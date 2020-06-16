@@ -1,0 +1,8 @@
+{
+    "ignore": [
+        "public",
+        "admin/app",
+        "main/app",
+        "student/app"
+    ]
+}
