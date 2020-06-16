@@ -1,0 +1,63 @@
+extends /main/index
+
+include /shared/views/mixins/flash-banner
+
+block flash
+    if meeting.capacity
+        if approvedRegistrations === meeting.capacity
+            +mdc-banner(`К сожалению мест на встречу больше нет. Ждем Вас в следующий раз!`)(icon='announcement').meeting-notice
+        else if (meeting.capacity - approvedRegistrations) < 10
+            +mdc-banner(`Осталось ${meeting.capacity - approvedRegistrations} мест!`)(icon='announcement').meeting-notice
+
+block main
+    +mdc-layout-grid
+        +mdc-layout-grid__cell(8)(tablet=8 phone=4)
+            +mdc-card()(outlined)
+                +mdc-card__media(meeting.thumbnailUrl)(wide)
+
+                +mdc-card__section()(primary)
+                    +mdc-typography(meeting.title)(style='headline5').meeting-title
+
+                    +mdc-chip-set
+                        +mdc-chip(meeting.datetime)(leadingIcon='event')
+                        +mdc-chip(meeting.level)(leadingIcon='star')
+                        +mdc-chip(meeting.host.fullname)(leadingIcon='person')
+
+                    +mdc-typography(meeting.description).meeting-description
+
+        +mdc-layout-grid__cell(4)(tablet=8 phone=4)
+            +mdc-card()(element='form' method='post' outlined)
+                +mdc-card__header
+                    +mdc-card__header__text('Регистрация на встречу')
+
+                +mdc-card__section()(primary)
+                    +mdc-text-field()(
+                        name='firstname'
+                        label='Имя'
+                        outlined
+                        required
+                    )
+
+                    +mdc-text-field()(
+                        name='lastname'
+                        label='Фамилия'
+                        outlined
+                        required
+                    )
+
+                    +mdc-text-field()(
+                        name='email'
+                        label='Электронная почта'
+                        outlined
+                        required
+                    )
+
+                    unless meeting.free
+                        +mdc-form-field('Я являюсь студентом SAY YES')
+                            +mdc-checkbox()(
+                                name='student'
+                                required
+                            )
+
+                +mdc-card__actions()
+                    +mdc-card__button('Зарегистрироваться')(unelevated disabled=(meeting.capacity && approvedRegistrations === meeting.capacity))

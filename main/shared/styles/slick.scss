@@ -1,0 +1,21 @@
+.slick-slider {
+    .slick-arrow::before {
+        color: #6c167b;
+    }
+
+    .slick-dots {
+        li {
+            button:hover::before {
+                color: #6c167b;
+                opacity: .75;
+            }
+        }
+
+        li.slick-active {
+            button::before {
+                color: #6c167b;
+                opacity: 1;
+            }
+        }
+    }
+}

@@ -1,0 +1,72 @@
+extends /shared/views/layouts/base
+
+include /shared/views/mixins/flash-banner
+include /shared/views/mixins/yandex-metrika
+include /shared/views/mixins/google-analytics
+include /shared/views/mixins/facebook-pixel
+
+block head
+    link(rel="stylesheet" href="/build/shared.css")
+    link(rel="stylesheet" href="/build/main.css")
+
+    if ENV === 'production'
+        +yandex-metrika(YANDEX_METRIKA_ID)
+        +google-analytics(GOOGLE_ANALYTICS_ID)
+        +facebook-pixel(FACEBOOOK_PIXEL_ID)
+
+    block styles
+    
+block body
+    include /shared/views/includes/header
+
+    block flash
+    
+    if flash.info
+        for message in flash.info
+            +flash-banner(message)(info icon='info' dismissable)
+
+    if flash.error
+        for message in flash.error
+            +flash-banner(message)(error icon='error' dismissable)
+
+    if flash.success
+        for message in flash.success
+            +flash-banner(message)(success icon='check_circle' dismissable)
+
+    main#content
+        block main
+    
+    include /shared/views/includes/footer
+    
+    include ./shared/includes/login-dialog
+    include ./shared/includes/password-dialog
+    include ./shared/includes/request-dialog
+    include ./shared/includes/contact-dialog
+
+    if ENV === 'development'
+        script(src="/lib/material-components-web/dist/material-components-web.js")
+    else
+        script(src="/lib/material-components-web/dist/material-components-web.min.js")
+
+    script.
+        mdc.autoInit();
+
+        document.querySelectorAll('[data-open]').forEach(function(element) {
+            element.addEventListener('click', function() {
+                document.querySelector(element.dataset.open).MDCDialog.open();
+            });
+        });
+
+        document.querySelectorAll('[data-close]').forEach(function(element) {
+            element.addEventListener('click', function() {
+                document.querySelector(element.dataset.close).MDCDialog.close();
+            });
+        });
+
+        document.querySelectorAll('.flash-banner').forEach(function(element) {
+            element.addEventListener('click', function() {
+                this.remove();
+            });
+        });
+
+    block scripts

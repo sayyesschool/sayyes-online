@@ -1,0 +1,24 @@
++mdc-dialog()(element='form' method='post' action='/request')#request-dialog
+    +mdc-dialog__title('Заказать звонок')
+
+    +mdc-dialog__content
+        +mdc-layout()(column)
+            +mdc-text-field('name')(
+                type='text'
+                label='Имя'
+                leadingIcon='person'
+                outlined 
+                required
+            )
+            
+            +mdc-text-field('phone')(
+                type='text'
+                label='Телефон'
+                leadingIcon='phone'
+                outlined
+                required
+            )
+    
+    +mdc-dialog__actions
+        +mdc-dialog__button('Закрыть')(type='button' action='cancel')
+        +mdc-dialog__button('Отправить')(type='submit' outlined default)

@@ -1,0 +1,39 @@
++mdc-dialog()(element='form' method='post' action='/signup')#signup-dialog
+    +mdc-dialog__title('Покупка билета')
+
+    +mdc-dialog__content
+        +mdc-typography('Билет позволит посетить 1 разговорный клуб в любое время.')
+        +mdc-typography('Мы создадим для Вас учетную запись и отправим данные для входа в клуб на указанный Email-адрес.')
+
+        +mdc-layout()(column)
+            +mdc-text-field('firstname')(
+                type='text'
+                label='Имя'
+                leadingIcon='person'
+                required
+                outlined
+            )
+
+            +mdc-text-field('lastname')(
+                type='text'
+                label='Фамилия'
+                leadingIcon='person'
+                required
+                outlined
+            )
+
+            +mdc-text-field('email')(
+                type='email'
+                label='Электронная почта'
+                leadingIcon='email'
+                required
+                outlined
+            )
+
+        +mdc-form-field('Я согласен с условиями предоставления услуг и политикой конфиденциальности.')
+            +mdc-checkbox()(name='confirm' checked required)
+
+    +mdc-dialog__actions
+        +mdc-dialog__button('Закрыть')(type='button' action='close')
+        +mdc-typography('350 руб.')(style='headline5' noMargin)
+        +mdc-dialog__button('Оплатить')(type='submit' default unelevated)

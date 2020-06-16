@@ -1,0 +1,31 @@
++mdc-dialog()(element='form' method='post' action='/contact')#contact-dialog
+    +mdc-dialog__title('Связаться с нами')
+
+    +mdc-dialog__content
+        +mdc-layout()(column)
+            +mdc-text-field('name')(
+                type='text'
+                label='Имя'
+                leadingIcon='person'
+                outlined 
+                required
+            )
+            
+            +mdc-text-field('email')(
+                type='email'
+                label='Электронная почта'
+                leadingIcon='email'
+                outlined
+                required
+            )
+
+            +mdc-text-field('message')(
+                label='Сообщение'
+                textarea
+                outlined
+                required
+            )
+    
+    +mdc-dialog__actions
+        +mdc-dialog__button('Закрыть')(type='button' action='cancel')
+        +mdc-dialog__button('Отправить')(type='submit' outlined default)

@@ -1,0 +1,7 @@
+mixin section
+    section.section&attributes(attributes)
+        div.section__content
+            block
+
+mixin section-title(text)
+    +mdc-typography(text, 'headline4')(element='h2').section-title
