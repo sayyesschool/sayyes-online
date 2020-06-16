@@ -1,0 +1,19 @@
+@use '@material/theme';
+
+.notification-snackbar {
+    // &.notification-snackbar--info .mdc-snackbar__surface {
+    //     background-color: $material-color-blue-500;
+    // }
+
+    // &.notification-snackbar--warning .mdc-snackbar__surface {
+    //     background-color: $material-color-orange-500;
+    // }
+
+    &.notification-snackbar--error .mdc-snackbar__surface {
+        background-color: theme.$red-500;
+    }
+
+    &.notification-snackbar--success .mdc-snackbar__surface {
+        background-color: theme.$green-500;
+    }
+}
