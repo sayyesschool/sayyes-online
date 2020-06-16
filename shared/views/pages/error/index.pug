@@ -1,0 +1,17 @@
+extends /shared/views/layouts/shared
+
+block main
+    main#content
+        +mdc-typography('Ой, произошла ошибка')(element='h1' style='headline4')
+
+        +mdc-typography(message)(element='h1' style='headline6')
+
+        if error
+            +mdc-typography(error.message)(style='headline6')
+
+            if IS_DEVELOPMENT
+                pre= error.stack
+        
+        +mdc-typography('Если это уже не первый раз, напишите пожалуйста в службу поддержки.')(style='subtitle1')
+
+        +mdc-fab('bug_report', 'Сообщить об ошибке')(element='a' href='mailto:support@sayes.ru?subject=Ошибка%20на%20сайте')

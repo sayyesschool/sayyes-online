@@ -1,0 +1,6 @@
+mixin form
+    form&attributes(attributes)
+        if attributes.method === 'post'
+            input(type='hidden' name='_csrf' value=CSRF_TOKEN)
+            input(type='hidden' name='returnUrl' value=CURRENT_URL)
+        block

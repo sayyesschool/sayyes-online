@@ -1,0 +1,25 @@
+footer#footer
+    +mdc-layout-grid
+        +mdc-layout-grid__cell(3)(tablet=8 phone=4)
+            img(src='https://static.sayes.ru/images/logos/sayyes-speaking-club-white.png').logo
+        
+        +mdc-layout-grid__cell(6)(tablet=8 phone=4)
+            div.legal
+                div.links
+                    +mdc-typography('Пользовательское соглашение')(element='a' href='/agreement' style='body2')
+                    +mdc-typography('Публичная оферта')(element='a' href='/offer' style='body2')
+                    +mdc-typography('Политика конфиденциальности')(element='a' href='/policy' style='body2')
+                    +mdc-typography('Правила использования')(element='a' href='/rules' style='body2')
+
+                div.copyright
+                    +mdc-typography(`© 2013 - ${new Date().getFullYear()} SAY YES!`)(style='caption' noMargin)
+                    +mdc-typography('Все права защищены')(style='caption' noMargin)
+
+        +mdc-layout-grid__cell(3)(tablet=8 phone=4)
+            div.icons.social-icons
+                a(href="https://www.instagram.com/sayyes2english" title="Страница в Instagram" target="_blank").instagram
+                a(href="https://www.facebook.com/YesISpeakEnglishSchool" title="Группа в Facebook" target="_blank").facebook
+                a(href="https://vk.com/sayyes2english" title="Группа в контакте" target="_blank").vkontakte
+            div.icons.contact-icons
+                a(href="https://wa.me/79858502427" title="Чат в WhatsApp" target="_blank").whatsapp
+                a(href="mailto:club@sayes.ru" title="Письмо на почту" target="_blank").email

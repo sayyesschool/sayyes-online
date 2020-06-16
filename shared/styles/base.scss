@@ -1,0 +1,91 @@
+@use 'shared/styles/variables';
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: variables.$font-family;
+    font-size: variables.$font-size;
+    font-weight: variables.$font-weight;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: variables.$body-color;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    //color: variables.$heading-color;
+    margin-top: 0;
+    margin-bottom: .5em;
+}
+
+p {
+    //color: variables.$text-color;
+    margin-top: 0;
+
+    a {
+        color: variables.$secondary-color;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+ul, ol, dl {
+    //color: variables.$text-color;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+blockquote {
+    line-height: 1.35;
+}
+
+mark {
+    background-color: #f4ff81;
+}
+
+textarea, code {
+    font-family: monospace !important;
+}
+
+hr {
+    height: 1px;
+    width: 100%;
+    border: none;
+    border-bottom-color: rgba(0, 0, 0, 0.12);
+}
+
+::-moz-selection {
+    color: white;
+    text-shadow: none;
+    background: variables.$primary-color;
+}
+
+::selection {
+    color: white;
+    text-shadow: none;
+    background: variables.$primary-color;
+}
+
+img {
+    width: 100%;
+}
+
+img::selection {
+    color: white;
+    background: transparent;
+}
+
+img::-moz-selection {
+    color: white;
+    background: transparent;
+}

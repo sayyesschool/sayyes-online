@@ -1,0 +1,5 @@
+@use 'shared/styles/variables';
+@use 'node_modules/mdc-pug' with (
+    $primary: variables.$primary-color,
+    $secondary: variables.$secondary-color
+);

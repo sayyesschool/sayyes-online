@@ -1,0 +1,57 @@
+/* Font */
+
+$font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !default;
+$font-size: 16px;
+$font-weight: 400;
+$line-height: 24px;
+
+/* Colors */
+
+$primary-color: #6c167b !default;
+$secondary-color: #6c167b !default;
+$body-color: #ffffff !default;
+$heading-color: #384047 !default;
+$text-color: #576366 !default;
+$text-light-color: #ffffff !default;
+$text-dark-color: #424242 !default;
+$background-color: #ffffff !default;
+$surface-color: #ffffff !default;
+$error-color: #d32f2f !default;
+
+$theme-dark: #222 !default;
+
+$facebook-color: #4267b2;
+$google-color: #ea4335;
+$microsoft-color: #0078D7;
+$telegram-color: #179cde;
+$vkontakte-color: #507299;
+$yandex-color: #ffdb4d;
+$youtube-color: red;
+
+$default-colors: ($primary-color, $secondary-color, $text-light-color, $text-dark-color);
+
+$oauth-provider-colors: (
+    vkontakte: ($vkontakte-color, $text-light-color),
+    facebook: ($facebook-color, $text-light-color),
+    google: ($google-color, $text-light-color),
+    yandex: ($yandex-color, $text-dark-color),
+    microsoft: ($microsoft-color, $text-light-color),
+    telegram: ($telegram-color, $text-light-color)
+);
+
+/* Breakpoints */
+
+$sm: '(max-width: 639px)';
+$gt-sm: '(min-width: 640px)';
+
+$lt-md: '(max-width: 639px)';
+$md: '(min-width: 640px) and (max-width: 959px)';
+$md-up: '(min-width: 640px)';
+$gt-md: '(min-width: 960px)';
+
+$lt-lg: '(max-width: 959px)';
+$lg: '(min-width: 960px) and (max-width: 1439px)';
+$lg-up: '(min-width: 960px)';
+$gt-lg: '(min-width: 1440px)';
+
+$xl: '(min-width: 1440px)';
