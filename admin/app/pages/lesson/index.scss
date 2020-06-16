@@ -1,0 +1,19 @@
+#meeting-page {
+    header {
+        margin-bottom: 2rem;
+
+        .mdc-button + .mdc-button {
+            margin-left: 8px;
+        }
+    }
+
+    > .mdc-layout-grid {
+        padding: 0;
+    }
+
+    .mdc-card {
+        .mdc-list {
+            padding: 0;
+        }
+    }
+}
