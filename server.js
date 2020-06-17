@@ -7,6 +7,7 @@ const auth = require('./auth');
 const admin = require('./admin');
 const main = require('./main');
 const student = require('./student');
+const teacher = require('./teacher');
 
 const server = express();
 
@@ -32,17 +33,13 @@ server.use(...core.middleware.flash);
 
 server.use('/api', api(core));
 server.use(shared.routes.common);
-server.use(shared.routes.legal);
 server.use(auth(core));
 server.use('/admin', admin);
-server.use((req, res, next) => {
-    if (!req.user) return next('route');
-    if (req.user.role === 'admin') return res.redirect('/admin');
-    if (req.user.role === 'teacher') return res.redirect('/teacher');
-    next();
-}, student(core));
+server.use(teacher(core));
+server.use(student(core));
 server.use(main(core));
-server.use(shared.routes.errors);
+server.use(shared.routes.notFound);
+server.use(shared.routes.error);
 
 server.listen(core.config.APP_PORT, () => console.log('Server started'));
 
