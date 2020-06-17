@@ -10,7 +10,7 @@ import { getAccount } from 'app/store/modules/account';
 import { getLessons } from 'app/store/modules/lessons';
 import { getPayments } from 'app/store/modules/payments';
 
-import Header from './components/header';
+import Header from './components/shared/header';
 import Account from './pages/account';
 import Home from './pages/home';
 import Lesson from './pages/lesson';

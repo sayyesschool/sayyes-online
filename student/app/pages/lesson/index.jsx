@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import {
+    LayoutGrid, LayoutGridCell,
     Spinner
 } from 'mdc-react';
 
-import Room from 'app/components/lessons/room';
+import { useSelector } from 'shared/hooks/store';
+
+import Chat from 'shared/components/chat';
+import Video from 'shared/components/video';
 
 export default function LessonPage({ match }) {
+    const user = useSelector(state => state.account);
     const [lesson, setLesson] = useState();
 
     useEffect(() => {
@@ -18,9 +23,33 @@ export default function LessonPage({ match }) {
 
     if (!lesson) return <Spinner />;
 
+    const members = {
+        [lesson.student.id]: lesson.student.name,
+        [lesson.teacher.id]: lesson.teacher.name
+    };
+
     return (
         <main id="lesson-page" className="page">
-            <Room name={lesson.id} audio video={{ width: 720 }} />
+            <LayoutGrid>
+                <LayoutGridCell span="8">
+                    Материалы урока
+                </LayoutGridCell>
+
+                <LayoutGridCell span="4">
+                    <Video
+                        token={lesson.videoToken}
+                        name={lesson.id}
+                        settings={{ width: 720 }}
+                    />
+
+                    <Chat
+                        token={lesson.chatToken}
+                        name={lesson.id}
+                        user={user}
+                        members={members}
+                    />
+                </LayoutGridCell>
+            </LayoutGrid>
         </main>
     );
 }
