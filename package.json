@@ -11,12 +11,15 @@
     "build-admin": "webpack --env=production --mode=production --config-name=admin",
     "dev-student": "webpack --watch --env=development --mode=development --config-name=student",
     "build-student": "webpack --env=production --mode=production --config-name=student",
+    "dev-teacher": "webpack --watch --env=development --mode=development --config-name=teacher",
+    "build-teacher": "webpack --env=production --mode=production --config-name=teacher",
     "sass": "gulp",
     "lint": "eslint",
     "cron": "nodemon -r dotenv/config cron.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "classnames": "^2.2.6",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^3.2.0",
     "cron": "^1.8.2",
@@ -48,6 +51,7 @@
     "redux-promise": "^0.6.0",
     "request": "^2.88.2",
     "twilio": "^3.45.0",
+    "twilio-chat": "^3.4.0",
     "twilio-video": "^2.5.0",
     "yandex-kassa": "0.0.3"
   },
