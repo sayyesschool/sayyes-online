@@ -1,12 +1,11 @@
 const { Router } = require('express');
 const upload = require('multer')();
 const Controller = require('./controller');
-const map = require('./mapper');
 
 module.exports = services => {
     const router = Router();
-    const controller = Controller(services, map);
-    
+    const controller = Controller(services);
+
     router.get('/', controller.getAccount);
     router.put('/profile', upload.single('avatar'), controller.updateProfile);
     router.put('/password', controller.updatePassword);
@@ -17,6 +16,6 @@ module.exports = services => {
             error: typeof error === 'object' ? error.message : undefined
         });
     });
-    
+
     return router;
 };
