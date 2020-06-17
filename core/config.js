@@ -23,6 +23,7 @@ module.exports = {
     SESSION_SECRET: 'BHve6rr4mAAP2w4G93qK',
 
     TWILIO_ACCOUNT_ID: process.env.TWILIO_ACCOUNT_ID,
+    TWILIO_CHAT_SERVICE_ID: process.env.TWILIO_CHAT_SERVICE_ID,
     TWILIO_API_KEY: process.env.TWILIO_API_KEY,
     TWILIO_API_SECRET: process.env.TWILIO_API_SECRET,
 

@@ -1,0 +1,16 @@
+#lesson-chat {
+    .message-list {
+        display: flex;
+        flex-direction: column;
+
+        .message-item {
+            &--local {
+                align-self: flex-end;
+            }
+
+            &--remote {
+                align-self: flex-start;
+            }
+        }
+    }
+}
