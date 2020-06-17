@@ -1,11 +1,5 @@
-const common = require('./routes/common');
-const legal = require('./routes/legal');
-const errors = require('./routes/errors');
+const routes = require('./routes');
 
 module.exports = {
-    routes: {
-        common,
-        legal,
-        errors
-    }
+    routes
 };

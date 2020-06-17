@@ -1,15 +1,4 @@
-const { Router } = require('express');
-
-const router = Router();
-
-router.use((req, res) => {
-    res.render('shared/views/pages/not-found', {
-        id: 'not-found',
-        title: 'Не найдено'
-    });
-});
-
-router.use((error, req, res, next) => {
+module.exports = (error, req, res, next) => {
     console.error(error);
 
     error.message = error.message || 'Что-то пошло не так :(';
@@ -26,6 +15,4 @@ router.use((error, req, res, next) => {
         req.flash('error', error.message);
         res.redirect('back');
     }
-});
-
-module.exports = router;
+};
