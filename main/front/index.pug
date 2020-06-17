@@ -10,12 +10,6 @@ append styles
 block header-content
     +mdc-top-app-bar__section.tab-nav
         +mdc-tab-bar()(align='center')
-            +mdc-tab('О клубе')(element='a' href='#about' minWidth)
-            +mdc-tab('Стоимость')(element='a' href='#prices' minWidth)
-            +mdc-tab('Ведущие')(element='a' href='#hosts' minWidth)
-            +mdc-tab('Расписание')(element='a' href='#meetings' minWidth)
-            +mdc-tab('Отзывы')(element='a' href='#testimonials' minWidth)
-            +mdc-tab('FAQ')(element='a' href='#faq' minWidth)
 
     +mdc-top-app-bar__section()(alignEnd)
         +mdc-button('Обратный звонок')(icon='phone' data-open='#request-dialog' unelevated).request-dialog-button
@@ -30,11 +24,6 @@ block main
             +mdc-typography('Практикуй английский онлайн!')(style='headline4').hero-subtitle
             +mdc-button('Войти')(outlined data-open='#login-dialog').hero-button
             +mdc-button('Зарегистрироваться')(raised data-open='#register-dialog').hero-button
-
-    +section#help
-        +mdc-typography('Не нашли ответа на свой вопрос? Задайте его нам:')(style='headline6' noMargin)
-        +mdc-button('Связаться с нами')(raised data-open="#contact-dialog")
-        +mdc-button('Обратный звонок')(data-open="#request-dialog").request-dialog-button
 
     include ../shared/includes/login-dialog
     include ../shared/includes/register-dialog

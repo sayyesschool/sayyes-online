@@ -3,7 +3,6 @@ const express = require('express');
 const moment = require('moment');
 
 const front = require('./front');
-const meeting = require('./meeting');
 
 module.exports = core => {
     const main = express();
@@ -20,7 +19,6 @@ module.exports = core => {
     });
 
     main.use('/', front(core.services));
-    main.use('/meetings', meeting(core.services));
 
     return main;
 };
