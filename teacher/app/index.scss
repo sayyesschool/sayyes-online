@@ -1,0 +1,11 @@
+@use 'styles/variables';
+@use 'styles/normalize';
+@use 'mdc-react' with (
+    $primary: variables.$primary-color,
+    $secondary: variables.$secondary-color
+);
+@use 'styles/base';
+@use 'styles/dialog';
+@use 'styles/form';
+@use 'styles/footer';
+@use 'styles/meeting-details';

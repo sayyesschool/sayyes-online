@@ -1,0 +1,20 @@
+.meeting-card {
+    .mdc-card__header__subtitle {
+        &::first-letter {
+            text-transform: capitalize;
+        }
+    }
+
+    .mdc-chip-set {
+        padding: 0;
+
+        .mdc-chip {
+            background-color: transparent;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+        }
+    }
+
+    .mdc-card__actions {
+        justify-content: space-between;
+    }
+}

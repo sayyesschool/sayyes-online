@@ -1,0 +1,17 @@
+#home-page {
+    .mdc-layout-grid {
+        padding: 0;
+    }
+
+    .mdc-chip-set {
+        .mdc-chip {
+            .mdc-chip__text {
+                text-transform: capitalize;
+            }
+        }
+    }
+
+    section + section {
+        margin-top: 2rem;
+    }
+}

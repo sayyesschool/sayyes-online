@@ -1,0 +1,11 @@
+#account-page {
+    #profile-form {
+        input[type='file'] {
+            display: none;
+        }
+
+        .filename {
+            margin-left: .5rem;
+        }
+    }
+}
