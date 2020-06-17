@@ -1,5 +1,6 @@
 const express = require('express');
 
+const auth = require('./auth');
 const api = require('./api');
 
 module.exports = core => {
@@ -12,6 +13,7 @@ module.exports = core => {
         Object.assign(app.locals, parent.locals);
     });
 
+    app.use(auth);
     app.use('/api', api(core));
     app.use((req, res) => res.render('index'));
 
