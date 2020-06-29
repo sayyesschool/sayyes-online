@@ -6,33 +6,35 @@ export default function useForm(initialData, deps = []) {
     useEffect(() => {
         setData(initialData);
     }, deps);
-    
+
     return [
         data,
-        (value, element) => {
-            value = (value === undefined) ? element.value : value;
-        
-            if (element.name.includes('.')) {
-                const [name1, name2] = element.name.split('.');
-                const obj = data[name1] ?
-                    {
-                        ...data[name1],
-                        [name2]: value
-                    }
-                    :
-                    {
-                        [name2]: value
-                    };
+        ({ target }, value) => {
+            value = (value === undefined) ? target.value : value;
 
-                setData({
-                    ...data,
-                    [name1]: obj
+            if (target.name.includes('.')) {
+                setData(data => {
+                    const [name1, name2] = target.name.split('.');
+                    const obj = typeof data[name1] === 'object' ?
+                        {
+                            ...data[name1],
+                            [name2]: value
+                        }
+                        :
+                        {
+                            [name2]: value
+                        };
+
+                    return {
+                        ...data,
+                        [name1]: obj
+                    };
                 });
             } else {
-                setData({
+                setData(data => ({
                     ...data,
-                    [element.name]: value
-                });
+                    [target.name]: value
+                }));
             }
         }
     ];

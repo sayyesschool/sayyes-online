@@ -1,23 +1,18 @@
 import api from '../api';
 
 const apiMiddleware = apiUrl => store => next => action => {
-    if (!action.request) {
-        return next(action);
-    }
+    if (!action.request) return next(action);
 
-    let REQUEST, SUCCESS, FAILURE;
-
-    if (action.types) {
-        [REQUEST, SUCCESS, FAILURE] = action.types;
-    } else {
-        REQUEST = `${action.type}_REQUEST`;
-        SUCCESS = action.type;
-        FAILURE = `${action.type}_FAILURE`;
-    }
+    const request = action.request;
+    const [
+        REQUEST = `${action.type}_REQUEST`,
+        SUCCESS = action.type,
+        FAILURE = `${action.type}_FAILURE`
+    ] = action.types || [];
 
     next({ ...action, type: REQUEST, request: undefined });
 
-    return api[action.request.method](`${apiUrl}${action.request.url}`, action.request.body)
+    return api[request.method](`${apiUrl}${request.url}`, request.body)
         .then(data => {
             next({
                 type: SUCCESS,
