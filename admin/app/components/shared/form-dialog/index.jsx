@@ -1,22 +1,23 @@
 import React from 'react';
 import {
-    Button,
-    Dialog, DialogTitle, DialogContent, DialogActions
-} from 'mdc-react';
+    DefaultButton,
+    PrimaryButton,
+    Dialog, DialogFooter
+} from '@fluentui/react';
 
-export default function FormDialog({ title, form, children, onClose, ...props }) {
+export default function FormDialog({ title, form, isOpen, children, onDismiss, ...props }) {
     return (
-        <Dialog onClose={onClose} {...props}>
-            <DialogTitle>{title}</DialogTitle>
+        <Dialog
+            dialogContentProps={{ title }}
+            hidden={!isOpen}
+            {...props}
+        >
+            {children}
 
-            <DialogContent>
-                {children}
-            </DialogContent>
-
-            <DialogActions>
-                <Button type="button" onClick={onClose}>Закрыть</Button>
-                <Button type="submit" form={form} outlined>Сохранить</Button>
-            </DialogActions>
+            <DialogFooter>
+                <DefaultButton type="button" onClick={onDismiss}>Закрыть</DefaultButton>
+                <PrimaryButton type="submit" form={form}>Сохранить</PrimaryButton>
+            </DialogFooter>
         </Dialog>
     );
 }

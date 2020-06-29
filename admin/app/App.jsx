@@ -8,12 +8,14 @@ import NotificationSnackbar from 'shared/components/notification-snackbar';
 import { getUsers } from 'app/store/modules/users';
 import UI from 'app/contexts/ui';
 
-import Header from './components/shared/header';
-import Drawer from './components/shared/drawer';
+import AppHeader from './components/shared/app-header';
+import AppSidenav from './components/shared/app-sidenav';
+import AppContent from './components/shared/app-content';
 import Home from './pages/home';
 import Lessons from './pages/lessons';
 import Lesson from './pages/lesson';
 import Payments from './pages/payments';
+import Requests from './pages/requests';
 import Users from './pages/users';
 
 import './App.scss';
@@ -33,19 +35,20 @@ export default function App() {
             showNotification: actions.showNotification,
             hideNotification: actions.hideNotification
         }}>
-            <Header />
+            <AppHeader />
 
-            <Drawer />
+            <AppSidenav />
 
-            <div id="content">
+            <AppContent>
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <Route exact path="/lessons" component={Lessons} />
+                    <Route path="/requests" component={Requests} />
                     <Route path="/lesson/:lessonId" component={Lesson} />
                     <Route path="/payments" component={Payments} />
                     <Route path="/users" component={Users} />
                 </Switch>
-            </div>
+            </AppContent>
 
             <NotificationSnackbar
                 open={notification.active}

@@ -1,47 +1,69 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-    DataTable, DataTableHeader, DataTableContent, DataTableRow, DataTableCell
-} from 'mdc-react';
+    DetailsList
+} from '@fluentui/react';
 
 export default function LessonList({ lessons }) {
+    const items = lessons
+        .map(lesson => ({
+            key: lesson.id,
+            value: lesson.id,
+            title: lesson.title,
+            datetime: lesson.datetime,
+            student: lesson.student?.fullname,
+            teacher: lesson.teacher?.fullname
+        }));
+
     return (
-        <DataTable id="lesson-list">
-            <DataTableHeader>
-                <DataTableRow header>
-                    <DataTableCell header>Название</DataTableCell>
-                    <DataTableCell header>Дата и время</DataTableCell>
-                    <DataTableCell header>Студент</DataTableCell>
-                    <DataTableCell header>Преподаватель</DataTableCell>
-                </DataTableRow>
-            </DataTableHeader>
-
-            <DataTableContent>
-                {lessons.map(lesson =>
-                    <DataTableRow key={lesson.id}>
-                        <DataTableCell>
-                            <Link to={`/lessons/${lesson.id}`}>
-                                {lesson.title}
-                                Урок
-                            </Link>
-                        </DataTableCell>
-
-                        <DataTableCell>{lesson.datetime}</DataTableCell>
-
-                        <DataTableCell>
-                            {lesson.student.fullname}
-                        </DataTableCell>
-
-                        <DataTableCell>
-                            {lesson.teacher ?
-                                lesson.teacher.fullname
-                                :
-                                '[Преподаватель не назначен]'
-                            }
-                        </DataTableCell>
-                    </DataTableRow>
-                )}
-            </DataTableContent>
-        </DataTable>
+        <section id="lesson-list">
+            <DetailsList
+                items={items}
+                compact={false}
+                columns={columns}
+                setKey="none"
+                isHeaderVisible={true}
+            />
+        </section>
     );
 }
+
+const columns = [
+    {
+        key: 'title',
+        name: 'Название',
+        fieldName: 'title',
+        data: 'string',
+        minWidth: 100,
+        maxWidth: 256,
+        isRowHeader: true,
+        isPadded: true
+    },
+    {
+        key: 'datetime',
+        name: 'Дата и время',
+        fieldName: 'datetime',
+        data: 'string',
+        minWidth: 100,
+        isRowHeader: true,
+        isPadded: true
+    },
+    {
+        key: 'student',
+        name: 'Студент',
+        fieldName: 'student',
+        data: 'string',
+        minWidth: 100,
+        isRowHeader: true,
+        isPadded: true
+    },
+    {
+        key: 'teacher',
+        name: 'Преподаватель',
+        fieldName: 'teacher',
+        data: 'string',
+        minWidth: 100,
+        isRowHeader: true,
+        isPadded: true
+    }
+];

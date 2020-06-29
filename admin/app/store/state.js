@@ -1,14 +1,18 @@
 export default {
     lessons: {
-        list: [],
+        list: null,
         single: null
     },
     payments: {
-        list: [],
+        list: null,
+        single: null
+    },
+    requests: {
+        list: null,
         single: null
     },
     users: {
-        list: [],
+        list: null,
         single: null
     }
 };

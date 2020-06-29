@@ -1,0 +1,21 @@
+#app-header {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid rgb(243, 242, 241);
+    background-color: purple;
+    color: white;
+
+    .app-title {
+        margin-right: 2rem;
+    }
+
+    .app-search-box {
+        
+    }
+
+    .app-user-avatar {
+        margin-left: auto;
+    }
+}

@@ -1,14 +1,10 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 import {
-    Button,
-    FormField,
-    Layout,
-    Select, SelectOption,
-    Spinner,
-    Switch,
-    TextField,
-    Typography
-} from 'mdc-react';
+    DatePicker,
+    CompactPeoplePicker,
+    Stack,
+    ValidationState
+} from '@fluentui/react';
 import moment from 'moment';
 
 import api from 'shared/api';
@@ -25,6 +21,7 @@ const defaultData = () => ({
 });
 
 export default function LessonForm({ lesson = defaultData(), onSubmit }) {
+    const [students, setStudents] = useState();
     const [teachers, setTeachers] = useState();
     const [data, setData] = useForm({
         date: moment(lesson.date).format('YYYY-MM-DDTHH:mm'),
@@ -32,49 +29,100 @@ export default function LessonForm({ lesson = defaultData(), onSubmit }) {
         teacher: lesson.teacher && lesson.teacher.id
     });
 
-    useEffect(() => {
-        api.get('/admin/api/users?role=teacher')
-            .then(users => setTeachers(users));
-    }, []);
-
-    function handleSubmit() {
+    const handleSubmit = useCallback(() => {
         data.date = moment(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
 
         onSubmit(data);
+    }, [data]);
+
+    const onResolveStudentSuggestions = (filterText, selectedItems) => {
+        if (filterText) {
+            console.log(filterText);
+
+            return api.get('/admin/api/students')
+                .then(res => res.data)
+                .then(data => data.map(teacher => ({ text: teacher.fullname })));
+        } else {
+            return [];
+        }
+    };
+
+    const onResolveTeacherSuggestions = (filterText, selectedItems) => {
+        if (filterText) {
+            console.log(filterText);
+
+            return api.get('/admin/api/teachers')
+                .then(res => res.data)
+                .then(data => data.map(teacher => ({ text: teacher.fullname })));
+        } else {
+            return [];
+        }
+    };
+
+    function validateInput(input) {
+        if (input.indexOf('@') !== -1) {
+            return ValidationState.valid;
+        } else if (input.length > 1) {
+            return ValidationState.warning;
+        } else {
+            return ValidationState.invalid;
+        }
     }
 
-    if (!teachers) return <Spinner />;
+    function getTextFromItem(item) {
+        return item.text;
+    }
 
     return (
         <Form id="lesson-form" onSubmit={handleSubmit}>
-            <Layout column>
-                <TextField
-                    type="datetime-local"
-                    name="date"
-                    value={data.date}
-                    label="Когда"
-                    outlined
-                    required
+            <Stack tokens={{ childrenGap: 8 }}>
+                <DatePicker
+                    textField={{
+                        name: "date"
+                    }}
+                    value={data.dob}
+                    placeholder="Дата"
                     onChange={setData}
                 />
 
-                <Select
-                    name="host"
-                    value={data.host}
-                    label="Ведущий"
-                    outlined
-                    onChange={setData}
-                >
-                    {teachers.map(teacher =>
-                        <SelectOption
-                            key={teacher.id}
-                            value={teacher.id}
-                        >
-                            {teacher.fullname}
-                        </SelectOption>
-                    )}
-                </Select>
-            </Layout>
+                <CompactPeoplePicker
+                    onResolveSuggestions={onResolveStudentSuggestions}
+                    getTextFromItem={getTextFromItem}
+                    inputProps={{
+                        placeholder: 'Ученик'
+                    }}
+                    pickerSuggestionsProps={{
+                        suggestionsHeaderText: 'Suggested People',
+                        mostRecentlyUsedHeaderText: 'Suggested Contacts',
+                        noResultsFoundText: 'No results found',
+                        loadingText: 'Loading',
+                        showRemoveButtons: false,
+                        suggestionsAvailableAlertText: 'People Picker Suggestions available',
+                        suggestionsContainerAriaLabel: 'Suggested contacts'
+                    }}
+                    onValidateInput={validateInput}
+                    resolveDelay={300}
+                />
+
+                <CompactPeoplePicker
+                    onResolveSuggestions={onResolveTeacherSuggestions}
+                    getTextFromItem={getTextFromItem}
+                    inputProps={{
+                        placeholder: 'Преподаватель'
+                    }}
+                    pickerSuggestionsProps={{
+                        suggestionsHeaderText: 'Suggested People',
+                        mostRecentlyUsedHeaderText: 'Suggested Contacts',
+                        noResultsFoundText: 'No results found',
+                        loadingText: 'Loading',
+                        showRemoveButtons: false,
+                        suggestionsAvailableAlertText: 'People Picker Suggestions available',
+                        suggestionsContainerAriaLabel: 'Suggested contacts'
+                    }}
+                    onValidateInput={validateInput}
+                    resolveDelay={300}
+                />
+            </Stack>
         </Form>
     );
 }

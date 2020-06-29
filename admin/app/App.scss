@@ -1,16 +1,1 @@
 @use 'shared/styles/variables';
-
-#content {
-    margin-left: 256px;
-    padding: 80px 1rem 1rem 1rem;
-
-    > .mdc-layout-grid {
-        padding: 0;
-    }
-}
-
-.mdc-dialog {
-    .mdc-dialog__surface {
-        min-width: 480px;
-    }
-}

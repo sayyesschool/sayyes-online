@@ -7,9 +7,7 @@ module.exports = ({ Lesson }) => ({
             .then(lessons => {
                 res.json({
                     ok: true,
-                    data: {
-                        lessons
-                    }
+                    data: lessons
                 });
             })
             .catch(next);
@@ -22,9 +20,7 @@ module.exports = ({ Lesson }) => ({
             .then(lesson => {
                 res.json({
                     ok: true,
-                    data: {
-                        lesson
-                    }
+                    data: lesson
                 });
             })
             .catch(next);
@@ -36,9 +32,7 @@ module.exports = ({ Lesson }) => ({
                 res.json({
                     ok: true,
                     message: 'Урок создан',
-                    data: {
-                        lesson
-                    }
+                    data: lesson
                 });
             })
             .catch(next);
@@ -50,9 +44,7 @@ module.exports = ({ Lesson }) => ({
                 res.json({
                     ok: true,
                     message: 'Урок изменен',
-                    data: {
-                        lesson
-                    }
+                    data: lesson
                 });
             })
             .catch(next);

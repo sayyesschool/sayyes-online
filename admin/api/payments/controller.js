@@ -5,9 +5,7 @@ module.exports = ({ Payment }) => ({
             .then(payments => {
                 res.json({
                     ok: true,
-                    data: {
-                        payments: payments.map(map)
-                    }
+                    data: payments.map(map)
                 });
             })
             .catch(next);
@@ -19,9 +17,7 @@ module.exports = ({ Payment }) => ({
             .then(payment => {
                 res.json({
                     ok: true,
-                    data: {
-                        payment: map(payment)
-                    }
+                    data: map(payment)
                 });
             })
             .catch(next);
@@ -33,9 +29,7 @@ module.exports = ({ Payment }) => ({
                 res.json({
                     ok: true,
                     message: 'Платеж создан',
-                    data: {
-                        payment
-                    }
+                    data: payment
                 });
             })
             .catch(next);
@@ -47,9 +41,7 @@ module.exports = ({ Payment }) => ({
                 res.json({
                     ok: true,
                     message: 'Платеж обновлен',
-                    data: {
-                        payment
-                    }
+                    data: payment
                 });
             })
             .catch(next);

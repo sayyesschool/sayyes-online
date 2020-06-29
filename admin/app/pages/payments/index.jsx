@@ -1,35 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import {
-    Spinner,
-    Typography
-} from 'mdc-react';
+import React, { useState, useEffect, useCallback } from 'react';
 
-import { useStore } from 'shared/hooks/store';
-import { actions as paymentActions } from 'app/store/modules/payments';
+import { useStore } from 'app/store';
+import Page from 'app/components/shared/page';
+import PageHeader from 'app/components/shared/page-header';
+import PageContent from 'app/components/shared/page-content';
+import FormPanel from 'app/components/shared/form-panel';
 import PaymentList from 'app/components/payments/payment-list';
+import PaymentForm from 'app/components/payments/payment-form';
 
-export default function Tickets() {
+export default function Payments() {
     const [isPaymentFormOpen, setPaymentFormOpen] = useState(false);
-    const [payments, actions] = useStore(
-        state => state.payments.list,
-        paymentActions
-    );
+    const [{ list: payments }, actions] = useStore('payments');
 
     useEffect(() => {
-        actions.getTickets();
+        actions.getPayments();
+    }, []);
+
+    const handleSubmit = useCallback(data => {
+        actions.createPayment(data)
+            .then(() => setPaymentFormOpen(false));
     }, []);
 
     return (
-        <main id="payments-page" className="page">
-            <Typography element="h1" variant="headline4">Платежи</Typography>
+        <Page id="payments">
+            <PageHeader
+                title="Платежи"
+                controls={[
+                    {
+                        key: 'add',
+                        text: 'Создать',
+                        iconProps: { iconName: 'Add' },
+                        onClick: () => setPaymentFormOpen(true)
+                    }
+                ]}
+            />
 
-            {payments ?
+            <PageContent loading={!payments}>
                 <PaymentList
                     payments={payments}
                 />
-                :
-                <Spinner />
-            }
-        </main>
+            </PageContent>
+
+            <FormPanel
+                title="Создание платежа"
+                isOpen={isPaymentFormOpen}
+                form="payment-form"
+                onDismiss={() => setPaymentFormOpen(false)}
+            >
+                <PaymentForm
+                    onSubmit={handleSubmit}
+                />
+            </FormPanel>
+        </Page>
     );
 }

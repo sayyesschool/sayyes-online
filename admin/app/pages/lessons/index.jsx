@@ -1,26 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-    Button,
-    Icon,
-    Layout,
-    Typography
-} from 'mdc-react';
 
-import { useStore } from 'shared/hooks/store';
-
-import { actions as lessonActions } from 'app/store/modules/lessons';
-
-import FormDialog from 'app/components/shared/form-dialog';
+import { useStore } from 'app/store';
+import Page from 'app/components/shared/page';
+import PageHeader from 'app/components/shared/page-header';
+import PageContent from 'app/components/shared/page-content';
+import FormPanel from 'app/components/shared/form-panel';
 import LessonList from 'app/components/lessons/lesson-list';
 import LessonForm from 'app/components/lessons/lesson-form';
 
 export default function Lessons() {
     const [isLessonFormOpen, setLessonFormOpen] = useState(false);
-
-    const [state, actions] = useStore(
-        state => state.lessons.list,
-        lessonActions
-    );
+    const [{ list: lessons }, actions] = useStore('lessons');
 
     useEffect(() => {
         actions.getLessons();
@@ -31,40 +21,36 @@ export default function Lessons() {
             .then(() => setLessonFormOpen(false));
     }, []);
 
-    const lessons = [...state].sort((a, b) => new Date(b.date) - new Date(a.date));
-
     return (
-        <main id="lessons-page" className="page">
-            <Layout element="header" row justifyContent="between">
-                <Typography element="h1" variant="headline4">Уроки</Typography>
+        <Page id="lessons">
+            <PageHeader
+                title="Уроки"
+                controls={[
+                    {
+                        key: 'add',
+                        text: 'Создать',
+                        iconProps: { iconName: 'Add' },
+                        onClick: () => setLessonFormOpen(true)
+                    }
+                ]}
+            />
 
-                <Button
-                    leadingIcon={<Icon>add</Icon>}
-                    outlined
-                    onClick={() => setLessonFormOpen(true)}
-                >
-                    Создать
-                </Button>
-            </Layout>
-
-            {lessons.length === 0 ?
-                <Typography>Уроков нет</Typography>
-                :
+            <PageContent loading={!lessons}>
                 <LessonList
                     lessons={lessons}
                 />
-            }
+            </PageContent>
 
-            <FormDialog
+            <FormPanel
                 title="Создание урока"
-                open={isLessonFormOpen}
+                isOpen={isLessonFormOpen}
                 form="lesson-form"
                 onClose={() => setLessonFormOpen(!isLessonFormOpen)}
             >
                 <LessonForm
                     onSubmit={handleSubmit}
                 />
-            </FormDialog>
-        </main>
+            </FormPanel>
+        </Page>
     );
 }
