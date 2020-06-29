@@ -25,6 +25,13 @@ const User = new Schema({
         maxlength: [64, 'Фамилия слишком длинная.'],
         match: [/^[^0-9 ]+$/, 'В фамилии не должно быть пробелов и цифр.']
     },
+    patronym: {
+        type: String,
+        trim: true,
+        minlength: [2, 'Отчество слишком короткая.'],
+        maxlength: [64, 'Отчество слишком длинная.'],
+        match: [/^[^0-9 ]+$/, 'В отчестве не должно быть пробелов и цифр.']
+    },
     email: {
         type: String,
         required: [true, 'Поле Email обязательно для заполнения.'],
@@ -38,22 +45,24 @@ const User = new Schema({
         type: String,
         trim: true
     },
-    phone: {
+    dob: { type: Date },
+    gender: { type: String, enum: ['male', 'female', 'other'] },
+    phones: [{
         type: String,
         trim: true
-    },
+    }],
     avatar: {
         type: String,
         trim: true
     },
-    role: { type: String, enum: ['student', 'teacher', 'admin'], default: 'student' },
-    zoomId: String,
+    role: { type: String, enum: ['student', 'teacher', 'manager', 'admin'], default: 'student' },
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
     activated: { type: Boolean, default: false, alias: 'isActivated' },
     activationToken: String,
     activationTokenExpiresAt: Date,
     resetPasswordToken: String,
-    resetPasswordTokenExpiresAt: Date
+    resetPasswordTokenExpiresAt: Date,
+    note: { type: String, trim: true }
 }, {
     timestamps: true,
     discriminatorKey: 'role'
@@ -120,9 +129,9 @@ User.methods.isResetPasswordTokenValid = function(token) {
 // Generate password
 User.pre('save', function(next) {
     if (!this.isModified('password')) return next();
-    
+
     this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync());
-    
+
     next();
 });
 
@@ -144,7 +153,7 @@ User.pre('save', function(next) {
     // Generate email verification token
     this.activationToken = User.statics.generateToken();
     this.activationTokenExpiresAt = Date.now() + 86400000;
-    
+
     next();
 });
 

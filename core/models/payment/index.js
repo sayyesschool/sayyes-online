@@ -6,10 +6,11 @@ const PaymentMethod = require('./payment-method');
 const Schema = mongoose.Schema;
 
 const STATUSES = {
-    pending: { value: 'pending', title: 'В обработке', icon: 'hourglass_empty' },
-    waiting_for_capture: { value: 'waiting_for_capture', title: 'В ожидании', icon: 'warning' },
-    succeeded: { value: 'succeeded', title: 'Завершен', icon: 'done' },
-    canceled: { value: 'canceled', title: 'Отменен', icon: 'clear' }
+    pending: { value: 'pending', label: 'В обработке', icon: 'hourglass_empty' },
+    waiting_for_capture: { value: 'waiting_for_capture', label: 'В ожидании', icon: 'warning' },
+    succeeded: { value: 'succeeded', label: 'Завершен', icon: 'done' },
+    canceled: { value: 'canceled', label: 'Отменен', icon: 'clear' },
+    refunded: { value: 'refunded', label: 'Возвращен', icon: 'clear' },
 };
 
 const Payment = new Schema({
@@ -18,24 +19,21 @@ const Payment = new Schema({
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     currency: { type: String, default: 'RUB' },
     description: { type: String, trim: true },
-    status: { type: String, required: true, enum: ['pending', 'waiting_for_capture', 'succeeded', 'canceled'] },
+    status: { type: String, required: true, enum: Object.keys(STATUSES) },
     paid: { type: Boolean, default: false },
     expiresAt: { type: Date },
+    dueAt: { type: Date },
     paidAt: { type: Date },
     confirmationUrl: { type: String },
-    method: PaymentMethod
+    method: PaymentMethod,
+    note: { type: String }
 }, {
     timestamps: true,
     toObject: { getters: true, virtuals: true },
     toJSON: { getters: true, virtuals: true }
 });
 
-Payment.statics.STATUSES = [
-    STATUSES.pending,
-    STATUSES.waiting_for_capture,
-    STATUSES.succeeded,
-    STATUSES.canceled
-];
+Payment.statics.STATUSES = Array.from(Object.values(STATUSES));
 
 Payment.virtual('date')
     .get(function() {
@@ -45,14 +43,14 @@ Payment.virtual('date')
         this.createdAt = value;
     });
 
-Payment.virtual('statusIcon')
-    .get(function() {
-        return STATUSES[this.status].icon;
-    });
-
 Payment.virtual('statusLabel')
     .get(function() {
         return STATUSES[this.status].title;
+    });
+
+Payment.virtual('statusIcon')
+    .get(function() {
+        return STATUSES[this.status].icon;
     });
 
 Payment.virtual('isPending').get(function() {
@@ -83,4 +81,4 @@ Payment.methods.getResolveUrl = function(paymentId) {
     return this.subscriptionId ? `/user/subscription/resolve?paymentId=${paymentId}` : `/user/payments/${paymentId}`;
 };
 
-module.exports = mongoose.model('Payment', Payment);;
+module.exports = mongoose.model('Payment', Payment);
