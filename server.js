@@ -34,7 +34,7 @@ server.use(...core.middleware.flash);
 server.use('/api', api(core));
 server.use(shared.routes.common);
 server.use(auth(core));
-server.use('/admin', admin);
+server.use('/admin', admin(core));
 server.use(teacher(core));
 server.use(student(core));
 server.use(main(core));
