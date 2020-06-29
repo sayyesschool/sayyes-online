@@ -18,6 +18,8 @@
     "cron": "nodemon -r dotenv/config cron.js"
   },
   "dependencies": {
+    "@fluentui/react": "^7.121.2",
+    "@reduxjs/toolkit": "^1.4.0",
     "bcryptjs": "^2.4.3",
     "classnames": "^2.2.6",
     "connect-flash": "^0.1.1",
