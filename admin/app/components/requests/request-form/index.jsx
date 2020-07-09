@@ -49,7 +49,7 @@ export default function RequestForm({ request = defaultData(), onSubmit }) {
 
         onSubmit(data);
     }
-    console.log(data);
+
     return (
         <Form id="request-form" onSubmit={handleSubmit}>
             <Pivot>
