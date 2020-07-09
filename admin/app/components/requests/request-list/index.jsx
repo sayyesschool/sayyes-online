@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    DetailsList, DetailsListLayoutMode,
+    DetailsList,
     SelectionMode,
     Icon,
     IconButton,
@@ -10,6 +10,7 @@ import {
     Text,
     PersonaSize
 } from '@fluentui/react';
+import moment from 'moment';
 
 export default function RequestList({ requests, onEdit, onTransform, onDelete }) {
     const items = requests.map(request => ({
@@ -23,10 +24,8 @@ export default function RequestList({ requests, onEdit, onTransform, onDelete })
             key: 'status',
             name: 'Статус',
             fieldName: 'status',
-            data: 'string',
             minWidth: 64,
             maxWidth: 96,
-            isRowHeader: true,
             onRender: item => (
                 <span className="ms-TagItem">
                     <Icon iconName={statusIcons[item.status]} />
@@ -38,17 +37,16 @@ export default function RequestList({ requests, onEdit, onTransform, onDelete })
             key: 'user',
             name: 'Контакт',
             fieldName: 'contact',
-            data: 'string',
             minWidth: 100,
             maxWidth: 256,
-            isRowHeader: true,
             onRender: item => (
                 <Stack horizontal horizontalAlign="space-between">
                     <Persona
-                        size={PersonaSize.extraSmall}
-                        primaryText={item.contact.name}
+                        size={PersonaSize.size24}
+                        primaryText={item.contact.firstname}
                         secondaryText={item.contact.phone}
                         showSecondaryText
+
                     />
 
                     <IconButton
@@ -82,36 +80,28 @@ export default function RequestList({ requests, onEdit, onTransform, onDelete })
             key: 'datetime',
             name: 'Дата и время',
             fieldName: 'datetime',
-            data: 'string',
             minWidth: 100,
             maxWidth: 256,
-            isRowHeader: true
+            onRender: item => moment(item.createdAt).format('dd, D MMM, H:mm')
         },
         {
-            key: 'source',
-            name: 'Источник',
-            fieldName: 'source',
-            data: 'string',
+            key: 'managers',
+            name: 'Менеджеры',
+            fieldName: 'managers',
             minWidth: 100,
             maxWidth: 256,
-            isRowHeader: true
-        },
-        {
-            key: 'channel',
-            name: 'Канал связи',
-            fieldName: 'channel',
-            data: 'string',
-            minWidth: 100,
-            maxWidth: 256,
-            isRowHeader: true
+            onRender: item => item.managers.map(manager =>
+                <Persona
+                    size={PersonaSize.size24}
+                    primaryText={manager.fullname}
+                />
+            )
         },
         {
             key: 'note',
             name: 'Заметка',
             fieldName: 'note',
-            data: 'string',
-            minWidth: 100,
-            isRowHeader: true
+            minWidth: 100
         }
     ], []);
 
