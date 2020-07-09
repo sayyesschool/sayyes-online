@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const moment = require('moment');
 
 const { Schema } = mongoose;
 
@@ -11,21 +10,48 @@ const RequstStatus = {
     postponed: 'Отложена'
 };
 
+const LevelStatus = {
+    zero: 'Нулевой',
+    beg: 'Beginner',
+    elem: 'Elementary',
+    pre: 'Pre-Intermediate',
+    int: 'Intermediate',
+    upper: 'Upper-Intermediate',
+    adv: 'Advanced'
+};
+
 const Request = new Schema({
-    contact: {
-        name: String,
-        phone: String,
-        email: String
-    },
     status: { type: String, enum: Object.keys(RequstStatus), default: RequstStatus.new },
-    channel: { type: String },
-    source: { type: String },
-    purpose: { type: String },
-    category: { type: String, enum: ['adult', 'child'] },
-    manager: { type: mongoose.Types.ObjectId, ref: 'Manager' },
+    contact: {
+        firstname: String,
+        lastname: String,
+        patronym: String,
+        phone: String,
+        email: String,
+        dob: String,
+        gender: String
+    },
+    study: {
+        level: { type: String, enum: Object.keys(LevelStatus) },
+        goal: { type: String },
+        category: { type: String, enum: ['children', 'teens', 'adults'] },
+        days: { type: [Number], enum: [0, 1, 2, 3, 4, 5, 6] },
+        time: {
+            from: Number,
+            to: Number
+        }
+    },
+    marketing: {
+        channel: { type: String },
+        source: { type: String },
+        utm: { type: Map }
+    },
+    note: { type: String, trim: true, default: '' },
+    lesson: { type: mongoose.Types.ObjectId, ref: 'Lesson' },
     student: { type: mongoose.Types.ObjectId, ref: 'Student' },
-    meta: { type: Map },
-    note: { type: String, trim: true, default: '' }
+    managers: [{ type: mongoose.Types.ObjectId, ref: 'Manager' }],
+    createdAt: { type: Date },
+    updatedAt: { type: Date }
 }, {
     timestamps: true
 });
@@ -34,12 +60,12 @@ Request.virtual('url').get(function() {
     return `/requests/${this.id}`;
 });
 
-Request.virtual('datetime').get(function() {
-    return moment(this.createdAt).tz('Europe/Moscow').format('dd, D MMM, H:mm МСК');
-});
-
 Request.virtual('statusLabel').get(function() {
     return RequstStatus[this.status];
+});
+
+Request.virtual('levelLabel').get(function() {
+    return LevelStatus[this.study.level];
 });
 
 module.exports = mongoose.model('Request', Request);

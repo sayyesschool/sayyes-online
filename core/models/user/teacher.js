@@ -1,6 +1,8 @@
 const { Schema } = require('mongoose');
 
-const Teacher = new Schema();
+const Teacher = new Schema({
+    level: { type: String }
+});
 
 Teacher.virtual('meetings', {
     ref: 'Meeting',
