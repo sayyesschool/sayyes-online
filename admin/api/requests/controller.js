@@ -1,7 +1,8 @@
 module.exports = ({ Request }) => ({
     get: (req, res, next) => {
         Request.get(req.query)
-            .sort({ date: 1 })
+            .populate('managers', 'firstname lastname')
+            .sort({ createdAt: 1 })
             .then(requests => {
                 res.json({
                     ok: true,
