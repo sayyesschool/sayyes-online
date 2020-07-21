@@ -1,29 +1,28 @@
 import React from 'react';
 import {
-    Button, ButtonType,
-    Dialog, DialogType, DialogFooter,
-} from '@fluentui/react';
+    Button,
+    Dialog
+} from 'mdc-react';
 
 export default function ConfirmationDialog({
     title,
     message,
-    isOpen,
+    open,
     onClose,
     onConfirm,
     ...props
 }) {
     return (
         <Dialog
-            type={DialogType.close}
+            open={open}
             title={title}
-            subText={message}
-            hidden={!isOpen}
+            content={message}
             {...props}
         >
-            <DialogFooter>
-                <Button buttonType={ButtonType.default} text="Нет" onClick={onClose} />
-                <Button buttonType={ButtonType.primary} text="Да" onClick={onConfirm} />
-            </DialogFooter>
+            <Dialog.Actions>
+                <Button label="Нет" onClick={onClose} />
+                <Button label="Да" outlined onClick={onConfirm} />
+            </Dialog.Actions>
         </Dialog>
     );
 }

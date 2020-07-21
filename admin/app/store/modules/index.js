@@ -1,6 +1,7 @@
+import * as clients from './clients';
 import * as lessons from './lessons';
-import * as requests from './requests';
 import * as payments from './payments';
-import * as users from './users';
+import * as requests from './requests';
+import * as teachers from './teachers';
 
-export { lessons, requests, payments, users };
+export { clients, lessons, payments, requests, teachers };

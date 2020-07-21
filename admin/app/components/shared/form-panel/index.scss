@@ -1,0 +1,9 @@
+@use 'mdc-react/src/SideSheet/mixins';
+
+.form-panel {
+    @include mixins.width(480px);
+
+    .mdc-side-sheet__content {
+        padding: 0 1rem 1rem;
+    }
+}

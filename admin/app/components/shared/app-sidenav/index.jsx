@@ -1,51 +1,40 @@
 import React from 'react';
-import { useHistory, useLocation, matchPath } from 'react-router-dom';
-import { Nav } from '@fluentui/react';
+import { NavLink } from 'react-router-dom';
+import {
+    Drawer,
+    Icon,
+    List, ListItem
+} from 'mdc-react';
 
 import './index.scss';
 
-const links = [
-    { key: '/', url: '/', name: 'Главная', icon: 'Home', exact: true },
-    { key: '/requests', url: '/requests', name: 'Заявки', icon: 'ContactCard', exact: false },
-    { key: '/lessons', url: '/lessons', name: 'Уроки', icon: 'Event', exact: false },
-    { key: '/payments', url: '/payments', name: 'Платежи', icon: 'PaymentCard', exact: false },
-    {
-        name: 'Люди', isExpanded: true, links: [
-            { key: '/students', url: '/students', name: 'Студенты', icon: 'People', exact: false },
-            { key: '/teachers', url: '/teachers', name: 'Преподаватели', icon: 'People', exact: false },
-        ]
-    },
-];
-
 export default function AppSidenav() {
-    const history = useHistory();
-    const location = useLocation();
-
-    function handleLinkClick(event, link) {
-        event.preventDefault();
-
-        history.push(link.url);
-    }
-
-    const match = links.map(link => matchPath(location.pathname, { path: link.url, exact: link.exact })).find(match => match !== null);
-
     return (
-        <aside id="app-sidenav">
-            <Nav
-                onLinkClick={handleLinkClick}
-                selectedKey={match?.path}
-                groups={[{
-                    links
-                }]}
-                styles={{
-                    link: {
-                        paddingLeft: '1rem'
-                    },
-                    linkText: {
-                        marginLeft: '1rem'
-                    }
-                }}
-            />
-        </aside>
+        <Drawer id="app-drawer" dismissible open appear>
+            <Drawer.Content>
+                <List>
+                    {links.map(link =>
+                        <ListItem
+                            key={link.key}
+                            component={NavLink}
+                            to={link.url}
+                            graphic={<Icon>{link.icon}</Icon>}
+                            text={link.text}
+                            exact={link.exact}
+                        />
+                    )}
+                </List>
+            </Drawer.Content>
+        </Drawer>
     );
 }
+
+const links = [
+    { key: 'home', url: '/', text: 'Главная', icon: 'home', exact: true },
+    { key: 'requests', url: '/requests', text: 'Заявки', icon: 'contact_phone', exact: false },
+    { key: 'lessons', url: '/lessons', text: 'Уроки', icon: 'school', exact: false },
+    { key: 'payments', url: '/payments', text: 'Платежи', icon: 'payments', exact: false },
+    { key: 'clients', url: '/clients', text: 'Студенты', icon: 'people', exact: false },
+    { key: 'students', url: '/students', text: 'Студенты', icon: 'people', exact: false },
+    { key: 'teachers', url: '/teachers', text: 'Преподаватели', icon: 'people', exact: false }
+];

@@ -1,7 +1,5 @@
-#app-sidenav {
+#app-drawer {
     position: fixed;
     top: 64px;
-    width: 256px;
     height: calc(100% - 64px);
-    border-right: 1px solid rgb(243, 242, 241);
 }

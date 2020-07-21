@@ -1,27 +1,33 @@
 import React from 'react';
 import {
-    DefaultButton,
-    Panel, PanelType,
-    PrimaryButton,
-    Stack
-} from '@fluentui/react';
+    Button,
+    Layout,
+    SideSheet
+} from 'mdc-react';
 
-export default function FormPanel({ title, form, children, onDismiss, ...props }) {
+import './index.scss';
+
+export default function FormPanel({
+    form,
+    title,
+    children,
+    onDismiss,
+    ...props
+}) {
     return (
-        <Panel
-            headerText={title}
-            type={PanelType.medium}
-            closeButtonAriaLabel="Close"
-            onDismiss={onDismiss}
-            onRenderFooterContent={() =>
-                <Stack horizontal tokens={{ childrenGap: 4 }}>
-                    <DefaultButton type="button" onClick={onDismiss}>Закрыть</DefaultButton>
-                    <PrimaryButton type="submit" form={form}>Сохранить</PrimaryButton>
-                </Stack>
-            }
+        <SideSheet
+            className="form-panel"
+            title={title}
+            modal
+            onClose={onDismiss}
             {...props}
         >
             {children}
-        </Panel>
+
+            <Layout>
+                <Button type="button" onClick={onDismiss}>Закрыть</Button>
+                <Button type="submit" form={form} outlined>Сохранить</Button>
+            </Layout>
+        </SideSheet>
     );
 }

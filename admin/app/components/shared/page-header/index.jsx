@@ -1,23 +1,27 @@
 import React from 'react';
 import {
-    CommandBar,
-    Text
-} from '@fluentui/react';
+    Button,
+    Icon,
+    Typography
+} from 'mdc-react';
 
 import './index.scss';
 
-export default function PageHeader({ title, controls, children }) {
+export default function PageHeader({ title, controls = [], children }) {
     return (
         <header className="page-header">
-            <Text className="page-title" as="h1" variant="xLarge" block>{title}</Text>
+            <Typography className="page-title" element="h1" variant="headline4">{title}</Typography>
 
             {children}
 
-            {controls &&
-                <CommandBar
-                    items={controls}
+            {controls.map(control =>
+                <Button
+                    key={control.key}
+                    label={control.label}
+                    icon={control.icon && <Icon>{control.icon}</Icon>}
+                    onClick={control.onClick}
                 />
-            }
+            )}
         </header>
     );
 }

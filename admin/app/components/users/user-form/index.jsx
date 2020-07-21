@@ -13,7 +13,10 @@ import Form from 'shared/components/form';
 const defaultData = () => ({
     firstname: '',
     lastname: '',
+    patronym: '',
+    phone: '',
     email: '',
+    gender: '',
     password: generatePassword(),
     role: 'host'
 });
@@ -22,11 +25,12 @@ export default function UserForm({ user = defaultData(), onSubmit }) {
     const [data, setData] = useForm({
         firstname: user.firstname,
         lastname: user.lastname,
+        patronym: user.patronym,
         email: user.email,
         password: user.password,
         role: user.role
     });
-    
+
     return (
         <Form id="user-form" onSubmit={() => onSubmit(data)}>
             <Layout column>
@@ -83,9 +87,9 @@ export default function UserForm({ user = defaultData(), onSubmit }) {
                     onChange={setData}
                 >
                     {[
-                        {value: 'admin', label: 'Администратор'},
-                        {value: 'host', label: 'Ведущий'},
-                        {value: 'participant', label: 'Участник'},
+                        { value: 'admin', label: 'Администратор' },
+                        { value: 'host', label: 'Ведущий' },
+                        { value: 'participant', label: 'Участник' },
                     ].map(role =>
                         <SelectOption key={role.value} value={role.value}>
                             {role.label}

@@ -8,13 +8,13 @@ import ConfirmationDialog from 'app/components/shared/confirmation-dialog';
 import FormPanel from 'app/components/shared/form-panel';
 import RequestList from 'app/components/requests/request-list';
 import RequestForm from 'app/components/requests/request-form';
-import StudentForm from 'app/components/users/student-form';
+import ClientForm from 'app/components/clients/client-form';
 
 export default function Requests() {
+    const [request, setRequest] = useState();
     const [isRequestFormOpen, setRequestFormOpen] = useState(false);
-    const [isStudentFormOpen, setStudentFormOpen] = useState(false);
+    const [isClientFormOpen, setClientFormOpen] = useState(false);
     const [isConfirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
-    const [request, setRequest] = useState(undefined);
     const [{ list: requests }, actions] = useStore('requests');
 
     useEffect(() => {
@@ -28,17 +28,22 @@ export default function Requests() {
         ).then(() => setRequestFormOpen(false));
     }, []);
 
-    const handleRequestEdit = useCallback(request => {
+    const handleClientSubmit = useCallback(data => {
+        actions.createClient(data)
+            .then(() => setClientFormOpen(false));
+    }, []);
+
+    const handleEdit = useCallback(request => {
         setRequest(request);
         setRequestFormOpen(true);
     }, []);
 
-    const handleRequestTransform = useCallback(request => {
+    const handleTransformToClient = useCallback(request => {
         setRequest(request);
-        setStudentFormOpen(true);
+        setClientFormOpen(true);
     }, []);
 
-    const handleRequestDelete = useCallback(request => {
+    const handleDelete = useCallback(request => {
         setRequest(request);
         setConfirmationDialogOpen(true);
     }, []);
@@ -58,7 +63,8 @@ export default function Requests() {
                 controls={[
                     {
                         key: 'add',
-                        text: 'Создать',
+                        label: 'Создать',
+                        icon: 'add',
                         iconProps: { iconName: 'Add' },
                         onClick: () => setRequestFormOpen(true)
                     }
@@ -68,16 +74,16 @@ export default function Requests() {
             <PageContent loading={!requests}>
                 <RequestList
                     requests={requests}
-                    onEdit={handleRequestEdit}
-                    onTransform={handleRequestTransform}
-                    onDelete={handleRequestDelete}
+                    onEdit={handleEdit}
+                    onTransformToClient={handleTransformToClient}
+                    onDelete={handleDelete}
                 />
             </PageContent>
 
             <FormPanel
-                title={request && request.id ? 'Редактирование заявки' : 'Новая заявка'}
+                title={request?.id ? 'Редактирование заявки' : 'Новая заявка'}
                 form="request-form"
-                isOpen={isRequestFormOpen}
+                open={isRequestFormOpen}
                 onDismiss={() => setRequestFormOpen(false)}
             >
                 <RequestForm
@@ -87,16 +93,14 @@ export default function Requests() {
             </FormPanel>
 
             <FormPanel
-                headerText="Регистрация студента"
-                isOpen={isStudentFormOpen}
-                onDismiss={() => setStudentFormOpen(false)}
+                headerText="Новый клиент"
+                form="client-form"
+                isOpen={isClientFormOpen}
+                onDismiss={() => setClientFormOpen(false)}
             >
-                <StudentForm
-                    student={{
-                        firstname: request?.contact.name,
-                        phone: request?.contact.phone
-                    }}
-                    onSubmit={console.log}
+                <ClientForm
+                    client={request?.contact}
+                    onSubmit={handleClientSubmit}
                 />
             </FormPanel>
 
