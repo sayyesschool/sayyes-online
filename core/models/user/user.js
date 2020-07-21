@@ -6,6 +6,8 @@ const { Schema } = mongoose;
 
 const roles = {
     admin: 'Администратор',
+    client: 'Клиент',
+    manager: 'Менеджер',
     student: 'Студент',
     teacher: 'Преподаватель'
 };
@@ -46,7 +48,7 @@ const User = new Schema({
         trim: true
     },
     dob: { type: Date },
-    gender: { type: String, enum: ['male', 'female', 'other'] },
+    gender: { type: String, enum: ['man', 'woman'] },
     phones: [{
         type: String,
         trim: true
@@ -55,7 +57,7 @@ const User = new Schema({
         type: String,
         trim: true
     },
-    role: { type: String, enum: ['student', 'teacher', 'manager', 'admin'], default: 'student' },
+    role: { type: String, enum: Object.keys(roles), default: 'client' },
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
     activated: { type: Boolean, default: false, alias: 'isActivated' },
     activationToken: String,
@@ -74,14 +76,9 @@ User.virtual('fullname').get(function() {
     return `${this.firstname} ${this.lastname}`;
 });
 
-User.virtual('isAdmin').get(function() {
-    return this.role === 'admin';
-});
-
 User.virtual('roleLabel').get(function() {
     return roles[this.role];
 });
-
 
 
 /* Statics */

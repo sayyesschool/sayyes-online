@@ -20,26 +20,32 @@ const LevelStatus = {
     adv: 'Advanced'
 };
 
+const Contact = new Schema({
+    firstname: String,
+    lastname: String,
+    patronym: String,
+    phone: String,
+    email: String,
+    gender: String,
+    dob: Date
+}, {
+    _id: false
+});
+
 const Request = new Schema({
     status: { type: String, enum: Object.keys(RequstStatus), default: RequstStatus.new },
-    contact: {
-        firstname: String,
-        lastname: String,
-        patronym: String,
-        phone: String,
-        email: String,
-        dob: String,
-        gender: String
-    },
+    contact: { type: Contact, default: undefined },
     study: {
-        level: { type: String, enum: Object.keys(LevelStatus) },
-        goal: { type: String },
-        category: { type: String, enum: ['children', 'teens', 'adults'] },
-        days: { type: [Number], enum: [0, 1, 2, 3, 4, 5, 6] },
-        time: {
-            from: Number,
-            to: Number
-        }
+        age: { type: String, enum: ['child', 'teenager', 'adult'], default: '' },
+        level: { type: String, enum: Object.keys(LevelStatus), default: '' },
+        goal: { type: String, default: '' },
+        domain: { type: String, enum: ['general', 'speaking', 'business'], default: '' },
+        teacher: { type: String, enum: ['russian', 'english'], default: '' },
+        schedule: [{
+            days: { type: [Number], enum: [0, 1, 2, 3, 4, 5, 6] },
+            from: { type: Number, min: 0, max: 23 },
+            to: { type: Number, min: 0, max: 23 }
+        }]
     },
     marketing: {
         channel: { type: String },
@@ -48,8 +54,9 @@ const Request = new Schema({
     },
     note: { type: String, trim: true, default: '' },
     lesson: { type: mongoose.Types.ObjectId, ref: 'Lesson' },
-    student: { type: mongoose.Types.ObjectId, ref: 'Student' },
+    client: { type: mongoose.Types.ObjectId, ref: 'User' },
     managers: [{ type: mongoose.Types.ObjectId, ref: 'Manager' }],
+    contactAt: { type: Date },
     createdAt: { type: Date },
     updatedAt: { type: Date }
 }, {
