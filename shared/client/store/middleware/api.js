@@ -1,6 +1,4 @@
-import api from '../api';
-
-const apiMiddleware = apiUrl => store => next => action => {
+export default (api, apiUrl) => store => next => action => {
     if (!action.request) return next(action);
 
     const request = action.request;
@@ -30,5 +28,3 @@ const apiMiddleware = apiUrl => store => next => action => {
             return Promise.reject(error);
         });
 };
-
-export default apiMiddleware;
