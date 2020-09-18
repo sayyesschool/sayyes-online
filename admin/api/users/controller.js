@@ -12,6 +12,20 @@ module.exports = ({ User }) => ({
             .catch(next);
     },
 
+    getMe: (req, res, next) => {
+        res.json({
+            ok: true,
+            data: {
+                id: req.user.id,
+                firstname: req.user.firstname,
+                lastname: req.user.lastname,
+                fullname: req.user.fullname,
+                email: req.user.email,
+                role: req.user.role
+            }
+        });
+    },
+
     getOne: (req, res, next) => {
         User.getById(req.params.id)
             .then(user => {

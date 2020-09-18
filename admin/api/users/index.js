@@ -10,6 +10,10 @@ module.exports = core => {
         .get(controller.get)
         .post(controller.create);
 
+    router.route('/me')
+        .get(controller.getMe)
+        .put(controller.update);
+
     router.route('/:id')
         .get(controller.getOne)
         .patch(controller.update)

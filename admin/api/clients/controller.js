@@ -1,6 +1,14 @@
 module.exports = ({ Client }) => ({
     get: (req, res, next) => {
-        const query = req.query ? req.query : {};
+        const search = req.query.search;
+        const query = search ? {
+            $or: [
+                { firstname: search },
+                { lastname: search },
+                { email: search },
+                { phone: search }
+            ]
+        } : req.query;
 
         Client.get(query)
             .then(clients => {
@@ -14,6 +22,25 @@ module.exports = ({ Client }) => ({
 
     getOne: (req, res, next) => {
         Client.getById(req.params.id)
+            .populate({
+                path: 'requests',
+                select: 'status manager',
+                populate: { path: 'manager', select: 'firstname lastname' }
+            })
+            .populate({
+                path: 'enrollments',
+                select: 'status manager type format',
+                populate: { path: 'manager', select: 'firstname lastname' }
+            })
+            .populate({
+                path: 'lessons',
+                select: 'status teacher trial',
+                populate: { path: 'teacher', select: 'firstname lastname' }
+            })
+            .populate({
+                path: 'payments',
+                select: 'status amount'
+            })
             .then(client => {
                 res.json({
                     ok: true,
@@ -24,6 +51,7 @@ module.exports = ({ Client }) => ({
     },
 
     create: (req, res, next) => {
+        console.log(req.body);
         Client.create(req.body)
             .then(client => {
                 res.json({

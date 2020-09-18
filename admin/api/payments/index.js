@@ -10,7 +10,7 @@ module.exports = core => {
         .get(controller.get)
         .post(controller.create);
 
-    router.route('/:ticketId')
+    router.route('/:payment')
         .get(controller.getOne)
         .put(controller.update)
         .delete(controller.delete);

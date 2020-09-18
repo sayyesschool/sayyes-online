@@ -1,19 +1,23 @@
 const { Router } = require('express');
 
+const clients = require('./clients');
+const enrollments = require('./enrollments');
 const lessons = require('./lessons');
+const managers = require('./managers');
 const payments = require('./payments');
 const requests = require('./requests');
-const students = require('./students');
 const teachers = require('./teachers');
 const users = require('./users');
 
 module.exports = core => {
     const router = Router();
 
+    router.use('/clients', clients(core));
+    router.use('/enrollments', enrollments(core));
     router.use('/lessons', lessons(core));
+    router.use('/managers', managers(core));
     router.use('/payments', payments(core));
     router.use('/requests', requests(core));
-    router.use('/students', students(core));
     router.use('/teachers', teachers(core));
     router.use('/users', users(core));
 

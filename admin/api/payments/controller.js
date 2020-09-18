@@ -1,7 +1,7 @@
 module.exports = ({ Payment }) => ({
     get: (req, res, next) => {
         Payment.get()
-            .populate('user')
+            .populate('client', 'firstname lastname email')
             .then(payments => {
                 res.json({
                     ok: true,
@@ -12,8 +12,8 @@ module.exports = ({ Payment }) => ({
     },
 
     getOne: (req, res, next) => {
-        Payment.getById(req.params.paymentId)
-            .populate('user')
+        Payment.getById(req.params.payment)
+            .populate('client', 'firstname lastname email')
             .then(payment => {
                 res.json({
                     ok: true,
@@ -24,7 +24,7 @@ module.exports = ({ Payment }) => ({
     },
 
     create: (req, res, next) => {
-        Payment.create(req.body)
+        Payment.model.create(req.body)
             .then(payment => {
                 res.json({
                     ok: true,
@@ -65,11 +65,5 @@ module.exports = ({ Payment }) => ({
 function map(payment) {
     const object = payment.toObject();
 
-    return {
-        ...object,
-        user: {
-            id: payment.user.id,
-            fullname: payment.user.fullname
-        }
-    };
+    return object;
 }

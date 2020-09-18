@@ -4,18 +4,15 @@ const Controller = require('./controller');
 
 module.exports = core => {
     const router = Router();
-    const controller = Controller(core.services);
+    const controller = Controller(core.services.Manager);
 
     router.route('/')
         .get(controller.get)
         .post(controller.create);
 
-    router.route('/new')
-        .get(controller.getNew);
-
-    router.route('/:requestId')
+    router.route('/:id')
         .get(controller.getOne)
-        .put(controller.update)
+        .patch(controller.update)
         .delete(controller.delete);
 
     return router;

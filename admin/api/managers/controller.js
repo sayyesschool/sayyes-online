@@ -1,62 +1,54 @@
-module.exports = ({ Student }) => ({
+module.exports = Manager => ({
     get: (req, res, next) => {
-        const search = req.query.search;
-        const query = search ? {
-            $or: [
-                { firstname: search },
-                { lastname: search },
-                { email: search },
-                { phone: search }
-            ]
-        } : req.query;
+        const query = req.query ? req.query : {};
 
-        Student.get(query)
-            .then(students => {
+        Manager.get(query, 'firstname lastname')
+            .then(managers => {
                 res.json({
                     ok: true,
-                    data: students
+                    data: managers
                 });
             })
             .catch(next);
     },
 
     getOne: (req, res, next) => {
-        Student.getById(req.params.id)
-            .then(student => {
+        Manager.getById(req.params.id)
+            .then(manager => {
                 res.json({
                     ok: true,
-                    data: student
+                    data: manager
                 });
             })
             .catch(next);
     },
 
     create: (req, res, next) => {
-        Student.create(req.body)
-            .then(student => {
+        Manager.create(req.body)
+            .then(manager => {
                 res.json({
                     ok: true,
                     message: 'Пользователь создан',
-                    data: student
+                    data: manager
                 });
             })
             .catch(next);
     },
 
     update: (req, res, next) => {
-        Student.update(req.params.id, req.body)
-            .then(student => {
+        Manager.update(req.params.id, req.body)
+            .then(manager => {
                 res.json({
                     ok: true,
                     message: 'Пользователь изменен',
-                    data: student
+                    data: manager
                 });
             })
             .catch(next);
     },
 
     delete: (req, res, next) => {
-        Student.delete(req.params.id)
+        Manager.delete(req.params.id)
             .then(() => {
                 res.json({
                     ok: true,

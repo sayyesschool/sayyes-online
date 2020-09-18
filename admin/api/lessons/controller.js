@@ -2,8 +2,8 @@ module.exports = ({ Lesson }) => ({
     get: (req, res, next) => {
         Lesson.get(req.query)
             .sort({ date: 1 })
+            .populate('client')
             .populate('teacher')
-            .populate('student')
             .then(lessons => {
                 res.json({
                     ok: true,
@@ -15,8 +15,8 @@ module.exports = ({ Lesson }) => ({
 
     getOne: (req, res, next) => {
         Lesson.getById(req.params.lessonId)
+            .populate('client')
             .populate('teacher')
-            .populate('student')
             .then(lesson => {
                 res.json({
                     ok: true,
