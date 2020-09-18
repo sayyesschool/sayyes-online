@@ -1,62 +1,40 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 
-const { Schema } = mongoose;
-
-const RequstStatus = {
+const RequestStatus = {
     new: 'Новая',
-    pending: 'В обработке',
-    resolved: 'Успешная',
-    rejected: 'Отказ',
-    postponed: 'Отложена'
+    processing: 'В обработке',
+    completed: 'Завершена',
+    canceled: 'Отменена'
 };
 
-const LevelStatus = {
-    zero: 'Нулевой',
-    beg: 'Beginner',
-    elem: 'Elementary',
-    pre: 'Pre-Intermediate',
-    int: 'Intermediate',
-    upper: 'Upper-Intermediate',
-    adv: 'Advanced'
+const RequstStatusIcon = {
+    new: 'new_releases',
+    processing: 'edit',
+    completed: 'check_circle',
+    canceled: 'cancel'
 };
-
-const Contact = new Schema({
-    firstname: String,
-    lastname: String,
-    patronym: String,
-    phone: String,
-    email: String,
-    gender: String,
-    dob: Date
-}, {
-    _id: false
-});
 
 const Request = new Schema({
-    status: { type: String, enum: Object.keys(RequstStatus), default: RequstStatus.new },
-    contact: { type: Contact, default: undefined },
-    study: {
-        age: { type: String, enum: ['child', 'teenager', 'adult'], default: '' },
-        level: { type: String, enum: Object.keys(LevelStatus), default: '' },
-        goal: { type: String, default: '' },
-        domain: { type: String, enum: ['general', 'speaking', 'business'], default: '' },
-        teacher: { type: String, enum: ['russian', 'english'], default: '' },
-        schedule: [{
-            days: { type: [Number], enum: [0, 1, 2, 3, 4, 5, 6] },
-            from: { type: Number, min: 0, max: 23 },
-            to: { type: Number, min: 0, max: 23 }
-        }]
+    status: { type: String, enum: Object.keys(RequestStatus), default: 'new' },
+    description: { type: String, default: 'Завка на обучение' },
+    contact: {
+        name: String,
+        phone: String
     },
-    marketing: {
-        channel: { type: String },
-        source: { type: String },
-        utm: { type: Map }
+    channel: { type: String, default: '' },
+    source: { type: String, default: '' },
+    referrer: { type: String },
+    utm: {
+        source: { type: String, default: '' },
+        medium: { type: String, default: '' },
+        campaign: { type: String, default: '' },
+        term: { type: String, default: '' },
+        content: { type: String, default: '' }
     },
     note: { type: String, trim: true, default: '' },
-    lesson: { type: mongoose.Types.ObjectId, ref: 'Lesson' },
-    client: { type: mongoose.Types.ObjectId, ref: 'User' },
-    managers: [{ type: mongoose.Types.ObjectId, ref: 'Manager' }],
-    contactAt: { type: Date },
+    client: { type: Schema.Types.ObjectId, ref: 'Client' },
+    manager: { type: Schema.Types.ObjectId, ref: 'Manager' },
+    enrollment: { type: Schema.Types.ObjectId, ref: 'Enrollment' },
     createdAt: { type: Date },
     updatedAt: { type: Date }
 }, {
@@ -64,15 +42,15 @@ const Request = new Schema({
 });
 
 Request.virtual('url').get(function() {
-    return `/requests/${this.id}`;
+    return `requests/${this.id}`;
 });
 
 Request.virtual('statusLabel').get(function() {
-    return RequstStatus[this.status];
+    return RequestStatus[this.status];
 });
 
-Request.virtual('levelLabel').get(function() {
-    return LevelStatus[this.study.level];
+Request.virtual('statusIcon').get(function() {
+    return RequstStatusIcon[this.status];
 });
 
-module.exports = mongoose.model('Request', Request);
+module.exports = model('Request', Request);

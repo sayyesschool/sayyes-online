@@ -1,21 +1,9 @@
-const { Schema } = require('mongoose');
+const { Schema, model } = require('mongoose');
 
-
-
-const Lesson = new Schema({
-    slug: { title: String, required: true, unique: true },
-    title: { type: String },
-    contents: []
-});
-
-const Unit = new Schema({
-    slug: { title: String, required: true, unique: true },
-    title: { type: String },
-    lessons: [Lesson]
-});
+const Unit = require('./unit');
 
 const Course = new Schema({
-    slug: { title: String, required: true, unique: true },
+    slug: { type: String, required: true, unique: true },
     title: { type: String },
     subtitle: { type: String },
     description: { type: String },
@@ -25,4 +13,4 @@ const Course = new Schema({
     units: [Unit]
 });
 
-module.exports = Course;
+module.exports = model('Course', Course);

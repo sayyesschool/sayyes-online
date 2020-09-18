@@ -43,20 +43,12 @@ const User = new Schema({
         maxlength: [256, 'Адрес электронный почты слишком длинный.'],
         match: [/^[a-zA-Z0-9'._%+-]+@[a-zA-Z0-9-][a-zA-Z0-9.-]*\.[a-zA-Z]{2,63}$/, 'Неверный формат адреса электронной почты.']
     },
-    password: {
-        type: String,
-        trim: true
-    },
+    phone: { type: String, trim: true },
+    password: { type: String, trim: true },
     dob: { type: Date },
     gender: { type: String, enum: ['man', 'woman'] },
-    phones: [{
-        type: String,
-        trim: true
-    }],
-    avatar: {
-        type: String,
-        trim: true
-    },
+    timezone: { type: String },
+    avatar: { type: String, trim: true },
     role: { type: String, enum: Object.keys(roles), default: 'client' },
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
     activated: { type: Boolean, default: false, alias: 'isActivated' },
@@ -76,8 +68,16 @@ User.virtual('fullname').get(function() {
     return `${this.firstname} ${this.lastname}`;
 });
 
+User.virtual('initials').get(function() {
+    return `${this.firstname[0]}${this.lastname[0]}`;
+});
+
 User.virtual('roleLabel').get(function() {
     return roles[this.role];
+});
+
+User.virtual('url').get(function() {
+    return `/${this.role}s/${this.id}`;
 });
 
 
