@@ -1,9 +1,12 @@
 import React from 'react';
+import {
+    CircularProgress
+} from 'mdc-react';
 
-export default function Page({ id, children }) {
+export default function Page({ id, loading, children }) {
     return (
         <article id={`${id}-page`} className="page">
-            {children}
+            {loading ? <CircularProgress indeterminate /> : children}
         </article>
     );
 }

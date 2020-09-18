@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import {
     Chip,
@@ -11,36 +11,7 @@ import moment from 'moment';
 
 import MenuButton from 'app/components/shared/menu-button';
 
-export default function RequestList({ requests, onEdit, onTransformToClient, onDelete }) {
-    const items = requests.map(request => ({
-        key: request.id,
-        value: request.id,
-        ...request
-    }));
-
-    const columns = useMemo(() => [
-        {
-            key: 'status',
-            text: 'Статус'
-        },
-        {
-            key: 'user',
-            text: 'Контакт'
-        },
-        {
-            key: 'datetime',
-            text: 'Дата и время'
-        },
-        {
-            key: 'managers',
-            text: 'Менеджеры'
-        },
-        {
-            key: 'note',
-            text: 'Заметка'
-        }
-    ], []);
-
+export default function RequestList({ requests, manager, onProcess, onEdit, onDelete }) {
     return (
         <DataTable id="request-list">
             <DataTable.Header>
@@ -56,53 +27,78 @@ export default function RequestList({ requests, onEdit, onTransformToClient, onD
             </DataTable.Header>
 
             <DataTable.Content>
-                {items.map(item =>
-                    <DataTable.Row key={item.id}>
+                {requests.map(request =>
+                    <DataTable.Row key={request.id}>
+                        <DataTable.Cell>
+                            {request.description}
+                        </DataTable.Cell>
+
                         <DataTable.Cell>
                             <Chip
-                                leadingIcon={<Icon>{statusIcons[item.status]}</Icon>}
-                                text={item.statusLabel}
+                                leadingIcon={<Icon>{request.statusIcon}</Icon>}
+                                text={request.statusLabel}
                             />
                         </DataTable.Cell>
 
                         <DataTable.Cell>
+                            {moment(request.createdAt).format('dd, D MMM, H:mm')}
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
                             <Layout column>
-                                <Typography element="span" variant="body1" noMargin>{item.contact.firstname}</Typography>
-                                <Typography element="span" variant="body2" noMargin>{item.contact.phone}</Typography>
+                                <Typography element="span" variant="body1" noMargin>{request.contact.name}</Typography>
+                                <Typography element="span" variant="body2" noMargin>{request.contact.phone}</Typography>
                             </Layout>
                         </DataTable.Cell>
 
                         <DataTable.Cell>
-                            {moment(item.createdAt).format('dd, D MMM, H:mm')}
+                            {request.client ?
+                                <Chip
+                                    component={Link}
+                                    to={`/clients/${request.client.id}`}
+                                    text={request.client.fullname}
+                                />
+                                :
+                                '[Отсутствует]'
+                            }
+
                         </DataTable.Cell>
 
                         <DataTable.Cell>
-                            {item.managers.map(manager =>
-                                <Chip key={manager.id} text={manager.fullname} />
-                            )}
+                            {request.manager ?
+                                <Chip
+                                    component={Link}
+                                    to={`/managers/${request.manager.id}`}
+                                    text={request.manager.fullname}
+                                />
+                                :
+                                '[Отсутствует]'
+                            }
                         </DataTable.Cell>
 
                         <DataTable.Cell>
-                            <Typography noMargin>{item.contact.note}</Typography>
+                            <Typography noMargin>{request.note}</Typography>
                         </DataTable.Cell>
 
                         <DataTable.Cell numeric>
                             <MenuButton
                                 items={[
                                     {
-                                        key: 'edit',
-                                        text: 'Изменить',
-                                        onClick: () => onEdit(item)
+                                        key: 'process',
+                                        text: 'Обработать',
+                                        disabled: (request.manager && request.manager?.id !== manager?.id),
+                                        onClick: () => onProcess(request)
                                     },
                                     {
-                                        key: 'tranfsorm',
-                                        text: 'Перевести в клиента',
-                                        onClick: () => onTransformToClient(item)
+                                        key: 'edit',
+                                        text: 'Изменить',
+                                        disabled: (request.manager && request.manager?.id !== manager?.id),
+                                        onClick: () => onEdit(request)
                                     },
                                     {
                                         key: 'delete',
                                         text: 'Удалить',
-                                        onClick: () => onDelete(item)
+                                        onClick: () => onDelete(request)
                                     }
                                 ]}
                             />
@@ -114,9 +110,33 @@ export default function RequestList({ requests, onEdit, onTransformToClient, onD
     );
 }
 
-const statusIcons = {
-    new: 'new_releases',
-    pending: 'pending',
-    resolved: 'StatusCircleCheckmark',
-    rejected: 'StatusCircleErrorX',
-};
+const columns = [
+    {
+        key: 'description',
+        text: 'Описание'
+    },
+    {
+        key: 'status',
+        text: 'Статус'
+    },
+    {
+        key: 'datetime',
+        text: 'Дата и время'
+    },
+    {
+        key: 'contact',
+        text: 'Контакт'
+    },
+    {
+        key: 'client',
+        text: 'Клиент'
+    },
+    {
+        key: 'manager',
+        text: 'Менеджер'
+    },
+    {
+        key: 'note',
+        text: 'Заметка'
+    }
+];

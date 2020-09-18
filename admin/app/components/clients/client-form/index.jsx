@@ -1,41 +1,39 @@
 import React from 'react';
 import {
+    Button,
     Layout,
-    TextField
+    TextField,
+    Select
 } from 'mdc-react';
+import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
 import RadioGroup from 'app/components/shared/radio-group';
-
-const defaultData = () => ({
-    firstname: '',
-    lastname: '',
-    email: '',
-    password: generatePassword(),
-    phone: '',
-    note: ''
-});
+import timezones from 'shared/../data/timezones';
 
 const maskFormat = { '*': /[0-9]/ };
 
-export default function ClientForm({ client = defaultData(), onSubmit }) {
+export default function ClientForm({ client = {}, onSubmit }) {
     const [data, handleChange] = useForm({
-        firstname: client.firstname,
-        lastname: client.lastname,
-        email: client.email,
-        password: client.password,
-        phone: client.phone,
-        note: client.note
+        firstname: '',
+        lastname: '',
+        email: '',
+        password: generatePassword(),
+        phone: '',
+        note: '',
+        timezone: '',
+        ...client
     });
 
     return (
         <Form id="client-form" onSubmit={() => onSubmit(data)}>
-            <Layout>
+            <Layout column>
                 <TextField
                     name="firstname"
                     value={data.firstname}
                     label="Имя"
+                    filled
                     required
                     onChange={handleChange}
                 />
@@ -44,6 +42,7 @@ export default function ClientForm({ client = defaultData(), onSubmit }) {
                     name="lastname"
                     value={data.lastname}
                     label="Фамилия"
+                    filled
                     required
                     onChange={handleChange}
                 />
@@ -52,6 +51,17 @@ export default function ClientForm({ client = defaultData(), onSubmit }) {
                     name="patronym"
                     value={data.patronym}
                     label="Отчество"
+                    filled
+                    onChange={handleChange}
+                />
+
+                <TextField
+                    type="phone"
+                    name="phone"
+                    value={data.phone}
+                    label="Телефон"
+                    required
+                    filled
                     onChange={handleChange}
                 />
 
@@ -60,28 +70,32 @@ export default function ClientForm({ client = defaultData(), onSubmit }) {
                     name="email"
                     value={data.email}
                     label="Электронная почта"
-                    required
+                    filled
                     onChange={handleChange}
                 />
 
-                {data.password &&
-                    <TextField
-                        name="password"
-                        value={data.password}
-                        label="Пароль"
-                        required
-                        onChange={handleChange}
-                    />
-                }
-
                 <TextField
-                    type="phone"
-                    name="phone"
-                    value={data.phone}
-                    label="Телефон"
-                    required
-                    // mask="* *** *** ** **"
-                    // maskFormat={maskFormat}
+                    type="date"
+                    name="dob"
+                    value={data.dob ? moment(data.dob).format('YYYY-MM-DD') : ''}
+                    label="Дата рождения"
+                    filled
+                    onChange={handleChange}
+                />
+
+                <Select
+                    name="timezone"
+                    value={data.timezone}
+                    label="Часовой пояс"
+                    options={timezones.map(item => ({
+                        key: item.value,
+                        value: item.value,
+                        text: item.text
+                    }))}
+                    menuProps={{
+                        fullWidth: true,
+                        style: { maxHeight: '300px' }
+                    }}
                     onChange={handleChange}
                 />
 
@@ -90,17 +104,9 @@ export default function ClientForm({ client = defaultData(), onSubmit }) {
                     value={data.gender}
                     label="Пол"
                     options={[
-                        { value: 'male', label: 'Мужчина' },
-                        { value: 'female', label: 'Женщина' }
+                        { value: 'man', label: 'Мужчина' },
+                        { value: 'woman', label: 'Женщина' }
                     ]}
-                    onChange={handleChange}
-                />
-
-                <TextField
-                    type="date"
-                    name="dob"
-                    value={data.dob}
-                    label="Дата рождения"
                     onChange={handleChange}
                 />
 
@@ -108,10 +114,13 @@ export default function ClientForm({ client = defaultData(), onSubmit }) {
                     name="note"
                     value={data.note}
                     label="Примечание"
-                    multiline
+                    filled
+                    textarea
                     onChange={handleChange}
                 />
             </Layout>
+
+            <Button type="submit" outlined>Сохранить</Button>
         </Form>
     );
 }

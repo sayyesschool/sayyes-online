@@ -1,27 +1,48 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
     Button,
     Icon,
-    Typography
+    IconButton,
+    TopAppBar
 } from 'mdc-react';
 
 import './index.scss';
 
-export default function PageHeader({ title, controls = [], children }) {
+export default function PageHeader({ title, backTo, controls = [], children }) {
     return (
-        <header className="page-header">
-            <Typography className="page-title" element="h1" variant="headline4">{title}</Typography>
+        <TopAppBar className="page-header">
+            <TopAppBar.Row>
+                <TopAppBar.Section align="start">
+                    {backTo &&
+                        <TopAppBar.NavigationIcon component={Link} to={backTo}>
+                            <Icon>arrow_back</Icon>
+                        </TopAppBar.NavigationIcon>
+                    }
 
-            {children}
+                    {title &&
+                        <TopAppBar.Title className="page-title">{title}</TopAppBar.Title>
+                    }
+                </TopAppBar.Section>
 
-            {controls.map(control =>
-                <Button
-                    key={control.key}
-                    label={control.label}
-                    icon={control.icon && <Icon>{control.icon}</Icon>}
-                    onClick={control.onClick}
-                />
-            )}
-        </header>
+                <TopAppBar.Section align="end">
+                    {controls.filter(control => Boolean(control)).map(({ icon, ...props }, index) =>
+                        <TopAppBar.ActionItem key={index}>
+                            {props.label ?
+                                <Button
+                                    icon={icon && <Icon>{icon}</Icon>}
+                                    {...props}
+                                />
+                                :
+                                <IconButton
+                                    icon={<Icon>{icon}</Icon>}
+                                    {...props}
+                                />
+                            }
+                        </TopAppBar.ActionItem>
+                    )}
+                </TopAppBar.Section>
+            </TopAppBar.Row>
+        </TopAppBar>
     );
 }

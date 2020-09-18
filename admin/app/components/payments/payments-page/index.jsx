@@ -1,0 +1,66 @@
+import React, { useState, useEffect, useCallback } from 'react';
+
+import { useStore } from 'app/store';
+import Page from 'app/components/shared/page';
+import PageHeader from 'app/components/shared/page-header';
+import PageContent from 'app/components/shared/page-content';
+import FormPanel from 'app/components/shared/form-panel';
+import PaymentList from 'app/components/payments/payment-list';
+import PaymentForm from 'app/components/payments/payment-form';
+
+export default function Payments({ match, history }) {
+    const [{ list: payments, single: payment }, actions] = useStore('payments');
+    const [isPaymentFormOpen, setPaymentFormOpen] = useState(false);
+
+    useEffect(() => {
+        actions.getPayments();
+
+        if (match.params.payment) {
+            actions.getPayment(match.params.payment)
+                .then(() => setPaymentFormOpen(true));
+        }
+    }, []);
+
+    const handleSubmit = useCallback(data => {
+        actions.updatePayment(data)
+            .then(() => setPaymentFormOpen(false));
+    }, []);
+
+    const handleEdit = useCallback(payment => {
+        actions.setPayment(payment);
+        setPaymentFormOpen(true);
+    }, []);
+
+    const handleClose = useCallback(() => {
+        actions.unsetPayment();
+        setPaymentFormOpen(false);
+        history.push('/payments');
+    }, []);
+
+    return (
+        <Page id="payments" loading={!payments}>
+            <PageHeader
+                title="Платежи"
+            />
+
+            <PageContent>
+                <PaymentList
+                    payments={payments}
+                    onEdit={handleEdit}
+                />
+            </PageContent>
+
+            <FormPanel
+                title="Редактирование платежа"
+                open={isPaymentFormOpen}
+                form="payment-form"
+                onClose={handleClose}
+            >
+                <PaymentForm
+                    payment={payment || undefined}
+                    onSubmit={handleSubmit}
+                />
+            </FormPanel>
+        </Page>
+    );
+}

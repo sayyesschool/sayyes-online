@@ -2,41 +2,48 @@ import React, { useRef, useState, useCallback } from 'react';
 import {
     Icon,
     IconButton,
-    Menu, MenuSurface, MenuItem
+    Menu, MenuItem
 } from 'mdc-react';
+import classnames from 'classnames';
 
-export default function MenuButton({ button, items, onChange }) {
+export default function MenuButton({
+    button,
+    icon,
+    items = [],
+    menuProps = {},
+    className,
+    children
+}) {
     const anchorRef = useRef();
     const [isOpen, setOpen] = useState(false);
     const handleOpen = useCallback(() => setOpen(true), []);
     const handleClose = useCallback(() => setOpen(false), []);
-    //const handleSelect = useCallback(key => onChange(key), []);
+
+    const classNames = classnames('menu-button', className);
 
     return (
-        <div className="menu-button" ref={anchorRef}>
+        <div ref={anchorRef} className={classNames}>
             {React.isValidElement(button) ?
                 React.cloneElement(button, {
                     onClick: handleOpen
                 })
                 :
                 <IconButton onClick={handleOpen}>
-                    <Icon>more_vert</Icon>
+                    <Icon>{icon || 'more_vert'}</Icon>
                 </IconButton>
             }
 
-            <MenuSurface
+            <Menu
                 anchor={anchorRef.current}
                 open={isOpen}
-                top right
-                belowAnchor
                 onClose={handleClose}
+                top right
+                {...menuProps}
             >
-                <Menu>
-                    {items.map(item =>
-                        <MenuItem {...item} />
-                    )}
-                </Menu>
-            </MenuSurface>
+                {items.filter(item => !!item).map(item =>
+                    <MenuItem {...item} />
+                )}
+            </Menu>
         </div>
     );
 }

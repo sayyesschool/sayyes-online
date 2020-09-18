@@ -6,11 +6,15 @@ import {
     List, ListItem
 } from 'mdc-react';
 
+import { useStore } from 'app/store';
+
 import './index.scss';
 
-export default function AppSidenav() {
+export default function AppSidenav({ open }) {
+    const [requests] = useStore('requests.list');
+
     return (
-        <Drawer id="app-drawer" dismissible open appear>
+        <Drawer id="app-drawer" dismissible open={open} appear>
             <Drawer.Content>
                 <List>
                     {links.map(link =>
@@ -18,9 +22,11 @@ export default function AppSidenav() {
                             key={link.key}
                             component={NavLink}
                             to={link.url}
+                            exact={link.exact}
+                            activeClassName="mdc-list-item--activated"
                             graphic={<Icon>{link.icon}</Icon>}
                             text={link.text}
-                            exact={link.exact}
+                            meta={link.key === 'requests' && requests?.length > 0 && requests.length}
                         />
                     )}
                 </List>
@@ -34,7 +40,7 @@ const links = [
     { key: 'requests', url: '/requests', text: 'Заявки', icon: 'contact_phone', exact: false },
     { key: 'lessons', url: '/lessons', text: 'Уроки', icon: 'school', exact: false },
     { key: 'payments', url: '/payments', text: 'Платежи', icon: 'payments', exact: false },
-    { key: 'clients', url: '/clients', text: 'Студенты', icon: 'people', exact: false },
-    { key: 'students', url: '/students', text: 'Студенты', icon: 'people', exact: false },
-    { key: 'teachers', url: '/teachers', text: 'Преподаватели', icon: 'people', exact: false }
+    { key: 'clients', url: '/clients', text: 'Клиенты', icon: 'people', exact: false },
+    // { key: 'students', url: '/students', text: 'Студенты', icon: 'people', exact: false },
+    // { key: 'teachers', url: '/teachers', text: 'Преподаватели', icon: 'people', exact: false }
 ];

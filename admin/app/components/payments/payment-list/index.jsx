@@ -1,91 +1,104 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-    DetailsList,
-    Icon
-} from '@fluentui/react';
+    Chip,
+    Icon,
+    DataTable
+} from 'mdc-react';
 
-export default function PaymentsList({ payments }) {
-    const items = payments.map(payment => ({
-        key: payment.id,
-        value: payment.id,
-        status: payment.status,
-        user: payment.user.fullname,
-        amount: payment.amount,
-        date: payment.date,
-        method: payment.method.title,
-        note: payment.note
-    }));
+import MenuButton from 'app/components/shared/menu-button';
 
+export default function PaymentList({ payments, onEdit, onDelete }) {
     return (
-        <section id="payment-list">
-            <DetailsList
-                items={items}
-                compact={false}
-                columns={columns}
-                setKey="none"
-                isHeaderVisible={true}
-            />
-        </section>
+        <DataTable id="client-list">
+            <DataTable.Header>
+                <DataTable.HeaderRow>
+                    {columns.map(col =>
+                        <DataTable.HeaderCell
+                            key={col.key}
+                        >
+                            {col.text}
+                        </DataTable.HeaderCell>
+                    )}
+                </DataTable.HeaderRow>
+            </DataTable.Header>
+
+            <DataTable.Content>
+                {payments.map(payment =>
+                    <DataTable.Row key={payment.id}>
+                        <DataTable.Cell>
+                            <Chip
+                                leadingIcon={<Icon>{payment.statusIcon}</Icon>}
+                                text={payment.statusLabel}
+                            />
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
+                            <Chip
+                                component={Link}
+                                to={`/clients/${payment.client.id}`}
+                                text={payment.client.fullname}
+                            />
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
+                            {payment.amount} руб.
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
+                            {payment.date}
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
+                            {payment.paymentMethod}
+                        </DataTable.Cell>
+
+                        <DataTable.Cell numeric>
+                            <MenuButton
+                                items={[
+                                    {
+                                        key: 'edit',
+                                        text: 'Изменить',
+                                        onClick: () => onEdit(payment)
+                                    },
+                                    {
+                                        key: 'delete',
+                                        text: 'Удалить',
+                                        onClick: () => onDelete(payment)
+                                    }
+                                ]}
+                            />
+                        </DataTable.Cell>
+                    </DataTable.Row>
+                )}
+            </DataTable.Content>
+        </DataTable>
     );
 }
 
 const columns = [
     {
         key: 'status',
-        name: 'status',
-        fieldName: 'status',
-        iconName: 'StatusCircleRing',
-        minWidth: 16,
-        maxWidth: 16,
-        isIconOnly: true,
-        onRender: item => <Icon iconName="Star" />
+        text: 'Статус'
     },
     {
         key: 'user',
-        name: 'Плательщик',
-        fieldName: 'user',
-        data: 'string',
-        minWidth: 100,
-        maxWidth: 256,
-        isRowHeader: true,
-        isPadded: true,
-        onRender: item => <Link to={`/${item.id}`}>{item.user}</Link>
+        text: 'Клиент'
     },
     {
         key: 'amount',
-        name: 'Сумма',
-        fieldName: 'amount',
-        data: 'number',
-        minWidth: 100,
-        isRowHeader: true,
-        isPadded: true
+        text: 'Сумма'
     },
     {
         key: 'date',
-        name: 'Дата',
-        fieldName: 'date',
-        data: 'string',
-        minWidth: 100,
-        isRowHeader: true,
-        isPadded: true
+        text: 'Дата'
     },
     {
         key: 'method',
-        name: 'Способ оплаты',
-        fieldName: 'method',
-        data: 'string',
-        minWidth: 100,
-        isRowHeader: true,
-        isPadded: true
+        text: 'Способ оплаты'
     },
     {
         key: 'note',
-        name: 'Заметка',
-        fieldName: 'note',
-        data: 'string',
-        minWidth: 100,
-        isRowHeader: true,
-        isPadded: true
+        text: 'Заметка'
     }
 ];

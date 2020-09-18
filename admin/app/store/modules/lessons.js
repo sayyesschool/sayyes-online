@@ -44,7 +44,7 @@ export const deleteLesson = createAction('DELETE_LESSON', lessonId => ({
 export default combineReducers({
     list: createReducer(null, {
         [getLessons]: (state, action) => action.data,
-        [createLesson]: (state, action) => [...state, action.data],
+        [createLesson]: (state, action) => state ? [...state, action.data] : [action.data],
         [updateLesson]: (state, action) => state.map(lesson => lesson.id === action.data.lesson.id ? ({ ...lesson, ...action.data.lesson }) : lesson),
         [deleteLesson]: (state, action) => state.filter(lesson => lesson.id !== action.data.lessonId)
     }),

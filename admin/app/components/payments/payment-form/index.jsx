@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import {
     Layout,
     TextField
@@ -11,53 +11,53 @@ import PeopleSelect from 'app/components/shared/people-select';
 
 import './index.scss';
 
-const defaultData = () => ({
-    user: {},
-    amount: 0,
-    date: new Date(),
-    method: '',
-    description: ''
-});
-
-export default function PaymentForm({ payment = defaultData(), onSubmit }) {
+export default function PaymentForm({ payment = {}, onSubmit }) {
     const [data, setData] = useForm({
-        user: payment.user?.fullname,
-        amount: payment.amount,
-        date: moment(payment.date).format('YYYY-MM-DDTHH:mm'),
-        method: payment.method?.title,
-        description: payment.description
+        amount: 0,
+        description: '',
+        date: moment(payment.date).format('YYYY-MM-DD'),
+        client: payment.client ? payment.client.id : '',
+        ...payment
     });
 
     const handleSubmit = useCallback(() => {
         data.date = moment(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
+        data.status = 'succeeded';
 
         onSubmit(data);
     }, [data]);
 
     return (
         <Form id="payment-form" onSubmit={handleSubmit}>
-            <Layout tokens={{ childrenGap: 8 }}>
+            <Layout column>
                 <TextField
                     type="number"
-                    label="Сумма"
                     name="amount"
                     value={data.amount}
+                    label="Сумма"
+                    filled
+                    min={1}
+                    required
+                    onChange={setData}
+                />
+
+                <TextField
+                    type="text"
+                    name="description"
+                    value={data.description}
+                    label="Описание"
+                    filled
+                    required
                     onChange={setData}
                 />
 
                 <TextField
                     type="date"
+                    name="date"
+                    value={data.date}
                     label="Дата"
-                    name="dob"
-                    value={data.dob}
+                    filled
                     onChange={setData}
-                />
-
-                <PeopleSelect
-                    label="Студент"
-                    name="student"
-                    value={data.student?.id}
-                    resolveUrl="/admin/api/students"
                 />
 
                 <TextField
@@ -65,7 +65,8 @@ export default function PaymentForm({ payment = defaultData(), onSubmit }) {
                     name="note"
                     value={data.note}
                     label="Заметка"
-                    multiline
+                    filled
+                    textarea
                     onChange={setData}
                 />
             </Layout>

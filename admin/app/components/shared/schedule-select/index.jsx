@@ -10,14 +10,23 @@ import {
 
 import WeekdaySelect from '../weekday-picker';
 
-export default function ScheduleSelect({ schedule, onChange }) {
+import './index.scss';
+
+export default function ScheduleSelect({ name, schedule, onChange }) {
     const [items, setItems] = useState(schedule);
+
+    useEffect(() => {
+        const event = { target: { name } };
+
+        onChange(event, items);
+    }, [items]);
 
     const handleAdd = useCallback(() => {
         setItems(items => [...items, { days: [], from: 0, to: 0 }]);
     }, []);
 
-    const handleDaysChange = useCallback((id, days) => {
+    const handleDayChange = useCallback((id, days) => {
+        console.log(days);
         setItems(items => items.map((item, index) => index !== id ? item : { ...item, days }));
     }, []);
 
@@ -29,18 +38,12 @@ export default function ScheduleSelect({ schedule, onChange }) {
         setItems(items => items.filter((item, index) => index !== id));
     }, []);
 
-    useEffect(() => {
-        const event = { target: { name: 'study.schedule' } };
-
-        onChange(event, items);
-    }, [items]);
-
     return (
         <div className="schedule-select">
             <Layout column>
                 <Layout row justifyContent="space-between" alignItems="center">
                     <Typography noMargin>Расписание</Typography>
-                    <Button onClick={handleAdd}>Добавить</Button>
+                    <Button type="button" onClick={handleAdd}>Добавить</Button>
                 </Layout>
 
                 {items.length === 0 &&
@@ -48,41 +51,73 @@ export default function ScheduleSelect({ schedule, onChange }) {
                 }
 
                 {items.map((item, index) =>
-                    <Layout key={index} column>
-                        <WeekdaySelect
-                            name="days"
-                            selectedValues={item.days}
-                            onChange={(event, values) => handleDaysChange(index, values)}
-                        />
-
-                        <Layout row>
-                            <TextField
-                                type="time"
-                                name="from"
-                                value={item.from}
-                                placeholder="С"
-                                step="1800"
-                                onChange={(event, option) => handleTimeChange(index, 'from', option.key)}
-                            />
-
-                            <TextField
-                                type="time"
-                                name="to"
-                                value={item.to}
-                                placeholder="До"
-                                step="1800"
-                                onChange={(event, option) => handleTimeChange(index, 'to', option.key)}
-                            />
-                        </Layout>
-
-                        <IconButton
-                            type="button"
-                            icon={<Icon>delete</Icon>}
-                            onClick={() => handleDelete(index)}
-                        />
-                    </Layout>
+                    <ScheduleSelectItem
+                        key={index}
+                        item={item}
+                        onDayChange={handleDayChange}
+                        onTimeChange={handleTimeChange}
+                        onDelete={handleDelete}
+                    />
                 )}
             </Layout>
-        </div>
+        </div >
     );
 }
+
+function ScheduleSelectItem({ item, onDayChange, onTimeChange, onDelete }) {
+    const handleDayChange = useCallback(day => {
+        console.log(item);
+        const set = new Set(item.days);
+
+        set.has(day) ? set.delete(day) : set.add(day);
+
+        onDayChange(item.id, Array.from(set).sort());
+    }, [item]);
+
+    const handleTimeChange = useCallback(event => {
+        onTimeChange(id, event.target.name, event.target.value);
+    }, []);
+
+    const handleDelete = useCallback(() => {
+        onDelete(id);
+    }, []);
+
+    return (
+        <div className="schedule-select-item">
+            <WeekdaySelect
+                id={id}
+                name="days"
+                values={item.days}
+                onChange={handleDayChange}
+            />
+
+            <div className="schedule-select__time-select">
+                <TextField
+                    type="time"
+                    name="from"
+                    value={item.from}
+                    label="С"
+                    step="1800"
+                    filled
+                    onChange={handleTimeChange}
+                />
+
+                <TextField
+                    type="time"
+                    name="to"
+                    value={item.to}
+                    label="До"
+                    step="1800"
+                    filled
+                    onChange={handleTimeChange}
+                />
+            </div>
+
+            <IconButton
+                type="button"
+                icon={<Icon>delete</Icon>}
+                onClick={handleDelete}
+            />
+        </div>
+    );
+};

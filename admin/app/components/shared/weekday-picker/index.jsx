@@ -1,36 +1,30 @@
 import React, { useCallback } from 'react';
 import {
     Checkbox,
-    FormField,
-    Layout
+    FormField
 } from 'mdc-react';
+
+import './index.scss';
 
 const labels = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
-export default function WeekdaySelect({ name, selectedValues, onChange }) {
-    const handleChange = useCallback((event, checked) => {
-        const value = Number(event.target.value);
-        const set = new Set(selectedValues);
-
-        checked ? set.add(value) : set.delete(value);
-
-        const newValues = Array.from(set).sort();
-
-        onChange(event, newValues);
-    }, [selectedValues]);
+export default function WeekdaySelect({ id, name, values, onChange }) {
+    const handleChange = useCallback(event => {
+        onChange(Number(event.target.value));
+    }, []);
 
     return (
-        <Layout row>
+        <div className="weekday-select">
             {labels.map((label, index) =>
                 <FormField key={label} label={label}>
                     <Checkbox
                         name={name}
                         value={index}
-                        checked={selectedValues.includes(index)}
+                        checked={values.includes(index)}
                         onChange={handleChange}
                     />
                 </FormField>
             )}
-        </Layout>
+        </div>
     );
 }

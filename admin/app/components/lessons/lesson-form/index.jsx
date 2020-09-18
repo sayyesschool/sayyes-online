@@ -1,60 +1,90 @@
 import React, { useCallback } from 'react';
 import {
+    FormField,
     Layout,
+    Switch,
     TextField
-} from '@fluentui/react';
+} from 'mdc-react';
 import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
-import PeopleSelect from 'app/components/shared/people-picker';
+import { useStore } from 'app/store';
+import PeopleSelect from 'app/components/shared/people-select';
 
 import './index.scss';
 
-const defaultData = () => ({
-    date: new Date(),
-    client: {},
-    student: {},
-    teacher: {},
-    description: ''
-});
-
-export default function LessonForm({ lesson = defaultData(), onSubmit }) {
-    const [data, setData] = useForm({
+export default function LessonForm({ lesson = {}, onSubmit }) {
+    const [teachers] = useStore('teachers.list');
+    const [data, handleChange] = useForm({
+        date: new Date(),
+        trial: false,
+        note: '',
+        ...data,
         date: moment(lesson.date).format('YYYY-MM-DDTHH:mm'),
-        student: lesson.student && lesson.student.id,
-        teacher: lesson.teacher && lesson.teacher.id
+        client: lesson.client ? lesson.client.id : '',
+        teacher: lesson.teacher ? lesson.teacher.id : '',
+        note: lesson.note
     });
 
     const handleSubmit = useCallback(() => {
         data.date = moment(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
+        data.teacher = data.teacher || undefined;
 
         onSubmit(data);
     }, [data]);
 
     return (
         <Form id="lesson-form" onSubmit={handleSubmit}>
-            <Layout>
+            <Layout column>
+                <FormField label="Пробный">
+                    <Switch
+                        name="trial"
+                        checked={data.trial}
+                        onChange={handleChange}
+                    />
+                </FormField>
+
                 <TextField
-                    type="date"
+                    type="datetime-local"
                     name="date"
-                    value={data.dob}
-                    placeholder="Дата"
-                    onChange={setData}
+                    value={moment(data.date).format('YYYY-MM-DDTHH:mm')}
+                    label="Дата и время"
+                    filled
+                    onChange={handleChange}
                 />
 
                 <PeopleSelect
                     name="client"
-                    value={data.client}
                     label="Клиент"
-                    resolveUrl="/admin/api/clients"
+                    value={data.client}
+                    options={[{
+                        key: lesson.client.id,
+                        value: lesson.client.id,
+                        text: lesson.client.fullname
+                    }]}
+                    disabled
                 />
 
                 <PeopleSelect
                     name="teacher"
                     value={data.teacher}
                     label="Преподаватель"
-                    resolveUrl="/admin/api/teachers"
+                    options={teachers.map(teacher => ({
+                        key: teacher.id,
+                        value: teacher.id,
+                        text: teacher.fullname
+                    }))}
+                    onChange={handleChange}
+                />
+
+                <TextField
+                    name="note"
+                    value={data.note}
+                    label="Примечание"
+                    filled
+                    textarea
+                    onChange={handleChange}
                 />
             </Layout>
         </Form>

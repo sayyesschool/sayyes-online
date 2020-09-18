@@ -1,69 +1,105 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-    DetailsList
-} from '@fluentui/react';
+    Chip,
+    Icon,
+    DataTable
+} from 'mdc-react';
 
-export default function LessonList({ lessons }) {
-    const items = lessons
-        .map(lesson => ({
-            key: lesson.id,
-            value: lesson.id,
-            title: lesson.title,
-            datetime: lesson.datetime,
-            student: lesson.student?.fullname,
-            teacher: lesson.teacher?.fullname
-        }));
+import MenuButton from 'app/components/shared/menu-button';
 
+export default function LessonList({ lessons, onView, onEdit, onDelete }) {
     return (
-        <section id="lesson-list">
-            <DetailsList
-                items={items}
-                compact={false}
-                columns={columns}
-                setKey="none"
-                isHeaderVisible={true}
-            />
-        </section>
+        <DataTable id="lesson-list">
+            <DataTable.Header>
+                <DataTable.HeaderRow>
+                    {columns.map(col =>
+                        <DataTable.HeaderCell
+                            key={col.key}
+                        >
+                            {col.text}
+                        </DataTable.HeaderCell>
+                    )}
+                </DataTable.HeaderRow>
+            </DataTable.Header>
+
+            <DataTable.Content>
+                {lessons.map(lesson =>
+                    <DataTable.Row key={lesson.id}>
+                        <DataTable.Cell>
+                            <Chip
+                                component={Link}
+                                to={`/lessons/${lesson.id}`}
+                                leadingIcon={<Icon>{lesson.statusIcon}</Icon>}
+                                text={lesson.statusLabel}
+                            />
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
+                            {lesson.datetime}
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
+                            <Chip
+                                component={Link}
+                                to={`/clients/${lesson.client.id}`}
+                                text={lesson.client.fullname}
+                            />
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
+                            {lesson.teacher &&
+                                <Chip
+                                    component={Link}
+                                    to={`/teachers/${lesson.teacher.id}`}
+                                    text={lesson.teacher.fullname}
+                                />
+                            }
+                        </DataTable.Cell>
+
+                        <DataTable.Cell numeric>
+                            <MenuButton
+                                items={[
+                                    {
+                                        key: 'view',
+                                        text: 'Посмотреть',
+                                        onClick: () => onView(lesson)
+                                    },
+                                    {
+                                        key: 'edit',
+                                        text: 'Изменить',
+                                        onClick: () => onEdit(lesson)
+                                    },
+                                    {
+                                        key: 'delete',
+                                        text: 'Удалить',
+                                        onClick: () => onDelete(lesson)
+                                    }
+                                ]}
+                            />
+                        </DataTable.Cell>
+                    </DataTable.Row>
+                )}
+            </DataTable.Content>
+        </DataTable>
     );
 }
 
 const columns = [
     {
-        key: 'title',
-        name: 'Название',
-        fieldName: 'title',
-        data: 'string',
-        minWidth: 100,
-        maxWidth: 256,
-        isRowHeader: true,
-        isPadded: true
+        key: 'status',
+        text: 'Статус'
     },
     {
         key: 'datetime',
-        name: 'Дата и время',
-        fieldName: 'datetime',
-        data: 'string',
-        minWidth: 100,
-        isRowHeader: true,
-        isPadded: true
+        text: 'Дата и время'
     },
     {
-        key: 'student',
-        name: 'Студент',
-        fieldName: 'student',
-        data: 'string',
-        minWidth: 100,
-        isRowHeader: true,
-        isPadded: true
+        key: 'client',
+        text: 'Клиент'
     },
     {
         key: 'teacher',
-        name: 'Преподаватель',
-        fieldName: 'teacher',
-        data: 'string',
-        minWidth: 100,
-        isRowHeader: true,
-        isPadded: true
+        text: 'Преподаватель'
     }
 ];

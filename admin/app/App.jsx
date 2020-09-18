@@ -1,28 +1,37 @@
-import React, { useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import { useStore } from 'shared/hooks/store';
-import { actions as notificationActions } from 'shared/store/actions/notification';
 import NotificationSnackbar from 'shared/components/notification-snackbar';
 
+import { useStore, useActions } from 'app/store';
 import UI from 'app/contexts/ui';
 
 import AppHeader from './components/shared/app-header';
 import AppSidenav from './components/shared/app-sidenav';
 import AppContent from './components/shared/app-content';
-import Home from './pages/home';
-// import Lessons from './pages/lessons';
-// import Lesson from './pages/lesson';
-// import Payments from './pages/payments';
-import Requests from './pages/requests';
+import Home from './components/home';
+import Clients from './components/clients';
+import Payments from './components/payments';
+import Requests from './components/requests';
 
 import './App.scss';
 
 export default function App() {
-    const [notification, actions] = useStore(
-        state => state.notification,
-        notificationActions
-    );
+    const [isSidenavOpen, setSidenavOpen] = useState(true);
+    const { getUser } = useActions('user');
+    const { getManagers } = useActions('managers');
+    const { getTeachers } = useActions('teachers');
+    const { getRequests, getNewRequests } = useActions('requests');
+    const [notification, actions] = useStore('notification');
+
+    useEffect(() => {
+        getUser();
+        getManagers();
+        getTeachers();
+        getRequests();
+
+        setInterval(() => getNewRequests(), 60000);
+    }, []);
 
     const handleSnackbarClose = useCallback(() => {
         actions.hideNotification();
@@ -33,17 +42,20 @@ export default function App() {
             showNotification: actions.showNotification,
             hideNotification: actions.hideNotification
         }}>
-            <AppHeader />
+            <AppHeader
+                onNavigationIconClick={() => setSidenavOpen(open => !open)}
+            />
 
-            <AppSidenav />
+            <AppSidenav
+                open={isSidenavOpen}
+            />
 
             <AppContent>
                 <Switch>
                     <Route exact path="/" component={Home} />
-                    {/* <Route exact path="/lessons" component={Lessons} /> */}
+                    <Route path="/clients" component={Clients} />
                     <Route path="/requests" component={Requests} />
-                    {/* <Route path="/lesson/:lessonId" component={Lesson} />
-                    <Route path="/payments" component={Payments} /> */}
+                    <Route path="/payments" component={Payments} />
                 </Switch>
             </AppContent>
 

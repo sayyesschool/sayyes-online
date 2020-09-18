@@ -6,4 +6,12 @@
     .mdc-side-sheet__content {
         padding: 0 1rem 1rem;
     }
+
+    .form-panel__actions {
+        margin-top: 1rem;
+
+        .mdc-button + .mdc-button {
+            margin-left: .5rem;
+        }
+    }
 }

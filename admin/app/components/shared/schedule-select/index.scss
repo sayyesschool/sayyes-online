@@ -1,0 +1,22 @@
+.schedule-select {
+    .schedule-select__time-select {
+        display: inline-flex;
+        align-items: center;
+
+        .mdc-text-field {
+            margin-right: 8px;
+
+            + .mdc-text-field {
+                margin-top: 0;
+            }
+        }
+    }
+
+    .weekday-select {
+        margin-bottom: 8px;
+    }
+
+    .schedule-select-item + .schedule-select-item {
+        margin-top: 1rem;
+    }
+}

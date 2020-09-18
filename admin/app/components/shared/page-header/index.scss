@@ -1,5 +1,15 @@
+@use '@material/top-app-bar';
+@use '@material/theme';
+
 .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    @include top-app-bar.fill-color-accessible(#f4f4f4);
+    @include top-app-bar.icon-ink-color(theme.accessible-ink-color(#f4f4f4, secondary));
+
+    .mdc-top-app-bar__section--align-start {
+        padding-left: 1rem;
+    }
+
+    .page-title {
+        padding-left: 0;
+    }
 }

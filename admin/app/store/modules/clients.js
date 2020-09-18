@@ -40,8 +40,8 @@ export const deleteClient = createAction('DELETE_CLIENT', (clientId, data) => ({
 
 export default combineReducers({
     list: createReducer(null, {
-        [getClient]: (state, action) => action.data,
-        [createClient]: (state, action) => [...state, action.data]
+        [getClients]: (state, action) => action.data,
+        [createClient]: (state, action) => state ? [...state, action.data] : [action.data]
     }),
 
     single: createReducer(null, {
