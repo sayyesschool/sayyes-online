@@ -1,7 +1,6 @@
 const { Types: { ObjectId } } = require('mongoose');
 const moment = require('moment');
 
-const { generateVideoToken, generateChatToken } = require('../lib/twilio');
 const { Lesson } = require('../models');
 const Mail = require('./mail');
 
@@ -57,9 +56,6 @@ module.exports = {
 
         return lesson;
     },
-
-    generateVideoToken,
-    generateChatToken,
 
     notifyStudent() {
         const inAnHour = moment().utc().minutes(0).seconds(0).milliseconds(0).add(1, 'hour');

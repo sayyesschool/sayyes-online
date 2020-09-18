@@ -1,10 +1,6 @@
 const crypto = require('crypto');
 
-const { APP_URL } = require('../config');
-const { User } = require('../models');
-const mail = require('./mail');
-
-module.exports = {
+module.exports = ({ APP_URL }, User, mail) => ({
     options: {
         //successRedirect: '/home',
         failureRedirect: '/',
@@ -123,4 +119,4 @@ module.exports = {
                 }
             });
     }
-};
+});

@@ -1,6 +1,4 @@
-const { User } = require('../models');
-
-module.exports = {
+module.exports = User => ({
     roles: User.roles,
 
     get(...args) {
@@ -26,4 +24,4 @@ module.exports = {
     delete(id, ...args) {
         return User.findByIdAndDelete(id, ...args);
     }
-};
+});

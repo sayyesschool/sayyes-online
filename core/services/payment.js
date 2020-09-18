@@ -3,6 +3,8 @@ const YandexKassa = require('../lib/yandex-kassa');
 const { Payment } = require('../models');
 
 module.exports = {
+    model: Payment,
+
     get(...args) {
         return Payment.find(...args);
     },

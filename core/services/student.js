@@ -1,6 +1,4 @@
-const { Student } = require('../models');
-
-module.exports = {
+module.exports = Student => ({
     get(...args) {
         return Student.find(...args);
     },
@@ -24,4 +22,4 @@ module.exports = {
     delete(id, ...args) {
         return Student.findByIdAndDelete(id, ...args);
     }
-};
+});

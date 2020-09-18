@@ -1,6 +1,4 @@
-const { Request } = require('../models');
-
-module.exports = {
+module.exports = Request => ({
     get(...args) {
         return Request.find(...args);
     },
@@ -24,4 +22,4 @@ module.exports = {
     delete(id, ...args) {
         return Request.findByIdAndDelete(id, ...args);
     }
-};
+});
