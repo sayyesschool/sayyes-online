@@ -1,4 +1,4 @@
-module.exports = ({ Auth, Mail }, data) => ({
+module.exports = ({ Auth, Mail, Request }, data) => ({
     showFront: (req, res) => {
         res.render('front', {
             id: 'front',
@@ -9,14 +9,13 @@ module.exports = ({ Auth, Mail }, data) => ({
     request: (req, res, next) => {
         const { name, phone } = req.body;
 
-        Mail.send({
-            subject: 'Разговорный клуб SAY YES - Обратный звонок',
-            html: `<p>${name} заказал обратный звонок на номер ${phone}.<p>`,
-            to: [{
-                email: 'club@sayes.ru'
-            }]
+        Request.create({
+            contact: {
+                name,
+                phone
+            }
         }).then(() => {
-            req.flash('success', 'Заявка на обратный звонок принята. Мы перезвоним вам в ближайшее время!');
+            req.flash('success', 'Заявка принята. Мы свяжимся с вамм в ближайшее время!');
             res.redirect('back');
         }).catch(next);
     },
