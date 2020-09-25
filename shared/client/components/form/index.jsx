@@ -1,33 +1,35 @@
-import React from 'react';
+import React, { useRef, useCallback } from 'react';
 
-Form.defaultProps = {
-    preventDefault: true,
-    onSubmit: Function.prototype
-};
+export default function Form({
+    preventDefault = true,
+    novalidate = false,
+    onSubmit = Function.prototype,
 
-export default function Form({ preventDefault, novalidate, onSubmit, children, ...props }) {
-    const formElement = React.useRef();
+    children,
+    ...props
+}) {
+    const formRef = useRef();
 
-    const handleSubmit = event => {
+    const handleSubmit = useCallback(event => {
         if (event && preventDefault) {
             event.preventDefault();
         }
 
-        if (novalidate || formElement.current.checkValidity()) {
-            return onSubmit(event);
+        if (novalidate || formRef.current.checkValidity()) {
+            onSubmit(event);
         } else {
-            formElement.current.reportValidity();
+            formRef.current.reportValidity();
         }
-    };
+    }, [preventDefault, novalidate, onSubmit]);
 
     return (
         <form
-            ref={formElement}
+            ref={formRef}
             onSubmit={handleSubmit}
             {...props}
         >
             <input type="hidden" name="_csrf" value={window.CSRF_TOKEN} />
-            
+
             {children}
         </form>
     );

@@ -24,11 +24,7 @@ export function createAction(type, fn) {
 }
 
 export function createReducer(initialState, caseReducers) {
-    return function(state, action) {
-        if (state === undefined) {
-            state = initialState;
-        }
-
+    return function(state = initialState, action) {
         return Object.entries(caseReducers)
             .filter(([key]) => key === action.type)
             .reduce((state, [key, reducer]) => reducer(state, action), state);

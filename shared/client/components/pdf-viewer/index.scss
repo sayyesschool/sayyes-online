@@ -1,0 +1,19 @@
+.pdf-viewer {
+    .react-pdf__Page__canvas {
+        margin: auto;
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__pages_label {
+        margin: 0 8px;
+
+        input {
+            width: 2em;
+        }
+    }
+}

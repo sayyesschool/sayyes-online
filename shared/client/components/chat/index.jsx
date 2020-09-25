@@ -1,26 +1,28 @@
-import { Client } from 'twilio-chat';
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import {
-    Card, CardHeader, CardSection,
-    Banner,
-    Button,
-    Icon,
-    LayoutGrid, LayoutGridCell,
-    List, ListItem,
-    Spinner,
-    Typography,
-    TextField
+    IconButton,
+    List, ListItem
 } from 'mdc-react';
 import classnames from 'classnames';
 
+import { useChat } from 'shared/hooks/twilio';
+
+import LoadingIndicator from 'shared/components/loading-indicator';
+
 import './index.scss';
 
-export default function Chat({ token, name, user, members }) {
+export default function Chat({ identity, name }) {
     const inputRef = useRef();
-    const [client, setClient] = useState();
-    const [channel, setChannel] = useState();
-    const [messages, setMessages] = useState([]);
-    const [isTyping, setTyping] = useState(false);
+    const [token, setToken] = useState();
+    // const { channel, messages } = useChat(token, { name });
+
+    // useEffect(() => {
+    //     if (lesson) {
+    //         fetch(`/api/twilio/tokens/chat?identity=${identity}`)
+    //             .then(res => res.json())
+    //             .then(res => setToken(res.data.token));
+    //     }
+    // }, [lesson]);
 
     const handleSubmit = useCallback(event => {
         event.preventDefault();
@@ -34,150 +36,46 @@ export default function Chat({ token, name, user, members }) {
         channel.typing();
     }, [channel]);
 
-    useEffect(() => {
-        Client.create(token).then(client => {
-            setClient(client);
+    // const members = {
+    //     [lesson.client.id]: lesson.client.name,
+    //     [lesson.teacher.id]: lesson.teacher.name
+    // };
 
-            function refreshToken() {
-                fetch()
-                    .then(token => {
-                        client.updateToken(token);
-                    })
-                    .catch(error => {
-                        console.error('Could not refresh token', error);
-                    });
-            }
-
-            client.on('tokenExpired', refreshToken);
-
-            client.getChannelByUniqueName(name)
-                .then(
-                    channel => {
-                        console.log('Found channel', channel);
-                        return channel;
-                    },
-                    () => {
-                        console.log('Create channel');
-                        client.createChannel({ uniqueName: name });
-                    }
-                )
-                .then(channel => {
-                    console.log('CHANNEL', channel);
-                    return setChannel(channel);
-                })
-                .catch(error => {
-                    console.error('Could not get channel', error);
-                });
-        });
-
-        return () => {
-            client;
-        };
-    }, []);
-
-    useEffect(() => {
-        function messageAdded(message) {
-            setMessages(messages => messages.concat({
-                username: message.author,
-                date: message.date,
-                body: message.body
-            }));
-        }
-
-        function memberJoined(member) {
-            console.log(member.identity + ' joined the channel');
-        }
-
-        function memberLeft(member) {
-            console.log(member.identity + ' left the channel');
-        }
-
-        function typingStarted(member) {
-            setTyping(true);
-        }
-
-        function typingEnded(member) {
-            setTyping(false);
-        }
-
-        if (channel) {
-            channel.join()
-                .catch(error => {
-                    if (channel.status === 'joined') {
-                        return channel;
-                    } else {
-                        throw error;
-                    }
-                })
-                .then(channel => {
-                    console.log('Joined channel', channel);
-
-                    channel.on('messageAdded', messageAdded);
-                    channel.on('memberJoined', memberJoined);
-                    channel.on('memberLeft', memberLeft);
-                    channel.on('typingStarted', typingStarted);
-                    channel.on('typingEnded', typingEnded);
-
-                    channel.getMessages(100)
-                        .then(messages => {
-                            setMessages(messages.items.map(message => ({
-                                id: message.state.sid,
-                                author: message.state.author,
-                                body: message.state.body,
-                                timestamp: message.state.timestamp,
-                                local: message.state.author === user.id
-                            })));
-                        });
-                })
-                .catch(error => {
-                    console.log('Could not join channel', error);
-                });
-        }
-
-        // return () => {
-        //     channel.leave().then(leftChannel => {
-        //         leftChannel.removeListener('messageAdded', messageAdded);
-        //         leftChannel.removeListener('memberJoined', memberJoined);
-        //         leftChannel.removeListener('memberLeft', memberLeft);
-        //         leftChannel.removeListener('typingStarted', typingStarted);
-        //         leftChannel.removeListener('typingEnded', typingEnded);
-        //     });
-        // };
-    }, [channel]);
-
-    if (!client) return <Spinner />;
+    const channel = undefined;
 
     return (
-        <Card id="lesson-chat" outlined>
-            <CardHeader
-                title="Чат"
-                subtitle="Подключен"
-            />
-
-            <CardSection primary>
+        <article className="chat">
+            {!channel ?
+                <LoadingIndicator />
+                :
                 <List className="message-list">
                     {messages.map(message =>
                         <ListItem
                             key={message.id}
                             className={classnames('message-item', {
-                                'message-item--local': message.local,
-                                'message-item--remote': !message.local
+                                'message-item--local': message.author === user.id,
+                                'message-item--remote': message.local !== user.id
                             })}
                         >
                             {message.body}
                         </ListItem>
                     )}
                 </List>
-            </CardSection>
+            }
 
-            <CardSection>
-                <form onSubmit={handleSubmit}>
-                    <input
-                        ref={inputRef}
-                        onKeyPress={handleKeyPress}
-                    />
-                </form>
-            </CardSection>
-        </Card>
+            <form className="message-form" onSubmit={handleSubmit}>
+                <input
+                    ref={inputRef}
+                    placeholder="Сообщение"
+                    onKeyPress={handleKeyPress}
+                />
+
+                <IconButton
+                    type="submit"
+                    icon="send"
+                    disabled={!channel}
+                />
+            </form>
+        </article>
     );
 }

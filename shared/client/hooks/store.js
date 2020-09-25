@@ -6,7 +6,7 @@ export function useState(mapState = state => state) {
     return useSelector(mapState, shallowEqual);
 }
 
-export function useActions(mapDispatch) {
+export function useActions(mapDispatch = Function.prototype) {
     const dispatch = useDispatch();
 
     return useMemo(() => bindActionCreators(mapDispatch, dispatch), []);
@@ -19,4 +19,4 @@ export function useStore(mapState = state => state, mapDispatch) {
     return [state, actions];
 }
 
-export { useSelector };
+export { useStore as default, useSelector };

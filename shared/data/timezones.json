@@ -1,143 +1,566 @@
 [
-    {"value": "Pacific/Midway", "text": "(GMT-11:00) Острова Мидуэй, Самоа"},
-    {"value": "Pacific/Pago_Pago", "text": "(GMT-11:00) Паго-Паго"},
-    {"value": "Pacific/Honolulu", "text": "(GMT-10:00) Гавайи"},
-    {"value": "America/Anchorage", "text": "(GMT-8:00) Аляска"},
-    {"value": "America/Juneau", "text": "(GMT-8:00) Джуно"},
-    {"value": "America/Vancouver", "text": "(GMT-7:00) Ванкувер"},
-    {"value": "America/Los_Angeles", "text": "(GMT-7:00) Тихоокеанское время (США и Канада)"},
-    {"value": "America/Tijuana", "text": "(GMT-7:00) Тихуана"},
-    {"value": "America/Phoenix", "text": "(GMT-7:00) Аризона"},
-    {"value": "America/Edmonton", "text": "(GMT-6:00) Эдмонтон"},
-    {"value": "America/Denver", "text": "(GMT-6:00) Зимнее время (США и Канада)"},
-    {"value": "America/Mazatlan", "text": "(GMT-6:00) Мазатлан"},
-    {"value": "America/Regina", "text": "(GMT-6:00) Саскачеван"},
-    {"value": "America/Guatemala", "text": "(GMT-6:00) Гватемала"},
-    {"value": "America/El_Salvador", "text": "(GMT-6:00) Сальвадор"},
-    {"value": "America/Managua", "text": "(GMT-6:00) Манагуа"},
-    {"value": "America/Costa_Rica", "text": "(GMT-6:00) Коста-Рика"},
-    {"value": "America/Tegucigalpa", "text": "(GMT-6:00) Тегусигальпа"},
-    {"value": "America/Chihuahua", "text": "(GMT-6:00) Чиуауа"},
-    {"value": "America/Winnipeg", "text": "(GMT-5:00) Виннипег"},
-    {"value": "America/Chicago", "text": "(GMT-5:00) Центральное время (США и Канада)"},
-    {"value": "America/Mexico_City", "text": "(GMT-5:00) Мехико"},
-    {"value": "America/Panama", "text": "(GMT-5:00) Панама"},
-    {"value": "America/Bogota", "text": "(GMT-5:00) Богота"},
-    {"value": "America/Lima", "text": "(GMT-5:00) Лима"},
-    {"value": "America/Monterrey", "text": "(GMT-5:00) Монтеррей"},
-    {"value": "America/Montreal", "text": "(GMT-4:00) Монреаль"},
-    {"value": "America/New_York", "text": "(GMT-4:00) Восточное время (США и Канада)"},
-    {"value": "America/Indianapolis", "text": "(GMT-4:00) Индиана (Восточная)"},
-    {"value": "America/Puerto_Rico", "text": "(GMT-4:00) Пуэрто-Рико"},
-    {"value": "America/Caracas", "text": "(GMT-4:00) Каракас"},
-    {"value": "America/Santiago", "text": "(GMT-4:00) Сантьяго"},
-    {"value": "America/La_Paz", "text": "(GMT-4:00) Ла-Пас"},
-    {"value": "America/Guyana", "text": "(GMT-4:00) Гаяна"},
-    {"value": "America/Halifax", "text": "(GMT-3:00) Галифакс"},
-    {"value": "America/Montevideo", "text": "(GMT-3:00) Монтевидео"},
-    {"value": "America/Araguaina", "text": "(GMT-3:00) Ресифи"},
-    {"value": "America/Argentina/Buenos_Aires", "text": "(GMT-3:00) Буэнос-Айрес, Джорджтаун"},
-    {"value": "America/Sao_Paulo", "text": "(GMT-3:00) Сан-Паулу"},
-    {"value": "Canada/Atlantic", "text": "(GMT-3:00) Атлантическое время (Канада)"},
-    {"value": "America/St_Johns", "text": "(GMT-2:30) Ньюфаундленд и Лабрадор"},
-    {"value": "America/Godthab", "text": "(GMT-2:00) Гренландия"},
-    {"value": "Atlantic/Cape_Verde", "text": "(GMT-1:00) Острова Зеленого Мыса"},
-    {"value": "Atlantic/Azores", "text": "(GMT+0:00) Азорские острова"},
-    {"value": "UTC", "text": "(GMT+0:00) Универсальное время UTC"},
-    {"value": "Etc/Greenwich", "text": "(GMT+0:00) Среднее время по Гринвичу"},
-    {"value": "Atlantic/Reykjavik", "text": "(GMT+0:00) Рейкъявик"},
-    {"value": "Africa/Nouakchott", "text": "(GMT+0:00) Нуакшот"},
-    {"value": "Europe/Dublin", "text": "(GMT+1:00) Дублин"},
-    {"value": "Europe/London", "text": "(GMT+1:00) Лондон"},
-    {"value": "Europe/Lisbon", "text": "(GMT+1:00) Лиссабон"},
-    {"value": "Africa/Casablanca", "text": "(GMT+1:00) Касабланка"},
-    {"value": "Africa/Bangui", "text": "(GMT+1:00) Западно-Центральная Африка"},
-    {"value": "Africa/Algiers", "text": "(GMT+1:00) Алжир"},
-    {"value": "Africa/Tunis", "text": "(GMT+1:00) Тунис"},
-    {"value": "Europe/Belgrade", "text": "(GMT+2:00) Белград, Братислава, Любляна"},
-    {"value": "CET", "text": "(GMT+2:00) Сараево, Скопье, Загреб"},
-    {"value": "Europe/Oslo", "text": "(GMT+2:00) Осло"},
-    {"value": "Europe/Copenhagen", "text": "(GMT+2:00) Копенгаген"},
-    {"value": "Europe/Brussels", "text": "(GMT+2:00) Брюссель"},
-    {"value": "Europe/Berlin", "text": "(GMT+2:00) Амстердам, Берлин, Рим, Стокгольм, Вена"},
-    {"value": "Europe/Amsterdam", "text": "(GMT+2:00) Амстердам"},
-    {"value": "Europe/Stockholm", "text": "(GMT+2:00) Стокгольм"},
-    {"value": "Europe/Vienna", "text": "(GMT+2:00) Вена"},
-    {"value": "Europe/Luxembourg", "text": "(GMT+2:00) Люксембург"},
-    {"value": "Europe/Paris", "text": "(GMT+2:00) Париж"},
-    {"value": "Europe/Zurich", "text": "(GMT+2:00) Цюрих"},
-    {"value": "Europe/Madrid", "text": "(GMT+2:00) Мадрид"},
-    {"value": "Africa/Harare", "text": "(GMT+2:00) Хараре, Претория"},
-    {"value": "Europe/Warsaw", "text": "(GMT+2:00) Варшава"},
-    {"value": "Europe/Prague", "text": "(GMT+2:00) Прага, Братислава"},
-    {"value": "Europe/Budapest", "text": "(GMT+2:00) Будапешт"},
-    {"value": "Africa/Tripoli", "text": "(GMT+2:00) Триполи"},
-    {"value": "Africa/Cairo", "text": "(GMT+2:00) Каир"},
-    {"value": "Africa/Johannesburg", "text": "(GMT+2:00) Йоханнесбург"},
-    {"value": "Africa/Khartoum", "text": "(GMT+2:00) Хартум"},
-    {"value": "Europe/Helsinki", "text": "(GMT+3:00) Хельсинки"},
-    {"value": "Africa/Nairobi", "text": "(GMT+3:00) Найроби"},
-    {"value": "Europe/Sofia", "text": "(GMT+3:00) София"},
-    {"value": "Europe/Istanbul", "text": "(GMT+3:00) Стамбул"},
-    {"value": "Europe/Athens", "text": "(GMT+3:00) Афины"},
-    {"value": "Europe/Bucharest", "text": "(GMT+3:00) Бухарест"},
-    {"value": "Asia/Nicosia", "text": "(GMT+3:00) Никосия"},
-    {"value": "Asia/Beirut", "text": "(GMT+3:00) Бейрут"},
-    {"value": "Asia/Damascus", "text": "(GMT+3:00) Дамаск"},
-    {"value": "Asia/Jerusalem", "text": "(GMT+3:00) Иерусалим"},
-    {"value": "Asia/Amman", "text": "(GMT+3:00) Амман"},
-    {"value": "Europe/Moscow", "text": "(GMT+3:00) Москва"},
-    {"value": "Asia/Baghdad", "text": "(GMT+3:00) Багдад"},
-    {"value": "Asia/Kuwait", "text": "(GMT+3:00) Кувейт"},
-    {"value": "Asia/Riyadh", "text": "(GMT+3:00) Эр-Рияд"},
-    {"value": "Asia/Bahrain", "text": "(GMT+3:00) Бахрейн"},
-    {"value": "Asia/Qatar", "text": "(GMT+3:00) Катар"},
-    {"value": "Asia/Aden", "text": "(GMT+3:00) Аден"},
-    {"value": "Africa/Djibouti", "text": "(GMT+3:00) Джибути"},
-    {"value": "Africa/Mogadishu", "text": "(GMT+3:00) Могадишо"},
-    {"value": "Europe/Kiev", "text": "(GMT+3:00) Киев"},
-    {"value": "Europe/Minsk", "text": "(GMT+3:00) Минск"},
-    {"value": "Asia/Dubai", "text": "(GMT+4:00) Дубай"},
-    {"value": "Asia/Muscat", "text": "(GMT+4:00) Маскат"},
-    {"value": "Asia/Baku", "text": "(GMT+4:00) Баку, Тбилиси, Ереван"},
-    {"value": "Asia/Tehran", "text": "(GMT+4:30) Тегеран"},
-    {"value": "Asia/Kabul", "text": "(GMT+4:30) Кабул"},
-    {"value": "Asia/Yekaterinburg", "text": "(GMT+5:00) Екатеринбург"},
-    {"value": "Asia/Tashkent", "text": "(GMT+5:00) Исламабад, Карачи, Ташкент"},
-    {"value": "Asia/Calcutta", "text": "(GMT+5:30) Индия"},
-    {"value": "Asia/Kolkata", "text": "(GMT+5:30) Мумбаи, Колката, Нью-Дели"},
-    {"value": "Asia/Kathmandu", "text": "(GMT+5:45) Катманду"},
-    {"value": "Asia/Almaty", "text": "(GMT+6:00) Алматы"},
-    {"value": "Asia/Dacca", "text": "(GMT+6:00) Дакка"},
-    {"value": "Asia/Dhaka", "text": "(GMT+6:00) Астана, Дакка"},
-    {"value": "Asia/Rangoon", "text": "(GMT+6:30) Рангун"},
-    {"value": "Asia/Novosibirsk", "text": "(GMT+7:00) Новосибирск"},
-    {"value": "Asia/Krasnoyarsk", "text": "(GMT+7:00) Красноярск"},
-    {"value": "Asia/Bangkok", "text": "(GMT+7:00) Бангкок"},
-    {"value": "Asia/Saigon", "text": "(GMT+7:00) Вьетнам"},
-    {"value": "Asia/Jakarta", "text": "(GMT+7:00) Джакарта"},
-    {"value": "Asia/Irkutsk", "text": "(GMT+8:00) Иркутск, Улан-Батор"},
-    {"value": "Asia/Shanghai", "text": "(GMT+8:00) Пекин, Шанхай"},
-    {"value": "Asia/Hong_Kong", "text": "(GMT+8:00) Гонконг"},
-    {"value": "Asia/Taipei", "text": "(GMT+8:00) Тайбэй"},
-    {"value": "Asia/Kuala_Lumpur", "text": "(GMT+8:00) Куала-Лумпур"},
-    {"value": "Asia/Singapore", "text": "(GMT+8:00) Сингапур"},
-    {"value": "Australia/Perth", "text": "(GMT+8:00) Перт"},
-    {"value": "Asia/Yakutsk", "text": "(GMT+9:00) Якутск"},
-    {"value": "Asia/Seoul", "text": "(GMT+9:00) Сеул"},
-    {"value": "Asia/Tokyo", "text": "(GMT+9:00) Осака, Саппоро, Токио"},
-    {"value": "Australia/Darwin", "text": "(GMT+9:30) Дарвин"},
-    {"value": "Australia/Adelaide", "text": "(GMT+9:30) Аделаида"},
-    {"value": "Asia/Vladivostok", "text": "(GMT+10:00) Владивосток"},
-    {"value": "Pacific/Port_Moresby", "text": "(GMT+10:00) Гуам, Порт-Морсби"},
-    {"value": "Australia/Brisbane", "text": "(GMT+10:00) Брисбен"},
-    {"value": "Australia/Sydney", "text": "(GMT+10:00) Канберра, Мельбурн, Сидней"},
-    {"value": "Australia/Hobart", "text": "(GMT+10:00) Хобарт"},
-    {"value": "Asia/Magadan", "text": "(GMT+11:00) Магадан"},
-    {"value": "SST", "text": "(GMT+11:00) Соломоновы острова"},
-    {"value": "Pacific/Noumea", "text": "(GMT+11:00) Новая Каледония"},
-    {"value": "Asia/Kamchatka", "text": "(GMT+12:00) Камчатка"},
-    {"value": "Pacific/Fiji", "text": "(GMT+12:00) Острова Фиджи, Маршалловы острова"},
-    {"value": "Pacific/Auckland", "text": "(GMT+12:00) Окленд, Веллингтон"},
-    {"value": "Pacific/Apia", "text": "(GMT+13:00) Независимое Государство Самоа"}
+    {
+        "value": "Pacific/Midway",
+        "text": "Острова Мидуэй, Самоа (GMT-11:00)"
+    },
+    {
+        "value": "Pacific/Pago_Pago",
+        "text": "Паго-Паго (GMT-11:00)"
+    },
+    {
+        "value": "Pacific/Honolulu",
+        "text": "(GMT-10:00) Гавайи"
+    },
+    {
+        "value": "America/Anchorage",
+        "text": "(GMT-8:00) Аляска"
+    },
+    {
+        "value": "America/Juneau",
+        "text": "(GMT-8:00) Джуно"
+    },
+    {
+        "value": "America/Vancouver",
+        "text": "(GMT-7:00) Ванкувер"
+    },
+    {
+        "value": "America/Los_Angeles",
+        "text": "(GMT-7:00) Тихоокеанское время (США и Канада)"
+    },
+    {
+        "value": "America/Tijuana",
+        "text": "(GMT-7:00) Тихуана"
+    },
+    {
+        "value": "America/Phoenix",
+        "text": "(GMT-7:00) Аризона"
+    },
+    {
+        "value": "America/Edmonton",
+        "text": "(GMT-6:00) Эдмонтон"
+    },
+    {
+        "value": "America/Denver",
+        "text": "(GMT-6:00) Зимнее время (США и Канада)"
+    },
+    {
+        "value": "America/Mazatlan",
+        "text": "(GMT-6:00) Мазатлан"
+    },
+    {
+        "value": "America/Regina",
+        "text": "(GMT-6:00) Саскачеван"
+    },
+    {
+        "value": "America/Guatemala",
+        "text": "(GMT-6:00) Гватемала"
+    },
+    {
+        "value": "America/El_Salvador",
+        "text": "(GMT-6:00) Сальвадор"
+    },
+    {
+        "value": "America/Managua",
+        "text": "(GMT-6:00) Манагуа"
+    },
+    {
+        "value": "America/Costa_Rica",
+        "text": "(GMT-6:00) Коста-Рика"
+    },
+    {
+        "value": "America/Tegucigalpa",
+        "text": "(GMT-6:00) Тегусигальпа"
+    },
+    {
+        "value": "America/Chihuahua",
+        "text": "(GMT-6:00) Чиуауа"
+    },
+    {
+        "value": "America/Winnipeg",
+        "text": "(GMT-5:00) Виннипег"
+    },
+    {
+        "value": "America/Chicago",
+        "text": "(GMT-5:00) Центральное время (США и Канада)"
+    },
+    {
+        "value": "America/Mexico_City",
+        "text": "(GMT-5:00) Мехико"
+    },
+    {
+        "value": "America/Panama",
+        "text": "(GMT-5:00) Панама"
+    },
+    {
+        "value": "America/Bogota",
+        "text": "(GMT-5:00) Богота"
+    },
+    {
+        "value": "America/Lima",
+        "text": "(GMT-5:00) Лима"
+    },
+    {
+        "value": "America/Monterrey",
+        "text": "(GMT-5:00) Монтеррей"
+    },
+    {
+        "value": "America/Montreal",
+        "text": "(GMT-4:00) Монреаль"
+    },
+    {
+        "value": "America/New_York",
+        "text": "(GMT-4:00) Восточное время (США и Канада)"
+    },
+    {
+        "value": "America/Indianapolis",
+        "text": "(GMT-4:00) Индиана (Восточная)"
+    },
+    {
+        "value": "America/Puerto_Rico",
+        "text": "(GMT-4:00) Пуэрто-Рико"
+    },
+    {
+        "value": "America/Caracas",
+        "text": "(GMT-4:00) Каракас"
+    },
+    {
+        "value": "America/Santiago",
+        "text": "(GMT-4:00) Сантьяго"
+    },
+    {
+        "value": "America/La_Paz",
+        "text": "(GMT-4:00) Ла-Пас"
+    },
+    {
+        "value": "America/Guyana",
+        "text": "(GMT-4:00) Гаяна"
+    },
+    {
+        "value": "America/Halifax",
+        "text": "(GMT-3:00) Галифакс"
+    },
+    {
+        "value": "America/Montevideo",
+        "text": "(GMT-3:00) Монтевидео"
+    },
+    {
+        "value": "America/Araguaina",
+        "text": "(GMT-3:00) Ресифи"
+    },
+    {
+        "value": "America/Argentina/Buenos_Aires",
+        "text": "(GMT-3:00) Буэнос-Айрес, Джорджтаун"
+    },
+    {
+        "value": "America/Sao_Paulo",
+        "text": "(GMT-3:00) Сан-Паулу"
+    },
+    {
+        "value": "Canada/Atlantic",
+        "text": "(GMT-3:00) Атлантическое время (Канада)"
+    },
+    {
+        "value": "America/St_Johns",
+        "text": "(GMT-2:30) Ньюфаундленд и Лабрадор"
+    },
+    {
+        "value": "America/Godthab",
+        "text": "(GMT-2:00) Гренландия"
+    },
+    {
+        "value": "Atlantic/Cape_Verde",
+        "text": "(GMT-1:00) Острова Зеленого Мыса"
+    },
+    {
+        "value": "Atlantic/Azores",
+        "text": "(GMT+0:00) Азорские острова"
+    },
+    {
+        "value": "UTC",
+        "text": "(GMT+0:00) Универсальное время UTC"
+    },
+    {
+        "value": "Etc/Greenwich",
+        "text": "(GMT+0:00) Среднее время по Гринвичу"
+    },
+    {
+        "value": "Atlantic/Reykjavik",
+        "text": "(GMT+0:00) Рейкъявик"
+    },
+    {
+        "value": "Africa/Nouakchott",
+        "text": "(GMT+0:00) Нуакшот"
+    },
+    {
+        "value": "Europe/Dublin",
+        "text": "(GMT+1:00) Дублин"
+    },
+    {
+        "value": "Europe/London",
+        "text": "(GMT+1:00) Лондон"
+    },
+    {
+        "value": "Europe/Lisbon",
+        "text": "(GMT+1:00) Лиссабон"
+    },
+    {
+        "value": "Africa/Casablanca",
+        "text": "(GMT+1:00) Касабланка"
+    },
+    {
+        "value": "Africa/Bangui",
+        "text": "(GMT+1:00) Западно-Центральная Африка"
+    },
+    {
+        "value": "Africa/Algiers",
+        "text": "(GMT+1:00) Алжир"
+    },
+    {
+        "value": "Africa/Tunis",
+        "text": "(GMT+1:00) Тунис"
+    },
+    {
+        "value": "Europe/Belgrade",
+        "text": "(GMT+2:00) Белград, Братислава, Любляна"
+    },
+    {
+        "value": "CET",
+        "text": "(GMT+2:00) Сараево, Скопье, Загреб"
+    },
+    {
+        "value": "Europe/Oslo",
+        "text": "(GMT+2:00) Осло"
+    },
+    {
+        "value": "Europe/Copenhagen",
+        "text": "(GMT+2:00) Копенгаген"
+    },
+    {
+        "value": "Europe/Brussels",
+        "text": "(GMT+2:00) Брюссель"
+    },
+    {
+        "value": "Europe/Berlin",
+        "text": "(GMT+2:00) Амстердам, Берлин, Рим, Стокгольм, Вена"
+    },
+    {
+        "value": "Europe/Amsterdam",
+        "text": "(GMT+2:00) Амстердам"
+    },
+    {
+        "value": "Europe/Stockholm",
+        "text": "(GMT+2:00) Стокгольм"
+    },
+    {
+        "value": "Europe/Vienna",
+        "text": "(GMT+2:00) Вена"
+    },
+    {
+        "value": "Europe/Luxembourg",
+        "text": "(GMT+2:00) Люксембург"
+    },
+    {
+        "value": "Europe/Paris",
+        "text": "(GMT+2:00) Париж"
+    },
+    {
+        "value": "Europe/Zurich",
+        "text": "(GMT+2:00) Цюрих"
+    },
+    {
+        "value": "Europe/Madrid",
+        "text": "(GMT+2:00) Мадрид"
+    },
+    {
+        "value": "Africa/Harare",
+        "text": "(GMT+2:00) Хараре, Претория"
+    },
+    {
+        "value": "Europe/Warsaw",
+        "text": "(GMT+2:00) Варшава"
+    },
+    {
+        "value": "Europe/Prague",
+        "text": "(GMT+2:00) Прага, Братислава"
+    },
+    {
+        "value": "Europe/Budapest",
+        "text": "(GMT+2:00) Будапешт"
+    },
+    {
+        "value": "Africa/Tripoli",
+        "text": "(GMT+2:00) Триполи"
+    },
+    {
+        "value": "Africa/Cairo",
+        "text": "(GMT+2:00) Каир"
+    },
+    {
+        "value": "Africa/Johannesburg",
+        "text": "(GMT+2:00) Йоханнесбург"
+    },
+    {
+        "value": "Africa/Khartoum",
+        "text": "(GMT+2:00) Хартум"
+    },
+    {
+        "value": "Europe/Helsinki",
+        "text": "(GMT+3:00) Хельсинки"
+    },
+    {
+        "value": "Africa/Nairobi",
+        "text": "(GMT+3:00) Найроби"
+    },
+    {
+        "value": "Europe/Sofia",
+        "text": "(GMT+3:00) София"
+    },
+    {
+        "value": "Europe/Istanbul",
+        "text": "(GMT+3:00) Стамбул"
+    },
+    {
+        "value": "Europe/Athens",
+        "text": "(GMT+3:00) Афины"
+    },
+    {
+        "value": "Europe/Bucharest",
+        "text": "(GMT+3:00) Бухарест"
+    },
+    {
+        "value": "Asia/Nicosia",
+        "text": "(GMT+3:00) Никосия"
+    },
+    {
+        "value": "Asia/Beirut",
+        "text": "(GMT+3:00) Бейрут"
+    },
+    {
+        "value": "Asia/Damascus",
+        "text": "(GMT+3:00) Дамаск"
+    },
+    {
+        "value": "Asia/Jerusalem",
+        "text": "(GMT+3:00) Иерусалим"
+    },
+    {
+        "value": "Asia/Amman",
+        "text": "(GMT+3:00) Амман"
+    },
+    {
+        "value": "Europe/Moscow",
+        "text": "(GMT+3:00) Москва"
+    },
+    {
+        "value": "Asia/Baghdad",
+        "text": "(GMT+3:00) Багдад"
+    },
+    {
+        "value": "Asia/Kuwait",
+        "text": "(GMT+3:00) Кувейт"
+    },
+    {
+        "value": "Asia/Riyadh",
+        "text": "(GMT+3:00) Эр-Рияд"
+    },
+    {
+        "value": "Asia/Bahrain",
+        "text": "(GMT+3:00) Бахрейн"
+    },
+    {
+        "value": "Asia/Qatar",
+        "text": "(GMT+3:00) Катар"
+    },
+    {
+        "value": "Asia/Aden",
+        "text": "(GMT+3:00) Аден"
+    },
+    {
+        "value": "Africa/Djibouti",
+        "text": "(GMT+3:00) Джибути"
+    },
+    {
+        "value": "Africa/Mogadishu",
+        "text": "(GMT+3:00) Могадишо"
+    },
+    {
+        "value": "Europe/Kiev",
+        "text": "(GMT+3:00) Киев"
+    },
+    {
+        "value": "Europe/Minsk",
+        "text": "(GMT+3:00) Минск"
+    },
+    {
+        "value": "Asia/Dubai",
+        "text": "(GMT+4:00) Дубай"
+    },
+    {
+        "value": "Asia/Muscat",
+        "text": "(GMT+4:00) Маскат"
+    },
+    {
+        "value": "Asia/Baku",
+        "text": "(GMT+4:00) Баку, Тбилиси, Ереван"
+    },
+    {
+        "value": "Asia/Tehran",
+        "text": "(GMT+4:30) Тегеран"
+    },
+    {
+        "value": "Asia/Kabul",
+        "text": "(GMT+4:30) Кабул"
+    },
+    {
+        "value": "Asia/Yekaterinburg",
+        "text": "(GMT+5:00) Екатеринбург"
+    },
+    {
+        "value": "Asia/Tashkent",
+        "text": "(GMT+5:00) Исламабад, Карачи, Ташкент"
+    },
+    {
+        "value": "Asia/Calcutta",
+        "text": "(GMT+5:30) Индия"
+    },
+    {
+        "value": "Asia/Kolkata",
+        "text": "(GMT+5:30) Мумбаи, Колката, Нью-Дели"
+    },
+    {
+        "value": "Asia/Kathmandu",
+        "text": "(GMT+5:45) Катманду"
+    },
+    {
+        "value": "Asia/Almaty",
+        "text": "(GMT+6:00) Алматы"
+    },
+    {
+        "value": "Asia/Dacca",
+        "text": "(GMT+6:00) Дакка"
+    },
+    {
+        "value": "Asia/Dhaka",
+        "text": "(GMT+6:00) Астана, Дакка"
+    },
+    {
+        "value": "Asia/Rangoon",
+        "text": "(GMT+6:30) Рангун"
+    },
+    {
+        "value": "Asia/Novosibirsk",
+        "text": "(GMT+7:00) Новосибирск"
+    },
+    {
+        "value": "Asia/Krasnoyarsk",
+        "text": "(GMT+7:00) Красноярск"
+    },
+    {
+        "value": "Asia/Bangkok",
+        "text": "(GMT+7:00) Бангкок"
+    },
+    {
+        "value": "Asia/Saigon",
+        "text": "(GMT+7:00) Вьетнам"
+    },
+    {
+        "value": "Asia/Jakarta",
+        "text": "(GMT+7:00) Джакарта"
+    },
+    {
+        "value": "Asia/Irkutsk",
+        "text": "(GMT+8:00) Иркутск, Улан-Батор"
+    },
+    {
+        "value": "Asia/Shanghai",
+        "text": "(GMT+8:00) Пекин, Шанхай"
+    },
+    {
+        "value": "Asia/Hong_Kong",
+        "text": "(GMT+8:00) Гонконг"
+    },
+    {
+        "value": "Asia/Taipei",
+        "text": "(GMT+8:00) Тайбэй"
+    },
+    {
+        "value": "Asia/Kuala_Lumpur",
+        "text": "(GMT+8:00) Куала-Лумпур"
+    },
+    {
+        "value": "Asia/Singapore",
+        "text": "(GMT+8:00) Сингапур"
+    },
+    {
+        "value": "Australia/Perth",
+        "text": "(GMT+8:00) Перт"
+    },
+    {
+        "value": "Asia/Yakutsk",
+        "text": "(GMT+9:00) Якутск"
+    },
+    {
+        "value": "Asia/Seoul",
+        "text": "(GMT+9:00) Сеул"
+    },
+    {
+        "value": "Asia/Tokyo",
+        "text": "(GMT+9:00) Осака, Саппоро, Токио"
+    },
+    {
+        "value": "Australia/Darwin",
+        "text": "(GMT+9:30) Дарвин"
+    },
+    {
+        "value": "Australia/Adelaide",
+        "text": "(GMT+9:30) Аделаида"
+    },
+    {
+        "value": "Asia/Vladivostok",
+        "text": "(GMT+10:00) Владивосток"
+    },
+    {
+        "value": "Pacific/Port_Moresby",
+        "text": "(GMT+10:00) Гуам, Порт-Морсби"
+    },
+    {
+        "value": "Australia/Brisbane",
+        "text": "(GMT+10:00) Брисбен"
+    },
+    {
+        "value": "Australia/Sydney",
+        "text": "(GMT+10:00) Канберра, Мельбурн, Сидней"
+    },
+    {
+        "value": "Australia/Hobart",
+        "text": "(GMT+10:00) Хобарт"
+    },
+    {
+        "value": "Asia/Magadan",
+        "text": "(GMT+11:00) Магадан"
+    },
+    {
+        "value": "SST",
+        "text": "(GMT+11:00) Соломоновы острова"
+    },
+    {
+        "value": "Pacific/Noumea",
+        "text": "(GMT+11:00) Новая Каледония"
+    },
+    {
+        "value": "Asia/Kamchatka",
+        "text": "(GMT+12:00) Камчатка"
+    },
+    {
+        "value": "Pacific/Fiji",
+        "text": "(GMT+12:00) Острова Фиджи, Маршалловы острова"
+    },
+    {
+        "value": "Pacific/Auckland",
+        "text": "(GMT+12:00) Окленд, Веллингтон"
+    },
+    {
+        "value": "Pacific/Apia",
+        "text": "(GMT+13:00) Независимое Государство Самоа"
+    }
 ]

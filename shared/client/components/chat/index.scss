@@ -1,7 +1,15 @@
-#lesson-chat {
+.chat {
+    display: flex;
+    flex-direction: column;
+
+    .mdc-circular-progress {
+        margin: auto;
+    }
+
     .message-list {
         display: flex;
         flex-direction: column;
+        overflow-y: auto;
 
         .message-item {
             &--local {
@@ -11,6 +19,19 @@
             &--remote {
                 align-self: flex-start;
             }
+        }
+    }
+
+    .message-form {
+        display: flex;
+        margin-top: auto;
+        border-top: 1px solid rgba(0, 0, 0, .12);
+
+        input {
+            flex: 1;
+            border: none;
+            padding: 8px;
+            outline: none;
         }
     }
 }
