@@ -8,7 +8,7 @@ const { YANDEX_METRIKA_ID, GOOGLE_ANALYTICS_ID } = require('./core/config');
 
 module.exports = [
     env => config('admin', env),
-    env => config('student', env),
+    env => config('client', env),
     env => config('teacher', env)
 ];
 
