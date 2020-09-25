@@ -1,5 +1,8 @@
 export default {
     account: null,
-    lessons: [],
-    payments: []
+    enrollments: {
+        list: null,
+        single: null
+    },
+    payments: null
 };

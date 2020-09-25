@@ -7,13 +7,13 @@ import NotificationSnackbar from 'shared/components/notification-snackbar';
 import LoadingIndicator from 'shared/components/loading-indicator';
 
 import { getAccount } from 'app/store/modules/account';
-import { getLessons } from 'app/store/modules/lessons';
-import { getPayments } from 'app/store/modules/payments';
+import { getEnrollments } from 'app/store/modules/enrollments';
 
-import Header from './components/shared/header';
+import AppHeader from './components/shared/app-header';
+import AppContent from './components/shared/app-content';
 import Account from './components/account';
 import Home from './components/home';
-import Lesson from './components/lessons/lesson-page';
+import Class from './components/class';
 
 import './App.scss';
 
@@ -23,13 +23,12 @@ export default function App() {
             account: state.account,
             notification: state.notification,
         }),
-        { hideNotification, getAccount, getLessons, getPayments }
+        { hideNotification, getAccount, getEnrollments }
     );
 
     useEffect(() => {
         actions.getAccount();
-        actions.getLessons();
-        actions.getPayments();
+        actions.getEnrollments();
     }, []);
 
     const handleSnackbarClose = useCallback(() => {
@@ -40,13 +39,15 @@ export default function App() {
 
     return (
         <React.Fragment>
-            <Header />
+            <AppHeader />
 
-            <Switch>
-                <Route exact path="/" component={Home} />
-                <Route path="/account" component={Account} />
-                <Route path="/lessons/:lessonId" component={Lesson} />
-            </Switch>
+            <AppContent>
+                <Switch>
+                    <Route exact path="/" component={Home} />
+                    <Route path="/account" component={Account} />
+                    <Route path="/class" component={Class} />
+                </Switch>
+            </AppContent>
 
             <NotificationSnackbar
                 open={notification.active}

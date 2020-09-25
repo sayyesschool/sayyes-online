@@ -1,0 +1,15 @@
+#unit-content {
+    padding: 2rem;
+    
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .mdc-side-sheet {
+        top: 0;
+        right: 0;
+        z-index: 2;
+    }
+}

@@ -1,6 +1,5 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import {
-    Chip,
     Icon,
     IconButton,
     Layout,
@@ -10,9 +9,7 @@ import {
 
 
 import { useSelector } from 'shared/hooks/store';
-
-import Calendar from 'app/components/shared/calendar';
-import LessonCard from 'app/components/lessons/lesson-card';
+import Calendar from 'shared/components/calendar';
 
 import './index.scss';
 

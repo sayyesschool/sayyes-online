@@ -4,15 +4,15 @@ include /shared/views/mixins/yandex-metrika
 include /shared/views/mixins/google-analytics
 
 append head
-    link(rel="stylesheet" href="/build/student.vendors.css")
-    link(rel="stylesheet" href="/build/student.main.css")
+    link(rel="stylesheet" href="/build/client.vendors.css")
+    link(rel="stylesheet" href="/build/client.main.css")
 
 append body
-    include /shared/views/includes/footer
+    //include /shared/views/includes/footer
 
     if ENV === 'production'
         +yandex-metrika(YANDEX_METRIKA_ID)(defer)
         +google-analytics(GOOGLE_ANALYTICS_ID)
     
-    script(src="/build/student.vendors.js")
-    script(src="/build/student.main.js")
+    script(src="/build/client.vendors.js")
+    script(src="/build/client.main.js")
