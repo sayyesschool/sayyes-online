@@ -1,11 +1,11 @@
 const { Schema } = require('mongoose');
 
-const Activity = require('./activity');
+const Exercise = require('./exercise');
 
 const Lesson = new Schema({
     slug: { type: String, required: true, unique: true },
     title: { type: String },
-    activities: [Activity]
+    exercises: [Exercise]
 });
 
 module.exports = Lesson;

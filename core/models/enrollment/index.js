@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const Schedule = require('./schedule');
+const Lesson = require('./lesson');
 
 const Status = {
     pending: 'В обработке',
@@ -61,6 +62,7 @@ const Enrollment = new Schema({
     teacher: { type: Schema.Types.ObjectId, ref: 'Teacher' },
     manager: { type: Schema.Types.ObjectId, ref: 'Manager' },
     course: { type: Schema.Types.ObjectId, ref: 'Course' },
+    lessons: { type: [Lesson] },
     createdAt: { type: Date },
     updatedAt: { type: Date }
 }, {
@@ -119,11 +121,11 @@ Enrollment.virtual('isPaid').get(function() {
     return this.amountPaid >= this.price;
 });
 
-Enrollment.virtual('lessons', {
-    ref: 'Lesson',
-    localField: '_id',
-    foreignField: 'enrollment'
-});
+// Enrollment.virtual('lessons', {
+//     ref: 'Lesson',
+//     localField: '_id',
+//     foreignField: 'enrollment'
+// });
 
 Enrollment.virtual('payments', {
     ref: 'Payment',
