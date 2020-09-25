@@ -36,7 +36,7 @@ module.exports = ({ Payment }) => ({
     },
 
     update: (req, res, next) => {
-        Payment.update(req.params.paymentId, req.body)
+        Payment.update(req.params.payment, req.body)
             .then(payment => {
                 res.json({
                     ok: true,
@@ -48,14 +48,12 @@ module.exports = ({ Payment }) => ({
     },
 
     delete: (req, res, next) => {
-        Payment.delete(req.params.paymentId)
-            .then(() => {
+        Payment.delete(req.params.payment)
+            .then(payment => {
                 res.json({
                     ok: true,
                     message: 'Платеж удален',
-                    data: {
-                        paymentId: req.params.paymentId
-                    }
+                    data: payment
                 });
             })
             .catch(next);

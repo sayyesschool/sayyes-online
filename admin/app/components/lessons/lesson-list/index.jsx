@@ -1,105 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-    Chip,
+    Avatar,
     Icon,
-    DataTable
+    List
 } from 'mdc-react';
 
-import MenuButton from 'app/components/shared/menu-button';
-
-export default function LessonList({ lessons, onView, onEdit, onDelete }) {
+export default function LessonList({ lessons }) {
     return (
-        <DataTable id="lesson-list">
-            <DataTable.Header>
-                <DataTable.HeaderRow>
-                    {columns.map(col =>
-                        <DataTable.HeaderCell
-                            key={col.key}
-                        >
-                            {col.text}
-                        </DataTable.HeaderCell>
-                    )}
-                </DataTable.HeaderRow>
-            </DataTable.Header>
-
-            <DataTable.Content>
-                {lessons.map(lesson =>
-                    <DataTable.Row key={lesson.id}>
-                        <DataTable.Cell>
-                            <Chip
-                                component={Link}
-                                to={`/lessons/${lesson.id}`}
-                                leadingIcon={<Icon>{lesson.statusIcon}</Icon>}
-                                text={lesson.statusLabel}
-                            />
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            {lesson.datetime}
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            <Chip
-                                component={Link}
-                                to={`/clients/${lesson.client.id}`}
-                                text={lesson.client.fullname}
-                            />
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            {lesson.teacher &&
-                                <Chip
-                                    component={Link}
-                                    to={`/teachers/${lesson.teacher.id}`}
-                                    text={lesson.teacher.fullname}
-                                />
-                            }
-                        </DataTable.Cell>
-
-                        <DataTable.Cell numeric>
-                            <MenuButton
-                                items={[
-                                    {
-                                        key: 'view',
-                                        text: 'Посмотреть',
-                                        onClick: () => onView(lesson)
-                                    },
-                                    {
-                                        key: 'edit',
-                                        text: 'Изменить',
-                                        onClick: () => onEdit(lesson)
-                                    },
-                                    {
-                                        key: 'delete',
-                                        text: 'Удалить',
-                                        onClick: () => onDelete(lesson)
-                                    }
-                                ]}
-                            />
-                        </DataTable.Cell>
-                    </DataTable.Row>
-                )}
-            </DataTable.Content>
-        </DataTable>
+        <List className="request-list" twoLine>
+            {lessons.map(lesson =>
+                <List.Item
+                    key={lesson.id}
+                    component={Link}
+                    to={lesson.url}
+                    graphic={<Icon>{lesson.lessonStatus}</Icon>}
+                    primaryText={lesson.trial ? 'Пробный урок' : 'Урок'}
+                    secondaryText={`${lesson.statusLabel} • ${lesson.datetime}`}
+                    meta={lesson.teacher && <Avatar text={lesson.teacher.initials} title={lesson.teacher.fullname} />}
+                />
+            )}
+        </List>
     );
 }
-
-const columns = [
-    {
-        key: 'status',
-        text: 'Статус'
-    },
-    {
-        key: 'datetime',
-        text: 'Дата и время'
-    },
-    {
-        key: 'client',
-        text: 'Клиент'
-    },
-    {
-        key: 'teacher',
-        text: 'Преподаватель'
-    }
-];

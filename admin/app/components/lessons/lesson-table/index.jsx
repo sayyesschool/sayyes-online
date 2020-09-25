@@ -8,9 +8,9 @@ import {
 
 import MenuButton from 'app/components/shared/menu-button';
 
-export default function PaymentList({ payments, onEdit, onDelete }) {
+export default function LessonList({ lessons, onView, onEdit, onDelete }) {
     return (
-        <DataTable id="client-list">
+        <DataTable id="lesson-list">
             <DataTable.Header>
                 <DataTable.HeaderRow>
                     {columns.map(col =>
@@ -24,49 +24,56 @@ export default function PaymentList({ payments, onEdit, onDelete }) {
             </DataTable.Header>
 
             <DataTable.Content>
-                {payments.map(payment =>
-                    <DataTable.Row key={payment.id}>
+                {lessons.map(lesson =>
+                    <DataTable.Row key={lesson.id}>
                         <DataTable.Cell>
                             <Chip
-                                leadingIcon={<Icon>{payment.statusIcon}</Icon>}
-                                text={payment.statusLabel}
+                                component={Link}
+                                to={`/lessons/${lesson.id}`}
+                                leadingIcon={<Icon>{lesson.statusIcon}</Icon>}
+                                text={lesson.statusLabel}
                             />
                         </DataTable.Cell>
 
                         <DataTable.Cell>
-                            {payment.client &&
+                            {lesson.datetime}
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
+                            <Chip
+                                component={Link}
+                                to={`/clients/${lesson.client.id}`}
+                                text={lesson.client.fullname}
+                            />
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
+                            {lesson.teacher &&
                                 <Chip
                                     component={Link}
-                                    to={`/clients/${payment.client.id}`}
-                                    text={payment.client.fullname}
+                                    to={`/teachers/${lesson.teacher.id}`}
+                                    text={lesson.teacher.fullname}
                                 />
                             }
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            {payment.amount} руб.
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            {payment.date}
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            {payment.paymentMethod}
                         </DataTable.Cell>
 
                         <DataTable.Cell numeric>
                             <MenuButton
                                 items={[
                                     {
+                                        key: 'view',
+                                        text: 'Посмотреть',
+                                        onClick: () => onView(lesson)
+                                    },
+                                    {
                                         key: 'edit',
                                         text: 'Изменить',
-                                        onClick: () => onEdit(payment)
+                                        onClick: () => onEdit(lesson)
                                     },
                                     {
                                         key: 'delete',
                                         text: 'Удалить',
-                                        onClick: () => onDelete(payment)
+                                        onClick: () => onDelete(lesson)
                                     }
                                 ]}
                             />
@@ -84,23 +91,15 @@ const columns = [
         text: 'Статус'
     },
     {
-        key: 'user',
+        key: 'datetime',
+        text: 'Дата и время'
+    },
+    {
+        key: 'client',
         text: 'Клиент'
     },
     {
-        key: 'amount',
-        text: 'Сумма'
-    },
-    {
-        key: 'date',
-        text: 'Дата'
-    },
-    {
-        key: 'method',
-        text: 'Способ оплаты'
-    },
-    {
-        key: 'note',
-        text: 'Заметка'
+        key: 'teacher',
+        text: 'Преподаватель'
     }
 ];

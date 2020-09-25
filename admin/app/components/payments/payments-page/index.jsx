@@ -5,6 +5,7 @@ import Page from 'app/components/shared/page';
 import PageHeader from 'app/components/shared/page-header';
 import PageContent from 'app/components/shared/page-content';
 import FormPanel from 'app/components/shared/form-panel';
+import EmptyState from 'app/components/shared/empty-state';
 import PaymentList from 'app/components/payments/payment-list';
 import PaymentForm from 'app/components/payments/payment-form';
 
@@ -31,6 +32,12 @@ export default function Payments({ match, history }) {
         setPaymentFormOpen(true);
     }, []);
 
+    const handleDelete = useCallback(payment => {
+        if (confirm('Подтвердите удаление платежа')) {
+            actions.deletePayment(payment.id);
+        }
+    }, []);
+
     const handleClose = useCallback(() => {
         actions.unsetPayment();
         setPaymentFormOpen(false);
@@ -44,10 +51,15 @@ export default function Payments({ match, history }) {
             />
 
             <PageContent>
-                <PaymentList
-                    payments={payments}
-                    onEdit={handleEdit}
-                />
+                {payments?.length > 0 ?
+                    <PaymentList
+                        payments={payments}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                    />
+                    :
+                    <EmptyState title="Платжей нет" />
+                }
             </PageContent>
 
             <FormPanel

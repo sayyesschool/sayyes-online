@@ -5,12 +5,13 @@ import Page from 'app/components/shared/page';
 import PageHeader from 'app/components/shared/page-header';
 import PageContent from 'app/components/shared/page-content';
 import FormPanel from 'app/components/shared/form-panel';
-import LessonList from 'app/components/lessons/lesson-list';
+import LessonCalendar from 'app/components/lessons/lesson-calendar';
 import LessonForm from 'app/components/lessons/lesson-form';
 
 export default function Lessons() {
-    const [isLessonFormOpen, setLessonFormOpen] = useState(false);
     const [lessons, actions] = useStore('lessons.list');
+    const [view, setView] = useState('week');
+    const [isLessonFormOpen, setLessonFormOpen] = useState(false);
 
     useEffect(() => {
         actions.getLessons();
@@ -31,12 +32,19 @@ export default function Lessons() {
                         title: 'Создать',
                         icon: 'add',
                         onClick: () => setLessonFormOpen(true)
+                    },
+                    {
+                        key: 'view',
+                        title: 'Представление',
+                        icon: view === 'week' ? 'today' : 'view_week',
+                        onClick: () => setView(view => view === 'week' ? 'month' : 'week')
                     }
                 ]}
             />
 
             <PageContent>
-                <LessonList
+                <LessonCalendar
+                    view={view}
                     lessons={lessons}
                 />
             </PageContent>

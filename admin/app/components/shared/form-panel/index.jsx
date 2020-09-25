@@ -6,6 +6,7 @@ import {
 import './index.scss';
 
 export default function FormPanel({
+    children,
     ...props
 }) {
     return (
@@ -13,6 +14,10 @@ export default function FormPanel({
             className="form-panel"
             modal
             {...props}
-        />
+        >
+            <SideSheet.Content>
+                {children}
+            </SideSheet.Content>
+        </SideSheet>
     );
 }

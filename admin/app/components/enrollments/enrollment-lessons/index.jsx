@@ -23,8 +23,8 @@ export default function EnrollmentLessons({ enrollment, onCreate }) {
                     <List twoLine>
                         {enrollment.lessons.map(lesson =>
                             <List.Item
-                                primaryText={lesson.datetime}
-                                secondaryText={lesson.trial ? 'Пробный урок' : 'Урок'}
+                                primaryText={lesson.trial ? 'Пробный урок' : 'Урок'}
+                                secondaryText={lesson.datetime}
                             />
                         )}
                     </List>

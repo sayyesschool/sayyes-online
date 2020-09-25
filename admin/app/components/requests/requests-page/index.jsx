@@ -7,7 +7,8 @@ import PageContent from 'app/components/shared/page-content';
 import PageSidePanel from 'app/components/shared/page-side-panel';
 import ConfirmationDialog from 'app/components/shared/confirmation-dialog';
 import FormPanel from 'app/components/shared/form-panel';
-import RequestList from 'app/components/requests/request-list';
+import EmptyState from 'app/components/shared/empty-state';
+import RequestTable from 'app/components/requests/request-table';
 import RequestForm from 'app/components/requests/request-form';
 import RequestProcessFormPanel from 'app/components/requests/request-process-form-panel';
 import RequestSearchForm from 'app/components/requests/request-search-form';
@@ -106,13 +107,17 @@ export default function RequestsPage({ history }) {
             </PageSidePanel>
 
             <PageContent>
-                <RequestList
-                    requests={requests}
-                    manager={user}
-                    onEdit={handleEditRequest}
-                    onProcess={handleProcessRequest}
-                    onDelete={handleDeleteConfirm}
-                />
+                {requests?.length > 0 ?
+                    <RequestTable
+                        requests={requests}
+                        manager={user}
+                        onEdit={handleEditRequest}
+                        onProcess={handleProcessRequest}
+                        onDelete={handleDeleteConfirm}
+                    />
+                    :
+                    <EmptyState title="Заявок пока нет" />
+                }
             </PageContent>
 
             <RequestProcessFormPanel

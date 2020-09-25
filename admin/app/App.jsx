@@ -11,6 +11,7 @@ import AppSidenav from './components/shared/app-sidenav';
 import AppContent from './components/shared/app-content';
 import Home from './components/home';
 import Clients from './components/clients';
+import Lessons from './components/lessons';
 import Payments from './components/payments';
 import Requests from './components/requests';
 
@@ -54,8 +55,9 @@ export default function App() {
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <Route path="/clients" component={Clients} />
-                    <Route path="/requests" component={Requests} />
+                    <Route path="/lessons" component={Lessons} />
                     <Route path="/payments" component={Payments} />
+                    <Route path="/requests" component={Requests} />
                 </Switch>
             </AppContent>
 
