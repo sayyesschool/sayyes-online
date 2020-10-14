@@ -1,114 +1,57 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import {
+    Avatar,
+    Card,
     IconButton,
-    TabBar, Tab,
-    Typography
+    LayoutGrid,
+    List
 } from 'mdc-react';
-
-import PageSideSheet from 'shared/components/page-side-sheet';
-import PDFViewer from 'shared/components/pdf-viewer';
-
-import CourseContents from 'app/components/class/course-contents';
-import UnitAudio from 'app/components/class/unit-audio';
-import UnitVideo from 'app/components/class/unit-video';
 
 import './index.scss';
 
-export default function UnitContent({ enrollment, course, unit }) {
-    const [view, setView] = useState('contents');
-    const [isSideSheetOpen, setSideSheetOpen] = useState(false);
-    const [activeLessonIndex, setActiveLessonIndex] = useState(0);
-
-    const handleSideSheet = useCallback(view => {
-        setView(view);
-        setSideSheetOpen(true);
-    }, []);
-
-    if (!unit) return <LoadingIndicator />;
-
+export default function UnitContent({ course, unit }) {
     return (
-        <div id="unit-content">
-            <header>
-                <Typography variant="headline5" noMargin>
-                    <Link to={`/class/${enrollment.id}`}>{course.title}</Link> › {unit.title}</Typography>
-
-                <div>
-                    <IconButton
-                        icon="list"
-                        onClick={() => handleSideSheet('contents')}
-                    />
-
-                    <IconButton
-                        icon="library_music"
-                        onClick={() => handleSideSheet('audio')}
-                    />
-
-                    <IconButton
-                        icon="video_library"
-                        onClick={() => handleSideSheet('video')}
-                    />
-                </div>
+        <div className="unit-content">
+            <header className="unit-content__header">
+                <h1 className="unit-title"><b>Unit 1</b> <span>{unit.title}</span><IconButton icon="panorama_fish_eye" /></h1>
             </header>
 
-            <TabBar value={activeLessonIndex} onChange={setActiveLessonIndex} minWidth>
-                {unit.lessons.map((lesson, index) =>
-                    <Tab
-                        value={index}
-                        label={`Lesson ${index + 1}`}
-                    />
-                )}
-            </TabBar>
-
-            <PageSideSheet
-                title={sideSheetTitles[view]}
-                open={isSideSheetOpen}
-                onClose={() => setSideSheetOpen(false)}
-            >
-                {view === 'contents' &&
-                    <CourseContents
-                        course={course}
-                    />
-                }
-
-                {view === 'audio' &&
-                    <UnitAudio
-                        course={course}
-                        unit={unit}
-                    />
-                }
-
-                {view === 'video' &&
-                    <UnitVideo
-                        course={course}
-                        unit={unit}
-                    />
-                }
-            </PageSideSheet>
-
-            <section>
-                {unit.document &&
-                    <PDFViewer
-                        file={`https://static.sayes.ru/courses/${course.slug}/documents/${unit.document}`}
-                    />
-                }
-
-                <div className="lesson-content">
-                    {unit.lessons.map((lesson, index) =>
+            <LayoutGrid>
+                <LayoutGrid.Cell span="6">
+                    {unit.image &&
                         <img
-                            key={index}
-                            src={`https://static.sayes.ru/courses/${course.slug}/images/${lesson.image}.png`}
-                            style={{ display: index === activeLessonIndex ? 'block' : 'none' }}
+                            src={`https://static.sayes.ru/courses/${course.slug}/images/${unit.image}`}
                         />
-                    )}
-                </div>
-            </section>
+                    }
+
+                    <Card>
+                        <Card.Header title="Содержание" />
+
+                        <Card.Section primary>
+                            {unit.description}
+                        </Card.Section>
+                    </Card>
+                </LayoutGrid.Cell>
+
+                <LayoutGrid.Cell span="6">
+                    <Card outlined>
+                        <Card.Header title="Уроки" />
+
+                        <List avatarList twoLine>
+                            {unit.lessons.map((lesson, index) =>
+                                <List.Item
+                                    component={Link}
+                                    to={`${unit.url}/lesson/${lesson.id}`}
+                                    graphic={<Avatar text={index + 1} />}
+                                    primaryText={lesson.title}
+                                    secondaryText={`${lesson.exercises.length} уроков`}
+                                />
+                            )}
+                        </List>
+                    </Card>
+                </LayoutGrid.Cell>
+            </LayoutGrid>
         </div>
     );
 }
-
-const sideSheetTitles = {
-    contents: 'Содержание',
-    audio: 'Аудио',
-    video: 'Видeо'
-};

@@ -1,69 +1,103 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import {
+    Card,
     Icon,
     List,
-    TabBar, Tab,
+    LayoutGrid,
     Typography
 } from 'mdc-react';
 
-import CourseContent from 'app/components/class/course-content';
+import CourseCard from 'app/components/class/course-card';
 
 import './index.scss';
 
 export default function EnrollmentDetails({ enrollment }) {
-    const [activeTab, setActiveTab] = useState('course');
-
     return (
         <div className="enrollment-details">
             <Typography variant="headline4">{enrollment.title}</Typography>
 
-            <TabBar value={activeTab} onChange={setActiveTab} minWidth>
-                <Tab
-                    value="course"
-                    label="Курс"
-                />
+            <LayoutGrid>
+                <LayoutGrid.Cell span="3">
+                    <Typography variant="headline6">Курсы</Typography>
 
-                <Tab
-                    value="lessons"
-                    label="Уроки"
-                />
+                    {enrollment.courses.map(course =>
+                        <CourseCard
+                            component={Link}
+                            to={`/class/${enrollment.id}/course/${course.id}`}
+                            key={course.id}
+                            course={course}
+                        />
+                    )}
+                </LayoutGrid.Cell>
 
-                <Tab
-                    value="homework"
-                    label="Задания"
-                />
-            </TabBar>
+                <LayoutGrid.Cell span="3">
+                    <Typography variant="headline6">Предстоящие занятия</Typography>
 
-            {activeTab === 'course' &&
-                <section>
-                    <CourseContent
-                        enrollment={enrollment}
-                        course={enrollment.course}
-                    />
-                </section>
-            }
+                    {enrollment.lessons ?
+                        <Card outlined>
+                            <List twoLine>
+                                {enrollment.lessons?.map(lesson =>
+                                    <List.Item
+                                        key={lesson.id}
+                                        graphic={<Icon>{lesson.statusIcon}</Icon>}
+                                        primaryText={lesson.datetime}
+                                        secondaryText={lesson.statusLabel}
+                                    />
+                                )}
+                            </List>
+                        </Card>
+                        :
+                        <Typography noMargin>Занятий пока нет</Typography>
+                    }
 
-            {activeTab === 'lessons' &&
-                <section>
-                    <List twoLine>
-                        {enrollment.lessons.map(lesson =>
-                            <List.Item
-                                key={lesson.id}
-                                graphic={<Icon>{lesson.statusIcon}</Icon>}
-                                primaryText={lesson.datetime}
-                                secondaryText={lesson.statusLabel}
-                            />
-                        )}
-                    </List>
-                </section>
-            }
+                </LayoutGrid.Cell>
 
-            {activeTab === 'homework' &&
-                <section>
+                <LayoutGrid.Cell span="3">
+                    <Typography variant="headline6">Домашние задания</Typography>
 
-                </section>
-            }
+                    {enrollment.assignments ?
+                        <Card outlined>
+                            <List twoLine>
+                                {enrollment.assignments?.map(assignment =>
+                                    <List.Item
+                                        key={lesson.id}
+                                        graphic={<Icon>{lesson.statusIcon}</Icon>}
+                                        primaryText={lesson.datetime}
+                                        secondaryText={lesson.statusLabel}
+                                        disabled
+                                    />
+                                )}
+                            </List>
+                        </Card>
+                        :
+                        <Typography noMargin>Заданий пока нет</Typography>
+                    }
+
+                </LayoutGrid.Cell>
+
+                <LayoutGrid.Cell span="3">
+                    <Typography variant="headline6">Прогресс обучения</Typography>
+
+                    {enrollment.reports ?
+                        <Card outlined>
+
+                            <List twoLine>
+                                {enrollment.reports?.map(report =>
+                                    <List.Item
+                                        key={report.id}
+                                        graphic={<Icon>{report.statusIcon}</Icon>}
+                                        primaryText={report.datetime}
+                                        secondaryText={report.statusLabel}
+                                    />
+                                )}
+                            </List>
+                        </Card>
+                        :
+                        <Typography noMargin>Отчетов пока нет</Typography>
+                    }
+                </LayoutGrid.Cell>
+            </LayoutGrid>
         </div>
     );
 }

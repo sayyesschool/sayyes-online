@@ -1,0 +1,43 @@
+@use 'mdc-react/src/SideSheet/mixins';
+
+.class {
+    .class-side-sheet,
+    .class-content {
+        height: calc(100vh - 64px);
+    }
+
+    .class-side-sheet {
+        @include mixins.width(360px);
+    
+        .mdc-side-sheet__header {
+            display: none;
+        }
+    }
+
+    .class-content {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .mdc-banner ~ & {
+        > .class-side-sheet,
+        > .class-content {
+            height: calc(100vh - 121px);
+        }
+    }
+
+    .mdc-avatar {
+        background-color: #e71985;
+
+        &__text {
+            color: white;
+        }
+    }
+}
+
+.video-dialog {
+    .mdc-dialog__surface {
+        max-width: none;
+        overflow: hidden;
+    }
+}

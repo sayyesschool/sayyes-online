@@ -1,8 +1,9 @@
 export default {
-    account: null,
+    user: null,
     enrollments: {
         list: null,
         single: null
     },
+    course: null,
     payments: null
 };

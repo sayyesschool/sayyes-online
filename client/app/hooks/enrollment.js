@@ -10,7 +10,7 @@ export function useEnrollments() {
         if (!enrollments) {
             actions.getEnrollments();
         }
-    }, []);
+    }, [enrollments]);
 
     return [enrollments, actions];
 }
@@ -19,6 +19,8 @@ export function useEnrollment(id) {
     const [enrollment, actions] = useStore(state => state.enrollments.single, enrollmentActions);
 
     useEffect(() => {
+        if (!id) return;
+
         if (!enrollment) {
             actions.getEnrollment(id);
         }

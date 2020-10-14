@@ -1,26 +1,27 @@
 @use 'mdc-react/src/SideSheet/mixins';
 
-#class-page {
+#course-page {
+    header {
+        display: flex;
+        align-items: center;
 
-}
+        .mdc-typography {
+            margin-right: auto;
+        }
 
-.class-side-sheet {
-    position: fixed;
-    top: 64px;
-    height: calc(100% - 64px);
-    z-index: 3;
-    @include mixins.width(360px);
-
-    .mdc-side-sheet__header {
-        display: none;
+        .mdc-icon-button + .mdc-typography {
+            margin-left: 8px;
+        }
     }
 
-    .mdc-side-sheet__content {
-        display: flex;
-        flex-direction: column;
+    .page-content {
+        padding: 2rem;
+    }
 
-        .chat {
-            flex: 1;
-        }
+    .mdc-side-sheet {
+        top: 0;
+        right: 0;
+        z-index: 2;
+        @include mixins.width(360px);
     }
 }

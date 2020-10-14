@@ -1,135 +1,82 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    Button,
-    Card, CardHeader, CardActions, CardAction,
     Icon,
-    LayoutGrid, LayoutGridCell,
-    List, ListItem, ListItemText, ListItemGraphic,
+    TabBar, Tab,
     Typography
 } from 'mdc-react';
 
 import { useStore } from 'shared/hooks/store';
-import { actionCreators } from 'app/store/modules/account';
+import Page from 'shared/components/page';
+import PageContent from 'shared/components/page-content';
+
+import { actions as userActions } from 'app/store/modules/user';
+import ProfileCard from 'app/components/account/profile-card';
+import PaymentsCard from 'app/components/account/payments-card';
+import TicketsCard from 'app/components/account/tickets-card';
+import MeetingsCard from 'app/components/account/meetings-card';
 import ProfileDialogForm from 'app/components/account/profile-dialog-form';
-import PasswordDialogForm from 'app/components/account/password-dialog-form';
+
+import './index.scss';
 
 export default function AccountPage() {
-    const [isProfileDialogOpen, setProfileDialogOpen] = useState(false);
-    const [isPasswordDialogOpen, setPasswordDialogOpen] = useState(false);
+    const [user, actions] = useStore(state => state.user, userActions);
+    const [activeTab, setActiveTab] = useState('profile');
+    const payments = [];
+    const tickets = [];
+    const meetings = [];
 
-    const [{ account, tickets, meetings }, actions] = useStore(state => ({
-        account: state.account,
-        tickets: state.tickets,
-        meetings: state.meetings.filter(meeting => meeting.hasParticipated)
-    }), actionCreators);
+    const [isProfileDialogOpen, setProfileDialogOpen] = useState(false);
 
     const handleProfileFormSubmit = useCallback(data => {
         actions.updateProfile(data)
             .then(() => setProfileDialogOpen(false));
     }, []);
 
-    const handlePasswordFormSubmit = useCallback(data => {
-        actions.updatePassword(data)
-            .then(() => setPasswordDialogOpen(false));
-    }, []);
-
     return (
-        <main id="account-page" className="page">
-            <Button
-                element={Link}
-                to="/"
-                icon={<Icon>arrow_back</Icon>}
-                label="Вернуться"
-            />
+        <Page id="account-page">
+            <PageContent>
+                <Typography element="h1" variant="headline4">Мой аккаунт</Typography>
 
-            <Typography element="h1" variant="headline4">Мой аккаунт</Typography>
+                <TabBar value={activeTab} onChange={setActiveTab}>
+                    <Tab value="profile" icon={<Icon>person</Icon>} label="Профиль" />
+                    <Tab value="payments" icon={<Icon>payment</Icon>} label="Платежи" />
+                    <Tab value="lessons" icon={<Icon>school</Icon>} label="Уроки" />
+                    <Tab value="tickets" icon={<Icon>local_activity</Icon>} label="Билеты" />
+                    <Tab value="meetings" icon={<Icon>event</Icon>} label="Встречи" />
+                </TabBar>
 
-            <LayoutGrid>
-                <LayoutGridCell span="12">
-                    <Typography element="h2" variant="headline5">Профиль</Typography>
+                {activeTab === 'profile' &&
+                    <ProfileCard
+                        user={user}
+                    />
+                }
 
-                    <Card outlined>
-                        <CardHeader
-                            title={account.fullname}
-                            subtitle={account.email}
-                        />
+                {activeTab === 'payments' &&
+                    <PaymentsCard
+                        payments={payments}
+                    />
+                }
 
-                        <CardActions>
-                            <CardAction button>
-                                <Button onClick={() => setProfileDialogOpen(true)}>Редактировать профиль</Button>
-                            </CardAction>
+                {activeTab === 'tickets' &&
+                    <TicketsCard
+                        tickets={tickets}
+                    />
+                }
 
-                            <CardAction button>
-                                <Button onClick={() => setPasswordDialogOpen(true)}>Изменить пароль</Button>
-                            </CardAction>
-                        </CardActions>
-                    </Card>
-                </LayoutGridCell>
-
-                <LayoutGridCell span="12">
-                    <Typography element="h2" variant="headline5">Билеты</Typography>
-
-                    {tickets.length > 0 ?
-                        <Card outlined>
-                            <List twoLine nonInteractive>
-                                {tickets.map(ticket =>
-                                    <ListItem key={ticket.id}>
-                                        <ListItemGraphic>
-                                            <Icon>confirmation_number</Icon>
-                                        </ListItemGraphic>
-
-                                        <ListItemText
-                                            primary={ticket.title}
-                                            secondary={ticket.meeting ? ticket.meeting.title : 'Не использован'}
-                                        />
-                                    </ListItem>
-                                )}
-                            </List>
-                        </Card>
-                        :
-                        <Typography>Вы еще не приобрели ни один билет.</Typography>
-                    }
-                </LayoutGridCell>
-
-                <LayoutGridCell span="12">
-                    <Typography element="h2" variant="headline5">Встречи</Typography>
-
-                    {meetings.length > 0 ?
-                        <Card outlined>
-                            <List twoLine nonInteractive>
-                                {meetings.map(meeting =>
-                                    <ListItem key={meeting.id}>
-                                        <ListItemGraphic>
-                                            <Icon>people</Icon>
-                                        </ListItemGraphic>
-
-                                        <ListItemText
-                                            primary={meeting.title}
-                                            secondary={meeting.datetime}
-                                        />
-                                    </ListItem>
-                                )}
-                            </List>
-                        </Card>
-                        :
-                        <Typography>Вы еще не участвовали ни в одной встрече.</Typography>
-                    }
-                </LayoutGridCell>
-            </LayoutGrid>
+                {activeTab === 'meetings' &&
+                    <MeetingsCard
+                        meetings={meetings}
+                    />
+                }
+            </PageContent>
 
             <ProfileDialogForm
                 open={isProfileDialogOpen}
-                profile={account}
+                profile={user}
                 onClose={() => setProfileDialogOpen(false)}
                 onSubmit={handleProfileFormSubmit}
             />
-
-            <PasswordDialogForm
-                open={isPasswordDialogOpen}
-                onClose={() => setPasswordDialogOpen(false)}
-                onSubmit={handlePasswordFormSubmit}
-            />
-        </main>
+        </Page>
     );
 }

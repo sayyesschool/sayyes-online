@@ -1,13 +1,16 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import { Dialog } from 'mdc-react';
 
-import VideoList from 'app/components/shared/video-list';
+import VideoPlayer from 'shared/components/video-player';
+import VideoList from 'shared/components/video-list';
+
+import './index.scss';
 
 export default function UnitVideo({ course, unit }) {
     const [selectedVideo, setSelectedVideo] = useState();
 
     return (
-        <div className="lesson-video">
+        <div className="unit-video">
             <VideoList
                 videos={unit.videos}
                 selectedVideo={selectedVideo}
@@ -15,12 +18,20 @@ export default function UnitVideo({ course, unit }) {
             />
 
             <Dialog
+                className="video-dialog"
                 open={!!selectedVideo}
+                appear
                 title={selectedVideo?.title}
                 onClose={() => setSelectedVideo(null)}
             >
                 {selectedVideo &&
-                    <video src={`https://static.sayes.ru/courses/${course.slug}/videos/${selectedVideo.filename}`} autoPlay controls />
+                    <VideoPlayer
+                        id="video-player"
+                        src={`https://static.sayes.ru/courses/${course.slug}/videos/${selectedVideo.filename}`}
+                        width="100%"
+                        controls
+                        autoPlay
+                    />
                 }
             </Dialog>
         </div>

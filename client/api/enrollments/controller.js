@@ -1,5 +1,3 @@
-const enrollments = require(".");
-
 module.exports = ({ Enrollment }) => ({
     findOne: (req, res, next, id) => {
         Enrollment.getById(id)
@@ -32,7 +30,7 @@ module.exports = ({ Enrollment }) => ({
         Enrollment.getById(req.params.id)
             .populate('client', 'firstname lastname fullname')
             .populate('teacher', 'firstname lastname fullname')
-            .populate('course')
+            .populate('courses', 'title slug image units.id lessons.id exercises.id')
             .then(enrollment => {
                 if (!enrollment) {
                     const error = new Error('Обучение не найдно');
@@ -48,7 +46,8 @@ module.exports = ({ Enrollment }) => ({
                 };
                 data.teacher = enrollment.teacher && {
                     id: enrollment.teacher.id,
-                    name: enrollment.teacher.fullname
+                    name: enrollment.teacher.fullname,
+                    initials: enrollment.teacher.initials
                 };
 
                 res.json({

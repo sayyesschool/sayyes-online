@@ -1,33 +1,39 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
+import { Dialog, SideSheet } from 'mdc-react';
 
 import { useStore } from 'shared/hooks/store';
 import { hideNotification } from 'shared/store/actions/notification';
 import NotificationSnackbar from 'shared/components/notification-snackbar';
 import LoadingIndicator from 'shared/components/loading-indicator';
+import NavBar from 'shared/components/nav-bar';
+import AppHeader from 'shared/components/app-header';
+import AppContent from 'shared/components/app-content';
 
-import { getAccount } from 'app/store/modules/account';
+import { getUser } from 'app/store/modules/user';
 import { getEnrollments } from 'app/store/modules/enrollments';
-
-import AppHeader from './components/shared/app-header';
-import AppContent from './components/shared/app-content';
-import Account from './components/account';
-import Home from './components/home';
-import Class from './components/class';
+import PaymentBanner from 'app/components/shared/payment-banner';
+import PaymentForm from 'app/components/shared/payment-form';
+import Account from 'app/components/account';
+import Home from 'app/components/home';
+import Class from 'app/components/class';
+import navItems from 'app/data/nav';
 
 import './App.scss';
 
 export default function App() {
-    const [{ account, notification }, actions] = useStore(
+    const [{ user, notification }, actions] = useStore(
         state => ({
-            account: state.account,
+            user: state.user,
             notification: state.notification,
         }),
-        { hideNotification, getAccount, getEnrollments }
+        { hideNotification, getUser, getEnrollments }
     );
+    const [isDialogOpen, setDialogOpen] = useState(false);
+    const [isSideSheetOpen, setSideSheetOpen] = useState(false);
 
     useEffect(() => {
-        actions.getAccount();
+        actions.getUser();
         actions.getEnrollments();
     }, []);
 
@@ -35,19 +41,35 @@ export default function App() {
         actions.hideNotification();
     }, []);
 
-    if (!account) return <LoadingIndicator />;
+    if (!user) return <LoadingIndicator />;
 
     return (
         <React.Fragment>
-            <AppHeader />
+            <AppHeader
+                user={user}
+                onNotificationIconClick={() => setSideSheetOpen(true)}
+            >
+                <NavBar items={navItems} />
+            </AppHeader>
 
             <AppContent>
+                <PaymentBanner onActionClick={() => setDialogOpen(true)} />
+
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <Route path="/account" component={Account} />
-                    <Route path="/class" component={Class} />
+                    <Route path="/class/:id?" component={Class} />
                 </Switch>
             </AppContent>
+
+            <Dialog
+                className="payment-dialog"
+                open={isDialogOpen}
+                title="Оплата обучения"
+                onClose={() => setDialogOpen(false)}
+            >
+                <PaymentForm />
+            </Dialog>
 
             <NotificationSnackbar
                 open={notification.active}
@@ -55,6 +77,15 @@ export default function App() {
                 text={notification.text}
                 onClose={handleSnackbarClose}
             />
+
+            <SideSheet
+                title="Уведомления"
+                open={isSideSheetOpen}
+                modal
+                onClose={() => setSideSheetOpen(false)}
+            >
+
+            </SideSheet>
         </React.Fragment>
     );
 }

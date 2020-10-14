@@ -1,15 +1,8 @@
-#unit-content {
-    padding: 2rem;
-    
-    header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+.unit-content {
+    max-width: 1024px;
+    margin: auto;
 
-    .mdc-side-sheet {
-        top: 0;
-        right: 0;
-        z-index: 2;
+    .mdc-card {
+        overflow: hidden;
     }
 }
