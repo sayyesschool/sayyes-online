@@ -15,7 +15,7 @@ module.exports = twilio => {
         } else if (type === 'chat') {
             token = twilio.generateChatToken({ identity, device });
         } else if (type === 'sync') {
-            token = twilio.generateSyncToken(identity);
+            token = twilio.generateSyncToken({ identity });
         }
 
         res.json({
