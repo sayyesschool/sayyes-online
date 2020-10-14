@@ -1,0 +1,23 @@
+.file-input {
+    input[type="file"] {
+        display: none;
+    }
+
+    .file-preview {
+        display: block;
+        margin: 0;
+        margin-bottom: .5rem;
+    }
+
+    .file-meta {
+        margin-bottom: .5rem;
+
+        p {
+            margin: 0;
+        }
+    }
+
+    button {
+        display: block;
+    }
+}

@@ -1,0 +1,85 @@
+@use '@material/icon-button';
+
+.conversation {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+
+    &__header {
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid rgba(0, 0, 0, .12);
+
+        .mdc-avatar {
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        &__text {
+            overflow: hidden;
+        }
+
+        &__actions {
+            flex-shrink: 0;
+            margin-left: auto;
+
+            .mdc-icon-button {
+                @include icon-button.size(36px);
+
+                margin: 2px;
+            }
+        }
+    }
+
+    &__main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .call {
+        display: none;
+        position: relative;
+        background-color: black;
+    
+        .media {
+            &.media--local {
+                position: absolute;
+                z-index: 1;
+                width: 25%;
+                top: 0;
+                right: 0;
+            }
+    
+            &.media--remote {
+                display: block;
+                width: 100%;
+            }
+        }
+    }
+
+    .chat {
+        flex: 1;
+    }
+
+    &--fullscreen &__main {
+        flex-direction: row;
+
+        .chat {
+            flex: none;
+            flex-basis: 360px;
+        }
+
+        .call {
+            flex: 1;
+        }
+    }
+
+    &--video {
+        .call {
+            display: block;
+        }
+    }
+}

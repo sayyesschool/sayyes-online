@@ -1,60 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Client } from 'twilio-chat';
 
 export function useChat(token, { name }) {
-    const [client, setClient] = useState();
-    const [channel, setChannel] = useState();
-    const [messages, setMessages] = useState([]);
+    const clientRef = useRef();
+    const channelRef = useRef();
+
+    const [isLoading, setLoading] = useState(false);
+    const [isConnected, setConnected] = useState(false);
     const [isTyping, setTyping] = useState(false);
+    const [messages, setMessages] = useState([]);
 
     useEffect(() => {
         if (!token) return;
 
-        Client.create(token).then(client => {
-            setClient(client);
-
-            client.on('tokenExpired', () => {
-                fetch()
-                    .then(token => {
-                        client.updateToken(token);
-                    })
-                    .catch(error => {
-                        console.error('Could not refresh token', error);
-                    });
-            });
-
-            client.getChannelByUniqueName(name)
-                .then(
-                    channel => {
-                        console.log('Found channel', channel);
-                        return channel;
-                    },
-                    () => {
-                        console.log('Create channel');
-                        client.createChannel({ uniqueName: name });
-                    }
-                )
-                .then(channel => {
-                    console.log('CHANNEL', channel);
-                    return setChannel(channel);
+        function tokenExpired() {
+            fetch()
+                .then(token => {
+                    client.updateToken(token);
                 })
                 .catch(error => {
-                    console.error('Could not get channel', error);
+                    console.error('Could not refresh token', error);
                 });
-        });
-
-        return () => {
-            client.shutdown();
-        };
-    }, [token]);
-
-    useEffect(() => {
-        function messageAdded(message) {
-            setMessages(messages => messages.concat({
-                author: message.author,
-                date: message.date,
-                body: message.body
-            }));
         }
 
         function memberJoined(member) {
@@ -65,6 +31,14 @@ export function useChat(token, { name }) {
             console.log(member.identity + ' left the channel');
         }
 
+        function messageAdded(message) {
+            setMessages(messages => messages.concat({
+                author: message.author,
+                date: message.date,
+                body: message.body
+            }));
+        }
+
         function typingStarted(member) {
             setTyping(true);
         }
@@ -73,54 +47,74 @@ export function useChat(token, { name }) {
             setTyping(false);
         }
 
-        if (channel) {
-            channel.join()
-                .catch(error => {
+        setLoading(true);
+
+        Client.create(token).then(client => {
+            client.on('tokenExpired', tokenExpired);
+
+            clientRef.current = client;
+
+            return client.getChannelByUniqueName(name);
+        })
+            .catch(() => {
+                return client.createChannel({ uniqueName: name });
+            })
+            .then(channel => {
+                return channel.join().catch(error => {
                     if (channel.status === 'joined') {
                         return channel;
                     } else {
                         throw error;
                     }
-                })
-                .then(channel => {
-                    console.log('Joined channel', channel);
-
-                    channel.on('messageAdded', messageAdded);
-                    channel.on('memberJoined', memberJoined);
-                    channel.on('memberLeft', memberLeft);
-                    channel.on('typingStarted', typingStarted);
-                    channel.on('typingEnded', typingEnded);
-
-                    channel.getMessages(100)
-                        .then(messages => {
-                            setMessages(messages.items.map(message => ({
-                                id: message.state.sid,
-                                author: message.state.author,
-                                body: message.state.body,
-                                timestamp: message.state.timestamp
-                            })));
-                        });
-                })
-                .catch(error => {
-                    console.log('Could not join channel', error);
                 });
-        }
+            })
+            .then(channel => {
+                console.log('Joined channel', channel);
 
-        // return () => {
-        //     channel.leave().then(leftChannel => {
-        //         leftChannel.removeListener('messageAdded', messageAdded);
-        //         leftChannel.removeListener('memberJoined', memberJoined);
-        //         leftChannel.removeListener('memberLeft', memberLeft);
-        //         leftChannel.removeListener('typingStarted', typingStarted);
-        //         leftChannel.removeListener('typingEnded', typingEnded);
-        //     });
-        // };
-    }, [channel]);
+                channel.on('memberJoined', memberJoined);
+                channel.on('memberLeft', memberLeft);
+                channel.on('messageAdded', messageAdded);
+                channel.on('typingStarted', typingStarted);
+                channel.on('typingEnded', typingEnded);
+
+                channelRef.current = channel;
+
+                return channel.getMessages(100);
+            })
+            .then(messages => {
+                setMessages(messages.items.map(message => ({
+                    id: message.state.sid,
+                    author: message.state.author,
+                    body: message.state.body,
+                    datetime: message.state.timestamp,
+                    type: message.state.type
+                })));
+
+                setLoading(false);
+                setConnected(true);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        return () => {
+            // channel.leave().then(leftChannel => {
+            //     leftChannel.removeListener('messageAdded', messageAdded);
+            //     leftChannel.removeListener('memberJoined', memberJoined);
+            //     leftChannel.removeListener('memberLeft', memberLeft);
+            //     leftChannel.removeListener('typingStarted', typingStarted);
+            //     leftChannel.removeListener('typingEnded', typingEnded);
+            // });
+            clientRef.current?.shutdown();
+        };
+    }, [token]);
+
 
     return {
-        client,
-        channel,
+        channel: channelRef.current,
         messages,
+        isConnected,
+        isLoading,
         isTyping
     };
 }

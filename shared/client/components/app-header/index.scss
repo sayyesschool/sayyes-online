@@ -1,0 +1,47 @@
+@use 'shared/styles/variables';
+@use '@material/tab';
+@use '@material/tab-indicator';
+@use '@material/theme';
+
+#app-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    z-index: 7;
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+
+    .mdc-top-app-bar__title {
+        margin-right: 1rem;
+        background-image: url(/sayyes-white.png);
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        height: 100%;
+        color: transparent;
+    }
+
+    .mdc-tab-bar {
+        width: auto;
+        display: flex;
+    }
+
+    .mdc-tab {
+        @include tab.text-label-color(on-primary);
+        @include tab.icon-color(on-primary);
+
+        .mdc-tab-indicator {
+            @include tab-indicator.underline-color(on-primary);
+            @include tab-indicator.icon-color(on-primary);
+        }
+
+        .mdc-tab__ripple {
+            @include tab.states-color(on-primary);
+        }
+    }
+
+    .search-box {
+        
+    }
+
+    .user-avatar {
+        margin-left: auto;
+    }
+}

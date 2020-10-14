@@ -1,28 +1,18 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useCallback } from 'react';
 import {
-    IconButton,
-    List, ListItem
+    IconButton
 } from 'mdc-react';
 import classnames from 'classnames';
+import moment from 'moment';
 
 import { useChat } from 'shared/hooks/twilio';
-
 import LoadingIndicator from 'shared/components/loading-indicator';
 
 import './index.scss';
 
-export default function Chat({ identity, name }) {
+export default function Chat({ name, localParticipant: user }) {
     const inputRef = useRef();
-    const [token, setToken] = useState();
-    // const { channel, messages } = useChat(token, { name });
-
-    // useEffect(() => {
-    //     if (lesson) {
-    //         fetch(`/api/twilio/tokens/chat?identity=${identity}`)
-    //             .then(res => res.json())
-    //             .then(res => setToken(res.data.token));
-    //     }
-    // }, [lesson]);
+    const { channel, isLoading, isConnected, messages } = useChat(window.TWILIO_CHAT_TOKEN, { name });
 
     const handleSubmit = useCallback(event => {
         event.preventDefault();
@@ -40,27 +30,26 @@ export default function Chat({ identity, name }) {
     //     [lesson.client.id]: lesson.client.name,
     //     [lesson.teacher.id]: lesson.teacher.name
     // };
-
-    const channel = undefined;
-
     return (
         <article className="chat">
-            {!channel ?
+            {isLoading ?
                 <LoadingIndicator />
                 :
-                <List className="message-list">
+                <ul className="message-list">
                     {messages.map(message =>
-                        <ListItem
+                        <li
                             key={message.id}
-                            className={classnames('message-item', {
-                                'message-item--local': message.author === user.id,
-                                'message-item--remote': message.local !== user.id
+                            className={classnames('message', {
+                                'message--local': message.author === user.id,
+                                'message--remote': message.author !== user.id,
+                                [`message--${message.type}`]: message.type
                             })}
                         >
-                            {message.body}
-                        </ListItem>
+                            <span className="message__time">{moment(message.datetime).fromNow()}</span>
+                            <span className="message__text">{message.body}</span>
+                        </li>
                     )}
-                </List>
+                </ul>
             }
 
             <form className="message-form" onSubmit={handleSubmit}>
@@ -73,9 +62,9 @@ export default function Chat({ identity, name }) {
                 <IconButton
                     type="submit"
                     icon="send"
-                    disabled={!channel}
+                    disabled={!isConnected}
                 />
             </form>
-        </article>
+        </article >
     );
 }

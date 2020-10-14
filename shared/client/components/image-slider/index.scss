@@ -1,0 +1,29 @@
+.image-slider {
+    position: relative;
+    padding: 0 3rem;
+
+    .image-slider__images {
+        margin: auto;
+    }
+
+    .image-slider__image {
+        display: none;
+
+        &--active {
+            display: block;
+        }
+    }
+
+    .image-slider__button {
+        position: absolute;
+        top: 50%;
+
+        &--prev {
+            left: 0%;
+        }
+
+        &--next {
+            right: 0%;
+        }
+    }
+}
