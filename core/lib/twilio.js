@@ -13,13 +13,13 @@ const ChatGrant = AccessToken.ChatGrant;
 const SyncGrant = AccessToken.SyncGrant;
 
 module.exports = {
-    generateVideoToken: ({ room, identity }) => {
+    generateVideoToken: ({ identity }) => {
         const token = new AccessToken(
             TWILIO_ACCOUNT_ID,
             TWILIO_API_KEY,
             TWILIO_API_SECRET
         );
-        const videoGrant = new VideoGrant({ room });
+        const videoGrant = new VideoGrant();
 
         token.identity = identity;
         token.addGrant(videoGrant);
@@ -27,17 +27,16 @@ module.exports = {
         return token.toJwt();
     },
 
-    generateChatToken: ({ identity, deviceId }) => {
-        const appName = 'TwilioChat';
-        const endpointId = appName + ':' + identity + ':' + deviceId;
+    generateChatToken: ({ identity }) => {
         const token = new AccessToken(
             TWILIO_ACCOUNT_ID,
             TWILIO_API_KEY,
             TWILIO_API_SECRET
         );
+        const appName = 'TwilioChat';
+        //const endpointId = appName + ':' + identity + ':' + deviceId;
         const chatGrant = new ChatGrant({
-            serviceSid: TWILIO_CHAT_SERVICE_ID,
-            endpointId
+            serviceSid: TWILIO_CHAT_SERVICE_ID
         });
 
         token.identity = identity;
@@ -46,7 +45,7 @@ module.exports = {
         return token.toJwt();
     },
 
-    generateSyncToken: (identity) => {
+    generateSyncToken: ({ identity }) => {
         const token = new AccessToken(
             TWILIO_ACCOUNT_ID,
             TWILIO_API_KEY,

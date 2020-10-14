@@ -61,7 +61,7 @@ const Enrollment = new Schema({
     client: { type: Schema.Types.ObjectId, ref: 'Client' },
     teacher: { type: Schema.Types.ObjectId, ref: 'Teacher' },
     manager: { type: Schema.Types.ObjectId, ref: 'Manager' },
-    course: { type: Schema.Types.ObjectId, ref: 'Course' },
+    courses: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
     lessons: { type: [Lesson] },
     createdAt: { type: Date },
     updatedAt: { type: Date }

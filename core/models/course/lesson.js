@@ -1,11 +1,14 @@
 const { Schema } = require('mongoose');
 
-const Exercise = require('./exercise');
-
 const Lesson = new Schema({
-    slug: { type: String, required: true, unique: true },
+    slug: { type: String, required: true },
     title: { type: String },
-    exercises: [Exercise]
+    image: { type: String },
+    _exercises: [Schema.Types.ObjectId]
+});
+
+Lesson.virtual('imageUrl').get(function() {
+    return this.image && `https://static.sayes.ru/courses/${this.parent().slug}/images/${this.image}`;
 });
 
 module.exports = Lesson;

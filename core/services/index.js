@@ -4,6 +4,7 @@ const models = require('../models');
 const Mail = require('./mail')(config);
 const Auth = require('./auth')(config, models.User, Mail);
 const Client = require('./client')(models.Client);
+const Course = require('./course')(models.Course);
 const Enrollment = require('./enrollment')(models.Enrollment);
 const Lesson = require('./lesson');
 const Manager = require('./manager')(models.Manager);
@@ -18,6 +19,7 @@ module.exports = {
     Auth,
     Mail,
     Client,
+    Course,
     Enrollment,
     Lesson,
     Manager,
