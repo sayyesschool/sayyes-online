@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
+import Page from 'shared/components/page';
+import PageHeader from 'shared/components/page-header';
+import PageContent from 'shared/components/page-content';
+import PageSideSheet from 'shared/components/page-side-sheet';
+
 import { useStore, useActions } from 'app/store';
-import Page from 'app/components/shared/page';
-import PageHeader from 'app/components/shared/page-header';
-import PageContent from 'app/components/shared/page-content';
-import PageSidePanel from 'app/components/shared/page-side-panel';
 import ConfirmationDialog from 'app/components/shared/confirmation-dialog';
 import FormPanel from 'app/components/shared/form-panel';
 import EmptyState from 'app/components/shared/empty-state';
@@ -97,14 +98,14 @@ export default function RequestsPage({ history }) {
                 ]}
             />
 
-            <PageSidePanel
+            <PageSideSheet
                 title="Поиск"
                 open={isSidePanelOpen}
                 dismissible
                 onClose={() => setSidePanelOpen(false)}
             >
                 <RequestSearchForm />
-            </PageSidePanel>
+            </PageSideSheet>
 
             <PageContent>
                 {requests?.length > 0 ?

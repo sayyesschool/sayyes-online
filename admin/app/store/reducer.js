@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 
 import clients from './modules/clients';
+import courses from './modules/courses';
 import enrollments from './modules/enrollments';
 import notification from './modules/notification';
 import lessons from './modules/lessons';
@@ -12,6 +13,7 @@ import user from './modules/user';
 
 export default combineReducers({
     clients,
+    courses,
     enrollments,
     notification,
     lessons,

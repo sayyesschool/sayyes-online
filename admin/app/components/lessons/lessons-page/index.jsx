@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
+import Page from 'shared/components/page';
+import PageHeader from 'shared/components/page-header';
+import PageContent from 'shared/components/page-content';
+
 import { useStore } from 'app/store';
-import Page from 'app/components/shared/page';
-import PageHeader from 'app/components/shared/page-header';
-import PageContent from 'app/components/shared/page-content';
 import FormPanel from 'app/components/shared/form-panel';
 import LessonCalendar from 'app/components/lessons/lesson-calendar';
 import LessonForm from 'app/components/lessons/lesson-form';

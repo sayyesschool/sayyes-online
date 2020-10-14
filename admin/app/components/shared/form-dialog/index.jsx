@@ -9,7 +9,7 @@ export default function FormDialog({
     title,
     open,
     children,
-    onDismiss,
+    onClose,
     ...props
 }) {
     return (
@@ -18,10 +18,12 @@ export default function FormDialog({
             title={title}
             {...props}
         >
-            {children}
+            <Dialog.Content>
+                {children}
+            </Dialog.Content>
 
             <Dialog.Actions>
-                <Button type="button" onClick={onDismiss}>Закрыть</Button>
+                <Button type="button" onClick={onClose}>Закрыть</Button>
                 <Button type="submit" form={form} outlined>Сохранить</Button>
             </Dialog.Actions>
         </Dialog>

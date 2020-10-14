@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import {
+    Button,
     Layout,
     TextField
 } from 'mdc-react';
@@ -7,7 +8,6 @@ import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
-import PeopleSelect from 'app/components/shared/people-select';
 
 import './index.scss';
 
@@ -70,6 +70,8 @@ export default function PaymentForm({ payment = {}, onSubmit }) {
                     onChange={setData}
                 />
             </Layout>
+
+            <Button type="submit" outlined>Сохранить</Button>
         </Form>
     );
 }

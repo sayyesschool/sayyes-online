@@ -1,5 +1,7 @@
 import { createAction, createReducer, combineReducers } from 'shared/store/utils';
 
+import { createPayment } from './payments';
+
 export const getClients = createAction('GET_CLIENTS', query => ({
     request: {
         method: 'get',
@@ -47,6 +49,10 @@ export default combineReducers({
     single: createReducer(null, {
         [getClient]: (state, action) => action.data,
         [updateClient]: (state, action) => action.data,
-        [deleteClient]: (state, action) => null
+        [deleteClient]: (state, action) => null,
+        [createPayment]: (state, action) => action.data.client === state.id ? {
+            ...state,
+            payments: state.payments.concat(action.data)
+        } : state
     })
 });

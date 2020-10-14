@@ -4,10 +4,11 @@ import {
     LayoutGrid as Grid
 } from 'mdc-react';
 
+import Page from 'shared/components/page';
+import PageHeader from 'shared/components/page-header';
+import PageContent from 'shared/components/page-content';
+
 import { useStore } from 'app/store';
-import Page from 'app/components/shared/page';
-import PageHeader from 'app/components/shared/page-header';
-import PageContent from 'app/components/shared/page-content';
 import RequstList from 'app/components/requests/request-list';
 import LessonList from 'app/components/lessons/lesson-list';
 

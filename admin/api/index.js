@@ -1,6 +1,7 @@
 const { Router } = require('express');
 
 const clients = require('./clients');
+const courses = require('./courses');
 const enrollments = require('./enrollments');
 const lessons = require('./lessons');
 const managers = require('./managers');
@@ -13,6 +14,7 @@ module.exports = core => {
     const router = Router();
 
     router.use('/clients', clients(core));
+    router.use('/courses', courses(core));
     router.use('/enrollments', enrollments(core));
     router.use('/lessons', lessons(core));
     router.use('/managers', managers(core));

@@ -3,10 +3,11 @@ import {
     LayoutGrid as Grid
 } from 'mdc-react';
 
-import { useStore } from 'app/store';
-import Page from 'app/components/shared/page';
-import PageHeader from 'app/components/shared/page-header';
-import PageContent from 'app/components/shared/page-content';
+import Page from 'shared/components/page';
+import PageHeader from 'shared/components/page-header';
+import PageContent from 'shared/components/page-content';
+
+import { useStore, useActions } from 'app/store';
 import ConfirmationDialog from 'app/components/shared/confirmation-dialog';
 import FormPanel from 'app/components/shared/form-panel';
 import ClientForm from 'app/components/clients/client-form';
@@ -19,42 +20,42 @@ import PaymentForm from 'app/components/payments/payment-form';
 
 import './index.scss';
 
-export default function ClientPage({ match, location }) {
-    const [client, actions] = useStore('clients.single');
+export default function ClientPage({ match, location, history }) {
+    const [client, clientActions] = useStore('clients.single');
+    const enrollmentActions = useActions('enrollments');
+    const paymentActions = useActions('payments');
+
     const [isClientFormOpen, setClientFormOpen] = useState(false);
     const [isEnrollmentFormOpen, setEnrollmentFormOpen] = useState(false);
     const [isPaymentFormOpen, setPaymentFormOpen] = useState(false);
     const [isConfirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
 
     useEffect(() => {
-        actions.getClient(match.params.id)
+        clientActions.getClient(match.params.id)
             .then(() => location.state?.edit && setClientFormOpen(true));
     }, []);
 
     const handleSubmit = useCallback(data => {
-        actions.updateClient(data.id, data)
+        clientActions.updateClient(data.id, data)
             .then(() => setClientFormOpen(false));
-    }, []);
+    }, [client]);
 
     const handleEnrollmentSubmit = useCallback(data => {
-        actions.createEnrollment(data)
-            .then(() => setEnrollmentFormOpen(false));
-    }, []);
+        enrollmentActions.createEnrollment(data)
+            .then(({ data }) => history.push(`/clients/${client?.id}/enrollments/${data?.id}`));
+    }, [client]);
 
     const handlePaymentSubmit = useCallback(data => {
         data.client = client.id;
 
         paymentActions.createPayment(data)
             .then(() => setPaymentFormOpen(false));
-    }, []);
+    }, [client]);
 
     const handleDeleteClient = useCallback(() => {
-        actions.deleteClient(client.id)
-            .then(() => {
-                history.push('/clients');
-                setConfirmationDialogOpen(false);
-            });
-    }, []);
+        clientActions.deleteClient(client.id)
+            .then(() => history.push('/clients'));
+    }, [client]);
 
     return (
         <Page id="client" loading={!client}>

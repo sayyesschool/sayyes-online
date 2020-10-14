@@ -3,3 +3,48 @@
 body {
     background-color: #f4f4f4;
 }
+
+#app-content {
+    margin-left: 256px;
+}
+
+.page-content {
+    padding: 1rem;
+
+    .mdc-layout-grid {
+        padding: 0;
+    }
+
+    .mdc-data-table {
+        width: 100%;
+    }
+}
+
+.page-title {
+    a:after {
+        display: inline-block;
+        content: '›';
+        margin: 0 8px;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+}
+
+.mdc-card {
+    overflow: hidden;
+
+    .mdc-card__section:not(.mdc-card__section--primary),
+    .mdc-card__section:not(.mdc-card__section--secondary) {
+        > .mdc-typography {
+            padding: 8px 16px 0;
+        }
+    }
+}
+
+.mdc-dialog {
+    .mdc-dialog__surface {
+        min-width: 480px;
+    }
+}

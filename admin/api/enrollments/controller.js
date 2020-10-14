@@ -33,9 +33,6 @@ module.exports = ({ Enrollment }) => ({
 
     create: (req, res, next) => {
         Enrollment.create(req.body)
-            .populate('manager', 'firstname lastname')
-            .populate('client', 'firstname lastname')
-            .populate('teacher', 'firstname lastname')
             .then(enrollment => {
                 res.json({
                     ok: true,

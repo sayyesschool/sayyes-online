@@ -3,10 +3,11 @@ import {
     LayoutGrid as Grid
 } from 'mdc-react';
 
+import Page from 'shared/components/page';
+import PageHeader from 'shared/components/page-header';
+import PageContent from 'shared/components/page-content';
+
 import { useStore, useActions } from 'app/store';
-import Page from 'app/components/shared/page';
-import PageHeader from 'app/components/shared/page-header';
-import PageContent from 'app/components/shared/page-content';
 import ConfirmationDialog from 'app/components/shared/confirmation-dialog';
 import FormPanel from 'app/components/shared/form-panel';
 import EnrollmentDetails from 'app/components/enrollments/enrollment-details';
@@ -20,8 +21,8 @@ import PaymentForm from 'app/components/payments/payment-form';
 import './index.scss';
 
 export default function EnrollmentPage({ match, history }) {
-    const [managers] = useStore('managers.list');
     const [enrollment, actions] = useStore('enrollments.single');
+    const [managers] = useStore('managers.list');
     const lessonActions = useActions('lessons');
     const paymentActions = useActions('payments');
 

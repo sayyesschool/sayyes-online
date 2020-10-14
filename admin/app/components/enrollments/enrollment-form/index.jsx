@@ -17,13 +17,13 @@ import ScheduleSelect from 'app/components/shared/schedule-select';
 export default function EnrollmentForm({ enrollment = {}, onSubmit }) {
     const [user] = useStore('user');
     const [data, handleChange] = useForm({
-        status: 'new',
+        status: 'pending',
         type: '',
         format: '',
         age: '',
         level: '',
         goal: '',
-        domain: '',
+        domain: 'general',
         teacher: '',
         schedule: [],
         note: undefined,
