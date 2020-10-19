@@ -1,15 +1,22 @@
-@use '@material/top-app-bar';
-@use '@material/theme';
-
 .page-header {
-    @include top-app-bar.fill-color-accessible(#f4f4f4);
-    @include top-app-bar.icon-ink-color(theme.accessible-ink-color(#f4f4f4, secondary));
-
     .mdc-top-app-bar__section--align-start {
         padding-left: 1rem;
     }
 
+    .page-breadcrumbs {
+        a + a:before {
+            display: inline-block;
+            content: '›';
+            margin: 0 8px;
+        }
+    
+        a:hover {
+            text-decoration: underline;
+        }
+    }
+
     .page-title {
+        margin: 0;
         padding-left: 0;
     }
 }

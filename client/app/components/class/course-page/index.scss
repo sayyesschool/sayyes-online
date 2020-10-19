@@ -1,21 +1,32 @@
 @use 'mdc-react/src/SideSheet/mixins';
+@use '@material/top-app-bar';
+@use '@material/theme';
 
 #course-page {
-    header {
-        display: flex;
-        align-items: center;
+    .page-header {
+        @include top-app-bar.fill-color-accessible(#fff);
+        @include top-app-bar.icon-ink-color(theme.accessible-ink-color(#fff, secondary));
 
-        .mdc-typography {
-            margin-right: auto;
+        .mdc-top-app-bar__row {
+            max-width: 1280px;
+            margin: auto;
+            padding-top: 1rem;
+            height: auto;
         }
 
-        .mdc-icon-button + .mdc-typography {
-            margin-left: 8px;
+        .mdc-top-app-bar__section--align-start {
+            display: block;
+            padding-left: 1rem;
         }
     }
 
+    .page-title {
+        font-size: 2rem;
+        line-height: 1.5;
+    }
+
     .page-content {
-        padding: 2rem;
+        padding: 1rem;
     }
 
     .mdc-side-sheet {

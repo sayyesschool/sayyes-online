@@ -1,5 +1,8 @@
 import React from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
+import {
+    Typography
+} from 'mdc-react';
 
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
@@ -20,28 +23,30 @@ export default function CoursePage({ match }) {
 
     if (!course) return <LoadingIndicator />;
 
-    const unit = course.units?.find(unit => unit.id === match.params.unitId);
-    const lesson = unit?.lessons.find(lesson => lesson.id === match.params.lessonId);
+    const unit = course.unitsById.get(match.params.unitId);
+    const lesson = course.lessonsById.get(match.params.lessonId);
 
     course.url = `/class/${enrollment.id}/course/${course.id}`;
     if (unit) unit.url = `${course.url}/unit/${unit.id}`;
     if (lesson) lesson.url = `${unit.url}/lesson/${lesson.id}`;
 
-    const title = [course, unit, lesson]
-        .filter(item => !!item)
-        .map(item => <Link to={item.url}>{item.title} › </Link>);
+    const segments = [course, unit, lesson].filter(item => !!item);
+    const [title] = segments.slice(-1).map(item => item.title);
+    const breadcrumbs = segments
+        .slice(0, -1)
+        .map(item => <Link to={item.url}>{item.title}</Link>);
 
     return (
         <Page id="course-page">
             <PageHeader
                 title={title}
+                breadcrumbs={breadcrumbs}
             />
 
             <PageContent>
                 <Switch>
                     <Route exact path="/class/:enrollmentId/course/:courseId">
                         <CourseContent
-                            enrollment={enrollment}
                             course={course}
                         />
                     </Route>

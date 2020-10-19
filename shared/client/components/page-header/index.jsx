@@ -9,7 +9,7 @@ import {
 
 import './index.scss';
 
-export default function PageHeader({ title, backTo, actions = [], children }) {
+export default function PageHeader({ title, breadcrumbs, backTo, actions = [], children }) {
     return (
         <TopAppBar className="page-header">
             <TopAppBar.Row>
@@ -20,8 +20,14 @@ export default function PageHeader({ title, backTo, actions = [], children }) {
                         </TopAppBar.NavigationIcon>
                     }
 
+                    {breadcrumbs?.length > 0 &&
+                        <span className="page-breadcrumbs">
+                            {breadcrumbs}
+                        </span>
+                    }
+
                     {title &&
-                        <TopAppBar.Title className="page-title">{title}</TopAppBar.Title>
+                        <TopAppBar.Title element="h1" className="page-title">{title}</TopAppBar.Title>
                     }
                 </TopAppBar.Section>
 

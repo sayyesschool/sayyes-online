@@ -12,21 +12,15 @@ import './index.scss';
 
 export default function UnitContent({ course, unit }) {
     return (
-        <div className="unit-content">
-            <header className="unit-content__header">
-                <h1 className="unit-title"><b>Unit 1</b> <span>{unit.title}</span><IconButton icon="panorama_fish_eye" /></h1>
-            </header>
-
+        <section className="unit-content">
             <LayoutGrid>
                 <LayoutGrid.Cell span="6">
-                    {unit.image &&
-                        <img
-                            src={`https://static.sayes.ru/courses/${course.slug}/images/${unit.image}`}
-                        />
-                    }
-
-                    <Card>
+                    <Card outlined>
                         <Card.Header title="Содержание" />
+
+                        <Card.Media
+                            imageUrl={`https://static.sayes.ru/courses/${course.slug}/images/${unit.image}`}
+                        />
 
                         <Card.Section primary>
                             {unit.description}
@@ -52,6 +46,6 @@ export default function UnitContent({ course, unit }) {
                     </Card>
                 </LayoutGrid.Cell>
             </LayoutGrid>
-        </div>
+        </section>
     );
 }
