@@ -1,4 +1,6 @@
 @use 'shared/styles/variables';
+@use '@material/top-app-bar';
+@use '@material/theme';
 
 body {
     background-color: #f4f4f4;
@@ -8,16 +10,9 @@ body {
     margin-left: 256px;
 }
 
-.page-content {
-    padding: 1rem;
-
-    .mdc-layout-grid {
-        padding: 0;
-    }
-
-    .mdc-data-table {
-        width: 100%;
-    }
+.page-header {
+    @include top-app-bar.fill-color-accessible(#f4f4f4);
+    @include top-app-bar.icon-ink-color(theme.accessible-ink-color(#f4f4f4, secondary));
 }
 
 .page-title {
@@ -29,6 +24,18 @@ body {
 
     a:hover {
         text-decoration: underline;
+    }
+}
+
+.page-content {
+    padding: 1rem;
+
+    .mdc-layout-grid {
+        padding: 0;
+    }
+
+    .mdc-data-table {
+        width: 100%;
     }
 }
 
