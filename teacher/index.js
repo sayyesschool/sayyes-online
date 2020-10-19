@@ -14,6 +14,7 @@ module.exports = core => {
     });
 
     app.use(auth);
+    app.use(core.middleware.tokens(core.lib.twilio));
     app.use('/api', api(core));
     app.use((req, res) => res.render('index'));
 

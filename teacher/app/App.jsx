@@ -1,55 +1,57 @@
 import React, { useEffect, useCallback } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { Spinner } from 'mdc-react';
 
 import { useStore } from 'shared/hooks/store';
+import { hideNotification } from 'shared/store/actions/notification';
 import NotificationSnackbar from 'shared/components/notification-snackbar';
-import { hideNotification } from 'shared/actions/notification';
+import LoadingIndicator from 'shared/components/loading-indicator';
 
-import { getAccount } from 'app/store/modules/account';
-import { getLessons } from 'app/store/modules/lessons';
-import { getPayments } from 'app/store/modules/payments';
+import { getUser } from 'app/store/modules/user';
+import { getEnrollments } from 'app/store/modules/enrollments';
 
-import Header from './components/shared/header';
-import Account from './pages/account';
-import Home from './pages/home';
-import Lesson from './pages/lesson';
+import AppHeader from './components/shared/app-header';
+import AppContent from './components/shared/app-content';
+
+import Account from './components/account';
+import Home from './components/home';
+import Class from './components/class';
 
 import './App.scss';
 
 export default function App() {
-    const [{ account, notification }, actions] = useStore(
+    const [{ user, notification }, actions] = useStore(
         state => ({
-            account: state.account,
+            user: state.user,
             notification: state.notification,
         }),
-        { hideNotification, getAccount, getLessons, getPayments }
+        { hideNotification, getUser, getEnrollments }
     );
 
     useEffect(() => {
-        actions.getAccount();
-        actions.getLessons();
-        actions.getPayments();
+        actions.getUser();
+        actions.getEnrollments();
     }, []);
 
     const handleSnackbarClose = useCallback(() => {
         actions.hideNotification();
     }, []);
 
+    if (!user) return <LoadingIndicator />;
+
     return (
         <React.Fragment>
-            <Header />
+            <AppHeader
+                user={user}
+                onNotificationIconClick={() => setSideSheetOpen(true)}
+            />
 
-            {!account ?
-                <Spinner />
-                :
+            <AppContent>
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <Route path="/account" component={Account} />
-                    {/* <Route path="/payments" component={Account} /> */}
-                    <Route path="/lessons/:lessonId" component={Lesson} />
+                    <Route path="/class/:id?" component={Class} />
                 </Switch>
-            }
+            </AppContent>
 
             <NotificationSnackbar
                 open={notification.active}

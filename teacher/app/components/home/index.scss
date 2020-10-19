@@ -1,0 +1,20 @@
+#home-page {
+    .mdc-chip-set {
+        .mdc-chip {
+            .mdc-chip__text {
+                text-transform: capitalize;
+            }
+        }
+    }
+
+    section + section {
+        margin-top: 2rem;
+    }
+
+    .calendar {
+        &__week {
+            border: none;
+            border-top: 1px solid #e0e0e0;
+        }
+    }
+}
