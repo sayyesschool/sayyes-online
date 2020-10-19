@@ -18,7 +18,7 @@ import './index.scss';
 export default function LessonPage({ match, history }) {
     const [course, actions] = useStore('courses.single');
 
-    const [activeExercise, setActveExercise] = useState();
+    const [activeExercise, setActiveExercise] = useState();
     const [isLessonFormOpen, setLessonFormOpen] = useState(false);
     const [isExerciseFormOpen, setExerciseFormOpen] = useState(false);
 
@@ -28,7 +28,7 @@ export default function LessonPage({ match, history }) {
 
     const handleUpdateLesson = useCallback(data => {
         (data.file ?
-            upload(file, {
+            upload(data.file, {
                 name: lesson.id,
                 path: `courses/${course.slug}/images/${lesson.id}`
             }).then(response => ({ ...data, imageUrl: response.url })) :
@@ -65,12 +65,12 @@ export default function LessonPage({ match, history }) {
     }, [course]);
 
     const handleAddExercise = useCallback(() => {
-        setActveExercise(undefined);
+        setActiveExercise(undefined);
         setExerciseFormOpen(true);
     }, []);
 
     const handleEditExercise = useCallback(exercise => {
-        setActveExercise(exercise);
+        setActiveExercise(exercise);
         setExerciseFormOpen(true);
     }, []);
 
@@ -140,7 +140,7 @@ export default function LessonPage({ match, history }) {
                 <ExerciseForm
                     exercise={activeExercise}
                     course={course}
-                    onSubmit={handleCreateExercise}
+                    onSubmit={activeExercise ? handleUpdateExercise : handleCreateExercise}
                 />
             </FormDialog>
         </Page>
