@@ -46,8 +46,8 @@ export default function RequestList({ requests, manager, onProcess, onEdit, onDe
 
                         <DataTable.Cell>
                             <Layout column>
-                                <Typography element="span" variant="body1" noMargin>{request.contact.name}</Typography>
-                                <Typography element="span" variant="body2" noMargin>{request.contact.phone}</Typography>
+                                <Typography element="span" type="body1" noMargin>{request.contact.name}</Typography>
+                                <Typography element="span" type="body2" noMargin>{request.contact.phone}</Typography>
                             </Layout>
                         </DataTable.Cell>
 

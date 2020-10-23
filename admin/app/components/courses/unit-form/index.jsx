@@ -18,9 +18,14 @@ export default function UnitForm({ unit = {}, onSubmit }) {
     }, [unit]);
 
     const handleSubmit = useCallback(() => {
-        const file = fileInputRef.current.files[0];
+        const file = fileInputRef.current.input.files[0];
+
+        if (file) {
+            file.path = `courses/${unit.course.id}/images/`;
+        }
 
         getData(data => onSubmit(Object.assign(data, { file })));
+        fileInputRef.current.reset();
     }, [onSubmit]);
 
     return (
@@ -53,8 +58,10 @@ export default function UnitForm({ unit = {}, onSubmit }) {
 
                 <FileInput
                     ref={fileInputRef}
-                    name="image"
+                    name="file"
                     label="Изображение"
+                    url={data.image && STATIC_URL + unit.imageUrl}
+                    caption={data.image}
                 />
             </Layout>
         </Form>

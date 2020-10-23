@@ -20,7 +20,7 @@ export default function Conversation({ messages }) {
                             primaryText={message.user}
                             secondaryText={message.datetime}
                         />
-                        <Typography className="message-content" variant="body2">{message.content}</Typography>
+                        <Typography className="message-content" type="body2">{message.content}</Typography>
                     </>
                 )}
             </List>

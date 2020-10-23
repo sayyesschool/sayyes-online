@@ -135,7 +135,7 @@ export default function RequestForm({ request = {}, onSubmit }) {
                 />
 
                 <Layout element="fieldset" column>
-                    <Typography element="legend" variant="subtitle2">UTM</Typography>
+                    <Typography element="legend" type="subtitle2">UTM</Typography>
 
                     <TextField
                         name="utm.source"

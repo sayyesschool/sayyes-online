@@ -9,7 +9,7 @@ import {
 export default function RadioGroup({ name, value, label, options, onChange, ...props }) {
     return (
         <Layout className="radio-group" column>
-            <Typography element="h3" variant="subtitle2" noMargin>{label}</Typography>
+            <Typography element="h3" type="subtitle2" noMargin>{label}</Typography>
 
             {options.map(option =>
                 <FormField key={option.value} label={option.label}>

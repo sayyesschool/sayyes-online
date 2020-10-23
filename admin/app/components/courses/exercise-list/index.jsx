@@ -6,7 +6,7 @@ import {
     List
 } from 'mdc-react';
 
-export default function ExerciseList({ exercises, onDelete }) {
+export default function ExerciseList({ exercise: activeExercise, exercises, onDelete }) {
     const handleClick = useCallback((event, exercise) => {
         event.preventDefault();
         event.stopPropagation();
@@ -29,6 +29,7 @@ export default function ExerciseList({ exercises, onDelete }) {
                             onClick={event => handleClick(event, exercise)}
                         />
                     }
+                    activated={exercise === activeExercise}
                 />
             )}
         </List>

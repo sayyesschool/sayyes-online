@@ -1,25 +1,25 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import {
+    LayoutGrid
+} from 'mdc-react';
 
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
+import FormDialog from 'shared/components/form-dialog';
 
 import { useStore } from 'app/store';
-import FormDialog from 'app/components/shared/form-dialog';
 import LessonDetails from 'app/components/courses/lesson-details';
-import LessonForm from 'app/components/courses/lesson-form';
+import Exercise from 'app/components/courses/exercise';
 import ExerciseForm from 'app/components/courses/exercise-form';
-import { upload } from 'app/helpers/file';
 
 import './index.scss';
 
 export default function LessonPage({ match, history }) {
     const [course, actions] = useStore('courses.single');
 
-    const [activeExercise, setActiveExercise] = useState();
-    const [isLessonFormOpen, setLessonFormOpen] = useState(false);
     const [isExerciseFormOpen, setExerciseFormOpen] = useState(false);
 
     useEffect(() => {
@@ -27,16 +27,7 @@ export default function LessonPage({ match, history }) {
     }, []);
 
     const handleUpdateLesson = useCallback(data => {
-        (data.file ?
-            upload(data.file, {
-                name: lesson.id,
-                path: `courses/${course.slug}/images/${lesson.id}`
-            }).then(response => ({ ...data, imageUrl: response.url })) :
-            Promise.resolve(data)
-        ).then(data => {
-            actions.updateLesson(course.id, lesson.id, data)
-                .then(() => setLessonFormOpen(false));
-        });
+        actions.updateLesson(course.id, lesson.id, data);
     }, [course, lesson]);
 
     const handleDeleteLesson = useCallback(() => {
@@ -47,61 +38,44 @@ export default function LessonPage({ match, history }) {
     }, [course, unit, lesson]);
 
     const handleCreateExercise = useCallback(data => {
-        data.lessonId = lesson.id;
+        data._unit = unit.id;
+        data._lesson = lesson.id;
 
         actions.createExercise(course.id, data)
             .then(() => setExerciseFormOpen(false));
-    }, [course]);
+    }, [course, unit, lesson]);
 
     const handleUpdateExercise = useCallback(data => {
-        actions.updateExercise(course.id, exercise.id, data)
+        return actions.updateExercise(course.id, exercise.id, data)
             .then(() => setExerciseFormOpen(false));
-    }, [course, activeExercise]);
+    }, [course, exercise]);
 
     const handleDeleteExercise = useCallback(exercise => {
         if (confirm('Удалить упражнение?')) {
-            actions.deleteExercise(course.id, exercise.id);
+            actions.deleteExercise(course.id, exercise.id)
+                .then(() => history.push(lesson.url));
         }
-    }, [course]);
+    }, [course, lesson, exercise]);
 
-    const handleAddExercise = useCallback(() => {
-        setActiveExercise(undefined);
-        setExerciseFormOpen(true);
-    }, []);
-
-    const handleEditExercise = useCallback(exercise => {
-        setActiveExercise(exercise);
-        setExerciseFormOpen(true);
+    const toggleExerciseForm = useCallback(() => {
+        setExerciseFormOpen(value => !value);
     }, []);
 
     if (!course) return <LoadingIndicator />;
 
     const unit = course.unitsById.get(match.params.unitId);
     const lesson = course.lessonsById.get(match.params.lessonId);
+    const exercise = course.exercisesById.get(match.params.exerciseId);
 
     return (
         <Page id="lesson-page">
             <PageHeader
-                title={
-                    <>
-                        <Link to={course.url}>{course.title}</Link>
-                        <Link to={unit.url}>{unit.title}</Link>
-                        {lesson.title}
-                    </>
-                }
+                breadcrumbs={[
+                    <Link to={course.url}>{course.title}</Link>,
+                    <Link to={unit.url}>{unit.title}</Link>
+                ]}
+                title={lesson.title}
                 actions={[
-                    {
-                        key: 'add',
-                        icon: 'add',
-                        title: 'Создать упражнение',
-                        onClick: handleAddExercise
-                    },
-                    {
-                        key: 'edit',
-                        icon: 'edit',
-                        title: 'Редактировать урок',
-                        onClick: () => setLessonFormOpen(true)
-                    },
                     {
                         key: 'delete',
                         icon: 'delete',
@@ -112,35 +86,39 @@ export default function LessonPage({ match, history }) {
             />
 
             <PageContent>
-                <LessonDetails
-                    lesson={lesson}
-                    onEditExercise={handleEditExercise}
-                    onDeleteExercise={handleDeleteExercise}
-                />
+                <LayoutGrid>
+                    <LayoutGrid.Cell span="6">
+                        <LessonDetails
+                            lesson={lesson}
+                            exercise={exercise}
+                            onUpdate={handleUpdateLesson}
+                            onAddExercise={toggleExerciseForm}
+                            onDeleteExercise={handleDeleteExercise}
+                        />
+                    </LayoutGrid.Cell>
+
+                    {exercise &&
+                        <LayoutGrid.Cell span="6">
+                            <Exercise
+                                course={course}
+                                exercise={exercise}
+                                onUpdate={handleUpdateExercise}
+                                onDelete={handleDeleteExercise}
+                            />
+                        </LayoutGrid.Cell>
+                    }
+                </LayoutGrid>
             </PageContent>
 
             <FormDialog
-                title="Редактирование урока"
-                form="lesson-form"
-                open={isLessonFormOpen}
-                onClose={() => setLessonFormOpen(false)}
-            >
-                <LessonForm
-                    lesson={lesson}
-                    onSubmit={handleUpdateLesson}
-                />
-            </FormDialog>
-
-            <FormDialog
-                title={activeExercise ? 'Редактирование упражнения' : 'Новое упражнение'}
+                title="Новое упражнение"
                 form="exercise-form"
                 open={isExerciseFormOpen}
-                onClose={() => setExerciseFormOpen(false)}
+                onClose={toggleExerciseForm}
             >
                 <ExerciseForm
-                    exercise={activeExercise}
                     course={course}
-                    onSubmit={activeExercise ? handleUpdateExercise : handleCreateExercise}
+                    onSubmit={handleCreateExercise}
                 />
             </FormDialog>
         </Page>

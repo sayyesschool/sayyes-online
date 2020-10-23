@@ -23,7 +23,7 @@ export default function CourseTable({ courses, onEdit, onDelete }) {
                 {courses.map(course =>
                     <DataTable.Row key={course.id}>
                         <DataTable.Cell>
-                            <Link to={course.url}>{course.title}</Link>
+                            <Link to={course.uri}>{course.title}</Link>
                         </DataTable.Cell>
 
                         <DataTable.Cell numeric>

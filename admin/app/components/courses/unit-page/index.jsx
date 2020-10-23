@@ -5,11 +5,10 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
+import FormDialog from 'shared/components/form-dialog';
 
 import { useStore } from 'app/store';
-import FormDialog from 'app/components/shared/form-dialog';
 import UnitDetails from 'app/components/courses/unit-details';
-import UnitForm from 'app/components/courses/unit-form';
 import LessonForm from 'app/components/courses/lesson-form';
 
 import './index.scss';
@@ -17,7 +16,6 @@ import './index.scss';
 export default function UnitPage({ match, history }) {
     const [course, actions] = useStore('courses.single');
 
-    const [isUnitFormOpen, setUnitFormOpen] = useState(false);
     const [isLessonFormOpen, setLessonFormOpen] = useState(false);
 
     useEffect(() => {
@@ -25,8 +23,7 @@ export default function UnitPage({ match, history }) {
     }, []);
 
     const handleUpdateUnit = useCallback(data => {
-        actions.updateUnit(course.id, unit.id, data)
-            .then(() => setUnitFormOpen(false));
+        actions.updateUnit(course.id, unit.id, data);
     }, [course, unit]);
 
     const handleDeleteUnit = useCallback(() => {
@@ -37,7 +34,7 @@ export default function UnitPage({ match, history }) {
     }, [course, unit]);
 
     const handleCreateLesson = useCallback(data => {
-        data.unitId = unit.id;
+        data._unit = unit.id;
 
         actions.createLesson(course.id, data)
             .then(() => setLessonFormOpen(false));
@@ -48,10 +45,6 @@ export default function UnitPage({ match, history }) {
             actions.deleteLesson(course.id, lesson.id);
         }
     }, [course, unit]);
-
-    const toggleUnitForm = useCallback(() => {
-        setUnitFormOpen(isOpen => !isOpen);
-    }, []);
 
     const toggleLessonForm = useCallback(() => {
         setLessonFormOpen(isOpen => !isOpen);
@@ -64,25 +57,11 @@ export default function UnitPage({ match, history }) {
     return (
         <Page id="unit-page">
             <PageHeader
-                title={
-                    <>
-                        <Link to={course.url}>{course.title}</Link>
-                        {unit.title}
-                    </>
-                }
+                breadcrumbs={[
+                    <Link to={course.url}>{course.title}</Link>
+                ]}
+                title={unit.title}
                 actions={[
-                    {
-                        key: 'add',
-                        icon: 'add',
-                        title: 'Создать урок',
-                        onClick: toggleLessonForm
-                    },
-                    {
-                        key: 'edit',
-                        icon: 'edit',
-                        title: 'Изменить юнит',
-                        onClick: toggleUnitForm
-                    },
                     {
                         key: 'delete',
                         icon: 'delete',
@@ -95,21 +74,11 @@ export default function UnitPage({ match, history }) {
             <PageContent>
                 <UnitDetails
                     unit={unit}
+                    onUpdate={handleUpdateUnit}
+                    onAddLesson={toggleLessonForm}
                     onDeleteLesson={handleDeleteLesson}
                 />
             </PageContent>
-
-            <FormDialog
-                title="Редактирование юнита"
-                form="unit-form"
-                open={isUnitFormOpen}
-                onClose={toggleUnitForm}
-            >
-                <UnitForm
-                    unit={unit}
-                    onSubmit={handleUpdateUnit}
-                />
-            </FormDialog>
 
             <FormDialog
                 title="Новый урок"

@@ -19,9 +19,14 @@ export default function ExerciseForm({ exercise = {}, course, onSubmit }) {
     }, [exercise]);
 
     const handleSubmit = useCallback(() => {
-        const file = fileInputRef.current.files[0];
+        const file = fileInputRef.current.input.files[0];
+
+        if (file) {
+            file.path = `courses/${course.id}/images/`;
+        }
 
         getData(data => onSubmit(Object.assign(data, { file })));
+        fileInputRef.current.reset();
     }, [onSubmit]);
 
     return (

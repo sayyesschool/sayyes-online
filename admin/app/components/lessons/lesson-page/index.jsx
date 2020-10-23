@@ -49,7 +49,7 @@ export default function LessonPage({ match, history }) {
     return (
         <main id="lesson-page" className="page">
             <Layout element="header" row justifyContent="between">
-                <Typography element="h1" variant="headline4" noMargin>{lesson.title}</Typography>
+                <Typography element="h1" type="headline4" noMargin>{lesson.title}</Typography>
 
                 <Layout>
                     <Button

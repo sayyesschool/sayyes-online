@@ -11,20 +11,24 @@ body {
 }
 
 .page-header {
+    padding-top: 1rem;
     @include top-app-bar.fill-color-accessible(#f4f4f4);
     @include top-app-bar.icon-ink-color(theme.accessible-ink-color(#f4f4f4, secondary));
+
+    .mdc-top-app-bar__row {
+        margin: auto;
+        height: auto;
+    }
+
+    .mdc-top-app-bar__section--align-start {
+        display: block;
+        padding-left: 1rem;
+    }
 }
 
 .page-title {
-    a:after {
-        display: inline-block;
-        content: '›';
-        margin: 0 8px;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
+    font-size: 1.5rem;
+    line-height: 1.5;
 }
 
 .page-content {

@@ -1,45 +1,77 @@
 import React from 'react';
 import {
     Card,
-    LayoutGrid,
-    Typography
+    Icon,
+    IconButton,
+    LayoutGrid
 } from 'mdc-react';
 
-import ExerciseDetails from '../exercise-details';
+import LessonForm from 'app/components/courses/lesson-form';
+import ExerciseList from 'app/components/courses/exercise-list';
+import ExerciseDetails from 'app/components/courses/exercise-details';
 
-export default function LessonDetails({ lesson, onEditExercise, onDeleteExercise }) {
+export default function LessonDetails({
+    course,
+    lesson,
+    exercise,
+
+    onUpdate,
+    onAddExercise,
+    onSelectExercise,
+    onEditExercise,
+    onDeleteExercise
+}) {
     return (
         <section className="lesson-details">
             <LayoutGrid>
-                <LayoutGrid.Cell span="4">
-                    <Typography variant="headline6">Детали</Typography>
-
+                <LayoutGrid.Cell span="6">
                     <Card>
                         <Card.Header
-                            title={lesson.title}
-                            subtitle={lesson.slug}
+                            graphic={<Icon>article</Icon>}
+                            title="Детали"
+                            actions={
+                                <IconButton
+                                    icon="save"
+                                    type="submit"
+                                    form="lesson-form"
+                                />
+                            }
                         />
 
-                        {lesson.imageUrl &&
-                            <Card.Media
-                                imageUrl={lesson.imageUrl}
-                                wide
+                        <Card.Section primary>
+                            <LessonForm
+                                course={course}
+                                lesson={lesson}
+                                onSubmit={onUpdate}
                             />
-                        }
+                        </Card.Section>
                     </Card>
                 </LayoutGrid.Cell>
 
-                <LayoutGrid.Cell span="4">
-                    <Typography variant="headline6">Упражнения</Typography>
-
-                    {lesson.exercises.map(exercise =>
-                        <ExerciseDetails
-                            key={exercise.id}
-                            exercise={exercise}
-                            onEdit={onEditExercise}
-                            onDelete={onDeleteExercise}
+                <LayoutGrid.Cell span="6">
+                    <Card>
+                        <Card.Header
+                            graphic={<Icon>school</Icon>}
+                            title="Упражнения"
+                            actions={
+                                <IconButton
+                                    icon="add"
+                                    onClick={onAddExercise}
+                                />
+                            }
                         />
-                    )}
+
+                        {lesson.exercises.length > 0 &&
+                            <Card.Section>
+                                <ExerciseList
+                                    exercise={exercise}
+                                    exercises={lesson.exercises}
+                                    onSelect={onSelectExercise}
+                                    onDelete={onDeleteExercise}
+                                />
+                            </Card.Section>
+                        }
+                    </Card>
                 </LayoutGrid.Cell>
             </LayoutGrid>
         </section>

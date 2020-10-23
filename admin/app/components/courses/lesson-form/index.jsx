@@ -8,7 +8,7 @@ import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
 import FileInput from 'shared/components/file-input';
 
-export default function LessonForm({ lesson = {}, onSubmit }) {
+export default function LessonForm({ lesson = {}, course, onSubmit }) {
     const fileInputRef = useRef();
     const [data, handleChange, getData] = useForm({
         title: lesson.title,
@@ -17,9 +17,14 @@ export default function LessonForm({ lesson = {}, onSubmit }) {
     }, [lesson]);
 
     const handleSubmit = useCallback(() => {
-        const file = fileInputRef.current.files[0];
+        const file = fileInputRef.current.input.files[0];
+
+        if (file) {
+            file.path = `courses/${course.id}/images/`;
+        }
 
         getData(data => onSubmit(Object.assign(data, { file })));
+        fileInputRef.current.reset();
     }, [onSubmit]);
 
     return (

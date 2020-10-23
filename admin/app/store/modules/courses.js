@@ -150,7 +150,9 @@ export default combineReducers({
 
         [deleteUnit]: (state, action) => mapCourse({
             ...state,
-            units: state.units.filter(unit => unit.id !== action.data.id)
+            units: state.units.filter(unit => unit.id !== action.data.id),
+            lessons: state.lessons.filter(lesson => lesson._unit !== action.data.id),
+            exercises: state.exercises.filter(exercise => exercise._unit !== action.data.id)
         }),
 
         // Lesson
@@ -158,7 +160,7 @@ export default combineReducers({
         [createLesson]: (state, action) => mapCourse({
             ...state,
             lessons: state.lessons.concat(action.data),
-            units: state.units.map(unit => unit.id !== action.data.unitId ? unit : {
+            units: state.units.map(unit => unit.id !== action.data._unit ? unit : {
                 ...unit,
                 _lessons: unit._lessons.concat(action.data.id)
             })
@@ -175,10 +177,11 @@ export default combineReducers({
         [deleteLesson]: (state, action) => mapCourse({
             ...state,
             lessons: state.lessons.filter(lesson => lesson.id !== action.data.id),
-            units: state.units.map(unit => unit.id !== action.data.unitId ? unit : {
+            units: state.units.map(unit => unit.id !== action.data._unit ? unit : {
                 ...unit,
                 _lessons: unit._lessons.filter(id => id !== action.data.id)
-            })
+            }),
+            exercises: state.exercises.filter(exercise => exercise._lesson !== action.data.id)
         }),
 
         // Exercise
@@ -186,7 +189,7 @@ export default combineReducers({
         [createExercise]: (state, action) => mapCourse({
             ...state,
             exercises: state.exercises.concat(action.data),
-            lessons: state.lessons.map(lesson => lesson.id !== action.data.lessonId ? lesson : {
+            lessons: state.lessons.map(lesson => lesson.id !== action.data._lesson ? lesson : {
                 ...lesson,
                 _exercises: lesson._exercises.concat(action.data.id)
             })
@@ -203,7 +206,7 @@ export default combineReducers({
         [deleteExercise]: (state, action) => mapCourse({
             ...state,
             exercises: state.exercises.filter(exercise => exercise.id !== action.data.id),
-            lessons: state.lessons.map(lesson => lesson.id !== action.data.lessonId ? lesson : {
+            lessons: state.lessons.map(lesson => lesson.id !== action.data._lesson ? lesson : {
                 ...lesson,
                 _exercises: lesson._exercises.filter(id => id !== action.data.id)
             })
@@ -218,18 +221,21 @@ function mapCourse(course) {
     course.audiosByFilename = course.audios.reduce((map, audio) => map.set(audio.filename, audio), new Map());
     course.videosByFilename = course.videos.reduce((map, video) => map.set(video.filename, video), new Map());
 
+    course.url = course.uri;
+
     course.units.forEach(unit => {
-        unit.url = `${course.url}/units/${unit.id}`;
+        unit.course = course;
+        unit.url = `${course.uri}/units/${unit.id}`;
 
         unit.lessons = unit._lessons.map(id => {
             const lesson = course.lessonsById.get(id);
 
-            lesson.unitId = unit.id;
+            lesson.course = course;
             lesson.url = `${unit.url}/lessons/${lesson.id}`;
             lesson.exercises = lesson._exercises.map((id, index) => {
                 const exercise = course.exercisesById.get(id);
 
-                exercise.lessonId = lesson.id;
+                exercise.course = course;
                 exercise.url = `${lesson.url}/exercises/${exercise.id}`;
                 exercise.number = index + 1;
 

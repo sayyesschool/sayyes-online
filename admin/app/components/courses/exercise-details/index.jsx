@@ -8,11 +8,10 @@ import {
 import AudioPlayer from 'shared/components/audio-player';
 import VideoPlayer from 'shared/components/video-player';
 
-export default function ExerciseDetails({ exercise, number, onEdit, onDelete }) {
+export default function ExerciseDetails({ exercise, onEdit, onDelete }) {
     return (
-        <Card className="exercise-details" outlined>
+        <Card className="exercise-details">
             <Card.Header
-                graphic={<Avatar text={number} />}
                 title={exercise.description}
                 actions={[
                     <IconButton
@@ -31,7 +30,7 @@ export default function ExerciseDetails({ exercise, number, onEdit, onDelete }) 
 
             {exercise.image &&
                 <img
-                    src={exercise.imageUrl}
+                    src={STATIC_URL + exercise.imageUrl}
                 />
             }
 

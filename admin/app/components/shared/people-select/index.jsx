@@ -3,7 +3,7 @@ import {
     Select
 } from 'mdc-react';
 
-import api from 'shared/api';
+import api from 'shared/services/api';
 
 export default function PeopleSelect({ resolveUrl, ...props }) {
     const [results, setResults] = useState();

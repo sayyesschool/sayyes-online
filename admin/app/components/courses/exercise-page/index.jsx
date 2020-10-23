@@ -7,10 +7,8 @@ import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
 
 import { useStore } from 'app/store';
-import FormDialog from 'app/components/shared/form-dialog';
 import ExerciseDetails from 'app/components/courses/exercise-details';
 import ExerciseForm from 'app/components/courses/exercise-form';
-import { upload } from 'app/helpers/file';
 
 import './index.scss';
 
@@ -24,21 +22,13 @@ export default function ExercisePage({ match, history }) {
     }, []);
 
     const handleUpdateExercise = useCallback(data => {
-        (data.file ?
-            upload(file, {
-                name: exercise.id,
-                path: `courses/${course.slug}/images/${exercise.id}`
-            }).then(response => ({ ...data, imageUrl: response.url })) :
-            Promise.resolve(data)
-        ).then(data => {
-            actions.updateExercise(course.id, exercise.id, data)
-                .then(() => setExerciseFormOpen(false));
-        });
+        actions.updateExercise(course.id, exercise.id, data)
+            .then(() => setExerciseFormOpen(false));
     }, [course, exercise]);
 
     const handleDeleteExercise = useCallback(() => {
-        if (confirm('Удалить урок?')) {
-            actions.deleteLesson(course.id, exercise.id)
+        if (confirm('Удалить упражнение?')) {
+            actions.deleteExercise(course.id, exercise.id)
                 .then(() => history.push(lesson.url));
         }
     }, [course, lesson, exercise]);
@@ -82,7 +72,7 @@ export default function ExercisePage({ match, history }) {
                 />
             </PageContent>
 
-            <FormDialog
+            {/* <FormDialog
                 title="Редактирование упражнения"
                 form="exercise-form"
                 open={isExerciseFormOpen}
@@ -93,7 +83,7 @@ export default function ExercisePage({ match, history }) {
                     course={course}
                     onSubmit={handleUpdateExercise}
                 />
-            </FormDialog>
+            </FormDialog> */}
         </Page>
     );
 }

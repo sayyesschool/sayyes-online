@@ -20,7 +20,7 @@ export default function UnitList({ units, onDelete }) {
                     key={unit.id}
                     component={Link}
                     to={unit.url}
-                    graphic={<img src={unit.imageUrl} />}
+                    graphic={<img src={STATIC_URL + unit.imageUrl} />}
                     primaryText={unit.title}
                     secondaryText={`${unit.lessons.length} уроков`}
                     meta={

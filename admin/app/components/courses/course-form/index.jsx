@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useRef, useCallback } from 'react';
 import {
     Layout,
     TextField
@@ -6,17 +6,26 @@ import {
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
-
-import './index.scss';
+import FileInput from 'shared/components/file-input';
 
 export default function CourseForm({ course = {}, onSubmit }) {
+    const fileInputRef = useRef();
     const [data, handleChange, getData] = useForm({
         title: course.title,
-        slug: course.slug
+        slug: course.slug,
+        description: course.description,
+        image: course.image
     }, [course]);
 
     const handleSubmit = useCallback(() => {
-        getData(onSubmit);
+        const file = fileInputRef.current.input.files[0];
+
+        if (file) {
+            file.path = `courses/${course.id}/images/`;
+        }
+
+        getData(data => onSubmit(Object.assign(data, { file })));
+        fileInputRef.current.reset();
     }, []);
 
     return (
@@ -37,6 +46,23 @@ export default function CourseForm({ course = {}, onSubmit }) {
                     filled
                     onChange={handleChange}
                 />
+
+                <TextField
+                    name="description"
+                    label="Описание"
+                    value={data.description}
+                    filled
+                    textarea
+                    onChange={handleChange}
+                />
+
+                <FileInput
+                    ref={fileInputRef}
+                    name="file"
+                    label="Изображение"
+                    url={data.image && STATIC_URL + course.imageUrl}
+                    caption={data.image}
+                />
             </Layout>
         </Form>
     );
@@ -45,6 +71,8 @@ export default function CourseForm({ course = {}, onSubmit }) {
 CourseForm.defaultProps = {
     course: {
         title: '',
-        slug: ''
+        slug: '',
+        description: '',
+        image: ''
     }
 };
