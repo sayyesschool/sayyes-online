@@ -109,7 +109,11 @@ module.exports = ({ Course }) => ({
 
         delete: (req, res, next) => {
             Course.update(req.params.course, {
-                $pull: { units: { _id: req.params.unit } }
+                $pull: {
+                    units: { _id: req.params.unit },
+                    lessons: { _unit: req.params.unit },
+                    exercises: { _unit: req.params.unit }
+                }
             }, {
                 new: false,
                 projection: {
@@ -137,27 +141,23 @@ module.exports = ({ Course }) => ({
                     'units.$[u]._lessons': lesson.id
                 }
             }, {
-                arrayFilters: [{ 'u._id': req.body.unitId }],
+                arrayFilters: [{ 'u._id': lesson._unit }],
                 projection: {
                     id: true,
                     slug: true,
                     lessons: { $slice: -1 }
                 }
-            }).then(({ lessons: [lesson] }) => {
-                const data = lesson.toObject();
-
-                data.unitId = req.body.unitId;
-
+            }).then(course => {
                 res.json({
                     ok: true,
                     message: 'Урок создан',
-                    data
+                    data: course.lessons[0]
                 });
             }).catch(next);
         },
 
         update: (req, res, next) => {
-            const data = Array.from(Object.entries(req.body))
+            const data = Array.from(Object.entries(data))
                 .reduce((data, [key, value]) => {
                     data[`lessons.$[l].${key}`] = value;
                     return data;
@@ -173,11 +173,11 @@ module.exports = ({ Course }) => ({
                     slug: true,
                     lessons: { $elemMatch: { _id: req.params.lesson } }
                 }
-            }).then(course => {
+            }).then(({ lessons: [lesson] }) => {
                 res.json({
                     ok: true,
                     message: 'Урок изменен',
-                    data: course.lessons[0]
+                    data: lesson
                 });
             }).catch(next);
         },
@@ -186,23 +186,24 @@ module.exports = ({ Course }) => ({
             Course.update(req.params.course, {
                 $pull: {
                     lessons: { _id: req.params.lesson },
-                    'units.$[u]._lessons': req.params.lesson
+                    'units.$[u]._lessons': req.params.lesson,
+                    exercises: { _lesson: req.params.lesson }
                 }
             }, {
                 arrayFilters: [{ 'u._lessons': req.params.lesson }],
-                lean: true,
                 projection: {
                     lessons: { $elemMatch: { _id: req.params.lesson } },
                     units: { $elemMatch: { _lessons: req.params.lesson } }
                 }
             }).then(({ lessons: [lesson], units: [unit] }) => {
+                const data = lesson.toObject();
+
+                data.unitId = unit.id;
+
                 res.json({
                     ok: true,
                     message: 'Урок удален',
-                    data: {
-                        id: lesson._id,
-                        unitId: unit._id
-                    }
+                    data
                 });
             }).catch(next);
         }
@@ -219,7 +220,7 @@ module.exports = ({ Course }) => ({
                 }
             }, {
                 new: true,
-                arrayFilters: [{ 'l._id': req.body.lessonId }],
+                arrayFilters: [{ 'l._id': exercise._lesson }],
                 projection: {
                     id: true,
                     slug: true,
@@ -241,7 +242,7 @@ module.exports = ({ Course }) => ({
         update: (req, res, next) => {
             const data = Array.from(Object.entries(req.body))
                 .reduce((data, [key, value]) => {
-                    data[`exercises.$[l].${key}`] = value;
+                    data[`exercises.$[e].${key}`] = value;
                     return data;
                 }, {});
 
@@ -249,17 +250,17 @@ module.exports = ({ Course }) => ({
                 $set: data
             }, {
                 new: true,
-                arrayFilters: [{ 'l._id': req.params.lesson }],
+                arrayFilters: [{ 'e._id': req.params.exercise }],
                 projection: {
                     id: true,
                     slug: true,
                     exercises: { $elemMatch: { _id: req.params.exercise } }
                 }
-            }).then(course => {
+            }).then(({ exercises: [exercise] }) => {
                 res.json({
                     ok: true,
                     message: 'Упражнение изменено',
-                    data: course.exercises[0]
+                    data: exercise
                 });
             }).catch(next);
         },
@@ -272,20 +273,14 @@ module.exports = ({ Course }) => ({
                 }
             }, {
                 arrayFilters: [{ 'l._exercises': req.params.exercise }],
-                lean: true,
                 projection: {
-                    exercises: { $elemMatch: { _id: req.params.exercise } },
-                    lessons: { $elemMatch: { _exercises: req.params.exercise } }
+                    exercises: { $elemMatch: { _id: req.params.exercise } }
                 }
-            }).then(({ exercises: [exercise], lessons: [lesson] }) => {
-                console.log(exercise);
+            }).then(({ exercises: [exercise] }) => {
                 res.json({
                     ok: true,
                     message: 'Упражнение удалено',
-                    data: {
-                        id: exercise._id,
-                        lessonId: lesson._id
-                    }
+                    data: exercise
                 });
             }).catch(next);
         }
