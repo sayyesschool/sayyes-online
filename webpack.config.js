@@ -1,8 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
-const sass = require('sass');
 const CssExtractPlugin = require('mini-css-extract-plugin');
-const autoprefixer = require('autoprefixer')();
+const TerserPlugin = require("terser-webpack-plugin");
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const { YANDEX_METRIKA_ID, GOOGLE_ANALYTICS_ID } = require('./core/config');
 
@@ -14,6 +14,7 @@ module.exports = [
 
 function config(name, env) {
     const APP_URL = env === 'development' ? 'http://localhost' : 'https://online.sayes.ru';
+    const STATIC_URL = env === 'development' ? 'http://localhost:8080' : 'https://static.sayes.ru';
 
     return {
         name,
@@ -50,13 +51,14 @@ function config(name, env) {
                         {
                             loader: 'postcss-loader',
                             options: {
-                                plugins: [autoprefixer]
+                                postcssOptions: {
+                                    plugins: ['postcss-preset-env']
+                                }
                             }
                         },
                         {
                             loader: 'sass-loader',
                             options: {
-                                implementation: sass,
                                 webpackImporter: false,
                                 sassOptions: {
                                     includePaths: [
@@ -75,8 +77,10 @@ function config(name, env) {
 
         plugins: [
             new webpack.DefinePlugin({
+                'process.env': JSON.stringify({}),
                 'APP_ENV': JSON.stringify(env),
                 'APP_URL': JSON.stringify(APP_URL),
+                'STATIC_URL': JSON.stringify(STATIC_URL),
                 'YANDEX_METRIKA_ID': JSON.stringify(YANDEX_METRIKA_ID),
                 'GOOGLE_ANALYTICS_ID': JSON.stringify(GOOGLE_ANALYTICS_ID)
             }),
@@ -96,21 +100,19 @@ function config(name, env) {
                 }
             },
 
-            // splitChunks: {
-            //     chunks: 'all',
-            //     name: 'shared'
-            // },
+            minimize: true,
 
-            // minimizer: [
-            //     new UglifyJsPlugin({
-            //         uglifyOptions: {
-            //             output: {
-            //                 comments: false
-            //             }
-            //         }
-            //     }),
-            //     new OptimizeCSSAssetsPlugin({})
-            // ]
+            minimizer: [
+                new TerserPlugin({
+                    terserOptions: {
+                        format: {
+                            comments: false,
+                        },
+                    },
+                    extractComments: false
+                }),
+                new OptimizeCSSAssetsPlugin({})
+            ]
         },
 
         resolve: {
@@ -124,6 +126,10 @@ function config(name, env) {
             alias: {
                 'app': path.resolve(__dirname, name, 'app'),
                 'shared': path.resolve(__dirname, 'shared', 'client')
+            },
+
+            fallback: {
+                util: require.resolve('util/')
             }
         }
     };
