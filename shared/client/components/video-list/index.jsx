@@ -10,9 +10,9 @@ export default function VideoList({ videos, selectedVideo, onClick }) {
             {videos.map(video =>
                 <List.Item
                     key={video.id}
+                    graphic={<Icon>movie</Icon>}
                     primaryText={video.title}
-                    secondaryText={video.filename}
-                    meta={video.duration}
+                    secondaryText={video.duration}
                     activated={video === selectedVideo}
                     onClick={() => onClick(video)}
                 />

@@ -6,7 +6,7 @@ import {
 
 export default function AudioList({ audios, selectedAudio, onClick }) {
     return (
-        <List className="audio-list" twoLine>
+        <List className="audio-list">
             {audios.map(audio =>
                 <AudioListItem
                     key={audio}
@@ -26,8 +26,9 @@ function AudioListItem({ audio, playing, onClick, ...props }) {
 
     return (
         <List.Item
-            primaryText={audio.title}
-            secondaryText={audio.filename}
+            text={audio.title}
+            graphic={<Icon>audiotrack</Icon>}
+            meta={audio.duration}
             activated={playing}
             onClick={handleClick}
             {...props}

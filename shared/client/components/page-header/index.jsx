@@ -21,15 +21,23 @@ export default function PageHeader({ title, breadcrumbs, backTo, actions = [], c
                     }
 
                     {breadcrumbs?.length > 0 &&
-                        <span className="page-breadcrumbs">
-                            {breadcrumbs}
-                        </span>
+                        <div className="page-breadcrumbs">
+                            {breadcrumbs.map((item, index) =>
+                                React.cloneElement(item, { key: index })
+                            )}
+                        </div>
                     }
 
                     {title &&
                         <TopAppBar.Title element="h1" className="page-title">{title}</TopAppBar.Title>
                     }
                 </TopAppBar.Section>
+
+                {children &&
+                    <TopAppBar.Section>
+                        {children}
+                    </TopAppBar.Section>
+                }
 
                 <TopAppBar.Section align="end">
                     {actions.filter(action => Boolean(action)).map(({ icon, ...props }, index) =>

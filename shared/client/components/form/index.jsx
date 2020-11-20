@@ -1,30 +1,30 @@
-import React, { useRef, useCallback } from 'react';
+import React, { forwardRef, useCallback } from 'react';
 
-export default function Form({
+export default forwardRef(Form);
+
+function Form({
     preventDefault = true,
     novalidate = false,
     onSubmit = Function.prototype,
 
     children,
     ...props
-}) {
-    const formRef = useRef();
-
+}, ref) {
     const handleSubmit = useCallback(event => {
         if (event && preventDefault) {
             event.preventDefault();
         }
 
-        if (novalidate || formRef.current.checkValidity()) {
+        if (novalidate || event.target.checkValidity()) {
             onSubmit(event);
         } else {
-            formRef.current.reportValidity();
+            event.target.reportValidity();
         }
     }, [preventDefault, novalidate, onSubmit]);
 
     return (
         <form
-            ref={formRef}
+            ref={ref}
             onSubmit={handleSubmit}
             {...props}
         >

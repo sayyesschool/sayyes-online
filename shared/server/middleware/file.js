@@ -1,0 +1,24 @@
+const upload = require('multer')();
+
+module.exports = ({ File }) => ({
+    upload: [
+        upload.single('image'),
+        (req, res, next) => {
+            if (!req.file) return next();
+
+            File.upload(req.file, {
+                name: req.body.image,
+                path: `courses/${req.params.course}/images/`
+            }).then(data => {
+                req.body.image = data.name;
+            }).finally(() => next());
+        }
+    ],
+
+    delete: (req, res, next) => {
+        if (req.body.imageUrl) return next();
+
+        File.delete(req.body.imageUrl)
+            .finally(() => next());
+    }
+});

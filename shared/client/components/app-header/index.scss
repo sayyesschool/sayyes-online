@@ -4,9 +4,22 @@
 @use '@material/theme';
 
 #app-header {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-    z-index: 7;
     box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+    z-index: 7;
+
+    .mdc-top-app-bar__section {
+        &--align-start {
+            flex: 1;
+        }
+
+        &--align-center {
+            padding: 0;
+        }
+
+        &--align-end {
+            flex: 1;
+        }
+    }
 
     .mdc-top-app-bar__title {
         margin-right: 1rem;
@@ -19,11 +32,14 @@
     }
 
     .mdc-tab-bar {
+        height: 100%;
         width: auto;
         display: flex;
     }
 
     .mdc-tab {
+        height: 100%;
+        text-transform: none;
         @include tab.text-label-color(on-primary);
         @include tab.icon-color(on-primary);
 
@@ -43,5 +59,6 @@
 
     .user-avatar {
         margin-left: auto;
+        background-color: #e71985;
     }
 }

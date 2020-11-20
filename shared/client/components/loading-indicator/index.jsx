@@ -6,7 +6,7 @@ import './index.scss';
 export default function LoadingIndicator() {
     return (
         <div className="loading-indicator">
-            <CircularProgress indeterminate />
+            <CircularProgress size="large" indeterminate />
         </div>
     );
 }

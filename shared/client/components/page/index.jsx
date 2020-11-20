@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import classnames from 'classnames';
-import {
-    CircularProgress
-} from 'mdc-react';
 
-export default function Page({ loading, className, ...props }) {
+export default forwardRef(Page);
+
+function Page({ className, ...props }, ref) {
     const classNames = classnames('page', className);
 
-    return loading ? <CircularProgress indeterminate /> : (
-        <div className={classNames} {...props} />
+    return (
+        <div ref={ref} className={classNames} {...props} />
     );
 }

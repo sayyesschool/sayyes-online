@@ -1,25 +1,57 @@
 import React, { useRef, useCallback, useEffect, useState } from 'react';
 import {
     Avatar,
+    Button,
+    Icon,
     IconButton,
     Typography
 } from 'mdc-react';
 import classnames from 'classnames';
 
-import { useRoom } from 'shared/hooks/twilio';
+import { useRoom, useChat } from 'shared/hooks/twilio';
 import Chat from 'shared/components/chat';
 
 import './index.scss';
 
 export default function Conversation({ name, localParticipant, remoteParticipant }) {
     const rootRef = useRef();
-    const localMediaRef = useRef();
-    const remoteMediaRef = useRef();
+    const localWebcamRef = useRef();
+    const remoteWebcamRef = useRef();
+    const remoteScreenRef = useRef();
+
     const [isFullscreen, setFullscreen] = useState(false);
+    const [isParticipantOnline, setParticipantOnline] = useState(false);
+
+    const chat = useChat(window.TWILIO_CHAT_TOKEN);
     const room = useRoom(window.TWILIO_VIDEO_TOKEN, {
-        localMediaRef,
-        remoteMediaRef
+        localWebcamRef,
+        remoteWebcamRef,
+        remoteScreenRef
     });
+
+    useEffect(() => {
+        chat.connect({
+            name,
+            onConnected: channel => {
+                console.log('Joined channel', channel);
+
+                channel.members.forEach(member => {
+                    if (member.identity === remoteParticipant.id) {
+                        setParticipantOnline(true);
+                    }
+                });
+
+                channel.on('memberJoined', member => member.identity === remoteParticipant.id && setParticipantOnline(true));
+                channel.on('memberLeft', member => member.identity === remoteParticipant.id && setParticipantOnline(false));
+            }
+        });
+    }, [name]);
+
+    useEffect(() => {
+        rootRef.current.addEventListener('fullscreenchange', event => {
+            setFullscreen(document.fullscreenElement === event.target);
+        });
+    }, []);
 
     useEffect(() => {
         if (isFullscreen) {
@@ -29,13 +61,17 @@ export default function Conversation({ name, localParticipant, remoteParticipant
         }
     }, [isFullscreen]);
 
-    const handleAudioCall = useCallback(() => {
-        room.connect({ name, video: false });
-    }, [name]);
+    const handleSubmitMessage = useCallback(message => {
+        chat.channel.channel.sendMessage(message);
+    }, [chat.channel]);
 
-    const handleVideoCall = useCallback(() => {
-        room.connect({ name });
-    }, [name]);
+    const handleChatTyping = useCallback(channel => {
+        chat.channel.typing();
+    }, [chat.channel]);
+
+    const handleConnect = useCallback(() => {
+        room.connect({ name, video: false });
+    }, []);
 
     const handleEndCall = useCallback(() => {
         room.disconnect();
@@ -59,18 +95,23 @@ export default function Conversation({ name, localParticipant, remoteParticipant
     }, [room.isVideoOn]);
 
     const classNames = classnames('conversation', {
+        'conversation--participant-online': isParticipantOnline,
+        'conversation--participant-offline': !isParticipantOnline,
         'conversation--video': room.isVideoOn,
         'conversation--fullscreen': isFullscreen
     });
-
+    console.log(room);
     return (
         <div ref={rootRef} className={classNames}>
             <header className="conversation__header">
                 <Avatar text={remoteParticipant.initials} />
 
                 <div className="conversation__header__text">
-                    <Typography variant="subtitle2" noMargin noWrap>{remoteParticipant.name}</Typography>
-                    <Typography variant="caption" noMargin noWrap>{room.time ? formatTime(room.time) : 'Offline'}</Typography>
+                    <Typography type="subtitle2" noMargin noWrap>{remoteParticipant.fullname}</Typography>
+
+                    {room.time &&
+                        <Typography type="caption" noMargin noWrap>{formatTime(room.time)}</Typography>
+                    }
                 </div>
 
                 <div className="conversation__header__actions">
@@ -105,35 +146,33 @@ export default function Conversation({ name, localParticipant, remoteParticipant
                             />
                         </>
                         :
-                        <>
-                            <IconButton
-                                icon="call"
-                                title="Голосовой звонок"
-                                onClick={handleAudioCall}
-                            />
-
-                            <IconButton
-                                icon="videocam"
-                                title="Видеозвонок"
-                                onClick={handleVideoCall}
-                            />
-                        </>
+                        <Button
+                            label="Войти"
+                            icon={<Icon>call</Icon>}
+                            unelevated
+                            disabled={room.isConnecting}
+                            onClick={handleConnect}
+                        />
                     }
                 </div>
             </header>
 
-            <section className="conversation__main">
-                <div className="call">
-                    <div></div>
-                    <video ref={localMediaRef} className="media media--local" />
-                    <video ref={remoteMediaRef} className="media media--remote" />
-                </div>
+            <section className="conversation__content">
+                <section className="conversation__main">
+                    <div ref={remoteScreenRef} className="media media--screen" />
+                </section>
 
-                <Chat
-                    name={name}
-                    localParticipant={localParticipant}
-                    remoteParticipan={remoteParticipant}
-                />
+                <aside className="conversation__aside">
+                    <div ref={localWebcamRef} className="media media--local" />
+                    <div ref={remoteWebcamRef} className="media media--remote" />
+
+                    <Chat
+                        user={localParticipant}
+                        messages={chat.messages}
+                        onSubmit={handleSubmitMessage}
+                        onTyping={handleChatTyping}
+                    />
+                </aside>
             </section>
         </div>
     );

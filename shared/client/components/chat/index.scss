@@ -1,7 +1,6 @@
 .chat {
     display: flex;
     flex-direction: column;
-    background-color: #eee;
 
     .mdc-circular-progress {
         margin: auto;
@@ -19,13 +18,14 @@
         overflow-x: hidden;
 
         .message {
-            display: block;
+            display: flex;
             position: relative;
+            align-items: flex-start;
         
             &__text {
                 position: relative;
                 display: inline-block;
-                max-width: 210px;
+                //max-width: 210px;
                 background-color: white;
                 color: #414141;
                 padding: 8px 10px;
@@ -35,10 +35,9 @@
             }
 
             &__time {
-                min-width: 42px;
                 font-size: 10px;
                 color: rgba(0, 0, 0, 0.54);
-                margin-right: 8px;
+                margin-top: 4px;
             }
 
             // &::after {
@@ -53,6 +52,10 @@
             &--local {
                 align-self: flex-end;
 
+                .message__time {
+                    margin-right: 8px;
+                }
+
                 .message__text {
                     background-color: rgb(215, 187, 220);
                 }
@@ -65,8 +68,13 @@
             &--remote {
                 align-self: flex-start;
 
+                .message__time {
+                    margin-left: 8px;
+                }
+
                 .message__text {
                     background-color: white;
+                    order: -1;
                 }
             }
 

@@ -1,17 +1,20 @@
 import React, { useRef, useState, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import classnames from 'classnames';
 import {
     Chip,
+    DataTable,
     Icon,
     IconButton,
     Typography
 } from 'mdc-react';
 
+import { formatTime } from 'shared/utils/format';
 import { getWeekData, getWeekLabel } from './utils';
 
-export default function WeekView({ selectedDate, eventsByDate }) {
+const hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
+
+export default function WeekView({ eventsByDate }) {
     const todayRef = useRef(new Date());
     const dateRef = useRef(moment());
     const [week, setWeek] = useState(dateRef.current.month());
@@ -42,45 +45,51 @@ export default function WeekView({ selectedDate, eventsByDate }) {
             </header>
 
             <section className="calendar__week">
-                {data.map((date, index) =>
-                    <CalendarDay
-                        key={date.valueOf()}
-                        date={date}
-                        isToday={date.isSame(todayRef.current)}
-                        events={eventsByDate.get(date.format('YYYY-MM-DD'))}
-                    />
-                )}
+                <DataTable>
+                    <DataTable.Header>
+                        <DataTable.HeaderRow>
+                            <DataTable.HeaderCell />
+
+                            {data.map(date =>
+                                <DataTable.HeaderCell key={date.valueOf()} className={date.isSame(todayRef.current) && 'today'}>
+                                    <Typography type="overline">{date.format('dd')}, {date.date()}</Typography>
+                                </DataTable.HeaderCell>
+                            )}
+                        </DataTable.HeaderRow>
+                    </DataTable.Header>
+
+                    <DataTable.Content>
+                        {hours.map(hour =>
+                            <DataTable.Row>
+                                <DataTable.Cell>
+                                    {formatTime(hour, 0)}
+                                </DataTable.Cell>
+
+                                {data.map(date =>
+                                    <DataTable.Cell>
+                                        <CalendarEvent
+                                            date={date}
+                                            hour={hour}
+                                            eventsByDate={eventsByDate}
+                                        />
+                                    </DataTable.Cell>
+                                )}
+                            </DataTable.Row>
+                        )}
+                    </DataTable.Content>
+                </DataTable>
             </section>
         </article>
     );
 }
 
-function CalendarDay({ date, isToday, events }) {
-    const classNames = classnames('calendar__day', {
-        'calendar__day--today': isToday,
-        'calendar__day--has-events': events
-    });
+function CalendarEvent({ date, hour, eventsByDate }) {
+    const key = date.utc().hours(hour).minutes(0).seconds(0).millisecond(0).toISOString();
+    const event = eventsByDate.get(key);
 
-    return (
-        <div className={classNames}>
-            <div className="calendar__day__title">
-                <Typography element="span" variant="headline6">{date.date()}</Typography>
-                <Typography element="span" variant="overline">{date.format('dd')}</Typography>
-            </div>
-
-            <div className="calendar__day__content">
-                {events && events.map(event =>
-                    <Chip
-                        key={event.id}
-                        component={Link}
-                        to={event.url}
-                        className="calendar-event-chip"
-                        text="Урок"
-                    />
-                )}
-            </div>
-        </div>
-    );
+    return event ? (
+        <Chip component={Link} to={event.url} text={event.client.fullname} outlined />
+    ) : null;
 }
 
 WeekView.defaultProps = {

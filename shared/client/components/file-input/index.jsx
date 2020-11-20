@@ -1,7 +1,7 @@
 import React, { forwardRef, useRef, useState, useImperativeHandle, useCallback } from 'react';
 import {
-    Button,
-    FormField,
+    IconButton,
+    TextField,
     Typography
 } from 'mdc-react';
 
@@ -13,24 +13,30 @@ function FileInput({
     name = 'file',
     label,
     accept = 'image/jpeg,image/png,image/jpeg',
-    imageUrl,
+    url,
+    caption,
     ...props
 }, ref) {
     const inputRef = useRef();
     const [file, setFile] = useState();
-    const [previewUrl, setPreviewUrl] = useState(imageUrl);
 
-    useImperativeHandle(ref, () => inputRef.current);
+    useImperativeHandle(ref, () => ({
+        get input() { return inputRef.current; },
+        reset: () => setFile(undefined)
+    }));
 
     const handleChange = useCallback(event => {
         const file = event.target.files[0];
-        const url = URL.createObjectURL(file);
 
-        setFile(file);
-        setPreviewUrl(url);
+        if (file) {
+            const url = URL.createObjectURL(file);
+            file.url = url;
+
+            setFile(file);
+        }
     }, []);
 
-    const handleClick = useCallback(event => {
+    const handleClick = useCallback(() => {
         inputRef.current.click();
     }, []);
 
@@ -45,28 +51,34 @@ function FileInput({
                 {...props}
             />
 
-            {label &&
-                <Typography element="p" variant="subtitle2">{label}</Typography>
+            <TextField
+                label={label}
+                defaultValue={caption}
+                filled
+                readOnly
+                trailingIcon={
+                    <IconButton
+                        type="button"
+                        icon="insert_photo"
+                        onClick={handleClick}
+                    />
+                }
+            />
+
+            {(!file && url) &&
+                <img src={url} alt={caption} />
             }
 
-            {previewUrl &&
-                <figure className="file-preview">
-                    <img src={previewUrl} />
+            {file && <figure className="file-preview">
+                <img src={file.url} />
 
-                    {imageUrl &&
-                        <figcaption>{imageUrl}</figcaption>
-                    }
-                </figure>
+                <figcaption className="file-meta">
+                    <Typography type="caption">Имя: <strong>{file.name}</strong></Typography>
+
+                    <Typography type="caption">Размер: <strong>{Math.ceil(file.size / 1000)} КБ</strong></Typography>
+                </figcaption>
+            </figure>
             }
-
-            {file &&
-                <div className="file-meta">
-                    <Typography element="p" variant="caption">Имя: <strong>{file.name}</strong></Typography>
-                    <Typography element="p" variant="caption">Размер: <strong>{Math.ceil(file.size / 1000)} КБ</strong></Typography>
-                </div>
-            }
-
-            <Button type="button" onClick={handleClick}>Выбрать файл</Button>
         </div>
     );
 }

@@ -7,8 +7,6 @@ mixin flash-banner(text)
             'flash-banner--success': attributes.success
         }
         icon=attributes.icon
+        data-open
     )
-        block
-
-        if attributes.dismissable
-            +mdc-icon-button('close')
+        +mdc-icon-button('close').flash-banner__dismiss

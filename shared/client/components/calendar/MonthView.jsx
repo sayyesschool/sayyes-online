@@ -3,13 +3,14 @@ import moment from 'moment';
 import classnames from 'classnames';
 import {
     Badge,
+    DataTable,
     Icon,
     IconButton,
-    Select
+    Select,
+    Typography
 } from 'mdc-react';
 
 import { getMonthData } from './utils';
-import Calendar from '.';
 
 export default function MonthView({
     selectedDate,
@@ -68,8 +69,12 @@ export default function MonthView({
                     value={month}
                     onChange={handleMonthChange}
                     options={monthNames.map((text, index) => ({ key: index, value: index, text }))}
+                    filled
                     menuProps={{
-                        fullWidth: true
+                        fullWidth: true,
+                        listProps: {
+                            dense: true
+                        }
                     }}
                 />
 
@@ -78,8 +83,12 @@ export default function MonthView({
                     value={year}
                     onChange={handleYearChange}
                     options={years.map(year => ({ key: year, value: year, text: year }))}
+                    filled
                     menuProps={{
-                        fullWidth: true
+                        fullWidth: true,
+                        listProps: {
+                            dense: true
+                        }
                     }}
                 />
 
@@ -88,32 +97,37 @@ export default function MonthView({
                 </IconButton>
             </header>
 
-            <table>
-                <thead>
-                    <tr>
+            <DataTable>
+                <DataTable.Header>
+                    <DataTable.HeaderRow>
                         {weekdayNames.map(name =>
-                            <th key={name}>{name}</th>
+                            <DataTable.HeaderCell key={name}>
+                                <Typography type="overline">{name}</Typography>
+                            </DataTable.HeaderCell>
                         )}
-                    </tr>
-                </thead>
+                    </DataTable.HeaderRow>
+                </DataTable.Header>
 
-                <tbody>
+                <DataTable.Content>
                     {data.map((week, index) =>
-                        <tr key={index} className="calendar__week">
-                            {week.map((date, index) => date ?
-                                <CalendarDay
-                                    date={date}
-                                    today={date.isSame(todayRef.current, 'day')}
-                                    selected={selectedDate && date.isSame(selectedDate, 'day')}
-                                    events={eventsByDate.get(date.format('YYYY-MM-DD'))}
-                                />
-                                :
-                                <td key={index} />
+                        <DataTable.Row key={index} className="calendar__week">
+                            {week.map((date, index) =>
+                                <DataTable.Cell
+                                    className={classnames('calendar__day', date && {
+                                        'calendar__day--today': date.isSame(todayRef.current, 'day'),
+                                        'calendar__day--selected': selectedDate && date.isSame(selectedDate, 'day'),
+                                        'calendar__day--has-events': eventsByDate.has(date.format('YYYY-MM-DD'))
+                                    })}
+                                >
+                                    {date &&
+                                        <div className="calendar__day-label">{date.date()}</div>
+                                    }
+                                </DataTable.Cell>
                             )}
-                        </tr>
+                        </DataTable.Row>
                     )}
-                </tbody>
-            </table>
+                </DataTable.Content>
+            </DataTable>
         </div>
     );
 }
@@ -130,11 +144,11 @@ function CalendarDay({ date, today, selected, events, onClick }) {
     });
 
     return (
-        <td className={classNames} onClick={handleDayClick}>
+        <div className={classNames} >
             <Badge value={events?.length} noBackground>
-                {date.date()}
+                { }
             </Badge>
-        </td>
+        </div>
     );
 }
 

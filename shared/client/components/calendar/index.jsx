@@ -14,12 +14,7 @@ export default function Calendar({
     ...props
 }) {
     const eventsByDate = events.reduce((map, event) => {
-        const dateString = moment(event.date).format('YYYY-MM-DD');
-        const events = map.get(dateString) || [];
-
-        events.push(event);
-
-        return map.set(dateString, events);
+        return map.set(event.date, event);
     }, new Map());
 
     if (view === 'week') {

@@ -1,18 +1,16 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import { Client } from 'twilio-chat';
 
-export function useChat(token, { name }) {
+export function useChat(token) {
     const clientRef = useRef();
     const channelRef = useRef();
 
     const [isLoading, setLoading] = useState(false);
     const [isConnected, setConnected] = useState(false);
     const [isTyping, setTyping] = useState(false);
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState();
 
-    useEffect(() => {
-        if (!token) return;
-
+    const connect = useCallback(({ name, onConnected = Function.prototype }) => {
         function tokenExpired() {
             fetch()
                 .then(token => {
@@ -24,11 +22,11 @@ export function useChat(token, { name }) {
         }
 
         function memberJoined(member) {
-            console.log(member.identity + ' joined the channel');
+            // onMemberJoined(member);
         }
 
         function memberLeft(member) {
-            console.log(member.identity + ' left the channel');
+            // onMemberLeft(member);
         }
 
         function messageAdded(message) {
@@ -57,7 +55,7 @@ export function useChat(token, { name }) {
             return client.getChannelByUniqueName(name);
         })
             .catch(() => {
-                return client.createChannel({ uniqueName: name });
+                return clientRef.current.createChannel({ uniqueName: name });
             })
             .then(channel => {
                 return channel.join().catch(error => {
@@ -69,7 +67,7 @@ export function useChat(token, { name }) {
                 });
             })
             .then(channel => {
-                console.log('Joined channel', channel);
+                onConnected(channel);
 
                 channel.on('memberJoined', memberJoined);
                 channel.on('memberLeft', memberLeft);
@@ -96,22 +94,23 @@ export function useChat(token, { name }) {
             .catch(error => {
                 console.error(error);
             });
-
-        return () => {
-            // channel.leave().then(leftChannel => {
-            //     leftChannel.removeListener('messageAdded', messageAdded);
-            //     leftChannel.removeListener('memberJoined', memberJoined);
-            //     leftChannel.removeListener('memberLeft', memberLeft);
-            //     leftChannel.removeListener('typingStarted', typingStarted);
-            //     leftChannel.removeListener('typingEnded', typingEnded);
-            // });
-            clientRef.current?.shutdown();
-        };
     }, [token]);
 
+    const disconnect = useCallback(() => {
+        channelRef.current.leave().then(leftChannel => {
+            // leftChannel.removeListener('messageAdded', messageAdded);
+            // leftChannel.removeListener('memberJoined', memberJoined);
+            // leftChannel.removeListener('memberLeft', memberLeft);
+            // leftChannel.removeListener('typingStarted', typingStarted);
+            // leftChannel.removeListener('typingEnded', typingEnded);
+        });
+        clientRef.current?.shutdown();
+    }, []);
 
     return {
         channel: channelRef.current,
+        connect,
+        disconnect,
         messages,
         isConnected,
         isLoading,

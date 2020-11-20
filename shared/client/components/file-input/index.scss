@@ -3,21 +3,18 @@
         display: none;
     }
 
+    .mdc-text-field {
+        width: 100%;
+    }
+
     .file-preview {
         display: block;
         margin: 0;
-        margin-bottom: .5rem;
     }
 
     .file-meta {
-        margin-bottom: .5rem;
-
-        p {
-            margin: 0;
+        span + span {
+            margin-left: 1rem;
         }
-    }
-
-    button {
-        display: block;
     }
 }

@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 import { connect as _connect, createLocalVideoTrack, LocalVideoTrack } from 'twilio-video';
 
-export function useRoom(token, { localMediaRef, remoteMediaRef }) {
+export function useRoom(token, { localWebcamRef, remoteWebcamRef, remoteScreenRef }) {
     const roomRef = useRef();
     const audioTrackRef = useRef();
     const videoTrackRef = useRef();
@@ -9,6 +9,7 @@ export function useRoom(token, { localMediaRef, remoteMediaRef }) {
     const timerRef = useRef();
     const startTimeRef = useRef();
 
+    const [isConnecting, setConnecting] = useState(false);
     const [isConnected, setConnected] = useState(false);
     const [isAudioOn, setAudioOn] = useState(false);
     const [isVideoOn, setVideoOn] = useState(false);
@@ -37,6 +38,8 @@ export function useRoom(token, { localMediaRef, remoteMediaRef }) {
 
     const connect = useCallback(({ name, audio = true, video = true }) => {
         if (!token) return;
+
+        setConnecting(true);
 
         _connect(token, {
             name,
@@ -69,12 +72,12 @@ export function useRoom(token, { localMediaRef, remoteMediaRef }) {
                         videoTrackRef.current = track;
                     }
 
-                    publication.track.attach(localMediaRef.current);
+                    publication.track.attach(localWebcamRef.current);
                 });
 
-                room.participants.forEach(participant => handleParticipantConnected(participant, remoteMediaRef.current));
+                room.participants.forEach(participant => handleParticipantConnected(participant, remoteWebcamRef.current, remoteScreenRef.current));
 
-                room.on('participantConnected', participant => handleParticipantConnected(participant, remoteMediaRef.current));
+                room.on('participantConnected', participant => handleParticipantConnected(participant, remoteWebcamRef.current, remoteScreenRef.current));
                 room.on('participantDisconnected', handleParticipantDisconnected);
                 room.on('disconnected', () => {
                     room.localParticipant.tracks.forEach(publication => {
@@ -86,6 +89,7 @@ export function useRoom(token, { localMediaRef, remoteMediaRef }) {
                 });
 
                 roomRef.current = room;
+                setConnecting(false);
                 setConnected(true);
             })
             .catch(error => {
@@ -128,6 +132,7 @@ export function useRoom(token, { localMediaRef, remoteMediaRef }) {
 
     return {
         ref: roomRef,
+        isConnecting,
         isConnected,
         isVideoOn,
         isAudioOn,
@@ -158,17 +163,34 @@ export function useLocalVideo() {
     return videoRef;
 }
 
-function handleParticipantConnected(participant, remoteMedia) {
+function handleParticipantConnected(participant, remoteCameraElement, remoteScreenElement) {
     // Attach the tracks that the Participant has already published
     participant.tracks.forEach(publication => {
         if (publication.isSubscribed) {
-            publication.track.attach(remoteMedia);
+            if (publication.track.name === 'camera') {
+                publication.track.attach(remoteCameraElement);
+            } else if (publication.track.name === 'screen') {
+                publication.track.attach(remoteScreenElement);
+            }
         }
     });
 
     // Attach tracks that the Participant eventually publishes
     participant.on('trackSubscribed', track => {
-        track.attach(remoteMedia);
+        if (track.name === 'camera') {
+            remoteCameraElement.appendChild(track.attach());
+        } else if (track.name === 'screen') {
+            remoteScreenElement.appendChild(track.attach());
+        }
+    });
+
+    participant.on('trackUnsubscribed', track => {
+        console.log('trackUnsubscribed', track);
+        // if (track.name === 'camera') {
+        //     track.attach(remoteCameraMedia);
+        // } else if (track.name === 'screen') {
+        //     track.attach(remoteScreenMedia);
+        // }
     });
 }
 
