@@ -62,15 +62,19 @@ export default function Conversation({ name, localParticipant, remoteParticipant
     }, [isFullscreen]);
 
     const handleSubmitMessage = useCallback(message => {
-        chat.channel.channel.sendMessage(message);
-    }, [chat.channel]);
+        chat.sendMessage(message);
+    }, [chat]);
 
-    const handleChatTyping = useCallback(channel => {
+    const handleDeleteMessage = useCallback(message => {
+        chat.deleteMessage(message);
+    }, [chat]);
+
+    const handleChatTyping = useCallback(() => {
         chat.channel.typing();
-    }, [chat.channel]);
+    }, []);
 
     const handleConnect = useCallback(() => {
-        room.connect({ name, video: false });
+        room.connect({ name, audio: true, video: true });
     }, []);
 
     const handleEndCall = useCallback(() => {
@@ -100,7 +104,7 @@ export default function Conversation({ name, localParticipant, remoteParticipant
         'conversation--video': room.isVideoOn,
         'conversation--fullscreen': isFullscreen
     });
-    console.log(room);
+
     return (
         <div ref={rootRef} className={classNames}>
             <header className="conversation__header">
@@ -170,6 +174,7 @@ export default function Conversation({ name, localParticipant, remoteParticipant
                         user={localParticipant}
                         messages={chat.messages}
                         onSubmit={handleSubmitMessage}
+                        onDelete={handleDeleteMessage}
                         onTyping={handleChatTyping}
                     />
                 </aside>

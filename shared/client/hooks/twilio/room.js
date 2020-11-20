@@ -72,7 +72,7 @@ export function useRoom(token, { localWebcamRef, remoteWebcamRef, remoteScreenRe
                         videoTrackRef.current = track;
                     }
 
-                    publication.track.attach(localWebcamRef.current);
+                    localWebcamRef.current.appendChild(publication.track.attach());
                 });
 
                 room.participants.forEach(participant => handleParticipantConnected(participant, remoteWebcamRef.current, remoteScreenRef.current));
@@ -168,9 +168,9 @@ function handleParticipantConnected(participant, remoteCameraElement, remoteScre
     participant.tracks.forEach(publication => {
         if (publication.isSubscribed) {
             if (publication.track.name === 'camera') {
-                publication.track.attach(remoteCameraElement);
+                remoteCameraElement.appendChild(publication.track.attach());
             } else if (publication.track.name === 'screen') {
-                publication.track.attach(remoteScreenElement);
+                remoteScreenElement.appendChild(publication.track.attach());
             }
         }
     });

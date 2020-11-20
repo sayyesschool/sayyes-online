@@ -1,6 +1,7 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import {
-    IconButton
+    IconButton,
+    Menu
 } from 'mdc-react';
 import classnames from 'classnames';
 import moment from 'moment';
@@ -12,11 +13,16 @@ import './index.scss';
 export default function Chat({
     user,
     messages,
+    onDelete,
 
     onTyping = Function.prototype,
     onSubmit = Function.prototype,
 }) {
     const inputRef = useRef();
+
+    const [message, setMessage] = useState();
+    const [isMenuOpen, setMenuOpen] = useState(false);
+    const [anchor, setAnchor] = useState();
 
     const handleSubmit = useCallback(event => {
         event.preventDefault();
@@ -29,6 +35,26 @@ export default function Chat({
     const handleKeyPress = useCallback(() => {
         onTyping();
     }, []);
+
+    const handleContextMenu = useCallback((event, message) => {
+        event.stopPropagation();
+        event.preventDefault();
+
+        if (user.id !== message.author) return;
+
+        setMessage(message);
+        setAnchor(event.currentTarget);
+        setMenuOpen(true);
+    }, [user]);
+
+    const handleMenuClose = useCallback(event => {
+        setMenuOpen(false);
+    }, []);
+
+    const handleDelete = useCallback(event => {
+        setMessage(null);
+        onDelete(message);
+    }, [message]);
 
     if (!messages) return <LoadingIndicator />;
 
@@ -43,6 +69,7 @@ export default function Chat({
                             'message--remote': message.author !== user.id,
                             [`message--${message.type}`]: message.type
                         })}
+                        onContextMenu={event => handleContextMenu(event, message)}
                     >
                         <span className="message__time">{moment(message.datetime).format('HH:mm')}</span>
                         <span className="message__text">{message.body}</span>
@@ -62,6 +89,18 @@ export default function Chat({
                     icon="send"
                 />
             </form>
+
+            <Menu
+                open={isMenuOpen}
+                anchor={anchor}
+                top right
+                onClose={handleMenuClose}
+            >
+                <Menu.Item
+                    text="Удалить"
+                    onClick={handleDelete}
+                />
+            </Menu>
         </article >
     );
 }

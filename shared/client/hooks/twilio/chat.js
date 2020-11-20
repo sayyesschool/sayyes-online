@@ -1,14 +1,13 @@
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useMemo } from 'react';
 import { Client } from 'twilio-chat';
 
 export function useChat(token) {
     const clientRef = useRef();
     const channelRef = useRef();
 
-    const [isLoading, setLoading] = useState(false);
-    const [isConnected, setConnected] = useState(false);
-    const [isTyping, setTyping] = useState(false);
+    const [state, setState] = useState();
     const [messages, setMessages] = useState();
+    const [isTyping, setTyping] = useState(false);
 
     const connect = useCallback(({ name, onConnected = Function.prototype }) => {
         function tokenExpired() {
@@ -30,11 +29,11 @@ export function useChat(token) {
         }
 
         function messageAdded(message) {
-            setMessages(messages => messages.concat({
-                author: message.author,
-                date: message.date,
-                body: message.body
-            }));
+            setMessages(messages => messages.concat(message));
+        }
+
+        function messageRemoved(message) {
+            setMessages(messages => messages.filter(m => m.sid !== message.sid));
         }
 
         function typingStarted(member) {
@@ -45,17 +44,19 @@ export function useChat(token) {
             setTyping(false);
         }
 
-        setLoading(true);
-
         Client.create(token).then(client => {
             client.on('tokenExpired', tokenExpired);
+            client.on('connectionStateChanged', setState);
 
             clientRef.current = client;
 
             return client.getChannelByUniqueName(name);
         })
             .catch(() => {
-                return clientRef.current.createChannel({ uniqueName: name });
+                return clientRef.current.createChannel({
+                    uniqueName: name,
+                    isPrivate: true
+                });
             })
             .then(channel => {
                 return channel.join().catch(error => {
@@ -72,6 +73,7 @@ export function useChat(token) {
                 channel.on('memberJoined', memberJoined);
                 channel.on('memberLeft', memberLeft);
                 channel.on('messageAdded', messageAdded);
+                channel.on('messageRemoved', messageRemoved);
                 channel.on('typingStarted', typingStarted);
                 channel.on('typingEnded', typingEnded);
 
@@ -80,16 +82,7 @@ export function useChat(token) {
                 return channel.getMessages(100);
             })
             .then(messages => {
-                setMessages(messages.items.map(message => ({
-                    id: message.state.sid,
-                    author: message.state.author,
-                    body: message.state.body,
-                    datetime: message.state.timestamp,
-                    type: message.state.type
-                })));
-
-                setLoading(false);
-                setConnected(true);
+                setMessages(messages.items);
             })
             .catch(error => {
                 console.error(error);
@@ -107,13 +100,37 @@ export function useChat(token) {
         clientRef.current?.shutdown();
     }, []);
 
-    return {
-        channel: channelRef.current,
+    const sendMessage = useCallback(message => {
+        channelRef.current.sendMessage(message);
+    }, []);
+
+    const deleteMessage = useCallback(message => {
+        messages.find(m => m.sid === message.id)?.remove().catch(error => console.error('ERROR', error));
+    }, [messages]);
+
+    return useMemo(() => ({
+        get client() {
+            return clientRef.current;
+        },
+        get channel() {
+            return channelRef.current;
+        },
+        get isConnected() {
+            return state === 'connected';
+        },
+        get messages() {
+            return messages?.map(message => ({
+                id: message.sid,
+                author: message.author,
+                body: message.body,
+                datetime: message.dateCreated,
+                type: message.type
+            }));
+        },
         connect,
         disconnect,
-        messages,
-        isConnected,
-        isLoading,
+        sendMessage,
+        deleteMessage,
         isTyping
-    };
+    }), [state, messages, isTyping]);
 }
