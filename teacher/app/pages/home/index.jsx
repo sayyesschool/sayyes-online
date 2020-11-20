@@ -20,14 +20,14 @@ export default function HomePage() {
     return (
         <main id="home-page" className="page">
             <header>
-                <Typography element="h1" variant="headline4">Привет, {account.firstname}! 👋</Typography>
+                <Typography element="h1" type="headline4">Привет, {account.firstname}! 👋</Typography>
                 <Typography>На встречах разговорного клуба Вас ждут живое общение на английском языке, интересные темы для обсуждения и новые знакомства. Вы наконец-то сможете сломать языковой барьер!</Typography>
             </header>
 
             <section>
                 <LayoutGrid>
                     <LayoutGridCell span="12">
-                        <Typography element="h2" variant="headline6" noMargin>Мои уроки</Typography>
+                        <Typography element="h2" type="headline6" noMargin>Мои уроки</Typography>
 
                         {lessons && lessons.map(lesson =>
                             <LessonCard

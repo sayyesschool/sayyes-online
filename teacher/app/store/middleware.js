@@ -2,9 +2,10 @@ import { applyMiddleware } from 'redux';
 import promise from 'redux-promise';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 
-import api from 'shared/middleware/api';
-import notification from 'shared/middleware/notification';
+import client from 'shared/services/api';
+import api from 'shared/store/middleware/api';
+import notification from 'shared/store/middleware/notification';
 
 export default composeWithDevTools(
-    applyMiddleware(api('/api'), notification, promise)
+    applyMiddleware(api(client, '/teacher/api'), notification, promise)
 );

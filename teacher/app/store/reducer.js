@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
 
-import notification from 'shared/actions/notification';
-import account from './modules/account';
-import lessons from './modules/lessons';
-import payments from './modules/payments';
+import enrollments from 'shared/store/modules/enrollments';
+import lessons from 'shared/store/modules/lessons';
+import notification from 'shared/store/modules/notification';
+import user from 'shared/store/modules/user';
 
 export default combineReducers({
-    notification,
-    account,
+    enrollments,
     lessons,
-    payments
+    notification,
+    user
 });

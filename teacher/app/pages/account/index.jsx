@@ -43,11 +43,11 @@ export default function AccountPage() {
                 label="Вернуться"
             />
 
-            <Typography element="h1" variant="headline4">Мой аккаунт</Typography>
+            <Typography element="h1" type="headline4">Мой аккаунт</Typography>
 
             <LayoutGrid>
                 <LayoutGridCell span="12">
-                    <Typography element="h2" variant="headline5">Профиль</Typography>
+                    <Typography element="h2" type="headline5">Профиль</Typography>
 
                     <Card outlined>
                         <CardHeader
@@ -68,7 +68,7 @@ export default function AccountPage() {
                 </LayoutGridCell>
 
                 <LayoutGridCell span="12">
-                    <Typography element="h2" variant="headline5">Билеты</Typography>
+                    <Typography element="h2" type="headline5">Билеты</Typography>
 
                     {tickets.length > 0 ?
                         <Card outlined>
@@ -93,7 +93,7 @@ export default function AccountPage() {
                 </LayoutGridCell>
 
                 <LayoutGridCell span="12">
-                    <Typography element="h2" variant="headline5">Встречи</Typography>
+                    <Typography element="h2" type="headline5">Встречи</Typography>
 
                     {meetings.length > 0 ?
                         <Card outlined>

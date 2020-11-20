@@ -10,7 +10,7 @@ import App from './App';
 
 ReactDOM.render(
     <Provider store={store}>
-        <Router>
+        <Router basename="/teacher">
             <App />
         </Router>
     </Provider>,

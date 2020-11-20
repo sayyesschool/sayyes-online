@@ -1,14 +1,12 @@
 #home-page {
+    max-width: 1024px;
+
     .mdc-chip-set {
         .mdc-chip {
             .mdc-chip__text {
                 text-transform: capitalize;
             }
         }
-    }
-
-    section + section {
-        margin-top: 2rem;
     }
 
     .calendar {

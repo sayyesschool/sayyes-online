@@ -1,8 +1,8 @@
-module.exports = (services, mapAccount) => ({
-    getAccount: (req, res, next) => {
+module.exports = () => ({
+    getUser: (req, res, next) => {
         res.json({
             ok: true,
-            account: mapAccount(req.user)
+            data: map(req.user)
         });
     },
 
@@ -17,7 +17,7 @@ module.exports = (services, mapAccount) => ({
                 res.json({
                     ok: true,
                     message: 'Профиль изменен',
-                    account: mapAccount(user)
+                    data: map(user)
                 });
             })
             .catch(next);
@@ -40,3 +40,15 @@ module.exports = (services, mapAccount) => ({
             .catch(next);
     }
 });
+
+function map(user) {
+    return {
+        id: user.id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        fullname: user.fullname,
+        email: user.email,
+        initials: user.initials,
+        role: user.role
+    };
+}

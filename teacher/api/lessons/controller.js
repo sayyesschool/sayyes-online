@@ -19,7 +19,7 @@ module.exports = ({ Lesson }) => ({
         Lesson.get({
             $or: [
                 { date: { $gte: new Date() } },
-                { user: req.user }
+                { client: req.user }
             ]
         })
             .then(lessons => {
@@ -33,8 +33,8 @@ module.exports = ({ Lesson }) => ({
 
     getOne: (req, res, next) => {
         Lesson.getById(req.params.lessonId)
-            .populate('teacher', 'firstname lastname fullname')
             .populate('student', 'firstname lastname fullname')
+            .populate('teacher', 'firstname lastname fullname')
             .then(lesson => {
                 if (!lesson) {
                     const error = new Error('Урок не найдн');
@@ -42,18 +42,16 @@ module.exports = ({ Lesson }) => ({
                     return next(error);
                 }
 
-                const videoToken = Lesson.generateVideoToken({
-                    room: req.lesson.id,
-                    identity: req.user.id
-                });
-                const chatToken = Lesson.generateChatToken({
-                    device: 'browser',
-                    identity: req.user.id
-                });
                 const data = req.lesson.toJSON();
 
-                data.videoToken = videoToken;
-                data.chatToken = chatToken;
+                data.student = {
+                    id: lesson.client.id,
+                    name: lesson.client.fullname
+                };
+                data.teacher = {
+                    id: lesson.teacher.id,
+                    name: lesson.teacher.fullname
+                };
 
                 res.json({
                     ok: true,
