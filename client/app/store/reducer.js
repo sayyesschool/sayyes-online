@@ -1,11 +1,10 @@
 import { combineReducers } from 'redux';
 
-import notification from 'shared/store/actions/notification';
-
-import course from './modules/course';
-import enrollments from './modules/enrollments';
-import payments from './modules/payments';
-import user from './modules/user';
+import course from 'shared/store/modules/course';
+import notification from 'shared/store/modules/notification';
+import enrollments from 'shared/store/modules/enrollments';
+import payments from 'shared/store/modules/payments';
+import user from 'shared/store/modules/user';
 
 export default combineReducers({
     notification,

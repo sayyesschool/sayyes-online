@@ -37,7 +37,7 @@ export default class QuizContent extends React.Component {
                 <LinearProgress value={progress} />
 
                 <CardSection primary>
-                    <Typography variant="caption">{hasNextQuestion && `Вопрос ${questionPosition} из ${numberOfQuestions}`}</Typography>
+                    <Typography type="caption">{hasNextQuestion && `Вопрос ${questionPosition} из ${numberOfQuestions}`}</Typography>
 
                     <MarkdownText>{question.text}</MarkdownText>
                 </CardSection>
@@ -57,7 +57,7 @@ export default class QuizContent extends React.Component {
                                 </ListItemGraphic>
 
                                 <MarkdownText>{option}</MarkdownText>
-                            </ListItem>    
+                            </ListItem>
                         )}
                     </List>
                 </CardSection>

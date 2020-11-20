@@ -3,20 +3,20 @@ import { Switch, Route } from 'react-router-dom';
 import { Dialog, SideSheet } from 'mdc-react';
 
 import { useStore } from 'shared/hooks/store';
-import { hideNotification } from 'shared/store/actions/notification';
+import { getUser } from 'shared/store/modules/user';
+import { getEnrollments } from 'shared/store/modules/enrollments';
+import { hideNotification } from 'shared/store/modules/notification';
 import NotificationSnackbar from 'shared/components/notification-snackbar';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import NavBar from 'shared/components/nav-bar';
 import AppHeader from 'shared/components/app-header';
 import AppContent from 'shared/components/app-content';
+import Class from 'shared/components/class';
 
-import { getUser } from 'app/store/modules/user';
-import { getEnrollments } from 'app/store/modules/enrollments';
 import PaymentBanner from 'app/components/shared/payment-banner';
 import PaymentForm from 'app/components/shared/payment-form';
 import Account from 'app/components/account';
 import Home from 'app/components/home';
-import Class from 'app/components/class';
 import navItems from 'app/data/nav';
 
 import './App.scss';
@@ -53,7 +53,7 @@ export default function App() {
             </AppHeader>
 
             <AppContent>
-                <PaymentBanner onActionClick={() => setDialogOpen(true)} />
+                {/* <PaymentBanner onActionClick={() => setDialogOpen(true)} /> */}
 
                 <Switch>
                     <Route exact path="/" component={Home} />

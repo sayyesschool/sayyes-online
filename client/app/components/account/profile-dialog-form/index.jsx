@@ -61,9 +61,9 @@ export default function ProfileDialogForm({ profile, onSubmit, onClose, ...props
                     </Layout>
 
                     {/* <div>
-                        <Typography variant="subtitle2">Аватар</Typography>
+                        <Typography type="subtitle2">Аватар</Typography>
 
-                        <Typography variant="caption">
+                        <Typography type="caption">
                             <span>Формат: <b>jpg, jpeg, png</b></span>
                             <span>Максимальный размер файла: <b>2Mb</b></span>
                             <span>Рекомендованный размер: <b>200х200 px</b></span>

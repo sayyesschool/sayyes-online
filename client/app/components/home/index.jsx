@@ -6,6 +6,7 @@ import {
     Layout,
     IconButton,
     LayoutGrid,
+    SegmentedButton,
     Typography
 } from 'mdc-react';
 
@@ -14,7 +15,7 @@ import Page from 'shared/components/page';
 import PageContent from 'shared/components/page-content';
 import Calendar from 'shared/components/calendar';
 
-import EnrollmentCard from 'app/components/class/enrollment-card';
+import EnrollmentCard from 'app/components/shared/enrollment-card';
 
 import './index.scss';
 
@@ -31,33 +32,52 @@ export default function HomePage() {
             <PageContent>
                 <LayoutGrid>
                     <LayoutGrid.Cell span="4">
-                        <Typography variant="headline6">Моё обучение</Typography>
+                        <section>
+                            <Typography type="headline6">Моё обучение</Typography>
 
-                        {enrollments?.map(enrollment =>
-                            <EnrollmentCard
-                                key={enrollment.id}
-                                enrollment={enrollment}
-                            />
-                        )}
+                            {enrollments?.map(enrollment =>
+                                <EnrollmentCard
+                                    key={enrollment.id}
+                                    enrollment={enrollment}
+                                />
+                            )}
+                        </section>
+
+                        <section>
+                            <Typography type="headline6">Ближайшие встречи разговорного клуба</Typography>
+
+                            {meetings.length > 0 ?
+                                meetings?.map(meeting =>
+                                    <EnrollmentCard
+                                        key={enrollment.id}
+                                        enrollment={enrollment}
+                                    />
+                                ) : (
+                                    <Typography type="body1">Встреч пока не запланировано</Typography>
+                                )
+                            }
+                        </section>
                     </LayoutGrid.Cell>
 
                     <LayoutGrid.Cell span="8">
                         <Layout row justifyContent="between" alignItems="center">
-                            <Typography variant="headline6">Календарь занятий</Typography>
+                            <Typography type="headline6">Календарь занятий</Typography>
 
-                            <ChipSet>
-                                <Chip
+                            <SegmentedButton>
+                                <SegmentedButton.Segment
                                     icon={<Icon>view_week</Icon>}
-                                    text="Неделя"
+                                    label="Неделя"
+                                    selected={view === 'week'}
                                     onClick={() => setView('week')}
                                 />
 
-                                <Chip
+                                <SegmentedButton.Segment
                                     icon={<Icon>today</Icon>}
-                                    text="Месяц"
+                                    label="Месяц"
+                                    selected={view === 'month'}
                                     onClick={() => setView('month')}
                                 />
-                            </ChipSet>
+                            </SegmentedButton>
                         </Layout>
 
                         <Card outlined>
@@ -66,21 +86,6 @@ export default function HomePage() {
                                 events={lessons}
                             />
                         </Card>
-                    </LayoutGrid.Cell>
-
-                    <LayoutGrid.Cell span="12">
-                        <Typography variant="headline6">Ближайшие встречи разговорного клуба</Typography>
-
-                        {meetings.length > 0 ?
-                            meetings?.map(meeting =>
-                                <EnrollmentCard
-                                    key={enrollment.id}
-                                    enrollment={enrollment}
-                                />
-                            ) : (
-                                <Typography variant="body1">Встреч пока не запланировано</Typography>
-                            )
-                        }
                     </LayoutGrid.Cell>
                 </LayoutGrid>
             </PageContent>

@@ -19,7 +19,7 @@ export default function QuizCard({ quiz, ...props }) {
             />
 
             <CardSection primary>
-                <Typography variant="body2" noMargin>{quiz.description}</Typography>
+                <Typography type="body2" noMargin>{quiz.description}</Typography>
             </CardSection>
 
             <CardActions>

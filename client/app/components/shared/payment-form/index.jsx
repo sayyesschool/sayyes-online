@@ -83,8 +83,8 @@ export default function PaymentForm({ }) {
 
             {activeTab === 'package' &&
                 <section>
-                    <Typography element="h3" variant="headline6" noMargin>{types[data.type]}</Typography>
-                    <Typography element="p" variant="subtitle1">Выберите пакет:</Typography>
+                    <Typography element="h3" type="headline6" noMargin>{types[data.type]}</Typography>
+                    <Typography element="p" type="subtitle1">Выберите пакет:</Typography>
 
                     <List>
                         {Object.entries(packages[data.type]).map(([key, value]) =>
@@ -107,7 +107,7 @@ export default function PaymentForm({ }) {
                     </List>
 
                     <Layout row justifyContent="between" alignItems="center">
-                        <Typography element="p" variant="subtitle1" noMargin>или введите сумму самостоятельно:</Typography>
+                        <Typography element="p" type="subtitle1" noMargin>или введите сумму самостоятельно:</Typography>
 
                         <TextField
                             name="amount"
@@ -126,12 +126,12 @@ export default function PaymentForm({ }) {
 
             {activeTab === 'checkout' &&
                 <section>
-                    <Typography element="h3" variant="headline6" noMargin>{types[data.type]}</Typography>
-                    <Typography element="p" variant="subtitle1">{packages[data.type][data.package]} руб.</Typography>
+                    <Typography element="h3" type="headline6" noMargin>{types[data.type]}</Typography>
+                    <Typography element="p" type="subtitle1">{packages[data.type][data.package]} руб.</Typography>
 
-                    <Typography variant="body1">При нажатии на кнопку <strong>Оплатить</strong> вы будете перенаправлены на сайт платежной системы, где сможете выбрать способ оплаты (Банковские карты, Яндекс.Деньги, Qiwi, Сбербанк, Альфа-Банк, Тинькофф, Apple Pay).</Typography>
+                    <Typography type="body1">При нажатии на кнопку <strong>Оплатить</strong> вы будете перенаправлены на сайт платежной системы, где сможете выбрать способ оплаты (Банковские карты, Яндекс.Деньги, Qiwi, Сбербанк, Альфа-Банк, Тинькофф, Apple Pay).</Typography>
 
-                    <Typography variant="body2">Нажимая на кропку <strong>Оплатить</strong> вы принимаете условия <a href="/offer" target="_blank">договора-оферты</a>.</Typography>
+                    <Typography type="body2">Нажимая на кропку <strong>Оплатить</strong> вы принимаете условия <a href="/offer" target="_blank">договора-оферты</a>.</Typography>
 
                     <Button type="submit" disabled={!data.type && (!data.package || !data.amount)} unelevated>Оплатить</Button>
                 </section>

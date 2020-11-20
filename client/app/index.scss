@@ -4,9 +4,11 @@
     $primary: variables.$primary-color,
     $secondary: variables.$secondary-color
 );
+@use 'plyr/src/sass/plyr.scss' with (
+    $plyr-color-main: variables.$primary-color
+);
 @use 'styles/base';
 @use 'styles/dialog';
 @use 'styles/form';
 @use 'styles/footer';
 @use 'styles/meeting-details';
-@use 'mediaelement/build/mediaelementplayer.min.css';

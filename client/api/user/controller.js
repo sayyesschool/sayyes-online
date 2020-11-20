@@ -2,7 +2,7 @@ module.exports = () => ({
     getUser: (req, res, next) => {
         res.json({
             ok: true,
-            account: map(req.user)
+            data: map(req.user)
         });
     },
 
@@ -17,7 +17,7 @@ module.exports = () => ({
                 res.json({
                     ok: true,
                     message: 'Профиль изменен',
-                    account: map(user)
+                    data: map(user)
                 });
             })
             .catch(next);

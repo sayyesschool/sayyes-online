@@ -1,14 +1,14 @@
 module.exports = ({ Enrollment }) => ({
     findOne: (req, res, next, id) => {
         Enrollment.getById(id)
-            .then(lesson => {
+            .then(enrollment => {
                 if (!lesson) {
-                    const error = new Error('Урок не найдн');
+                    const error = new Error('Обучение не найдено');
                     error.status = 404;
                     return next(error);
                 }
 
-                req.lesson = lesson;
+                req.enrollment = enrollment;
 
                 next();
             })
@@ -17,10 +17,10 @@ module.exports = ({ Enrollment }) => ({
 
     getMany: (req, res, next) => {
         Enrollment.get({ client: req.user.id, ...req.query })
-            .then(lessons => {
+            .then(enrollments => {
                 res.json({
                     ok: true,
-                    data: lessons.map(lesson => map(lesson, req.user))
+                    data: enrollments
                 });
             })
             .catch(next);
@@ -31,34 +31,19 @@ module.exports = ({ Enrollment }) => ({
             .populate('client', 'firstname lastname fullname')
             .populate('teacher', 'firstname lastname fullname')
             .populate('courses', 'title slug image units.id lessons.id exercises.id')
+            .populate('materials', 'title slug image')
             .then(enrollment => {
                 if (!enrollment) {
-                    const error = new Error('Обучение не найдно');
+                    const error = new Error('Обучение не найдено');
                     error.status = 404;
                     return next(error);
                 }
 
-                const data = enrollment.toJSON();
-
-                data.client = enrollment.client && {
-                    id: enrollment.client.id,
-                    name: enrollment.client.fullname
-                };
-                data.teacher = enrollment.teacher && {
-                    id: enrollment.teacher.id,
-                    name: enrollment.teacher.fullname,
-                    initials: enrollment.teacher.initials
-                };
-
                 res.json({
                     ok: true,
-                    data
+                    data: enrollment
                 });
             })
             .catch(next);
     }
 });
-
-function map(lesson, user) {
-    return lesson;
-}

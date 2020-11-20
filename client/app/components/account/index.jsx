@@ -36,7 +36,7 @@ export default function AccountPage() {
     return (
         <Page id="account-page">
             <PageContent>
-                <Typography element="h1" variant="headline4">Мой аккаунт</Typography>
+                <Typography element="h1" type="headline4">Мой аккаунт</Typography>
 
                 <TabBar value={activeTab} onChange={setActiveTab}>
                     <Tab value="profile" icon={<Icon>person</Icon>} label="Профиль" />

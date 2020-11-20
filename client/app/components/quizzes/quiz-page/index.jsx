@@ -43,7 +43,7 @@ class Quiz extends React.Component {
         const { quiz, question, questionPosition, numberOfQuestions, hasNextQuestion, quizProgress, actions } = this.props;
 
         if (quiz.loading) return <LoadingIndicator />;
-        
+
         return (
             <AppContent className={`theme-${quiz.topic.id}`}>
                 <AppHeader
@@ -58,7 +58,7 @@ class Quiz extends React.Component {
                     <PageHeader pullContent>
                         <Avatar src={quiz.topic.image} large />
 
-                        <Typography variant="headline4">{quiz.title}</Typography>
+                        <Typography type="headline4">{quiz.title}</Typography>
                     </PageHeader>
 
                     <PageContent>
@@ -82,15 +82,15 @@ class Quiz extends React.Component {
 export default connect(
     state => {
         const quiz = state.quizzes.single;
-        
+
         if (quiz.loading) return { quiz };
-        
+
         const numberOfQuestions = quiz.questions.length;
         const question = quiz.questions[quiz.currentQuestionIndex];
         const questionPosition = quiz.currentQuestionIndex + 1;
         const hasNextQuestion = quiz.currentQuestionIndex < quiz.questions.length;
         const quizProgress = quiz.currentQuestionIndex / numberOfQuestions * 100;
-        
+
         return {
             quiz,
             question,
