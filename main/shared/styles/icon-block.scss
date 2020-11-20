@@ -11,7 +11,7 @@
     }
 
     .icon-block__icon {
-        @include theme.prop(color, text-secondary-on-light);
+        @include theme.property(color, text-secondary-on-light);
 
         display: block;
         font-size: 3rem;
@@ -23,7 +23,7 @@
 
     .icon-block__title {
         @include typography.typography(headline6);
-        @include theme.prop(color, text-primary-on-light);
+        @include theme.property(color, text-primary-on-light);
         margin-top: 1rem;
         margin-bottom: .5rem;
 
@@ -34,7 +34,7 @@
 
     .icon-block__subtitle {
         @include typography.typography(subtitle1);
-        @include theme.prop(color, text-secondary-on-light);
+        @include theme.property(color, text-secondary-on-light);
 
         &:last-child {
             margin-bottom: 0;
@@ -64,7 +64,7 @@
 
     .icon-block__image,
     .icon-block__icon {
-        @include theme.prop(color, secondary);
+        @include theme.property(color, secondary);
         display: inline-block;
         font-size: 2rem;
         vertical-align: middle;

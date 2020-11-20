@@ -3,7 +3,8 @@
 
     +mdc-dialog__content
         +mdc-layout()(column)
-            +mdc-text-field('email')(
+            +mdc-text-field()(
+                name='email'
                 type='email'
                 label='Электронная почта'
                 leadingIcon='email'
@@ -11,7 +12,8 @@
                 required
             )
             
-            +mdc-text-field('password')(
+            +mdc-text-field()(
+                name='password'
                 type='password'
                 label='Пароль'
                 leadingIcon='vpn_key'

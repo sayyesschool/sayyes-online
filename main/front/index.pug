@@ -23,42 +23,42 @@ block main
             +mdc-typography('Say Yes Online')(element='h1' type='headline2').hero-title
             +mdc-typography('Практикуй английский онлайн!')(type='headline4').hero-subtitle
             +mdc-button('Войти')(outlined data-open='#login-dialog').hero-button
-            +mdc-button('Зарегистрироваться')(raised data-open='#register-dialog').hero-button
+            //- +mdc-button('Зарегистрироваться')(raised data-open='#register-dialog').hero-button
 
 append scripts
     script(src='//code.jquery.com/jquery-1.11.0.min.js')
     script(src='//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js')
     script.
-        (function() {
-            var authTabBar = document.querySelector('#auth-dialog .mdc-tab-bar');
-            var authTabPanels = document.querySelectorAll('#auth-dialog .tab-panel');
-            var authButton = document.querySelector('#auth-dialog .auth-button');
-            var authButtonLabel = document.querySelector('#auth-dialog .auth-button .mdc-button__label');
-            var forms = [
-                document.querySelector('#auth-dialog #register-form'),
-                document.querySelector('#auth-dialog #login-form')
-            ];
-            var labels = ['Зарегистрироваться', 'Войти'];
-            var activeForm = forms[0];
+        //- (function() {
+        //-     var authTabBar = document.querySelector('#auth-dialog .mdc-tab-bar');
+        //-     var authTabPanels = document.querySelectorAll('#auth-dialog .tab-panel');
+        //-     var authButton = document.querySelector('#auth-dialog .auth-button');
+        //-     var authButtonLabel = document.querySelector('#auth-dialog .auth-button .mdc-button__label');
+        //-     var forms = [
+        //-         document.querySelector('#auth-dialog #register-form'),
+        //-         document.querySelector('#auth-dialog #login-form')
+        //-     ];
+        //-     var labels = ['Зарегистрироваться', 'Войти'];
+        //-     var activeForm = forms[0];
 
-            authTabBar.addEventListener('MDCTabBar:activated', function(event) {
-                var index = event.detail.index;
+        //-     authTabBar.addEventListener('MDCTabBar:activated', function(event) {
+        //-         var index = event.detail.index;
 
-                authTabPanels.forEach(function(panel) {
-                    panel.classList.remove('tab-panel--active');
-                });
+        //-         authTabPanels.forEach(function(panel) {
+        //-             panel.classList.remove('tab-panel--active');
+        //-         });
 
-                authTabPanels[index].classList.add('tab-panel--active');
-                authButtonLabel.textContent = labels[index];
-                activeForm = forms[index];
-            });
+        //-         authTabPanels[index].classList.add('tab-panel--active');
+        //-         authButtonLabel.textContent = labels[index];
+        //-         activeForm = forms[index];
+        //-     });
 
-            authButton.addEventListener('click', function() {
-                if (activeForm.reportValidity()) {
-                    activeForm.submit();
-                }
-            }, false);
-        })();
+        //-     authButton.addEventListener('click', function() {
+        //-         if (activeForm.reportValidity()) {
+        //-             activeForm.submit();
+        //-         }
+        //-     }, false);
+        //- })();
 
         (function() {
             var sections = new Map();
