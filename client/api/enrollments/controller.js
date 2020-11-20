@@ -2,7 +2,7 @@ module.exports = ({ Enrollment }) => ({
     findOne: (req, res, next, id) => {
         Enrollment.getById(id)
             .then(enrollment => {
-                if (!lesson) {
+                if (!enrollment) {
                     const error = new Error('Обучение не найдено');
                     error.status = 404;
                     return next(error);
