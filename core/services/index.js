@@ -1,32 +1,35 @@
 const config = require('../config');
+const lib = require('../lib');
 const models = require('../models');
 
-const Mail = require('./mail')(config);
+const Mail = require('./mail')(lib.mailjet);
 const Auth = require('./auth')(config, models.User, Mail);
-const Client = require('./client')(models.Client);
 const Course = require('./course')(models.Course);
 const Enrollment = require('./enrollment')(models.Enrollment);
-const Lesson = require('./lesson');
-const Manager = require('./manager')(models.Manager);
-const Payment = require('./payment');
-const Quiz = require('./quiz')(models.Quiz);
+const File = require('./file');
+const Lesson = require('./lesson')(models.Lesson, Mail);
+const Material = require('./material')(models.Material);
+const Newsletter = require('./newsletter')(lib.mailjet);
+const Payment = require('./payment')(config, lib.yandexKassa, models.Payment);
 const Request = require('./request')(models.Request);
-const Student = require('./student')(models.Student);
-const Teacher = require('./teacher')(models.Teacher);
-const User = require('./user')(models.User);
+const Ticket = require('./ticket')(models.Ticket, Payment);
+const Meeting = require('./meeting')(lib.zoom, models.Meeting, { Mail, Ticket, Newsletter });
+const User = require('./user');
 
 module.exports = {
     Auth,
-    Mail,
-    Client,
     Course,
     Enrollment,
+    File,
     Lesson,
-    Manager,
+    Mail,
+    Material,
+    Meeting,
     Payment,
     Request,
-    Quiz,
-    Student,
-    Teacher,
-    User
+    Client: User(models.Client),
+    Manager: User(models.Manager),
+    Student: User(models.Student),
+    Teacher: User(models.Teacher),
+    User: User(models.User)
 };

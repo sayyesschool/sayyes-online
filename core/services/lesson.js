@@ -1,10 +1,7 @@
 const { Types: { ObjectId } } = require('mongoose');
 const moment = require('moment');
 
-const { Lesson } = require('../models');
-const Mail = require('./mail');
-
-module.exports = {
+module.exports = (Lesson, Mail) => ({
     get(...args) {
         return Lesson.find(...args)
             .populate('host', 'firstname lastname avatarUrl');
@@ -87,4 +84,4 @@ module.exports = {
                 }
             });
     }
-};
+});

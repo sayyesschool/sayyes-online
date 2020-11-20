@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema } = require('mongoose');
 
 const Message = require('./message');
 
@@ -10,4 +10,4 @@ const Conversation = new Schema({
     timestamps: true
 });
 
-module.exports = model('Conversation', Conversation);
+module.exports = Conversation;

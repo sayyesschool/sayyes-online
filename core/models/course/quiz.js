@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema } = require('mongoose');
 
 const Question = new Schema({
     type: { type: String, enum: ['single', 'multiple', 'fill', 'open'] },
@@ -23,10 +23,4 @@ const Quiz = new Schema({
     questions: [Question]
 });
 
-
-Quiz.virtual('url').get(function() {
-    return `/quizzes/${this.slug}`;
-});
-
-
-module.exports = model('Quiz', Quiz);
+module.exports = Quiz;

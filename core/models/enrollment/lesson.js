@@ -42,7 +42,7 @@ Lesson.statics.status = Status;
 Lesson.virtual('url').get(function() {
     const parent = this.parent();
 
-    return `/${parent.url}/${this.id}`;
+    return `${parent.url}/${this.id}`;
 });
 
 Lesson.virtual('datetime').get(function() {

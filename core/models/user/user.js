@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 const { Schema } = mongoose;
 
@@ -43,7 +44,13 @@ const User = new Schema({
         maxlength: [256, 'Адрес электронный почты слишком длинный.'],
         match: [/^[a-zA-Z0-9'._%+-]+@[a-zA-Z0-9-][a-zA-Z0-9.-]*\.[a-zA-Z]{2,63}$/, 'Неверный формат адреса электронной почты.']
     },
-    phone: { type: String, trim: true },
+    phone: {
+        type: String,
+        trim: true,
+        minlength: 8,
+        maxlength: 12,
+        set: value => value.trim().replace(/[\s()\-\+]+/g, '')
+    },
     password: { type: String, trim: true },
     dob: { type: Date },
     gender: { type: String, enum: ['man', 'woman'] },
@@ -59,7 +66,13 @@ const User = new Schema({
     note: { type: String, trim: true }
 }, {
     timestamps: true,
-    discriminatorKey: 'role'
+    discriminatorKey: 'role',
+    toJSON: {
+        transform: (doc, obj, options) => {
+            delete obj.password;
+            return obj;
+        }
+    }
 });
 
 /* Virtuals */
@@ -72,7 +85,19 @@ User.virtual('initials').get(function() {
     return `${this.firstname[0]}${this.lastname[0]}`;
 });
 
+User.virtual('birthdate').get(function() {
+    return this.dob && moment(this.dob).format('DD.MM.YYYY');
+});
+
+User.virtual('age').get(function() {
+    return this.dob && moment().diff(this.dob, 'years');
+});
+
 User.virtual('roleLabel').get(function() {
+    return roles[this.role];
+});
+
+User.virtual('timezoneLabel').get(function() {
     return roles[this.role];
 });
 

@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema } = require('mongoose');
 const moment = require('moment');
 
 const PaymentMethod = require('./payment-method');
@@ -90,4 +90,4 @@ Payment.methods.getResolveUrl = function(paymentId) {
         `/user/payments/${paymentId}`;
 };
 
-module.exports = model('Payment', Payment);
+module.exports = Payment;

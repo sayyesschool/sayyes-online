@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema } = require('mongoose');
 
 const Schedule = require('./schedule');
 const Lesson = require('./lesson');
@@ -62,6 +62,7 @@ const Enrollment = new Schema({
     teacher: { type: Schema.Types.ObjectId, ref: 'Teacher' },
     manager: { type: Schema.Types.ObjectId, ref: 'Manager' },
     courses: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
+    materials: [{ type: Schema.Types.ObjectId, ref: 'Material' }],
     lessons: { type: [Lesson] },
     createdAt: { type: Date },
     updatedAt: { type: Date }
@@ -74,7 +75,7 @@ Enrollment.virtual('title').get(function() {
 });
 
 Enrollment.virtual('url').get(function() {
-    return `/enrollments/${this.id}`;
+    return `/class/${this.id}`;
 });
 
 Enrollment.virtual('statusLabel').get(function() {
@@ -133,4 +134,4 @@ Enrollment.virtual('payments', {
     foreignField: 'enrollment'
 });
 
-module.exports = model('Enrollment', Enrollment);
+module.exports = Enrollment;

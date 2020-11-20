@@ -1,54 +1,48 @@
-const Mailjet = require('node-mailjet');
-
 const FROM = {
-    email: 'online@sayes.ru',
-    name: 'SAY YES Online'
+    email: 'club@sayes.ru',
+    name: 'Разговорный клуб SAY YES'
 };
 
-module.exports = ({ MAILJET_API_KEY, MAILJET_API_SECRET }) => {
-    const mailjet = Mailjet.connect(MAILJET_API_KEY, MAILJET_API_SECRET);
-
-    return {
-        send({ from = FROM, to, subject, text, html, templateId, variables }) {
-            return mailjet
-                .post('send', { 'version': 'v3.1' })
-                .request({
-                    Messages: [
-                        {
-                            From: {
-                                Email: from.email,
-                                Name: from.name
-                            },
-                            To: to.map(({ name: Name, email: Email }) => ({ Name, Email })),
-                            Subject: subject,
-                            TextPart: text,
-                            HTMLPart: html,
-                            TemplateID: templateId,
-                            TemplateLanguage: true,
-                            Variables: variables
-                        }
-                    ]
-                });
-        },
-
-        sendMany(messages) {
-            return mailjet
-                .post('send', { 'version': 'v3.1' })
-                .request({
-                    Messages: messages.map(message => ({
+module.exports = mailjet => ({
+    send({ from = FROM, to, subject, text, html, templateId, variables }) {
+        return mailjet
+            .post('send', { 'version': 'v3.1' })
+            .request({
+                Messages: [
+                    {
                         From: {
-                            Email: FROM.email,
-                            Name: FROM.name
+                            Email: from.email,
+                            Name: from.name
                         },
-                        To: message.to.map(({ name: Name, email: Email }) => ({ Name, Email })),
-                        Subject: message.subject,
-                        TextPart: message.text,
-                        HTMLPart: message.html,
-                        TemplateID: message.templateId,
+                        To: to.map(({ name: Name, email: Email }) => ({ Name, Email })),
+                        Subject: subject,
+                        TextPart: text,
+                        HTMLPart: html,
+                        TemplateID: templateId,
                         TemplateLanguage: true,
-                        Variables: message.variables
-                    }))
-                });
-        }
-    };
-};
+                        Variables: variables
+                    }
+                ]
+            }).catch(console.error);
+    },
+
+    sendMany(messages) {
+        return mailjet
+            .post('send', { 'version': 'v3.1' })
+            .request({
+                Messages: messages.map(message => ({
+                    From: {
+                        Email: FROM.email,
+                        Name: FROM.name
+                    },
+                    To: message.to.map(({ name: Name, email: Email }) => ({ Name, Email })),
+                    Subject: message.subject,
+                    TextPart: message.text,
+                    HTMLPart: message.html,
+                    TemplateID: message.templateId,
+                    TemplateLanguage: true,
+                    Variables: message.variables
+                }))
+            }).catch(console.error);
+    }
+});

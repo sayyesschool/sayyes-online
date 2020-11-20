@@ -6,4 +6,10 @@ const Video = new Schema({
     duration: String
 });
 
+Video.virtual('url').get(function() {
+    const parent = this.parent();
+
+    return `https://static.sayes.ru${parent ? parent.url : ''}/videos/${this.filename}`;
+});
+
 module.exports = Video;

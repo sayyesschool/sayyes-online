@@ -32,7 +32,11 @@ module.exports = {
     YANDEX_KASSA_SECRET: process.env.YANDEX_KASSA_SECRET,
 
     ZOOM_API_KEY: process.env.ZOOM_API_KEY,
-    ZOOM_API_SECRET: process.env.ZOOM_API_SECRET
+    ZOOM_API_SECRET: process.env.ZOOM_API_SECRET,
+
+    YANDEX_METRIKA_ID: '61110085',
+    GOOGLE_ANALYTICS_ID: 'UA-161447925-1',
+    FACEBOOK_PIXEL_ID: '758563291240040'
 
     // paths: {
     //     public: path.join(APP_PATH, 'public'),

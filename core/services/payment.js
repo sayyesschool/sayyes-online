@@ -1,8 +1,4 @@
-const { APP_URL } = require('../config');
-const YandexKassa = require('../lib/yandex-kassa');
-const { Payment } = require('../models');
-
-module.exports = {
+module.exports = ({ APP_URL }, Kassa, Payment) => ({
     model: Payment,
 
     get(...args) {
@@ -18,7 +14,7 @@ module.exports = {
     },
 
     create({ amount, description, method, returnUrl, email, metadata }) {
-        return YandexKassa.createPayment({
+        return Kassa.createPayment({
             amount: {
                 value: Number(amount).toFixed(2),
                 currency: 'RUB'
@@ -60,4 +56,4 @@ module.exports = {
     delete(id, ...args) {
         return Payment.findByIdAndDelete(id, ...args);
     }
-};
+});

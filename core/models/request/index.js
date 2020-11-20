@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema } = require('mongoose');
 
 const RequestStatus = {
     new: 'Новая',
@@ -7,7 +7,7 @@ const RequestStatus = {
     canceled: 'Отменена'
 };
 
-const RequstStatusIcon = {
+const RequestStatusIcon = {
     new: 'new_releases',
     processing: 'edit',
     completed: 'check_circle',
@@ -16,10 +16,10 @@ const RequstStatusIcon = {
 
 const Request = new Schema({
     status: { type: String, enum: Object.keys(RequestStatus), default: 'new' },
-    description: { type: String, default: 'Завка на обучение' },
+    description: { type: String, default: 'Заявка на обучение' },
     contact: {
-        name: String,
-        phone: String
+        name: { type: String },
+        phone: { type: String, set: value => value.trim().replace(/[\s()\-\+]+/g, '') }
     },
     channel: { type: String, default: '' },
     source: { type: String, default: '' },
@@ -50,7 +50,7 @@ Request.virtual('statusLabel').get(function() {
 });
 
 Request.virtual('statusIcon').get(function() {
-    return RequstStatusIcon[this.status];
+    return RequestStatusIcon[this.status];
 });
 
-module.exports = model('Request', Request);
+module.exports = Request;

@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema } = require('mongoose');
 const moment = require('moment');
 
 const Status = {
@@ -55,4 +55,4 @@ Lesson.virtual('statusIcon').get(function() {
     return Status[this.status]?.icon;
 });
 
-module.exports = model('Lesson', Lesson);
+module.exports = Lesson;

@@ -6,4 +6,10 @@ const Audio = new Schema({
     duration: String
 });
 
+Audio.virtual('url').get(function() {
+    const parent = this.parent();
+
+    return `https://static.sayes.ru${parent ? parent.url : ''}/audios/${this.filename}`;
+});
+
 module.exports = Audio;

@@ -1,24 +1,14 @@
-const mongoose = require('mongoose');
+const User = require('./user');
+const Admin = require('./admin');
+const Client = require('./client');
+const Manager = require('./manager');
+const Teacher = require('./teacher');
+const Student = require('./student');
 
-const UserSchema = require('./user');
-const AdminSchema = require('./admin');
-const ClientSchema = require('./client');
-const ManagerSchema = require('./manager');
-const TeacherSchema = require('./teacher');
-const StudentSchema = require('./student');
+User.Admin = Admin;
+User.Client = Client;
+User.Manager = Manager;
+User.Teacher = Teacher;
+User.Student = Student;
 
-const User = mongoose.model('User', UserSchema);
-const Admin = User.discriminator('Admin', AdminSchema, 'admin');
-const Client = User.discriminator('Client', ClientSchema, 'client');
-const Manager = User.discriminator('Manager', ManagerSchema, 'manager');
-const Teacher = User.discriminator('Teacher', TeacherSchema, 'teacher');
-const Student = User.discriminator('Student', StudentSchema, 'student');
-
-module.exports = {
-    Admin,
-    Client,
-    Manager,
-    Teacher,
-    Student,
-    User
-};
+module.exports = User;

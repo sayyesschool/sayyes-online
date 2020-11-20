@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema } = require('mongoose');
 
 const Unit = require('./unit');
 const Lesson = require('./lesson');
@@ -22,11 +22,15 @@ const Course = new Schema({
 });
 
 Course.virtual('url').get(function() {
+    return `/courses/${this.slug}`;
+});
+
+Course.virtual('uri').get(function() {
     return `/courses/${this.id}`;
 });
 
 Course.virtual('imageUrl').get(function() {
-    return `https://static.sayes.ru/courses/${this.slug}/images/${this.image}`;
+    return this.image && `https://static.sayes.ru${this.url}/images/${this.image}`;
 });
 
-module.exports = model('Course', Course);
+module.exports = Course;
