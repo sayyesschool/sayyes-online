@@ -19,19 +19,7 @@ block head
 block body
     include /shared/views/includes/header
 
-    block flash
-    
-    if flash.info
-        for message in flash.info
-            +flash-banner(message)(info icon='info' dismissable)
-
-    if flash.error
-        for message in flash.error
-            +flash-banner(message)(error icon='error' dismissable)
-
-    if flash.success
-        for message in flash.success
-            +flash-banner(message)(success icon='check_circle' dismissable)
+    include /shared/views/includes/flash
 
     main#content
         block main
@@ -47,6 +35,30 @@ block body
         script(src="/lib/material-components-web/dist/material-components-web.js")
     else
         script(src="/lib/material-components-web/dist/material-components-web.min.js")
+        script.
+            document.querySelector('#request-dialog').addEventListener('submit', function() {
+                ym('#{YANDEX_METRIKA_ID}', 'reachGoal', 'callback');
+                gtag('event', 'click', { event_category: 'callback' });
+                fbq('track', 'Lead_club');
+
+                return true;
+            });
+
+            document.querySelector('#contact-dialog').addEventListener('submit', function() {
+                ym('#{YANDEX_METRIKA_ID}', 'reachGoal', 'feedback');
+                gtag('event', 'click', { event_category: 'feedback' });
+                fbq('track', 'Lead_club');
+
+                return true;
+            });
+
+            document.querySelector('#register-form').addEventListener('submit', function() {
+                ym('#{YANDEX_METRIKA_ID}', 'reachGoal', 'ticket');
+                gtag('event', 'click', { event_category: 'ticket' });
+                fbq('track', 'Lead_club');
+
+                return true;
+            });
 
     script.
         mdc.autoInit();
@@ -64,8 +76,10 @@ block body
         });
 
         document.querySelectorAll('.flash-banner').forEach(function(element) {
-            element.addEventListener('click', function() {
-                this.remove();
+            element.MDCBanner.open();
+
+            element.querySelector('.flash-banner__dismiss').addEventListener('click', function() {
+                element.MDCBanner.close();
             });
         });
 

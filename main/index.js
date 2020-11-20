@@ -18,6 +18,17 @@ module.exports = core => {
         Object.assign(main.locals, parent.locals);
     });
 
+    main.use((req, res, next) => {
+        if (!req.user) return next();
+
+        const role = req.user.role;
+
+        if (role === 'manager') return res.redirect('/admin');
+        if (role === 'teacher') return res.redirect('/teacher');
+
+        next();
+    });
+
     main.use('/', front(core.services));
 
     return main;

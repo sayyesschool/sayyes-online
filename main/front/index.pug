@@ -20,44 +20,14 @@ block main
         div.hero-image
 
         div.hero-content
-            +mdc-typography('Say Yes Online')(element='h1' style='headline2').hero-title
-            +mdc-typography('Практикуй английский онлайн!')(style='headline4').hero-subtitle
+            +mdc-typography('Say Yes Online')(element='h1' type='headline2').hero-title
+            +mdc-typography('Практикуй английский онлайн!')(type='headline4').hero-subtitle
             +mdc-button('Войти')(outlined data-open='#login-dialog').hero-button
             +mdc-button('Зарегистрироваться')(raised data-open='#register-dialog').hero-button
-
-    include ../shared/includes/login-dialog
-    include ../shared/includes/register-dialog
-    include ../shared/includes/request-dialog
 
 append scripts
     script(src='//code.jquery.com/jquery-1.11.0.min.js')
     script(src='//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js')
-    if ENV === 'production'
-        script.
-            document.querySelector('#request-dialog').addEventListener('submit', function() {
-                ym('#{YANDEX_METRIKA_ID}', 'reachGoal', 'callback');
-                gtag('event', 'click', { event_category: 'callback' });
-                fbq('track', 'Lead_club');
-
-                return true;
-            });
-
-            document.querySelector('#contact-dialog').addEventListener('submit', function() {
-                ym('#{YANDEX_METRIKA_ID}', 'reachGoal', 'feedback');
-                gtag('event', 'click', { event_category: 'feedback' });
-                fbq('track', 'Lead_club');
-
-                return true;
-            });
-
-            document.querySelector('#register-form').addEventListener('submit', function() {
-                ym('#{YANDEX_METRIKA_ID}', 'reachGoal', 'ticket');
-                gtag('event', 'click', { event_category: 'ticket' });
-                fbq('track', 'Lead_club');
-
-                return true;
-            });
-
     script.
         (function() {
             var authTabBar = document.querySelector('#auth-dialog .mdc-tab-bar');
