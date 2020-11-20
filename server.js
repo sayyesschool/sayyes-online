@@ -1,7 +1,7 @@
 const express = require('express');
 
-const core = require('./core');
 const shared = require('./shared');
+const core = require('./core');
 const api = require('./api');
 const auth = require('./auth');
 const admin = require('./admin');
