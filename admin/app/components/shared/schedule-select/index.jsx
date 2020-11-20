@@ -41,10 +41,7 @@ export default function ScheduleSelect({ name, schedule, onChange }) {
     return (
         <div className="schedule-select">
             <Layout column>
-                <Layout row justifyContent="space-between" alignItems="center">
-                    <Typography noMargin>Расписание</Typography>
-                    <Button type="button" onClick={handleAdd}>Добавить</Button>
-                </Layout>
+                <Typography noMargin>Расписание</Typography>
 
                 {items.length === 0 &&
                     <Typography noMargin>Нет расписания</Typography>
@@ -59,6 +56,8 @@ export default function ScheduleSelect({ name, schedule, onChange }) {
                         onDelete={handleDelete}
                     />
                 )}
+
+                <Button type="button" onClick={handleAdd}>Добавить</Button>
             </Layout>
         </div >
     );
@@ -85,7 +84,7 @@ function ScheduleSelectItem({ item, onDayChange, onTimeChange, onDelete }) {
     return (
         <div className="schedule-select-item">
             <WeekdaySelect
-                id={id}
+                id={item.id}
                 name="days"
                 values={item.days}
                 onChange={handleDayChange}

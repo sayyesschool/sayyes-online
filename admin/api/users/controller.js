@@ -1,6 +1,14 @@
 module.exports = ({ User }) => ({
     get: (req, res, next) => {
-        const query = req.query ? req.query : {};
+        const regex = req.query.search && new RegExp(req.query.search, 'i');
+        const query = search ? {
+            $or: [
+                { firstname: regex },
+                { lastname: regex },
+                { email: regex },
+                { phone: regex }
+            ]
+        } : req.query;
 
         User.get(query)
             .then(users => {

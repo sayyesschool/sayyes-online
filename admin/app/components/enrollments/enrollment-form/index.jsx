@@ -35,7 +35,7 @@ export default function EnrollmentForm({ enrollment = {}, onSubmit }) {
 
     const handleSubmit = useCallback(() => {
         onSubmit(data);
-    }, [data]);
+    }, [data, onSubmit]);
 
     return (
         <Form id="enrollment-form" onSubmit={handleSubmit}>
@@ -146,8 +146,6 @@ export default function EnrollmentForm({ enrollment = {}, onSubmit }) {
                     onChange={handleChange}
                 />
             </Layout>
-
-            <Button type="submit" outlined>Сохранить</Button>
         </Form >
     );
 }

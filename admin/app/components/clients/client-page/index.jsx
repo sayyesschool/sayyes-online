@@ -6,9 +6,9 @@ import {
 import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
+import ConfirmationDialog from 'shared/components/confirmation-dialog';
 
 import { useStore, useActions } from 'app/store';
-import ConfirmationDialog from 'app/components/shared/confirmation-dialog';
 import FormPanel from 'app/components/shared/form-panel';
 import ClientForm from 'app/components/clients/client-form';
 import ClientDetails from 'app/components/clients/client-details';
@@ -32,42 +32,42 @@ export default function ClientPage({ match, location, history }) {
 
     useEffect(() => {
         clientActions.getClient(match.params.id)
-            .then(() => location.state?.edit && setClientFormOpen(true));
+            .then(() => {
+                if (location.state?.edit) {
+                    setClientFormOpen(true);
+                } else if (location.state?.delete) {
+                    setConfirmationDialogOpen(true);
+                }
+            });
     }, []);
 
-    const handleSubmit = useCallback(data => {
-        clientActions.updateClient(data.id, data)
+    const updateClient = useCallback(data => {
+        clientActions.updateClient(client.id, data)
             .then(() => setClientFormOpen(false));
     }, [client]);
 
-    const handleEnrollmentSubmit = useCallback(data => {
+    const deleteClient = useCallback(() => {
+        clientActions.deleteClient(client.id)
+            .then(() => history.push('/clients'));
+    }, [client]);
+
+    const createEnrollment = useCallback(data => {
         enrollmentActions.createEnrollment(data)
             .then(({ data }) => history.push(`/clients/${client?.id}/enrollments/${data?.id}`));
     }, [client]);
 
-    const handlePaymentSubmit = useCallback(data => {
+    const createPayment = useCallback(data => {
         data.client = client.id;
 
         paymentActions.createPayment(data)
             .then(() => setPaymentFormOpen(false));
     }, [client]);
 
-    const handleDeleteClient = useCallback(() => {
-        clientActions.deleteClient(client.id)
-            .then(() => history.push('/clients'));
-    }, [client]);
-
     return (
         <Page id="client" loading={!client}>
             <PageHeader
                 title={client?.fullname}
-                controls={[
-                    {
-                        key: 'edit',
-                        title: 'Редактировать',
-                        icon: 'edit',
-                        onClick: () => setClientFormOpen(true)
-                    },
+                actions={[
                     {
                         key: 'delete',
                         title: 'Удалить',
@@ -82,6 +82,7 @@ export default function ClientPage({ match, location, history }) {
                     <Grid.Cell span="3">
                         <ClientDetails
                             client={client}
+                            onEdit={() => setClientFormOpen(true)}
                         />
                     </Grid.Cell>
 
@@ -117,7 +118,7 @@ export default function ClientPage({ match, location, history }) {
             >
                 <ClientForm
                     client={client}
-                    onSubmit={handleSubmit}
+                    onSubmit={updateClient}
                 />
             </FormPanel>
 
@@ -131,7 +132,7 @@ export default function ClientPage({ match, location, history }) {
                     enrollment={{
                         client
                     }}
-                    onSubmit={handleEnrollmentSubmit}
+                    onSubmit={createEnrollment}
                 />
             </FormPanel>
 
@@ -145,7 +146,7 @@ export default function ClientPage({ match, location, history }) {
                     payment={{
                         client
                     }}
-                    onSubmit={handlePaymentSubmit}
+                    onSubmit={createPayment}
                 />
             </FormPanel>
 
@@ -153,7 +154,7 @@ export default function ClientPage({ match, location, history }) {
                 title="Подтвердите действие"
                 message="Вы действительно хотите удалить клиента?"
                 open={isConfirmationDialogOpen}
-                onConfirm={handleDeleteClient}
+                onConfirm={deleteClient}
                 onClose={() => setConfirmationDialogOpen(false)}
             />
         </Page>

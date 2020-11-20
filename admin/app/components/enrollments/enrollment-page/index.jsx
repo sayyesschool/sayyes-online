@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import {
     LayoutGrid as Grid
 } from 'mdc-react';
@@ -6,17 +7,16 @@ import {
 import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
+import ConfirmationDialog from 'shared/components/confirmation-dialog';
 
 import { useStore, useActions } from 'app/store';
-import ConfirmationDialog from 'app/components/shared/confirmation-dialog';
 import FormPanel from 'app/components/shared/form-panel';
 import EnrollmentDetails from 'app/components/enrollments/enrollment-details';
 import EnrollmentLessons from 'app/components/enrollments/enrollment-lessons';
+import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';
 import EnrollmentPayments from 'app/components/enrollments/enrollment-payments';
 import EnrollmentStatus from 'app/components/enrollments/enrollment-status';
 import EnrollmentForm from 'app/components/enrollments/enrollment-form';
-import LessonForm from 'app/components/lessons/lesson-form';
-import PaymentForm from 'app/components/payments/payment-form';
 
 import './index.scss';
 
@@ -27,8 +27,6 @@ export default function EnrollmentPage({ match, history }) {
     const paymentActions = useActions('payments');
 
     const [isEnrollmentFormOpen, setEnrollmentFormOpen] = useState(false);
-    const [isLessonFormOpen, setLessonFormOpen] = useState(false);
-    const [isPaymentFormOpen, setPaymentFormOpen] = useState(false);
     const [isSidePanelOpen, setSidePanelOpen] = useState(false);
     const [isConfirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
 
@@ -41,14 +39,35 @@ export default function EnrollmentPage({ match, history }) {
             .then(() => setEnrollmentFormOpen(false));
     }, []);
 
-    const handleLessonSubmit = useCallback(data => {
+    const handleDeleteEnrollment = useCallback(() => {
+        actions.deleteEnrollment(enrollment.id)
+            .then(() => {
+                history.push('/enrollments');
+                setConfirmationDialogOpen(false);
+            });
+    }, [enrollment]);
+
+    const handleCreateLesson = useCallback(data => {
         data.enrollment = enrollment.id;
 
         lessonActions.createLesson(data)
             .then(() => setLessonFormOpen(false));
     }, [enrollment]);
 
-    const handlePaymentSubmit = useCallback(data => {
+    const handleDeleteLesson = useCallback(lesson => {
+        lessonActions.deleteLesson(lesson.id)
+            .then(() => setLessonFormOpen(false));
+    }, [enrollment]);
+
+    const handleAddCourse = useCallback(course => {
+        actions.updateEnrollment(enrollment.id, { courses: [course] });
+    }, [enrollment]);
+
+    const handleRemoveCourse = useCallback(course => {
+        actions.updateEnrollment(enrollment.id, { courses: [course] });
+    }, [enrollment]);
+
+    const handleCreatePayment = useCallback(data => {
         data.enrollment = enrollment.id;
         data.client = enrollment.client.id;
 
@@ -60,38 +79,18 @@ export default function EnrollmentPage({ match, history }) {
         setEnrollmentFormOpen(true);
     }, []);
 
-    const handleCreateLesson = useCallback(() => {
-        setLessonFormOpen(true);
-    }, []);
-
-    const handleCreatePayment = useCallback(() => {
-        setPaymentFormOpen(true);
-    }, []);
-
     const handleDelete = useCallback(() => {
         setConfirmationDialogOpen(true);
     }, []);
 
-    const deleteEnrollment = useCallback(() => {
-        actions.deleteEnrollment(enrollment.id)
-            .then(() => {
-                history.push('/enrollments');
-                setConfirmationDialogOpen(false);
-            });
-    }, [enrollment]);
-
     return (
         <Page id="enrollment" loading={!enrollment}>
             <PageHeader
-                title={enrollment && `${enrollment.client.fullname} - ${enrollment.title}`}
-                backTo={enrollment?.client.url}
-                controls={[
-                    {
-                        key: 'edit',
-                        title: 'Изменить',
-                        icon: 'edit',
-                        onClick: handleEdit
-                    },
+                breadcrumbs={[
+                    <Link to={enrollment?.client.url}>{enrollment?.client.fullname}</Link>
+                ]}
+                title={enrollment?.title}
+                actions={[
                     {
                         key: 'delete',
                         title: 'Удалить',
@@ -109,15 +108,16 @@ export default function EnrollmentPage({ match, history }) {
 
             <PageContent>
                 <Grid>
-                    <Grid.Cell span="3">
+                    {/* <Grid.Cell span="3">
                         <EnrollmentStatus
                             enrollment={enrollment}
                         />
-                    </Grid.Cell>
+                    </Grid.Cell> */}
 
                     <Grid.Cell span="3">
                         <EnrollmentDetails
                             enrollment={enrollment}
+                            onEdit={handleEdit}
                         />
                     </Grid.Cell>
 
@@ -125,6 +125,15 @@ export default function EnrollmentPage({ match, history }) {
                         <EnrollmentLessons
                             enrollment={enrollment}
                             onCreate={handleCreateLesson}
+                            onDelete={handleDeleteLesson}
+                        />
+                    </Grid.Cell>
+
+                    <Grid.Cell span="3">
+                        <EnrollmentCourses
+                            enrollment={enrollment}
+                            onAdd={handleAddCourse}
+                            onRemove={handleRemoveCourse}
                         />
                     </Grid.Cell>
 
@@ -135,7 +144,6 @@ export default function EnrollmentPage({ match, history }) {
                         />
                     </Grid.Cell>
                 </Grid>
-
             </PageContent>
 
             <FormPanel
@@ -151,39 +159,11 @@ export default function EnrollmentPage({ match, history }) {
                 />
             </FormPanel>
 
-            <FormPanel
-                title="Новое занятие"
-                form="lesson-form"
-                open={isLessonFormOpen}
-                onClose={() => setLessonFormOpen(false)}
-            >
-                <LessonForm
-                    lesson={{
-                        client: enrollment?.client
-                    }}
-                    onSubmit={handleLessonSubmit}
-                />
-            </FormPanel>
-
-            <FormPanel
-                title="Новый платеж"
-                form="payment-form"
-                open={isPaymentFormOpen}
-                onClose={() => setPaymentFormOpen(false)}
-            >
-                <PaymentForm
-                    payment={{
-                        client: enrollment?.client
-                    }}
-                    onSubmit={handlePaymentSubmit}
-                />
-            </FormPanel>
-
             <ConfirmationDialog
                 title="Подтвердите действие"
                 message="Вы действительно хотите удалить обучение?"
                 open={isConfirmationDialogOpen}
-                onConfirm={deleteEnrollment}
+                onConfirm={handleDeleteEnrollment}
                 onClose={() => setConfirmationDialogOpen(false)}
             />
         </Page>

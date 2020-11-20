@@ -10,14 +10,18 @@ import NotificationSnackbar from 'shared/components/notification-snackbar';
 import { useStore, useActions } from 'app/store';
 import UI from 'app/contexts/ui';
 import NavList from 'app/components/shared/nav-list';
+import Search from 'app/components/shared/search';
 import navItems from 'app/data/nav';
 
 import Home from './components/home';
 import Clients from './components/clients';
 import Courses from './components/courses';
 import Lessons from './components/lessons';
+import Materials from './components/materials';
+import Meetings from './components/meetings';
 import Payments from './components/payments';
 import Requests from './components/requests';
+import Tickets from './components/tickets';
 
 import './App.scss';
 
@@ -25,6 +29,7 @@ export default function App() {
     const [requests, requestActions] = useStore('requests.list');
     const [user, userActions] = useStore('user');
     const [notification, notificationActions] = useStore('notification');
+    const courseActions = useActions('courses');
     const managerActions = useActions('managers');
     const teacherActions = useActions('teachers');
 
@@ -33,6 +38,7 @@ export default function App() {
     useEffect(() => {
         userActions.getUser();
         requestActions.getRequests();
+        courseActions.getCourses();
         managerActions.getManagers();
         teacherActions.getTeachers();
 
@@ -54,7 +60,9 @@ export default function App() {
                 user={user}
                 onNavigationIconClick={() => setSidenavOpen(open => !open)}
                 fixed
-            />
+            >
+                <Search />
+            </AppHeader>
 
             <AppDrawer
                 open={isSidenavOpen}
@@ -68,8 +76,11 @@ export default function App() {
                     <Route path="/clients" component={Clients} />
                     <Route path="/courses" component={Courses} />
                     <Route path="/lessons" component={Lessons} />
+                    <Route path="/materials" component={Materials} />
+                    <Route path="/meetings" component={Meetings} />
                     <Route path="/payments" component={Payments} />
                     <Route path="/requests" component={Requests} />
+                    <Route path="/tickets" component={Tickets} />
                 </Switch>
             </AppContent>
 

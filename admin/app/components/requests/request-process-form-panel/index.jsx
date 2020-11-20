@@ -65,28 +65,31 @@ export default function RequestProcessFormPanel({ request, open, onSubmit, onClo
                 />
             </TabBar>
 
-            <TabPanel shown={activeTab === 'client'}>
-                <ClientForm
-                    client={{
-                        firstname: request?.contact.name,
-                        phone: request?.contact.phone
-                    }}
-                    onSubmit={handleClientSubmit}
-                />
-            </TabPanel>
+            <SideSheet.Content>
 
-            <TabPanel shown={activeTab === 'enrollment'}>
-                <EnrollmentForm
-                    onSubmit={handleEnrollmentSubmit}
-                />
-            </TabPanel>
+                <TabPanel shown={activeTab === 'client'}>
+                    <ClientForm
+                        client={{
+                            firstname: request?.contact.name,
+                            phone: request?.contact.phone
+                        }}
+                        onSubmit={handleClientSubmit}
+                    />
+                </TabPanel>
 
-            <TabPanel shown={activeTab === 'request'}>
-                <RequestForm
-                    request={request}
-                    onSubmit={handleRequestSubmit}
-                />
-            </TabPanel>
+                <TabPanel shown={activeTab === 'enrollment'}>
+                    <EnrollmentForm
+                        onSubmit={handleEnrollmentSubmit}
+                    />
+                </TabPanel>
+
+                <TabPanel shown={activeTab === 'request'}>
+                    <RequestForm
+                        request={request}
+                        onSubmit={handleRequestSubmit}
+                    />
+                </TabPanel>
+            </SideSheet.Content>
         </SideSheet>
     );
 }

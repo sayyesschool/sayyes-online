@@ -43,6 +43,12 @@ body {
     }
 }
 
+.page-side-sheet {
+    .mdc-side-sheet__content {
+        padding: 0 1rem;
+    }
+}
+
 .mdc-card {
     overflow: hidden;
 

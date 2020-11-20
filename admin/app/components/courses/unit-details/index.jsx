@@ -13,7 +13,7 @@ export default function UnitDetails({ unit, onUpdate, onAddLesson, onDeleteLesso
     return (
         <section className="unit-details">
             <LayoutGrid>
-                <LayoutGrid.Cell span="3">
+                <LayoutGrid.Cell span="6">
                     <Card>
                         <Card.Header
                             graphic={<Icon>article</Icon>}

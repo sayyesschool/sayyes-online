@@ -1,14 +1,6 @@
 module.exports = ({ Client }) => ({
     get: (req, res, next) => {
-        const search = req.query.search;
-        const query = search ? {
-            $or: [
-                { firstname: search },
-                { lastname: search },
-                { email: search },
-                { phone: search }
-            ]
-        } : req.query;
+        const query = req.query ? req.query : {};
 
         Client.get(query)
             .then(clients => {

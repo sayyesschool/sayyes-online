@@ -2,6 +2,7 @@ module.exports = ({ Course }) => ({
     courses: {
         get: (req, res, next) => {
             Course.get(req.query)
+                .select('id title slug image')
                 .then(courses => {
                     res.json({
                         ok: true,

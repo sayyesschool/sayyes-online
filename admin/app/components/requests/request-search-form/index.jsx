@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     Button,
-    Icon,
     Layout,
     Select,
-    TextField,
-    Typography
+    TextField
 } from 'mdc-react';
 import moment from 'moment';
 
@@ -24,9 +22,6 @@ export default function RequestSearchForm({ onSubmit }) {
     });
 
     function handleSubmit() {
-        data.contact.phone = data.contact?.phone.replace(/ /gm, '');
-        //data.managers = data.managers.map(m => m.id);
-
         onSubmit(data);
     }
 

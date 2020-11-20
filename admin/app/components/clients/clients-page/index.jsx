@@ -1,17 +1,19 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 
+import { useBoolean } from 'shared/hooks/state';
 import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
 
 import { useStore } from 'app/store';
 import FormPanel from 'app/components/shared/form-panel';
-import ClientList from 'app/components/clients/client-list';
+import ClientTable from 'app/components/clients/client-table';
 import ClientForm from 'app/components/clients/client-form';
 
 export default function ClientsPage({ history }) {
-    const [isClientFormOpen, setClientFormOpen] = useState(false);
     const [clients, actions] = useStore('clients.list');
+
+    const [isClientFormOpen, toggleClientFormOpen] = useBoolean(false);
 
     useEffect(() => {
         actions.getClients();
@@ -19,31 +21,37 @@ export default function ClientsPage({ history }) {
 
     const handleSubmit = useCallback(data => {
         actions.createClient(data)
-            .then(() => setClientFormOpen(false));
+            .then(() => toggleClientFormOpen(false));
     }, []);
 
     const handleEdit = useCallback(client => {
         history.push(client.url, { edit: true });
     }, []);
 
+    const handleDelete = useCallback(client => {
+        history.push(client.url, { delete: true });
+    }, []);
+
     return (
         <Page id="clients" loading={!clients}>
             <PageHeader
                 title="Клиенты"
-                controls={[
+                actions={[
                     {
                         key: 'add',
                         label: 'Создать',
                         icon: 'add',
-                        onClick: () => setClientFormOpen(true)
+                        outlined: true,
+                        onClick: toggleClientFormOpen
                     }
                 ]}
             />
 
             <PageContent>
-                <ClientList
+                <ClientTable
                     clients={clients}
                     onEdit={handleEdit}
+                    onDelete={handleDelete}
                 />
             </PageContent>
 
@@ -51,7 +59,7 @@ export default function ClientsPage({ history }) {
                 title="Новый клиент"
                 open={isClientFormOpen}
                 form="client-form"
-                onClose={() => setClientFormOpen(!isClientFormOpen)}
+                onClose={toggleClientFormOpen}
             >
                 <ClientForm
                     onSubmit={handleSubmit}

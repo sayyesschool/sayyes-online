@@ -1,4 +1,6 @@
-module.exports = ({ Request }) => ({
+const { request } = require("express");
+
+module.exports = ({ Request, Client }) => ({
     get: (req, res, next) => {
         Request.get({ status: { $in: ['new', 'processing'] }, ...req.query })
             .populate('manager', 'firstname lastname')
@@ -38,9 +40,21 @@ module.exports = ({ Request }) => ({
             .populate('manager', 'firstname lastname')
             .populate('client', 'firstname lastname')
             .then(request => {
+                return Client.getOne({
+                    phone: request.contact.phone
+                }).then(client => {
+                    console.log(client);
+                    return [request, client];
+                });
+            })
+            .then(([request, client]) => {
+                const data = request.toJSON({ getters: true, virtuals: true });
+
+                data.existingClient = client;
+
                 res.json({
                     ok: true,
-                    data: request
+                    data
                 });
             })
             .catch(next);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'mdc-react';
+import { Link } from 'react-router-dom';
 import {
     Avatar,
     Icon,
@@ -13,7 +13,7 @@ export default function RequestList({ requests }) {
                 <List.Item
                     key={request.id}
                     component={Link}
-                    to={request.url}
+                    to={'/requests'}
                     graphic={<Icon>{request.statusIcon}</Icon>}
                     primaryText={`${request.contact.name} • ${request.contact.phone}`}
                     secondaryText={request.statusLabel}

@@ -2,18 +2,25 @@ import React from 'react';
 import {
     Card,
     Icon,
+    IconButton,
     List
 } from 'mdc-react';
 
 import './index.scss';
 
-export default function EnrollmentDetails({ enrollment }) {
+export default function EnrollmentDetails({ enrollment, onEdit }) {
 
     return (
         <section className="enrollment-details">
             <Card>
                 <Card.Header
                     title="Детали"
+                    actions={
+                        <IconButton
+                            icon="edit"
+                            onClick={onEdit}
+                        />
+                    }
                 />
 
                 <Card.Section>

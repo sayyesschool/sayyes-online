@@ -70,8 +70,6 @@ export default function PaymentForm({ payment = {}, onSubmit }) {
                     onChange={setData}
                 />
             </Layout>
-
-            <Button type="submit" outlined>Сохранить</Button>
         </Form>
     );
 }

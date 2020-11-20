@@ -14,7 +14,17 @@ export default {
         single: null
     },
 
+    materials: {
+        list: null,
+        single: null
+    },
+
     managers: {
+        list: null,
+        single: null
+    },
+
+    meetings: {
         list: null,
         single: null
     },
@@ -30,6 +40,11 @@ export default {
     },
 
     teachers: {
+        list: null,
+        single: null
+    },
+
+    tickets: {
         list: null,
         single: null
     },

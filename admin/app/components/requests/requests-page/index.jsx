@@ -2,11 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
 import PageSideSheet from 'shared/components/page-side-sheet';
+import PageContent from 'shared/components/page-content';
+import ConfirmationDialog from 'shared/components/confirmation-dialog';
 
 import { useStore, useActions } from 'app/store';
-import ConfirmationDialog from 'app/components/shared/confirmation-dialog';
 import FormPanel from 'app/components/shared/form-panel';
 import EmptyState from 'app/components/shared/empty-state';
 import RequestTable from 'app/components/requests/request-table';
@@ -26,6 +26,7 @@ export default function RequestsPage({ history }) {
     const [isRequestFormOpen, setRequestFormOpen] = useState(false);
     const [isSidePanelOpen, setSidePanelOpen] = useState(false);
     const [isConfirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
+    const [requestWithExistingClient, setRequestWithExistingClient] = useState();
 
     useEffect(() => {
         requestActions.getRequests();
@@ -37,18 +38,26 @@ export default function RequestsPage({ history }) {
     }, []);
 
     const handleProcessRequest = useCallback(request => {
+        if (!request.manager) {
+            requestActions.updateRequest(request.id, { status: 'processing', manager: user.id })
+                .then(() => setRequestProcessPanelOpen(true));
+        } else if (request.manager.id === user.id) {
+            setRequestProcessPanelOpen(true);
+        } else {
+            showNotification({ text: `Обработкой заявки уже занимается ${request.manager.fullname}` });
+        }
+    }, [user]);
+
+    const handleCheckRequest = useCallback(request => {
         requestActions.getRequest(request.id)
             .then(({ data: request }) => {
-                if (!request.manager) {
-                    requestActions.updateRequest(request.id, { status: 'processing', manager: user.id })
-                        .then(() => setRequestProcessPanelOpen(true));
-                } else if (request.manager.id === user.id) {
-                    setRequestProcessPanelOpen(true);
+                if (request.existingClient) {
+                    setRequestWithExistingClient(request);
                 } else {
-                    showNotification({ text: `Обработкой заявки уже занимается ${request.manager.fullname}` });
+                    handleProcessRequest(request);
                 }
             });
-    }, [user]);
+    }, []);
 
     const handleProccessRequestSubmit = useCallback(data => {
         clientActions.createClient(data.client)
@@ -67,6 +76,23 @@ export default function RequestsPage({ history }) {
             .then(({ data }) => history.push(`/clients/${data.client.id}`));
     }, [request]);
 
+    const handleExistingClient = useCallback(() => {
+        requestActions.updateRequest(requestWithExistingClient.id, {
+            status: 'completed',
+            manager: user.id,
+            client: requestWithExistingClient.existingClient.id
+        }).then(({ data }) => {
+            history.push(`/clients/${data.client.id}`);
+            showNotification({ text: 'Заявка привязана к клиенту' });
+        });
+    }, [requestWithExistingClient]);
+
+    const handleContinueProcessing = useCallback(() => {
+        delete requestWithExistingClient.existingClient;
+        handleProcessRequest(requestWithExistingClient);
+        setRequestWithExistingClient(undefined);
+    }, [requestWithExistingClient]);
+
     const handleEditRequest = useCallback(request => {
         requestActions.setRequest(request);
         setRequestFormOpen(true);
@@ -75,7 +101,7 @@ export default function RequestsPage({ history }) {
     const handleDeleteRequest = useCallback(() => {
         requestActions.deleteRequest(request.id)
             .then(() => {
-                requestActions.setRequest();
+                requestActions.unsetRequest();
                 setConfirmationDialogOpen(false);
             });
     }, [request]);
@@ -85,15 +111,19 @@ export default function RequestsPage({ history }) {
         setConfirmationDialogOpen(true);
     }, []);
 
+    const toggleSidePanel = useCallback(() => {
+        setSidePanelOpen(value => !value);
+    }, []);
+
     return (
         <Page id="requests" loading={!requests}>
             <PageHeader
                 title="Заявки"
-                controls={[
+                actions={[
                     {
                         key: 'search',
                         icon: 'search',
-                        onClick: () => setSidePanelOpen(isOpen => !isOpen)
+                        onClick: toggleSidePanel
                     }
                 ]}
             />
@@ -102,7 +132,7 @@ export default function RequestsPage({ history }) {
                 title="Поиск"
                 open={isSidePanelOpen}
                 dismissible
-                onClose={() => setSidePanelOpen(false)}
+                onClose={toggleSidePanel}
             >
                 <RequestSearchForm />
             </PageSideSheet>
@@ -113,7 +143,7 @@ export default function RequestsPage({ history }) {
                         requests={requests}
                         manager={user}
                         onEdit={handleEditRequest}
-                        onProcess={handleProcessRequest}
+                        onProcess={handleCheckRequest}
                         onDelete={handleDeleteConfirm}
                     />
                     :
@@ -147,6 +177,14 @@ export default function RequestsPage({ history }) {
                 open={isConfirmationDialogOpen}
                 onConfirm={handleDeleteRequest}
                 onClose={() => setConfirmationDialogOpen(false)}
+            />
+
+            <ConfirmationDialog
+                title="Совпадение номера телефона"
+                message={`Номер телефона в заявке совпадает с номером телефона существующего клиента ${requestWithExistingClient?.existingClient.fullname} (${requestWithExistingClient?.existingClient.phone}). Вы хотите привязать заявку к нему?`}
+                open={Boolean(requestWithExistingClient)}
+                onConfirm={handleExistingClient}
+                onClose={handleContinueProcessing}
             />
         </Page>
     );

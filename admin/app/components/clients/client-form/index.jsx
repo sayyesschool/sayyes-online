@@ -14,7 +14,7 @@ import timezones from 'shared/../data/timezones';
 
 const maskFormat = { '*': /[0-9]/ };
 
-export default function ClientForm({ client = {}, onSubmit }) {
+export default function ClientForm({ id = 'client-form', client = {}, onSubmit }) {
     const [data, handleChange] = useForm({
         firstname: '',
         lastname: '',
@@ -27,7 +27,7 @@ export default function ClientForm({ client = {}, onSubmit }) {
     });
 
     return (
-        <Form id="client-form" onSubmit={() => onSubmit(data)}>
+        <Form id={id} onSubmit={() => onSubmit(data)}>
             <Layout column>
                 <TextField
                     name="firstname"
@@ -119,8 +119,6 @@ export default function ClientForm({ client = {}, onSubmit }) {
                     onChange={handleChange}
                 />
             </Layout>
-
-            <Button type="submit" outlined>Сохранить</Button>
         </Form>
     );
 }

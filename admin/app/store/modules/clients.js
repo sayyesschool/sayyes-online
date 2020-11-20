@@ -2,12 +2,16 @@ import { createAction, createReducer, combineReducers } from 'shared/store/utils
 
 import { createPayment } from './payments';
 
-export const getClients = createAction('GET_CLIENTS', query => ({
-    request: {
-        method: 'get',
-        url: '/clients' + (query ? ('?' + query) : '')
-    }
-}));
+export const getClients = createAction('GET_CLIENTS', (params = {}) => {
+    const query = Object.entries(params).map(([k, v]) => `${k}=${v}`).join('&');
+
+    return {
+        request: {
+            method: 'get',
+            url: '/clients' + (query ? ('?' + query) : '')
+        }
+    };
+});
 
 export const getClient = createAction('GET_CLIENT', clientId => ({
     request: {

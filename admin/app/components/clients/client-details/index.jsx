@@ -2,13 +2,14 @@ import React, { useContext } from 'react';
 import {
     Card,
     Icon,
+    IconButton,
     List
 } from 'mdc-react';
 import moment from 'moment';
 
 import DataContext from 'app/contexts/data';
 
-export default function ClientDetails({ client }) {
+export default function ClientDetails({ client, onEdit }) {
     const data = useContext(DataContext);
 
     return (
@@ -16,6 +17,12 @@ export default function ClientDetails({ client }) {
             <Card>
                 <Card.Header
                     title="Профиль"
+                    actions={
+                        <IconButton
+                            icon="edit"
+                            onClick={onEdit}
+                        />
+                    }
                 />
 
                 <Card.Section>

@@ -9,14 +9,16 @@ import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
 
 import { useStore } from 'app/store';
-import RequstList from 'app/components/requests/request-list';
+import RequestList from 'app/components/requests/request-list';
 import LessonList from 'app/components/lessons/lesson-list';
+import MeetingList from 'app/components/meetings/meeting-list';
 
 import './index.scss';
 
 export default function HomePage() {
     const [requests] = useStore('requests.list');
     const [lessons] = useStore('lessons.list');
+    const [meetings] = useStore('meetings.list');
 
     return (
         <Page id="home">
@@ -31,7 +33,7 @@ export default function HomePage() {
                             <Card.Header title="Заявки" />
 
                             {requests &&
-                                <RequstList
+                                <RequestList
                                     requests={requests}
                                 />
                             }
@@ -45,6 +47,18 @@ export default function HomePage() {
                             {lessons &&
                                 <LessonList
                                     lessons={lessons}
+                                />
+                            }
+                        </Card>
+                    </Grid.Cell>
+
+                    <Grid.Cell span="3">
+                        <Card outlined>
+                            <Card.Header title="Встречи" subtitle="Сегодня" />
+
+                            {meetings &&
+                                <MeetingList
+                                    meetings={meetings}
                                 />
                             }
                         </Card>

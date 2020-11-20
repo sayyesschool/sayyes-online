@@ -4,13 +4,14 @@ import {
     TextField
 } from 'mdc-react';
 
+import { slugify } from 'shared/utils/format';
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
 import FileInput from 'shared/components/file-input';
 
 export default function CourseForm({ course = {}, onSubmit }) {
     const fileInputRef = useRef();
-    const [data, handleChange, getData] = useForm({
+    const [data, handleChange, getData, setData] = useForm({
         title: course.title,
         slug: course.slug,
         description: course.description,
@@ -28,6 +29,10 @@ export default function CourseForm({ course = {}, onSubmit }) {
         fileInputRef.current.reset();
     }, []);
 
+    const handleTitleBlur = useCallback(() => {
+        setData(data => ({ ...data, slug: slugify(data.title) }));
+    }, [data.title]);
+
     return (
         <Form id="course-form" onSubmit={handleSubmit}>
             <Layout column>
@@ -37,6 +42,7 @@ export default function CourseForm({ course = {}, onSubmit }) {
                     value={data.title}
                     filled
                     onChange={handleChange}
+                    onBlur={handleTitleBlur}
                 />
 
                 <TextField
@@ -60,7 +66,7 @@ export default function CourseForm({ course = {}, onSubmit }) {
                     ref={fileInputRef}
                     name="file"
                     label="Изображение"
-                    url={data.image && STATIC_URL + course.imageUrl}
+                    url={data.image && course.imageUrl}
                     caption={data.image}
                 />
             </Layout>

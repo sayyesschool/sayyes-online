@@ -5,7 +5,14 @@ import {
     List
 } from 'mdc-react';
 
-export default function EnrollmentLessons({ enrollment, onCreate }) {
+import { useBoolean } from 'shared/hooks/state';
+
+import FormPanel from 'app/components/shared/form-panel';
+import LessonForm from 'app/components/lessons/lesson-form';
+
+export default function EnrollmentLessons({ enrollment, onCreate, onDelete }) {
+    const [isFormOpen, toggleFormOpen] = useBoolean(false);
+
     return (
         <section className="enrollment-lessons">
             <Card>
@@ -14,7 +21,7 @@ export default function EnrollmentLessons({ enrollment, onCreate }) {
                     actions={
                         <IconButton
                             icon="add"
-                            onClick={onCreate}
+                            onClick={toggleFormOpen}
                         />
                     }
                 />
@@ -25,11 +32,32 @@ export default function EnrollmentLessons({ enrollment, onCreate }) {
                             <List.Item
                                 primaryText={lesson.trial ? 'Пробный урок' : 'Урок'}
                                 secondaryText={lesson.datetime}
+                                meta={
+                                    <IconButton
+                                        icon="remove"
+                                        title="Убрать курс"
+                                        onClick={() => onDelete(lesson)}
+                                    />
+                                }
                             />
                         )}
                     </List>
                 </Card.Section>
             </Card>
+
+            <FormPanel
+                title="Новое занятие"
+                form="lesson-form"
+                open={isFormOpen}
+                onClose={toggleFormOpen}
+            >
+                <LessonForm
+                    lesson={{
+                        client: enrollment?.client
+                    }}
+                    onSubmit={onCreate}
+                />
+            </FormPanel>
         </section>
     );
 }

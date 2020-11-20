@@ -61,7 +61,6 @@ export default function RequestList({ requests, manager, onProcess, onEdit, onDe
                                 :
                                 '[Отсутствует]'
                             }
-
                         </DataTable.Cell>
 
                         <DataTable.Cell>

@@ -9,10 +9,10 @@ import classnames from 'classnames';
 export default function MenuButton({
     button,
     icon,
+    disabled,
     items = [],
     menuProps = {},
-    className,
-    children
+    className
 }) {
     const anchorRef = useRef();
     const [isOpen, setOpen] = useState(false);
@@ -25,12 +25,15 @@ export default function MenuButton({
         <div ref={anchorRef} className={classNames}>
             {React.isValidElement(button) ?
                 React.cloneElement(button, {
+                    disabled,
                     onClick: handleOpen
                 })
                 :
-                <IconButton onClick={handleOpen}>
-                    <Icon>{icon || 'more_vert'}</Icon>
-                </IconButton>
+                <IconButton
+                    icon={icon || 'more_vert'}
+                    disabled={disabled}
+                    onClick={handleOpen}
+                />
             }
 
             <Menu

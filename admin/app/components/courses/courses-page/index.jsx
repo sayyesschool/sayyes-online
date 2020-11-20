@@ -11,6 +11,7 @@ import CourseForm from 'app/components/courses/course-form';
 
 export default function CoursesPage() {
     const [courses, actions] = useStore('courses.list');
+
     const [isCourseFormOpen, setCourseFormOpen] = useState(false);
 
     useEffect(() => {
@@ -26,7 +27,7 @@ export default function CoursesPage() {
         <Page id="courses" loading={!courses}>
             <PageHeader
                 title="Курсы"
-                controls={[
+                actions={[
                     {
                         key: 'add',
                         title: 'Создать',
@@ -44,7 +45,7 @@ export default function CoursesPage() {
 
             <FormPanel
                 title="Новый курс"
-                isOpen={isCourseFormOpen}
+                open={isCourseFormOpen}
                 form="course-form"
                 onClose={() => setCourseFormOpen(!isCourseFormOpen)}
             >

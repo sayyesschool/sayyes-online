@@ -88,8 +88,6 @@ export default function LessonForm({ lesson = {}, onSubmit }) {
                     onChange={handleChange}
                 />
             </Layout>
-
-            <Button type="submit" outlined>Сохранить</Button>
         </Form>
     );
 }

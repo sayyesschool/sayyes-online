@@ -6,7 +6,14 @@ import {
     List
 } from 'mdc-react';
 
+import { useBoolean } from 'shared/hooks/state';
+
+import FormPanel from 'app/components/shared/form-panel';
+import PaymentForm from 'app/components/payments/payment-form';
+
 export default function EnrollmentPayments({ enrollment, onCreate }) {
+    const [isFormOpen, toggleFormOpen] = useBoolean(false);
+
     return (
         <section className="enrollment-payments">
             <Card>
@@ -15,7 +22,7 @@ export default function EnrollmentPayments({ enrollment, onCreate }) {
                     actions={
                         <IconButton
                             icon="add"
-                            onClick={onCreate}
+                            onClick={toggleFormOpen}
                         />
                     }
                 />
@@ -32,6 +39,20 @@ export default function EnrollmentPayments({ enrollment, onCreate }) {
                     </List>
                 </Card.Section>
             </Card>
+
+            <FormPanel
+                title="Новый платеж"
+                form="payment-form"
+                open={isFormOpen}
+                onClose={toggleFormOpen}
+            >
+                <PaymentForm
+                    payment={{
+                        client: enrollment?.client
+                    }}
+                    onSubmit={onCreate}
+                />
+            </FormPanel>
         </section>
     );
 }

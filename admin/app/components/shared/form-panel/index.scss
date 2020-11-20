@@ -4,11 +4,12 @@
     @include mixins.width(480px);
 
     .mdc-side-sheet__content {
-        padding: 0 1rem 1rem;
+        height: auto;
+        padding: 0 1rem .5rem;
     }
 
     .form-panel__actions {
-        margin-top: 1rem;
+        padding: .5rem 1rem 1rem;
 
         .mdc-button + .mdc-button {
             margin-left: .5rem;

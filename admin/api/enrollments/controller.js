@@ -22,6 +22,7 @@ module.exports = ({ Enrollment }) => ({
             .populate('teacher', 'firstname lastname')
             .populate({ path: 'lessons', populate: { path: 'teacher', select: 'firstname lastname' } })
             .populate('payments')
+            .populate('courses', 'slug title image')
             .then(enrollment => {
                 res.json({
                     ok: true,

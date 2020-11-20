@@ -12,13 +12,14 @@ import PaymentForm from 'app/components/payments/payment-form';
 
 export default function Payments({ match, history }) {
     const [{ list: payments, single: payment }, actions] = useStore('payments');
+
     const [isPaymentFormOpen, setPaymentFormOpen] = useState(false);
 
     useEffect(() => {
         actions.getPayments();
 
-        if (match.params.payment) {
-            actions.getPayment(match.params.payment)
+        if (match.params.id) {
+            actions.getPayment(match.params.id)
                 .then(() => setPaymentFormOpen(true));
         }
     }, []);
@@ -39,6 +40,11 @@ export default function Payments({ match, history }) {
         }
     }, []);
 
+    const handleOpen = useCallback(() => {
+        actions.unsetPayment();
+        setPaymentFormOpen(true);
+    }, []);
+
     const handleClose = useCallback(() => {
         actions.unsetPayment();
         setPaymentFormOpen(false);
@@ -49,6 +55,15 @@ export default function Payments({ match, history }) {
         <Page id="payments" loading={!payments}>
             <PageHeader
                 title="Платежи"
+                actions={[
+                    {
+                        key: 'add',
+                        label: 'Создать',
+                        icon: 'add',
+                        outlined: true,
+                        onClick: handleOpen
+                    }
+                ]}
             />
 
             <PageContent>
@@ -59,12 +74,12 @@ export default function Payments({ match, history }) {
                         onDelete={handleDelete}
                     />
                     :
-                    <EmptyState title="Платжей нет" />
+                    <EmptyState title="Платежей нет" />
                 }
             </PageContent>
 
             <FormPanel
-                title="Редактирование платежа"
+                title={payment ? 'Редактирование платежа' : 'Новый платеж'}
                 open={isPaymentFormOpen}
                 form="payment-form"
                 onClose={handleClose}

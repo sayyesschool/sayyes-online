@@ -6,7 +6,7 @@ import Payments from './payments-page';
 export default function ClientsRouter() {
     return (
         <Switch>
-            <Route path="/payments/:payment?" component={Payments} />
+            <Route path="/payments/:id?" component={Payments} />
         </Switch>
     );
 }

@@ -1,6 +1,7 @@
 import React, { useRef, useCallback } from 'react';
 import {
     Layout,
+    LayoutGrid,
     TextField
 } from 'mdc-react';
 
@@ -30,40 +31,54 @@ export default function UnitForm({ unit = {}, onSubmit }) {
 
     return (
         <Form id="unit-form" onSubmit={handleSubmit}>
-            <Layout column>
-                <TextField
-                    name="title"
-                    label="Название"
-                    value={data.title}
-                    filled
-                    onChange={handleChange}
-                />
+            <LayoutGrid>
+                <LayoutGrid.Cell span="6">
+                    <Layout column>
+                        <TextField
+                            name="title"
+                            label="Название"
+                            value={data.title}
+                            filled
+                            onChange={handleChange}
+                        />
 
-                <TextField
-                    name="slug"
-                    label="Слаг"
-                    value={data.slug}
-                    filled
-                    onChange={handleChange}
-                />
+                        <TextField
+                            name="slug"
+                            label="Слаг"
+                            value={data.slug}
+                            filled
+                            onChange={handleChange}
+                        />
 
-                <TextField
-                    name="description"
-                    label="Описание"
-                    value={data.description}
-                    filled
-                    textarea
-                    onChange={handleChange}
-                />
+                        <TextField
+                            name="document"
+                            label="Документ"
+                            value={data.document}
+                            filled
+                            onChange={handleChange}
+                        />
 
-                <FileInput
-                    ref={fileInputRef}
-                    name="file"
-                    label="Изображение"
-                    url={data.image && STATIC_URL + unit.imageUrl}
-                    caption={data.image}
-                />
-            </Layout>
+                        <FileInput
+                            ref={fileInputRef}
+                            name="file"
+                            label="Изображение"
+                            url={data.image && unit.imageUrl}
+                            caption={data.image}
+                        />
+                    </Layout>
+                </LayoutGrid.Cell>
+
+                <LayoutGrid.Cell span="6">
+                    <TextField
+                        name="description"
+                        label="Описание"
+                        value={data.description}
+                        filled
+                        textarea
+                        onChange={handleChange}
+                    />
+                </LayoutGrid.Cell>
+            </LayoutGrid>
         </Form>
     );
 }

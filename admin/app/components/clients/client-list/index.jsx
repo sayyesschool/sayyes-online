@@ -1,75 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-    DataTable
+    List
 } from 'mdc-react';
 
-import MenuButton from 'app/components/shared/menu-button';
-
-export default function ClientList({ clients, onEdit, onDelete }) {
+export default function ClientList({ clients }) {
     return (
-        <DataTable id="client-list">
-            <DataTable.Header>
-                <DataTable.HeaderRow>
-                    {columns.map(col =>
-                        <DataTable.HeaderCell
-                            key={col.key}
-                        >
-                            {col.text}
-                        </DataTable.HeaderCell>
-                    )}
-                </DataTable.HeaderRow>
-            </DataTable.Header>
-
-            <DataTable.Content>
-                {clients.map(client =>
-                    <DataTable.Row key={client.id}>
-                        <DataTable.Cell>
-                            <Link to={`/clients/${client.id}`}>{client.fullname}</Link>
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            {client.email}
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            {client.phone}
-                        </DataTable.Cell>
-
-                        <DataTable.Cell numeric>
-                            <MenuButton
-                                items={[
-                                    {
-                                        key: 'edit',
-                                        text: 'Изменить',
-                                        onClick: () => onEdit(client)
-                                    },
-                                    {
-                                        key: 'delete',
-                                        text: 'Удалить',
-                                        onClick: () => onDelete(client)
-                                    }
-                                ]}
-                            />
-                        </DataTable.Cell>
-                    </DataTable.Row>
-                )}
-            </DataTable.Content>
-        </DataTable>
+        <List className="client-list" twoLine>
+            {clients.map(client =>
+                <List.Item
+                    key={client.id}
+                    component={Link}
+                    to={client.url}
+                    primaryText={client.fullname}
+                    secondaryText={`${client.email} ${client.phone}`}
+                />
+            )}
+        </List>
     );
 }
-
-const columns = [
-    {
-        key: 'fullname',
-        text: 'Имя и фамилия'
-    },
-    {
-        key: 'email',
-        text: 'Email'
-    },
-    {
-        key: 'phone',
-        text: 'Телефон'
-    }
-];
