@@ -1,15 +1,15 @@
 const express = require('express');
 
 const twilio = require('./twilio');
-const yandexKassa = require('./yandex-kassa');
+const yookassa = require('./yookassa');
 const zoom = require('./zoom');
 
-module.exports = core => {
+module.exports = context => {
     const api = express();
 
-    api.use('/yandex-kassa', yandexKassa(core.services));
-    api.use('/twilio', twilio(core.lib.twilio));
-    api.use('/zoom', zoom(core.models));
+    api.use('/yookassa', yookassa(context.models));
+    api.use('/twilio', twilio(context.lib.twilio));
+    api.use('/zoom', zoom(context.models));
 
     api.use((error, req, res, next) => {
         console.log(error);

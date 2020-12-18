@@ -6,8 +6,8 @@ module.exports = ({ Ticket, Meeting, User }) => {
 
         if (event === 'payment.succeeded') {
             const payment = req.body.object;
-            const user = await User.getById(payment.metadata.userId);
-            const meeting = await Meeting.getById(payment.metadata.meetingId);
+            const user = await User.findById(payment.metadata.userId);
+            const meeting = await Meeting.findById(payment.metadata.meetingId);
 
             const ticket = await Ticket.create({
                 user: user.id,
@@ -29,7 +29,7 @@ module.exports = ({ Ticket, Meeting, User }) => {
         } else if (event === 'refund.succeeded') {
             const refund = req.body.object;
 
-            Ticket.delete({ 'payment.id': refund.payment_id })
+            Ticket.deleteOne({ 'payment.id': refund.payment_id })
                 .then(() => res.sendStatus(200))
                 .catch(() => {
                     res.sendStatus(500);
