@@ -30,9 +30,11 @@ function deleteFile(path) {
     }).then(res => res.data);
 }
 
-module.exports = {
-    uploadFile,
-    deleteFile,
-    upload: uploadFile,
-    delete: deleteFile
+module.exports = () => {
+    return {
+        uploadFile,
+        deleteFile,
+        upload: uploadFile,
+        delete: deleteFile
+    };
 };

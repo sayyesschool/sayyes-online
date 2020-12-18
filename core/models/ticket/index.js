@@ -49,6 +49,23 @@ const Ticket = new Schema({
 
 Ticket.statics.plans = plans;
 
+Ticket.statics.getByMonth = function() {
+    const today = new Date();
+
+    return this.aggregate()
+        .match({
+            paidAt: {
+                $gt: new Date(today.getFullYear() - 1, 11, 31),
+                $lt: new Date(today.getFullYear() + 1, 0)
+            }
+        })
+        .group({
+            _id: { $month: '$paidAt' },
+            count: { $sum: 1 },
+            amount: { $sum: '$price' }
+        });
+};
+
 Ticket.virtual('title').get(function() {
     return plans[this.plan].title;
 });

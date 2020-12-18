@@ -1,5 +1,5 @@
 const moment = require('moment');
-const { Types: { ObjectId } } = require('mongoose');
+const { Types: { ObjectId }, isValidObjectId } = require('mongoose');
 
 const registrationActionToStatus = {
     approve: 'approved',
@@ -7,35 +7,24 @@ const registrationActionToStatus = {
     deny: 'denied'
 };
 
-module.exports = (Zoom, Meeting, { Mail, Ticket, Newsletter }) => ({
-    get(...args) {
+module.exports = (Zoom, { Meeting, Ticket }, { Mail, Newsletter }) => ({
+    getMeetings(...args) {
         return Meeting.find(...args)
             .populate('host', 'firstname lastname avatarUrl');
     },
 
-    getScheduled() {
-        return Meeting.find({
-            date: { $gte: new Date() },
-            status: 'scheduled',
-            published: true
-        })
-            .sort({ date: 1 })
-            .populate('host', 'firstname lastname avatarUrl');
-    },
+    getMeeting(...args) {
+        const [id, ...rest] = args;
 
-    getOne(...args) {
-        return Meeting.findOne(...args)
+        return (isValidObjectId(id) ?
+            Meeting.findById(id, ...rest) :
+            Meeting.findOne(...args)
+        )
             .populate('host', 'firstname lastname avatarUrl')
             .populate('participants');
     },
 
-    getById(...args) {
-        return Meeting.findById(...args)
-            .populate('host', 'firstname lastname avatarUrl')
-            .populate('participants');
-    },
-
-    async create(data, ...args) {
+    async createMeeting(data, ...args) {
         const zoomMeeting = await Zoom.meetings.create(Object.assign(data, {
             topic: data.title,
             agenda: data.description,
@@ -60,7 +49,7 @@ module.exports = (Zoom, Meeting, { Mail, Ticket, Newsletter }) => ({
         return meeting.populate('host').execPopulate();
     },
 
-    async update(id, data, ...args) {
+    async updateMeeting(id, data, ...args) {
         const meeting = await Meeting.findByIdAndUpdate(id, data, {
             new: true,
             select: '-registrations -participants'
@@ -76,7 +65,7 @@ module.exports = (Zoom, Meeting, { Mail, Ticket, Newsletter }) => ({
         return meeting.populate('host').execPopulate();
     },
 
-    async cancel(id) {
+    async cancelMeeting(id) {
         const meeting = await Meeting.findByIdAndUpdate(id, { status: 'canceled' }, { new: true });
 
         // send email
@@ -84,7 +73,7 @@ module.exports = (Zoom, Meeting, { Mail, Ticket, Newsletter }) => ({
         return meeting;
     },
 
-    async delete(id, ...args) {
+    async deleteMeeting(id, ...args) {
         const meeting = await Meeting.findByIdAndDelete(id, ...args);
 
         if (meeting.hasRegistrants || meeting.hasParticipants) {
@@ -94,6 +83,23 @@ module.exports = (Zoom, Meeting, { Mail, Ticket, Newsletter }) => ({
         await Zoom.meetings.delete(meeting.zoomId);
 
         return meeting;
+    },
+
+    async createPayment(user, planId, meeting = {}) {
+        if (!user) throw new Error('Для приобретения билета необходимо указать пользователя.');
+
+        const plan = Ticket.plans[planId] || {};
+
+        return Payment.create({
+            amount: plan.price,
+            description: plan.title,
+            email: user.email,
+            metadata: {
+                userId: ObjectId.isValid(user) ? user : user.id,
+                planId: plan.id,
+                meetingId: ObjectId.isValid(meeting) ? meeting : meeting.id
+            }
+        });
     },
 
     async register(meetingId, user, ticket) {
@@ -167,7 +173,11 @@ module.exports = (Zoom, Meeting, { Mail, Ticket, Newsletter }) => ({
 
         return Promise.all([
             meeting.save(),
-            Ticket.invalidate(user, meeting)
+            Ticket.findOneAndUpdate(
+                { user, meeting },
+                { $unset: { meeting: '' } },
+                { new: true }
+            )
         ]);
     },
 
@@ -292,7 +302,7 @@ module.exports = (Zoom, Meeting, { Mail, Ticket, Newsletter }) => ({
                 id: registration.user,
                 email: registration.registrant.email
             };
-            const payment = await Ticket.purchase(user, 'single', meeting);
+            const payment = await this.createPayment(user, 'single', meeting);
 
             Mail.send({
                 to: [{

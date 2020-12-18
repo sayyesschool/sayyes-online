@@ -6,9 +6,17 @@ const Unit = new Schema({
     description: { type: String },
     document: { type: String },
     image: { type: String },
-    _audios: [String],
-    _videos: [String],
-    _lessons: [Schema.Types.ObjectId]
+    audios: [String],
+    videos: [String],
+    lessons: [Schema.Types.ObjectId]
+});
+
+Unit.virtual('url').get(function() {
+    return `${this.parent().url}/units/${this.id}`;
+});
+
+Unit.virtual('uri').get(function() {
+    return `${this.parent().uri}/units/${this.id}`;
 });
 
 Unit.virtual('documentUrl').get(function() {

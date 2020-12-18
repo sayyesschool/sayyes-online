@@ -22,7 +22,7 @@ const Course = new Schema({
 });
 
 Course.virtual('url').get(function() {
-    return `/courses/${this.slug}`;
+    return `/courses/${this.id}`;
 });
 
 Course.virtual('uri').get(function() {

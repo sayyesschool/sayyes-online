@@ -1,6 +1,6 @@
 const { Schema } = require('mongoose');
 
-const Message = require('./message');
+const Message = require('../message');
 
 const Conversation = new Schema({
     participants: [{ type: Schema.Types.ObjectId, ref: 'User' }],

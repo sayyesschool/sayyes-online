@@ -17,39 +17,29 @@ module.exports = request => ({
         });
     },
 
-    list: options => {
-        return request({
-            path: '/users',
-            method: 'GET'
-        });
-    },
+    list: options => request({
+        path: '/users',
+        method: 'GET'
+    }),
 
-    get: (userId, options) => {
-        return request({
-            path: `/users/${userId}`,
-            method: 'GET'
-        });
-    },
+    get: (userId, options) => request({
+        path: `/users/${userId}`,
+        method: 'GET'
+    }),
 
-    user: userId => ({
-        activate() {
-            return request({
-                path: `/users/${userId}/status`,
-                method: 'PUT',
-                body: {
-                    action: 'activate'
-                }
-            });
-        },
-    
-        deactivate() {
-            return request({
-                path: `/users/${userId}/status`,
-                method: 'PUT',
-                body: {
-                    action: 'deactivate'
-                }
-            });
+    activate: userId => request({
+        path: `/users/${userId}/status`,
+        method: 'PUT',
+        body: {
+            action: 'activate'
+        }
+    }),
+
+    deactivate: userId => request({
+        path: `/users/${userId}/status`,
+        method: 'PUT',
+        body: {
+            action: 'deactivate'
         }
     })
 });

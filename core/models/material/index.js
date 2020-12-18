@@ -1,12 +1,16 @@
 const { Schema } = require('mongoose');
 
+const Content = require('./content');
+
 const Material = new Schema({
     slug: { type: String, required: true, unique: true },
     title: { type: String },
+    subtitle: { type: String },
     level: { type: String },
     published: { type: Boolean },
     image: { type: String },
-    document: { type: String }
+    document: { type: String },
+    contents: [Content]
 });
 
 Material.virtual('url').get(function() {

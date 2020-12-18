@@ -2,59 +2,69 @@ const { Types: { ObjectId } } = require('mongoose');
 const moment = require('moment');
 
 module.exports = (Lesson, Mail) => ({
-    get(...args) {
-        return Lesson.find(...args)
-            .populate('host', 'firstname lastname avatarUrl');
-    },
+    notifyStudents() {
+        const inAnHour = moment().utc().minutes(0).seconds(0).milliseconds(0).add(1, 'hour');
 
-    getScheduled() {
-        return Lesson.find({
-            date: { $gte: new Date() },
-            status: 'scheduled',
-            published: true
+        Lesson.find({
+            date: inAnHour.toDate()
         })
-            .sort({ date: 1 })
-            .populate('host', 'firstname lastname avatarUrl');
+            .populate('student', 'firstname lastname email')
+            .populate('teacher', 'firstname lastname avatarUrl')
+            .then(lessons => {
+                const messages = lessons.map(lesson => ({
+                    to: [{
+                        name: `${lesson.student.firstname} ${lesson.student.lastname}`,
+                        email: lesson.student.email
+                    }],
+                    subject: 'Напоминание об уроке',
+                    templateId: 1348680,
+                    variables: {
+                        firstname: lesson.student.firstname,
+                        title: lesson.title,
+                        datetime: lesson.datetime,
+                        teacher: `${lesson.teacher.firstname} ${lesson.teacher.lastname}`,
+                        url: lesson.url
+                    }
+                }));
+
+                if (messages.length > 0) {
+                    Mail.sendMany(messages);
+                }
+            });
     },
 
-    getOne(...args) {
-        return Lesson.findOne(...args)
-            .populate('teacher', 'firstname lastname avatarUrl');
+    notifyParticipants() {
+        const inAnHour = moment().utc().minutes(0).seconds(0).milliseconds(0).add(1, 'hour');
+
+        Lesson.find({
+            date: inAnHour.toDate()
+        })
+            .populate('student', 'firstname lastname email')
+            .populate('teacher', 'firstname lastname avatarUrl')
+            .then(lessons => {
+                const messages = lessons.map(lesson => ({
+                    to: [{
+                        name: `${lesson.student.firstname} ${lesson.student.lastname}`,
+                        email: lesson.student.email
+                    }],
+                    subject: 'Напоминание о встрече',
+                    templateId: 1348680,
+                    variables: {
+                        firstname: lesson.student.firstname,
+                        title: lesson.title,
+                        datetime: lesson.datetime,
+                        teacher: `${lesson.teacher.firstname} ${lesson.teacher.lastname}`,
+                        url: lesson.url
+                    }
+                }));
+
+                if (messages.length > 0) {
+                    Mail.sendMany(messages);
+                }
+            });
     },
 
-    getById(...args) {
-        return Lesson.findById(...args)
-            .populate('host', 'firstname lastname avatarUrl')
-            .populate('participants');
-    },
-
-    async create(data, ...args) {
-        const lesson = await Lesson.create(data, ...args);
-
-        return lesson;
-    },
-
-    async update(id, data, ...args) {
-        const lesson = await Lesson.findByIdAndUpdate(id, data, { new: true }, ...args);
-
-        return lesson;
-    },
-
-    async cancel(id) {
-        const lesson = await Lesson.findByIdAndUpdate(id, { status: 'canceled' }, { new: true });
-
-        // send email
-
-        return lesson;
-    },
-
-    async delete(id, ...args) {
-        const lesson = await Lesson.findByIdAndDelete(id, ...args);
-
-        return lesson;
-    },
-
-    notifyStudent() {
+    notifyTeachers() {
         const inAnHour = moment().utc().minutes(0).seconds(0).milliseconds(0).add(1, 'hour');
 
         Lesson.find({

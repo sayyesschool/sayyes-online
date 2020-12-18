@@ -4,22 +4,22 @@ const moment = require('moment');
 const Status = {
     scheduled: {
         id: 'scheduled',
-        label: 'Запланирован',
+        label: 'Запланировано',
         icon: 'event'
     },
     started: {
         id: 'started',
-        label: 'Начался',
+        label: 'Началось',
         icon: 'video_call'
     },
     ended: {
         id: 'ended',
-        label: 'Завершился',
+        label: 'Завершилось',
         icon: 'event_available'
     },
     canceled: {
         id: 'canceled',
-        label: 'Отменен',
+        label: 'Отменено',
         icon: 'event_busy'
     }
 };
@@ -38,6 +38,22 @@ const Lesson = new Schema({
 });
 
 Lesson.statics.status = Status;
+
+Lesson.statics.findScheduled = function(id) {
+    return this.find({
+        date: { $gte: new Date() },
+        status: 'scheduled',
+        published: true
+    }).sort({ date: 1 });
+};
+
+Lesson.statics.cancel = function(id) {
+    return this.findByIdAndUpdate(id, { status: 'canceled' }, { new: true });
+};
+
+Lesson.virtual('title').get(function() {
+    return 'Урок';
+});
 
 Lesson.virtual('url').get(function() {
     return `/lessons/${this.id}`;
