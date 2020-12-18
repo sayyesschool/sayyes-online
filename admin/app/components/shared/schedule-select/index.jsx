@@ -26,7 +26,6 @@ export default function ScheduleSelect({ name, schedule, onChange }) {
     }, []);
 
     const handleDayChange = useCallback((id, days) => {
-        console.log(days);
         setItems(items => items.map((item, index) => index !== id ? item : { ...item, days }));
     }, []);
 
@@ -64,8 +63,7 @@ export default function ScheduleSelect({ name, schedule, onChange }) {
 }
 
 function ScheduleSelectItem({ item, onDayChange, onTimeChange, onDelete }) {
-    const handleDayChange = useCallback(day => {
-        console.log(item);
+    const handleDayChange = useCallback(day => {=
         const set = new Set(item.days);
 
         set.has(day) ? set.delete(day) : set.add(day);
