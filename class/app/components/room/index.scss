@@ -1,0 +1,155 @@
+@use '@material/icon-button';
+
+.room {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+
+    &__header {
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid rgba(0, 0, 0, .12);
+        background-color: white;
+
+        .mdc-avatar {
+            margin-right: 1rem;
+            flex-shrink: 0;
+            position: relative;
+            overflow: visible;
+
+            &::after {
+                visibility: hidden;
+                content: '';
+                width: 8px;
+                height: 8px;
+                position: absolute;
+                border-radius: 50%;
+                top: 0px;
+                right: 0px;
+                border: 2px solid white;
+            }
+        }
+
+        &__text {
+            overflow: hidden;
+        }
+
+        &__actions {
+            flex-shrink: 0;
+            margin-left: auto;
+
+            .mdc-icon-button {
+                @include icon-button.size(36px);
+                @include icon-button.ink-color(text-secondary-on-light);
+
+                margin: 2px;
+            }
+        }
+    }
+
+    &__content {
+        flex: 1;
+        display: flex;
+    }
+
+    &__main {
+        position: relative;
+        display: flex;
+        flex: 1;
+
+        .media {
+            align-self: center;
+        }
+    }
+
+    &__aside {
+        display: flex;
+        flex-direction: column;
+        flex-basis: 360px;
+        position: relative;
+    }
+
+    &--connected {
+        //background-color: #111;
+    }
+
+    &--participant-online {
+        .mdc-avatar {
+            &::after {
+                visibility: visible;
+                background-color: forestgreen;
+            }
+        }
+    }
+
+    &--participant-offline {
+        .mdc-avatar {
+            &::after {
+                visibility: visible;
+                background-color: firebrick;
+            }
+        }
+    }
+
+    &--fullscreen &__content {
+        flex-direction: row;
+    }
+
+    &--fullscreen &__main {
+        flex: 1;
+    }
+
+    &--fullscreen &__aside {
+        flex: none;
+        flex-basis: 360px;
+    }
+
+    .waiting-room {
+        min-width: 640px;
+        margin: auto;
+
+        .mdc-card {
+            overflow: hidden;
+
+            .mdc-card__action-icons {
+                flex-grow: 0;
+            }
+
+            .mdc-card__actions {
+                justify-content: space-between;
+            }
+        }
+
+        .mdc-fab {
+            display: block;
+            margin: 1rem auto;
+        }
+    }
+
+    .media {
+        width: 100%;
+        //background-color: black;
+
+        &--screen {
+
+        }
+
+        &--local {
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            right: 0;
+        }
+
+        &--remote {
+            display: block;
+        }
+
+        video {
+            display: block;
+            width: 100%;
+        }
+    }
+}
