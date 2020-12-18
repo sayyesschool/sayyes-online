@@ -43,7 +43,6 @@ module.exports = ({ Request, Client }) => ({
                 return Client.getOne({
                     phone: request.contact.phone
                 }).then(client => {
-                    console.log(client);
                     return [request, client];
                 });
             })

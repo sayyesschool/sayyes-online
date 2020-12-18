@@ -43,7 +43,6 @@ module.exports = ({ Client }) => ({
     },
 
     create: (req, res, next) => {
-        console.log(req.body);
         Client.create(req.body)
             .then(client => {
                 res.json({

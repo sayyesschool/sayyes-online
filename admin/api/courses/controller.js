@@ -134,7 +134,7 @@ module.exports = ({ Course }) => ({
 
     lessons: {
         create: (req, res, next) => {
-            const lesson = new Course.model().lessons.create(req.body);
+            const lesson = new Course().lessons.create(req.body);
 
             Course.update(req.params.course, {
                 $push: {
