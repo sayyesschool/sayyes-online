@@ -9,8 +9,8 @@ import {
 import { useStore } from 'shared/hooks/store';
 import Page from 'shared/components/page';
 import PageContent from 'shared/components/page-content';
+import { actions as userActions } from 'shared/store/modules/user';
 
-import { actions as userActions } from 'app/store/modules/user';
 import ProfileCard from 'app/components/account/profile-card';
 import PaymentsCard from 'app/components/account/payments-card';
 import TicketsCard from 'app/components/account/tickets-card';

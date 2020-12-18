@@ -1,22 +1,6 @@
 module.exports = ({ Enrollment }) => ({
-    findOne: (req, res, next, id) => {
-        Enrollment.getById(id)
-            .then(enrollment => {
-                if (!enrollment) {
-                    const error = new Error('Обучение не найдено');
-                    error.status = 404;
-                    return next(error);
-                }
-
-                req.enrollment = enrollment;
-
-                next();
-            })
-            .catch(next);
-    },
-
     getMany: (req, res, next) => {
-        Enrollment.get({ client: req.user.id, ...req.query })
+        Enrollment.find({ client: req.user.id, ...req.query })
             .then(enrollments => {
                 res.json({
                     ok: true,
@@ -27,11 +11,14 @@ module.exports = ({ Enrollment }) => ({
     },
 
     getOne: (req, res, next) => {
-        Enrollment.getById(req.params.id)
-            .populate('client', 'firstname lastname fullname')
+        Enrollment.findById(req.params.id)
+            .populate('manager', 'firstname lastname fullname')
             .populate('teacher', 'firstname lastname fullname')
             .populate('courses', 'title slug image units.id lessons.id exercises.id')
-            .populate('materials', 'title slug image')
+            .populate('materials')
+            .populate('lessons', 'id title date trial status')
+            .populate('assignments', 'id title status createdAt dueAt')
+            .populate('posts', 'id title createdAt')
             .then(enrollment => {
                 if (!enrollment) {
                     const error = new Error('Обучение не найдено');

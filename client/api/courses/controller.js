@@ -1,6 +1,6 @@
-module.exports = ({ Course, Enrollment }) => ({
+module.exports = ({ Course }) => ({
     getOne: (req, res, next) => {
-        Course.getById(req.params.id)
+        Course.findById(req.params.id)
             .then(course => {
                 if (!course) {
                     const error = new Error('Курс не найден');

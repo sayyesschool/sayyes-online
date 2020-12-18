@@ -1,0 +1,16 @@
+#meeting-dialog {
+    .mdc-chip-set {
+        padding: 0;
+        margin-bottom: 1rem;
+
+        .mdc-chip {
+            margin: 0;
+            background-color: transparent;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+
+            + .mdc-chip {
+                margin-left: 4px;
+            }
+        }
+    }
+}

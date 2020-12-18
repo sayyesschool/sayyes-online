@@ -2,9 +2,9 @@ const { Router } = require('express');
 const upload = require('multer')();
 const Controller = require('./controller');
 
-module.exports = services => {
+module.exports = context => {
     const router = Router();
-    const controller = Controller(services);
+    const controller = Controller(context.models);
 
     router.get('/', controller.getUser);
     router.put('/profile', upload.single('avatar'), controller.updateProfile);

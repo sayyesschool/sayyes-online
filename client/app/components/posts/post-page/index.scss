@@ -1,0 +1,13 @@
+#post-page {
+    max-width: 1024px;
+    margin: 1rem auto;
+
+    .comment-card + .comment-card {
+        margin-top: 1rem;
+    }
+
+    #new-comment-form {
+        border-top: 1px solid rgba(0,0,0,.12);
+        border-bottom: 1px solid rgba(0,0,0,.12);
+    }
+}

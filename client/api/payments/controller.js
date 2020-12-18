@@ -1,6 +1,6 @@
 module.exports = ({ Payment }) => ({
     getMany: (req, res, next) => {
-        return Payment.get({ user: req.user })
+        return Payment.find({ user: req.user })
             .then(payments => {
                 res.json({
                     ok: true,
@@ -11,7 +11,7 @@ module.exports = ({ Payment }) => ({
     },
 
     getOne: (req, res, next) => {
-        return Payment.getOne({ user: req.user })
+        return Payment.findOne({ user: req.user })
             .then(payment => {
                 res.json({
                     ok: true,

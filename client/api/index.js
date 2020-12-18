@@ -1,19 +1,27 @@
 const { Router } = require('express');
 
+const assignments = require('./assignments');
 const courses = require('./courses');
 const enrollments = require('./enrollments');
 const lessons = require('./lessons');
+const materials = require('./materials');
+const meetings = require('./meetings');
 const payments = require('./payments');
+const posts = require('./posts');
 const user = require('./user');
 
-module.exports = core => {
+module.exports = context => {
     const router = Router();
 
-    router.use('/courses', courses(core.services));
-    router.use('/enrollments', enrollments(core.services));
-    router.use('/lessons', lessons(core.services));
-    router.use('/payments', payments(core.services));
-    router.use('/user', user(core.services));
+    router.use('/assignments', assignments(context));
+    router.use('/courses', courses(context));
+    router.use('/enrollments', enrollments(context));
+    router.use('/lessons', lessons(context));
+    router.use('/materials', materials(context));
+    router.use('/meetings', meetings(context));
+    router.use('/payments', payments(context));
+    router.use('/posts', posts(context));
+    router.use('/user', user(context));
 
     return router;
 };

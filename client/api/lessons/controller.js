@@ -1,67 +1,39 @@
-module.exports = ({ Lesson }) => ({
-    findOne: (req, res, next, id) => {
-        Lesson.getById(id)
-            .then(lesson => {
-                if (!lesson) {
-                    const error = new Error('Урок не найдн');
-                    error.status = 404;
-                    return next(error);
-                }
-
-                req.lesson = lesson;
-
-                next();
-            })
-            .catch(next);
-    },
-
+module.exports = ({
+    models: { Lesson }
+}, { mapLesson }) => ({
     getMany: (req, res, next) => {
-        Lesson.get({
+        Lesson.find({
             $or: [
-                { date: { $gte: new Date() } },
                 { client: req.user }
             ]
         })
+            .populate('client', 'firstname lastname fullname')
+            .populate('teacher', 'firstname lastname fullname')
             .then(lessons => {
                 res.json({
                     ok: true,
-                    data: lessons.map(lesson => map(lesson, req.user))
+                    data: lessons.map(lesson => mapLesson(lesson, req.user))
                 });
             })
             .catch(next);
     },
 
     getOne: (req, res, next) => {
-        Lesson.getById(req.params.lessonId)
-            .populate('student', 'firstname lastname fullname')
+        Lesson.findById(req.params.lessonId)
+            .populate('client', 'firstname lastname fullname')
             .populate('teacher', 'firstname lastname fullname')
             .then(lesson => {
                 if (!lesson) {
-                    const error = new Error('Урок не найдн');
+                    const error = new Error('Урок не найден');
                     error.status = 404;
                     return next(error);
                 }
 
-                const data = req.lesson.toJSON();
-
-                data.student = {
-                    id: lesson.client.id,
-                    name: lesson.client.fullname
-                };
-                data.teacher = {
-                    id: lesson.teacher.id,
-                    name: lesson.teacher.fullname
-                };
-
                 res.json({
                     ok: true,
-                    data
+                    data: mapLesson(lesson, req.user)
                 });
             })
             .catch(next);
     }
 });
-
-function map(lesson, user) {
-    return lesson;
-}

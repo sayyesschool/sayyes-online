@@ -3,7 +3,7 @@ const express = require('express');
 const auth = require('./auth');
 const api = require('./api');
 
-module.exports = core => {
+module.exports = context => {
     const app = express();
 
     app.set('view engine', 'pug');
@@ -14,8 +14,8 @@ module.exports = core => {
     });
 
     app.use(auth);
-    app.use(core.middleware.tokens(core.lib.twilio));
-    app.use('/api', api(core));
+    app.use(context.middleware.tokens(context.lib.twilio));
+    app.use('/api', api(context));
     app.use((req, res) => res.render('index'));
 
     return app;

@@ -1,0 +1,36 @@
+#meeting-page {
+    .mdc-chip {
+        .mdc-chip__text {
+            text-transform: capitalize;
+        }
+    }
+
+    .meeting-meta {
+        display: flex;
+        margin-bottom: 2rem;
+        
+        .meeting-meta__item {
+            display: inline-flex;
+            align-items: center;
+
+            strong {
+                display: inline-block;
+                vertical-align: middle;
+                margin-right: 8px;
+            }
+
+            + .meeting-meta__item {
+                margin-left: 1rem;
+            }
+        }
+    }
+
+    .meeting-register-button {
+        margin-bottom: 1rem;
+    }
+
+    .meeting-image {
+        border: 1px solid rgba(0,0,0,.12);
+        border-radius: 4px;
+    }
+}
