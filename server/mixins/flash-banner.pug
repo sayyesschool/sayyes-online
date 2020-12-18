@@ -1,0 +1,12 @@
+mixin flash-banner(text)
+    +mdc-banner(text)(
+        class='flash-banner'
+        class={
+            'flash-banner--info': attributes.info,
+            'flash-banner--error': attributes.error,
+            'flash-banner--success': attributes.success
+        }
+        icon=attributes.icon
+        centered
+    )
+        +mdc-icon-button('close').flash-banner__dismiss

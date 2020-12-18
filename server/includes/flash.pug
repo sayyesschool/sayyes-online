@@ -1,0 +1,11 @@
+if flash.info
+    for message in flash.info
+        +flash-banner(message)(info icon='info')
+
+if flash.error
+    for message in flash.error
+        +flash-banner(message)(error icon='error')
+
+if flash.success
+    for message in flash.success
+        +flash-banner(message)(success icon='check_circle')
