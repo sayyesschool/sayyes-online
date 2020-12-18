@@ -1,20 +1,21 @@
 const path = require('path');
 const webpack = require('webpack');
 const CssExtractPlugin = require('mini-css-extract-plugin');
-const TerserPlugin = require("terser-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-const { YANDEX_METRIKA_ID, GOOGLE_ANALYTICS_ID } = require('./core/config');
+const { YANDEX_METRIKA_ID, GOOGLE_ANALYTICS_ID } = require('./config');
 
 module.exports = [
     env => config('admin', env),
+    env => config('class', env),
     env => config('client', env),
     env => config('teacher', env)
 ];
 
 function config(name, env) {
     const APP_URL = env === 'development' ? 'http://localhost' : 'https://online.sayes.ru';
-    const STATIC_URL = env === 'development' ? 'http://localhost:8080' : 'https://static.sayes.ru';
+    const STATIC_URL = 'https://static.sayes.ru';
 
     return {
         name,
