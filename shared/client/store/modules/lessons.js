@@ -1,29 +1,69 @@
-export const GET_LESSONS = 'GET_LESSONS';
+import { createAction, createReducer, combineReducers } from 'shared/store/utils';
 
-export default function reducer(state = [], action) {
-    switch (action.type) {
-        case GET_LESSONS:
-            return action.data;
-
-        default:
-            return state;
-    }
-}
-
-export function getLessons() {
+export const getLessons = createAction('GET_LESSONS', query => {
     return {
-        type: GET_LESSONS,
         request: {
             method: 'get',
-            url: '/lessons'
+            url: '/lessons',
+            query
         }
     };
-}
+});
 
-export const types = {
-    GET_LESSONS
-};
+export const getLesson = createAction('GET_LESSON', lessonId => ({
+    request: {
+        method: 'get',
+        url: `/lessons/${lessonId}`
+    }
+}));
+
+export const unsetLesson = createAction('UNSET_LESSON');
+
+export const createLesson = createAction('CREATE_LESSON', data => ({
+    request: {
+        method: 'post',
+        url: '/lessons',
+        body: data
+    }
+}));
+
+export const updateLesson = createAction('UPDATE_LESSON', (lessonId, data) => ({
+    request: {
+        method: 'put',
+        url: `/lessons/${lessonId}`,
+        body: data
+    }
+}));
+
+export const deleteLesson = createAction('DELETE_LESSON', lessonId => ({
+    request: {
+        method: 'delete',
+        url: `/lessons/${lessonId}`
+    }
+}));
 
 export const actions = {
-    getLessons
+    getLessons,
+    getLesson,
+    unsetLesson,
+    createLesson,
+    updateLesson,
+    deleteLesson
 };
+
+export const lessonsReducer = createReducer(null, {
+    [getLessons]: (state, action) => action.data,
+    [createLesson]: (state, action) => state ? [...state, action.data] : [action.data],
+    [updateLesson]: (state, action) => state.map(lesson => lesson.id === action.data.lesson.id ? ({ ...lesson, ...action.data.lesson }) : lesson),
+    [deleteLesson]: (state, action) => state.filter(lesson => lesson.id !== action.data.lessonId)
+});
+
+export const lessonReducer = createReducer(null, {
+    [updateLesson]: (state, action) => ({ ...state, ...action.data }),
+    [deleteLesson]: (state, action) => null
+});
+
+export default combineReducers({
+    list: lessonsReducer,
+    single: lessonReducer
+});

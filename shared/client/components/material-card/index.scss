@@ -1,0 +1,32 @@
+.material-card {
+    .mdc-card__media:before {
+        margin-top: 127.25%;
+    }
+
+    .mdc-card__header {
+        opacity: 0;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background: linear-gradient(0deg,
+            rgba(0,0,0,0.5) 0%,
+            rgba(0,0,0,0.3) 60%,
+            rgba(255,255,255,0) 100%
+        );
+        transition: opacity .2s;
+
+        .mdc-card__header__title {
+            color: rgba(255, 255, 255, 1);
+        }
+
+        .mdc-card__header__subtitle {
+            color: rgba(255, 255, 255, .9);
+        }
+    }
+
+    &:hover {
+        .mdc-card__header {
+            opacity: 1;
+        }
+    }
+}

@@ -88,7 +88,14 @@ function CalendarEvent({ date, hour, eventsByDate }) {
     const event = eventsByDate.get(key);
 
     return event ? (
-        <Chip component={Link} to={event.url} text={event.client.fullname} outlined />
+        <Chip
+            component={Link}
+            to={event.url}
+            icon={<Icon>{event.icon}</Icon>}
+            text={event.title}
+            title={event.title}
+            outlined
+        />
     ) : null;
 }
 

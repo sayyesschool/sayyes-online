@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import {
     IconButton,
     Menu
@@ -6,34 +6,39 @@ import {
 import classnames from 'classnames';
 import moment from 'moment';
 
+import { useChat } from 'shared/hooks/twilio';
 import LoadingIndicator from 'shared/components/loading-indicator';
 
 import './index.scss';
 
-export default function Chat({
-    user,
-    messages,
-    onDelete,
+export default function Chat({ name, user }) {
+    const chat = useChat(window.TWILIO_CHAT_TOKEN);
 
-    onTyping = Function.prototype,
-    onSubmit = Function.prototype,
-}) {
     const inputRef = useRef();
 
     const [message, setMessage] = useState();
     const [isMenuOpen, setMenuOpen] = useState(false);
     const [anchor, setAnchor] = useState();
 
+    useEffect(() => {
+        chat.connect({ name });
+    }, [name]);
+
     const handleSubmit = useCallback(event => {
         event.preventDefault();
 
-        onSubmit(inputRef.current.value);
+        chat.sendMessage(inputRef.current.value);
 
         inputRef.current.value = '';
-    }, [onSubmit]);
+    }, [chat]);
+
+    const handleDelete = useCallback(event => {
+        setMessage(null);
+        chat.deleteMessage(message);
+    }, [chat]);
 
     const handleKeyPress = useCallback(() => {
-        onTyping();
+        //onTyping();
     }, []);
 
     const handleContextMenu = useCallback((event, message) => {
@@ -51,17 +56,12 @@ export default function Chat({
         setMenuOpen(false);
     }, []);
 
-    const handleDelete = useCallback(event => {
-        setMessage(null);
-        onDelete(message);
-    }, [message]);
-
-    if (!messages) return <LoadingIndicator />;
+    if (!chat.messages) return <LoadingIndicator />;
 
     return (
         <article className="chat">
             <ul className="message-list">
-                {messages.map(message =>
+                {chat.messages.map(message =>
                     <li
                         key={message.id}
                         className={classnames('message', {

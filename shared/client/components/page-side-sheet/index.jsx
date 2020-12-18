@@ -10,8 +10,6 @@ export default function PageSideSheet({ className, children, ...props }) {
     return (
         <SideSheet
             className={classNames}
-            open
-            appear
             dismissible
             {...props}
         >

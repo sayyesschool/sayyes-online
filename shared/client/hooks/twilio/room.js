@@ -7,7 +7,6 @@ export function useRoom(token, { localWebcamRef, remoteWebcamRef, remoteScreenRe
     const videoTrackRef = useRef();
     const screenTrackRef = useRef();
     const timerRef = useRef();
-    const startTimeRef = useRef();
 
     const [isConnecting, setConnecting] = useState(false);
     const [isConnected, setConnected] = useState(false);
@@ -20,31 +19,27 @@ export function useRoom(token, { localWebcamRef, remoteWebcamRef, remoteScreenRe
 
     useEffect(() => {
         if (isConnected) {
-            setTime(0);
-            startTimeRef.current = Date.now();
-            timerRef.current = setInterval(() => {
-                const start = startTimeRef.current;
-                const now = Date.now();
+            const start = Date.now();
 
-                setTime(now - start);
+            timerRef.current = setInterval(() => {
+                setTime(Date.now() - start);
             }, 1000);
         } else {
-            clearInterval(timerRef.current);
             setTime(undefined);
-            startTimeRef.current = null;
+            clearInterval(timerRef.current);
             timerRef.current = null;
         }
     }, [isConnected]);
 
-    const connect = useCallback(({ name, audio = true, video = true }) => {
+    const connect = useCallback(({ name, audio, video }) => {
         if (!token) return;
 
         setConnecting(true);
 
         _connect(token, {
             name,
-            audio: audio && { name: 'microphone' },
-            video: video && { name: 'camera' }
+            audio: (audio || isAudioOn) && { name: 'microphone' },
+            video: (video || isVideoOn) && { name: 'camera' }
         })
             .then(room => {
                 console.log('Connected to Room: ', room);
@@ -53,22 +48,24 @@ export function useRoom(token, { localWebcamRef, remoteWebcamRef, remoteScreenRe
                     const track = publication.track;
 
                     if (track.name === 'microphone') {
-                        setAudioOn(track.isEnabled);
+                        track.enable(audio);
 
                         track.on('started', () => setAudioOn(true));
                         track.on('enabled', () => setAudioOn(true));
                         track.on('stopped', () => setAudioOn(false));
                         track.on('disabled', () => setAudioOn(false));
 
+                        setAudioOn(track.isEnabled);
                         audioTrackRef.current = track;
                     } else if (track.name === 'camera') {
-                        setVideoOn(track.isEnabled);
+                        console.log(video, track.isEnabled);
 
                         track.on('started', () => setVideoOn(true));
                         track.on('enabled', () => setVideoOn(true));
                         track.on('stopped', () => setVideoOn(false));
                         track.on('disabled', () => setVideoOn(false));
 
+                        setVideoOn(track.isEnabled);
                         videoTrackRef.current = track;
                     }
 
@@ -82,7 +79,7 @@ export function useRoom(token, { localWebcamRef, remoteWebcamRef, remoteScreenRe
                 room.on('disconnected', () => {
                     room.localParticipant.tracks.forEach(publication => {
                         publication.track.stop();
-                        publication.track.detach();
+                        publication.track.detach().forEach(element => element.remove());
                     });
 
                     setConnected(false);
@@ -139,6 +136,8 @@ export function useRoom(token, { localWebcamRef, remoteWebcamRef, remoteScreenRe
         isSharingScreen,
         connect,
         disconnect,
+        setAudioOn,
+        setVideoOn,
         muteVideo,
         unmuteVideo,
         muteAudio,
@@ -147,20 +146,6 @@ export function useRoom(token, { localWebcamRef, remoteWebcamRef, remoteScreenRe
         unshareScreen,
         time
     };
-}
-
-export function useLocalVideo() {
-    const videoRef = useRef();
-
-    useEffect(() => {
-        createLocalVideoTrack().then(track => {
-            if (videoRef.current) {
-                track.attach(videoRef.current);
-            }
-        });
-    }, []);
-
-    return videoRef;
 }
 
 function handleParticipantConnected(participant, remoteCameraElement, remoteScreenElement) {
@@ -199,7 +184,7 @@ function handleParticipantDisconnected(participant) {
 
     participant.tracks.forEach(publication => {
         if (publication.isSubscribed) {
-            publication.track.detach();
+            publication.track.detach().forEach(element => element.remove());
         }
     });
 }

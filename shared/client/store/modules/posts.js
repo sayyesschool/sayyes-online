@@ -1,0 +1,106 @@
+import { createAction, createReducer, combineReducers } from 'shared/store';
+
+export const getPosts = createAction('GET_POSTS', query => ({
+    request: {
+        method: 'get',
+        url: '/posts',
+        query
+    }
+}));
+
+export const getPost = createAction('GET_POST', id => ({
+    request: {
+        method: 'get',
+        url: `/posts/${id}`
+    }
+}));
+
+export const unsetPost = createAction('UNSET_POST');
+
+export const createPost = createAction('CREATE_POST', data => ({
+    request: {
+        method: 'post',
+        url: '/posts',
+        body: data
+    }
+}));
+
+export const updatePost = createAction('UPDATE_POST', (id, data) => ({
+    request: {
+        method: 'put',
+        url: `/posts/${id}`,
+        body: data
+    }
+}));
+
+export const deletePost = createAction('DELETE_POST', id => ({
+    request: {
+        method: 'delete',
+        url: `/posts/${id}`
+    }
+}));
+
+export const createComment = createAction('CREATE_POST_COMMENT', (id, data) => ({
+    request: {
+        method: 'post',
+        url: `/posts/${id}/comments`,
+        body: data
+    }
+}));
+
+export const updateComment = createAction('UPDATE_POST_COMMENT', (postId, commentId, data) => ({
+    request: {
+        method: 'put',
+        url: `/posts/${postId}/comments/${commentId}`,
+        body: data
+    }
+}));
+
+export const deleteComment = createAction('DELETE_POST_COMMENT', (postId, commentId) => ({
+    request: {
+        method: 'delete',
+        url: `/posts/${postId}/comments/${commentId}`
+    }
+}));
+
+export const actions = {
+    getPosts,
+    getPost,
+    unsetPost,
+    createPost,
+    updatePost,
+    deletePost,
+    createComment,
+    updateComment,
+    deleteComment
+};
+
+export const postsReducer = createReducer(null, {
+    [getPosts]: (state, action) => action.data,
+    [createPost]: (state, action) => state?.concat(action.data) || [action.data]
+});
+
+export const postReducer = createReducer(null, {
+    [getPost]: (state, action) => action.data,
+    [unsetPost]: (state, action) => null,
+    [createComment]: (state, action) => ({
+        ...state,
+        comments: state.comments.concat(action.data)
+    }),
+    [updateComment]: (state, action) => ({
+        ...state,
+        comments: state.comments.map(comment => comment.id !== action.data.id ?
+            comment :
+            action.data
+        )
+    }),
+    [deleteComment]: (state, action) => ({
+        ...state,
+        comments: state.comments.filter(comment => comment.id !== action.data.id)
+    })
+});
+
+export default combineReducers({
+    list: postsReducer,
+    single: postReducer
+});

@@ -101,8 +101,11 @@
 
 .calendar--week-view {
     .mdc-data-table {
-        width: 100%;
         border: none;
+
+        .mdc-data-table__table {
+            width: 100%;
+        }
 
         &__header-cell {
             text-align: center;
@@ -113,12 +116,29 @@
         }
 
         &__cell {
-            &:not(:first-child) {
-                width: calc(100% / 7);
+            padding: 8px;
+
+            &:first-child {
+                text-align: center;
             }
+
+            // &:not(:first-child) {
+            //     width: calc(100% / 7);
+            // }
 
             &:not(:last-child) {
                 border-right: 1px solid rgba(0, 0, 0, 0.12);
+            }
+        }
+
+        .mdc-chip {
+            width: 100%;
+            text-decoration: none;
+
+            .mdc-chip__text {
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
             }
         }
     }

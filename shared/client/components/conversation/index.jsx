@@ -2,6 +2,7 @@ import React, { useRef, useCallback, useEffect, useState } from 'react';
 import {
     Avatar,
     Button,
+    Dialog,
     Icon,
     IconButton,
     Typography
@@ -61,6 +62,26 @@ export default function Conversation({ name, localParticipant, remoteParticipant
         }
     }, [isFullscreen]);
 
+    const handleConnect = useCallback(() => {
+        room.connect({ name, audio: true, video: false });
+    }, []);
+
+    const handleToggleAudio = useCallback(() => {
+        room.isAudioOn ? room.muteAudio() : room.unmuteAudio();
+    }, [room.isAudioOn]);
+
+    const handleToggleVideo = useCallback(() => {
+        room.isVideoOn ? room.muteVideo() : room.unmuteVideo();
+    }, [room.isVideoOn]);
+
+    const handleShareScreen = useCallback(() => {
+        room.isSharingScreen ? room.unshareScreen() : room.shareScreen();
+    }, [room.isSharingScreen]);
+
+    const handleFullscreen = useCallback(() => {
+        setFullscreen(value => !value);
+    }, []);
+
     const handleSubmitMessage = useCallback(message => {
         chat.sendMessage(message);
     }, [chat]);
@@ -73,30 +94,10 @@ export default function Conversation({ name, localParticipant, remoteParticipant
         chat.channel.typing();
     }, []);
 
-    const handleConnect = useCallback(() => {
-        room.connect({ name, audio: true, video: true });
-    }, []);
-
     const handleEndCall = useCallback(() => {
         room.disconnect();
         setFullscreen(false);
     }, []);
-
-    const handleFullscreen = useCallback(() => {
-        setFullscreen(value => !value);
-    }, []);
-
-    const handleShareScreen = useCallback(() => {
-        room.isSharingScreen ? room.unshareScreen() : room.shareScreen();
-    }, [room.isSharingScreen]);
-
-    const handleToggleAudio = useCallback(() => {
-        room.isAudioOn ? room.muteAudio() : room.unmuteAudio();
-    }, [room.isAudioOn]);
-
-    const handleToggleVideo = useCallback(() => {
-        room.isVideoOn ? room.muteVideo() : room.unmuteVideo();
-    }, [room.isVideoOn]);
 
     const classNames = classnames('conversation', {
         'conversation--participant-online': isParticipantOnline,

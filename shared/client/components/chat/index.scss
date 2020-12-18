@@ -1,6 +1,7 @@
 .chat {
     display: flex;
     flex-direction: column;
+    height: 100%;
 
     .mdc-circular-progress {
         margin: auto;

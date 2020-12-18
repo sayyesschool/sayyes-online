@@ -7,6 +7,6 @@ function Page({ className, ...props }, ref) {
     const classNames = classnames('page', className);
 
     return (
-        <div ref={ref} className={classNames} {...props} />
+        <main ref={ref} className={classNames} {...props} />
     );
 }

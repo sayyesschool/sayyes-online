@@ -1,17 +1,27 @@
-export const GET_USER = 'GET_USER';
-export const UPDATE_PROFILE = 'UPDATE_PROFILE';
-export const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
+import { createAction, createReducer } from 'shared/store';
 
-export default function reducer(state = null, action) {
-    switch (action.type) {
-        case GET_USER:
-        case UPDATE_PROFILE:
-            return action.data;
-
-        default:
-            return state;
+export const getUser = createAction('GET_USER', () => ({
+    request: {
+        method: 'get',
+        url: '/user'
     }
-}
+}));
+
+export const updateProfile = createAction('UPDATE_PROFILE', data => ({
+    request: {
+        method: 'put',
+        url: '/user/profile',
+        body: data
+    }
+}));
+
+export const updatePassword = createAction('UPDATE_PASSWORD', data => ({
+    request: {
+        method: 'put',
+        url: '/user/password',
+        body: data
+    }
+}));
 
 export const actions = {
     getUser,
@@ -19,34 +29,9 @@ export const actions = {
     updatePassword
 };
 
-export function getUser() {
-    return {
-        type: GET_USER,
-        request: {
-            method: 'get',
-            url: '/user'
-        }
-    };
-}
+export const reducer = createReducer(null, {
+    [getUser]: (state, action) => action.data,
+    [updateProfile]: (state, action) => action.data
+});
 
-export function updateProfile(data) {
-    return {
-        type: UPDATE_PROFILE,
-        request: {
-            method: 'put',
-            url: '/user/profile',
-            body: data
-        }
-    };
-}
-
-export function updatePassword(data) {
-    return {
-        type: UPDATE_PASSWORD,
-        request: {
-            method: 'put',
-            url: '/user/password',
-            body: data
-        }
-    };
-}
+export { reducer as default }; 

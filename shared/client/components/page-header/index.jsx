@@ -9,7 +9,7 @@ import {
 
 import './index.scss';
 
-export default function PageHeader({ title, breadcrumbs, backTo, actions = [], children }) {
+export default function PageHeader({ title, breadcrumbs, backTo, actions, children }) {
     return (
         <TopAppBar className="page-header">
             <TopAppBar.Row>
@@ -20,17 +20,19 @@ export default function PageHeader({ title, breadcrumbs, backTo, actions = [], c
                         </TopAppBar.NavigationIcon>
                     }
 
-                    {breadcrumbs?.length > 0 &&
-                        <div className="page-breadcrumbs">
-                            {breadcrumbs.map((item, index) =>
-                                React.cloneElement(item, { key: index })
-                            )}
-                        </div>
-                    }
+                    <div>
+                        {breadcrumbs?.length > 0 &&
+                            <div className="page-breadcrumbs">
+                                {breadcrumbs.map((item, index) =>
+                                    React.cloneElement(item, { key: index, className: 'mdc-typography--subtitle1' })
+                                )}
+                            </div>
+                        }
 
-                    {title &&
-                        <TopAppBar.Title element="h1" className="page-title">{title}</TopAppBar.Title>
-                    }
+                        {title &&
+                            <TopAppBar.Title element="h1" className="page-title">{title}</TopAppBar.Title>
+                        }
+                    </div>
                 </TopAppBar.Section>
 
                 {children &&
@@ -39,23 +41,25 @@ export default function PageHeader({ title, breadcrumbs, backTo, actions = [], c
                     </TopAppBar.Section>
                 }
 
-                <TopAppBar.Section align="end">
-                    {actions.filter(action => Boolean(action)).map(({ icon, ...props }, index) =>
-                        <TopAppBar.ActionItem key={index}>
-                            {props.label ?
-                                <Button
-                                    icon={icon && <Icon>{icon}</Icon>}
-                                    {...props}
-                                />
-                                :
-                                <IconButton
-                                    icon={<Icon>{icon}</Icon>}
-                                    {...props}
-                                />
-                            }
-                        </TopAppBar.ActionItem>
-                    )}
-                </TopAppBar.Section>
+                {actions &&
+                    <TopAppBar.Section align="end">
+                        {actions.filter(action => Boolean(action)).map(({ icon, ...props }, index) =>
+                            <TopAppBar.ActionItem key={index}>
+                                {props.label ?
+                                    <Button
+                                        icon={icon && <Icon>{icon}</Icon>}
+                                        {...props}
+                                    />
+                                    :
+                                    <IconButton
+                                        icon={<Icon>{icon}</Icon>}
+                                        {...props}
+                                    />
+                                }
+                            </TopAppBar.ActionItem>
+                        )}
+                    </TopAppBar.Section>
+                }
             </TopAppBar.Row>
         </TopAppBar>
     );

@@ -1,0 +1,12 @@
+.text-editor {
+    .ck-editor {
+        .ck-toolbar {
+            border: none;
+            border-bottom: 1px solid rgba(0,0,0,.12) !important;
+        }
+
+        .ck-content {
+            border: none;
+        }
+    }
+}

@@ -1,5 +1,51 @@
 @use 'shared/styles/variables';
-@use 'node_modules/mdc-pug' with (
+@use '@material/theme' with (
     $primary: variables.$primary-color,
     $secondary: variables.$secondary-color
 );
+@use '@material/typography' with (
+    $styles-headline1: (
+        font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
+        font-weight: 700
+    ),
+    $styles-headline2: (
+        font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
+        font-weight: 700
+    ),
+    $styles-headline3: (
+        font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
+        font-weight: 700
+    ),
+    $styles-headline4: (
+        font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
+        font-weight: 700
+    ),
+    $styles-headline5: (
+        font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
+        font-weight: 700
+    ),
+    $styles-headline6: (
+        font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
+        font-weight: 700
+    ),
+    $styles-subtitle1: (
+        font-family: unquote('Nunito, Arial, Helvetica, sans-serif')
+    ),
+    $styles-subtitle2: (
+        font-family: unquote('Nunito, Arial, Helvetica, sans-serif')
+    ),
+    $styles-body1: (
+        font-family: unquote('Roboto, Arial, Helvetica, sans-serif')
+    ),
+    $styles-body2: (
+        font-family: unquote('Roboto, Arial, Helvetica, sans-serif')
+    ),
+    $styles-button: (
+        font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
+        font-weight: 700
+    )
+);
+
+.material-icons {
+    font-family: 'Material Icons Round';
+}

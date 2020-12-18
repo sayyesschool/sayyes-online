@@ -1,0 +1,11 @@
+@use 'shared/styles/variables';
+
+.mdc-data-table {
+    td a {
+        color: variables.$primary-color;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

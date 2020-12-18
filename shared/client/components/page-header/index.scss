@@ -4,10 +4,9 @@
 .page-header {
     @include top-app-bar.fill-color-accessible(transparent);
     @include top-app-bar.ink-color(text-primary-on-light);
-    @include top-app-bar.icon-ink-color(text-icon-on-light);
+    @include top-app-bar.icon-ink-color(text-secondary-on-light);
 
     .mdc-top-app-bar__section--align-start {
-        display: block;
         padding-left: 1rem;
     }
 
@@ -26,5 +25,6 @@
     .page-title {
         margin: 0;
         padding-left: 0;
+        font-size: 1.5rem;
     }
 }
