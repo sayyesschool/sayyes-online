@@ -23,10 +23,8 @@ const paths = {
 
 const modules = ['main', 'shared'];
 
-exports.default = () => gulp.watch(
-    modules.map(name => `${paths[name][0]}**/*.scss`),
-
-    gulp.parallel(...modules.map(name => {
+function build() {
+    return gulp.parallel(...modules.map(name => {
         const [src, dest] = paths[name];
 
         return () => gulp.src(`${src}index.scss`)
@@ -39,5 +37,15 @@ exports.default = () => gulp.watch(
             }))
             .pipe(rename(`${name}.css`))
             .pipe(gulp.dest(dest));
-    }))
-);
+    }));
+}
+
+function dev() {
+    return gulp.watch(
+        modules.map(name => `${paths[name][0]}**/*.scss`),
+        build()
+    );
+}
+
+exports.build = build();
+exports.dev = dev;
