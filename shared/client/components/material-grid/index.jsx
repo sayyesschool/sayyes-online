@@ -3,7 +3,7 @@ import {
     LayoutGrid
 } from 'mdc-react';
 
-import MaterialCard from 'app/components/materials/material-card';
+import MaterialCard from 'shared/components/material-card';
 
 export default function MaterialGrid({ materials, ...props }) {
     return (

@@ -29,9 +29,7 @@ export const actions = {
     updatePassword
 };
 
-export const reducer = createReducer(null, {
+export default createReducer(null, {
     [getUser]: (state, action) => action.data,
     [updateProfile]: (state, action) => action.data
 });
-
-export { reducer as default }; 

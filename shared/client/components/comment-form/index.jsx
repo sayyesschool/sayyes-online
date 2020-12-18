@@ -1,7 +1,4 @@
 import React, { useRef, useCallback } from 'react';
-import {
-    Button
-} from 'mdc-react';
 
 import Form from 'shared/components/form';
 import TextEditor from 'shared/components/text-editor';

@@ -67,7 +67,7 @@ export const enrollmentReducer = createReducer(null, {
 
 });
 
-export const combinedReducer = createReducer({
+export default createReducer({
     enrollments: enrollmentsReducer,
     enrollment: enrollmentReducer
 });
