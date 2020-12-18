@@ -47,7 +47,7 @@ export default function HomePage() {
             url: meeting.url
         }))
     ];
-    console.log(events);
+
     return (
         <Page id="home-page">
             <PageContent>

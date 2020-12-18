@@ -1,15 +1,9 @@
 @use 'styles/variables';
 @use 'styles/normalize';
-@use 'mdc-react' with (
-    $primary: variables.$primary-color,
-    $secondary: variables.$secondary-color
-);
+@use 'styles/base';
+@use 'styles/material';
+@use 'mdc-react';
 @use 'plyr/src/sass/plyr.scss' with (
     $plyr-color-main: variables.$primary-color
 );
-@use 'styles/base';
-@use 'styles/page';
-@use 'styles/dialog';
-@use 'styles/form';
-@use 'styles/footer';
-@use 'styles/meeting-details';
+@use 'styles/components';
