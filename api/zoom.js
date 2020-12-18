@@ -6,7 +6,7 @@ module.exports = ({ Meeting }) => {
     router.post('/meetings', (req, res, next) => {
         const event = req.body.event;
         const data = req.body.payload.object;
-        console.log(event, data);
+
         switch (event) {
             case 'meeting.started':
                 Meeting.updateOne({

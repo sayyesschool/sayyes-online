@@ -13,6 +13,7 @@ module.exports = context => {
 
     api.use((error, req, res, next) => {
         console.log(error);
+
         res.status(500).send({ error: error.message || error });
     });
 
