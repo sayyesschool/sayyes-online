@@ -42,6 +42,17 @@ module.exports = ({ Auth }) => ({
         provider.auth(req, res, next);
     },
 
+    // authenticate: (req, res, next) => {
+    //     if (!req.session.userId) return next();
+
+    //     User.getById(req.session.userId).then(user => {
+    //         req.user = user;
+    //         res.locals.user = user;
+
+    //         next();
+    //     });
+    // },
+
     callback: (req, res, next) => req.provider.callback(req, res, next),
 
     connect: (req, res, next) => req.provider.auth(req, res, next),
