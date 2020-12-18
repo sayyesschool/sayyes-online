@@ -4,13 +4,13 @@ const moment = require('moment');
 
 const front = require('./front');
 
-module.exports = core => {
+module.exports = context => {
     const main = express();
 
     main.set('view engine', 'pug');
     main.set('views', [
-        core.config.APP_PATH,
-        path.join(core.config.APP_PATH, 'main')
+        context.config.APP_PATH,
+        path.join(context.config.APP_PATH, 'main')
     ]);
 
     main.on('mount', parent => {
@@ -29,7 +29,7 @@ module.exports = core => {
         next();
     });
 
-    main.use('/', front(core.services));
+    main.use('/', front(context.services));
 
     return main;
 };

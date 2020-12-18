@@ -1,9 +1,9 @@
-extends /shared/views/layouts/base
+extends /server/layouts/base
 
-include /shared/views/mixins/flash-banner
-include /shared/views/mixins/yandex-metrika
-include /shared/views/mixins/google-analytics
-include /shared/views/mixins/facebook-pixel
+include /server/mixins/flash-banner
+include /server/mixins/yandex-metrika
+include /server/mixins/google-analytics
+include /server/mixins/facebook-pixel
 
 block head
     link(rel="stylesheet" href="/build/shared.css")
@@ -17,14 +17,14 @@ block head
     block styles
     
 block body
-    include /shared/views/includes/header
+    include /server/includes/header
 
-    include /shared/views/includes/flash
+    include /server/includes/flash
 
     main#content
         block main
     
-    include /shared/views/includes/footer
+    include /server/includes/footer
     
     include ./shared/includes/login-dialog
     include ./shared/includes/password-dialog
