@@ -3,6 +3,8 @@
         "public",
         "admin/app",
         "main/app",
-        "client/app"
+        "class/app",
+        "client/app",
+        "teacher/app"
     ]
 }
