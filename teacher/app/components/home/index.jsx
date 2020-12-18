@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import {
     Card,
-    ChipSet, Chip,
     Icon,
-    Layout,
     LayoutGrid,
-    Typography
+    SegmentedButton
 } from 'mdc-react';
 
 import { useSelector } from 'shared/hooks/store';
@@ -26,6 +24,14 @@ export default function HomePage() {
 
     if (!enrollments) return <LoadingIndicator />;
 
+    const students = enrollments.map(enrollment => {
+        const student = enrollment.client;
+
+        student.url = enrollment.url;
+
+        return student;
+    });
+
     const lessons = enrollments.reduce((lessons, enrollment) => {
         return lessons.concat(...enrollment.lessons.map(lesson => ({ ...lesson, client: enrollment.client })));
     }, []);
@@ -33,37 +39,50 @@ export default function HomePage() {
     return (
         <Page id="home-page">
             <PageContent>
-                <Card outlined>
-                    <Card.Header
-                        title="Расписание уроков"
-                        actions={
-                            <ChipSet>
-                                <Chip
-                                    icon={<Icon>view_week</Icon>}
-                                    text="Неделя"
-                                    onClick={() => setView('week')}
-                                />
+                <LayoutGrid>
+                    <LayoutGrid.Cell span="4">
+                        <Card outlined>
+                            <Card.Header
+                                title="Мои ученики"
+                                subtitle={`Количество учеников: ${students.length}`}
+                            />
 
-                                <Chip
-                                    icon={<Icon>today</Icon>}
-                                    text="Месяц"
-                                    onClick={() => setView('month')}
-                                />
-                            </ChipSet>
-                        }
-                    />
-
-                    <Calendar
-                        view={view}
-                        events={lessons}
-                    />
-                </Card>
-
-                {/* <Card outlined>
                             <StudentList
                                 students={students}
                             />
-                        </Card> */}
+                        </Card>
+                    </LayoutGrid.Cell>
+
+                    <LayoutGrid.Cell span="8">
+                        <Card outlined>
+                            <Card.Header
+                                title="Расписание"
+                                actions={
+                                    <SegmentedButton>
+                                        <SegmentedButton.Segment
+                                            icon={<Icon>view_week</Icon>}
+                                            label="Неделя"
+                                            selected={view === 'week'}
+                                            onClick={() => setView('week')}
+                                        />
+
+                                        <SegmentedButton.Segment
+                                            icon={<Icon>today</Icon>}
+                                            label="Месяц"
+                                            selected={view === 'month'}
+                                            onClick={() => setView('month')}
+                                        />
+                                    </SegmentedButton>
+                                }
+                            />
+
+                            <Calendar
+                                view={view}
+                                events={lessons}
+                            />
+                        </Card>
+                    </LayoutGrid.Cell>
+                </LayoutGrid>
             </PageContent>
         </Page>
     );

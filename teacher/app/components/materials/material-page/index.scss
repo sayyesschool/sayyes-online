@@ -1,0 +1,16 @@
+#material-page {
+    .mdc-card {
+        height: 100%;
+        max-height: calc(100vh - 64px - 32px);
+        overflow: hidden;
+        
+        .mdc-list {
+            overflow: auto;
+        }
+    }
+
+    iframe {
+        height: 100%;
+        border: none;
+    }
+}

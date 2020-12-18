@@ -8,6 +8,7 @@
     $plyr-color-main: variables.$primary-color
 );
 @use 'styles/base';
+@use 'styles/page';
 @use 'styles/dialog';
 @use 'styles/form';
 @use 'styles/footer';

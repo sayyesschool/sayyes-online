@@ -10,12 +10,15 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 import AppHeader from 'shared/components/app-header';
 import AppContent from 'shared/components/app-content';
 import NavBar from 'shared/components/nav-bar';
-import Class from 'shared/components/class';
 
 import navItems from 'app/data/nav';
 import Account from './components/account';
+import Assignment from './components/assignment';
+import Courses from './components/courses';
 import Home from './components/home';
-import Students from './components/students';
+import Enrollment from './components/enrollment';
+import Materials from './components/materials';
+import Post from './components/post';
 
 import './App.scss';
 
@@ -44,6 +47,7 @@ export default function App() {
             <AppHeader
                 user={user}
                 onNotificationIconClick={() => setSideSheetOpen(true)}
+                fixed
             >
                 <NavBar items={navItems} />
             </AppHeader>
@@ -52,8 +56,11 @@ export default function App() {
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <Route path="/account" component={Account} />
-                    <Route path="/students" component={Students} />
-                    <Route path="/class/:id?" component={Class} />
+                    <Route path="/assignments/:id" component={Assignment} />
+                    <Route path="/courses" component={Courses} />
+                    <Route path="/enrollments/:id" component={Enrollment} />
+                    <Route path="/materials" component={Materials} />
+                    <Route path="/posts/:id" component={Post} />
                 </Switch>
             </AppContent>
 

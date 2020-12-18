@@ -6,9 +6,10 @@ module.exports = core => {
     const router = Router();
     const controller = Controller(core.models, core.services);
 
-    router.get('/', controller.getMany);
+    router.route('/')
+        .get(controller.getMany);
 
-    router.route('/:id')
+    router.route('/:slug')
         .get(controller.getOne);
 
     return router;

@@ -1,18 +1,5 @@
 #home-page {
-    max-width: 1024px;
-
-    .mdc-chip-set {
-        .mdc-chip {
-            .mdc-chip__text {
-                text-transform: capitalize;
-            }
-        }
-    }
-
-    .calendar {
-        &__week {
-            border: none;
-            border-top: 1px solid #e0e0e0;
-        }
+    .page-content {
+        max-width: 1024px;
     }
 }

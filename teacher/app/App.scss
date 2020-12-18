@@ -1,20 +1,22 @@
-* {
-    box-sizing: border-box;
-}
+@use '@material/dialog';
 
 body {
     background-color: #f8f9fc;
 }
 
-.page {
-    max-width: 1024px;
-    margin: auto;
+.assignment-dialog,
+.post-dialog {
+    @include dialog.min-width(640px);
 
-    .page-content {
-        padding: 1rem;
+    .mdc-dialog__surface {
+        height: calc(100% - 32px);
     }
 
-    .mdc-layout-grid {
-        padding: 0;
+    .mdc-dialog__content {
+        overflow: hidden;
+    }
+
+    .ck-editor {
+        margin-top: 1rem;
     }
 }

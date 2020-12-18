@@ -1,0 +1,26 @@
+#assignment-form {
+    .mdc-text-field {
+        margin-top: 0;
+        border-radius: 0;
+        background-color: transparent;
+
+        &:first-child {
+            flex: 1;
+        }
+    }
+
+    .text-editor {
+        margin: 0;
+    }
+    
+    .ck-editor {
+        .ck-toolbar {
+            border: none;
+            border-bottom: 1px solid rgba(0,0,0,.12);
+        }
+
+        .ck-content {
+            border: none;
+        }
+    }
+}

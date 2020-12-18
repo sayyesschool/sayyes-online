@@ -1,6 +1,21 @@
-module.exports = ({ Course, Enrollment }) => ({
+const { isValidObjectId } = require('mongoose');
+
+module.exports = ({ Course }) => ({
+    getMany: (req, res, next) => {
+        Course.find()
+            .then(courses => {
+                res.json({
+                    ok: true,
+                    data: courses
+                });
+            })
+            .catch(next);
+    },
+
     getOne: (req, res, next) => {
-        Course.getById(req.params.id)
+        const key = isValidObjectId(req.params.course) ? '_id' : 'slug';
+
+        Course.findOne({ [key]: req.params.course })
             .then(course => {
                 if (!course) {
                     const error = new Error('Курс не найден');
