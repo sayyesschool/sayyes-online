@@ -58,6 +58,7 @@ const Enrollment = new Schema({
     schedules: [Schedule],
     pricePerLesson: { type: Number },
     client: { type: Schema.Types.ObjectId, ref: 'Client' },
+    clients: [{ type: Schema.Types.ObjectId, ref: 'Client' }],
     teacher: { type: Schema.Types.ObjectId, ref: 'Teacher' },
     manager: { type: Schema.Types.ObjectId, ref: 'Manager' },
     courses: [{ type: Schema.Types.ObjectId, ref: 'Course' }],

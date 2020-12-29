@@ -1,5 +1,6 @@
 const twilio = require('twilio');
 
+const MAX_ALLOWED_SESSION_DURATION = 14400;
 const AccessToken = twilio.jwt.AccessToken;
 const VideoGrant = AccessToken.VideoGrant;
 const ChatGrant = AccessToken.ChatGrant;
@@ -13,13 +14,16 @@ module.exports = ({
     TWILIO_SYNC_SERVICE_ID
 }) => {
     return {
-        generateVideoToken: ({ identity }) => {
+        generateVideoToken: ({ identity, room }) => {
             const token = new AccessToken(
                 TWILIO_ACCOUNT_ID,
                 TWILIO_API_KEY,
-                TWILIO_API_SECRET
+                TWILIO_API_SECRET,
+                {
+                    ttl: MAX_ALLOWED_SESSION_DURATION
+                }
             );
-            const videoGrant = new VideoGrant();
+            const videoGrant = new VideoGrant({ room });
 
             token.identity = identity;
             token.addGrant(videoGrant);
