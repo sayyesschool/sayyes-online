@@ -14,6 +14,7 @@ module.exports = ({ Enrollment }) => ({
     getOne: (req, res, next) => {
         Enrollment.findById(req.params.id)
             .populate('client', 'firstname lastname fullname')
+            .populate('clients', 'firstname lastname fullname')
             .populate('teacher', 'firstname lastname fullname')
             .populate('courses', 'title slug image units.id lessons.id exercises.id')
             .then(enrollment => {

@@ -1,0 +1,53 @@
+@use 'shared/styles/mixins' as *;
+
+.local-video-preview {
+    position: relative;
+    height: 0;
+    overflow: hidden;
+    padding-top: calc((9 / 16) * 100%);
+    background: black;
+    border-radius: 4px;
+
+    &__inner-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+    }
+
+    &__identity-container {
+        position: absolute;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    &__identity {
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 0.18em 0.3em;
+        margin: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    &__avatar-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: black;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+
+        @include breakpoint(lt-md) {
+            svg {
+                transform: scale(0.7);
+            }
+        }
+    }
+}

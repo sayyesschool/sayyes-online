@@ -1,0 +1,42 @@
+@use '@material/banner';
+@use '@material/button';
+@use '@material/icon-button';
+
+.room__header {
+    align-items: center;
+    background-color: #222;
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+    //border-bottom: 1px solid rgba(255, 255, 255, .12);
+
+    &__text {
+
+    }
+
+    &__actions {
+        flex-shrink: 0;
+
+        .mdc-top-app-bar__action-item {
+            margin: 4px;
+        }
+
+        .mdc-icon-button {
+            @include icon-button.size(36px);
+            @include icon-button.ink-color(text-secondary-on-dark);
+        }
+    }
+
+    .end-call-button {
+        @include button.filled-accessible(firebrick);
+    }
+}
+
+.screen-sharing-banner {
+    @include banner.fill-color(#222);
+    @include banner.text-color(text-secondary-on-dark);
+    border-top: 1px solid rgba(255,255,255,.12);
+    border-bottom: 1px solid rgba(255,255,255,.12);
+
+    .mdc-banner__graphic-text-wrapper {
+        align-items: center;
+    }
+}

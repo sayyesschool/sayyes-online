@@ -1,0 +1,13 @@
+.network-quality-level {
+    display: flex;
+    align-items: flex-end;
+    
+    div {
+        width: 2px;
+        margin-right: 1px;
+
+        &:not(:last-child) {
+            border-right: none;
+        }
+    }
+}

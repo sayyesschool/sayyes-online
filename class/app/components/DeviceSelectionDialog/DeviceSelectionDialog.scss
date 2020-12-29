@@ -1,0 +1,14 @@
+@use '@material/dialog';
+
+.device-selection-dialog {
+    @include dialog.min-width(640px);
+
+    .video-input-list,
+    .audio-input-list {
+        margin-bottom: 1rem;
+    }
+
+    .mdc-select {
+        width: 100%;
+    }
+}

@@ -1,0 +1,36 @@
+.device-selection-screen {
+    .mdc-layout-grid {
+        padding: 0;
+    }
+
+    .mdc-card {
+        .mdc-card__section--secondary {
+            display: flex;
+            height: 100%;
+            background-color: lavender;
+
+            img {
+                width: auto;
+                height: 256px;
+                margin: auto;;
+            }
+        }
+
+        .mdc-card__section--primary {
+            padding-top: 2rem;
+            padding-left: 1rem;
+            padding-right: 2rem;
+        }
+
+        .mdc-card__actions {
+            justify-content: space-between;
+            padding-left: 1rem;
+            padding-right: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .mdc-card__action-icons {
+            justify-content: flex-start;
+        }
+    }
+}

@@ -6,13 +6,16 @@ import { Provider } from 'react-redux';
 import './index.scss';
 
 import store from './store';
-import App from './components';
+import { AppStateProvider } from './contexts/AppStateContext';
+import Root from './components';
 
 ReactDOM.render(
     <Provider store={store}>
-        <Router basename="/class">
-            <App />
-        </Router>
+        <AppStateProvider>
+            <Router basename="/class">
+                <Root />
+            </Router>
+        </AppStateProvider>
     </Provider>,
     document.getElementById('root')
 );
