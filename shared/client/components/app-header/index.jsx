@@ -11,8 +11,8 @@ import './index.scss';
 
 export default function AppHeader({
     user,
+    navigationIcon,
     onNavigationIconClick,
-    onNotificationIconClick,
     children,
     ...props
 }) {
@@ -20,11 +20,13 @@ export default function AppHeader({
         <TopAppBar id="app-header" {...props}>
             <TopAppBar.Row>
                 <TopAppBar.Section align="start">
-                    <TopAppBar.NavigationIcon
-                        onClick={onNavigationIconClick}
-                    >
-                        <Icon>menu</Icon>
-                    </TopAppBar.NavigationIcon>
+                    {navigationIcon &&
+                        <TopAppBar.NavigationIcon
+                            onClick={onNavigationIconClick}
+                        >
+                            <Icon>{navigationIcon}</Icon>
+                        </TopAppBar.NavigationIcon>
+                    }
 
                     <TopAppBar.Title>Say Yes Online</TopAppBar.Title>
                 </TopAppBar.Section>
@@ -36,12 +38,6 @@ export default function AppHeader({
                 }
 
                 <TopAppBar.Section align="end">
-                    <TopAppBar.ActionItem>
-                        <IconButton onClick={onNotificationIconClick}>
-                            <Icon>notifications</Icon>
-                        </IconButton>
-                    </TopAppBar.ActionItem>
-
                     <TopAppBar.ActionItem element={Link} to="/account">
                         <Avatar className="user-avatar" text={user.initials} />
                     </TopAppBar.ActionItem>

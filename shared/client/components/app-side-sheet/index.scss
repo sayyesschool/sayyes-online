@@ -1,0 +1,11 @@
+@use 'shared/styles/variables';
+@use 'mdc-react/src/SideSheet/mixins';
+
+.app-side-sheet {
+    @include mixins.width(360px);
+
+    &.mdc-side-sheet--dismissible {
+        position: fixed;
+        height: 100%;
+    }
+}

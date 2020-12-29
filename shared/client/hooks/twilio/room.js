@@ -15,7 +15,9 @@ export function useRoom(token, { localWebcamRef, remoteWebcamRef, remoteScreenRe
     const [isSharingScreen, setSharingScreen] = useState(false);
     const [time, setTime] = useState();
 
-    useEffect(() => () => roomRef.current?.disconnect(), []);
+    useEffect(() => {
+        return () => roomRef.current?.disconnect();
+    }, []);
 
     useEffect(() => {
         if (isConnected) {
@@ -55,18 +57,20 @@ export function useRoom(token, { localWebcamRef, remoteWebcamRef, remoteScreenRe
                         track.on('stopped', () => setAudioOn(false));
                         track.on('disabled', () => setAudioOn(false));
 
-                        setAudioOn(track.isEnabled);
                         audioTrackRef.current = track;
+
+                        setAudioOn(track.isEnabled);
                     } else if (track.name === 'camera') {
-                        console.log(video, track.isEnabled);
+                        track.enable(video);
 
                         track.on('started', () => setVideoOn(true));
                         track.on('enabled', () => setVideoOn(true));
                         track.on('stopped', () => setVideoOn(false));
                         track.on('disabled', () => setVideoOn(false));
 
-                        setVideoOn(track.isEnabled);
                         videoTrackRef.current = track;
+
+                        setVideoOn(track.isEnabled);
                     }
 
                     localWebcamRef.current.appendChild(publication.track.attach());
@@ -75,7 +79,9 @@ export function useRoom(token, { localWebcamRef, remoteWebcamRef, remoteScreenRe
                 room.participants.forEach(participant => handleParticipantConnected(participant, remoteWebcamRef.current, remoteScreenRef.current));
 
                 room.on('participantConnected', participant => handleParticipantConnected(participant, remoteWebcamRef.current, remoteScreenRef.current));
+
                 room.on('participantDisconnected', handleParticipantDisconnected);
+
                 room.on('disconnected', () => {
                     room.localParticipant.tracks.forEach(publication => {
                         publication.track.stop();
@@ -86,6 +92,7 @@ export function useRoom(token, { localWebcamRef, remoteWebcamRef, remoteScreenRe
                 });
 
                 roomRef.current = room;
+
                 setConnecting(false);
                 setConnected(true);
             })
@@ -96,6 +103,15 @@ export function useRoom(token, { localWebcamRef, remoteWebcamRef, remoteScreenRe
 
     const disconnect = useCallback(() => {
         roomRef.current?.disconnect();
+    }, []);
+
+    const setVideoDevice = useCallback(deviceId => {
+        videoTrackRef.current.stop();
+
+    }, []);
+
+    const setAudioDevice = useCallback(deviceId => {
+
     }, []);
 
     const muteVideo = useCallback(() => videoTrackRef.current.disable(), []);
@@ -138,6 +154,8 @@ export function useRoom(token, { localWebcamRef, remoteWebcamRef, remoteScreenRe
         disconnect,
         setAudioOn,
         setVideoOn,
+        setVideoDevice,
+        setAudioDevice,
         muteVideo,
         unmuteVideo,
         muteAudio,
