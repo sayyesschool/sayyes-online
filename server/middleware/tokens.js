@@ -1,5 +1,8 @@
 module.exports = twilio => (req, res, next) => {
-    const options = { identity: req.user.id };
+    const options = {
+        identity: req.user.firstname,
+        room: req.params.id
+    };
 
     res.locals.TWILIO_CHAT_TOKEN = twilio.generateChatToken(options);
     res.locals.TWILIO_VIDEO_TOKEN = twilio.generateVideoToken(options);
