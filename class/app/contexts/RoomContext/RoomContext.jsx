@@ -3,7 +3,6 @@ import React, { createContext } from 'react';
 import useRoom from 'app/hooks/useRoom';
 import useLocalTracks from 'app/hooks/useLocalTracks';
 import useScreenShareToggle from 'app/hooks/useScreenShareToggle';
-import useSelectedParticipant from 'app/hooks/useSelectedParticipant';
 import useHandleRoomDisconnectionErrors from 'app/hooks/useHandleRoomDisconnectionErrors';
 import useHandleTrackPublicationFailed from 'app/hooks/useHandleTrackPublicationFailed';
 import useHandleOnDisconnect from 'app/hooks/useHandleOnDisconnect';
