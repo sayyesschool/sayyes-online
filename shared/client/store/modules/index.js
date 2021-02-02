@@ -1,0 +1,13 @@
+export * as clients from 'shared/store/modules/clients';
+export * as courses from 'shared/store/modules/courses';
+export * as enrollments from 'shared/store/modules/enrollments';
+export * as lessons from 'shared/store/modules/lessons';
+export * as managers from 'shared/store/modules/managers';
+export * as materials from 'shared/store/modules/materials';
+export * as meetings from 'shared/store/modules/meetings';
+export * as notification from 'shared/store/modules/notification';
+export * as payments from 'shared/store/modules/payments';
+export * as requests from 'shared/store/modules/requests';
+export * as teachers from 'shared/store/modules/teachers';
+export * as tickets from 'shared/store/modules/tickets';
+export * as user from 'shared/store/modules/user';

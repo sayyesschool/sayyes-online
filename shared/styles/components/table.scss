@@ -1,11 +1,22 @@
 @use 'shared/styles/variables';
 
 .mdc-data-table {
-    td a {
-        color: variables.$primary-color;
+    &__table {
+        width: 100%;
+    }
 
-        &:hover {
-            text-decoration: underline;
+    &__header-cell,
+    &__cell {
+        height: 48px;
+    }
+
+    &__cell {
+        a {
+            color: variables.$primary-color;
+    
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
 }

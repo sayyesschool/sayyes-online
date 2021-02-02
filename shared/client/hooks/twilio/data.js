@@ -13,9 +13,7 @@ export function useData(token, options) {
             room.localParticipant.publishTrack(dataTrack);
 
             room.localParticipant.on('trackPublished', publication => {
-                console.log(publication);
                 if (publication.track === dataTrack) {
-                    console.log(publication.track);
                     setDataTrack(publication.track);
                 }
             });

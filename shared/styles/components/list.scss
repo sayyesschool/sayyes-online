@@ -1,0 +1,5 @@
+@use '@material/list';
+
+.mdc-list {
+    @include list.icon-margin(16px);
+}

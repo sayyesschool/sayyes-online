@@ -1,0 +1,8 @@
+.mdc-card {
+    border-radius: 10px;
+    overflow: hidden;
+
+    + .mdc-card {
+        margin-top: 1rem;
+    }
+}

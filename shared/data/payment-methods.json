@@ -1,0 +1,46 @@
+[
+    {
+        "id": "cash",
+        "name": "Наличные"
+    },
+    {
+        "id": "bank_card",
+        "name": "Банковская карта"
+    },
+    {
+        "id": "apple_pay",
+        "name": "Apple Pay"
+    },
+    {
+        "id": "google_pay",
+        "name": "Google Pay"
+    },
+    {
+        "id": "yoo_money",
+        "name": "ЮMoney"
+    },
+    {
+        "id": "qiwi",
+        "name": "QIWI Кошелек"
+    },
+    {
+        "id": "webmoney",
+        "name": "WebMoney"
+    },
+    {
+        "id": "sberbank",
+        "name": "Сбербанк Онлайн"
+    },
+    {
+        "id": "alfabank",
+        "name": "Альфа-Банк"
+    },
+    {
+        "id": "tinkoff_bank",
+        "name": "Тинькофф"
+    },
+    {
+        "id": "b2b_sberbank",
+        "name": "Сбербанк Бизнес Онлайн"
+    }
+]

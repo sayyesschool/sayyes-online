@@ -1,30 +1,131 @@
-@use '@material/top-app-bar';
 @use '@material/theme';
+@use '@material/button';
+@use '@material/chips';
+@use '@material/tab';
+@use '@material/tab-indicator';
+@use '@material/textfield';
+@use '@material/textfield/icon';
+@use 'shared/styles/variables';
+@use 'shared/styles/mixins' as *;
+
+$fill-color: variables.$primary-color;
+$ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
 
 .page-header {
-    @include top-app-bar.fill-color-accessible(transparent);
-    @include top-app-bar.ink-color(text-primary-on-light);
-    @include top-app-bar.icon-ink-color(text-secondary-on-light);
+    position: relative;
+    @include theme.property(background-color, $fill-color);
+    @include theme.property(color, $ink-color);
+    background-image: url('https://static.sayes.ru/images/kids/fourth.png');
 
-    .mdc-top-app-bar__section--align-start {
-        padding-left: 1rem;
-    }
+    &__inner {
+        max-width: 1024px;
+        position: relative;
+        margin: 0 auto;
+        padding: 2rem 1rem 1rem;
 
-    .page-breadcrumbs {
-        a + a:before {
-            display: inline-block;
-            content: '›';
-            margin: 0 8px;
-        }
-    
-        a:hover {
-            text-decoration: underline;
+        @include breakpoint(lt-md) {
+            padding: 1rem;
         }
     }
 
-    .page-title {
-        margin: 0;
-        padding-left: 0;
-        font-size: 1.5rem;
+    &__row {
+        display: flex;
+    }
+
+    &__section {
+        &:first-child {
+            flex: 1;
+        }
+
+        &.page-header__section--actions {
+            .mdc-fab + .mdc-fab {
+                margin-left: 8px;
+            }
+        }
+    }
+
+    .mdc-icon,
+    .mdc-typography {
+        @include theme.property(color, $ink-color);
+    }
+
+    .mdc-button {
+        &.mdc-button--outlined {
+            @include button.container-fill-color($fill-color);
+            @include button.icon-color($ink-color);
+            @include button.ink-color($ink-color);
+            @include button.outline-color($ink-color);
+        }
+    }
+
+    .mdc-chip-set {
+        justify-content: center;
+
+        .mdc-chip {
+            background-color: transparent;
+            @include chips.ink-color($ink-color);
+            @include chips.selected-ink-color($ink-color);
+            @include chips.leading-icon-color($ink-color);
+        }
+    }
+
+    .mdc-tab {
+        @include tab.text-label-color($ink-color);
+        @include tab.icon-color($ink-color);
+
+        .mdc-tab-indicator {
+            @include tab-indicator.underline-color($ink-color);
+            @include tab-indicator.icon-color($ink-color);
+        }
+
+        .mdc-tab__ripple {
+            @include tab.states-color($ink-color);
+        }
+    }
+
+    .mdc-text-field {    
+        @include textfield.height(48px);
+        @include textfield.ink-color(rgba(255, 255, 255));
+        @include textfield.placeholder-color(rgba(255, 255, 255.6));
+        @include textfield.caret-color(rgba(255, 255, 255.8));
+        @include textfield.fill-color(rgba(255, 255, 255, .1));
+        @include icon.leading-icon-color(rgba(255, 255, 255.8));
+        @include icon.trailing-icon-color(rgba(255, 255, 255.8));
+    }
+
+    .icon-block {
+        .icon-block__icon {
+            color: white;
+        }
+
+        .icon-block__title {
+            @include theme.property(color, $ink-color);
+        }
+
+        .icon-block__subtitle {
+            @include theme.property(color, theme.accessible-ink-color(variables.$primary-color, secondary));
+        }
+    }
+
+    &.page-header--pull-content {
+        box-shadow: none;
+
+        @include breakpoint(gt-md) {
+            padding-bottom: 64px;
+        }
+
+        + .page-content {
+            @include breakpoint(gt-md) {
+                position: relative;
+                top: -96px;
+                margin-bottom: -48px;
+            }
+        }
+    }
+
+    &.page-header--with-tabs {
+        .page-header__inner {
+            padding-bottom: 0;
+        }
     }
 }

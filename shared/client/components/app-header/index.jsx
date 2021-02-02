@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-    Avatar,
     Icon,
-    IconButton,
     TopAppBar
 } from 'mdc-react';
+
+import NotificationMenu from 'shared/components/notification-menu';
+import UserMenu from 'shared/components/user-menu';
 
 import './index.scss';
 
@@ -17,7 +18,7 @@ export default function AppHeader({
     ...props
 }) {
     return (
-        <TopAppBar id="app-header" {...props}>
+        <TopAppBar id="app-header" fixed {...props}>
             <TopAppBar.Row>
                 <TopAppBar.Section align="start">
                     {navigationIcon &&
@@ -38,8 +39,18 @@ export default function AppHeader({
                 }
 
                 <TopAppBar.Section align="end">
-                    <TopAppBar.ActionItem element={Link} to="/account">
-                        <Avatar className="user-avatar" text={user.initials} />
+                    <TopAppBar.ActionItem>
+                        <NotificationMenu />
+                    </TopAppBar.ActionItem>
+
+                    <TopAppBar.ActionItem>
+                        <UserMenu
+                            user={user}
+                            items={[
+                                { key: 'account', component: Link, to: '/account', text: 'Личный кабинет' },
+                                { key: 'logout', element: 'a', href: '/logout', text: 'Выйти' }
+                            ]}
+                        />
                     </TopAppBar.ActionItem>
                 </TopAppBar.Section>
             </TopAppBar.Row>

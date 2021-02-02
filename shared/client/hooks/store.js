@@ -19,12 +19,4 @@ export function useStore(mapState = state => state, mapDispatch) {
     return [state, actions];
 }
 
-export function useSlice(path) {
-    const [parent, child] = path.split('.');
-    const state = store.useState(state => child ? state[parent][child] : state[parent]);
-    const actions = store.useActions(modules[parent]);
-
-    return [state, actions];
-}
-
 export { useStore as default, useSelector };

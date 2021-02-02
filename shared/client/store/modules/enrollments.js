@@ -1,5 +1,5 @@
-import { createAction, createReducer } from 'shared/store';
-import { createLesson } from './lessons';
+import { createAction, createReducer, combineReducers } from 'shared/store';
+import { createLesson, deleteLesson } from './lessons';
 import { createPost } from './posts';
 
 export const getEnrollments = createAction('GET_ENROLLMENTS', () => ({
@@ -50,24 +50,26 @@ export const actions = {
 export const enrollmentsReducer = createReducer(null, {
     [getEnrollments]: (state, action) => action.data,
     [createEnrollment]: (state, action) => state?.concat(action.data) || [action.data],
-    [updateEnrollment]: (state, action) => state?.map(r => r.id !== action.data.id ? r : { ...r, ...action.data }),
-    [deleteEnrollment]: (state, action) => state?.filter(r => r.id !== action.data.id)
+    //[updateEnrollment]: (state, action) => state?.map(e => e.id !== action.data.id ? e : { ...e, ...action.data }),
+    [deleteEnrollment]: (state, action) => state?.filter(e => e.id !== action.data.id)
 });
 
 export const enrollmentReducer = createReducer(null, {
     [getEnrollment]: (state, action) => action.data,
     [updateEnrollment]: (state, action) => ({ ...state, ...action.data }),
     [deleteEnrollment]: (state, action) => null,
-    [createLesson]: (state, action) => action.data.enrollment == state.id ?
+    [createLesson]: (state, action) => state.id === action.data.enrollment ?
         { ...state, lessons: state.lessons.concat(action.data) } :
         state,
-    [createPost]: (state, action) => action.data.enrollment === state.id ?
+    [deleteLesson]: (state, action) => state.id === action.data.enrollment ?
+        { ...state, lessons: state.lessons.filter(lesson => lesson.id !== action.data.id) } :
+        state,
+    [createPost]: (state, action) => state.id === action.data.enrollment ?
         { ...state, lessons: state.posts.concat(action.data) } :
         state
-
 });
 
-export default createReducer({
-    enrollments: enrollmentsReducer,
-    enrollment: enrollmentReducer
+export default combineReducers({
+    list: enrollmentsReducer,
+    single: enrollmentReducer
 });

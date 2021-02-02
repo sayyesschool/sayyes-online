@@ -1,26 +1,22 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import {
-    Button,
-    Icon,
-    IconButton,
-    TopAppBar
+    Typography
 } from 'mdc-react';
+import classnames from 'classnames';
 
 import './index.scss';
 
-export default function PageHeader({ title, breadcrumbs, backTo, actions, children }) {
-    return (
-        <TopAppBar className="page-header">
-            <TopAppBar.Row>
-                <TopAppBar.Section align="start">
-                    {backTo &&
-                        <TopAppBar.NavigationIcon component={Link} to={backTo}>
-                            <Icon>arrow_back</Icon>
-                        </TopAppBar.NavigationIcon>
-                    }
+export default function PageHeader({ title, subtitle, breadcrumbs, actions, className, pullContent, withTabs, children }) {
+    const classNames = classnames('page-header', {
+        'page-header--pull-content': pullContent,
+        'page-header--with-tabs': withTabs
+    }, className);
 
-                    <div>
+    return (
+        <header className={classNames}>
+            <div className="page-header__inner">
+                <div className="page-header__row">
+                    <div className="page-header__section page-header__section--main">
                         {breadcrumbs?.length > 0 &&
                             <div className="page-breadcrumbs">
                                 {breadcrumbs.map((item, index) =>
@@ -29,38 +25,32 @@ export default function PageHeader({ title, breadcrumbs, backTo, actions, childr
                             </div>
                         }
 
-                        {title &&
-                            <TopAppBar.Title element="h1" className="page-title">{title}</TopAppBar.Title>
-                        }
+                        {title && (React.isValidElement(title) ?
+                            React.cloneElement(title, { className: 'page-header__title' })
+                            :
+                            <Typography className="page-header__title" type="headline4">{title}</Typography>
+                        )}
+
+                        {subtitle && (React.isValidElement(subtitle) ?
+                            React.cloneElement(subtitle, { className: 'page-header__subtitle' })
+                            :
+                            <Typography className="page-header__subtitle" type="headline6">{subtitle}</Typography>
+                        )}
                     </div>
-                </TopAppBar.Section>
+
+                    {actions &&
+                        <div className="page-header__section page-header__section--actions">
+                            {actions}
+                        </div>
+                    }
+                </div>
 
                 {children &&
-                    <TopAppBar.Section>
+                    <div className="page-header__row">
                         {children}
-                    </TopAppBar.Section>
+                    </div>
                 }
-
-                {actions &&
-                    <TopAppBar.Section align="end">
-                        {actions.filter(action => Boolean(action)).map(({ icon, ...props }, index) =>
-                            <TopAppBar.ActionItem key={index}>
-                                {props.label ?
-                                    <Button
-                                        icon={icon && <Icon>{icon}</Icon>}
-                                        {...props}
-                                    />
-                                    :
-                                    <IconButton
-                                        icon={<Icon>{icon}</Icon>}
-                                        {...props}
-                                    />
-                                }
-                            </TopAppBar.ActionItem>
-                        )}
-                    </TopAppBar.Section>
-                }
-            </TopAppBar.Row>
-        </TopAppBar>
+            </div>
+        </header>
     );
 }

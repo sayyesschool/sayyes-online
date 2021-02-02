@@ -5,7 +5,7 @@ import {
 } from 'mdc-react';
 
 export default function ConfirmationDialog({
-    title,
+    title = 'Подтвердите действие',
     message,
     open,
     onClose,

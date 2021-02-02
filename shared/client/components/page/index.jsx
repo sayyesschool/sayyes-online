@@ -1,12 +1,15 @@
 import React, { forwardRef } from 'react';
 import classnames from 'classnames';
 
+import LoadingIndicator from 'shared/components/loading-indicator';
+
 export default forwardRef(Page);
 
-function Page({ className, ...props }, ref) {
+function Page({ loading, className, ...props }, ref) {
     const classNames = classnames('page', className);
 
-    return (
-        <main ref={ref} className={classNames} {...props} />
-    );
+    return loading ?
+        <LoadingIndicator indeterminate />
+        :
+        <main ref={ref} className={classNames} {...props} />;
 }

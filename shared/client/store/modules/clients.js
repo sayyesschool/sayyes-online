@@ -3,8 +3,6 @@ import { createAction, createReducer, combineReducers } from 'shared/store';
 import { createPayment } from './payments';
 
 export const getClients = createAction('GET_CLIENTS', query => {
-    const query = Object.entries(params).map(([k, v]) => `${k}=${v}`).join('&');
-
     return {
         request: {
             method: 'get',
@@ -39,7 +37,7 @@ export const updateClient = createAction('UPDATE_CLIENT', (clientId, data) => ({
 
 export const deleteClient = createAction('DELETE_CLIENT', (clientId, data) => ({
     request: {
-        method: 'put',
+        method: 'delete',
         url: `/clients/${clientId}`,
         body: data
     }

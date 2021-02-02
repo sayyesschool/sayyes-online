@@ -60,5 +60,12 @@
     .user-avatar {
         margin-left: auto;
         background-color: #e71985;
+        cursor: pointer;
+    }
+
+    .mdc-top-app-bar__action-item {
+        + .mdc-top-app-bar__action-item {
+            margin-left: 8px;
+        }
     }
 }

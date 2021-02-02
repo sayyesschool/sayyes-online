@@ -10,7 +10,6 @@ function TextEditor({ value, defaultValue = value }, ref) {
     return (
         <div className="text-editor">
             <CKEditor
-                className="text-editor"
                 ref={ref}
                 editor={ClassicEditor}
                 data={defaultValue}

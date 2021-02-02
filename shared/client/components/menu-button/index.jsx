@@ -1,6 +1,5 @@
 import React, { useRef, useState, useCallback } from 'react';
 import {
-    Icon,
     IconButton,
     Menu, MenuItem
 } from 'mdc-react';

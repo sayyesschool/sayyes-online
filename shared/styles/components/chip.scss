@@ -1,0 +1,18 @@
+.mdc-chip {
+    &.person-chip {
+        padding-left: 0;
+
+        .mdc-chip__icon {
+            width: 32px;
+            height: 32px;
+            margin-left: 0;
+        }
+    }
+}
+
+a.mdc-chip {
+    .mdc-chip__icon,
+    .mdc-chip__text {
+        text-decoration: none;
+    }
+}

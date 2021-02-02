@@ -113,5 +113,5 @@ export const meetingReducer = createReducer(null, {
 
 export default combineReducers({
     list: meetingsReducer,
-    single: meetingsReducer
+    single: meetingReducer
 });
