@@ -29,7 +29,7 @@ module.exports = context => {
         next();
     });
 
-    main.use('/', front(context.services));
+    main.use('/', front(context));
 
     return main;
 };

@@ -1,4 +1,8 @@
-module.exports = ({ Auth, Mail, Request }, data) => ({
+module.exports = ({
+    models: { Request },
+    services: { Mail },
+    data
+}) => ({
     showFront: (req, res) => {
         res.render('front', {
             id: 'front',
