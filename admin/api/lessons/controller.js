@@ -1,5 +1,3 @@
-const { data } = require("autoprefixer");
-
 module.exports = ({
     models: { Lesson }
 }) => ({
