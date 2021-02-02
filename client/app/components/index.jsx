@@ -13,9 +13,6 @@ import AppHeader from 'shared/components/app-header';
 import AppContent from 'shared/components/app-content';
 
 import navItems from 'app/data/nav';
-import PaymentBanner from 'app/components/shared/payment-banner';
-import PaymentDialog from 'app/components/shared/payment-dialog';
-import PaymentForm from 'app/components/shared/payment-form';
 import Account from 'app/components/account';
 import Home from 'app/components/home';
 import Assignments from 'app/components/assignments';
@@ -59,9 +56,7 @@ export default function App() {
                 <NavBar items={navItems} />
             </AppHeader>
 
-            <AppContent>
-                {/* <PaymentBanner onActionClick={() => setDialogOpen(true)} /> */}
-
+            <AppContent fixedAdjust>
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <Route path="/account" component={Account} />
@@ -74,13 +69,6 @@ export default function App() {
                     <Route path="/pay" component={Pay} />
                 </Switch>
             </AppContent>
-
-            <PaymentDialog
-                open={isDialogOpen}
-                onClose={() => setDialogOpen(false)}
-            >
-                <PaymentForm />
-            </PaymentDialog>
 
             <NotificationSnackbar
                 open={notification.active}

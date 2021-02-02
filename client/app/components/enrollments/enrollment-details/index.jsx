@@ -1,41 +1,32 @@
 import React from 'react';
 import {
-    Card,
-    Icon,
-    IconButton,
-    List
+    Avatar,
+    ChipSet, Chip,
+    Tooltip
 } from 'mdc-react';
+
+import './index.scss';
 
 export default function EnrollmentDetails({ enrollment }) {
     return (
         <section className="enrollment-details">
-            <Card outlined>
-                <Card.Header
-                    title="Детали"
-                />
+            <ChipSet>
+                <Tooltip label="Преподаватель">
+                    <Chip
+                        className="person-chip"
+                        icon={<Avatar src={enrollment.teacher?.imageUrl} />}
+                        text={enrollment.teacher?.fullname}
+                    />
+                </Tooltip>
 
-                <Card.Section>
-                    <List twoLine>
-                        <List.Item
-                            graphic={<Icon>schedule</Icon>}
-                            primaryText={enrollment.schedule || '[Не указано]'}
-                            secondaryText="Расписание"
-                        />
-
-                        <List.Item
-                            graphic={<Icon>person</Icon>}
-                            primaryText={enrollment.teacher?.fullname}
-                            secondaryText="Преподаватель"
-                        />
-
-                        <List.Item
-                            graphic={<Icon>person</Icon>}
-                            primaryText={enrollment.manager?.fullname}
-                            secondaryText="Менеджер"
-                        />
-                    </List>
-                </Card.Section>
-            </Card>
+                <Tooltip label="Преподаватель">
+                    <Chip
+                        className="person-chip"
+                        icon={<Avatar src={enrollment.manager?.imageUrl} />}
+                        text={enrollment.manager?.fullname}
+                    />
+                </Tooltip>
+            </ChipSet>
         </section>
     );
 }

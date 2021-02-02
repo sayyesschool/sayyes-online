@@ -1,4 +1,6 @@
-module.exports = ({ Course }) => ({
+module.exports = ({
+    models: { Course }
+}) => ({
     getOne: (req, res, next) => {
         Course.findById(req.params.id)
             .then(course => {

@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import {
     FAB,
+    Icon,
     LayoutGrid
 } from 'mdc-react';
 
@@ -19,6 +20,7 @@ import EnrollmentDetails from 'app/components/enrollments/enrollment-details';
 import EnrollmentLessons from 'app/components/enrollments/enrollment-lessons';
 import EnrollmentMaterials from 'app/components/enrollments/enrollment-materials';
 import EnrollmentPosts from 'app/components/enrollments/enrollment-posts';
+import PaymentBanner from 'app/components/shared/payment-banner';
 
 import './index.scss';
 
@@ -46,22 +48,33 @@ export default function EnrollmentPage({ match }) {
             <div>
                 <Page id="enrollment-page">
                     <PageHeader
-                        title={`${enrollment.title}`}
+                        title={enrollment.title}
                         actions={[
-                            { key: 'chat', icon: 'forum', title: 'Чат', onClick: () => setChatOpen(true) },
-                            { key: 'class', element: 'a', href: enrollment.classUrl, target: '_blank', label: 'Перейти в класс', raised: true }
+                            <FAB
+                                key="class"
+                                element="a"
+                                href={enrollment.classUrl}
+                                icon={<Icon>video_call</Icon>}
+                                label="Перейти в класс"
+                            />,
+
+                            <FAB
+                                key="chat"
+                                icon={<Icon>chat</Icon>}
+                                onClick={() => setChatOpen(true)}
+                            />
                         ]}
-                    />
+                    >
+                        <EnrollmentDetails
+                            enrollment={enrollment}
+                        />
+                    </PageHeader>
+
+                    <PaymentBanner onActionClick={() => setDialogOpen(true)} />
 
                     <PageContent>
                         <LayoutGrid>
                             <LayoutGrid.Cell grid span="3">
-                                <LayoutGrid.Cell span="12">
-                                    <EnrollmentDetails
-                                        enrollment={enrollment}
-                                    />
-                                </LayoutGrid.Cell>
-
                                 <LayoutGrid.Cell span="12">
                                     <EnrollmentCourses
                                         enrollment={enrollment}

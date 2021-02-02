@@ -1,4 +1,7 @@
-module.exports = ({ Meeting, Ticket }, { Club }, { mapMeeting, mapTicket }) => ({
+module.exports = ({
+    models: { Meeting, Ticket },
+    services: { Club },
+}, { mapMeeting, mapTicket }) => ({
     find: (req, res, next, id) => {
         Club.getMeeting(id)
             .then(meeting => {

@@ -50,6 +50,7 @@ export default function AssignmentPage({ match }) {
                     <Link to={enrollment.url}>{enrollment.title}</Link>
                 ]}
                 title={assignment.title}
+                pullContent
             >
                 <Chip
                     icon={<Icon>{assignment.statusIcon}</Icon>}
@@ -100,7 +101,7 @@ export default function AssignmentPage({ match }) {
                                     </Card.Action>
 
                                     <Card.Action>
-                                        <Button type="submit" form="new-comment-form" icon={<Icon>send</Icon>} outlined>Отправить</Button>
+                                        <Button type="submit" form="new-comment-form" icon={<Icon>send</Icon>} unelevated>Отправить</Button>
                                     </Card.Action>
                                 </Card.Actions>
                             </Card>

@@ -1,4 +1,6 @@
-module.exports = ({ Post }) => ({
+module.exports = ({
+    models: { Post }
+}) => ({
     getMany: (req, res, next) => {
         Post.find({ teacher: req.user.id, ...req.query })
             .populate('user', 'firstname lastname email')
@@ -13,8 +15,8 @@ module.exports = ({ Post }) => ({
 
     getOne: (req, res, next) => {
         Post.findById(req.params.id)
-            .populate('user', 'firstname lastname email')
-            .populate('comments.user', 'firstname lastname email')
+            .populate('user', 'firstname lastname email imageUrl')
+            .populate('comments.user', 'firstname lastname email imageUrl')
             .then(post => {
                 if (!post) {
                     const error = new Error('Запись не найдена');

@@ -1,21 +1,22 @@
 import React, { useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
 import {
+    Avatar,
     Icon,
     TabBar, Tab,
     Typography
 } from 'mdc-react';
 
 import { useStore } from 'shared/hooks/store';
-import Page from 'shared/components/page';
-import PageContent from 'shared/components/page-content';
 import { actions as userActions } from 'shared/store/modules/user';
+import Page from 'shared/components/page';
+import PageHeader from 'shared/components/page-header';
+import PageContent from 'shared/components/page-content';
 
 import ProfileCard from 'app/components/account/profile-card';
 import PaymentsCard from 'app/components/account/payments-card';
 import TicketsCard from 'app/components/account/tickets-card';
 import MeetingsCard from 'app/components/account/meetings-card';
-import ProfileDialogForm from 'app/components/account/profile-dialog-form';
+import ProfileForm from 'app/components/account/profile-form';
 
 import './index.scss';
 
@@ -35,17 +36,23 @@ export default function AccountPage() {
 
     return (
         <Page id="account-page">
-            <PageContent>
-                <Typography element="h1" type="headline4">Мой аккаунт</Typography>
+            <PageHeader withTabs>
+                <Typography element="h1" type="overline">Мой аккаунт</Typography>
 
-                <TabBar value={activeTab} onChange={setActiveTab}>
+                <Avatar className="user-avatar" text={user.initials} large />
+
+                <Typography element="h2" type="headline4">{user.fullname}</Typography>
+
+                <TabBar value={activeTab} onChange={setActiveTab} minWidth align="center">
                     <Tab value="profile" icon={<Icon>person</Icon>} label="Профиль" />
                     <Tab value="payments" icon={<Icon>payment</Icon>} label="Платежи" />
                     <Tab value="lessons" icon={<Icon>school</Icon>} label="Уроки" />
                     <Tab value="tickets" icon={<Icon>local_activity</Icon>} label="Билеты" />
                     <Tab value="meetings" icon={<Icon>event</Icon>} label="Встречи" />
                 </TabBar>
+            </PageHeader>
 
+            <PageContent>
                 {activeTab === 'profile' &&
                     <ProfileCard
                         user={user}
@@ -70,13 +77,6 @@ export default function AccountPage() {
                     />
                 }
             </PageContent>
-
-            <ProfileDialogForm
-                open={isProfileDialogOpen}
-                profile={user}
-                onClose={() => setProfileDialogOpen(false)}
-                onSubmit={handleProfileFormSubmit}
-            />
         </Page>
     );
 }

@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
     Card,
+    Chip,
+    Icon,
     List
 } from 'mdc-react';
 
@@ -10,11 +12,11 @@ export default function EnrollmentPosts({ enrollment }) {
         <div className="enrollment-posts">
             <Card outlined>
                 <Card.Header
-                    title="Отчеты об обучения"
+                    title="Отчеты об обучении"
                     subtitle={(!enrollment.posts || enrollment.posts.length === 0) && 'Отчетов пока нет'}
                 />
 
-                {enrollment.posts &&
+                {enrollment.posts?.length > 0 &&
                     <Card.Section>
                         <List twoLine>
                             {enrollment.posts?.map(post =>
@@ -24,6 +26,14 @@ export default function EnrollmentPosts({ enrollment }) {
                                     to={`${enrollment.url}${post.url}`}
                                     primaryText={post.title}
                                     secondaryText={post.timeSinceCreated}
+                                    meta={
+                                        <Chip
+                                            icon={<Icon>forum</Icon>}
+                                            text={post.comments.length}
+                                            disabled
+                                            outlined
+                                        />
+                                    }
                                 />
                             )}
                         </List>

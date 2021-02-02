@@ -2,37 +2,33 @@ import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
     Card,
-    Icon,
-    IconButton,
-    List
+    LayoutGrid,
+    Typography
 } from 'mdc-react';
 
 export default function EnrollmentMaterials({ enrollment }) {
     return (
         <div className="enrollment-materials">
-            <Card outlined>
-                <Card.Header
-                    title="Дополнительные материалы"
-                    subtitle={(!enrollment.materials || enrollment.materials.length === 0) && 'Отчетов пока нет'}
-                />
+            <Typography type="headline6">Пособия</Typography>
 
-                {enrollment.materials &&
-                    <Card.Section>
-                        <List twoLine thumbnailList>
-                            {enrollment.materials?.map(material =>
-                                <List.Item
-                                    key={material.id}
-                                    component={Link}
-                                    to={`${enrollment.url}${material.url}`}
-                                    graphic={<img src={material.imageUrl} />}
-                                    primaryText={material.title}
-                                    secondaryText={material.subtitle}
+            {enrollment.materials?.length > 0 ?
+                <LayoutGrid>
+                    {enrollment.materials.map(material =>
+                        <LayoutGrid.Cell key={material.id} span="6">
+                            <Card component={Link} to={`${enrollment.url}${material.url}`} outlined>
+                                <img src={material.imageUrl} />
+
+                                <Card.Header
+                                    title={material.title}
+                                    subtitle={material.subtitle}
                                 />
-                            )}
-                        </List>
-                    </Card.Section>
-                }
-            </Card>
-        </div >
+                            </Card>
+                        </LayoutGrid.Cell>
+                    )}
+                </LayoutGrid>
+                :
+                <Typography>Пособия пока не назначены</Typography>
+            }
+        </div>
     );
 };

@@ -12,10 +12,10 @@ export default function EnrollmentLessons({ enrollment }) {
             <Card outlined>
                 <Card.Header
                     title="Занятия"
-                    subtitle={(!enrollment.lessons || enrollment.lessons.length === 0) && 'Занятий пока нет'}
+                    subtitle={enrollment.scheduleLabel}
                 />
 
-                {enrollment.lessons &&
+                {enrollment.lessons?.length > 0 &&
                     <Card.Section>
                         <List twoLine>
                             {enrollment.lessons?.map(lesson =>

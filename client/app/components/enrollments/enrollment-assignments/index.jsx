@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
     Card,
+    Chip,
     Icon,
     List
 } from 'mdc-react';
@@ -15,7 +16,7 @@ export default function EnrollmentAssignments({ enrollment }) {
                     subtitle={(!enrollment.assignments || enrollment.assignments.length === 0) && 'Заданий пока нет'}
                 />
 
-                {enrollment.assignments &&
+                {enrollment.assignments?.length > 0 &&
                     <Card.Section>
                         <List twoLine>
                             {enrollment.assignments?.map(assignment =>
@@ -23,9 +24,15 @@ export default function EnrollmentAssignments({ enrollment }) {
                                     key={assignment.id}
                                     component={Link}
                                     to={`${enrollment.url}${assignment.url}`}
+                                    graphic={<Icon>{assignment.statusIcon}</Icon>}
                                     primaryText={assignment.title}
                                     secondaryText={`${assignment.statusLabel} • ${assignment.timeToDue}`}
-                                    meta={<Icon>{assignment.statusIcon}</Icon>}
+                                    meta={<Chip
+                                        icon={<Icon>forum</Icon>}
+                                        text={assignment.comments.length}
+                                        disabled
+                                        outlined
+                                    />}
                                 />
                             )}
                         </List>

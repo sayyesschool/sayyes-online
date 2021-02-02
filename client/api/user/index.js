@@ -4,7 +4,7 @@ const Controller = require('./controller');
 
 module.exports = context => {
     const router = Router();
-    const controller = Controller(context.models);
+    const controller = Controller(context);
 
     router.get('/', controller.getUser);
     router.put('/profile', upload.single('avatar'), controller.updateProfile);

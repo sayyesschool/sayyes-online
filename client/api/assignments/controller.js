@@ -1,4 +1,6 @@
-module.exports = ({ Assignment }) => ({
+module.exports = ({
+    models: { Assignment }
+}) => ({
     getMany: (req, res, next) => {
         Assignment.find({ teacher: req.user.id, ...req.query })
             .populate('client', 'firstname lastname email')

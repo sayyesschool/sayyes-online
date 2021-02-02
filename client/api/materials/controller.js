@@ -1,4 +1,6 @@
-module.exports = ({ Material }) => ({
+module.exports = ({
+    models: { Material }
+}) => ({
     getMany: (req, res, next) => {
         Material.find()
             .then(materials => {

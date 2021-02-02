@@ -1,4 +1,14 @@
 #meeting-page {
+    .page-header {
+        &__inner {
+            max-width: 1024px;
+        }
+    }
+
+    .page-content {
+        max-width: 1024px;
+    }
+
     .mdc-chip {
         .mdc-chip__text {
             text-transform: capitalize;

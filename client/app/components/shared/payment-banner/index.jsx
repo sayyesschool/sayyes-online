@@ -11,7 +11,9 @@ export default function PaymentBanner({ onActionClick }) {
             className="payment-banner"
             icon={<Icon>warning</Icon>}
             text="Пора платить!"
-            actions={<Button onClick={onActionClick}>Оплатить</Button>}
+            centered
+            fixed
+            primaryAction={<Button onClick={onActionClick}>Оплатить</Button>}
         />
     );
 }

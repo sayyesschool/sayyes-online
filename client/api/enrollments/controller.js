@@ -1,6 +1,9 @@
-module.exports = ({ Enrollment }) => ({
+module.exports = ({
+    models: { Enrollment }
+}) => ({
     getMany: (req, res, next) => {
         Enrollment.find({ client: req.user.id, ...req.query })
+            .populate('teacher', 'firstname lastname imageUrl')
             .then(enrollments => {
                 res.json({
                     ok: true,
@@ -12,13 +15,13 @@ module.exports = ({ Enrollment }) => ({
 
     getOne: (req, res, next) => {
         Enrollment.findById(req.params.id)
-            .populate('manager', 'firstname lastname fullname')
-            .populate('teacher', 'firstname lastname fullname')
+            .populate('manager', 'firstname lastname imageUrl')
+            .populate('teacher', 'firstname lastname imageUrl')
             .populate('courses', 'title slug image units.id lessons.id exercises.id')
             .populate('materials')
             .populate('lessons', 'id title date trial status')
-            .populate('assignments', 'id title status createdAt dueAt')
-            .populate('posts', 'id title createdAt')
+            .populate('assignments', 'id title status createdAt dueAt comments._id')
+            .populate('posts', 'id title createdAt comments._id')
             .then(enrollment => {
                 if (!enrollment) {
                     const error = new Error('Обучение не найдено');

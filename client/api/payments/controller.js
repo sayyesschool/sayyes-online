@@ -1,4 +1,7 @@
-module.exports = ({ Payment }) => ({
+module.exports = ({
+    models: { Payment },
+    services: { Checkout }
+}) => ({
     getMany: (req, res, next) => {
         return Payment.find({ user: req.user })
             .then(payments => {
@@ -19,6 +22,26 @@ module.exports = ({ Payment }) => ({
                 });
             })
             .catch(next);
+    },
+
+    create: (req, res, next) => {
+        const user = req.user;
+        const data = {};
+
+        Checkout.createPayment({
+            amount: 4000, // Get price somehow
+            description: 'Оплата обучения', // Clarify the exact message
+            paymentMethod: req.body.usePaymentMethod ? user.paymentMethod : undefined,
+            savePaymentMethod: req.body.savePaymentMethod,
+            email: req.user.email,
+            returnUrl: '/',
+            metadata: {
+                userId: req.user.id,
+                enrollmentId: enrollment.id,
+                planId: 1,
+                packId: 16
+            }
+        });
     }
 });
 

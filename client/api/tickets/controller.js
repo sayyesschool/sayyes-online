@@ -1,4 +1,6 @@
-module.exports = ({ Ticket }, mapTicket) => ({
+module.exports = ({
+    models: { Ticket }
+}, mapTicket) => ({
     get: (req, res, next) => {
         return req.user.populate({ path: 'tickets', populate: 'meeting' })
             .execPopulate()
@@ -10,7 +12,7 @@ module.exports = ({ Ticket }, mapTicket) => ({
             })
             .catch(next);
     },
-    
+
     getOne: (req, res, next) => {
         return req.user.populate({ path: 'ticket', populate: 'meeting' })
             .execPopulate()

@@ -6,7 +6,7 @@ const mapMeeting = require('./mapper');
 
 module.exports = context => {
     const router = Router();
-    const controller = Controller(context.models, context.services, { mapMeeting, mapTicket });
+    const controller = Controller(context, { mapMeeting, mapTicket });
 
     router.param('meetingId', controller.find);
 

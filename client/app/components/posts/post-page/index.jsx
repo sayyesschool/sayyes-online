@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
+    Avatar,
     Button,
     Card,
     Icon,
@@ -49,12 +50,19 @@ export default function PostPage({ match }) {
                     <Link to={enrollment.url}>{enrollment.title}</Link>
                 ]}
                 title={post.title}
+                pullContent
             />
 
             <PageContent>
                 <LayoutGrid>
                     <LayoutGrid.Cell span="12">
                         <Card outlined>
+                            <Card.Header
+                                graphic={<Avatar src={post.user.imageUrl} large />}
+                                title={post.user.fullname}
+                                subtitle={post.timeSinceCreated}
+                            />
+
                             <PostContent
                                 post={post}
                             />

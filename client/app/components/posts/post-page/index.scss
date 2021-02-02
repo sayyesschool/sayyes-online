@@ -1,6 +1,17 @@
 #post-page {
-    max-width: 1024px;
-    margin: 1rem auto;
+    .page-header {
+        &__inner {
+            max-width: 1024px;
+        }
+    }
+
+    .mdc-card__header {
+        padding-top: 1rem;
+    }
+    
+    .page-content {
+        max-width: 1024px;
+    }
 
     .comment-card + .comment-card {
         margin-top: 1rem;

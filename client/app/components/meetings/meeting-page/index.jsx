@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
+    Card,
     Banner,
     Button,
     ChipSet, Chip,
@@ -55,66 +56,70 @@ export default function MeetingPage({ match }) {
                     <Link to="/meetings">Разговорный клуб</Link>
                 ]}
                 title={meeting.title}
-            />
+                actions={
+                    <FAB
+                        className="meeting-register-button"
+                        label={meeting.isRegistered ? 'Отменить запись' : 'Зарегистрироваться'}
+                        onClick={handleRegister}
+                    />
+                }
+                pullContent
+            >
+                <div className="meeting-meta">
+                    <div className="meeting-meta__item">
+                        <Chip
+                            className="meeting-datetime"
+                            leadingIcon={<Icon>event</Icon>}
+                            text={`${meeting.datetime}`}
+                            outlined
+                        />
+                    </div>
+
+                    <div className="meeting-meta__item">
+                        <Chip
+                            className={`meeting-level meeting-level--${meeting.level.toLowerCase()}`}
+                            leadingIcon={<Icon>star</Icon>}
+                            text={meeting.level}
+                            outlined
+                        />
+                    </div>
+
+                    {meeting.host &&
+                        <div className="meeting-meta__item">
+                            <Chip
+                                className="meeting-host"
+                                leadingIcon={meeting.host.avatarUrl ? <Avatar src={meeting.host.avatarUrl} /> : <Icon>person</Icon>}
+                                text={meeting.host.fullname}
+                                outlined
+                            />
+                        </div>
+                    }
+                </div>
+            </PageHeader>
 
             <PageContent>
-                <LayoutGrid>
-                    <LayoutGrid.Cell span="8">
-                        <Typography className="meeting-description">{meeting.description}</Typography>
+                <Card>
+                    <LayoutGrid>
+                        <LayoutGrid.Cell span="4">
+                            <Card.Media
+                                className="meeting-image"
+                                imageUrl={STATIC_URL + meeting.imageUrl}
+                                wide
+                            />
+                        </LayoutGrid.Cell>
 
-                        <div className="meeting-meta">
-                            <div className="meeting-meta__item">
-                                <strong>Когда: </strong>
+                        <LayoutGrid.Cell span="8">
+                            <Card.Section primary>
+                                <Typography className="meeting-description">{meeting.description}</Typography>
+                            </Card.Section>
+                        </LayoutGrid.Cell>
+                    </LayoutGrid>
+                </Card>
 
-                                <Chip
-                                    className="meeting-datetime"
-                                    leadingIcon={<Icon>event</Icon>}
-                                    text={`${meeting.datetime}`}
-                                    outlined
-                                />
-                            </div>
-
-                            <div className="meeting-meta__item">
-                                <strong>Уровень: </strong>
-
-                                <Chip
-                                    className={`meeting-level meeting-level--${meeting.level.toLowerCase()}`}
-                                    leadingIcon={<Icon>star</Icon>}
-                                    text={meeting.level}
-                                    outlined
-                                />
-                            </div>
-
-                            {meeting.host &&
-                                <div className="meeting-meta__item">
-                                    <strong>Ведущий: </strong>
-
-                                    <Chip
-                                        className="meeting-host"
-                                        leadingIcon={meeting.host.avatarUrl ? <Avatar src={meeting.host.avatarUrl} /> : <Icon>person</Icon>}
-                                        text={meeting.host.fullname}
-                                        outlined
-                                    />
-                                </div>
-                            }
-                        </div>
-
-                        <FAB
-                            className="meeting-register-button"
-                            label={meeting.isRegistered ? 'Отменить запись' : 'Зарегистрироваться'}
-                            onClick={handleRegister}
-                        />
-
-                        <Typography>
-                            <strong>Внимание!</strong> Выбирайте встречу строго для вашего уровня!
+                <Typography align="center">
+                    <strong>Внимание!</strong> Выбирайте встречу строго для вашего уровня!
                             <Button onClick={() => setLevelDialogOpen(true)}>Подробнее</Button>
-                        </Typography>
-                    </LayoutGrid.Cell>
-
-                    <LayoutGrid.Cell span="4">
-                        <img className="meeting-image" src={STATIC_URL + meeting.imageUrl} />
-                    </LayoutGrid.Cell>
-                </LayoutGrid>
+                </Typography>
             </PageContent>
 
             <MeetingLevelDialog

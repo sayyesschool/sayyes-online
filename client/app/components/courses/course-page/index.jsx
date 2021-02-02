@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
 
+import { useEnrollment } from 'shared/hooks/enrollments';
 import { useCourse } from 'shared/hooks/courses';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
@@ -16,8 +17,10 @@ import UnitVideo from 'shared/components/unit-video';
 import './index.scss';
 
 export default function CoursePage({ match }) {
-    const rootRef = useRef();
+    const [enrollment] = useEnrollment(match.params.enrollmentId);
     const [course] = useCourse(match.params.courseId);
+
+    const rootRef = useRef();
 
     const [isFullscreen, setFullscreen] = useState(false);
     const [isSideSheetOpen, setSideSheetOpen] = useState(false);
@@ -87,6 +90,7 @@ export default function CoursePage({ match }) {
                         unit.videos?.length > 0 && { icon: 'movie', onClick: () => openSideSheet('video') },
                         { icon: isFullscreen ? 'fullscreen_exit' : 'fullscreen', onClick: () => toggleFullscreen() }
                     ]}
+                    pullContent
                 />
 
                 <PageContent>
