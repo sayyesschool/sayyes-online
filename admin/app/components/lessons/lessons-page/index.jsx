@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
+import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 
-import { useStore } from 'app/store';
+import { useStore } from 'app/hooks/store';
 import FormPanel from 'app/components/shared/form-panel';
-import LessonCalendar from 'app/components/lessons/lesson-calendar';
+import LessonsTable from 'app/components/lessons/lessons-table';
 import LessonForm from 'app/components/lessons/lesson-form';
 
 export default function Lessons() {
     const [lessons, actions] = useStore('lessons.list');
     const [view, setView] = useState('week');
+
     const [isLessonFormOpen, setLessonFormOpen] = useState(false);
 
     useEffect(() => {
@@ -24,8 +25,8 @@ export default function Lessons() {
     }, []);
 
     return (
-        <Page id="lessons" loading={!lessons}>
-            <PageHeader
+        <Page id="lessons-page" loading={!lessons}>
+            <PageTopBar
                 title="Уроки"
                 controls={[
                     {
@@ -44,16 +45,16 @@ export default function Lessons() {
             />
 
             <PageContent>
-                <LessonCalendar
-                    view={view}
+                <LessonsTable
                     lessons={lessons}
                 />
             </PageContent>
 
             <FormPanel
+                form="lesson-form"
                 title="Новый урок"
                 isOpen={isLessonFormOpen}
-                form="lesson-form"
+                modal
                 onClose={() => setLessonFormOpen(!isLessonFormOpen)}
             >
                 <LessonForm

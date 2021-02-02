@@ -1,28 +1,28 @@
 import { combineReducers } from 'redux';
 
-import clients from './modules/clients';
-import courses from './modules/courses';
-import enrollments from './modules/enrollments';
-import notification from './modules/notification';
-import lessons from './modules/lessons';
-import managers from './modules/managers';
-import materials from './modules/materials';
-import meetings from './modules/meetings';
-import payments from './modules/payments';
-import requests from './modules/requests';
-import teachers from './modules/teachers';
-import tickets from './modules/tickets';
-import user from './modules/user';
+import clients from 'shared/store/modules/clients';
+import courses from 'shared/store/modules/courses';
+import enrollments from 'shared/store/modules/enrollments';
+import lessons from 'shared/store/modules/lessons';
+import managers from 'shared/store/modules/managers';
+import materials from 'shared/store/modules/materials';
+import meetings from 'shared/store/modules/meetings';
+import notification from 'shared/store/modules/notification';
+import payments from 'shared/store/modules/payments';
+import requests from 'shared/store/modules/requests';
+import teachers from 'shared/store/modules/teachers';
+import tickets from 'shared/store/modules/tickets';
+import user from 'shared/store/modules/user';
 
 export default combineReducers({
     clients,
     courses,
     enrollments,
-    notification,
     lessons,
     managers,
     materials,
     meetings,
+    notification,
     payments,
     requests,
     teachers,

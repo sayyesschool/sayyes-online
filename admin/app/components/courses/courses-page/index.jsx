@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
+import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 
-import { useStore } from 'app/store';
+import { useStore } from 'app/hooks/store';
 import FormPanel from 'app/components/shared/form-panel';
 import CourseTable from 'app/components/courses/course-table';
 import CourseForm from 'app/components/courses/course-form';
@@ -25,7 +25,7 @@ export default function CoursesPage() {
 
     return (
         <Page id="courses" loading={!courses}>
-            <PageHeader
+            <PageTopBar
                 title="Курсы"
                 actions={[
                     {
@@ -44,9 +44,10 @@ export default function CoursesPage() {
             </PageContent>
 
             <FormPanel
+                form="course-form"
                 title="Новый курс"
                 open={isCourseFormOpen}
-                form="course-form"
+                modal
                 onClose={() => setCourseFormOpen(!isCourseFormOpen)}
             >
                 <CourseForm

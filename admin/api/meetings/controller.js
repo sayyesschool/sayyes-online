@@ -1,6 +1,8 @@
-module.exports = ({ Meeting }) => ({
+module.exports = ({
+    services: { Club }
+}) => ({
     get: (req, res, next) => {
-        Meeting.get(req.query)
+        Club.getMeetings(req.query)
             .sort({ date: 1 })
             .populate('host')
             .then(meetings => {
@@ -13,7 +15,7 @@ module.exports = ({ Meeting }) => ({
     },
 
     getOne: (req, res, next) => {
-        Meeting.getById(req.params.meetingId)
+        Club.getMeeting(req.params.meetingId)
             .populate('host')
             .populate('participants')
             .populate('registrations.user')
@@ -27,7 +29,7 @@ module.exports = ({ Meeting }) => ({
     },
 
     create: (req, res, next) => {
-        Meeting.create(req.body)
+        Club.createMeeting(req.body)
             .then(meeting => {
                 res.json({
                     ok: true,
@@ -39,7 +41,7 @@ module.exports = ({ Meeting }) => ({
     },
 
     update: (req, res, next) => {
-        Meeting.update(req.params.meetingId, req.body)
+        Club.updateMeeting(req.params.meetingId, req.body)
             .then(meeting => {
                 res.json({
                     ok: true,
@@ -51,7 +53,7 @@ module.exports = ({ Meeting }) => ({
     },
 
     delete: (req, res, next) => {
-        Meeting.delete(req.params.meetingId)
+        Club.deleteMeeting(req.params.meetingId)
             .then(() => {
                 res.json({
                     ok: true,
@@ -70,7 +72,7 @@ module.exports = ({ Meeting }) => ({
             status: 'approved'
         };
 
-        Meeting.addRegistration(req.params.meetingId, registration)
+        Club.addRegistration(req.params.meetingId, registration)
             .then(registration => {
                 registration.meetingId = req.params.meetingId;
 
@@ -84,7 +86,7 @@ module.exports = ({ Meeting }) => ({
     },
 
     approveRegistration: (req, res, next) => {
-        Meeting.approveRegistration(req.params.meetingId, req.params.registrationId)
+        Club.approveRegistration(req.params.meetingId, req.params.registrationId)
             .then(registration => {
                 registration.meetingId = req.params.meetingId;
 
@@ -100,7 +102,7 @@ module.exports = ({ Meeting }) => ({
     updateRegistration: (req, res, next) => {
         const action = req.body.action;
 
-        Meeting[`${action}Registration`](req.params.meetingId, req.params.registrationId)
+        Club[`${action}Registration`](req.params.meetingId, req.params.registrationId)
             .then(registration => {
                 registration.meetingId = req.params.meetingId;
 
@@ -114,7 +116,7 @@ module.exports = ({ Meeting }) => ({
     },
 
     removeRegistration: (req, res, next) => {
-        Meeting.removeRegistration(req.params.meetingId, req.params.registrationId)
+        Club.removeRegistration(req.params.meetingId, req.params.registrationId)
             .then(registration => {
                 registration.meetingId = req.params.meetingId;
 

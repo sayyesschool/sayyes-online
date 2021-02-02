@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import {
-    Button,
     FormField,
     Layout,
     Select,
@@ -11,11 +10,14 @@ import {
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
 
-import { useStore } from 'app/store';
+import { useStore } from 'app/hooks/store';
 import ScheduleSelect from 'app/components/shared/schedule-select';
+import PeopleSelect from 'app/components/shared/people-select';
 
 export default function EnrollmentForm({ enrollment = {}, onSubmit }) {
     const [user] = useStore('user');
+    const [teachers] = useStore('teachers.list');
+    const [managers] = useStore('managers.list');
     const [data, handleChange] = useForm({
         status: 'pending',
         type: '',
@@ -25,7 +27,7 @@ export default function EnrollmentForm({ enrollment = {}, onSubmit }) {
         goal: '',
         domain: 'general',
         teacher: '',
-        schedule: [],
+        schedules: [],
         note: undefined,
         ...enrollment,
         client: enrollment.client?.id,
@@ -49,6 +51,7 @@ export default function EnrollmentForm({ enrollment = {}, onSubmit }) {
                         { key: 'individual', value: 'individual', text: 'Индвидуально' },
                         { key: 'group', value: 'group', text: 'Группа' }
                     ]}
+                    filled
                     required
                     onChange={handleChange}
                 />
@@ -62,6 +65,7 @@ export default function EnrollmentForm({ enrollment = {}, onSubmit }) {
                         { key: 'online', value: 'online', text: 'Онлайн' },
                         { key: 'offline', value: 'offline', text: 'Оффлайн' }
                     ]}
+                    filled
                     required
                     onChange={handleChange}
                 />
@@ -76,6 +80,7 @@ export default function EnrollmentForm({ enrollment = {}, onSubmit }) {
                         { key: 'teenager', value: 'teenager', text: 'Подростки' },
                         { key: 'child', value: 'child', text: 'Дети' }
                     ]}
+                    filled
                     onChange={handleChange}
                 />
 
@@ -93,6 +98,7 @@ export default function EnrollmentForm({ enrollment = {}, onSubmit }) {
                         { key: 'upper', value: 'upper', text: 'Upper-Intermediate' },
                         { key: 'adv', value: 'adv', text: 'Advanced' }
                     ]}
+                    filled
                     onChange={handleChange}
                 />
 
@@ -108,6 +114,7 @@ export default function EnrollmentForm({ enrollment = {}, onSubmit }) {
                         { key: 'travel', value: 'travel', text: 'Для путешествий' },
                         { key: 'hobby', value: 'hobby', text: 'Для себя (хобби)' }
                     ]}
+                    filled
                     onChange={handleChange}
                 />
 
@@ -120,8 +127,8 @@ export default function EnrollmentForm({ enrollment = {}, onSubmit }) {
                 </FormField>
 
                 <ScheduleSelect
-                    name="schedule"
-                    schedule={data.schedule}
+                    name="schedules"
+                    schedule={data.schedules}
                     onChange={handleChange}
                 />
 
@@ -133,6 +140,34 @@ export default function EnrollmentForm({ enrollment = {}, onSubmit }) {
                         label="Дата и время связи"
                         filled
                         required
+                        onChange={handleChange}
+                    />
+                }
+
+                {enrollment.id &&
+                    <PeopleSelect
+                        name="teacher"
+                        value={data.teacher || ''}
+                        label="Преподаватель"
+                        options={teachers.map(teacher => ({
+                            key: teacher.id,
+                            value: teacher.id,
+                            text: teacher.fullname
+                        }))}
+                        onChange={handleChange}
+                    />
+                }
+
+                {enrollment.id &&
+                    <PeopleSelect
+                        name="manager"
+                        value={data.manager}
+                        label="Менеджер"
+                        options={managers.map(manager => ({
+                            key: manager.id,
+                            value: manager.id,
+                            text: manager.fullname
+                        }))}
                         onChange={handleChange}
                     />
                 }

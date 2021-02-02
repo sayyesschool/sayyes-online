@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageSideSheet from 'shared/components/page-side-sheet';
+import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 
-import { useStore, useActions } from 'app/store';
+import { useStore, useActions } from 'app/hooks/store';
 import FormPanel from 'app/components/shared/form-panel';
 import EmptyState from 'app/components/shared/empty-state';
-import RequestTable from 'app/components/requests/request-table';
+import RequestsTable from 'app/components/requests/requests-table';
 import RequestForm from 'app/components/requests/request-form';
 import RequestProcessFormPanel from 'app/components/requests/request-process-form-panel';
 import RequestSearchForm from 'app/components/requests/request-search-form';
+
+import './index.scss';
 
 export default function RequestsPage({ history }) {
     const [user] = useStore('user');
@@ -59,7 +60,7 @@ export default function RequestsPage({ history }) {
             });
     }, []);
 
-    const handleProccessRequestSubmit = useCallback(data => {
+    const handleProcessRequestSubmit = useCallback(data => {
         clientActions.createClient(data.client)
             .then(({ data }) => enrollmentActions.createEnrollment({
                 ...data.enrollment,
@@ -111,56 +112,67 @@ export default function RequestsPage({ history }) {
         setConfirmationDialogOpen(true);
     }, []);
 
+    const handleSearch = useCallback(params => {
+        console.log(params);
+    }, []);
+
     const toggleSidePanel = useCallback(() => {
         setSidePanelOpen(value => !value);
     }, []);
 
     return (
-        <Page id="requests" loading={!requests}>
-            <PageHeader
-                title="Заявки"
-                actions={[
-                    {
-                        key: 'search',
-                        icon: 'search',
-                        onClick: toggleSidePanel
-                    }
-                ]}
-            />
-
-            <PageSideSheet
+        <Page id="requests-page">
+            <FormPanel
+                form="request-search-form"
                 title="Поиск"
                 open={isSidePanelOpen}
+                submitButtonText="Найти"
                 dismissible
                 onClose={toggleSidePanel}
             >
-                <RequestSearchForm />
-            </PageSideSheet>
+                <RequestSearchForm
+                    onSubmit={handleSearch}
+                />
+            </FormPanel>
 
-            <PageContent>
-                {requests?.length > 0 ?
-                    <RequestTable
-                        requests={requests}
-                        manager={user}
-                        onEdit={handleEditRequest}
-                        onProcess={handleCheckRequest}
-                        onDelete={handleDeleteConfirm}
-                    />
-                    :
-                    <EmptyState title="Заявок пока нет" />
-                }
-            </PageContent>
+            <div>
+                <PageTopBar
+                    title="Заявки"
+                    actions={[
+                        {
+                            key: 'search',
+                            icon: isSidePanelOpen ? 'search_off' : 'search',
+                            onClick: toggleSidePanel
+                        }
+                    ]}
+                />
+
+                <PageContent>
+                    {requests?.length > 0 ?
+                        <RequestsTable
+                            requests={requests}
+                            manager={user}
+                            onEdit={handleEditRequest}
+                            onProcess={handleCheckRequest}
+                            onDelete={handleDeleteConfirm}
+                        />
+                        :
+                        <EmptyState title="Заявок пока нет" />
+                    }
+                </PageContent>
+            </div>
 
             <RequestProcessFormPanel
                 request={request}
                 open={isRequestProcessPanelOpen}
-                onSubmit={handleProccessRequestSubmit}
+                onSubmit={handleProcessRequestSubmit}
                 onClose={() => setRequestProcessPanelOpen(false)}
             />
 
             <FormPanel
                 title="Редактирование заявки"
                 form="request-form"
+                modal
                 open={isRequestFormOpen}
                 onClose={() => setRequestFormOpen(false)}
             >

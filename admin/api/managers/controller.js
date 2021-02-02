@@ -1,8 +1,10 @@
-module.exports = Manager => ({
+module.exports = ({
+    models: { Manager }
+}) => ({
     get: (req, res, next) => {
         const query = req.query ? req.query : {};
 
-        Manager.get(query, 'firstname lastname')
+        Manager.find(query, 'firstname lastname email')
             .then(managers => {
                 res.json({
                     ok: true,
@@ -13,7 +15,7 @@ module.exports = Manager => ({
     },
 
     getOne: (req, res, next) => {
-        Manager.getById(req.params.id)
+        Manager.findById(req.params.id)
             .then(manager => {
                 res.json({
                     ok: true,
@@ -36,7 +38,7 @@ module.exports = Manager => ({
     },
 
     update: (req, res, next) => {
-        Manager.update(req.params.id, req.body)
+        Manager.findByIdAndUpdate(req.params.id, req.body, { new: true })
             .then(manager => {
                 res.json({
                     ok: true,
@@ -48,7 +50,7 @@ module.exports = Manager => ({
     },
 
     delete: (req, res, next) => {
-        Manager.delete(req.params.id)
+        Manager.findByIdAndDelete(req.params.id)
             .then(() => {
                 res.json({
                     ok: true,

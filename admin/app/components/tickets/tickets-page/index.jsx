@@ -4,7 +4,7 @@ import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
 
-import { useStore } from 'app/store';
+import { useStore } from 'app/hooks/store';
 import TicketList from 'app/components/tickets/ticket-list';
 
 export default function Tickets() {

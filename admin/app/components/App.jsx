@@ -7,21 +7,22 @@ import AppContent from 'shared/components/app-content';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import NotificationSnackbar from 'shared/components/notification-snackbar';
 
-import { useStore, useActions } from 'app/store';
+import navItems from 'app/data/nav';
 import UI from 'app/contexts/ui';
+import { useStore, useActions } from 'app/hooks/store';
 import NavList from 'app/components/shared/nav-list';
 import Search from 'app/components/shared/search';
-import navItems from 'app/data/nav';
-
-import Home from './components/home';
-import Clients from './components/clients';
-import Courses from './components/courses';
-import Lessons from './components/lessons';
-import Materials from './components/materials';
-import Meetings from './components/meetings';
-import Payments from './components/payments';
-import Requests from './components/requests';
-import Tickets from './components/tickets';
+import Home from 'app/components/home';
+import Clients from 'app/components/clients';
+import Courses from 'app/components/courses';
+import Lessons from 'app/components/lessons';
+import Managers from 'app/components/managers';
+import Materials from 'app/components/materials';
+import Meetings from 'app/components/meetings';
+import Payments from 'app/components/payments';
+import Requests from 'app/components/requests';
+import Teachers from 'app/components/teachers';
+import Tickets from 'app/components/tickets';
 
 import './App.scss';
 
@@ -77,9 +78,11 @@ export default function App() {
                     <Route path="/courses" component={Courses} />
                     <Route path="/lessons" component={Lessons} />
                     <Route path="/materials" component={Materials} />
+                    <Route path="/managers" component={Managers} />
                     <Route path="/meetings" component={Meetings} />
                     <Route path="/payments" component={Payments} />
                     <Route path="/requests" component={Requests} />
+                    <Route path="/teachers" component={Teachers} />
                     <Route path="/tickets" component={Tickets} />
                 </Switch>
             </AppContent>

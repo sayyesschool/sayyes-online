@@ -10,13 +10,13 @@ import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
-import { useStore } from 'app/store';
+
+import { useStore } from 'app/hooks/store';
 import PeopleSelect from 'app/components/shared/people-select';
 
 import './index.scss';
 
 export default function RequestForm({ request = {}, onSubmit }) {
-    const [user] = useStore('user');
     const [managers] = useStore('managers.list');
     const [data, handleChange] = useForm({
         status: 'new',
@@ -27,7 +27,7 @@ export default function RequestForm({ request = {}, onSubmit }) {
         note: undefined,
         ...request,
         client: request.client?.id,
-        manager: request.manager ? request.manager.id : user.id
+        manager: request.manager?.id
     });
 
     function handleSubmit() {
@@ -74,6 +74,7 @@ export default function RequestForm({ request = {}, onSubmit }) {
                         { key: 'rejected', value: 'rejected', text: 'Отказ' },
                         { key: 'postponed', value: 'postponed', text: 'Отложенная' },
                     ]}
+                    filled
                     required
                     onChange={handleChange}
                 />
@@ -88,6 +89,7 @@ export default function RequestForm({ request = {}, onSubmit }) {
                             value: request.client.id,
                             text: request.client.fullname
                         }]}
+                        filled
                         disabled
                     />
                 }
@@ -101,6 +103,7 @@ export default function RequestForm({ request = {}, onSubmit }) {
                         value: manager.id,
                         text: manager.fullname
                     }))}
+                    filled
                     required
                     onChange={handleChange}
                 />
@@ -116,6 +119,7 @@ export default function RequestForm({ request = {}, onSubmit }) {
                         { key: 'whatsapp', value: 'whatsapp', text: 'WhatsApp' },
                         { key: 'instagram', value: 'instagram', text: 'Instagram' },
                     ]}
+                    filled
                     onChange={handleChange}
                 />
 
@@ -131,6 +135,16 @@ export default function RequestForm({ request = {}, onSubmit }) {
                         { key: 'google', value: 'google', text: 'Google' },
                         { key: 'referral', value: 'referral', text: 'Рекомендация' }
                     ]}
+                    filled
+                    onChange={handleChange}
+                />
+
+                <TextField
+                    name="note"
+                    value={data.note}
+                    label="Примечание"
+                    filled
+                    textarea
                     onChange={handleChange}
                 />
 
@@ -177,18 +191,7 @@ export default function RequestForm({ request = {}, onSubmit }) {
                         onChange={handleChange}
                     />
                 </Layout>
-
-                <TextField
-                    name="note"
-                    value={data.note}
-                    label="Примечание"
-                    filled
-                    textarea
-                    onChange={handleChange}
-                />
             </Layout>
-
-            <Button type="submit" outlined>Сохранить</Button>
-        </Form >
+        </Form>
     );
 }

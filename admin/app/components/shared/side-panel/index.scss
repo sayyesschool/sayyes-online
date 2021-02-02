@@ -1,0 +1,35 @@
+@use 'shared/styles/variables';
+@use 'mdc-react/src/SideSheet/mixins';
+
+.side-panel {
+    &.mdc-side-sheet--dismissible {
+        position: fixed;
+        top: 64px;
+        height: calc(100% - 64px);
+        @include mixins.width(360px);
+
+        @media #{variables.$lt-md} {
+            top: 56px;
+            height: calc(100% - 56px);
+        }
+    }
+
+    &.mdc-side-sheet--modal {
+        @include mixins.width(480px);
+    }
+
+    .mdc-side-sheet__content {
+        padding: 1rem;
+        border-top: 1px solid rgba(0,0,0,.12);
+        border-bottom: 1px solid rgba(0,0,0,.12);
+        overflow-x: hidden;
+    }
+
+    &__footer {
+        padding: 1rem;
+
+        .mdc-button + .mdc-button {
+            margin-left: .5rem;
+        }
+    }
+}

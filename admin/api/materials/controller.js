@@ -1,6 +1,8 @@
-module.exports = ({ Material }) => ({
+module.exports = ({
+    models: { Material }
+}) => ({
     get: (req, res, next) => {
-        Material.get(req.query)
+        Material.find(req.query)
             .select('id title slug image')
             .then(materials => {
                 res.json({
@@ -12,7 +14,7 @@ module.exports = ({ Material }) => ({
     },
 
     getOne: (req, res, next) => {
-        Material.getById(req.params.material)
+        Material.findById(req.params.material)
             .then(material => {
                 res.json({
                     ok: true,
@@ -35,7 +37,7 @@ module.exports = ({ Material }) => ({
     },
 
     update: (req, res, next) => {
-        Material.update(req.params.material, req.body)
+        Material.findByIdAndUpdate(req.params.material, req.body, { new: true })
             .then(material => {
                 res.json({
                     ok: true,
@@ -47,7 +49,7 @@ module.exports = ({ Material }) => ({
     },
 
     delete: (req, res, next) => {
-        Material.delete(req.params.material)
+        Material.findByIdAndDelete(req.params.material)
             .select('id')
             .then(material => {
                 res.json({

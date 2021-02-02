@@ -1,8 +1,8 @@
-const { request } = require("express");
-
-module.exports = ({ Request, Client }) => ({
+module.exports = ({
+    models: { Request, Client }
+}) => ({
     get: (req, res, next) => {
-        Request.get({ status: { $in: ['new', 'processing'] }, ...req.query })
+        Request.find({ status: { $in: ['new', 'processing'] }, ...req.query })
             .populate('manager', 'firstname lastname')
             .populate('client', 'firstname lastname')
             .sort({ createdAt: 1 })
@@ -18,7 +18,7 @@ module.exports = ({ Request, Client }) => ({
     getNew: (req, res, next) => {
         const minAgo = new Date(Date.now() - 60000);
 
-        Request.get({
+        Request.find({
             status: 'new',
             createdAt: {
                 $gt: minAgo
@@ -36,11 +36,11 @@ module.exports = ({ Request, Client }) => ({
     },
 
     getOne: (req, res, next) => {
-        Request.getById(req.params.requestId)
+        Request.findById(req.params.requestId)
             .populate('manager', 'firstname lastname')
             .populate('client', 'firstname lastname')
             .then(request => {
-                return Client.getOne({
+                return Client.findOne({
                     phone: request.contact.phone
                 }).then(client => {
                     return [request, client];
@@ -74,7 +74,7 @@ module.exports = ({ Request, Client }) => ({
     },
 
     update: (req, res, next) => {
-        Request.update(req.params.requestId, req.body)
+        Request.findByIdAndUpdate(req.params.requestId, req.body, { new: true })
             .populate('manager', 'firstname lastname')
             .populate('client', 'firstname lastname')
             .then(request => {
@@ -88,7 +88,7 @@ module.exports = ({ Request, Client }) => ({
     },
 
     delete: (req, res, next) => {
-        Request.delete(req.params.requestId)
+        Request.findByIdAndDelete(req.params.requestId)
             .then(() => {
                 res.json({
                     ok: true,

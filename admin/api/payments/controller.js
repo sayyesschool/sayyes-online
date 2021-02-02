@@ -1,6 +1,8 @@
-module.exports = ({ Payment }) => ({
+module.exports = ({
+    models: { Payment }
+}) => ({
     get: (req, res, next) => {
-        Payment.get()
+        Payment.find()
             .populate('client', 'firstname lastname email')
             .then(payments => {
                 res.json({
@@ -12,7 +14,7 @@ module.exports = ({ Payment }) => ({
     },
 
     getOne: (req, res, next) => {
-        Payment.getById(req.params.payment)
+        Payment.findById(req.params.payment)
             .populate('client', 'firstname lastname email')
             .then(payment => {
                 res.json({
@@ -24,7 +26,7 @@ module.exports = ({ Payment }) => ({
     },
 
     create: (req, res, next) => {
-        Payment.model.create(req.body)
+        Payment.create(req.body)
             .then(payment => {
                 res.json({
                     ok: true,
@@ -36,7 +38,7 @@ module.exports = ({ Payment }) => ({
     },
 
     update: (req, res, next) => {
-        Payment.update(req.params.payment, req.body)
+        Payment.findByIdAndUpdate(req.params.payment, req.body, { new: true })
             .then(payment => {
                 res.json({
                     ok: true,
@@ -48,7 +50,7 @@ module.exports = ({ Payment }) => ({
     },
 
     delete: (req, res, next) => {
-        Payment.delete(req.params.payment)
+        Payment.findByIdAndDelete(req.params.payment)
             .then(payment => {
                 res.json({
                     ok: true,

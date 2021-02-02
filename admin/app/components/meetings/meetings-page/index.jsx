@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
+import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 
-import { useStore } from 'app/store';
+import { useStore } from 'app/hooks/store';
 import FormPanel from 'app/components/shared/form-panel';
-import MeetingTable from 'app/components/meetings/meeting-table';
+import MeetingsTable from 'app/components/meetings/meetings-table';
 import MeetingForm from 'app/components/meetings/meeting-form';
 
-export default function Meetings() {
+export default function MeetingsPage() {
     const [meetings, actions] = useStore('meetings.list');
 
     const [isMeetingFormOpen, setMeetingFormOpen] = useState(false);
@@ -24,30 +24,31 @@ export default function Meetings() {
     }, []);
 
     return (
-        <Page id="meetings" loading={!meetings}>
-            <PageHeader
+        <Page id="meetings-page" loading={!meetings}>
+            <PageTopBar
                 title="Встречи"
                 actions={[
                     {
                         key: 'add',
                         label: 'Создать',
                         icon: 'add',
-                        outlined: true,
+                        unelevated: true,
                         onClick: () => setMeetingFormOpen(true)
                     }
                 ]}
             />
 
             <PageContent>
-                <MeetingTable
+                <MeetingsTable
                     meetings={meetings}
                 />
             </PageContent>
 
             <FormPanel
+                form="meeting-form"
                 title="Новая встреча"
                 open={isMeetingFormOpen}
-                form="meeting-form"
+                modal
                 onClose={() => setMeetingFormOpen(false)}
             >
                 <MeetingForm

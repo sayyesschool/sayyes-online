@@ -1,6 +1,10 @@
-module.exports = ({ Lesson }) => ({
+const { data } = require("autoprefixer");
+
+module.exports = ({
+    models: { Lesson }
+}) => ({
     get: (req, res, next) => {
-        Lesson.get(req.query)
+        Lesson.find(req.query)
             .sort({ date: 1 })
             .populate('client')
             .populate('teacher')
@@ -14,7 +18,7 @@ module.exports = ({ Lesson }) => ({
     },
 
     getOne: (req, res, next) => {
-        Lesson.getById(req.params.lessonId)
+        Lesson.findById(req.params.lessonId)
             .populate('client')
             .populate('teacher')
             .then(lesson => {
@@ -39,7 +43,7 @@ module.exports = ({ Lesson }) => ({
     },
 
     update: (req, res, next) => {
-        Lesson.update(req.params.lessonId, req.body)
+        Lesson.findByIdAndUpdate(req.params.lessonId, req.body, { new: true })
             .then(lesson => {
                 res.json({
                     ok: true,
@@ -51,13 +55,14 @@ module.exports = ({ Lesson }) => ({
     },
 
     delete: (req, res, next) => {
-        Lesson.delete(req.params.lessonId)
-            .then(() => {
+        Lesson.findByIdAndDelete(req.params.lessonId)
+            .then(lesson => {
                 res.json({
                     ok: true,
                     message: 'Урок удален',
                     data: {
-                        lessonId: req.params.lessonId
+                        id: lesson.id,
+                        enrollment: lesson.enrollment
                     }
                 });
             })

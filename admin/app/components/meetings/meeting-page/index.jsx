@@ -3,14 +3,14 @@ import {
     LayoutGrid, LayoutGridCell
 } from 'mdc-react';
 
-import LoadingIndicator from 'shared/components/loading-indicator';
-import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
-import FormDialog from 'shared/components/form-dialog';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
+import LoadingIndicator from 'shared/components/loading-indicator';
+import FormDialog from 'shared/components/form-dialog';
+import Page from 'shared/components/page';
+import PageTopBar from 'shared/components/page-top-bar';
+import PageContent from 'shared/components/page-content';
 
-import { useStore } from 'app/store';
+import { useStore } from 'app/hooks/store';
 import MeetingForm from 'app/components/meetings/meeting-form';
 import MeetingDetails from 'app/components/meetings/meeting-details';
 import MeetingRegistrations from 'app/components/meetings/meeting-registrations';
@@ -62,8 +62,8 @@ export default function Meeting({ match, history }) {
     if (!meeting) return <LoadingIndicator />;
 
     return (
-        <Page id="meeting-page">
-            <PageHeader
+        <Page id="meeting-page" loading={!meeting}>
+            <PageTopBar
                 title={meeting.title}
                 actions={[
                     {

@@ -21,6 +21,7 @@ export default function PeopleSelect({ resolveUrl, ...props }) {
     return (
         <Select
             className="people-select"
+            filled
             {...props}
         />
     );

@@ -1,6 +1,8 @@
-module.exports = ({ Ticket }) => ({
+module.exports = ({
+    models: { Ticket }
+}) => ({
     get: (req, res, next) => {
-        Ticket.get()
+        Ticket.find()
             .populate('user')
             .populate('meeting')
             .then(tickets => {
@@ -13,7 +15,7 @@ module.exports = ({ Ticket }) => ({
     },
 
     getOne: (req, res, next) => {
-        Ticket.getById(req.params.ticketId)
+        Ticket.findById(req.params.ticketId)
             .populate('user')
             .populate('meeting')
             .then(ticket => {
@@ -38,7 +40,7 @@ module.exports = ({ Ticket }) => ({
     },
 
     update: (req, res, next) => {
-        Ticket.update(req.params.ticketId, req.body)
+        Ticket.findByIdAndUpdate(req.params.ticketId, req.body, { new: true })
             .then(ticket => {
                 res.json({
                     ok: true,
@@ -50,7 +52,7 @@ module.exports = ({ Ticket }) => ({
     },
 
     delete: (req, res, next) => {
-        Ticket.delete(req.params.ticketId)
+        Ticket.findByIdAndDelete(req.params.ticketId)
             .then(() => {
                 res.json({
                     ok: true,

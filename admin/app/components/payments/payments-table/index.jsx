@@ -1,14 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
+    Chip,
+    Icon,
     DataTable
 } from 'mdc-react';
 
-import MenuButton from 'app/components/shared/menu-button';
+import MenuButton from 'shared/components/menu-button';
 
-export default function ClientTable({ clients, onEdit, onDelete }) {
+export default function PaymentList({ payments, onEdit, onDelete }) {
     return (
-        <DataTable className="client-table">
+        <DataTable id="client-list">
             <DataTable.Header>
                 <DataTable.HeaderRow>
                     {columns.map(col =>
@@ -22,28 +24,35 @@ export default function ClientTable({ clients, onEdit, onDelete }) {
             </DataTable.Header>
 
             <DataTable.Content>
-                {clients.map(client =>
-                    <DataTable.Row key={client.id}>
+                {payments.map(payment =>
+                    <DataTable.Row key={payment.id}>
                         <DataTable.Cell>
-                            <Link to={`/clients/${client.id}`}>{client.fullname}</Link>
+                            <Chip
+                                leadingIcon={<Icon>{payment.statusIcon}</Icon>}
+                                text={payment.statusLabel}
+                            />
                         </DataTable.Cell>
 
                         <DataTable.Cell>
-                            {client.email}
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            {client.phone}
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            {client.birthdate &&
-                                `${client.birthdate} (${client.age})`
+                            {payment.client &&
+                                <Chip
+                                    component={Link}
+                                    to={`/clients/${payment.client.id}`}
+                                    text={payment.client.fullname}
+                                />
                             }
                         </DataTable.Cell>
 
                         <DataTable.Cell>
-                            {client.timezone}
+                            {payment.amount} руб.
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
+                            {payment.date}
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
+                            {payment.paymentMethod}
                         </DataTable.Cell>
 
                         <DataTable.Cell numeric>
@@ -52,12 +61,12 @@ export default function ClientTable({ clients, onEdit, onDelete }) {
                                     {
                                         key: 'edit',
                                         text: 'Изменить',
-                                        onClick: () => onEdit(client)
+                                        onClick: () => onEdit(payment)
                                     },
                                     {
                                         key: 'delete',
                                         text: 'Удалить',
-                                        onClick: () => onDelete(client)
+                                        onClick: () => onDelete(payment)
                                     }
                                 ]}
                             />
@@ -71,23 +80,27 @@ export default function ClientTable({ clients, onEdit, onDelete }) {
 
 const columns = [
     {
-        key: 'fullname',
-        text: 'Имя и фамилия'
+        key: 'status',
+        text: 'Статус'
     },
     {
-        key: 'email',
-        text: 'Email'
+        key: 'user',
+        text: 'Клиент'
     },
     {
-        key: 'phone',
-        text: 'Телефон'
+        key: 'amount',
+        text: 'Сумма'
     },
     {
-        key: 'dob',
-        text: 'День рождения'
+        key: 'date',
+        text: 'Дата'
     },
     {
-        key: 'timezone',
-        text: 'Часовой пояс'
+        key: 'method',
+        text: 'Способ оплаты'
     },
+    {
+        key: 'note',
+        text: 'Заметка'
+    }
 ];

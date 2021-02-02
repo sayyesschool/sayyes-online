@@ -1,8 +1,10 @@
-module.exports = ({ Client }) => ({
+module.exports = ({
+    models: { Client }
+}) => ({
     get: (req, res, next) => {
         const query = req.query ? req.query : {};
 
-        Client.get(query)
+        Client.find(query)
             .then(clients => {
                 res.json({
                     ok: true,
@@ -13,15 +15,15 @@ module.exports = ({ Client }) => ({
     },
 
     getOne: (req, res, next) => {
-        Client.getById(req.params.id)
+        Client.findById(req.params.id)
             .populate({
                 path: 'requests',
-                select: 'status manager',
+                select: 'status manager contact',
                 populate: { path: 'manager', select: 'firstname lastname' }
             })
             .populate({
                 path: 'enrollments',
-                select: 'status manager type format',
+                select: 'status type domain format manager schedules',
                 populate: { path: 'manager', select: 'firstname lastname' }
             })
             .populate({
@@ -55,7 +57,7 @@ module.exports = ({ Client }) => ({
     },
 
     update: (req, res, next) => {
-        Client.update(req.params.id, req.body)
+        Client.findByIdAndUpdate(req.params.id, req.body)
             .then(client => {
                 res.json({
                     ok: true,
@@ -67,7 +69,7 @@ module.exports = ({ Client }) => ({
     },
 
     delete: (req, res, next) => {
-        Client.delete(req.params.id)
+        Client.findByIdAndDelete(req.params.id)
             .then(() => {
                 res.json({
                     ok: true,

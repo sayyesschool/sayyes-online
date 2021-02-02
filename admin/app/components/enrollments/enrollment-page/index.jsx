@@ -4,27 +4,25 @@ import {
     LayoutGrid as Grid
 } from 'mdc-react';
 
-import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
+import LoadingIndicator from 'shared/components/loading-indicator';
+import Page from 'shared/components/page';
+import PageTopBar from 'shared/components/page-top-bar';
+import PageContent from 'shared/components/page-content';
 
-import { useStore, useActions } from 'app/store';
+import { useStore, useActions } from 'app/hooks/store';
 import FormPanel from 'app/components/shared/form-panel';
 import EnrollmentDetails from 'app/components/enrollments/enrollment-details';
 import EnrollmentLessons from 'app/components/enrollments/enrollment-lessons';
 import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';
+import EnrollmentMaterials from 'app/components/enrollments/enrollment-materials';
 import EnrollmentPayments from 'app/components/enrollments/enrollment-payments';
-import EnrollmentStatus from 'app/components/enrollments/enrollment-status';
 import EnrollmentForm from 'app/components/enrollments/enrollment-form';
 
 import './index.scss';
 
 export default function EnrollmentPage({ match, history }) {
     const [enrollment, actions] = useStore('enrollments.single');
-    const [managers] = useStore('managers.list');
-    const lessonActions = useActions('lessons');
-    const paymentActions = useActions('payments');
 
     const [isEnrollmentFormOpen, setEnrollmentFormOpen] = useState(false);
     const [isSidePanelOpen, setSidePanelOpen] = useState(false);
@@ -34,10 +32,10 @@ export default function EnrollmentPage({ match, history }) {
         actions.getEnrollment(match.params.enrollmentId);
     }, []);
 
-    const handleEnrollmentSubmit = useCallback(data => {
-        actions.updateEnrollment(data.id, data)
+    const handleUpdateEnrollment = useCallback(data => {
+        actions.updateEnrollment(enrollment.id, data)
             .then(() => setEnrollmentFormOpen(false));
-    }, []);
+    }, [enrollment]);
 
     const handleDeleteEnrollment = useCallback(() => {
         actions.deleteEnrollment(enrollment.id)
@@ -45,34 +43,6 @@ export default function EnrollmentPage({ match, history }) {
                 history.push('/enrollments');
                 setConfirmationDialogOpen(false);
             });
-    }, [enrollment]);
-
-    const handleCreateLesson = useCallback(data => {
-        data.enrollment = enrollment.id;
-
-        lessonActions.createLesson(data)
-            .then(() => setLessonFormOpen(false));
-    }, [enrollment]);
-
-    const handleDeleteLesson = useCallback(lesson => {
-        lessonActions.deleteLesson(lesson.id)
-            .then(() => setLessonFormOpen(false));
-    }, [enrollment]);
-
-    const handleAddCourse = useCallback(course => {
-        actions.updateEnrollment(enrollment.id, { courses: [course] });
-    }, [enrollment]);
-
-    const handleRemoveCourse = useCallback(course => {
-        actions.updateEnrollment(enrollment.id, { courses: [course] });
-    }, [enrollment]);
-
-    const handleCreatePayment = useCallback(data => {
-        data.enrollment = enrollment.id;
-        data.client = enrollment.client.id;
-
-        paymentActions.createPayment(data)
-            .then(() => setPaymentFormOpen(false));
     }, [enrollment]);
 
     const handleEdit = useCallback(() => {
@@ -83,9 +53,11 @@ export default function EnrollmentPage({ match, history }) {
         setConfirmationDialogOpen(true);
     }, []);
 
+    if (!enrollment) return <LoadingIndicator />;
+
     return (
         <Page id="enrollment" loading={!enrollment}>
-            <PageHeader
+            <PageTopBar
                 breadcrumbs={[
                     <Link to={enrollment?.client.url}>{enrollment?.client.fullname}</Link>
                 ]}
@@ -117,45 +89,49 @@ export default function EnrollmentPage({ match, history }) {
                     <Grid.Cell span="3">
                         <EnrollmentDetails
                             enrollment={enrollment}
-                            onEdit={handleEdit}
                         />
                     </Grid.Cell>
 
                     <Grid.Cell span="3">
                         <EnrollmentLessons
                             enrollment={enrollment}
-                            onCreate={handleCreateLesson}
-                            onDelete={handleDeleteLesson}
-                        />
-                    </Grid.Cell>
-
-                    <Grid.Cell span="3">
-                        <EnrollmentCourses
-                            enrollment={enrollment}
-                            onAdd={handleAddCourse}
-                            onRemove={handleRemoveCourse}
                         />
                     </Grid.Cell>
 
                     <Grid.Cell span="3">
                         <EnrollmentPayments
                             enrollment={enrollment}
-                            onCreate={handleCreatePayment}
                         />
+                    </Grid.Cell>
+
+                    <Grid.Cell span="3">
+                        <Grid.Cell grid>
+                            <Grid.Cell span="12">
+                                <EnrollmentCourses
+                                    enrollment={enrollment}
+                                />
+                            </Grid.Cell>
+
+                            <Grid.Cell span="12">
+                                <EnrollmentMaterials
+                                    enrollment={enrollment}
+                                />
+                            </Grid.Cell>
+                        </Grid.Cell>
                     </Grid.Cell>
                 </Grid>
             </PageContent>
 
             <FormPanel
-                title="Редактирование обучения"
                 form="enrollment-form"
+                title="Редактирование обучения"
                 open={isEnrollmentFormOpen}
+                modal
                 onClose={() => setEnrollmentFormOpen(false)}
             >
                 <EnrollmentForm
                     enrollment={enrollment}
-                    managers={managers}
-                    onSubmit={handleEnrollmentSubmit}
+                    onSubmit={handleUpdateEnrollment}
                 />
             </FormPanel>
 

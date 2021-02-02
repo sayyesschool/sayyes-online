@@ -1,29 +1,30 @@
 import React from 'react';
-import {
-    Button,
-    SideSheet
-} from 'mdc-react';
+import { Button } from 'mdc-react';
+import classnames from 'classnames';
+
+import SidePanel from 'app/components/shared/side-panel';
 
 import './index.scss';
 
 export default function FormPanel({
     form,
+    submitButtonText = 'Сохранить',
+    className,
     children,
     ...props
 }) {
     return (
-        <SideSheet
-            className="form-panel"
-            modal
+        <SidePanel
+            className={classnames('form-panel', className)}
             {...props}
         >
-            <SideSheet.Content>
+            <SidePanel.Content>
                 {children}
-            </SideSheet.Content>
+            </SidePanel.Content>
 
-            <footer className="form-panel__actions">
-                <Button type="submit" form={form} outlined>Сохранить</Button>
-            </footer>
-        </SideSheet>
+            <SidePanel.Footer>
+                <Button type="submit" form={form} unelevated>{submitButtonText}</Button>
+            </SidePanel.Footer>
+        </SidePanel>
     );
 }

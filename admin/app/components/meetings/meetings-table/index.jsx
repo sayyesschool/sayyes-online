@@ -6,9 +6,9 @@ import {
     Switch
 } from 'mdc-react';
 
-export default function MeetingTable({ meetings }) {
+export default function MeetingsTable({ meetings }) {
     return (
-        <DataTable className="meeting-table">
+        <DataTable className="meetings-table">
             <DataTable.Header>
                 <DataTable.HeaderRow>
                     <DataTable.HeaderCell>Тема</DataTable.HeaderCell>

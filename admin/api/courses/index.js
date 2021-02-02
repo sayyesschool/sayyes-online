@@ -2,9 +2,9 @@ const { Router } = require('express');
 
 const Controller = require('./controller');
 
-module.exports = core => {
+module.exports = context => {
     const router = Router();
-    const { courses, units, lessons, exercises } = Controller(core.services);
+    const { courses, units, lessons, exercises } = Controller(context);
 
     router.route('/')
         .get(courses.get)

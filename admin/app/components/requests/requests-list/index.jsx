@@ -6,18 +6,23 @@ import {
     List
 } from 'mdc-react';
 
-export default function RequestList({ requests }) {
+export default function RequestsList({ requests }) {
     return (
-        <List className="request-list" twoLine>
+        <List className="requests-list" twoLine>
             {requests.map(request =>
                 <List.Item
                     key={request.id}
                     component={Link}
-                    to={'/requests'}
+                    to={request.url}
                     graphic={<Icon>{request.statusIcon}</Icon>}
                     primaryText={`${request.contact.name} • ${request.contact.phone}`}
                     secondaryText={request.statusLabel}
-                    meta={request.manager && <Avatar text={request.manager.initials} title={request.manager.fullname} />}
+                    meta={request.manager &&
+                        <Avatar
+                            text={request.manager.initials}
+                            title={request.manager.fullname}
+                        />
+                    }
                 />
             )}
         </List>

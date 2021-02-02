@@ -7,7 +7,7 @@ import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
 import FormDialog from 'shared/components/form-dialog';
 
-import { useStore } from 'app/store';
+import { useStore } from 'app/hooks/store';
 import UnitDetails from 'app/components/courses/unit-details';
 import LessonForm from 'app/components/courses/lesson-form';
 

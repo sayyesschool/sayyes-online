@@ -3,12 +3,13 @@ import {
     LayoutGrid as Grid
 } from 'mdc-react';
 
-import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
+import LoadingIndicator from 'shared/components/loading-indicator';
+import Page from 'shared/components/page';
+import PageTopBar from 'shared/components/page-top-bar';
+import PageContent from 'shared/components/page-content';
 
-import { useStore, useActions } from 'app/store';
+import { useStore, useActions } from 'app/hooks/store';
 import FormPanel from 'app/components/shared/form-panel';
 import ClientForm from 'app/components/clients/client-form';
 import ClientDetails from 'app/components/clients/client-details';
@@ -63,9 +64,13 @@ export default function ClientPage({ match, location, history }) {
             .then(() => setPaymentFormOpen(false));
     }, [client]);
 
+    if (!client) return <LoadingIndicator />;
+
+    client.enrollments.map(enrollment => enrollment.url = `${client.url}${enrollment.url}`);
+
     return (
-        <Page id="client" loading={!client}>
-            <PageHeader
+        <Page id="client">
+            <PageTopBar
                 title={client?.fullname}
                 actions={[
                     {
@@ -86,34 +91,33 @@ export default function ClientPage({ match, location, history }) {
                         />
                     </Grid.Cell>
 
-                    <Grid.Cell span="3" grid>
-                        <Grid.Cell span="12">
-                            <ClientRequests
-                                requests={client?.requests}
-                            />
-                        </Grid.Cell>
-
-                        <Grid.Cell span="12">
-                            <ClientPayments
-                                payments={client?.payments}
-                                onCreate={() => setPaymentFormOpen(true)}
-                            />
-                        </Grid.Cell>
+                    <Grid.Cell span="3">
+                        <ClientRequests
+                            requests={client?.requests}
+                        />
                     </Grid.Cell>
 
                     <Grid.Cell span="3">
                         <ClientEnrollments
-                            client={client}
+                            enrollments={client?.enrollments}
                             onCreate={() => setEnrollmentFormOpen(true)}
+                        />
+                    </Grid.Cell>
+
+                    <Grid.Cell span="3">
+                        <ClientPayments
+                            payments={client?.payments}
+                            onCreate={() => setPaymentFormOpen(true)}
                         />
                     </Grid.Cell>
                 </Grid>
             </PageContent>
 
             <FormPanel
+                form="client-form"
                 title="Данные клиента"
                 open={isClientFormOpen}
-                form="client-form"
+                modal
                 onClose={() => setClientFormOpen(!isClientFormOpen)}
             >
                 <ClientForm
@@ -123,9 +127,10 @@ export default function ClientPage({ match, location, history }) {
             </FormPanel>
 
             <FormPanel
-                title="Новое обучение"
                 form="enrollment-form"
+                title="Новое обучение"
                 open={isEnrollmentFormOpen}
+                modal
                 onClose={() => setEnrollmentFormOpen(false)}
             >
                 <EnrollmentForm
@@ -137,8 +142,9 @@ export default function ClientPage({ match, location, history }) {
             </FormPanel>
 
             <FormPanel
-                title="Новый платеж"
                 form="payment-form"
+                title="Новый платеж"
+                modal
                 open={isPaymentFormOpen}
                 onClose={() => setPaymentFormOpen(false)}
             >

@@ -1,12 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import {
-    Avatar,
     Card,
-    Icon,
-    List,
     Typography
 } from 'mdc-react';
+
+import RequestsList from 'app/components/requests/requests-list';
 
 export default function ClientRequests({ requests }) {
     return (
@@ -17,19 +15,9 @@ export default function ClientRequests({ requests }) {
                 />
 
                 {requests && requests.length > 0 ?
-                    <List twoLine>
-                        {requests.map(request =>
-                            <List.Item
-                                key={request.id}
-                                component={Link}
-                                to={request.url}
-                                graphic={<Icon>{request.statusIcon}</Icon>}
-                                primaryText={`Заявка`}
-                                secondaryText={request.statusLabel}
-                                meta={request.manager && <Avatar text={request.manager.initials} title={request.manager.fullname} />}
-                            />
-                        )}
-                    </List>
+                    <RequestsList
+                        requests={requests}
+                    />
                     :
                     <Card.Section primary>
                         <Typography noMargin>Заявок нет</Typography>

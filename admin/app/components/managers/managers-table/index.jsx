@@ -1,16 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-    Chip,
-    Icon,
     DataTable
 } from 'mdc-react';
 
-import MenuButton from 'app/components/shared/menu-button';
+import MenuButton from 'shared/components/menu-button';
 
-export default function PaymentList({ payments, onEdit, onDelete }) {
+export default function ManagersTable({ managers, onEdit, onDelete }) {
     return (
-        <DataTable id="client-list">
+        <DataTable className="managers-table">
             <DataTable.Header>
                 <DataTable.HeaderRow>
                     {columns.map(col =>
@@ -24,35 +22,28 @@ export default function PaymentList({ payments, onEdit, onDelete }) {
             </DataTable.Header>
 
             <DataTable.Content>
-                {payments.map(payment =>
-                    <DataTable.Row key={payment.id}>
+                {managers.map(manager =>
+                    <DataTable.Row key={manager.id}>
                         <DataTable.Cell>
-                            <Chip
-                                leadingIcon={<Icon>{payment.statusIcon}</Icon>}
-                                text={payment.statusLabel}
-                            />
+                            <Link to={`/managers/${manager.id}`}>{manager.fullname}</Link>
                         </DataTable.Cell>
 
                         <DataTable.Cell>
-                            {payment.client &&
-                                <Chip
-                                    component={Link}
-                                    to={`/clients/${payment.client.id}`}
-                                    text={payment.client.fullname}
-                                />
+                            {manager.email}
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
+                            {manager.phone}
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
+                            {manager.birthdate &&
+                                `${manager.birthdate} (${manager.age})`
                             }
                         </DataTable.Cell>
 
                         <DataTable.Cell>
-                            {payment.amount} руб.
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            {payment.date}
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            {payment.paymentMethod}
+                            {manager.timezone}
                         </DataTable.Cell>
 
                         <DataTable.Cell numeric>
@@ -61,12 +52,12 @@ export default function PaymentList({ payments, onEdit, onDelete }) {
                                     {
                                         key: 'edit',
                                         text: 'Изменить',
-                                        onClick: () => onEdit(payment)
+                                        onClick: () => onEdit(manager)
                                     },
                                     {
                                         key: 'delete',
                                         text: 'Удалить',
-                                        onClick: () => onDelete(payment)
+                                        onClick: () => onDelete(manager)
                                     }
                                 ]}
                             />
@@ -80,27 +71,23 @@ export default function PaymentList({ payments, onEdit, onDelete }) {
 
 const columns = [
     {
-        key: 'status',
-        text: 'Статус'
+        key: 'fullname',
+        text: 'Имя и фамилия'
     },
     {
-        key: 'user',
-        text: 'Клиент'
+        key: 'email',
+        text: 'Email'
     },
     {
-        key: 'amount',
-        text: 'Сумма'
+        key: 'phone',
+        text: 'Телефон'
     },
     {
-        key: 'date',
-        text: 'Дата'
+        key: 'dob',
+        text: 'День рождения'
     },
     {
-        key: 'method',
-        text: 'Способ оплаты'
+        key: 'timezone',
+        text: 'Часовой пояс'
     },
-    {
-        key: 'note',
-        text: 'Заметка'
-    }
 ];

@@ -14,12 +14,12 @@ export default {
         single: null
     },
 
-    materials: {
+    managers: {
         list: null,
         single: null
     },
 
-    managers: {
+    materials: {
         list: null,
         single: null
     },

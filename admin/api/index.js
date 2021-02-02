@@ -11,25 +11,28 @@ const payments = require('./payments');
 const requests = require('./requests');
 const teachers = require('./teachers');
 const tickets = require('./tickets');
+const user = require('./user');
 const users = require('./users');
 
-module.exports = core => {
+module.exports = context => {
     const router = Router();
 
-    router.use('/clients', clients(core));
-    router.use('/courses', courses(core));
-    router.use('/enrollments', enrollments(core));
-    router.use('/lessons', lessons(core));
-    router.use('/managers', managers(core));
-    router.use('/materials', materials(core));
-    router.use('/meetings', meetings(core));
-    router.use('/payments', payments(core));
-    router.use('/requests', requests(core));
-    router.use('/teachers', teachers(core));
-    router.use('/tickets', tickets(core));
-    router.use('/users', users(core));
+    router.use('/clients', clients(context));
+    router.use('/courses', courses(context));
+    router.use('/enrollments', enrollments(context));
+    router.use('/lessons', lessons(context));
+    router.use('/managers', managers(context));
+    router.use('/materials', materials(context));
+    router.use('/meetings', meetings(context));
+    router.use('/payments', payments(context));
+    router.use('/requests', requests(context));
+    router.use('/teachers', teachers(context));
+    router.use('/tickets', tickets(context));
+    router.use('/user', user(context));
+    router.use('/users', users(context));
 
     router.use((error, req, res, next) => {
+        console.error(error);
         res.status(error.status || 500).send({ ok: false, error: error.message || error });
     });
 

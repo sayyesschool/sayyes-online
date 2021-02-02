@@ -2,9 +2,9 @@ const { Router } = require('express');
 
 const Controller = require('./controller');
 
-module.exports = core => {
+module.exports = context => {
     const router = Router();
-    const controller = Controller(core.services.Manager);
+    const controller = Controller(context);
 
     router.route('/')
         .get(controller.get)

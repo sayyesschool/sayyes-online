@@ -9,9 +9,9 @@ import {
 } from 'mdc-react';
 import moment from 'moment';
 
-import MenuButton from 'app/components/shared/menu-button';
+import MenuButton from 'shared/components/menu-button';
 
-export default function RequestList({ requests, manager, onProcess, onEdit, onDelete }) {
+export default function RequestsTable({ requests, manager, onProcess, onEdit, onDelete }) {
     return (
         <DataTable id="request-list">
             <DataTable.Header>

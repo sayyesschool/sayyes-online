@@ -70,6 +70,7 @@ export default function Search() {
                 fixed
                 belowAnchor
                 top left
+                fullWidth
                 listProps={{
                     dense: true,
                     twoLine: true

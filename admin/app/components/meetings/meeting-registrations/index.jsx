@@ -8,6 +8,7 @@ import {
     TextField
 } from 'mdc-react';
 
+import { useBoolean } from 'shared/hooks/state';
 import UIContext from 'app/contexts/ui';
 
 export default function MeetingRegistrations({
@@ -17,11 +18,7 @@ export default function MeetingRegistrations({
     onRemove
 }) {
     const [query, setQuery] = useState('');
-    const [isSearching, setSearching] = useState(false);
-
-    const showSearch = useCallback(() => {
-        setSearching(true);
-    }, []);
+    const [isSearching, toggleSearching] = useBoolean(false);
 
     const hideSearch = useCallback(() => {
         setQuery('');
@@ -54,21 +51,12 @@ export default function MeetingRegistrations({
                 title="Регистрации"
                 subtitle={subtitle}
                 actions={[
-                    (isSearching ?
-                        <TextField
-                            placeholder="Поиск"
-                            value={query}
-                            trailingIcon={query && <Icon onClick={hideSearch}>close</Icon>}
-                            outlined
-                            onChange={handleChange}
-                        />
-                        :
-                        <IconButton
-                            key="search"
-                            icon="search"
-                            onClick={showSearch}
-                        />
-                    ),
+                    <IconButton
+                        key="search"
+                        icon={isSearching ? 'search_off' : 'search'}
+                        title={isSearching ? 'Отменить поиск' : 'Поиск'}
+                        onClick={toggleSearching}
+                    />,
                     <IconButton
                         key="add"
                         icon="add"
@@ -78,6 +66,18 @@ export default function MeetingRegistrations({
             />
 
             <Card.Section>
+                {isSearching &&
+                    <Card.Section secondary>
+                        <TextField
+                            placeholder="Поиск"
+                            value={query}
+                            trailingIcon={query && <Icon onClick={hideSearch}>close</Icon>}
+                            filled
+                            onChange={handleChange}
+                        />
+                    </Card.Section>
+                }
+
                 <MeetingRegistrationListGroup
                     title="В ожидании"
                     registrations={pending}

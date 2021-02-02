@@ -10,11 +10,9 @@ import {
 
 import { useStore } from 'shared/hooks/store';
 
-import { actions as lessonActions } from 'app/store/modules/lessons';
-
+import { actions as lessonActions } from 'app/hooks/store/modules/lessons';
 import FormDialog from 'app/components/shared/form-dialog';
 import ConfirmationDialog from 'app/components/shared/confirmation-dialog';
-
 import LessonForm from 'app/components/lessons/lesson-form';
 import LessonDetails from 'app/components/lessons/lesson-details';
 

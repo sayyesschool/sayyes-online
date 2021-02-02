@@ -9,7 +9,7 @@ moment.locale('ru');
 import './index.scss';
 
 import store from './store';
-import App from './App';
+import App from './components/App';
 
 ReactDOM.render(
     <Provider store={store}>

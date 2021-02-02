@@ -1,7 +1,9 @@
-module.exports = ({ Course }) => ({
+module.exports = ({
+    models: { Course }
+}) => ({
     courses: {
         get: (req, res, next) => {
-            Course.get(req.query)
+            Course.find(req.query)
                 .select('id title slug image')
                 .then(courses => {
                     res.json({
@@ -13,7 +15,7 @@ module.exports = ({ Course }) => ({
         },
 
         getOne: (req, res, next) => {
-            Course.getById(req.params.course)
+            Course.findById(req.params.course)
                 .then(course => {
                     res.json({
                         ok: true,
@@ -36,7 +38,7 @@ module.exports = ({ Course }) => ({
         },
 
         update: (req, res, next) => {
-            Course.update(req.params.course, req.body)
+            Course.findByIdAndUpdate(req.params.course, req.body)
                 .select('-units -lessons -exercises')
                 .then(course => {
                     res.json({
@@ -49,7 +51,7 @@ module.exports = ({ Course }) => ({
         },
 
         delete: (req, res, next) => {
-            Course.delete(req.params.course)
+            Course.findByIdAndDelete(req.params.course)
                 .select('id')
                 .then(course => {
                     res.json({

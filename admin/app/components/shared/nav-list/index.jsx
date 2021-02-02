@@ -9,7 +9,7 @@ import classnames from 'classnames';
 export default function NavList({ items, requests }) {
     return (
         <List element="nav" className="nav-list">
-            {items.map(item =>
+            {items.map((item, index) =>
                 item ?
                     <List.Item
                         key={item.key}
@@ -23,7 +23,7 @@ export default function NavList({ items, requests }) {
                         meta={item.key === 'requests' && requests?.length > 0 && requests.length}
                     />
                     :
-                    <List.Divider />
+                    <List.Divider key={index} />
             )}
         </List>
     );

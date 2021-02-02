@@ -39,13 +39,13 @@ export default function EnrollmentDetails({ enrollment, onEdit }) {
 
                         <List.Item
                             graphic={<Icon>flag</Icon>}
-                            primaryText={enrollment.goal || '[Не указана]'}
+                            primaryText={enrollment.goalLabel || '[Не указана]'}
                             secondaryText="Цель"
                         />
 
                         <List.Item
                             graphic={<Icon>schedule</Icon>}
-                            primaryText={enrollment.schedule.map(s => s.label).join(', ') || '[Не указано]'}
+                            primaryText={enrollment.schedules.map(s => s.label).join(', ') || '[Не указано]'}
                             secondaryText="Расписание"
                         />
 

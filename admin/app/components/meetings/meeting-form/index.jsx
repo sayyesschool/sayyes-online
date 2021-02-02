@@ -4,7 +4,8 @@ import {
     Layout,
     Select, SelectOption,
     Switch,
-    TextField
+    TextField,
+    Typography
 } from 'mdc-react';
 import moment from 'moment';
 
@@ -13,6 +14,7 @@ import api from 'shared/services/api';
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
 import FileInput from 'shared/components/file-input';
+import TextEditor from 'shared/components/text-editor';
 
 import './index.scss';
 
@@ -140,12 +142,12 @@ export default function MeetingForm({ meeting = {}, onSubmit }) {
                     caption={data.image}
                 />
 
-                <TextField
+                <Typography type="subtitle2">Описание</Typography>
+
+                <TextEditor
                     name="description"
                     value={data.description}
                     label="Описание"
-                    filled
-                    textarea
                     onChange={setData}
                 />
             </Layout>

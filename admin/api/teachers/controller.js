@@ -1,8 +1,10 @@
-module.exports = ({ Teacher }) => ({
+module.exports = ({
+    models: { Teacher }
+}) => ({
     get: (req, res, next) => {
         const query = req.query ? req.query : {};
 
-        Teacher.get(query)
+        Teacher.find(query)
             .then(teachers => {
                 res.json({
                     ok: true,
@@ -13,7 +15,7 @@ module.exports = ({ Teacher }) => ({
     },
 
     getOne: (req, res, next) => {
-        Teacher.getById(req.params.id)
+        Teacher.findById(req.params.id)
             .then(teacher => {
                 res.json({
                     ok: true,
@@ -36,7 +38,7 @@ module.exports = ({ Teacher }) => ({
     },
 
     update: (req, res, next) => {
-        Teacher.update(req.params.id, req.body)
+        Teacher.findByIdAndUpdate(req.params.id, req.body, { new: true })
             .then(teacher => {
                 res.json({
                     ok: true,
@@ -48,7 +50,7 @@ module.exports = ({ Teacher }) => ({
     },
 
     delete: (req, res, next) => {
-        Teacher.delete(req.params.id)
+        Teacher.findByIdAndDelete(req.params.id)
             .then(() => {
                 res.json({
                     ok: true,

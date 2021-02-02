@@ -2,11 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
+import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 import FormDialog from 'shared/components/form-dialog';
 
-import { useStore } from 'app/store';
+import { useStore } from 'app/hooks/store';
 import CourseDetails from 'app/components/courses/course-details';
 import UnitForm from 'app/components/courses/unit-form';
 
@@ -50,7 +50,7 @@ export default function CoursePage({ match, history }) {
 
     return (
         <Page id="course-page">
-            <PageHeader
+            <PageTopBar
                 title={course.title}
                 actions={[
                     {

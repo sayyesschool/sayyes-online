@@ -1,6 +1,8 @@
-module.exports = ({ Enrollment }) => ({
+module.exports = ({
+    models: { Enrollment }
+}) => ({
     get: (req, res, next) => {
-        Enrollment.get(req.query)
+        Enrollment.find(req.query)
             .select('-messages')
             .populate('manager', 'firstname lastname')
             .populate('client', 'firstname lastname')
@@ -16,13 +18,14 @@ module.exports = ({ Enrollment }) => ({
     },
 
     getOne: (req, res, next) => {
-        Enrollment.getById(req.params.id)
+        Enrollment.findById(req.params.id)
             .populate('manager', 'firstname lastname')
             .populate('client', 'firstname lastname')
             .populate('teacher', 'firstname lastname')
             .populate({ path: 'lessons', populate: { path: 'teacher', select: 'firstname lastname' } })
             .populate('payments')
             .populate('courses', 'slug title image')
+            .populate('materials', 'slug title subtitle image')
             .then(enrollment => {
                 res.json({
                     ok: true,
@@ -45,7 +48,7 @@ module.exports = ({ Enrollment }) => ({
     },
 
     update: (req, res, next) => {
-        Enrollment.update(req.params.id, req.body)
+        Enrollment.findByIdAndUpdate(req.params.id, req.body, { new: true })
             .populate('manager', 'firstname lastname')
             .populate('client', 'firstname lastname')
             .populate('teacher', 'firstname lastname')
@@ -60,7 +63,7 @@ module.exports = ({ Enrollment }) => ({
     },
 
     delete: (req, res, next) => {
-        Enrollment.delete(req.params.id)
+        Enrollment.findByIdAndDelete(req.params.id)
             .then(() => {
                 res.json({
                     ok: true,

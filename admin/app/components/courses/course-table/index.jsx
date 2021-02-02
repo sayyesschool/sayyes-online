@@ -4,7 +4,7 @@ import {
     DataTable
 } from 'mdc-react';
 
-import MenuButton from 'app/components/shared/menu-button';
+import MenuButton from 'shared/components/menu-button';
 
 export default function CourseTable({ courses, onEdit, onDelete }) {
     return (

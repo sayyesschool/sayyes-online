@@ -1,10 +1,11 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
+    Button,
     Icon,
-    TabBar, Tab,
-    SideSheet
+    TabBar, Tab
 } from 'mdc-react';
 
+import SidePanel from 'app/components/shared/side-panel';
 import ClientForm from 'app/components/clients/client-form';
 import EnrollmentForm from 'app/components/enrollments/enrollment-form';
 import RequestForm from 'app/components/requests/request-form';
@@ -16,6 +17,15 @@ export default function RequestProcessFormPanel({ request, open, onSubmit, onClo
     const [client, setClient] = useState();
     const [enrollment, setEnrollment] = useState();
 
+    useEffect(() => {
+        if (request && !client) {
+            setClient({
+                firstname: request?.contact.name,
+                phone: request?.contact.phone
+            });
+        }
+    }, [request]);
+
     const handleClientSubmit = useCallback(data => {
         setClient(data);
         setActiveTab('enrollment');
@@ -26,76 +36,83 @@ export default function RequestProcessFormPanel({ request, open, onSubmit, onClo
         setActiveTab('request');
     }, []);
 
-    const handleRequestSubmit = useCallback(request => {
+    const handleSubmit = useCallback(request => {
         onSubmit({ client, enrollment, request });
     }, [client, enrollment]);
 
     return (
-        <SideSheet
+        <SidePanel
             className="request-process-panel"
-            open={open}
             title="Обработка заявки"
+            open={open}
             modal
             style={{ top: 0, width: '480px' }}
             onClose={onClose}
         >
-            <TabBar
-                value={activeTab}
-                onChange={setActiveTab}
-                minWidth
-            >
-                <Tab
-                    value="client"
-                    icon={<Icon>person</Icon>}
-                    label="Клиент"
-                />
+            <SidePanel.Header>
+                <TabBar
+                    value={activeTab}
+                    onChange={setActiveTab}
+                    minWidth
+                >
+                    <Tab
+                        value="client"
+                        icon={<Icon>person</Icon>}
+                        label="Клиент"
+                    />
 
-                <Tab
-                    value="enrollment"
-                    icon={<Icon>school</Icon>}
-                    disabled={!client}
-                    label="Обучение"
-                />
+                    <Tab
+                        value="enrollment"
+                        icon={<Icon>school</Icon>}
+                        disabled={!client}
+                        label="Обучение"
+                    />
 
-                <Tab
-                    value="request"
-                    icon={<Icon>assignment</Icon>}
-                    disabled={!enrollment}
-                    label="Обращение"
-                />
-            </TabBar>
+                    <Tab
+                        value="request"
+                        icon={<Icon>assignment</Icon>}
+                        disabled={!enrollment}
+                        label="Обращение"
+                    />
+                </TabBar>
+            </SidePanel.Header>
 
-            <SideSheet.Content>
-
-                <TabPanel shown={activeTab === 'client'}>
+            <SidePanel.Content>
+                {activeTab === 'client' &&
                     <ClientForm
-                        client={{
-                            firstname: request?.contact.name,
-                            phone: request?.contact.phone
-                        }}
+                        client={client}
                         onSubmit={handleClientSubmit}
                     />
-                </TabPanel>
+                }
 
-                <TabPanel shown={activeTab === 'enrollment'}>
+                {activeTab === 'enrollment' &&
                     <EnrollmentForm
+                        enrollment={enrollment}
                         onSubmit={handleEnrollmentSubmit}
                     />
-                </TabPanel>
+                }
 
-                <TabPanel shown={activeTab === 'request'}>
+                {activeTab === 'request' &&
                     <RequestForm
                         request={request}
-                        onSubmit={handleRequestSubmit}
+                        onSubmit={handleSubmit}
                     />
-                </TabPanel>
-            </SideSheet.Content>
-        </SideSheet>
-    );
-}
+                }
+            </SidePanel.Content>
 
-function TabPanel({ shown, children }) {
-    return shown && (
-        <div className="tab-panel">{children}</div>
+            <SidePanel.Footer>
+                {activeTab === 'client' &&
+                    <Button type="submit" form="client-form" unelevated>Далее</Button>
+                }
+
+                {activeTab === 'enrollment' &&
+                    <Button type="submit" form="enrollment-form" unelevated>Далее</Button>
+                }
+
+                {activeTab === 'request' &&
+                    <Button type="submit" form="request-form" unelevated>Сохранить</Button>
+                }
+            </SidePanel.Footer>
+        </SidePanel>
     );
 }

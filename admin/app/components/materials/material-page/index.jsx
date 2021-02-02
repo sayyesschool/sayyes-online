@@ -5,12 +5,12 @@ import {
 
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
+import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 import FormDialog from 'shared/components/form-dialog';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 
-import { useStore } from 'app/store';
+import { useStore } from 'app/hooks/store';
 import MaterialForm from 'app/components/materials/material-form';
 import MaterialDetails from 'app/components/materials/material-details';
 
@@ -40,7 +40,7 @@ export default function Material({ match, history }) {
 
     return (
         <Page id="material-page">
-            <PageHeader
+            <PageTopBar
                 title={material.title}
                 actions={[
                     {

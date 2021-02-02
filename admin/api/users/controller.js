@@ -1,7 +1,9 @@
-module.exports = ({ User }) => ({
+module.exports = ({
+    models: { User }
+}) => ({
     get: (req, res, next) => {
         const regex = req.query.search && new RegExp(req.query.search, 'i');
-        const query = search ? {
+        const query = regex ? {
             $or: [
                 { firstname: regex },
                 { lastname: regex },
@@ -10,7 +12,7 @@ module.exports = ({ User }) => ({
             ]
         } : req.query;
 
-        User.get(query)
+        User.find(query)
             .then(users => {
                 res.json({
                     ok: true,
@@ -20,22 +22,8 @@ module.exports = ({ User }) => ({
             .catch(next);
     },
 
-    getMe: (req, res, next) => {
-        res.json({
-            ok: true,
-            data: {
-                id: req.user.id,
-                firstname: req.user.firstname,
-                lastname: req.user.lastname,
-                fullname: req.user.fullname,
-                email: req.user.email,
-                role: req.user.role
-            }
-        });
-    },
-
     getOne: (req, res, next) => {
-        User.getById(req.params.id)
+        User.findById(req.params.id)
             .then(user => {
                 res.json({
                     ok: true,
@@ -58,7 +46,7 @@ module.exports = ({ User }) => ({
     },
 
     update: (req, res, next) => {
-        User.update(req.params.id, req.body)
+        User.findByIdAndUpdate(req.params.id, req.body, { new: true })
             .then(user => {
                 res.json({
                     ok: true,
@@ -70,7 +58,7 @@ module.exports = ({ User }) => ({
     },
 
     delete: (req, res, next) => {
-        User.delete(req.params.id)
+        User.findByIdAndDelete(req.params.id)
             .then(() => {
                 res.json({
                     ok: true,

@@ -2,10 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Card } from 'mdc-react';
 
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
+import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 
-import { useStore } from 'app/store';
+import { useStore } from 'app/hooks/store';
 import FormPanel from 'app/components/shared/form-panel';
 import MaterialGridList from 'app/components/materials/material-grid-list';
 import MaterialForm from 'app/components/materials/material-form';
@@ -26,7 +26,7 @@ export default function Materials() {
 
     return (
         <Page id="materials" loading={!materials}>
-            <PageHeader
+            <PageTopBar
                 title="Материалы"
                 actions={[
                     {
@@ -46,9 +46,10 @@ export default function Materials() {
             </PageContent>
 
             <FormPanel
+                form="material-form"
                 title="Новый материал"
                 open={isFormOpen}
-                form="material-form"
+                modal
                 onClose={() => setFormOpen(false)}
             >
                 <MaterialForm

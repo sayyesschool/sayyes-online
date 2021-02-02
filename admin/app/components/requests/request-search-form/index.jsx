@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
-    Button,
     Layout,
     Select,
     TextField
@@ -9,21 +8,24 @@ import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
-import { useStore } from 'app/store';
+
+import { useStore } from 'app/hooks/store';
 import PeopleSelect from 'app/components/shared/people-select';
 
 import './index.scss';
 
 export default function RequestSearchForm({ onSubmit }) {
     const [managers] = useStore('managers.list');
-    const [data, handleChange] = useForm({
+    const [data, handleChange, getData] = useForm({
         query: '',
-        statuses: []
+        statuses: [],
+        createdAt: '',
+        manager: ''
     });
 
-    function handleSubmit() {
-        onSubmit(data);
-    }
+    const handleSubmit = useCallback(() => {
+        getData(data => onSubmit(data));
+    }, []);
 
     return (
         <Form id="request-search-form" onSubmit={handleSubmit}>
@@ -41,32 +43,32 @@ export default function RequestSearchForm({ onSubmit }) {
                     name="statuses"
                     value={data.statuses}
                     label="Статус"
+                    filled
+                    multiple
                     options={[
                         { key: 'new', value: 'new', text: 'Новая' },
                         { key: 'pending', value: 'pending', text: 'В обработке' },
                         { key: 'resolved', value: 'resolved', text: 'Успешная' },
                         { key: 'rejected', value: 'rejected', text: 'Отказ' },
-                        { key: 'postponed', value: 'postponed', text: 'Отложенная' },
+                        { key: 'postponed', value: 'postponed', text: 'Отложенная' }
                     ]}
-                    multiple
                     onChange={handleChange}
                 />
 
-                {data.createAt &&
-                    <TextField
-                        type="datetime-local"
-                        name="createdAt"
-                        value={moment(data.createdAt).format('YYYY-MM-DDTHH:mm')}
-                        label="Дата создания"
-                        filled
-                        onChange={handleChange}
-                    />
-                }
+                <TextField
+                    type="date"
+                    name="createdAt"
+                    value={moment(data.createdAt).format('YYYY-MM-DD')}
+                    label="Дата создания"
+                    filled
+                    onChange={handleChange}
+                />
 
                 <PeopleSelect
                     name="manager"
                     value={data.manager}
                     label="Менеджер"
+                    filled
                     options={(managers || []).map(manager => ({
                         key: manager.id,
                         value: manager.id,
@@ -76,11 +78,6 @@ export default function RequestSearchForm({ onSubmit }) {
                     onChange={handleChange}
                 />
             </Layout>
-
-            <Layout>
-                <Button type="button">Очистить</Button>
-                <Button type="submit" outlined>Искать</Button>
-            </Layout>
-        </Form >
+        </Form>
     );
 }

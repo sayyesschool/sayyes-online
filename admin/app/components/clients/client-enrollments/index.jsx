@@ -1,41 +1,31 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import {
-    Avatar,
     Card,
-    Icon,
     IconButton,
-    List,
     Typography
 } from 'mdc-react';
 
-export default function ClientEnrollments({ client, onCreate }) {
+import EnrollmentsList from 'app/components/enrollments/enrollments-list';
+
+export default function ClientEnrollments({ enrollments, onCreate }) {
     return (
-        <section className="client-enrollmets">
+        <section className="client-enrollments">
             <Card>
                 <Card.Header
                     title="Обучение"
                     actions={
-                        <IconButton title="Создать обучение" onClick={onCreate}>
-                            <Icon>add</Icon>
-                        </IconButton>
+                        <IconButton
+                            icon="add"
+                            title="Создать обучение"
+                            onClick={onCreate}
+                        />
                     }
                 />
 
-                {client.enrollments && client.enrollments.length > 0 ?
-                    <List twoLine>
-                        {client.enrollments.map(enrollment =>
-                            <List.Item
-                                key={enrollment.id}
-                                component={Link}
-                                to={`${client.url}${enrollment.url}`}
-                                graphic={<Icon>{enrollment.statusIcon}</Icon>}
-                                primaryText={enrollment.title}
-                                secondaryText={enrollment.statusLabel}
-                                meta={enrollment.teacher && <Avatar text={enrollment.teacher.initials} title={enrollment.teacher.fullname} />}
-                            />
-                        )}
-                    </List>
+                {enrollments && enrollments.length > 0 ?
+                    <EnrollmentsList
+                        enrollments={enrollments}
+                    />
                     :
                     <Card.Section primary>
                         <Typography noMargin>Обучений пока нет</Typography>

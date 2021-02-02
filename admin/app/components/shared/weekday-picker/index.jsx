@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useRef, useCallback, useEffect } from 'react';
 import {
     Checkbox,
     FormField
@@ -8,10 +8,21 @@ import './index.scss';
 
 const labels = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
-export default function WeekdaySelect({ id, name, values, onChange }) {
+export default function WeekdaySelect({ name, values, onChange }) {
+    const valuesRef = useRef(values);
+
+    useEffect(() => {
+        valuesRef.current = values;
+    }, [values]);
+
     const handleChange = useCallback(event => {
-        onChange(Number(event.target.value));
-    }, []);
+        const set = new Set(valuesRef.current);
+        const day = Number(event.target.value);
+
+        set.has(day) ? set.delete(day) : set.add(day);
+
+        onChange(Array.from(set));
+    }, [values, onChange]);
 
     return (
         <div className="weekday-select">

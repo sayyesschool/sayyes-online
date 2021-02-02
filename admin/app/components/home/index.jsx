@@ -5,11 +5,11 @@ import {
 } from 'mdc-react';
 
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
+import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 
-import { useStore } from 'app/store';
-import RequestList from 'app/components/requests/request-list';
+import { useStore } from 'app/hooks/store';
+import RequestsList from 'app/components/requests/requests-list';
 import LessonList from 'app/components/lessons/lesson-list';
 import MeetingList from 'app/components/meetings/meeting-list';
 
@@ -22,7 +22,7 @@ export default function HomePage() {
 
     return (
         <Page id="home">
-            <PageHeader
+            <PageTopBar
                 title="Главная"
             />
 
@@ -33,7 +33,7 @@ export default function HomePage() {
                             <Card.Header title="Заявки" />
 
                             {requests &&
-                                <RequestList
+                                <RequestsList
                                     requests={requests}
                                 />
                             }

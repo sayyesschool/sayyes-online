@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
+import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 
-import { useStore } from 'app/store';
+import { useStore } from 'app/hooks/store';
 import FormPanel from 'app/components/shared/form-panel';
 import EmptyState from 'app/components/shared/empty-state';
-import PaymentList from 'app/components/payments/payment-list';
+import PaymentsTable from 'app/components/payments/payments-table';
 import PaymentForm from 'app/components/payments/payment-form';
 
 export default function Payments({ match, history }) {
@@ -53,22 +53,13 @@ export default function Payments({ match, history }) {
 
     return (
         <Page id="payments" loading={!payments}>
-            <PageHeader
+            <PageTopBar
                 title="Платежи"
-                actions={[
-                    {
-                        key: 'add',
-                        label: 'Создать',
-                        icon: 'add',
-                        outlined: true,
-                        onClick: handleOpen
-                    }
-                ]}
             />
 
             <PageContent>
                 {payments?.length > 0 ?
-                    <PaymentList
+                    <PaymentsTable
                         payments={payments}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
@@ -79,9 +70,10 @@ export default function Payments({ match, history }) {
             </PageContent>
 
             <FormPanel
+                form="payment-form"
                 title={payment ? 'Редактирование платежа' : 'Новый платеж'}
                 open={isPaymentFormOpen}
-                form="payment-form"
+                modal
                 onClose={handleClose}
             >
                 <PaymentForm

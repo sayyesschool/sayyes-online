@@ -10,7 +10,7 @@ import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
 import FormDialog from 'shared/components/form-dialog';
 
-import { useStore } from 'app/store';
+import { useStore } from 'app/hooks/store';
 import LessonDetails from 'app/components/courses/lesson-details';
 import Exercise from 'app/components/courses/exercise';
 import ExerciseForm from 'app/components/courses/exercise-form';

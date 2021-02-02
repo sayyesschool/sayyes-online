@@ -1,12 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import {
     Card,
-    Icon,
     IconButton,
-    List,
     Typography
 } from 'mdc-react';
+
+import PaymentsList from 'app/components/payments/payments-list';
 
 export default function ClientPayments({ payments, onCreate }) {
     return (
@@ -15,25 +14,18 @@ export default function ClientPayments({ payments, onCreate }) {
                 <Card.Header
                     title="Платежи"
                     actions={
-                        <IconButton title="Создать платеж" onClick={onCreate}>
-                            <Icon>add</Icon>
-                        </IconButton>
+                        <IconButton
+                            icon="add"
+                            title="Создать платеж"
+                            onClick={onCreate}
+                        />
                     }
                 />
 
                 {payments && payments.length > 0 ?
-                    <List twoLine>
-                        {payments.map(payment =>
-                            <List.Item
-                                key={payment.id}
-                                component={Link}
-                                to={payment.url}
-                                graphic={<Icon>{payment.statusIcon}</Icon>}
-                                primaryText={`${payment.amount} руб.`}
-                                secondaryText={`${payment.statusLabel} • ${payment.datetime}`}
-                            />
-                        )}
-                    </List>
+                    <PaymentsList
+                        payments={payments}
+                    />
                     :
                     <Card.Section primary>
                         <Typography noMargin>Платежей нет</Typography>

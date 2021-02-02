@@ -1,13 +1,14 @@
 import React, { useEffect, useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
+import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
+import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 
-import { useStore } from 'app/store';
+import { useStore } from 'app/hooks/store';
 import FormPanel from 'app/components/shared/form-panel';
-import ClientTable from 'app/components/clients/client-table';
+import ClientsTable from 'app/components/clients/clients-table';
 import ClientForm from 'app/components/clients/client-form';
 
 export default function ClientsPage({ history }) {
@@ -32,23 +33,25 @@ export default function ClientsPage({ history }) {
         history.push(client.url, { delete: true });
     }, []);
 
+    if (!clients) return <LoadingIndicator />;
+
     return (
-        <Page id="clients" loading={!clients}>
-            <PageHeader
+        <Page id="clients-page">
+            <PageTopBar
                 title="Клиенты"
                 actions={[
                     {
                         key: 'add',
                         label: 'Создать',
                         icon: 'add',
-                        outlined: true,
+                        unelevated: true,
                         onClick: toggleClientFormOpen
                     }
                 ]}
             />
 
             <PageContent>
-                <ClientTable
+                <ClientsTable
                     clients={clients}
                     onEdit={handleEdit}
                     onDelete={handleDelete}
@@ -56,9 +59,10 @@ export default function ClientsPage({ history }) {
             </PageContent>
 
             <FormPanel
+                form="client-form"
                 title="Новый клиент"
                 open={isClientFormOpen}
-                form="client-form"
+                modal
                 onClose={toggleClientFormOpen}
             >
                 <ClientForm

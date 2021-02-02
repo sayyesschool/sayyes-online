@@ -6,7 +6,7 @@ import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
 
-import { useStore } from 'app/store';
+import { useStore } from 'app/hooks/store';
 import ExerciseDetails from 'app/components/courses/exercise-details';
 import ExerciseForm from 'app/components/courses/exercise-form';
 

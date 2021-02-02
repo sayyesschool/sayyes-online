@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import {
-    Button,
     FormField,
     Layout,
     Switch,
@@ -10,7 +9,8 @@ import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
-import { useStore } from 'app/store';
+
+import { useStore } from 'app/hooks/store';
 import PeopleSelect from 'app/components/shared/people-select';
 
 import './index.scss';
@@ -38,14 +38,6 @@ export default function LessonForm({ lesson = {}, onSubmit }) {
     return (
         <Form id="lesson-form" onSubmit={handleSubmit}>
             <Layout column>
-                <FormField label="Пробный">
-                    <Switch
-                        name="trial"
-                        checked={data.trial}
-                        onChange={handleChange}
-                    />
-                </FormField>
-
                 <TextField
                     type="datetime-local"
                     name="date"
@@ -60,9 +52,9 @@ export default function LessonForm({ lesson = {}, onSubmit }) {
                     label="Клиент"
                     value={data.client}
                     options={[{
-                        key: lesson.client.id,
-                        value: lesson.client.id,
-                        text: lesson.client.fullname
+                        key: lesson.client?.id,
+                        value: lesson.client?.id,
+                        text: lesson.client?.fullname
                     }]}
                     disabled
                 />
@@ -72,12 +64,20 @@ export default function LessonForm({ lesson = {}, onSubmit }) {
                     value={data.teacher}
                     label="Преподаватель"
                     options={teachers.map(teacher => ({
-                        key: teacher.id,
-                        value: teacher.id,
-                        text: teacher.fullname
+                        key: teacher?.id,
+                        value: teacher?.id,
+                        text: teacher?.fullname
                     }))}
                     onChange={handleChange}
                 />
+
+                <FormField label="Пробный">
+                    <Switch
+                        name="trial"
+                        checked={data.trial}
+                        onChange={handleChange}
+                    />
+                </FormField>
 
                 <TextField
                     name="note"

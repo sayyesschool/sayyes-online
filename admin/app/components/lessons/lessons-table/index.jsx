@@ -6,11 +6,11 @@ import {
     DataTable
 } from 'mdc-react';
 
-import MenuButton from 'app/components/shared/menu-button';
+import MenuButton from 'shared/components/menu-button';
 
-export default function LessonList({ lessons, onView, onEdit, onDelete }) {
+export default function LessonTable({ lessons, onView, onEdit, onDelete }) {
     return (
-        <DataTable id="lesson-list">
+        <DataTable id="lesson-table">
             <DataTable.Header>
                 <DataTable.HeaderRow>
                     {columns.map(col =>
@@ -28,10 +28,9 @@ export default function LessonList({ lessons, onView, onEdit, onDelete }) {
                     <DataTable.Row key={lesson.id}>
                         <DataTable.Cell>
                             <Chip
-                                component={Link}
-                                to={`/lessons/${lesson.id}`}
                                 leadingIcon={<Icon>{lesson.statusIcon}</Icon>}
                                 text={lesson.statusLabel}
+                                outlined
                             />
                         </DataTable.Cell>
 

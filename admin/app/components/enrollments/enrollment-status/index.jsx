@@ -6,7 +6,7 @@ import {
     List
 } from 'mdc-react';
 
-import MenuButton from 'app/components/shared/menu-button';
+import MenuButton from 'shared/components/menu-button';
 
 export default function EnrollmentStatus({ enrollment }) {
     const hasDetails = enrollment.type && enrollment.format && enrollment.level && enrollment.goal;
