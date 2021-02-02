@@ -36,6 +36,12 @@ const Age = {
     child: 'Дети'
 };
 
+const Domain = {
+    general: 'Общий разговорный курс',
+    speaking: 'Разговорный курс',
+    business: 'Бизнес курс'
+};
+
 const Level = {
     zero: 'Нулевой',
     beg: 'Beginner',
@@ -46,31 +52,36 @@ const Level = {
     adv: 'Advanced'
 };
 
+const Goal = {
+    work: 'Для работы',
+    study: 'Для учебы',
+    interview: 'Для собеседования',
+    travel: 'Для путешествий',
+    hobby: 'Для себя (хобби)'
+};
+
 const Enrollment = new Schema({
     status: { type: String, default: 'pending' },
+    domain: { type: String, enum: ['general', 'speaking', 'business'], default: 'general' },
     type: { type: String, enum: Object.keys(Type), default: 'individual' },
     format: { type: String, enum: Object.keys(Format), default: 'online' },
     age: { type: String, enum: Object.keys(Age), default: 'adult' },
-    level: { type: String, enum: Object.keys(Level) },
-    goal: { type: String, default: '' },
-    domain: { type: String, enum: ['general', 'speaking', 'business'], default: 'general' },
+    level: { type: String, enum: Object.keys(Level), default: '' },
+    goal: { type: String, enum: Object.keys(Goal), default: '' },
     native: { type: Boolean, default: false },
     schedules: [Schedule],
-    pricePerLesson: { type: Number },
     client: { type: Schema.Types.ObjectId, ref: 'Client' },
     clients: [{ type: Schema.Types.ObjectId, ref: 'Client' }],
     teacher: { type: Schema.Types.ObjectId, ref: 'Teacher' },
     manager: { type: Schema.Types.ObjectId, ref: 'Manager' },
     courses: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
-    materials: [{ type: Schema.Types.ObjectId, ref: 'Material' }],
-    createdAt: { type: Date },
-    updatedAt: { type: Date }
+    materials: [{ type: Schema.Types.ObjectId, ref: 'Material' }]
 }, {
     timestamps: true
 });
 
 Enrollment.virtual('title').get(function() {
-    return `${this.typeLabel} ${this.formatLabel}`;
+    return `${this.domainLabel}`;
 });
 
 Enrollment.virtual('url').get(function() {
@@ -93,6 +104,10 @@ Enrollment.virtual('statusIcon').get(function() {
     return StatusIcon[this.status];
 });
 
+Enrollment.virtual('domainLabel').get(function() {
+    return Domain[this.domain];
+});
+
 Enrollment.virtual('levelLabel').get(function() {
     return Level[this.level];
 });
@@ -105,12 +120,16 @@ Enrollment.virtual('formatLabel').get(function() {
     return Format[this.format];
 });
 
+Enrollment.virtual('goalLabel').get(function() {
+    return Goal[this.goal];
+});
+
 Enrollment.virtual('ageLabel').get(function() {
     return Age[this.age];
 });
 
-Enrollment.virtual('schedule').get(function() {
-    return this.schedules.map(schedule => schedule.label).join(', ');
+Enrollment.virtual('scheduleLabel').get(function() {
+    return this.schedules?.map(schedule => schedule.label).join(', ');
 });
 
 Enrollment.virtual('hasPayments').get(function() {
@@ -133,6 +152,15 @@ Enrollment.virtual('isPaid').get(function() {
     return this.amountPaid >= this.price;
 });
 
+Enrollment.virtual('payments', {
+    ref: 'Payment',
+    localField: '_id',
+    foreignField: 'enrollment',
+    options: {
+        sort: { createdAt: -1 }
+    }
+});
+
 Enrollment.virtual('lessons', {
     ref: 'Lesson',
     localField: '_id',
@@ -148,15 +176,6 @@ Enrollment.virtual('assignments', {
     }
 });
 
-Enrollment.virtual('payments', {
-    ref: 'Payment',
-    localField: '_id',
-    foreignField: 'enrollment',
-    options: {
-        sort: { createdAt: -1 }
-    }
-});
-
 Enrollment.virtual('posts', {
     ref: 'Post',
     localField: '_id',
@@ -165,5 +184,13 @@ Enrollment.virtual('posts', {
         sort: { createdAt: -1 }
     }
 });
+
+Enrollment.methods.createLessons = function(quantity) {
+    return new Array(quantity).fill({
+        enrollment: this.id,
+        client: this.client,
+        teacher: this.teacher
+    });
+};
 
 module.exports = Enrollment;

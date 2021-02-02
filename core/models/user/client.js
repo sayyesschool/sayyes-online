@@ -2,6 +2,10 @@ const { Schema } = require('mongoose');
 
 const Client = new Schema();
 
+Client.virtual('status').get(function() {
+    return this.enrollments?.some(enrollment => enrollment.isActive);
+});
+
 Client.virtual('requests', {
     ref: 'Request',
     localField: '_id',

@@ -55,7 +55,7 @@ const User = new Schema({
     dob: { type: Date },
     gender: { type: String, enum: ['man', 'woman'] },
     timezone: { type: String },
-    avatar: { type: String, trim: true },
+    imageUrl: { type: String },
     role: { type: String, enum: Object.keys(roles), default: 'client' },
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
     activated: { type: Boolean, default: false, alias: 'isActivated' },

@@ -7,7 +7,7 @@ const registrationActionToStatus = {
     deny: 'denied'
 };
 
-module.exports = (Zoom, { Meeting, Ticket }, { Mail, Newsletter }) => ({
+module.exports = (Zoom, { Meeting, Ticket }, { Checkout, Mail, Newsletter }) => ({
     getMeetings(...args) {
         return Meeting.find(...args)
             .populate('host', 'firstname lastname avatarUrl');
@@ -90,7 +90,7 @@ module.exports = (Zoom, { Meeting, Ticket }, { Mail, Newsletter }) => ({
 
         const plan = Ticket.plans[planId] || {};
 
-        return Payment.create({
+        return Checkout.createPayment({
             amount: plan.price,
             description: plan.title,
             email: user.email,

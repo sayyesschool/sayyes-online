@@ -4,15 +4,7 @@ module.exports = ({ YANDEX_KASSA_SHOP_ID, YANDEX_KASSA_SECRET, APP_URL }, { Paym
     const kassa = new YooKassa(YANDEX_KASSA_SHOP_ID, YANDEX_KASSA_SECRET);
 
     return {
-        get(...args) {
-            return Payment.find(...args);
-        },
-
-        getOne(...args) {
-            return Payment.findOne(...args);
-        },
-
-        create({ amount, description, method, returnUrl, email, metadata }) {
+        createPayment({ amount, description, method, returnUrl, email, metadata }) {
             return kassa.createPayment({
                 amount: {
                     value: Number(amount).toFixed(2),
@@ -48,11 +40,11 @@ module.exports = ({ YANDEX_KASSA_SHOP_ID, YANDEX_KASSA_SECRET, APP_URL }, { Paym
             });
         },
 
-        update(id, data, options) {
+        updatePayment(id, data, options) {
             return Payment.findByIdAndUpdate(id, data, { new: true, ...options });
         },
 
-        delete(id, ...args) {
+        deletePayment(id, ...args) {
             return Payment.findByIdAndDelete(id, ...args);
         }
     };

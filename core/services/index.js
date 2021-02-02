@@ -1,9 +1,9 @@
 const Auth = require('./auth');
+const Checkout = require('./checkout');
 const Club = require('./club');
 const File = require('./file');
 const Mail = require('./mail');
 const Newsletter = require('./newsletter');
-const Payment = require('./payment');
 
 module.exports = (config, lib, models) => {
     const mail = Mail(lib.mailjet);
@@ -33,16 +33,16 @@ module.exports = (config, lib, models) => {
             }
         })
     });
+    const checkout = Checkout(config, models);
+    const club = Club(lib.zoom, models, { mail: Mail, newsletter: Newsletter, checkout: Checkout });
     const file = File();
-    const payment = Payment(config, models);
-    const club = Club(lib.zoom, models, { mail: Mail, newsletter: Newsletter, payment: Payment });
 
     return {
         Auth: auth,
+        Checkout: checkout,
+        Club: club,
         File: file,
         Mail: mail,
-        Club: club,
-        Newsletter: newsletter,
-        Payment: payment
+        Newsletter: newsletter
     };
 };
