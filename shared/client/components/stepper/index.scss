@@ -1,0 +1,88 @@
+@use 'shared/styles/variables';
+@use '@material/theme';
+@use '@material/typography' with (
+    $styles-subtitle1: (
+        font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
+        font-weight: 600,
+        color: variables.$heading-color
+    )
+);
+
+.stepper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    &__step {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding-left: 8px;
+        padding-right: 8px;
+
+        &__graphic {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            margin-right: 8px;
+            border-radius: 100%;
+            background-color: #b1b1b1;
+            color: white;
+            text-align: center;
+            font-family: Nunito;
+        }
+        
+        &__label {
+            width: 100%;
+            @include typography.typography(subtitle1);
+            @include theme.property(color, text-secondary-on-light);
+            line-height: 1.5;
+        }
+
+        &--active &__graphic {
+            background-color: variables.$secondary-color;
+        }
+
+        &--active &__label {
+            @include theme.property(color, text-primary-on-light);
+        }
+
+        &--vertical {
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            text-align: center;
+        }
+
+        &--vertical &__graphic {
+            margin-right: 0;
+            margin-bottom: 8px;
+        }
+
+        // &::before {
+        //     content: '';
+        //     position: absolute;
+        //     display: block;
+        //     top: 16px;
+        //     left: 0;
+        //     height: 1px;
+        //     width: calc(50% - 20px);
+        //     background-color: rgba(0,0,0,.12);
+        // }
+
+        // &:first-child {
+        //     &::before {
+        //         content: none;
+        //     }
+        // }
+    }
+
+    &--vertical {
+
+    }
+}
