@@ -21,7 +21,6 @@ import Courses from 'app/components/courses';
 import Materials from 'app/components/materials';
 import Meetings from 'app/components/meetings';
 import Posts from 'app/components/posts';
-import Pay from 'app/components/pay';
 
 import './index.scss';
 
@@ -51,7 +50,6 @@ export default function App() {
         <React.Fragment>
             <AppHeader
                 user={user}
-                onNotificationIconClick={() => setSideSheetOpen(true)}
             >
                 <NavBar items={navItems} />
             </AppHeader>
@@ -66,7 +64,6 @@ export default function App() {
                     <Route path="/enrollments/:id/posts" component={Posts} />
                     <Route path="/enrollments" component={Enrollments} />
                     <Route path="/meetings" component={Meetings} />
-                    <Route path="/pay" component={Pay} />
                 </Switch>
             </AppContent>
 

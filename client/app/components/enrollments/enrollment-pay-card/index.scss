@@ -1,0 +1,72 @@
+@use 'shared/styles/variables';
+@use '@material/theme';
+
+$fill-color: variables.$primary-color;
+$ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
+
+.enrollment-pay-card {
+    display: flex;
+    flex-direction: row;
+
+    &__section {
+        flex: 1;
+        padding: 1rem;
+
+        > .mdc-card__header {
+            padding: 0;
+            margin-bottom: 1rem;
+        }
+    }
+
+    &__details-section {
+        background-color: #e6e6fa;
+        text-align: center;
+        flex-basis: 256px;
+    }
+
+    &__steps-section {
+        flex: 1 0 60%;
+
+        .stepper {
+            margin-bottom: 2rem;
+        }
+
+        .pack-card-grid {
+            margin-bottom: 1rem;
+        }
+    }
+
+    &__checkout-section {
+        flex-basis: 256px;
+        display: flex;
+        flex-direction: column;
+        background-color: $fill-color;
+        color: $ink-color;
+        background-image: url('https://static.sayes.ru/images/kids/fourth.png');
+
+        .mdc-card__header__graphic,
+        .mdc-card__header__title {
+            color: $ink-color !important;
+        }
+
+        .balance {
+            display: flex;
+            align-items: center;
+
+            strong {
+                font-size: 42px;
+                font-weight: bold;
+                line-height: 42px;
+                margin-right: 8px;
+            }
+
+            p {
+                line-height: 1.2;
+            }
+        }
+
+        .mdc-button {
+            width: 100%;
+        }
+    }
+}

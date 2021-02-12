@@ -3,7 +3,9 @@ module.exports = ({
 }) => ({
     getMany: (req, res, next) => {
         Enrollment.find({ client: req.user.id, ...req.query })
+            .populate('client', 'firstname lastname imageUrl')
             .populate('teacher', 'firstname lastname imageUrl')
+            .populate('currentPayment', 'status amount description')
             .then(enrollments => {
                 res.json({
                     ok: true,

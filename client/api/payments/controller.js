@@ -1,5 +1,5 @@
 module.exports = ({
-    models: { Payment },
+    models: { Payment, Enrollment },
     services: { Checkout }
 }) => ({
     getMany: (req, res, next) => {
@@ -25,23 +25,43 @@ module.exports = ({
     },
 
     create: (req, res, next) => {
-        const user = req.user;
-        const data = {};
+        if (!req.body.numberOfLessons) return next({ code: 401, message: 'Не указано количество уроков' });
 
-        Checkout.createPayment({
-            amount: 4000, // Get price somehow
-            description: 'Оплата обучения', // Clarify the exact message
-            paymentMethod: req.body.usePaymentMethod ? user.paymentMethod : undefined,
-            savePaymentMethod: req.body.savePaymentMethod,
-            email: req.user.email,
-            returnUrl: '/',
-            metadata: {
-                userId: req.user.id,
-                enrollmentId: enrollment.id,
-                planId: 1,
-                packId: 16
-            }
-        });
+        Enrollment.findOne({ _id: req.body.enrollmentId, client: req.user.id })
+            .then(enrollment => {
+                if (!enrollment) return next({ code: 401, message: 'Обучение не найдено' });
+
+                return Checkout.createPayment({
+                    amount: enrollment.getPrice(req.body.numberOfLessons),
+                    description: `Оплата ${req.body.numberOfLessons} занятий по 50 минут`,
+                    paymentMethod: req.body.usePaymentMethod ? user.paymentMethod : undefined,
+                    savePaymentMethod: req.body.savePaymentMethod,
+                    email: req.user.email,
+                    returnUrl: '/',
+                    metadata: {
+                        userId: enrollment.user,
+                        enrollmentId: enrollment.id,
+                        numberOfLessons: req.body.numberOfLessons
+                    }
+                }).then(payment => {
+                    return Payment.create({
+                        uuid: payment.id,
+                        status: payment.status,
+                        amount: payment.amount.value,
+                        description: payment.description,
+                        confirmationUrl: payment.confirmationUrl,
+                        operator: 'yookassa',
+                        client: req.user.id,
+                        enrollment: enrollment.id
+                    });
+                });
+            }).then(payment => {
+                res.json({
+                    ok: true,
+                    data: payment
+                });
+            })
+            .catch(next);
     }
 });
 

@@ -3,8 +3,9 @@ const { Schema } = require('mongoose');
 const Schedule = require('./schedule');
 
 const Status = {
-    pending: 'В обработке',
+    processing: 'В обработке',
     trial: 'Пробный урок',
+    payment: 'Оплата',
     active: 'Активное',
     postponed: 'Отложено',
     canceled: 'Отменено',
@@ -12,8 +13,9 @@ const Status = {
 };
 
 const StatusIcon = {
-    pending: 'pending',
+    processing: 'pending',
     trial: 'event_available',
+    payment: 'payment',
     active: 'school',
     postponed: 'next_plan',
     canceled: 'cancel',
@@ -31,9 +33,9 @@ const Format = {
 };
 
 const Age = {
-    adult: 'Взрослые',
-    teenager: 'Подростки',
-    child: 'Дети'
+    adults: 'Взрослые',
+    teenagers: 'Подростки',
+    children: 'Дети'
 };
 
 const Domain = {
@@ -60,16 +62,33 @@ const Goal = {
     hobby: 'Для себя (хобби)'
 };
 
+const Plans = {
+    children: {
+        general: {
+            id: 'general',
+            title: 'Общий разговорный курс',
+            subtitle: '50 минут',
+            basePricePerLesson: 1300,
+            packs: {
+                '4': 4150,
+                '8': 7600,
+                '16': 14100,
+                '32': 26100
+            }
+        }
+    }
+};
+
 const Enrollment = new Schema({
-    status: { type: String, default: 'pending' },
+    status: { type: String, default: 'processing' },
     domain: { type: String, enum: ['general', 'speaking', 'business'], default: 'general' },
     type: { type: String, enum: Object.keys(Type), default: 'individual' },
     format: { type: String, enum: Object.keys(Format), default: 'online' },
-    age: { type: String, enum: Object.keys(Age), default: 'adult' },
+    age: { type: String, enum: Object.keys(Age), default: 'adults' },
     level: { type: String, enum: Object.keys(Level), default: '' },
     goal: { type: String, enum: Object.keys(Goal), default: '' },
     native: { type: Boolean, default: false },
-    schedules: [Schedule],
+    schedule: [Schedule],
     client: { type: Schema.Types.ObjectId, ref: 'Client' },
     clients: [{ type: Schema.Types.ObjectId, ref: 'Client' }],
     teacher: { type: Schema.Types.ObjectId, ref: 'Teacher' },
@@ -132,8 +151,24 @@ Enrollment.virtual('scheduleLabel').get(function() {
     return this.schedules?.map(schedule => schedule.label).join(', ');
 });
 
+Enrollment.virtual('packs').get(function() {
+    const plan = Plans[this.age]?.[this.domain];
+    const packs = plan?.packs;
+
+    return Object.entries(packs).map(([key, value]) => ({
+        price: value,
+        numberOfLessons: key,
+        basePricePerLesson: plan.basePricePerLesson,
+        pricePerLesson: Math.round(value / key)
+    }));
+});
+
+Enrollment.virtual('numberOfScheduledLessons').get(function() {
+    return (this.lessons?.filter(lesson => lesson.status === 'scheduled')) || 0;
+});
+
 Enrollment.virtual('hasPayments').get(function() {
-    return (this.payments && this.payments.length) ? true : false;
+    return this.payments?.length > 0 ? true : false;
 });
 
 Enrollment.virtual('hasUnresolvedPayments').get(function() {
@@ -158,6 +193,21 @@ Enrollment.virtual('payments', {
     foreignField: 'enrollment',
     options: {
         sort: { createdAt: -1 }
+    }
+});
+
+Enrollment.virtual('currentPayment', {
+    ref: 'Payment',
+    localField: '_id',
+    foreignField: 'enrollment',
+    justOne: true,
+    match: {
+        status: 'pending'
+    },
+    options: {
+        sort: {
+            createdAt: -1
+        }
     }
 });
 
@@ -191,6 +241,10 @@ Enrollment.methods.createLessons = function(quantity) {
         client: this.client,
         teacher: this.teacher
     });
+};
+
+Enrollment.methods.getPrice = function(numberOfLessons) {
+    return Plans[this.age][this.domain].packs[numberOfLessons];
 };
 
 module.exports = Enrollment;

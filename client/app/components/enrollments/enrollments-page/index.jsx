@@ -10,8 +10,6 @@ import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
 
-import EnrollmentCard from 'app/components/enrollments/enrollment-card';
-
 import './index.scss';
 
 export default function EnrollmentsPage() {

@@ -12,16 +12,15 @@ const STATUSES = {
 };
 
 const OPERATORS = {
-    yandex: { value: 'yandex', label: 'Яндекс.Касса', icon: 'hourglass_empty' }
+    yookassa: { value: 'yookassa', label: 'YooKassa' }
 };
 
 const Payment = new Schema({
-    paymentId: { type: String },
+    uuid: { type: String },
     amount: { type: Number, default: 0, min: 0, required: true },
     currency: { type: String, default: 'RUB' },
     status: { type: String, required: true, enum: Object.keys(STATUSES) },
     description: { type: String, trim: true },
-    paid: { type: Boolean, default: false },
     confirmationUrl: { type: String },
     method: PaymentMethod,
     expiresAt: { type: Date },

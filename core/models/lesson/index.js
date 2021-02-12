@@ -59,8 +59,12 @@ Lesson.virtual('url').get(function() {
     return `/lessons/${this.id}`;
 });
 
-Lesson.virtual('datetime').get(function() {
+Lesson.virtual('dateLabel').get(function() {
     return moment(this.date).tz('Europe/Moscow').format('dd, D MMM, H:mm МСК');
+});
+
+Lesson.virtual('dateLabelFromNow').get(function() {
+    return moment(this.date).tz('Europe/Moscow').fromNow();
 });
 
 Lesson.virtual('statusLabel').get(function() {

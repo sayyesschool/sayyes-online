@@ -1,0 +1,65 @@
+@use 'shared/styles/variables';
+
+.enrollment-pack-card {
+    height: 100%;
+    overflow: visible;
+    text-align: center;
+    cursor: pointer;
+    padding: 16px;
+
+    &::after {
+        content: "check";
+        position: absolute;
+        font-family: Material Icons;
+        width: 24px;
+        height: 24px;
+        top: -12px;
+        left: 93%;
+        color: white;
+        background-color: variables.$primary-color;
+        line-height: 20px;
+        text-align: center;
+        border: 2px solid white;
+        border-radius: 100%;
+        transform: scale(0);
+        transition: transform .2s;
+    }
+
+    &--selected {
+        position: relative;
+        border: 2px solid variables.$primary-color;
+        overflow: visible;
+        padding: 15px;
+
+        &::after {
+            transform: scale(1);
+        }
+    }
+}
+
+.enrollment-pack {
+    &__price-per-lesson {
+        display: block;
+    }
+
+    &__base-price-per-lesson {
+        display: block;
+        text-decoration: line-through;
+    }
+
+    &__number-of-lessons {
+        display: block;
+        margin: .5rem 0;
+    }
+
+    &__total-price {
+        display: block;
+        margin: auto auto .5rem;
+        font-size: 1.25rem;
+    }
+
+    &__base-total-price {
+        display: block;
+        text-decoration: line-through;
+    }
+}

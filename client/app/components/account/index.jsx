@@ -36,13 +36,12 @@ export default function AccountPage() {
 
     return (
         <Page id="account-page">
-            <PageHeader withTabs>
-                <Typography element="h1" type="overline">Мой аккаунт</Typography>
-
-                <Avatar className="user-avatar" text={user.initials} large />
-
-                <Typography element="h2" type="headline4">{user.fullname}</Typography>
-
+            <PageHeader
+                overline="Мой аккаунт"
+                graphic={<Avatar className="user-avatar" text={user.initials} large />}
+                title={user.fullname}
+                withTabs
+            >
                 <TabBar value={activeTab} onChange={setActiveTab} minWidth align="center">
                     <Tab value="profile" icon={<Icon>person</Icon>} label="Профиль" />
                     <Tab value="payments" icon={<Icon>payment</Icon>} label="Платежи" />

@@ -1,0 +1,30 @@
+.enrollment-status-card {
+    display: flex;
+    flex-direction: row;
+
+    &__section--graphic {
+        flex: 0 0 256px;
+        padding: 1rem;
+        display: flex;
+        text-align: center;
+        background-color: lavender;
+
+        img {
+            margin: auto;
+        }
+    }
+
+    &__section--main {
+        flex: 1;
+        padding: 32px;
+    }
+
+    .stepper {
+        margin-bottom: 2rem;
+    }
+
+    .lesson-card {
+        display: inline-flex;
+        margin-bottom: 1rem;
+    }
+}

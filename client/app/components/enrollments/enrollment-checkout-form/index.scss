@@ -1,0 +1,50 @@
+@use '@material/textfield';
+
+.enrollment-checkout-form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .mdc-typography {
+        color: white;
+    }
+
+    .promocode {
+        margin: 1rem 0;
+
+        .mdc-text-field {
+            margin-bottom: 1rem;
+            @include textfield.outline-shape-radius(24px);
+            @include textfield.density(-4);
+            @include textfield.ink-color(white);
+            @include textfield.label-color(white);
+            @include textfield.placeholder-color(rgba(255, 255, 255, .75));
+            @include textfield.caret-color(rgba(255, 255, 255, .75));
+            @include textfield.outline-color(white);
+            @include textfield.focused-outline-color(white);
+            @include textfield.hover-outline-color(white);
+
+            @include textfield.disabled-ink-color(rgba(255, 255, 255, .75));
+            @include textfield.disabled-outline-color(rgba(255, 255, 255, .75));
+    
+            &__input {
+                text-align: center;
+                text-transform: uppercase;
+            }
+        }
+
+        .mdc-button {
+            &:disabled {
+                color: rgba(255,255,255,.38);
+            }
+        }
+    }
+
+    .price {
+        margin-top: auto;
+        margin: auto 0 1rem;
+    }
+
+    .submit {
+    }
+}
