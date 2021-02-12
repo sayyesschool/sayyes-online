@@ -6,34 +6,43 @@
 @use '@material/typography' with (
     $styles-headline1: (
         font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
-        font-weight: 700
+        font-weight: 700,
+        color: variables.$heading-color
     ),
     $styles-headline2: (
         font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
-        font-weight: 700
+        font-weight: 700,
+        color: variables.$heading-color
     ),
     $styles-headline3: (
         font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
-        font-weight: 700
+        font-weight: 700,
+        color: variables.$heading-color
     ),
     $styles-headline4: (
         font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
-        font-weight: 700
+        font-weight: 700,
+        color: variables.$heading-color
     ),
     $styles-headline5: (
         font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
-        font-weight: 700
+        font-weight: 700,
+        color: variables.$heading-color
     ),
     $styles-headline6: (
         font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
-        font-weight: 700
+        font-weight: 700,
+        color: variables.$heading-color
     ),
     $styles-subtitle1: (
-        font-family: unquote('Nunito, Arial, Helvetica, sans-serif')
+        font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
+        font-weight: 600,
+        color: variables.$heading-color
     ),
     $styles-subtitle2: (
         font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
-        font-weight: 600
+        font-weight: 600,
+        color: variables.$heading-color
     ),
     $styles-body1: (
         font-family: unquote('Nunito, Arial, Helvetica, sans-serif')

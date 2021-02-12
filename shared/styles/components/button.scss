@@ -1,5 +1,0 @@
-@use '@material/button';
-
-.mdc-button {
-    @include button.shape-radius(8px);
-}
