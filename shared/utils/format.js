@@ -9,6 +9,7 @@ module.exports = {
     formatDate,
     formatTime,
     formatDuration,
+    pluralize,
     timeToSeconds
 };
 
@@ -78,6 +79,18 @@ function formatDuration(seconds = 0) {
     result += s > 9 ? s : `0${s}`;
 
     return result;
+}
+
+function pluralize(word, count) {
+    const lastDigit = count % 10;
+
+    if (lastDigit === 1) {
+        return word;
+    } else if (lastDigit > 1 && lastDigit < 5) {
+        return word + 'а';
+    } else {
+        return word + 'ов';
+    }
 }
 
 function timeToSeconds(value) {
