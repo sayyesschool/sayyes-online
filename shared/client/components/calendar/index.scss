@@ -100,6 +100,33 @@
 }
 
 .calendar--week-view {
+    .calendar__week {
+        display: flex;
+        min-height: 128px;
+    }
+
+    .calendar__day {
+        flex: 1;
+        text-align: center;
+
+        &--today .calendar__day-name {
+            border-bottom: solid 3px #6c167b;
+        }
+
+        + .calendar__day {
+            border-left: 1px solid rgba(0, 0, 0, 0.12);
+        }
+    }
+
+    .calendar__day-name {
+        width: 100%;
+        border-bottom: solid 3px transparent;
+    }
+
+    .calendar__day-events {
+        padding: 8px;
+    }
+
     .mdc-data-table {
         border: none;
 
@@ -111,7 +138,7 @@
             text-align: center;
 
             &.today {
-                border-bottom: solid 3px #6c167b;
+                
             }
         }
 

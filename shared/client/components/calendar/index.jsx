@@ -14,7 +14,7 @@ export default function Calendar({
     ...props
 }) {
     const eventsByDate = events.reduce((map, event) => {
-        return map.set(event.date, event);
+        return map.set(event.date.toLocaleDateString(), event);
     }, new Map());
 
     if (view === 'week') {

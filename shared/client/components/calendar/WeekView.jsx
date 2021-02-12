@@ -8,11 +8,10 @@ import {
     IconButton,
     Typography
 } from 'mdc-react';
+import classnames from 'classnames';
 
 import { formatTime } from 'shared/utils/format';
 import { getWeekData, getWeekLabel } from './utils';
-
-const hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 
 export default function WeekView({ eventsByDate }) {
     const todayRef = useRef(new Date());
@@ -45,58 +44,40 @@ export default function WeekView({ eventsByDate }) {
             </header>
 
             <section className="calendar__week">
-                <DataTable>
-                    <DataTable.Header>
-                        <DataTable.HeaderRow>
-                            <DataTable.HeaderCell />
+                {data.map(date =>
+                    <div
+                        key={date.valueOf()}
+                        className={classnames('calendar__day', {
+                            'calendar__day--today': date.isSame(todayRef.current) && 'today'
+                        })}
+                    >
+                        <Typography className="calendar__day-name" element="div" type="overline">{date.format('dd')}, {date.date()}</Typography>
 
-                            {data.map(date =>
-                                <DataTable.HeaderCell key={date.valueOf()} className={date.isSame(todayRef.current) && 'today'}>
-                                    <Typography type="overline">{date.format('dd')}, {date.date()}</Typography>
-                                </DataTable.HeaderCell>
-                            )}
-                        </DataTable.HeaderRow>
-                    </DataTable.Header>
-
-                    <DataTable.Content>
-                        {hours.map(hour =>
-                            <DataTable.Row>
-                                <DataTable.Cell>
-                                    {formatTime(hour, 0)}
-                                </DataTable.Cell>
-
-                                {data.map(date =>
-                                    <DataTable.Cell>
-                                        <CalendarEvent
-                                            date={date}
-                                            hour={hour}
-                                            eventsByDate={eventsByDate}
-                                        />
-                                    </DataTable.Cell>
-                                )}
-                            </DataTable.Row>
-                        )}
-                    </DataTable.Content>
-                </DataTable>
+                        <div className="calendar__day-events">
+                            {eventsByDate.has(date.toDate().toLocaleDateString()) &&
+                                <CalendarEvent
+                                    event={eventsByDate.get(date.toDate().toLocaleDateString())}
+                                />
+                            }
+                        </div>
+                    </div>
+                )}
             </section>
         </article>
     );
 }
 
-function CalendarEvent({ date, hour, eventsByDate }) {
-    const key = date.utc().hours(hour).minutes(0).seconds(0).millisecond(0).toISOString();
-    const event = eventsByDate.get(key);
-
-    return event ? (
+function CalendarEvent({ event }) {
+    return (
         <Chip
             component={Link}
             to={event.url}
             icon={<Icon>{event.icon}</Icon>}
-            text={event.title}
+            text={moment(event.date).format('HH:mm')}
             title={event.title}
             outlined
         />
-    ) : null;
+    );
 }
 
 WeekView.defaultProps = {
