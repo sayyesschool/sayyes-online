@@ -1,10 +1,10 @@
-@use '@material/theme';
 @use '@material/button';
 @use '@material/chips';
 @use '@material/tab';
 @use '@material/tab-indicator';
 @use '@material/textfield';
 @use '@material/textfield/icon';
+@use '@material/theme';
 @use 'shared/styles/variables';
 @use 'shared/styles/mixins' as *;
 
@@ -42,6 +42,15 @@ $ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
                 margin-left: 8px;
             }
         }
+    }
+
+    &__overline {
+        margin-bottom: .5rem;
+    }
+
+    &__graphic {
+        margin-bottom: 1rem;
+        border: 3px solid variables.$secondary-color;
     }
 
     .mdc-icon,

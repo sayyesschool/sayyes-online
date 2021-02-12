@@ -6,7 +6,7 @@ import classnames from 'classnames';
 
 import './index.scss';
 
-export default function PageHeader({ title, subtitle, breadcrumbs, actions, className, pullContent, withTabs, children }) {
+export default function PageHeader({ title, subtitle, overline, graphic, breadcrumbs, actions, className, pullContent, withTabs, children }) {
     const classNames = classnames('page-header', {
         'page-header--pull-content': pullContent,
         'page-header--with-tabs': withTabs
@@ -23,6 +23,16 @@ export default function PageHeader({ title, subtitle, breadcrumbs, actions, clas
                                     React.cloneElement(item, { key: index, className: 'mdc-typography--subtitle1' })
                                 )}
                             </div>
+                        }
+
+                        {overline && (React.isValidElement(overline) ?
+                            React.cloneElement(overline, { className: 'page-header__overline' })
+                            :
+                            <Typography element="div" className="page-header__overline" type="overline">{overline}</Typography>
+                        )}
+
+                        {graphic &&
+                            React.cloneElement(graphic, { className: 'page-header__graphic' })
                         }
 
                         {title && (React.isValidElement(title) ?
