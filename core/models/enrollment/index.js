@@ -1,4 +1,5 @@
 const { Schema } = require('mongoose');
+const moment = require('moment');
 
 const Schedule = require('./schedule');
 
@@ -235,16 +236,16 @@ Enrollment.virtual('posts', {
     }
 });
 
+Enrollment.methods.getPrice = function(numberOfLessons) {
+    return Plans[this.age][this.domain].packs[numberOfLessons];
+};
+
 Enrollment.methods.createLessons = function(quantity) {
-    return new Array(quantity).fill({
+    return new Array(quantity).fill().map(() => ({
         enrollment: this.id,
         client: this.client,
         teacher: this.teacher
-    });
-};
-
-Enrollment.methods.getPrice = function(numberOfLessons) {
-    return Plans[this.age][this.domain].packs[numberOfLessons];
+    }));
 };
 
 module.exports = Enrollment;

@@ -25,7 +25,7 @@ const Payment = new Schema({
     method: PaymentMethod,
     expiresAt: { type: Date },
     dueAt: { type: Date },
-    paidAt: { type: Date },
+    test: { type: Boolean },
     operator: { type: String, enum: Object.keys(OPERATORS) },
     client: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     enrollment: { type: Schema.Types.ObjectId, ref: 'Enrollment' },
