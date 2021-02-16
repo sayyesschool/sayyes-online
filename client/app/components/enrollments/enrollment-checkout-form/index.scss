@@ -1,3 +1,4 @@
+@use '@material/button';
 @use '@material/textfield';
 
 .enrollment-checkout-form {
@@ -7,6 +8,12 @@
 
     .mdc-typography {
         color: white;
+    }
+
+    .mdc-button--outlined {
+        @include button.ink-color(white);
+        @include button.outline-color(white);
+        @include button.shape-radius(24px);
     }
 
     .promocode {

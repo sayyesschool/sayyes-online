@@ -23,60 +23,49 @@ export default function EnrollmentCheckoutForm({ enrollment, pack, onSubmit }) {
     }, [isEnteringPromoCode]);
 
     const handleSubmit = useCallback(event => {
-        event.preventDefault();
-
         onSubmit({
             enrollmentId: enrollment.id,
             numberOfLessons: pack.numberOfLessons,
             promoCode: textFieldRef.current?.control.value,
             isPromoCodeCorrect
         });
-
-        return false;
     }, [enrollment, pack, isPromoCodeCorrect]);
 
     const handlePromoCode = useCallback(() => {
         const promoCode = textFieldRef.current.control.value;
 
-        if (promoCode?.toUpperCase() === 'SAYYES') {
+        if (promoCode?.toUpperCase() === 'YES') {
             togglePromoCodeCorrect(true);
         }
     }, []);
 
     return (
-        <Form
-            id="checkout-form"
-            className="enrollment-checkout-form"
-            method="post"
-            action="/api/checkout"
-            preventDefault={false}
-            onSubmit={handleSubmit}
-        >
+        <div className="enrollment-checkout-form">
             <div className="balance">
                 <Typography element="strong" noMargin>{pack.numberOfLessons}</Typography>
                 <Typography noMargin>{pluralize('урок', pack.numberOfLessons)}<br />по 50 минут</Typography>
             </div>
 
-            {isPromoCodeCorrect &&
+            {isPromoCodeCorrect ?
                 <Typography noMargin>+2 урока по промокоду</Typography>
+                :
+                <div className="promocode">
+                    {isEnteringPromoCode ?
+                        <Form onSubmit={handlePromoCode}>
+                            <TextField
+                                ref={textFieldRef}
+                                placeholder="Промокод"
+                                outlined
+                                disabled={isPromoCodeCorrect}
+                            />
+
+                            <Button type="submit" outlined>Применить</Button>
+                        </Form>
+                        :
+                        <Button type="button" outlined onClick={toggleEnteringPromoCode}>Промокод</Button>
+                    }
+                </div>
             }
-
-            <div className="promocode">
-                {isEnteringPromoCode ?
-                    <>
-                        <TextField
-                            ref={textFieldRef}
-                            placeholder="Промокод"
-                            outlined
-                            disabled={isPromoCodeCorrect}
-                        />
-
-                        <Button type="button" unelevated onClick={handlePromoCode} disabled={isPromoCodeCorrect}>Применить</Button>
-                    </>
-                    :
-                    <Button type="button" unelevated onClick={toggleEnteringPromoCode}>Промокод</Button>
-                }
-            </div>
 
             <div className="price">
                 <Typography element="span" type="headline4" noMargin>{pack.price}</Typography>
@@ -84,8 +73,8 @@ export default function EnrollmentCheckoutForm({ enrollment, pack, onSubmit }) {
             </div>
 
             <div className="submit">
-                <Button type="submit" unelevated>Оплатить</Button>
+                <Button unelevated onClick={handleSubmit}>Оплатить</Button>
             </div>
-        </Form>
+        </div>
     );
 }

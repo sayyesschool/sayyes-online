@@ -1,4 +1,5 @@
 @use 'shared/styles/variables';
+@use '@material/theme';
 
 .enrollment-pack-card {
     height: 100%;
@@ -45,11 +46,13 @@
     &__base-price-per-lesson {
         display: block;
         text-decoration: line-through;
+        @include theme.property(color, text-secondary-on-light);
     }
 
     &__number-of-lessons {
         display: block;
         margin: .5rem 0;
+        font-weight: bold;
     }
 
     &__total-price {
@@ -61,5 +64,6 @@
     &__base-total-price {
         display: block;
         text-decoration: line-through;
+        @include theme.property(color, text-secondary-on-light);
     }
 }

@@ -1,4 +1,5 @@
 @use 'shared/styles/variables';
+@use '@material/checkbox';
 @use '@material/theme';
 
 $fill-color: variables.$primary-color;
@@ -7,6 +8,13 @@ $ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
 .enrollment-pay-card {
     display: flex;
     flex-direction: row;
+
+    .mdc-checkbox {
+        @include checkbox.container-colors(gray, transparent, gray, transparent);
+        @include checkbox.ink-color(gray);
+        @include checkbox.focus-indicator-color(gray);
+        @include checkbox.density(-1);
+    }
 
     &__section {
         flex: 1;
@@ -27,7 +35,7 @@ $ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
     &__steps-section {
         flex: 1 0 60%;
 
-        .stepper {
+        .mdc-card__header {
             margin-bottom: 2rem;
         }
 
@@ -45,7 +53,8 @@ $ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
         background-image: url('https://static.sayes.ru/images/kids/fourth.png');
 
         .mdc-card__header__graphic,
-        .mdc-card__header__title {
+        .mdc-card__header__title,
+        .mdc-icon-button {
             color: $ink-color !important;
         }
 
