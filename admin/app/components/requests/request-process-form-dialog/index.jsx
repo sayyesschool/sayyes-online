@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
+    Dialog,
     Button,
     Icon,
     TabBar, Tab
 } from 'mdc-react';
 
-import SidePanel from 'app/components/shared/side-panel';
 import ClientForm from 'app/components/clients/client-form';
 import EnrollmentForm from 'app/components/enrollments/enrollment-form';
 import RequestForm from 'app/components/requests/request-form';
 
 import './index.scss';
 
-export default function RequestProcessFormPanel({ request, open, onSubmit, onClose }) {
+export default function RequestProcessFormDialog({ request, open, onSubmit, onClose }) {
     const [activeTab, setActiveTab] = useState('client');
     const [client, setClient] = useState();
     const [enrollment, setEnrollment] = useState();
@@ -41,43 +41,39 @@ export default function RequestProcessFormPanel({ request, open, onSubmit, onClo
     }, [client, enrollment]);
 
     return (
-        <SidePanel
+        <Dialog
             className="request-process-panel"
             title="Обработка заявки"
             open={open}
-            modal
-            style={{ top: 0, width: '480px' }}
             onClose={onClose}
         >
-            <SidePanel.Header>
-                <TabBar
-                    value={activeTab}
-                    onChange={setActiveTab}
-                    minWidth
-                >
-                    <Tab
-                        value="client"
-                        icon={<Icon>person</Icon>}
-                        label="Клиент"
-                    />
+            <TabBar
+                value={activeTab}
+                onChange={setActiveTab}
+                minWidth
+            >
+                <Tab
+                    value="client"
+                    icon={<Icon>person</Icon>}
+                    label="Клиент"
+                />
 
-                    <Tab
-                        value="enrollment"
-                        icon={<Icon>school</Icon>}
-                        disabled={!client}
-                        label="Обучение"
-                    />
+                <Tab
+                    value="enrollment"
+                    icon={<Icon>school</Icon>}
+                    disabled={!client}
+                    label="Обучение"
+                />
 
-                    <Tab
-                        value="request"
-                        icon={<Icon>assignment</Icon>}
-                        disabled={!enrollment}
-                        label="Обращение"
-                    />
-                </TabBar>
-            </SidePanel.Header>
+                <Tab
+                    value="request"
+                    icon={<Icon>assignment</Icon>}
+                    disabled={!enrollment}
+                    label="Обращение"
+                />
+            </TabBar>
 
-            <SidePanel.Content>
+            <Dialog.Content>
                 {activeTab === 'client' &&
                     <ClientForm
                         client={client}
@@ -98,10 +94,13 @@ export default function RequestProcessFormPanel({ request, open, onSubmit, onClo
                         onSubmit={handleSubmit}
                     />
                 }
-            </SidePanel.Content>
+            </Dialog.Content>
 
-            <SidePanel.Footer>
-                {activeTab === 'client' &&
+            <Dialog.Actions>
+                <Button type="button" outlined onClick={onClose}>Отменить</Button>
+
+                <Button type="submit" form="client-form" unelevated>Далее</Button>
+                {/* {activeTab === 'client' &&
                     <Button type="submit" form="client-form" unelevated>Далее</Button>
                 }
 
@@ -111,8 +110,8 @@ export default function RequestProcessFormPanel({ request, open, onSubmit, onClo
 
                 {activeTab === 'request' &&
                     <Button type="submit" form="request-form" unelevated>Сохранить</Button>
-                }
-            </SidePanel.Footer>
-        </SidePanel>
+                } */}
+            </Dialog.Actions>
+        </Dialog>
     );
 }

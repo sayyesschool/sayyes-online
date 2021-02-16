@@ -37,6 +37,7 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                             <Chip
                                 leadingIcon={<Icon>{request.statusIcon}</Icon>}
                                 text={request.statusLabel}
+                                outlined
                             />
                         </DataTable.Cell>
 
@@ -57,6 +58,7 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                                     component={Link}
                                     to={`/clients/${request.client.id}`}
                                     text={request.client.fullname}
+                                    outlined
                                 />
                                 :
                                 '[Отсутствует]'
@@ -69,6 +71,7 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                                     component={Link}
                                     to={`/managers/${request.manager.id}`}
                                     text={request.manager.fullname}
+                                    outlined
                                 />
                                 :
                                 '[Отсутствует]'

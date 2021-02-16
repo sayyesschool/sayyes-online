@@ -14,9 +14,7 @@ export default function PaymentList({ payments, onEdit, onDelete }) {
             <DataTable.Header>
                 <DataTable.HeaderRow>
                     {columns.map(col =>
-                        <DataTable.HeaderCell
-                            key={col.key}
-                        >
+                        <DataTable.HeaderCell key={col.key}>
                             {col.text}
                         </DataTable.HeaderCell>
                     )}
@@ -27,20 +25,7 @@ export default function PaymentList({ payments, onEdit, onDelete }) {
                 {payments.map(payment =>
                     <DataTable.Row key={payment.id}>
                         <DataTable.Cell>
-                            <Chip
-                                leadingIcon={<Icon>{payment.statusIcon}</Icon>}
-                                text={payment.statusLabel}
-                            />
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            {payment.client &&
-                                <Chip
-                                    component={Link}
-                                    to={`/clients/${payment.client.id}`}
-                                    text={payment.client.fullname}
-                                />
-                            }
+                            {payment.description}
                         </DataTable.Cell>
 
                         <DataTable.Cell>
@@ -49,6 +34,25 @@ export default function PaymentList({ payments, onEdit, onDelete }) {
 
                         <DataTable.Cell>
                             {payment.date}
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
+                            {payment.client &&
+                                <Chip
+                                    component={Link}
+                                    to={`/clients/${payment.client.id}`}
+                                    text={payment.client.fullname}
+                                    outlined
+                                />
+                            }
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
+                            <Chip
+                                leadingIcon={<Icon>{payment.statusIcon}</Icon>}
+                                text={payment.statusLabel}
+                                outlined
+                            />
                         </DataTable.Cell>
 
                         <DataTable.Cell>
@@ -80,12 +84,8 @@ export default function PaymentList({ payments, onEdit, onDelete }) {
 
 const columns = [
     {
-        key: 'status',
-        text: 'Статус'
-    },
-    {
-        key: 'user',
-        text: 'Клиент'
+        key: 'description',
+        text: 'Описание'
     },
     {
         key: 'amount',
@@ -96,11 +96,15 @@ const columns = [
         text: 'Дата'
     },
     {
-        key: 'method',
-        text: 'Способ оплаты'
+        key: 'user',
+        text: 'Клиент'
     },
     {
-        key: 'note',
-        text: 'Заметка'
+        key: 'status',
+        text: 'Статус'
+    },
+    {
+        key: 'method',
+        text: 'Способ оплаты'
     }
 ];

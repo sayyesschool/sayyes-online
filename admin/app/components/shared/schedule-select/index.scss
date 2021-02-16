@@ -1,22 +1,22 @@
 .schedule-select {
-    .schedule-select__time-select {
-        display: inline-flex;
+    .schedule-select-item {
+        display: flex;
         align-items: center;
+        margin-bottom: .5rem;
+
+        .mdc-select {
+            flex: 1;
+            margin-right: 8px;
+        }
 
         .mdc-text-field {
+            flex: 1;
             margin-right: 8px;
-
-            + .mdc-text-field {
-                margin-top: 0;
-            }
+            margin-top: 0 !important;
         }
-    }
 
-    .weekday-select {
-        margin-bottom: 8px;
-    }
-
-    .schedule-select-item + .schedule-select-item {
-        margin-top: 1rem;
+        .mdc-icon-button {
+            margin-left: auto;
+        }
     }
 }

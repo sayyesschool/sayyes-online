@@ -4,13 +4,14 @@ import Page from 'shared/components/page';
 import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
+import FormDialog from 'shared/components/form-dialog';
 
 import { useStore, useActions } from 'app/hooks/store';
 import FormPanel from 'app/components/shared/form-panel';
 import EmptyState from 'app/components/shared/empty-state';
 import RequestsTable from 'app/components/requests/requests-table';
 import RequestForm from 'app/components/requests/request-form';
-import RequestProcessFormPanel from 'app/components/requests/request-process-form-panel';
+import RequestProcessFormDialog from 'app/components/requests/request-process-form-dialog';
 import RequestSearchForm from 'app/components/requests/request-search-form';
 
 import './index.scss';
@@ -162,14 +163,14 @@ export default function RequestsPage({ history }) {
                 </PageContent>
             </div>
 
-            <RequestProcessFormPanel
+            <RequestProcessFormDialog
                 request={request}
                 open={isRequestProcessPanelOpen}
                 onSubmit={handleProcessRequestSubmit}
                 onClose={() => setRequestProcessPanelOpen(false)}
             />
 
-            <FormPanel
+            <FormDialog
                 title="Редактирование заявки"
                 form="request-form"
                 modal
@@ -181,7 +182,7 @@ export default function RequestsPage({ history }) {
                     managers={managers}
                     onSubmit={handleUpdateRequest}
                 />
-            </FormPanel>
+            </FormDialog>
 
             <ConfirmationDialog
                 title="Подтвердите действие"

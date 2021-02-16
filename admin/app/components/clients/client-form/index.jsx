@@ -43,7 +43,6 @@ export default function ClientForm({ id = 'client-form', client = {}, onSubmit }
                     value={data.lastname}
                     label="Фамилия"
                     filled
-                    required
                     onChange={handleChange}
                 />
 

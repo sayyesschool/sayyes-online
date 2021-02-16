@@ -28,21 +28,10 @@ export default function LessonTable({ lessons, onView, onEdit, onDelete }) {
                     <DataTable.Row key={lesson.id}>
                         <DataTable.Cell>
                             <Chip
-                                leadingIcon={<Icon>{lesson.statusIcon}</Icon>}
-                                text={lesson.statusLabel}
-                                outlined
-                            />
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            {lesson.datetime}
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            <Chip
                                 component={Link}
                                 to={`/clients/${lesson.client.id}`}
                                 text={lesson.client.fullname}
+                                outlined
                             />
                         </DataTable.Cell>
 
@@ -52,8 +41,21 @@ export default function LessonTable({ lessons, onView, onEdit, onDelete }) {
                                     component={Link}
                                     to={`/teachers/${lesson.teacher.id}`}
                                     text={lesson.teacher.fullname}
+                                    outlined
                                 />
                             }
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
+                            <Chip
+                                leadingIcon={<Icon>{lesson.statusIcon}</Icon>}
+                                text={lesson.statusLabel}
+                                outlined
+                            />
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
+                            {lesson.dateLabel}
                         </DataTable.Cell>
 
                         <DataTable.Cell numeric>
@@ -86,19 +88,19 @@ export default function LessonTable({ lessons, onView, onEdit, onDelete }) {
 
 const columns = [
     {
-        key: 'status',
-        text: 'Статус'
-    },
-    {
-        key: 'datetime',
-        text: 'Дата и время'
-    },
-    {
         key: 'client',
         text: 'Клиент'
     },
     {
         key: 'teacher',
         text: 'Преподаватель'
+    },
+    {
+        key: 'status',
+        text: 'Статус'
+    },
+    {
+        key: 'datetime',
+        text: 'Дата и время'
     }
 ];

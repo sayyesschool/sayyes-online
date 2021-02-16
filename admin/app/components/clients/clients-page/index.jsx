@@ -2,12 +2,12 @@ import React, { useEffect, useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
 import LoadingIndicator from 'shared/components/loading-indicator';
+import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
 import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 
 import { useStore } from 'app/hooks/store';
-import FormPanel from 'app/components/shared/form-panel';
 import ClientsTable from 'app/components/clients/clients-table';
 import ClientForm from 'app/components/clients/client-form';
 
@@ -58,17 +58,16 @@ export default function ClientsPage({ history }) {
                 />
             </PageContent>
 
-            <FormPanel
+            <FormDialog
                 form="client-form"
                 title="Новый клиент"
                 open={isClientFormOpen}
-                modal
                 onClose={toggleClientFormOpen}
             >
                 <ClientForm
                     onSubmit={handleSubmit}
                 />
-            </FormPanel>
+            </FormDialog>
         </Page>
     );
 }
