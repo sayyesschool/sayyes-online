@@ -8,7 +8,9 @@ export default function FormDialog({
     form,
     title,
     open,
+    submitButtonText = 'Сохранить',
     children,
+    confirmation,
     onClose,
     ...props
 }) {
@@ -23,8 +25,8 @@ export default function FormDialog({
             </Dialog.Content>
 
             <Dialog.Actions>
-                <Button type="button" onClick={onClose}>Закрыть</Button>
-                <Button type="submit" form={form} outlined>Сохранить</Button>
+                <Button type="button" outlined onClick={onClose}>Закрыть</Button>
+                <Button type="submit" form={form} unelevated>{submitButtonText}</Button>
             </Dialog.Actions>
         </Dialog>
     );

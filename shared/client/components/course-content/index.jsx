@@ -8,7 +8,7 @@ import {
 
 import './index.scss';
 
-export default function CourseContent({ course }) {
+export default function CourseContent({ enrollment, course }) {
     return (
         <section className="course-content">
             <LayoutGrid>
@@ -16,7 +16,7 @@ export default function CourseContent({ course }) {
                     <LayoutGrid.Cell span="4">
                         <Card
                             component={Link}
-                            to={unit.url}
+                            to={enrollment.url + unit.uri}
                             outlined
                         >
                             <Card.Media

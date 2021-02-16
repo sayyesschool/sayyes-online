@@ -13,7 +13,7 @@ export default function UnitContent({ course, unit }) {
     return (
         <section className="unit-content">
             {unit.document ?
-                <Card outlined>
+                <Card>
                     <iframe
                         src={unit.documentUrl}
                     />

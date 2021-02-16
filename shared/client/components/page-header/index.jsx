@@ -38,13 +38,13 @@ export default function PageHeader({ title, subtitle, overline, graphic, breadcr
                         {title && (React.isValidElement(title) ?
                             React.cloneElement(title, { className: 'page-header__title' })
                             :
-                            <Typography className="page-header__title" type="headline4">{title}</Typography>
+                            <Typography className="page-header__title" type="headline4" noMargin>{title}</Typography>
                         )}
 
                         {subtitle && (React.isValidElement(subtitle) ?
                             React.cloneElement(subtitle, { className: 'page-header__subtitle' })
                             :
-                            <Typography className="page-header__subtitle" type="headline6">{subtitle}</Typography>
+                            <Typography className="page-header__subtitle" type="headline6" noMargin>{subtitle}</Typography>
                         )}
                     </div>
 
