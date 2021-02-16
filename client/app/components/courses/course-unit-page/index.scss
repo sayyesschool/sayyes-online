@@ -1,0 +1,34 @@
+@use 'mdc-react/src/SideSheet/mixins';
+
+#course-unit-page {
+    height: calc(100vh - 64px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .page-header {
+        flex: auto 0;
+
+        &__inner {
+            max-width: 1024px;
+        }
+    }
+    
+    .page-content {
+        flex: 1;
+        width: 100%;
+        max-width: 1024px;
+
+        .unit-content {
+            height: 100%;
+        }
+    }
+
+    .mdc-side-sheet {
+        top: 0;
+        right: 0;
+        z-index: 4;
+        position: absolute;
+        @include mixins.width(360px);
+    }
+}

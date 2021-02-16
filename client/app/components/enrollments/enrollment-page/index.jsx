@@ -46,6 +46,8 @@ export default function EnrollmentPage({ match }) {
             </PageSideSheet>
 
             <div>
+                <PaymentBanner onActionClick={() => setDialogOpen(true)} />
+
                 <Page id="enrollment-page">
                     <PageHeader
                         title={enrollment.title}
@@ -56,21 +58,14 @@ export default function EnrollmentPage({ match }) {
                                 href={enrollment.classUrl}
                                 icon={<Icon>video_call</Icon>}
                                 label="Перейти в класс"
-                            />,
-
-                            <FAB
-                                key="chat"
-                                icon={<Icon>chat</Icon>}
-                                onClick={() => setChatOpen(true)}
                             />
                         ]}
+                        pullContent
                     >
                         <EnrollmentDetails
                             enrollment={enrollment}
                         />
                     </PageHeader>
-
-                    <PaymentBanner onActionClick={() => setDialogOpen(true)} />
 
                     <PageContent>
                         <LayoutGrid>
@@ -110,6 +105,13 @@ export default function EnrollmentPage({ match }) {
                         </LayoutGrid>
                     </PageContent>
                 </Page>
+
+                <FAB
+                    className="chat-button"
+                    key="chat"
+                    icon={<Icon>chat</Icon>}
+                    onClick={() => setChatOpen(true)}
+                />
             </div>
         </>
     );

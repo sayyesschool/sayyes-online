@@ -9,9 +9,10 @@ import {
 export default function EnrollmentLessons({ enrollment }) {
     return (
         <div className="enrollment-lessons">
-            <Card outlined>
+            <Card>
                 <Card.Header
-                    title="Занятия"
+                    graphic={<Icon>today</Icon>}
+                    title="Предстоящие занятия"
                     subtitle={enrollment.scheduleLabel}
                 />
 
@@ -21,8 +22,7 @@ export default function EnrollmentLessons({ enrollment }) {
                             {enrollment.lessons?.map(lesson =>
                                 <List.Item
                                     key={lesson.id}
-                                    graphic={<Icon>{lesson.statusIcon}</Icon>}
-                                    primaryText={lesson.datetime}
+                                    primaryText={lesson.dateLabel}
                                     secondaryText={lesson.statusLabel}
                                 />
                             )}

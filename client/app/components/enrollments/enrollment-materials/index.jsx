@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import {
     Card,
@@ -9,8 +9,6 @@ import {
 export default function EnrollmentMaterials({ enrollment }) {
     return (
         <div className="enrollment-materials">
-            <Typography type="headline6">Пособия</Typography>
-
             {enrollment.materials?.length > 0 ?
                 <LayoutGrid>
                     {enrollment.materials.map(material =>

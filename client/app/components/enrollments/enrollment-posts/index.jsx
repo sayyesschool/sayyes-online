@@ -12,6 +12,7 @@ export default function EnrollmentPosts({ enrollment }) {
         <div className="enrollment-posts">
             <Card outlined>
                 <Card.Header
+                    graphic={<Icon>article</Icon>}
                     title="Отчеты об обучении"
                     subtitle={(!enrollment.posts || enrollment.posts.length === 0) && 'Отчетов пока нет'}
                 />

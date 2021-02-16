@@ -9,9 +9,10 @@ import {
 
 export default function EnrollmentAssignments({ enrollment }) {
     return (
-        <div className="enrollment-assignments">
-            <Card outlined>
+        <section className="enrollment-assignments">
+            <Card>
                 <Card.Header
+                    graphic={<Icon>assignment</Icon>}
                     title="Домашние задания"
                     subtitle={(!enrollment.assignments || enrollment.assignments.length === 0) && 'Заданий пока нет'}
                 />
@@ -39,6 +40,6 @@ export default function EnrollmentAssignments({ enrollment }) {
                     </Card.Section>
                 }
             </Card>
-        </div>
+        </section>
     );
 }
