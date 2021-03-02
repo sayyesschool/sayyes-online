@@ -13,21 +13,7 @@ $ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
 
 .page-header {
     position: relative;
-    color: $ink-color;
-    background-color: $fill-color;
-    background-image: url('https://static.sayes.ru/images/kids/fourth.png');
     overflow: hidden;
-
-    // &::before {
-    //     content: '';
-    //     background-image: url(https://static.sayes.ru/images/kids/fourth.png);
-    //     background-color: $fill-color;
-    //     width: 110%;
-    //     height: 100%;
-    //     position: absolute;
-    //     border-radius: 0 0 50% 50%;
-    //     left: -5%;
-    // }
 
     &__inner {
         max-width: 1024px;
@@ -50,6 +36,8 @@ $ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
         }
 
         &.page-header__section--actions {
+            display: flex;
+
             .mdc-fab + .mdc-fab {
                 margin-left: 8px;
             }
@@ -63,12 +51,6 @@ $ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
     &__graphic {
         margin-bottom: 1rem;
         border: 3px solid variables.$secondary-color;
-    }
-
-    .page-breadcrumbs {
-        a {
-            color: white;
-        }
     }
 
     .mdc-icon,

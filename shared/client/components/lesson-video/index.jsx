@@ -6,13 +6,13 @@ import VideoList from 'shared/components/video-list';
 
 import './index.scss';
 
-export default function UnitVideo({ unit }) {
+export default function LessonVideo({ lesson }) {
     const [selectedVideo, setSelectedVideo] = useState();
 
     return (
-        <div className="unit-video">
+        <div className="lesson-video">
             <VideoList
-                videos={unit.videos}
+                videos={lesson.videos}
                 selectedVideo={selectedVideo}
                 onClick={setSelectedVideo}
             />

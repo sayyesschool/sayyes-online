@@ -3,7 +3,7 @@ import React, { useState, useCallback } from 'react';
 import AudioPlayer from 'shared/components/audio-player';
 import AudioList from 'shared/components/audio-list';
 
-export default function UnitAudio({ unit }) {
+export default function LessonAudio({ lesson }) {
     const [selectedAudio, setSelectedAudio] = useState();
 
     const handleClick = useCallback(audio => {
@@ -13,7 +13,7 @@ export default function UnitAudio({ unit }) {
     return (
         <div className="lesson-audio">
             <AudioList
-                audios={unit.audios}
+                audios={lesson.audios}
                 selectedAudio={selectedAudio}
                 onClick={handleClick}
             />

@@ -10,18 +10,6 @@
         padding-left: 1rem;
     }
 
-    .page-breadcrumbs {
-        a + a:before {
-            display: inline-block;
-            content: '›';
-            margin: 0 8px;
-        }
-    
-        a:hover {
-            text-decoration: underline;
-        }
-    }
-
     .page-title {
         margin: 0;
         padding-left: 0;

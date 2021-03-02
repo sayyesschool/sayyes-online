@@ -8,16 +8,17 @@ import {
 
 import './index.scss';
 
-export default function CourseContent({ enrollment, course }) {
+export default function CourseContent({ enrollmentId, course, onSelectUnit }) {
     return (
         <section className="course-content">
             <LayoutGrid>
                 {course.units.map((unit, index) =>
-                    <LayoutGrid.Cell span="4">
+                    <LayoutGrid.Cell key={unit.id} span="4">
                         <Card
-                            component={Link}
-                            to={enrollment.url + unit.uri}
+                            component={!onSelectUnit ? Link : undefined}
+                            to={!onSelectUnit ? `/${enrollmentId}${unit.uri}` : undefined}
                             outlined
+                            onClick={onSelectUnit && (() => onSelectUnit(unit))}
                         >
                             <Card.Media
                                 imageUrl={`https://static.sayes.ru/courses/${course.slug}/images/${unit.image}`}
@@ -33,6 +34,6 @@ export default function CourseContent({ enrollment, course }) {
                     </LayoutGrid.Cell>
                 )}
             </LayoutGrid>
-        </section>
+        </section >
     );
 }

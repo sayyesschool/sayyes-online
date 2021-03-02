@@ -1,3 +1,29 @@
-#course-page {
-    
+@use '@material/icon-button';
+@use '@material/theme';
+
+.course {
+    .breadcrumbs {
+        @include theme.property(color, text-secondary-on-dark);
+    }
+
+    .mdc-icon-button {
+        @include icon-button.ink-color(text-secondary-on-dark);
+    }
+
+    .page-header {
+        &__inner {
+            padding: 1rem;
+        }
+
+        &__section--main {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .page-content {
+        max-width: 1024px;
+        margin: auto;
+        padding: 0 1rem 1rem;
+    }
 }

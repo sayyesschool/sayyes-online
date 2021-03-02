@@ -10,6 +10,7 @@ export default function MenuButton({
     icon,
     disabled,
     items = [],
+    listProps = {},
     menuProps = {},
     className
 }) {
@@ -40,6 +41,7 @@ export default function MenuButton({
                 open={isOpen}
                 onClose={handleClose}
                 top right
+                listProps={listProps}
                 {...menuProps}
             >
                 {items.filter(item => !!item).map(item =>

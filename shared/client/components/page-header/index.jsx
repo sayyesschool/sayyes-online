@@ -4,6 +4,8 @@ import {
 } from 'mdc-react';
 import classnames from 'classnames';
 
+import Breadcrumbs from 'shared/components/breadcrumbs';
+
 import './index.scss';
 
 export default function PageHeader({ title, subtitle, overline, graphic, breadcrumbs, actions, className, pullContent, withTabs, children }) {
@@ -18,11 +20,7 @@ export default function PageHeader({ title, subtitle, overline, graphic, breadcr
                 <div className="page-header__row">
                     <div className="page-header__section page-header__section--main">
                         {breadcrumbs?.length > 0 &&
-                            <div className="page-breadcrumbs">
-                                {breadcrumbs.map((item, index) =>
-                                    React.cloneElement(item, { key: index, className: 'mdc-typography--subtitle1' })
-                                )}
-                            </div>
+                            <Breadcrumbs items={breadcrumbs} />
                         }
 
                         {overline && (React.isValidElement(overline) ?
