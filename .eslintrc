@@ -8,7 +8,8 @@
     },
     "extends": [
         "eslint:recommended",
-        "plugin:react/recommended"
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended"
     ],
     "parserOptions": {
         "ecmaVersion": 2018,
@@ -18,16 +19,37 @@
         }
     },
     "rules": {
-        "indent": ["error", 4, { "SwitchCase": 1, "MemberExpression": 1 }],
-        "linebreak-style": ["error", "windows"],
-        "quotes": ["error", "single"],
-        "semi": ["error", "always"]
+        "indent": [
+            "error",
+            4,
+            {
+                "SwitchCase": 1,
+                "MemberExpression": 1
+            }
+        ],
+        "linebreak-style": [
+            "error",
+            "windows"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ]
     },
     "plugins": [
         "react"
     ],
-    "overrides": [{
-        "files": ["*.js", ".jsx"],
-        "excludedFiles": "*/public/*.js"
-    }]
+    "overrides": [
+        {
+            "files": [
+                "*.js",
+                ".jsx"
+            ],
+            "excludedFiles": "*/public/*.js"
+        }
+    ]
 }
