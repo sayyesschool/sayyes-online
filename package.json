@@ -18,6 +18,7 @@
     "dev-main": "gulp dev",
     "build-main": "gulp build",
     "lint": "eslint",
+    "test": "jest",
     "cron": "nodemon -r dotenv/config cron.js"
   },
   "dependencies": {
@@ -37,7 +38,7 @@
     "jsonwebtoken": "^8.5.1",
     "material-components-web": "^8.0.0",
     "mdc-pug": "^2.0.2",
-    "mdc-react": "^0.19.7",
+    "mdc-react": "^0.19.9",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.32",
     "mongoose": "^5.11.11",
@@ -64,7 +65,7 @@
     "request": "^2.88.2",
     "twilio": "^3.55.0",
     "twilio-chat": "^4.1.0",
-    "twilio-sync": "^0.12.4",
+    "twilio-sync": "^2.0.0",
     "twilio-video": "^2.10.0",
     "yandex-kassa": "0.0.3"
   },
@@ -88,6 +89,8 @@
     "css-loader": "^5.0.1",
     "d3-timer": "^1.0.10",
     "dotenv": "^8.2.0",
+    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
     "gulp-rename": "^2.0.0",
