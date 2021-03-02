@@ -147,18 +147,18 @@ export const coursesReducer = createReducer(null, {
 export const courseReducer = createReducer(null, {
     // Course
 
-    [getCourse]: (state, action) => mapCourse(action.data),
+    [getCourse]: (state, action) => action.data,
     [updateCourse]: (state, action) => ({ ...state, ...action.data }),
     [deleteCourse]: (state, action) => null,
 
     // Unit
 
-    [createUnit]: (state, action) => mapCourse({
+    [createUnit]: (state, action) => ({
         ...state,
         units: state.units.concat(action.data)
     }),
 
-    [updateUnit]: (state, action) => mapCourse({
+    [updateUnit]: (state, action) => ({
         ...state,
         units: state.units.map(unit => unit.id !== action.data.id ? unit : {
             ...unit,
@@ -166,7 +166,7 @@ export const courseReducer = createReducer(null, {
         })
     }, action.data),
 
-    [deleteUnit]: (state, action) => mapCourse({
+    [deleteUnit]: (state, action) => ({
         ...state,
         units: state.units.filter(unit => unit.id !== action.data.id),
         lessons: state.lessons.filter(lesson => lesson._unit !== action.data.id),
@@ -175,7 +175,7 @@ export const courseReducer = createReducer(null, {
 
     // Lesson
 
-    [createLesson]: (state, action) => mapCourse({
+    [createLesson]: (state, action) => ({
         ...state,
         lessons: state.lessons.concat(action.data),
         units: state.units.map(unit => unit.id !== action.data._unit ? unit : {
@@ -184,7 +184,7 @@ export const courseReducer = createReducer(null, {
         })
     }),
 
-    [updateLesson]: (state, action) => mapCourse({
+    [updateLesson]: (state, action) => ({
         ...state,
         lessons: state.lessons.map(lesson => lesson.id !== action.data.id ? lesson : {
             ...lesson,
@@ -192,7 +192,7 @@ export const courseReducer = createReducer(null, {
         })
     }),
 
-    [deleteLesson]: (state, action) => mapCourse({
+    [deleteLesson]: (state, action) => ({
         ...state,
         lessons: state.lessons.filter(lesson => lesson.id !== action.data.id),
         units: state.units.map(unit => unit.id !== action.data._unit ? unit : {
@@ -204,7 +204,7 @@ export const courseReducer = createReducer(null, {
 
     // Exercise
 
-    [createExercise]: (state, action) => mapCourse({
+    [createExercise]: (state, action) => ({
         ...state,
         exercises: state.exercises.concat(action.data),
         lessons: state.lessons.map(lesson => lesson.id !== action.data._lesson ? lesson : {
@@ -213,7 +213,7 @@ export const courseReducer = createReducer(null, {
         })
     }),
 
-    [updateExercise]: (state, action) => mapCourse({
+    [updateExercise]: (state, action) => ({
         ...state,
         exercises: state.exercises.map(lesson => lesson.id !== action.data.id ? lesson : {
             ...lesson,
@@ -221,7 +221,7 @@ export const courseReducer = createReducer(null, {
         })
     }),
 
-    [deleteExercise]: (state, action) => mapCourse({
+    [deleteExercise]: (state, action) => ({
         ...state,
         exercises: state.exercises.filter(exercise => exercise.id !== action.data.id),
         lessons: state.lessons.map(lesson => lesson.id !== action.data._lesson ? lesson : {
@@ -235,33 +235,3 @@ export default combineReducers({
     list: coursesReducer,
     single: courseReducer
 });
-
-function mapCourse(course) {
-    course.unitsById = course.units.reduce((map, unit) => map.set(unit.id, unit), new Map());
-    course.lessonsById = course.lessons.reduce((map, lesson) => map.set(lesson.id, lesson), new Map());
-    course.exercisesById = course.exercises.reduce((map, exercise) => map.set(exercise.id, exercise), new Map());
-    course.audiosByFilename = course.audios.reduce((map, audio) => map.set(audio.filename, audio), new Map());
-    course.videosByFilename = course.videos.reduce((map, video) => map.set(video.filename, video), new Map());
-
-    course.units.forEach(unit => {
-        unit.audios = unit.audios.map(title => course.audiosByFilename.get(title));
-        unit.videos = unit.videos.map(title => course.videosByFilename.get(title));
-        unit.lessons = unit.lessons.map(id => {
-            const lesson = course.lessonsById.get(id);
-
-            lesson.unitId = unit.id;
-            lesson.exercises = lesson.exercises.map((id, index) => {
-                const exercise = course.exercisesById.get(id);
-
-                exercise.lessonId = lesson.id;
-                exercise.number = index + 1;
-
-                return exercise;
-            });
-
-            return lesson;
-        });
-    });
-
-    return course;
-}
