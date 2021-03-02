@@ -39,7 +39,7 @@ module.exports = ({
                     email: req.user.email,
                     returnUrl: '/',
                     metadata: {
-                        userId: enrollment.user,
+                        clientId: enrollment.client,
                         enrollmentId: enrollment.id,
                         numberOfLessons: req.body.numberOfLessons
                     }
@@ -50,6 +50,7 @@ module.exports = ({
                         amount: payment.amount.value,
                         description: payment.description,
                         confirmationUrl: payment.confirmationUrl,
+                        test: payment.test,
                         operator: 'yookassa',
                         client: req.user.id,
                         enrollment: enrollment.id

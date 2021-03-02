@@ -2,6 +2,9 @@
 @use '@material/button';
 @use '@material/segmented-button';
 
+$fill-color: variables.$primary-color;
+$ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
+
 .mdc-button {
     &--raised,
     &--unelevated {
@@ -20,4 +23,21 @@
             border-radius: 0 24px 24px 0;
         }
     }
+}
+
+.page-header {
+    color: $ink-color;
+    background-color: $fill-color;
+    background-image: url('https://static.sayes.ru/images/kids/fourth.png');
+
+    // &::before {
+    //     content: '';
+    //     background-image: url(https://static.sayes.ru/images/kids/fourth.png);
+    //     background-color: $fill-color;
+    //     width: 110%;
+    //     height: 100%;
+    //     position: absolute;
+    //     border-radius: 0 0 50% 50%;
+    //     left: -5%;
+    // }
 }

@@ -2,14 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
     Card,
-    LayoutGrid,
-    Typography
+    LayoutGrid
 } from 'mdc-react';
 
 export default function EnrollmentMaterials({ enrollment }) {
     return (
         <div className="enrollment-materials">
-            {enrollment.materials?.length > 0 ?
+            {enrollment.materials?.length > 0 &&
                 <LayoutGrid>
                     {enrollment.materials.map(material =>
                         <LayoutGrid.Cell key={material.id} span="6">
@@ -24,8 +23,6 @@ export default function EnrollmentMaterials({ enrollment }) {
                         </LayoutGrid.Cell>
                     )}
                 </LayoutGrid>
-                :
-                <Typography>Пособия пока не назначены</Typography>
             }
         </div>
     );
