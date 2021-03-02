@@ -11,12 +11,12 @@ const Unit = new Schema({
     lessons: [Schema.Types.ObjectId]
 });
 
-Unit.virtual('url').get(function() {
-    return `${this.parent().url}/units/${this.id}`;
-});
-
 Unit.virtual('uri').get(function() {
     return `${this.parent().uri}/units/${this.id}`;
+});
+
+Unit.virtual('url').get(function() {
+    return `${this.parent().url}/units/${this.slug}`;
 });
 
 Unit.virtual('documentUrl').get(function() {

@@ -90,6 +90,7 @@ const Enrollment = new Schema({
     goal: { type: String, enum: Object.keys(Goal), default: '' },
     native: { type: Boolean, default: false },
     schedule: [Schedule],
+    lessonDuration: { type: Number },
     client: { type: Schema.Types.ObjectId, ref: 'Client' },
     clients: [{ type: Schema.Types.ObjectId, ref: 'Client' }],
     teacher: { type: Schema.Types.ObjectId, ref: 'Teacher' },
@@ -242,6 +243,7 @@ Enrollment.methods.getPrice = function(numberOfLessons) {
 
 Enrollment.methods.createLessons = function(quantity) {
     return new Array(quantity).fill().map(() => ({
+        duration: this.lessonDuration,
         enrollment: this.id,
         client: this.client,
         teacher: this.teacher

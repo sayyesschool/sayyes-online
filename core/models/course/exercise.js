@@ -7,8 +7,8 @@ const Exercise = new Schema({
     image: { type: String },
     audio: { type: String },
     video: { type: String },
-    _unit: { type: Schema.Types.ObjectId },
-    _lesson: { type: Schema.Types.ObjectId }
+    unit: { type: Schema.Types.ObjectId },
+    lesson: { type: Schema.Types.ObjectId }
 });
 
 Exercise.virtual('imageUrl').get(function() {

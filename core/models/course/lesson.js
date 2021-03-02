@@ -5,8 +5,18 @@ const Lesson = new Schema({
     title: { type: String },
     document: { type: String },
     image: { type: String },
-    _unit: { type: Schema.Types.ObjectId },
-    _exercises: [Schema.Types.ObjectId]
+    audios: [String],
+    videos: [String],
+    unit: { type: Schema.Types.ObjectId },
+    exercises: [Schema.Types.ObjectId]
+});
+
+Lesson.virtual('uri').get(function() {
+    return `${this.parent().uri}/units/${this.unit}/lessons/${this.id}`;
+});
+
+Lesson.virtual('url').get(function() {
+    return `${this.parent().url}/lessons/${this.slug}`;
 });
 
 Lesson.virtual('documentUrl').get(function() {

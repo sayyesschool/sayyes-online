@@ -21,12 +21,12 @@ const Course = new Schema({
     exercises: [Exercise]
 });
 
-Course.virtual('url').get(function() {
+Course.virtual('uri').get(function() {
     return `/courses/${this.id}`;
 });
 
-Course.virtual('uri').get(function() {
-    return `/courses/${this.id}`;
+Course.virtual('url').get(function() {
+    return `/courses/${this.slug}`;
 });
 
 Course.virtual('imageUrl').get(function() {
