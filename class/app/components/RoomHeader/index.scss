@@ -1,32 +1,58 @@
 @use '@material/banner';
 @use '@material/button';
 @use '@material/icon-button';
+@use '@material/tab';
+@use '@material/tab-indicator';
+@use '@material/theme';
 
 .room__header {
-    align-items: center;
     background-color: #222;
     box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
-    //border-bottom: 1px solid rgba(255, 255, 255, .12);
 
-    &__text {
-
+    .mdc-top-app-bar__row {
+        height: 48px;
     }
 
-    &__actions {
-        flex-shrink: 0;
+    .mdc-top-app-bar__section {
+        flex: 1;
 
-        .mdc-top-app-bar__action-item {
-            margin: 4px;
+        &--align-center {
+            justify-content: center;
         }
 
-        .mdc-icon-button {
-            @include icon-button.size(36px);
-            @include icon-button.ink-color(text-secondary-on-dark);
+        &--align-end {
+            flex-shrink: 0;
         }
+    }
+
+    .mdc-top-app-bar__title {
+        @include theme.property(color, text-secondary-on-dark);
+        padding-left: 0;
+    }
+
+    .mdc-top-app-bar__action-item {
+        margin: 4px;
+    }
+
+    .mdc-icon-button {
+        @include icon-button.ink-color(text-secondary-on-dark);
     }
 
     .end-call-button {
         @include button.filled-accessible(firebrick);
+    }
+
+    .mdc-tab {
+        @include tab.icon-color(text-secondary-on-dark);
+        @include tab.text-label-color(text-secondary-on-dark);
+        @include tab.states-color(text-secondary-on-dark);
+        @include tab.active-icon-color(text-primary-on-dark);
+        @include tab.active-text-label-color(text-primary-on-dark);
+        @include tab.active-states-color(text-primary-on-dark);
+    
+        .mdc-tab-indicator {
+            @include tab-indicator.underline-color(on-primary);
+        }
     }
 }
 

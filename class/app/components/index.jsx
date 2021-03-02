@@ -7,7 +7,7 @@ import App from 'app/components/App';
 import ErrorDialog from 'app/components/ErrorDialog';
 import UnsupportedBrowserWarning from 'app/components/UnsupportedBrowserWarning';
 
-export default function Root({ match }) {
+export default function Root() {
     const { error, setError } = useAppState();
     const connectionOptions = useConnectionOptions();
 

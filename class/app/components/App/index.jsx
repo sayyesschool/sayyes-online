@@ -29,22 +29,6 @@ export default function App() {
 
     const [isChatOpen, setChatOpen] = useState(false);
 
-    // useEffect(() => {
-    //     if (enrollment) {
-    //         syncClientRef.current?.document(enrollment.id).then(document => {
-    //             document.on('updated', update => {
-    //                 if (update.isLocal) return;
-
-    //                 setDocument(update.value);
-    //             });
-
-    //             setDocument(document);
-    //         });
-    //     }
-
-    //     return () => document?.close();
-    // }, [enrollment]);
-
     if (!user || !enrollment) return <LoadingIndicator />;
 
     return (
@@ -67,7 +51,10 @@ export default function App() {
                     </AppSideSheet>
 
                     <AppContent className="class-content">
-                        <Room />
+                        <Room
+                            enrollmentId={enrollment.id}
+                            courseId={enrollment.courses[0].id}
+                        />
 
                         <FAB
                             className="chat-button"

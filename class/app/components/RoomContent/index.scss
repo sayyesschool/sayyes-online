@@ -7,7 +7,7 @@ $participantBorderWidth: 2px;
 $totalMobileSidebarHeight: $sidebarMobileHeight + ($sidebarMobilePadding * 2) + $participantBorderWidth;
 
 .room__content {
-    height: calc(100% - 64px);
+    height: calc(100% - 48px);
     display: grid;
     grid-template-columns: 1fr 355px;
     grid-template-rows: 100%;

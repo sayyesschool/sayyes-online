@@ -2,6 +2,8 @@ import React from 'react';
 import {
     Banner,
     Button,
+    Icon,
+    IconButton,
     TopAppBar
 } from 'mdc-react';
 
@@ -15,7 +17,7 @@ import ToggleScreenShareButton from 'app/components/ToggleScreenShareButton';
 
 import './index.scss';
 
-export default function RoomHeader({ title, ...props }) {
+export default function RoomHeader({ isFullscreen, handleFullscreen, children, ...props }) {
     const { room, isSharingScreen, toggleScreenShare } = useRoomContext();
     const roomState = useRoomState();
     const connectedTime = useConnectedTime();
@@ -28,6 +30,10 @@ export default function RoomHeader({ title, ...props }) {
                 <TopAppBar.Row>
                     <TopAppBar.Section className="room__header__text" align="start">
                         <TopAppBar.Title>{formatTime(connectedTime)}</TopAppBar.Title>
+                    </TopAppBar.Section>
+
+                    <TopAppBar.Section className="room__header__tabs" align="center">
+                        {children}
                     </TopAppBar.Section>
 
                     <TopAppBar.Section className="room__header__actions" align="end">
@@ -45,13 +51,13 @@ export default function RoomHeader({ title, ...props }) {
                             </TopAppBar.ActionItem>
                         }
 
-                        {/* <TopAppBar.ActionItem>
+                        <TopAppBar.ActionItem>
                             <IconButton
                                 icon={isFullscreen ? 'fullscreen_exit' : 'fullscreen'}
                                 title={isFullscreen ? 'Полный экран' : 'Отключить полный экран'}
                                 onClick={handleFullscreen}
                             />
-                        </TopAppBar.ActionItem> */}
+                        </TopAppBar.ActionItem>
 
                         <TopAppBar.ActionItem>
                             <Button
@@ -68,7 +74,7 @@ export default function RoomHeader({ title, ...props }) {
             <Banner
                 className="screen-sharing-banner"
                 open={isSharingScreen}
-                //icon={<Icon>screen_share</Icon>}
+                icon={<Icon>screen_share</Icon>}
                 text="Вы делитесь своим экраном"
                 action={
                     <Button onClick={() => toggleScreenShare()}>Остановить</Button>
