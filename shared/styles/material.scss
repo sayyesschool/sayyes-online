@@ -4,11 +4,12 @@
     $secondary: variables.$secondary-color
 );
 @use '@material/typography' with (
+    $font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
     $styles-headline1: (
         font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
         font-weight: 700,
         color: variables.$heading-color
-    ),
+    ), 
     $styles-headline2: (
         font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
         font-weight: 700,
