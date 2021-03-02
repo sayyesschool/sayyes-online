@@ -1,3 +1,5 @@
+@use '@material/icon-button';
+
 .bottom-sheet {
     position: fixed;
     left: 0;
@@ -10,15 +12,19 @@
     transition: transform .2s;
     z-index: 10;
 
-    &__content {
+    .bottom-sheet__content {
         flex: 1;
     }
 
-    &__actions {
+    .bottom-sheet__actions {
         margin: 8px;
+
+        .mdc-icon-button {
+            @include icon-button.ink-color(text-secondary-on-light);
+        }
     }
 
-    &--open {
+    &.bottom-sheet--open {
         transform: translateY(0);
     }
 }
