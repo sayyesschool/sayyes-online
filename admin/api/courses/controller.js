@@ -114,8 +114,8 @@ module.exports = ({
             Course.update(req.params.course, {
                 $pull: {
                     units: { _id: req.params.unit },
-                    lessons: { _unit: req.params.unit },
-                    exercises: { _unit: req.params.unit }
+                    lessons: { unit: req.params.unit },
+                    exercises: { unit: req.params.unit }
                 }
             }, {
                 new: false,
@@ -138,13 +138,13 @@ module.exports = ({
         create: (req, res, next) => {
             const lesson = new Course().lessons.create(req.body);
 
-            Course.update(req.params.course, {
+            Course.findByIdAndUpdate(req.params.course, {
                 $push: {
                     lessons: lesson,
-                    'units.$[u]._lessons': lesson.id
+                    'units.$[u].lessons': lesson.id
                 }
             }, {
-                arrayFilters: [{ 'u._id': lesson._unit }],
+                arrayFilters: [{ 'u._id': lesson.unit }],
                 projection: {
                     id: true,
                     slug: true,
@@ -189,14 +189,14 @@ module.exports = ({
             Course.update(req.params.course, {
                 $pull: {
                     lessons: { _id: req.params.lesson },
-                    'units.$[u]._lessons': req.params.lesson,
-                    exercises: { _lesson: req.params.lesson }
+                    'units.$[u].lessons': req.params.lesson,
+                    exercises: { lesson: req.params.lesson }
                 }
             }, {
                 arrayFilters: [{ 'u._lessons': req.params.lesson }],
                 projection: {
                     lessons: { $elemMatch: { _id: req.params.lesson } },
-                    units: { $elemMatch: { _lessons: req.params.lesson } }
+                    units: { $elemMatch: { lessons: req.params.lesson } }
                 }
             }).then(({ lessons: [lesson], units: [unit] }) => {
                 const data = lesson.toObject();
@@ -219,11 +219,11 @@ module.exports = ({
             Course.update(req.params.course, {
                 $push: {
                     exercises: exercise,
-                    'lessons.$[l]._exercises': exercise.id
+                    'lessons.$[l].exercises': exercise.id
                 }
             }, {
                 new: true,
-                arrayFilters: [{ 'l._id': exercise._lesson }],
+                arrayFilters: [{ 'l._id': exercise.lesson }],
                 projection: {
                     id: true,
                     slug: true,
@@ -272,10 +272,10 @@ module.exports = ({
             Course.update(req.params.course, {
                 $pull: {
                     exercises: { _id: req.params.exercise },
-                    'lessons.$[l]._exercises': req.params.exercise
+                    'lessons.$[l].exercises': req.params.exercise
                 }
             }, {
-                arrayFilters: [{ 'l._exercises': req.params.exercise }],
+                arrayFilters: [{ 'l.exercises': req.params.exercise }],
                 projection: {
                     exercises: { $elemMatch: { _id: req.params.exercise } }
                 }
