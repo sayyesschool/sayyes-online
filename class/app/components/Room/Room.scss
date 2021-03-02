@@ -13,4 +13,10 @@
         height: 100%;
         margin: auto;
     }
+
+    &--showing-content {
+        .participant-info--hide-participant {
+            display: flex;
+        }
+    }
 }
