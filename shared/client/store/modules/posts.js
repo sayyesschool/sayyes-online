@@ -77,12 +77,34 @@ export const actions = {
 
 export const postsReducer = createReducer(null, {
     [getPosts]: (state, action) => action.data,
-    [createPost]: (state, action) => state?.concat(action.data) || [action.data]
+    [createPost]: (state, action) => state?.concat(action.data).sort(sortByDate) || [action.data],
+    [updatePost]: (state, action) => state?.map(post => post.id !== action.data.id ? post : {
+        ...post,
+        ...action.data
+    }),
+    [deletePost]: (state, action) => state?.filter(post => post.id !== action.data.id),
+    [createComment]: (state, action) => state?.map(post => post.id !== action.data.postId ? post : ({
+        ...post,
+        comments: post.comments.concat(action.data)
+    })),
+    [updateComment]: (state, action) => state?.map(post => post.id !== action.data.postId ? post : ({
+        ...post,
+        comments: post.comments.map(comment => comment.id !== action.data.id ?
+            comment :
+            action.data
+        )
+    })),
+    [deleteComment]: (state, action) => state?.map(post => post.id !== action.data.postId ? post : ({
+        ...post,
+        comments: post.comments.filter(comment => comment.id !== action.data.id)
+    }))
 });
 
 export const postReducer = createReducer(null, {
     [getPost]: (state, action) => action.data,
     [unsetPost]: (state, action) => null,
+    [updatePost]: (state, action) => ({ ...state, ...action.data }),
+    [deletePost]: (state, action) => null,
     [createComment]: (state, action) => ({
         ...state,
         comments: state.comments.concat(action.data)
@@ -104,3 +126,9 @@ export default combineReducers({
     list: postsReducer,
     single: postReducer
 });
+
+function sortByDate(a, b) {
+    if (a.createAt === b.createdAt) return 0;
+    if (a.createdAt < b.createdAt) return 1;
+    else return -1;
+}

@@ -19,17 +19,17 @@ export default function MenuButton({
     const handleOpen = useCallback(() => setOpen(true), []);
     const handleClose = useCallback(() => setOpen(false), []);
 
-    const classNames = classnames('menu-button', className);
-
     return (
-        <div ref={anchorRef} className={classNames}>
+        <div ref={anchorRef}>
             {React.isValidElement(button) ?
                 React.cloneElement(button, {
+                    className,
                     disabled,
                     onClick: handleOpen
                 })
                 :
                 <IconButton
+                    className={className}
                     icon={icon || 'more_vert'}
                     disabled={disabled}
                     onClick={handleOpen}

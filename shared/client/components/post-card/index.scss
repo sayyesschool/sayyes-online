@@ -1,0 +1,41 @@
+.post-card {
+    overflow: visible;
+
+    > .mdc-card__header {
+        .mdc-card__header__actions {
+            opacity: 0;
+            transition: opacity .2s;
+        }
+    }
+
+    .post-content {
+        padding: 1rem 2rem;
+    }
+
+    .post-form {
+        border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .comment-card {
+        border: none;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .comment-form {
+        border-top: 1px solid #e0e0e0;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .mdc-card__actions {
+        justify-content: space-between;
+    }
+
+    &:hover {
+        > .mdc-card__header {
+            .mdc-card__header__actions {
+                opacity: 1;
+            }
+        }
+    }
+}

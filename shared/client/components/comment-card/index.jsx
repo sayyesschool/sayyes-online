@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import {
+    Avatar,
     Card,
     Icon,
     IconButton
@@ -11,7 +12,7 @@ import MenuButton from 'shared/components/menu-button';
 
 import './index.scss';
 
-export default function CommentCard({ comment = {}, onUpdate, onDelete }) {
+export default function CommentCard({ user, comment = {}, onUpdate, onDelete }) {
     const [isEditing, toggleEditing] = useBoolean(false);
 
     const handleUpdate = useCallback(data => {
@@ -26,9 +27,10 @@ export default function CommentCard({ comment = {}, onUpdate, onDelete }) {
     return (
         <Card className="comment-card" outlined>
             <Card.Header
+                graphic={<Avatar src={comment.user?.imageUrl} text={comment.user?.initials} />}
                 title={comment.user?.fullname}
                 subtitle={comment.datetime}
-                actions={isEditing ?
+                actions={user.id === comment.user.id && (isEditing ?
                     [
                         <IconButton
                             icon="save"
@@ -58,7 +60,7 @@ export default function CommentCard({ comment = {}, onUpdate, onDelete }) {
                             }
                         ]}
                     />
-                }
+                )}
             />
 
             {isEditing ?
@@ -69,7 +71,6 @@ export default function CommentCard({ comment = {}, onUpdate, onDelete }) {
                 />
                 :
                 <Card.Section
-                    primary
                     dangerouslySetInnerHTML={{ __html: comment.content }}
                 />
             }

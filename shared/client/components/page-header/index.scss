@@ -69,13 +69,13 @@ $ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
 
     .mdc-chip-set {
         justify-content: center;
+    }
 
-        .mdc-chip {
-            background-color: transparent;
-            @include chips.ink-color($ink-color);
-            @include chips.selected-ink-color($ink-color);
-            @include chips.leading-icon-color($ink-color);
-        }
+    .mdc-chip {
+        background-color: transparent;
+        @include chips.ink-color($ink-color);
+        @include chips.selected-ink-color($ink-color);
+        @include chips.leading-icon-color($ink-color);
     }
 
     .mdc-tab {

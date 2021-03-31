@@ -64,9 +64,9 @@ export const enrollmentReducer = createReducer(null, {
     [deleteLesson]: (state, action) => state.id === action.data.enrollment ?
         { ...state, lessons: state.lessons.filter(lesson => lesson.id !== action.data.id) } :
         state,
-    [createPost]: (state, action) => state.id === action.data.enrollment ?
-        { ...state, lessons: state.posts.concat(action.data) } :
-        state
+    // [createPost]: (state, action) => state.id === action.data.enrollment ?
+    //     { ...state, lessons: state.posts.concat(action.data) } :
+    //     state
 });
 
 export default combineReducers({

@@ -1,0 +1,27 @@
+.schedule-select {
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .schedule-select-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: .5rem;
+
+        .mdc-select {
+            flex: 1;
+            margin-right: 8px;
+        }
+
+        .mdc-text-field {
+            margin-right: 8px;
+            margin-top: 0 !important;
+        }
+
+        .mdc-icon-button {
+            margin-left: auto;
+        }
+    }
+}

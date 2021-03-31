@@ -1,7 +1,35 @@
 .comment-card {
+    .mdc-card__header {
+        .mdc-card__header__title {
+            line-height: 1.4;
+            font-size: 1rem;
+        }
+
+        .mdc-card__header__subtitle {
+            line-height: 1.1rem !important;
+        }
+
+        .mdc-card__header__actions {
+            opacity: 0;
+            transition: opacity .2s;
+        }
+    }
+
     .mdc-card__section {
+        padding: 8px 1rem 8px 72px;
+
         p:last-child {
             margin-bottom: 0;
+        }
+    }
+
+    .mdc-card__actions {
+        justify-content: space-between;
+    }
+
+    &:hover {
+        .mdc-card__header__actions {
+            opacity: 1;
         }
     }
 }

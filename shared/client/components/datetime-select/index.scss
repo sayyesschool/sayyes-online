@@ -1,0 +1,26 @@
+.datetime-select {
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .datetime-select-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: .5rem;
+
+        .mdc-text-field {
+            margin-right: 8px;
+            margin-top: 0 !important;
+
+            &:first-child {
+                flex: 1;
+            }
+        }
+
+        .mdc-icon-button {
+            margin-left: auto;
+        }
+    }
+}

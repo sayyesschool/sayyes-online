@@ -1,7 +1,6 @@
 export default (api, apiUrl) => store => next => action => {
     if (!action.request) return next(action);
 
-    const request = action.request;
     const [
         REQUEST = `${action.type}_REQUEST`,
         SUCCESS = action.type,
@@ -10,7 +9,11 @@ export default (api, apiUrl) => store => next => action => {
 
     next({ ...action, type: REQUEST, request: undefined });
 
-    return api[request.method](`${apiUrl}${request.url}`, request.body)
+    const { method, url: path, query, body } = action.request;
+    const qs = typeof query === 'object' ? new URLSearchParams(query).toString() : query;
+    const url = apiUrl + path + (qs ? `?${qs}` : '');
+
+    return api[method](url, body)
         .then(data => {
             next({
                 type: SUCCESS,

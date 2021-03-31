@@ -51,7 +51,7 @@ export default combineReducers({
 
     single: createReducer(null, {
         [getClient]: (state, action) => action.data,
-        [updateClient]: (state, action) => action.data,
+        [updateClient]: (state, action) => ({ ...state, ...action.data }),
         [deleteClient]: (state, action) => null,
         [createPayment]: (state, action) => action.data.client === state.id ? {
             ...state,

@@ -4,6 +4,8 @@ import {
     Dialog
 } from 'mdc-react';
 
+import './index.scss';
+
 export default function FormDialog({
     form,
     title,
@@ -16,6 +18,7 @@ export default function FormDialog({
 }) {
     return (
         <Dialog
+            className="form-dialog"
             open={open}
             title={title}
             {...props}

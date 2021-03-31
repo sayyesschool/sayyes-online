@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 import 'moment/locale/ru';
 
 import MonthView from './MonthView';
@@ -7,7 +6,7 @@ import WeekView from './WeekView';
 
 import './index.scss';
 
-export default function Calendar({
+function Calendar({
     value,
     view = 'week',
     events = [],
@@ -37,3 +36,8 @@ export default function Calendar({
         );
     }
 }
+
+Calendar.WeekView = WeekView;
+Calendar.MonthView = MonthView;
+
+export { Calendar as default, WeekView, MonthView };

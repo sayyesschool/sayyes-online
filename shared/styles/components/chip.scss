@@ -2,10 +2,11 @@
     &.person-chip {
         padding-left: 0;
 
-        .mdc-chip__icon {
+        .mdc-chip__icon--leading {
             width: 32px;
             height: 32px;
             margin-left: 0;
+            margin-right: 8px;
         }
     }
 }

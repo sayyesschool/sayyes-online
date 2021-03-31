@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route, Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import {
     Dialog,
     Icon,
@@ -23,16 +23,20 @@ import MenuButton from 'shared/components/menu-button';
 
 import './index.scss';
 
-export default function Course({ match, location, history }) {
-    const [sharedState, setSharedState] = useSyncDoc(window.TWILIO_SYNC_TOKEN, match.params.enrollmentId);
-    const [course] = useCourse(match.params.courseId);
+export default function Course({ onMedia }) {
+    const history = useHistory();
+    const location = useLocation();
+    const params = useParams();
+    const [sharedState, setSharedState] = useSyncDoc(window.TWILIO_SYNC_TOKEN, params.enrollmentId);
+    const [user] = useUser();
+    const [course] = useCourse(params.courseId);
 
     const [audio, setAudio] = useState(null);
     const [video, setVideo] = useState(null);
 
     useUpdated(() => {
         if (sharedState?.path) {
-            history.push(sharedState?.path);
+            history.push(sharedState.path);
         }
 
         if (sharedState?.audio) {
@@ -46,21 +50,35 @@ export default function Course({ match, location, history }) {
         setSharedState({});
     }, [course, sharedState]);
 
+    useUpdated(() => {
+        onMedia(audio);
+    }, [audio]);
+
+    useUpdated(() => {
+        onMedia(video);
+    }, [video]);
+
     const handleAudio = useCallback(audio => {
         setAudio(audio);
-        setSharedState({
-            audio: audio.filename,
-            path: location.pathname
-        });
-    }, [location]);
+
+        if (user.role === 'teacher') {
+            setSharedState({
+                audio: audio.filename,
+                path: location.pathname
+            });
+        }
+    }, [user, location]);
 
     const handleVideo = useCallback(video => {
         setVideo(video);
-        setSharedState({
-            video: video.filename,
-            path: location.pathname
-        });
-    }, [location]);
+
+        if (user.role === 'teacher') {
+            setSharedState({
+                video: video.filename,
+                path: location.pathname
+            });
+        }
+    }, [user, location]);
 
     const handleSync = useCallback(() => {
         setSharedState({
@@ -70,9 +88,9 @@ export default function Course({ match, location, history }) {
 
     if (!course) return <LoadingIndicator />;
 
-    const enrollmentId = match.params.enrollmentId;
-    const unit = course.unitsById.get(match.params.unitId);
-    const lesson = course.lessonsById.get(match.params.lessonId);
+    const enrollmentId = params.enrollmentId;
+    const unit = course.unitsById.get(params.unitId);
+    const lesson = course.lessonsById.get(params.lessonId);
 
     return (
         <div className="course">
@@ -116,11 +134,13 @@ export default function Course({ match, location, history }) {
                                 }))}
                             />
                         ),
-                        <IconButton
-                            key="sync"
-                            icon="sync"
-                            onClick={handleSync}
-                        />
+                        (user.role === 'teacher' &&
+                            <IconButton
+                                key="sync"
+                                icon="sync"
+                                onClick={handleSync}
+                            />
+                        )
                     ]
                 }
             />

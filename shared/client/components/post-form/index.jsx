@@ -10,7 +10,7 @@ import TextEditor from 'shared/components/text-editor';
 
 import './index.scss';
 
-export default function PostForm({ post = {}, onSubmit }) {
+export default function PostForm({ id = 'post-form', post = {}, onSubmit }) {
     const editorRef = useRef();
     const [data, handleChange] = useForm({
         title: post.title || '',
@@ -26,7 +26,7 @@ export default function PostForm({ post = {}, onSubmit }) {
     }, [data]);
 
     return (
-        <Form id="post-form" onSubmit={handleSubmit}>
+        <Form id={id} className="post-form" onSubmit={handleSubmit}>
             <Layout column>
                 <TextField
                     name="title"
