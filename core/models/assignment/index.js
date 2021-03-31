@@ -6,12 +6,11 @@ const Message = require('../message');
 const Status = {
     assigned: 'assigned',
     submitted: 'submitted',
-    pending: 'pending',
     completed: 'completed'
 };
 
 const Assignment = new Schema({
-    title: { type: String, required: true, trim: true },
+    //title: { type: String, required: true, trim: true },
     content: { type: String, default: '' },
     published: { type: Boolean, default: true },
     status: { type: String, enum: Object.keys(Status), default: Status.assigned },
@@ -22,6 +21,10 @@ const Assignment = new Schema({
     dueAt: { type: Date }
 }, {
     timestamps: true
+});
+
+Assignment.virtual('title').get(function() {
+    return `Задание от ${moment(this.createdAt).format('DD.MM')}`;
 });
 
 Assignment.virtual('url').get(function() {

@@ -4,13 +4,11 @@ const moment = require('moment');
 const Message = require('../message');
 
 const Post = new Schema({
-    title: { type: String, required: true, trim: true },
+    title: { type: String, trim: true },
     content: { type: String, default: '' },
     published: { type: Boolean, default: true },
     comments: [Message],
     user: { type: Schema.Types.ObjectId, ref: 'User' },
-    client: { type: Schema.Types.ObjectId, ref: 'User' },
-    teacher: { type: Schema.Types.ObjectId, ref: 'User' },
     enrollment: { type: Schema.Types.ObjectId, ref: 'Enrollment' }
 }, {
     timestamps: true
@@ -23,6 +21,20 @@ Post.virtual('url').get(function() {
 Post.virtual('uri').get(function() {
     return `/posts/${this.id}`;
 });
+
+Post.virtual('statusLabel').get(function() {
+    return this.read ? 'Ознакомлен' : 'Новый';
+});
+
+Post.virtual('statusIcon').get(function() {
+    return this.read ? 'check_circle' : 'new_releases';
+});
+
+
+Post.virtual('dateCreated')
+    .get(function() {
+        return moment(this.createdAt).format('DD.MM.YY');
+    });
 
 Post.virtual('timeSinceCreated')
     .get(function() {

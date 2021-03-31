@@ -24,23 +24,18 @@ const User = new Schema({
     lastname: {
         type: String,
         trim: true,
-        minlength: [2, 'Фамилия слишком короткая.'],
         maxlength: [64, 'Фамилия слишком длинная.'],
         match: [/^[^0-9 ]+$/, 'В фамилии не должно быть пробелов и цифр.']
     },
     patronym: {
         type: String,
         trim: true,
-        minlength: [2, 'Отчество слишком короткая.'],
         maxlength: [64, 'Отчество слишком длинная.'],
         match: [/^[^0-9 ]+$/, 'В отчестве не должно быть пробелов и цифр.']
     },
     email: {
         type: String,
-        required: [true, 'Поле Email обязательно для заполнения.'],
-        unique: true,
         trim: true,
-        minlength: [7, 'Адрес электронный почты слишком короткий.'],
         maxlength: [256, 'Адрес электронный почты слишком длинный.'],
         match: [/^[a-zA-Z0-9'._%+-]+@[a-zA-Z0-9-][a-zA-Z0-9.-]*\.[a-zA-Z]{2,63}$/, 'Неверный формат адреса электронной почты.']
     },
@@ -57,6 +52,10 @@ const User = new Schema({
     timezone: { type: String },
     imageUrl: { type: String },
     role: { type: String, enum: Object.keys(roles), default: 'client' },
+    socialAccounts: [{
+        provider: { type: 'String' },
+        value: { type: 'String' }
+    }],
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
     activated: { type: Boolean, default: false, alias: 'isActivated' },
     activationToken: String,
@@ -159,7 +158,7 @@ User.pre('save', function(next) {
 
 // Check email
 User.pre('save', function(next) {
-    if (!this.isModified('email')) return next();
+    if (!this.isModified('email') || this.email === '') return next();
 
     mongoose.models.User.findOne({ email: this.email })
         .then(user => {

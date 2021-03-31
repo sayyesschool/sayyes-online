@@ -1,6 +1,15 @@
 const { Schema } = require('mongoose');
 
-const Client = new Schema();
+const Client = new Schema({
+    altPhone: {
+        type: String,
+        trim: true,
+        maxlength: 12,
+        set: value => value.trim().replace(/[\s()\-\+]+/g, '')
+    },
+    occupation: { type: 'String' },
+    interests: { type: 'String' }
+});
 
 Client.virtual('status').get(function() {
     return this.enrollments?.some(enrollment => enrollment.isActive);

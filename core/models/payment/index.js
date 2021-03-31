@@ -25,6 +25,7 @@ const Payment = new Schema({
     method: PaymentMethod,
     expiresAt: { type: Date },
     dueAt: { type: Date },
+    paidAt: { type: Date },
     test: { type: Boolean },
     operator: { type: String, enum: Object.keys(OPERATORS) },
     client: { type: Schema.Types.ObjectId, ref: 'User', required: true },
@@ -41,12 +42,9 @@ Payment.virtual('url').get(function() {
     return `/payments/${this.id}`;
 });
 
-Payment.virtual('date')
+Payment.virtual('dateLabel')
     .get(function() {
         return moment(this.createdAt).format('DD.MM.YYYY');
-    })
-    .set(function(value) {
-        this.createdAt = value;
     });
 
 Payment.virtual('statusLabel')
