@@ -15,7 +15,8 @@ export default {
     meetings: null,
     meeting: null,
 
-    post: null,
+    //post: null,
+    posts: null,
 
     payments: null
 };

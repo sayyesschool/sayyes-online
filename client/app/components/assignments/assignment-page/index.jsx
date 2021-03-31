@@ -50,14 +50,13 @@ export default function AssignmentPage({ match }) {
                     <Link to={enrollment.url}>{enrollment.title}</Link>
                 ]}
                 title={assignment.title}
-                pullContent
-            >
-                <Chip
+                actions={<Chip
                     icon={<Icon>{assignment.statusIcon}</Icon>}
                     text={assignment.statusLabel}
                     outlined
-                />
-            </PageHeader>
+                />}
+                pullContent
+            />
 
             <PageContent>
                 <LayoutGrid>

@@ -13,8 +13,8 @@ import PageContent from 'shared/components/page-content';
 import PageSideSheet from 'shared/components/page-side-sheet';
 import CourseContents from 'shared/components/course-contents';
 import UnitContent from 'shared/components/unit-content';
-import UnitAudio from 'shared/components/unit-audio';
-import UnitVideo from 'shared/components/unit-video';
+import LessonAudio from 'shared/components/lesson-audio';
+import LessonVideo from 'shared/components/lesson-video';
 
 import './index.scss';
 
@@ -65,11 +65,11 @@ export default function CourseUnitPage({ match }) {
                 onClose={() => setSideSheetOpen(false)}
             >
                 {sideSheetView === 'audio' &&
-                    <UnitAudio unit={unit} />
+                    <LessonAudio lesson={lesson} />
                 }
 
                 {sideSheetView === 'video' &&
-                    <UnitVideo unit={unit} />
+                    <LessonVideo lesson={lesson} />
                 }
 
                 {sideSheetView === 'contents' &&

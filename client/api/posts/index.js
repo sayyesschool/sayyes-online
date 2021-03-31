@@ -11,7 +11,9 @@ module.exports = context => {
         .post(controller.create);
 
     router.route('/:id')
-        .get(controller.getOne);
+        .get(controller.getOne)
+        .put(controller.update)
+        .delete(controller.delete);
 
     router.route('/:id/comments')
         .post(controller.createComment);

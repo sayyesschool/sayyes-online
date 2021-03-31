@@ -44,7 +44,7 @@ module.exports = ({
     },
 
     update: (req, res, next) => {
-        Assignment.findByInAndUpdate(req.params.id, req.body, { new: true })
+        Assignment.findByIdAndUpdate(req.params.id, req.body, { new: true })
             .then(assignment => {
                 res.json({
                     ok: true,
@@ -56,7 +56,7 @@ module.exports = ({
     },
 
     delete: (req, res, next) => {
-        Assignment.findByInAndDelete(req.params.id)
+        Assignment.findByIdAndDelete(req.params.id)
             .then(assignment => {
                 res.json({
                     ok: true,

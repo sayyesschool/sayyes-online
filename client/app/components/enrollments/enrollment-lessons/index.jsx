@@ -1,35 +1,22 @@
-import React, { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
-import {
-    Card,
-    Icon,
-    List
-} from 'mdc-react';
+import React from 'react';
+
+import CalendarCard from 'shared/components/calendar-card';
 
 export default function EnrollmentLessons({ enrollment }) {
+    const events = enrollment.lessons.map(lesson => ({
+        id: lesson.id,
+        title: 'Урок',
+        icon: 'school',
+        date: new Date(lesson.date),
+        url: lesson.url
+    }));
+
     return (
         <div className="enrollment-lessons">
-            <Card>
-                <Card.Header
-                    graphic={<Icon>today</Icon>}
-                    title="Предстоящие занятия"
-                    subtitle={enrollment.scheduleLabel}
-                />
-
-                {enrollment.lessons?.length > 0 &&
-                    <Card.Section>
-                        <List twoLine>
-                            {enrollment.lessons?.map(lesson =>
-                                <List.Item
-                                    key={lesson.id}
-                                    primaryText={lesson.dateLabel}
-                                    secondaryText={lesson.statusLabel}
-                                />
-                            )}
-                        </List>
-                    </Card.Section>
-                }
-            </Card>
+            <CalendarCard
+                title="Занятия"
+                events={events}
+            />
         </div >
     );
 }

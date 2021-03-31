@@ -21,11 +21,9 @@ export default function EnrollmentPayCard({ enrollment, onCheckout, onCancel, ..
     return (
         <Card className="enrollment-pay-card" {...props}>
             <Card.Section className="enrollment-pay-card__section enrollment-pay-card__details-section">
-                <img src={STATIC_URL + '/images/cat/cat-welcome.png'} />
+                <img src={STATIC_URL + enrollment.imageSrc} />
 
                 <Typography className="domain-name" type="headline6">{enrollment.domainLabel}</Typography>
-
-                <Typography className="level-name" type="overline">{enrollment.levelLabel}</Typography>
             </Card.Section>
 
             <Card.Section className="enrollment-pay-card__section enrollment-pay-card__steps-section">

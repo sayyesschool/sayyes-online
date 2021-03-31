@@ -1,6 +1,7 @@
 @use 'shared/styles/variables';
 @use '@material/button';
 @use '@material/segmented-button';
+@use '@material/theme';
 
 $fill-color: variables.$primary-color;
 $ink-color: theme.accessible-ink-color(variables.$primary-color, primary);

@@ -2,8 +2,10 @@ module.exports = ({
     models: { Post }
 }) => ({
     getMany: (req, res, next) => {
-        Post.find({ teacher: req.user.id, ...req.query })
-            .populate('user', 'firstname lastname email')
+        Post.find({ ...req.query })
+            .populate('user', 'firstname lastname email imageUrl')
+            .populate('comments.user', 'firstname lastname email imageUrl')
+            .sort({ createdAt: -1 })
             .then(posts => {
                 res.json({
                     ok: true,
@@ -37,18 +39,51 @@ module.exports = ({
 
         Post.create(req.body)
             .then(post => {
+                post.user = req.user;
+
                 res.json({
                     ok: true,
-                    message: 'Запись создана',
+                    message: 'Пост создан',
                     data: post
                 });
             })
             .catch(next);
     },
 
-    update: (req, res, next) => { },
+    update: (req, res, next) => {
+        Post.findOneAndUpdate({
+            _id: req.params.id,
+            user: req.user.id
+        }, req.body, {
+            new: true,
+            projection: Object.keys(req.body)
+        })
+            .then(post => {
+                res.json({
+                    ok: true,
+                    message: 'Пост обновлен',
+                    data: post
+                });
+            })
+            .catch(next);
+    },
 
-    delete: (req, res, next) => { },
+    delete: (req, res, next) => {
+        Post.findOneAndDelete({
+            _id: req.params.id,
+            user: req.user.id
+        })
+            .then(post => {
+                res.json({
+                    ok: true,
+                    message: 'Пост удален',
+                    data: {
+                        id: post.id
+                    }
+                });
+            })
+            .catch(next);
+    },
 
     createComment: (req, res, next) => {
         req.body.user = req.user.id;

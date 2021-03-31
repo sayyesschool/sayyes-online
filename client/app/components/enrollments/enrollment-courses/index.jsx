@@ -13,12 +13,12 @@ export default function EnrollmentCourses({ enrollment }) {
                 <LayoutGrid>
                     {enrollment.courses.map(course =>
                         <LayoutGrid.Cell key={course.id} span="12">
-                            <Card component={Link} to={`${enrollment.url}${course.url}`}>
+                            <Card component={Link} to={`${enrollment.url}${course.uri}`}>
                                 <Card.Media imageUrl={course.imageUrl} wide />
 
                                 <Card.Header
                                     title={course.title}
-                                    subtitle={`${course.units.length} юнитов`}
+                                    subtitle={course.subtitle}
                                 />
                             </Card>
                         </LayoutGrid.Cell>

@@ -26,11 +26,9 @@ export default function EnrollmentDetailsCard({ enrollment, onPay, ...props }) {
                     />
 
                     <Card.Section primary>
-                        <img src={STATIC_URL + '/images/cat/cat-welcome.png'} />
+                        <img src={STATIC_URL + enrollment.imageSrc} />
 
-                        <Typography type="headline6">{enrollment.domainLabel}</Typography>
-
-                        <Typography type="overline">{enrollment.levelLabel}</Typography>
+                        <Typography className="domain-name" type="headline6">{enrollment.domainLabel}</Typography>
                     </Card.Section>
                 </LayoutGrid.Cell>
 
@@ -53,18 +51,15 @@ export default function EnrollmentDetailsCard({ enrollment, onPay, ...props }) {
                         title="Расписание"
                     />
 
-                    <Card.Section secondary>
-                        <Card className="next-lesson-card" outlined>
-                            <Card.Header
-                                title={nextLesson ? nextLesson.dateLabelFromNow : 'Не назначено'}
-                                subtitle="Следующее занятие"
-                            />
-                        </Card>
-                    </Card.Section>
-
                     <Card.Section primary>
                         <Card className="week-schedule-card" outlined>
-                            <WeekSchedule schedule={enrollment.schedule} />
+                            {enrollment.schedule ?
+                                <WeekSchedule schedule={enrollment.schedule} />
+                                :
+                                <Card.Header
+                                    title="Не назначено"
+                                />
+                            }
                         </Card>
                     </Card.Section>
                 </LayoutGrid.Cell>

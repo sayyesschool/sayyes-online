@@ -93,7 +93,7 @@ function TrialContent({ enrollment }) {
 }
 
 function PaymentContent({ enrollment }) {
-    return enrollment?.currentPayment.status === 'pending' ?
+    return enrollment?.currentPayment?.status === 'pending' ?
         (
             <div className="payment-content">
                 <Typography type="headline6">Ожидание поступления платежа</Typography>

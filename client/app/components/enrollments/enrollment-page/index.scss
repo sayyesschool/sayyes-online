@@ -1,5 +1,13 @@
 #enrollment-page {
-    
+    .page-header {
+        &__inner {
+            max-width: 1024px;
+        }
+    }
+
+    .page-content {
+        max-width: 1024px;
+    }
 }
 
 .chat-button {

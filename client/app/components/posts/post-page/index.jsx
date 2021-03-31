@@ -28,6 +28,10 @@ export default function PostPage({ match }) {
 
     const [isCommenting, toggleCommenting] = useBoolean(false);
 
+    const handleUpdatePost = useCallback(data => {
+        return actions.updatePost(post.id, data);
+    }, [post]);
+
     const handleCreateComment = useCallback(data => {
         return actions.createComment(post.id, data)
             .then(() => toggleCommenting(false));
@@ -49,7 +53,8 @@ export default function PostPage({ match }) {
                 breadcrumbs={[
                     <Link to={enrollment.url}>{enrollment.title}</Link>
                 ]}
-                title={post.title}
+                title={`Отчет от ${post.dateCreated}`}
+                actions={!post.read && <Button onClick={() => handleUpdatePost({ read: true })} raised>Отметить как прочитанный</Button>}
                 pullContent
             />
 

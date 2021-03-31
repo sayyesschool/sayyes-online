@@ -7,7 +7,7 @@ import { lessonsReducer } from 'shared/store/modules/lessons';
 import { materialReducer } from 'shared/store/modules/materials';
 import { meetingsReducer, meetingReducer } from 'shared/store/modules/meetings';
 import { paymentsReducer } from 'shared/store/modules/payments';
-import { postReducer } from 'shared/store/modules/posts';
+import { postsReducer, postReducer } from 'shared/store/modules/posts';
 import notification from 'shared/store/modules/notification';
 import user from 'shared/store/modules/user';
 
@@ -22,6 +22,7 @@ export default combineReducers({
     meetings: meetingsReducer,
     meeting: meetingReducer,
     payments: paymentsReducer,
-    post: postReducer,
+    posts: postsReducer,
+    //post: postReducer,
     user
 });

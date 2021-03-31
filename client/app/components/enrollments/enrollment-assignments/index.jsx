@@ -27,7 +27,7 @@ export default function EnrollmentAssignments({ enrollment }) {
                                     to={`${enrollment.url}${assignment.url}`}
                                     graphic={<Icon>{assignment.statusIcon}</Icon>}
                                     primaryText={assignment.title}
-                                    secondaryText={`${assignment.statusLabel} • ${assignment.timeToDue}`}
+                                    secondaryText={`${assignment.statusLabel}`}
                                     meta={<Chip
                                         icon={<Icon>forum</Icon>}
                                         text={assignment.comments.length}

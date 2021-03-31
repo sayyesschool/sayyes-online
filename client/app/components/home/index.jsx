@@ -1,10 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import {
-    Card,
-    Icon,
-    Layout,
     LayoutGrid,
-    SegmentedButton,
     Typography
 } from 'mdc-react';
 
@@ -17,7 +13,7 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
-import Calendar from 'shared/components/calendar';
+import CalendarCard from 'shared/components/calendar-card';
 
 import EnrollmentDetailsCard from 'app/components/enrollments/enrollment-details-card';
 import EnrollmentStatusCard from 'app/components/enrollments/enrollment-status-card';
@@ -32,7 +28,6 @@ export default function HomePage() {
     const [lessons] = useLessons();
     const [meetings] = useMeetings();
 
-    const [view, setView] = useState('week');
     const [isPaying, setPaying] = useState(false);
 
     const handleCheckout = useCallback(data => {
@@ -70,7 +65,7 @@ export default function HomePage() {
 
             <PageContent>
                 <LayoutGrid>
-                    {!activeEnrollment?.status !== 'active' &&
+                    {activeEnrollment?.status !== 'active' &&
                         <LayoutGrid.Cell span="12">
                             <EnrollmentStatusCard
                                 enrollment={activeEnrollment}
@@ -78,49 +73,29 @@ export default function HomePage() {
                         </LayoutGrid.Cell>
                     }
 
-                    <LayoutGrid.Cell span="12">
-                        {isPaying ?
-                            <EnrollmentPayCard
-                                enrollment={activeEnrollment}
-                                onCheckout={handleCheckout}
-                                onCancel={() => setPaying(false)}
-                            />
-                            :
-                            <EnrollmentDetailsCard
-                                enrollment={activeEnrollment}
-                                onPay={() => setPaying(true)}
-                            />
-                        }
-
-                    </LayoutGrid.Cell>
-
-                    <LayoutGrid.Cell span="12">
-                        <Layout row justifyContent="between" alignItems="center">
-                            <Typography type="headline6">Календарь</Typography>
-
-                            <SegmentedButton>
-                                <SegmentedButton.Segment
-                                    icon={<Icon>view_week</Icon>}
-                                    label="Неделя"
-                                    selected={view === 'week'}
-                                    onClick={() => setView('week')}
+                    {activeEnrollment?.status !== 'processing' &&
+                        <LayoutGrid.Cell span="12">
+                            {isPaying ?
+                                <EnrollmentPayCard
+                                    enrollment={activeEnrollment}
+                                    onCheckout={handleCheckout}
+                                    onCancel={() => setPaying(false)}
                                 />
-
-                                <SegmentedButton.Segment
-                                    icon={<Icon>today</Icon>}
-                                    label="Месяц"
-                                    selected={view === 'month'}
-                                    onClick={() => setView('month')}
+                                :
+                                <EnrollmentDetailsCard
+                                    enrollment={activeEnrollment}
+                                    onPay={() => setPaying(true)}
                                 />
-                            </SegmentedButton>
-                        </Layout>
+                            }
 
-                        <Card outlined>
-                            <Calendar
-                                view={view}
-                                events={events}
-                            />
-                        </Card>
+                        </LayoutGrid.Cell>
+                    }
+
+                    <LayoutGrid.Cell span="12">
+                        <CalendarCard
+                            title="Календарь"
+                            events={events}
+                        />
                     </LayoutGrid.Cell>
 
                     <LayoutGrid.Cell span="4">
