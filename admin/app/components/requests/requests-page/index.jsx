@@ -63,17 +63,17 @@ export default function RequestsPage({ history }) {
 
     const handleProcessRequestSubmit = useCallback(data => {
         clientActions.createClient(data.client)
-            .then(({ data }) => enrollmentActions.createEnrollment({
+            .then(({ data: client }) => enrollmentActions.createEnrollment({
                 ...data.enrollment,
-                client: data.id,
+                client: client.id,
                 manager: user.id,
                 request: request.id
             }))
-            .then(({ data }) => requestActions.updateRequest(request.id, {
+            .then(({ data: enrollment }) => requestActions.updateRequest(request.id, {
                 ...data.request,
                 status: 'completed',
-                client: data.client,
-                enrollment: data.enrollment
+                client: enrollment.client,
+                enrollment: enrollment.enrollment
             }))
             .then(({ data }) => history.push(`/clients/${data.client.id}`));
     }, [request]);

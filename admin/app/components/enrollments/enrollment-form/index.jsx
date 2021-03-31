@@ -1,56 +1,112 @@
-import React, { useCallback } from 'react';
+import React, { forwardRef, useRef, useCallback, useImperativeHandle } from 'react';
 import {
-    FormField,
     Layout,
     Select,
-    Switch,
     TextField
 } from 'mdc-react';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
+import ScheduleSelect from 'shared/components/schedule-select';
+import DateTimeSelect from 'shared/components/datetime-select';
+import PeopleSelect from 'shared/components/people-select';
 
 import { useStore } from 'app/hooks/store';
-import ScheduleSelect from 'app/components/shared/schedule-select';
-import PeopleSelect from 'app/components/shared/people-select';
 
-export default function EnrollmentForm({ enrollment = {}, onSubmit }) {
+import './index.scss';
+
+const types = [
+    { key: 'null', value: '', text: '' },
+    { key: 'individual', value: 'individual', text: 'Индивидуально' },
+    { key: 'group', value: 'group', text: 'Группа' }
+];
+
+const formats = [
+    { key: 'null', value: '', text: '' },
+    { key: 'online', value: 'online', text: 'Онлайн' },
+    { key: 'offline', value: 'offline', text: 'Оффлайн' }
+];
+
+const ages = [
+    { key: 'null', value: '', text: '' },
+    { key: 'adults', value: 'adults', text: 'Взрослые' },
+    { key: 'teenagers', value: 'teenagers', text: 'Подростки' },
+    { key: 'children', value: 'children', text: 'Дети' }
+];
+
+const levels = [
+    { key: 'null', value: '', text: '' },
+    { key: 'zero', value: 'zero', text: 'Нулевой' },
+    { key: 'beg', value: 'beg', text: 'Beginner' },
+    { key: 'elem', value: 'elem', text: 'Elementary' },
+    { key: 'pre', value: 'pre', text: 'Pre-Intermediate' },
+    { key: 'int', value: 'int', text: 'Intermediate' },
+    { key: 'upper', value: 'upper', text: 'Upper-Intermediate' },
+    { key: 'adv', value: 'adv', text: 'Advanced' }
+];
+
+const purposes = [
+    { key: 'null', value: '', text: '' },
+    { key: 'work', value: 'work', text: 'Для работы' },
+    { key: 'study', value: 'study', text: 'Для учебы' },
+    { key: 'interview', value: 'interview', text: 'Для собеседования' },
+    { key: 'travel', value: 'travel', text: 'Для путешествий' },
+    { key: 'hobby', value: 'hobby', text: 'Для себя (хобби)' }
+];
+
+const defaultEnrollment = {
+    status: 'pending',
+    domain: 'general',
+    type: '',
+    format: '',
+    age: '',
+    level: '',
+    experience: '',
+    purpose: '',
+    preferences: '',
+    trialLessonDate: new Date(),
+    trialLessonTime: { from: 0, to: 0 },
+    schedule: [],
+    note: '',
+};
+
+export default forwardRef(EnrollmentForm);
+
+function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
+    const formRef = useRef();
+
     const [user] = useStore('user');
     const [teachers] = useStore('teachers.list');
     const [managers] = useStore('managers.list');
+
     const [data, handleChange] = useForm({
-        status: 'pending',
-        type: '',
-        format: '',
-        age: '',
-        level: '',
-        goal: '',
-        domain: 'general',
-        teacher: '',
-        schedules: [],
-        note: undefined,
+        ...defaultEnrollment,
         ...enrollment,
-        client: enrollment.client?.id,
-        teacher: enrollment.teacher?.id,
-        manager: enrollment.manager ? enrollment.manager.id : user.id
+        client: enrollment.client?.id || '',
+        teacher: enrollment.teacher?.id || '',
+        manager: enrollment.manager?.id || user.id,
+        courses: undefined,
+        lessons: undefined,
+        payments: undefined
     });
+
+    useImperativeHandle(ref, () => ({
+        get form() { return formRef.current; },
+        get data() { return data; }
+    }));
 
     const handleSubmit = useCallback(() => {
         onSubmit(data);
     }, [data, onSubmit]);
 
     return (
-        <Form id="enrollment-form" onSubmit={handleSubmit}>
+        <Form ref={formRef} className="enrollment-form" onSubmit={handleSubmit} {...props}>
             <Layout column>
                 <Select
                     name="type"
                     value={data.type}
                     label="Тип"
-                    options={[
-                        { key: 'null', value: '', text: '' },
-                        { key: 'individual', value: 'individual', text: 'Индвидуально' },
-                        { key: 'group', value: 'group', text: 'Группа' }
-                    ]}
+                    options={types}
                     filled
                     required
                     onChange={handleChange}
@@ -60,11 +116,7 @@ export default function EnrollmentForm({ enrollment = {}, onSubmit }) {
                     name="format"
                     value={data.format}
                     label="Формат"
-                    options={[
-                        { key: 'null', value: '', text: '' },
-                        { key: 'online', value: 'online', text: 'Онлайн' },
-                        { key: 'offline', value: 'offline', text: 'Оффлайн' }
-                    ]}
+                    options={formats}
                     filled
                     required
                     onChange={handleChange}
@@ -74,12 +126,7 @@ export default function EnrollmentForm({ enrollment = {}, onSubmit }) {
                     name="age"
                     value={data.age}
                     label="Возрастная группа"
-                    options={[
-                        { key: 'null', value: '', text: '' },
-                        { key: 'adult', value: 'adult', text: 'Взрослые' },
-                        { key: 'teenager', value: 'teenager', text: 'Подростки' },
-                        { key: 'child', value: 'child', text: 'Дети' }
-                    ]}
+                    options={ages}
                     filled
                     onChange={handleChange}
                 />
@@ -88,89 +135,51 @@ export default function EnrollmentForm({ enrollment = {}, onSubmit }) {
                     name="level"
                     value={data.level}
                     label="Уровень"
-                    options={[
-                        { key: 'null', value: '', text: '' },
-                        { key: 'zero', value: 'zero', text: 'Нулевой' },
-                        { key: 'beg', value: 'beg', text: 'Beginner' },
-                        { key: 'elem', value: 'elem', text: 'Elementary' },
-                        { key: 'pre', value: 'pre', text: 'Pre-Intermediate' },
-                        { key: 'int', value: 'int', text: 'Intermediate' },
-                        { key: 'upper', value: 'upper', text: 'Upper-Intermediate' },
-                        { key: 'adv', value: 'adv', text: 'Advanced' }
-                    ]}
+                    options={levels}
                     filled
                     onChange={handleChange}
                 />
 
                 <Select
-                    name="goal"
-                    value={data.goal}
+                    name="purpose"
+                    value={data.purpose}
                     label="Цель"
-                    options={[
-                        { key: 'null', value: '', text: '' },
-                        { key: 'work', value: 'work', text: 'Для работы' },
-                        { key: 'study', value: 'study', text: 'Для учебы' },
-                        { key: 'interview', value: 'interview', text: 'Для собеседования' },
-                        { key: 'travel', value: 'travel', text: 'Для путешествий' },
-                        { key: 'hobby', value: 'hobby', text: 'Для себя (хобби)' }
-                    ]}
+                    options={purposes}
                     filled
                     onChange={handleChange}
                 />
 
-                <FormField label="Носитель языка">
-                    <Switch
-                        name="native"
-                        checked={data.native}
-                        onChange={handleChange}
-                    />
-                </FormField>
-
-                <ScheduleSelect
-                    name="schedules"
-                    schedule={data.schedules}
+                <TextField
+                    name="experience"
+                    value={data.experience}
+                    label="Опыт"
+                    filled
+                    textarea
                     onChange={handleChange}
                 />
 
-                {data.status === 'postponed' &&
-                    <TextField
-                        type="datetime-local"
-                        name="contactAt"
-                        value={moment(data.contactAt).format('YYYY-MM-DDTHH:mm')}
-                        label="Дата и время связи"
-                        filled
-                        required
-                        onChange={handleChange}
-                    />
-                }
+                <TextField
+                    name="preferences"
+                    value={data.preferences}
+                    label="Пожелания"
+                    filled
+                    textarea
+                    onChange={handleChange}
+                />
 
-                {enrollment.id &&
-                    <PeopleSelect
-                        name="teacher"
-                        value={data.teacher || ''}
-                        label="Преподаватель"
-                        options={teachers.map(teacher => ({
-                            key: teacher.id,
-                            value: teacher.id,
-                            text: teacher.fullname
-                        }))}
-                        onChange={handleChange}
-                    />
-                }
+                <DateTimeSelect
+                    name="trialLesson"
+                    label="Пробный урок"
+                    items={data.trialLesson}
+                    onChange={handleChange}
+                />
 
-                {enrollment.id &&
-                    <PeopleSelect
-                        name="manager"
-                        value={data.manager}
-                        label="Менеджер"
-                        options={managers.map(manager => ({
-                            key: manager.id,
-                            value: manager.id,
-                            text: manager.fullname
-                        }))}
-                        onChange={handleChange}
-                    />
-                }
+                <ScheduleSelect
+                    name="schedule"
+                    label="Расписание"
+                    schedule={data.schedule}
+                    onChange={handleChange}
+                />
 
                 <TextField
                     name="note"
@@ -178,6 +187,30 @@ export default function EnrollmentForm({ enrollment = {}, onSubmit }) {
                     label="Примечание"
                     filled
                     textarea
+                    onChange={handleChange}
+                />
+
+                <PeopleSelect
+                    name="teacher"
+                    value={data.teacher}
+                    label="Преподаватель"
+                    options={teachers.map(teacher => ({
+                        key: teacher.id,
+                        value: teacher.id,
+                        text: teacher.fullname
+                    }))}
+                    onChange={handleChange}
+                />
+
+                <PeopleSelect
+                    name="manager"
+                    value={data.manager}
+                    label="Менеджер"
+                    options={managers.map(manager => ({
+                        key: manager.id,
+                        value: manager.id,
+                        text: manager.fullname
+                    }))}
                     onChange={handleChange}
                 />
             </Layout>

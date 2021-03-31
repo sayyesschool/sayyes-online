@@ -57,7 +57,7 @@ module.exports = ({
     },
 
     update: (req, res, next) => {
-        Client.findByIdAndUpdate(req.params.id, req.body)
+        Client.findByIdAndUpdate(req.params.id, req.body, { new: true })
             .then(client => {
                 res.json({
                     ok: true,

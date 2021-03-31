@@ -5,12 +5,12 @@ import {
 
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
+import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
 import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 
 import { useStore, useActions } from 'app/hooks/store';
-import FormPanel from 'app/components/shared/form-panel';
 import ClientForm from 'app/components/clients/client-form';
 import ClientDetails from 'app/components/clients/client-details';
 import ClientEnrollments from 'app/components/clients/client-enrollments';
@@ -113,48 +113,48 @@ export default function ClientPage({ match, location, history }) {
                 </Grid>
             </PageContent>
 
-            <FormPanel
+            <FormDialog
                 form="client-form"
                 title="Данные клиента"
                 open={isClientFormOpen}
-                modal
                 onClose={() => setClientFormOpen(!isClientFormOpen)}
             >
                 <ClientForm
+                    id="client-form"
                     client={client}
                     onSubmit={updateClient}
                 />
-            </FormPanel>
+            </FormDialog>
 
-            <FormPanel
+            <FormDialog
                 form="enrollment-form"
                 title="Новое обучение"
                 open={isEnrollmentFormOpen}
-                modal
                 onClose={() => setEnrollmentFormOpen(false)}
             >
                 <EnrollmentForm
+                    id="enrollment-form"
                     enrollment={{
                         client
                     }}
                     onSubmit={createEnrollment}
                 />
-            </FormPanel>
+            </FormDialog>
 
-            <FormPanel
+            <FormDialog
                 form="payment-form"
                 title="Новый платеж"
-                modal
                 open={isPaymentFormOpen}
                 onClose={() => setPaymentFormOpen(false)}
             >
                 <PaymentForm
+                    id="payment-form"
                     payment={{
                         client
                     }}
                     onSubmit={createPayment}
                 />
-            </FormPanel>
+            </FormDialog>
 
             <ConfirmationDialog
                 title="Подтвердите действие"

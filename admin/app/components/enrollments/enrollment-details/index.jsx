@@ -9,7 +9,6 @@ import {
 import './index.scss';
 
 export default function EnrollmentDetails({ enrollment, onEdit }) {
-
     return (
         <section className="enrollment-details">
             <Card>
@@ -39,13 +38,13 @@ export default function EnrollmentDetails({ enrollment, onEdit }) {
 
                         <List.Item
                             graphic={<Icon>flag</Icon>}
-                            primaryText={enrollment.goalLabel || '[Не указана]'}
+                            primaryText={enrollment.purposeLabel || '[Не указана]'}
                             secondaryText="Цель"
                         />
 
                         <List.Item
                             graphic={<Icon>schedule</Icon>}
-                            primaryText={enrollment.schedules.map(s => s.label).join(', ') || '[Не указано]'}
+                            primaryText={enrollment.scheduleLabel || '[Не указано]'}
                             secondaryText="Расписание"
                         />
 

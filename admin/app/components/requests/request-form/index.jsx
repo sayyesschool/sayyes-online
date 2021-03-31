@@ -1,34 +1,46 @@
-import React from 'react';
+import React, { forwardRef, useRef, useImperativeHandle } from 'react';
 import {
-    Button,
     Layout,
     Select,
     TextField,
     Typography
 } from 'mdc-react';
-import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
+import PeopleSelect from 'shared/components/people-select';
 
 import { useStore } from 'app/hooks/store';
-import PeopleSelect from 'app/components/shared/people-select';
 
 import './index.scss';
 
-export default function RequestForm({ request = {}, onSubmit }) {
+const defaultRequest = {
+    status: 'new',
+    contact: {},
+    channel: '',
+    source: '',
+    utm: {},
+    note: undefined
+};
+
+export default forwardRef(RequestForm);
+
+function RequestForm({ request = {}, onSubmit, ...props }, ref) {
+    const formRef = useRef();
+
     const [managers] = useStore('managers.list');
+
     const [data, handleChange] = useForm({
-        status: 'new',
-        contact: {},
-        channel: '',
-        source: '',
-        utm: {},
-        note: undefined,
+        ...defaultRequest,
         ...request,
         client: request.client?.id,
         manager: request.manager?.id
     });
+
+    useImperativeHandle(ref, () => ({
+        get form() { return formRef.current; },
+        get data() { return data; }
+    }));
 
     function handleSubmit() {
         data.contact.phone = data.contact?.phone.replace(/ /gm, '');
@@ -37,8 +49,24 @@ export default function RequestForm({ request = {}, onSubmit }) {
     }
 
     return (
-        <Form id="request-form" onSubmit={handleSubmit}>
+        <Form ref={formRef} className="request-form" onSubmit={handleSubmit} {...props}>
             <Layout column>
+                <Select
+                    name="status"
+                    value={data.status}
+                    label="Статус"
+                    options={[
+                        { key: 'new', value: 'new', text: 'Новая' },
+                        { key: 'processing', value: 'processing', text: 'В обработке' },
+                        { key: 'resolved', value: 'resolved', text: 'Успешная' },
+                        { key: 'rejected', value: 'rejected', text: 'Отказ' },
+                        { key: 'postponed', value: 'postponed', text: 'Отложенная' },
+                    ]}
+                    filled
+                    required
+                    onChange={handleChange}
+                />
+
                 <TextField
                     name="description"
                     value={data.description}
@@ -60,22 +88,6 @@ export default function RequestForm({ request = {}, onSubmit }) {
                     value={data.contact.phone}
                     label="Телефон"
                     filled
-                    onChange={handleChange}
-                />
-
-                <Select
-                    name="status"
-                    value={data.status}
-                    label="Статус"
-                    options={[
-                        { key: 'new', value: 'new', text: 'Новая' },
-                        { key: 'processing', value: 'processing', text: 'В обработке' },
-                        { key: 'resolved', value: 'resolved', text: 'Успешная' },
-                        { key: 'rejected', value: 'rejected', text: 'Отказ' },
-                        { key: 'postponed', value: 'postponed', text: 'Отложенная' },
-                    ]}
-                    filled
-                    required
                     onChange={handleChange}
                 />
 

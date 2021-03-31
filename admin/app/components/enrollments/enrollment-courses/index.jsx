@@ -44,7 +44,6 @@ export default function EnrollmentCourses({ enrollment }) {
                     actions={
                         <MenuButton
                             icon="add"
-                            disabled={items.length === 0}
                             items={items}
                         />
                     }
@@ -53,20 +52,22 @@ export default function EnrollmentCourses({ enrollment }) {
                 {enrollment.courses.length > 0 &&
                     <Card.Section>
                         <List imageList>
-                            {enrollment.courses.map(course =>
-                                <List.Item
-                                    key={course.id}
-                                    graphic={<img src={course.imageUrl} />}
-                                    text={course.title}
-                                    meta={
-                                        <IconButton
-                                            icon="remove"
-                                            title="Убрать курс"
-                                            onClick={() => handleRemoveCourse(course.id)}
-                                        />
-                                    }
-                                />
-                            )}
+                            {enrollment.courses
+                                .map(course => typeof course === 'string' ? courses.find(course) : course)
+                                .map(course =>
+                                    <List.Item
+                                        key={course.id}
+                                        graphic={<img src={course.imageUrl} />}
+                                        text={course.title}
+                                        meta={
+                                            <IconButton
+                                                icon="remove"
+                                                title="Убрать курс"
+                                                onClick={() => handleRemoveCourse(course.id)}
+                                            />
+                                        }
+                                    />
+                                )}
                         </List>
                     </Card.Section>
                 }

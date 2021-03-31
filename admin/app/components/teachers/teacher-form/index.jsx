@@ -1,29 +1,28 @@
 import React from 'react';
 import {
-    Button,
     Layout,
-    TextField,
-    Select
+    TextField
 } from 'mdc-react';
 import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
-import RadioGroup from 'app/components/shared/radio-group';
-import timezones from 'shared/../data/timezones';
+import RadioGroup from 'shared/components/radio-group';
+import TimeZoneSelect from 'shared/components/timezone-select';
 
-const maskFormat = { '*': /[0-9]/ };
+const defaultTeacher = {
+    firstname: '',
+    lastname: '',
+    email: '',
+    phone: '',
+    timezone: '',
+    note: ''
+};
 
-export default function ClientForm({ id = 'client-form', client = {}, onSubmit }) {
+export default function TeacherForm({ id = 'teacher-form', teacher = {}, onSubmit }) {
     const [data, handleChange] = useForm({
-        firstname: '',
-        lastname: '',
-        email: '',
-        password: generatePassword(),
-        phone: '',
-        note: '',
-        timezone: '',
-        ...client
+        ...defaultTeacher,
+        ...teacher
     });
 
     return (
@@ -83,20 +82,8 @@ export default function ClientForm({ id = 'client-form', client = {}, onSubmit }
                     onChange={handleChange}
                 />
 
-                <Select
+                <TimeZoneSelect
                     name="timezone"
-                    value={data.timezone}
-                    label="Часовой пояс"
-                    options={timezones.map(item => ({
-                        key: item.value,
-                        value: item.value,
-                        text: item.text
-                    }))}
-                    menuProps={{
-                        fullWidth: true,
-                        style: { maxHeight: '300px' }
-                    }}
-                    filled
                     onChange={handleChange}
                 />
 
@@ -122,10 +109,4 @@ export default function ClientForm({ id = 'client-form', client = {}, onSubmit }
             </Layout>
         </Form>
     );
-}
-
-function generatePassword() {
-    const buf = new Uint8Array(6);
-    crypto.getRandomValues(buf);
-    return btoa(String.fromCharCode(...buf));
 }

@@ -1,6 +1,5 @@
-import React, { useCallback } from 'react';
+import React, { forwardRef, useCallback, useRef, useImperativeHandle } from 'react';
 import {
-    Button,
     Layout,
     TextField
 } from 'mdc-react';
@@ -13,15 +12,28 @@ import PaymentMethodSelect from 'app/components/payments/payment-method-select';
 
 import './index.scss';
 
-export default function PaymentForm({ payment = {}, onSubmit }) {
+const defaultPayment = {
+    amount: 0,
+    description: '',
+    paidAt: new Date(),
+    paymentMethod: ''
+};
+
+export default forwardRef(PaymentForm);
+
+function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
+    const formRef = useRef();
+
     const [data, setData] = useForm({
-        amount: 0,
-        description: '',
-        date: moment(payment.date).format('YYYY-MM-DD'),
-        paymentMethod: payment.method?.type,
         client: payment.client ? payment.client.id : '',
+        ...defaultPayment,
         ...payment
     });
+
+    useImperativeHandle(ref, () => ({
+        get form() { return formRef.current; },
+        get data() { return data; }
+    }));
 
     const handleSubmit = useCallback(() => {
         data.date = moment(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
@@ -31,7 +43,7 @@ export default function PaymentForm({ payment = {}, onSubmit }) {
     }, [data]);
 
     return (
-        <Form id="payment-form" onSubmit={handleSubmit}>
+        <Form ref={formRef} className="payment-form" onSubmit={handleSubmit} {...props}>
             <Layout column>
                 <TextField
                     type="text"
@@ -57,7 +69,7 @@ export default function PaymentForm({ payment = {}, onSubmit }) {
                 <TextField
                     type="date"
                     name="date"
-                    value={data.date}
+                    value={moment(data.paidAt).format('YYYY-MM-DD')}
                     label="Дата"
                     filled
                     onChange={setData}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useMemo } from 'react';
 import {
     Dialog,
     Button,
@@ -13,36 +13,43 @@ import RequestForm from 'app/components/requests/request-form';
 import './index.scss';
 
 export default function RequestProcessFormDialog({ request, open, onSubmit, onClose }) {
-    const [activeTab, setActiveTab] = useState('client');
-    const [client, setClient] = useState();
-    const [enrollment, setEnrollment] = useState();
+    const clientFormRef = useRef();
+    const enrollmentFormRef = useRef();
+    const requestFormRef = useRef();
 
-    useEffect(() => {
-        if (request && !client) {
-            setClient({
-                firstname: request?.contact.name,
-                phone: request?.contact.phone
-            });
-        }
+    const client = useMemo(() => {
+        const [firstname, lastname] = request?.contact?.name.split(' ') || [];
+
+        return {
+            firstname,
+            lastname,
+            phone: request?.contact.phone
+        };
     }, [request]);
 
-    const handleClientSubmit = useCallback(data => {
-        setClient(data);
-        setActiveTab('enrollment');
-    }, []);
+    const [activeTab, setActiveTab] = useState('client');
 
-    const handleEnrollmentSubmit = useCallback(data => {
-        setEnrollment(data);
-        setActiveTab('request');
-    }, []);
+    const handleSubmit = useCallback(() => {
+        const client = clientFormRef.current.data;
+        const enrollment = enrollmentFormRef.current.data;
+        const request = requestFormRef.current.data;
 
-    const handleSubmit = useCallback(request => {
+        if (!clientFormRef.current.form.reportValidity()) {
+            console.log('ALERT CLIENT');
+            return;
+        }
+
+        if (!enrollmentFormRef.current.form.reportValidity()) {
+            console.log('ALERT ENROLLMENT');
+            return;
+        }
+
         onSubmit({ client, enrollment, request });
-    }, [client, enrollment]);
+    }, [onSubmit]);
 
     return (
         <Dialog
-            className="request-process-panel"
+            className="request-process-dialog"
             title="Обработка заявки"
             open={open}
             onClose={onClose}
@@ -61,57 +68,41 @@ export default function RequestProcessFormDialog({ request, open, onSubmit, onCl
                 <Tab
                     value="enrollment"
                     icon={<Icon>school</Icon>}
-                    disabled={!client}
                     label="Обучение"
                 />
 
                 <Tab
                     value="request"
                     icon={<Icon>assignment</Icon>}
-                    disabled={!enrollment}
                     label="Обращение"
                 />
             </TabBar>
 
             <Dialog.Content>
-                {activeTab === 'client' &&
-                    <ClientForm
-                        client={client}
-                        onSubmit={handleClientSubmit}
-                    />
-                }
+                <ClientForm
+                    ref={clientFormRef}
+                    client={client}
+                    style={{ display: activeTab === 'client' ? 'block' : 'none' }}
+                />
 
-                {activeTab === 'enrollment' &&
-                    <EnrollmentForm
-                        enrollment={enrollment}
-                        onSubmit={handleEnrollmentSubmit}
-                    />
-                }
+                <EnrollmentForm
+                    ref={enrollmentFormRef}
+                    style={{ display: activeTab === 'enrollment' ? 'block' : 'none' }}
+                />
 
-                {activeTab === 'request' &&
-                    <RequestForm
-                        request={request}
-                        onSubmit={handleSubmit}
-                    />
-                }
+                <RequestForm
+                    ref={requestFormRef}
+                    request={request}
+                    style={{ display: activeTab === 'request' ? 'block' : 'none' }}
+                />
             </Dialog.Content>
 
             <Dialog.Actions>
                 <Button type="button" outlined onClick={onClose}>Отменить</Button>
 
-                <Button type="submit" form="client-form" unelevated>Далее</Button>
-                {/* {activeTab === 'client' &&
-                    <Button type="submit" form="client-form" unelevated>Далее</Button>
-                }
 
-                {activeTab === 'enrollment' &&
-                    <Button type="submit" form="enrollment-form" unelevated>Далее</Button>
-                }
-
-                {activeTab === 'request' &&
-                    <Button type="submit" form="request-form" unelevated>Сохранить</Button>
-                } */}
+                <Button type="button" unelevated onClick={handleSubmit}>{activeTab === 'request' ? 'Сохранить' : 'Далее'}</Button>
             </Dialog.Actions>
-        </Dialog>
+        </Dialog >
     );
 }

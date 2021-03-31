@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import {
     FormField,
     Layout,
+    Select,
     Switch,
     TextField
 } from 'mdc-react';
@@ -9,23 +10,34 @@ import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
+import PeopleSelect from 'shared/components/people-select';
 
 import { useStore } from 'app/hooks/store';
-import PeopleSelect from 'app/components/shared/people-select';
 
 import './index.scss';
 
-export default function LessonForm({ lesson = {}, onSubmit }) {
+const statuses = [
+    { key: 'scheduled', value: 'scheduled', text: 'Запланировано' },
+    { key: 'started', value: 'started', text: 'Началось' },
+    { key: 'ended', value: 'ended', text: 'Завершилось' },
+    { key: 'canceled', value: 'canceled', text: 'Отменено' },
+];
+
+const defaultLesson = {
+    status: 'scheduled',
+    trial: false,
+    duration: 60,
+    date: new Date(),
+    note: ''
+};
+
+export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
     const [teachers] = useStore('teachers.list');
     const [data, handleChange] = useForm({
-        date: new Date(),
-        trial: false,
-        note: '',
-        ...data,
-        date: moment(lesson.date).format('YYYY-MM-DDTHH:mm'),
-        client: lesson.client ? lesson.client.id : '',
-        teacher: lesson.teacher ? lesson.teacher.id : '',
-        note: lesson.note
+        ...defaultLesson,
+        ...lesson,
+        client: lesson.client?.id || '',
+        teacher: lesson.teacher?.id || ''
     });
 
     const handleSubmit = useCallback(() => {
@@ -36,8 +48,26 @@ export default function LessonForm({ lesson = {}, onSubmit }) {
     }, [data]);
 
     return (
-        <Form id="lesson-form" onSubmit={handleSubmit}>
+        <Form className="lesson-form" onSubmit={handleSubmit} {...props}>
             <Layout column>
+                <FormField label="Пробное">
+                    <Switch
+                        name="trial"
+                        checked={data.trial}
+                        onChange={handleChange}
+                    />
+                </FormField>
+
+                <Select
+                    name="status"
+                    value={data.status}
+                    label="Статус"
+                    options={statuses}
+                    filled
+                    required
+                    onChange={handleChange}
+                />
+
                 <TextField
                     type="datetime-local"
                     name="date"
@@ -47,16 +77,14 @@ export default function LessonForm({ lesson = {}, onSubmit }) {
                     onChange={handleChange}
                 />
 
-                <PeopleSelect
-                    name="client"
-                    label="Клиент"
-                    value={data.client}
-                    options={[{
-                        key: lesson.client?.id,
-                        value: lesson.client?.id,
-                        text: lesson.client?.fullname
-                    }]}
-                    disabled
+                <TextField
+                    type="number"
+                    name="duration"
+                    step="5"
+                    value={data.duration}
+                    label="Продолжительность (мин.)"
+                    filled
+                    onChange={handleChange}
                 />
 
                 <PeopleSelect
@@ -70,14 +98,6 @@ export default function LessonForm({ lesson = {}, onSubmit }) {
                     }))}
                     onChange={handleChange}
                 />
-
-                <FormField label="Пробный">
-                    <Switch
-                        name="trial"
-                        checked={data.trial}
-                        onChange={handleChange}
-                    />
-                </FormField>
 
                 <TextField
                     name="note"

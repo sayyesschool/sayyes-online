@@ -1,32 +1,54 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
     Card,
+    Icon,
     IconButton,
     List
 } from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
+import ConfirmationDialog from 'shared/components/confirmation-dialog';
+import FormDialog from 'shared/components/form-dialog';
 
 import { useActions } from 'app/hooks/store';
-import FormPanel from 'app/components/shared/form-panel';
 import LessonForm from 'app/components/lessons/lesson-form';
 
 export default function EnrollmentLessons({ enrollment }) {
     const actions = useActions('lessons');
 
-    const [isFormOpen, toggleFormOpen] = useBoolean(false);
+    const [lesson, setLesson] = useState();
+
+    const [isNewLessonFormOpen, toggleNewLessonFormOpen] = useBoolean(false);
+    const [isEditLessonFormOpen, toggleEditLessonFormOpen] = useBoolean(false);
+    const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     const handleCreateLesson = useCallback(data => {
         data.enrollment = enrollment.id;
 
         actions.createLesson(data)
-            .then(() => toggleFormOpen(false));
+            .then(() => toggleNewLessonFormOpen(false));
     }, [enrollment]);
 
-    const handleDeleteLesson = useCallback(lesson => {
-        if (confirm('Вы уверены что хотите удалить урок?')) {
-            actions.deleteLesson(lesson.id);
-        }
+    const handleUpdateLesson = useCallback(data => {
+        actions.updateLesson(lesson.id, data)
+            .then(() => toggleEditLessonFormOpen(false));
+    }, [lesson]);
+
+    const handleDeleteLesson = useCallback(() => {
+        actions.deleteLesson(lesson.id)
+            .then(() => toggleConfirmationDialogOpen(false));
+    }, [lesson]);
+
+    const handleUpdate = useCallback(lesson => {
+        setLesson(lesson);
+        toggleEditLessonFormOpen(true);
+    }, []);
+
+    const handleDelete = useCallback((event, lesson) => {
+        event.stopPropagation();
+
+        setLesson(lesson);
+        toggleConfirmationDialogOpen(true);
     }, []);
 
     return (
@@ -38,7 +60,7 @@ export default function EnrollmentLessons({ enrollment }) {
                     actions={
                         <IconButton
                             icon="add"
-                            onClick={toggleFormOpen}
+                            onClick={toggleNewLessonFormOpen}
                         />
                     }
                 />
@@ -49,15 +71,17 @@ export default function EnrollmentLessons({ enrollment }) {
                             {enrollment.lessons.map(lesson =>
                                 <List.Item
                                     key={lesson.id}
+                                    graphic={<Icon>{lesson.statusIcon}</Icon>}
                                     primaryText={lesson.trial ? 'Пробный урок' : 'Урок'}
-                                    secondaryText={lesson.datetime}
+                                    secondaryText={lesson.dateLabel}
                                     meta={
                                         <IconButton
                                             icon="remove"
-                                            title="Убрать курс"
-                                            onClick={() => handleDeleteLesson(lesson)}
+                                            title="Удалить урок"
+                                            onClick={event => handleDelete(event, lesson)}
                                         />
                                     }
+                                    onClick={() => handleUpdate(lesson)}
                                 />
                             )}
                         </List>
@@ -65,20 +89,42 @@ export default function EnrollmentLessons({ enrollment }) {
                 }
             </Card>
 
-            <FormPanel
-                form="lesson-form"
+            <FormDialog
+                form="new-lesson-form"
                 title="Новое занятие"
-                open={isFormOpen}
-                modal
-                onClose={toggleFormOpen}
+                open={isNewLessonFormOpen}
+                onClose={toggleNewLessonFormOpen}
             >
                 <LessonForm
+                    id="new-lesson-form"
                     lesson={{
-                        client: enrollment?.client
+                        client: enrollment?.client,
+                        teacher: enrollment?.teacher
                     }}
                     onSubmit={handleCreateLesson}
                 />
-            </FormPanel>
+            </FormDialog>
+
+            <FormDialog
+                form="edit-lesson-form"
+                title="Редактирование занятия"
+                open={isEditLessonFormOpen}
+                onClose={toggleEditLessonFormOpen}
+            >
+                <LessonForm
+                    id="edit-lesson-form"
+                    lesson={lesson}
+                    onSubmit={handleUpdateLesson}
+                />
+            </FormDialog>
+
+            <ConfirmationDialog
+                title="Подтвердите действие"
+                message="Вы действительно хотите удалить урок?"
+                open={isConfirmationDialogOpen}
+                onConfirm={handleDeleteLesson}
+                onClose={() => toggleConfirmationDialogOpen(false)}
+            />
         </section>
     );
 }

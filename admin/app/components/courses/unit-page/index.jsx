@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
+import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 import FormDialog from 'shared/components/form-dialog';
 
@@ -34,7 +34,7 @@ export default function UnitPage({ match, history }) {
     }, [course, unit]);
 
     const handleCreateLesson = useCallback(data => {
-        data._unit = unit.id;
+        data.unit = unit.id;
 
         actions.createLesson(course.id, data)
             .then(() => setLessonFormOpen(false));
@@ -56,7 +56,7 @@ export default function UnitPage({ match, history }) {
 
     return (
         <Page id="unit-page">
-            <PageHeader
+            <PageTopBar
                 breadcrumbs={[
                     <Link to={course.url}>{course.title}</Link>
                 ]}

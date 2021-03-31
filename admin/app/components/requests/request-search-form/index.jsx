@@ -8,9 +8,9 @@ import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
+import PeopleSelect from 'shared/components/people-select';
 
 import { useStore } from 'app/hooks/store';
-import PeopleSelect from 'app/components/shared/people-select';
 
 import './index.scss';
 

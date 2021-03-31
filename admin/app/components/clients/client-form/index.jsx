@@ -1,33 +1,49 @@
-import React from 'react';
+import React, { forwardRef, useRef, useImperativeHandle } from 'react';
 import {
-    Button,
     Layout,
-    TextField,
-    Select
+    TextField
 } from 'mdc-react';
 import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
-import RadioGroup from 'app/components/shared/radio-group';
-import timezones from 'shared/../data/timezones';
+import RadioGroup from 'shared/components/radio-group';
+import TimeZoneSelect from 'shared/components/timezone-select';
 
-const maskFormat = { '*': /[0-9]/ };
+const defaultClient = {
+    firstname: '',
+    lastname: '',
+    patronym: '',
+    email: '',
+    phone: '',
+    altPhone: '',
+    occupation: '',
+    interests: '',
+    timezone: '',
+    note: ''
+};
 
-export default function ClientForm({ id = 'client-form', client = {}, onSubmit }) {
+export default forwardRef(ClientForm);
+
+function ClientForm({ client = {}, onSubmit, ...props }, ref) {
+    const formRef = useRef();
+
     const [data, handleChange] = useForm({
-        firstname: '',
-        lastname: '',
-        email: '',
-        password: generatePassword(),
-        phone: '',
-        note: '',
-        timezone: '',
-        ...client
-    });
+        ...defaultClient,
+        ...client,
+        requests: undefined,
+        enrollments: undefined,
+        payments: undefined,
+        lessons: undefined
+    }, [client?.id]);
+
+    useImperativeHandle(ref, () => ({
+        get form() { return formRef.current; },
+        get data() { return data; }
+    }));
 
     return (
-        <Form id={id} onSubmit={() => onSubmit(data)}>
+        <Form ref={formRef} className="client-form" onSubmit={() => onSubmit(data)} {...props}>
             <Layout column>
                 <TextField
                     name="firstname"
@@ -65,36 +81,19 @@ export default function ClientForm({ id = 'client-form', client = {}, onSubmit }
                 />
 
                 <TextField
-                    type="email"
-                    name="email"
-                    value={data.email}
-                    label="Электронная почта"
+                    type="phone"
+                    name="altPhone"
+                    value={data.altPhone}
+                    label="Дополнительный телефон"
                     filled
                     onChange={handleChange}
                 />
 
                 <TextField
-                    type="date"
-                    name="dob"
-                    value={data.dob ? moment(data.dob).format('YYYY-MM-DD') : ''}
-                    label="Дата рождения"
-                    filled
-                    onChange={handleChange}
-                />
-
-                <Select
-                    name="timezone"
-                    value={data.timezone}
-                    label="Часовой пояс"
-                    options={timezones.map(item => ({
-                        key: item.value,
-                        value: item.value,
-                        text: item.text
-                    }))}
-                    menuProps={{
-                        fullWidth: true,
-                        style: { maxHeight: '300px' }
-                    }}
+                    type="email"
+                    name="email"
+                    value={data.email}
+                    label="Электронная почта"
                     filled
                     onChange={handleChange}
                 />
@@ -110,6 +109,43 @@ export default function ClientForm({ id = 'client-form', client = {}, onSubmit }
                     onChange={handleChange}
                 />
 
+                {client?.id &&
+                    <>
+                        <TextField
+                            type="date"
+                            name="dob"
+                            value={data.dob ? moment(data.dob).format('YYYY-MM-DD') : ''}
+                            label="Дата рождения"
+                            filled
+                            onChange={handleChange}
+                        />
+
+                        <TextField
+                            type="text"
+                            name="occupation"
+                            value={data.occupation}
+                            label="Род деятельности"
+                            filled
+                            onChange={handleChange}
+                        />
+
+                        <TextField
+                            type="text"
+                            name="interests"
+                            value={data.interests}
+                            label="Интересы"
+                            filled
+                            onChange={handleChange}
+                        />
+
+                        <TimeZoneSelect
+                            name="timezone"
+                            value={data.timezone}
+                            onChange={handleChange}
+                        />
+                    </>
+                }
+
                 <TextField
                     name="note"
                     value={data.note}
@@ -121,10 +157,4 @@ export default function ClientForm({ id = 'client-form', client = {}, onSubmit }
             </Layout>
         </Form>
     );
-}
-
-function generatePassword() {
-    const buf = new Uint8Array(6);
-    crypto.getRandomValues(buf);
-    return btoa(String.fromCharCode(...buf));
 }

@@ -15,11 +15,11 @@ export default function UnitList({ units, onDelete }) {
 
     return (
         <List className="unit-list" twoLine imageList>
-            {units.map((unit, index) =>
+            {units.map(unit =>
                 <List.Item
                     key={unit.id}
                     component={Link}
-                    to={unit.url}
+                    to={unit.uri}
                     graphic={<img src={unit.imageUrl} />}
                     primaryText={unit.title}
                     secondaryText={`${unit.lessons.length} уроков`}

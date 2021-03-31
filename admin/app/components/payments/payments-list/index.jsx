@@ -14,8 +14,8 @@ export default function PaymentsList({ payments }) {
                     component={Link}
                     to={payment.url}
                     graphic={<Icon>{payment.statusIcon}</Icon>}
-                    primaryText={`${payment.amount} • ${payment.user.fullname}`}
-                    secondaryText={request.statusLabel}
+                    primaryText={`${payment.amount} руб.`}
+                    secondaryText={payment.statusLabel}
                 />
             )}
         </List>

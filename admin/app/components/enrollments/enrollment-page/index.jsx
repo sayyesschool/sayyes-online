@@ -1,17 +1,18 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
     LayoutGrid as Grid
 } from 'mdc-react';
 
+import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
+import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
 import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 
 import { useStore, useActions } from 'app/hooks/store';
-import FormPanel from 'app/components/shared/form-panel';
 import EnrollmentDetails from 'app/components/enrollments/enrollment-details';
 import EnrollmentLessons from 'app/components/enrollments/enrollment-lessons';
 import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';
@@ -24,9 +25,8 @@ import './index.scss';
 export default function EnrollmentPage({ match, history }) {
     const [enrollment, actions] = useStore('enrollments.single');
 
-    const [isEnrollmentFormOpen, setEnrollmentFormOpen] = useState(false);
-    const [isSidePanelOpen, setSidePanelOpen] = useState(false);
-    const [isConfirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
+    const [isEnrollmentFormOpen, toggleEnrollmentFormOpen] = useBoolean(false);
+    const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     useEffect(() => {
         actions.getEnrollment(match.params.enrollmentId);
@@ -34,24 +34,16 @@ export default function EnrollmentPage({ match, history }) {
 
     const handleUpdateEnrollment = useCallback(data => {
         actions.updateEnrollment(enrollment.id, data)
-            .then(() => setEnrollmentFormOpen(false));
+            .then(() => toggleEnrollmentFormOpen(false));
     }, [enrollment]);
 
     const handleDeleteEnrollment = useCallback(() => {
         actions.deleteEnrollment(enrollment.id)
             .then(() => {
                 history.push('/enrollments');
-                setConfirmationDialogOpen(false);
+                toggleConfirmationDialogOpen(false);
             });
     }, [enrollment]);
-
-    const handleEdit = useCallback(() => {
-        setEnrollmentFormOpen(true);
-    }, []);
-
-    const handleDelete = useCallback(() => {
-        setConfirmationDialogOpen(true);
-    }, []);
 
     if (!enrollment) return <LoadingIndicator />;
 
@@ -67,13 +59,7 @@ export default function EnrollmentPage({ match, history }) {
                         key: 'delete',
                         title: 'Удалить',
                         icon: 'delete',
-                        onClick: handleDelete
-                    },
-                    {
-                        key: 'messages',
-                        title: 'Переписка',
-                        icon: 'forum',
-                        onClick: () => setSidePanelOpen(isOpen => !isOpen)
+                        onClick: toggleConfirmationDialogOpen
                     }
                 ]}
             />
@@ -89,6 +75,7 @@ export default function EnrollmentPage({ match, history }) {
                     <Grid.Cell span="3">
                         <EnrollmentDetails
                             enrollment={enrollment}
+                            onEdit={toggleEnrollmentFormOpen}
                         />
                     </Grid.Cell>
 
@@ -122,25 +109,25 @@ export default function EnrollmentPage({ match, history }) {
                 </Grid>
             </PageContent>
 
-            <FormPanel
+            <FormDialog
                 form="enrollment-form"
                 title="Редактирование обучения"
                 open={isEnrollmentFormOpen}
-                modal
-                onClose={() => setEnrollmentFormOpen(false)}
+                onClose={() => toggleEnrollmentFormOpen(false)}
             >
                 <EnrollmentForm
+                    id="enrollment-form"
                     enrollment={enrollment}
                     onSubmit={handleUpdateEnrollment}
                 />
-            </FormPanel>
+            </FormDialog>
 
             <ConfirmationDialog
                 title="Подтвердите действие"
                 message="Вы действительно хотите удалить обучение?"
                 open={isConfirmationDialogOpen}
                 onConfirm={handleDeleteEnrollment}
-                onClose={() => setConfirmationDialogOpen(false)}
+                onClose={() => toggleConfirmationDialogOpen(false)}
             />
         </Page>
     );

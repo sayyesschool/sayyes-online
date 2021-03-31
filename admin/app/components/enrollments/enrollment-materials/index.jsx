@@ -44,7 +44,6 @@ export default function EnrollmentMaterials({ enrollment }) {
                     actions={
                         <MenuButton
                             icon="add"
-                            disabled={items.length === 0}
                             items={items}
                         />
                     }

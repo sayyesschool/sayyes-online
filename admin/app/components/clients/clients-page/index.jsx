@@ -65,6 +65,7 @@ export default function ClientsPage({ history }) {
                 onClose={toggleClientFormOpen}
             >
                 <ClientForm
+                    id="client-form"
                     onSubmit={handleSubmit}
                 />
             </FormDialog>
