@@ -46,8 +46,8 @@ export const unsetPayment = createAction('UNSET_PAYMENT');
 export const paymentsReducer = createReducer(null, {
     [getPayments]: (state, action) => action.data,
     [createPayment]: (state, action) => state ? [...state, action.data] : [action.data],
-    [updatePayment]: (state, action) => state.map(payment => payment.id !== action.data.id ? payment : action.data),
-    [deletePayment]: (state, action) => state.filter(payment => payment.id !== action.data.id)
+    [updatePayment]: (state, action) => state && state.map(payment => payment.id !== action.data.id ? payment : action.data),
+    [deletePayment]: (state, action) => state && state.filter(payment => payment.id !== action.data.id)
 });
 
 export const paymentReducer = createReducer(null, {

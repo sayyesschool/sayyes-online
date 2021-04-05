@@ -5,6 +5,7 @@ import {
     IconButton,
     List
 } from 'mdc-react';
+import moment from 'moment';
 
 import './index.scss';
 
@@ -40,6 +41,12 @@ export default function EnrollmentDetails({ enrollment, onEdit }) {
                             graphic={<Icon>flag</Icon>}
                             primaryText={enrollment.purposeLabel || '[Не указана]'}
                             secondaryText="Цель"
+                        />
+
+                        <List.Item
+                            graphic={<Icon>schedule</Icon>}
+                            primaryText={enrollment.trialLesson ? moment(enrollment.trialLesson.date).format('DD.MM.YYYY') : '[Не указано]'}
+                            secondaryText="Предполагаемая дата и время пробного урока"
                         />
 
                         <List.Item

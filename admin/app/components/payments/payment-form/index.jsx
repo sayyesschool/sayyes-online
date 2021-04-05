@@ -25,10 +25,9 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
     const formRef = useRef();
 
     const [data, setData] = useForm({
-        client: payment.client ? payment.client.id : '',
         ...defaultPayment,
         ...payment
-    });
+    }, [payment]);
 
     useImperativeHandle(ref, () => ({
         get form() { return formRef.current; },

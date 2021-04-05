@@ -12,7 +12,7 @@ import Page from 'shared/components/page';
 import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 
-import { useStore, useActions } from 'app/hooks/store';
+import { useStore } from 'app/hooks/store';
 import EnrollmentDetails from 'app/components/enrollments/enrollment-details';
 import EnrollmentLessons from 'app/components/enrollments/enrollment-lessons';
 import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';

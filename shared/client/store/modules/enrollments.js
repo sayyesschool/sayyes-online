@@ -51,7 +51,7 @@ export const enrollmentsReducer = createReducer(null, {
     [getEnrollments]: (state, action) => action.data,
     [createEnrollment]: (state, action) => state?.concat(action.data) || [action.data],
     //[updateEnrollment]: (state, action) => state?.map(e => e.id !== action.data.id ? e : { ...e, ...action.data }),
-    [deleteEnrollment]: (state, action) => state?.filter(e => e.id !== action.data.id)
+    //[deleteEnrollment]: (state, action) => state?.filter(e => e.id !== action.data.id)
 });
 
 export const enrollmentReducer = createReducer(null, {

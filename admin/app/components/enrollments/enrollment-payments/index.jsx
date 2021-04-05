@@ -23,8 +23,8 @@ export default function EnrollmentPayments({ enrollment }) {
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     const handleCreatePayment = useCallback(data => {
-        data.enrollment = enrollment.id;
         data.client = enrollment.client.id;
+        data.enrollment = enrollment.id;
 
         actions.createPayment(data)
             .then(() => toggleCreateFormOpen(false));
@@ -36,7 +36,7 @@ export default function EnrollmentPayments({ enrollment }) {
     }, [payment]);
 
     const handleDeletePayment = useCallback(() => {
-        if (confirm('Вы уверены что хотите удалить урок?')) {
+        if (confirm('Вы уверены что хотите удалить платеж?')) {
             actions.deletePayment(payment.id);
         }
     }, [payment]);
@@ -69,7 +69,7 @@ export default function EnrollmentPayments({ enrollment }) {
 
                 {enrollment.payments.length > 0 &&
                     <Card.Section>
-                        <List twoLine>
+                        <List className="payments-list" twoLine>
                             {enrollment.payments.map(payment =>
                                 <List.Item
                                     key={payment.id}
@@ -100,9 +100,7 @@ export default function EnrollmentPayments({ enrollment }) {
             >
                 <PaymentForm
                     id="create-payment-form"
-                    payment={{
-                        client: enrollment?.client
-                    }}
+                    payment={{}}
                     onSubmit={handleCreatePayment}
                 />
             </FormDialog>

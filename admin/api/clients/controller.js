@@ -33,7 +33,7 @@ module.exports = ({
             })
             .populate({
                 path: 'payments',
-                select: 'status amount'
+                select: 'description status amount'
             })
             .then(client => {
                 res.json({
@@ -70,10 +70,13 @@ module.exports = ({
 
     delete: (req, res, next) => {
         Client.findByIdAndDelete(req.params.id)
-            .then(() => {
+            .then(client => {
                 res.json({
                     ok: true,
-                    message: 'Клиент удален'
+                    message: 'Клиент удален',
+                    data: {
+                        id: client.id
+                    }
                 });
             })
             .catch(next);

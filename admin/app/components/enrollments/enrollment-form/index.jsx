@@ -64,8 +64,7 @@ const defaultEnrollment = {
     experience: '',
     purpose: '',
     preferences: '',
-    trialLessonDate: new Date(),
-    trialLessonTime: { from: 0, to: 0 },
+    trialLesson: [],
     schedule: [],
     note: '',
 };
