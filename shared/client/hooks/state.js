@@ -5,6 +5,6 @@ export function useBoolean(state) {
 
     return [
         value,
-        useCallback(value => setValue(v => (typeof value === 'boolean' && value) || !v), [])
+        useCallback(newValue => setValue(oldValue => typeof newValue === 'boolean' ? newValue : !oldValue), [])
     ];
 }

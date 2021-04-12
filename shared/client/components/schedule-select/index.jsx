@@ -1,9 +1,7 @@
 import React, { useCallback } from 'react';
 import {
-    Button,
     Icon,
     IconButton,
-    Layout,
     Select,
     TextField,
     Typography
@@ -15,12 +13,12 @@ const dayLabels = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
 export default function ScheduleSelect({ name, label, schedule, onChange }) {
     const handleAdd = useCallback(() => {
-        onChange({ target: { name } }, schedule.concat({ day: '0', from: '00:00', to: '00:00' }));
+        onChange({ target: { name } }, schedule.concat({ day: 0, from: '00:00', to: '00:00' }));
     }, [onChange]);
 
     const handleDayChange = useCallback((itemToChange, target) => {
         onChange({ target: { name } }, schedule.map(item =>
-            itemToChange !== item ? item : { ...item, day: target.value }
+            itemToChange !== item ? item : { ...item, day: Number(target.value) }
         ));
     }, [schedule, onChange]);
 

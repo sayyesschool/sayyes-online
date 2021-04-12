@@ -14,6 +14,7 @@ export default function FormDialog({
     children,
     confirmation,
     onClose,
+    onSubmit,
     ...props
 }) {
     return (
@@ -29,7 +30,7 @@ export default function FormDialog({
 
             <Dialog.Actions>
                 <Button type="button" outlined onClick={onClose}>Закрыть</Button>
-                <Button type="submit" form={form} unelevated>{submitButtonText}</Button>
+                <Button type="submit" form={form} unelevated onClick={onSubmit}>{submitButtonText}</Button>
             </Dialog.Actions>
         </Dialog>
     );

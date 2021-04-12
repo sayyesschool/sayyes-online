@@ -2,7 +2,7 @@
 
 .week-schedule {
     display: flex;
-    height: 170px;
+    height: 128px;
 
     .day-schedule {
         flex: 1 1 40px;
@@ -20,7 +20,7 @@
         flex-basis: 30px;
         align-items: center;
         min-height: 100%;
-        padding-left: 4px;
+        padding: 4px;
         color: #707070;
         font-size: 12px;
         font-weight: 400;
@@ -29,13 +29,12 @@
 
         @media (min-width: 768px)  {
             min-height: 0;
-            padding-left: 0;
             width: 100%;
             text-align: center;
             display: block;
             border: 0;
+            border-top: 1px #dadada solid;
             border-bottom: 1px #dadada solid;
-            padding-top: 9px;
         }
     }
 
@@ -45,7 +44,7 @@
         align-items: center;
         height: 170px;
         overflow: hidden;
-        padding: 4px;
+        padding: 8px 4px;
     }
 
     .day-event {

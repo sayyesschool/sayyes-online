@@ -15,4 +15,10 @@
         padding-left: 0;
         font-size: 1.5rem;
     }
+
+    .mdc-top-app-bar__action-item {
+        + .mdc-top-app-bar__action-item {
+            margin-left: 4px;
+        }
+    }
 }

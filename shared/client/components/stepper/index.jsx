@@ -20,7 +20,7 @@ function Stepper({ steps, children = steps }) {
 
 function Step({ graphic, label, completed, vertical, active }) {
     return (
-        <span className="stepper__step" className={classnames('stepper__step', {
+        <span className={classnames('stepper__step', {
             'stepper__step--completed': completed,
             'stepper__step--active': active,
             'stepper__step--vertical': vertical
@@ -36,6 +36,15 @@ function Step({ graphic, label, completed, vertical, active }) {
     );
 }
 
-Stepper.Step = Step;
+function Divider({ vertical }) {
+    return (
+        <hr className={classnames('stepper__divider', {
+            'stepper__divider--vertical': vertical
+        })} />
+    );
+}
 
-export { Stepper as default, Stepper, Step };
+Stepper.Step = Step;
+Stepper.Divider = Divider;
+
+export { Stepper as default, Stepper, Step, Divider };

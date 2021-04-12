@@ -5,7 +5,7 @@ import './index.scss';
 const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
 export default function WeekSchedule({ schedule }) {
-    const map = new Map(schedule.map(({ day, time }) => [day, time]));
+    const map = new Map(schedule.map(({ day, from }) => [day, from]));
 
     return (
         <div className="week-schedule">
@@ -15,7 +15,7 @@ export default function WeekSchedule({ schedule }) {
                     <div className="day-content">
                         {map.has(index) &&
                             <div className="day-event">
-                                <time>{map.get(index)}:00</time>
+                                <time>{map.get(index)}</time>
                             </div>
                         }
                     </div>
