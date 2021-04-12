@@ -3,7 +3,7 @@ module.exports = ({
 }) => ({
     get: (req, res, next) => {
         Material.find(req.query)
-            .select('id title slug image')
+            .select('id slug title subtitle image')
             .then(materials => {
                 res.json({
                     ok: true,

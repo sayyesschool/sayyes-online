@@ -15,8 +15,8 @@ export default function LessonList({ lessons }) {
                     component={Link}
                     to={lesson.url}
                     graphic={<Icon>{lesson.lessonStatus}</Icon>}
-                    primaryText={lesson.trial ? 'Пробный урок' : 'Урок'}
-                    secondaryText={`${lesson.statusLabel} • ${lesson.datetime}`}
+                    primaryText={lesson.dateLabel}
+                    secondaryText={lesson.timeLabel}
                     meta={lesson.teacher && <Avatar text={lesson.teacher.initials} title={lesson.teacher.fullname} />}
                 />
             )}

@@ -72,8 +72,8 @@ export default function EnrollmentLessons({ enrollment }) {
                                 <List.Item
                                     key={lesson.id}
                                     graphic={<Icon>{lesson.statusIcon}</Icon>}
-                                    primaryText={lesson.trial ? 'Пробный урок' : 'Урок'}
-                                    secondaryText={lesson.dateLabel}
+                                    primaryText={lesson.dateLabel}
+                                    secondaryText={lesson.timeLabel}
                                     meta={
                                         <IconButton
                                             icon="remove"

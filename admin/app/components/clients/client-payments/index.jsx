@@ -98,7 +98,6 @@ export default function ClientPayments({ client }) {
                 form="create-payment-form"
                 title="Новый платеж"
                 open={isCreateFormOpen}
-                modal
                 onClose={toggleCreateFormOpen}
             >
                 <PaymentForm

@@ -12,62 +12,9 @@ import DateTimeSelect from 'shared/components/datetime-select';
 import PeopleSelect from 'shared/components/people-select';
 
 import { useStore } from 'app/hooks/store';
+import { statuses, types, formats, ages, levels, purposes, defaultEnrollment } from 'app/data/enrollment';
 
 import './index.scss';
-
-const types = [
-    { key: 'null', value: '', text: '' },
-    { key: 'individual', value: 'individual', text: 'Индивидуально' },
-    { key: 'group', value: 'group', text: 'Группа' }
-];
-
-const formats = [
-    { key: 'null', value: '', text: '' },
-    { key: 'online', value: 'online', text: 'Онлайн' },
-    { key: 'offline', value: 'offline', text: 'Оффлайн' }
-];
-
-const ages = [
-    { key: 'null', value: '', text: '' },
-    { key: 'adults', value: 'adults', text: 'Взрослые' },
-    { key: 'teenagers', value: 'teenagers', text: 'Подростки' },
-    { key: 'children', value: 'children', text: 'Дети' }
-];
-
-const levels = [
-    { key: 'null', value: '', text: '' },
-    { key: 'zero', value: 'zero', text: 'Нулевой' },
-    { key: 'beg', value: 'beg', text: 'Beginner' },
-    { key: 'elem', value: 'elem', text: 'Elementary' },
-    { key: 'pre', value: 'pre', text: 'Pre-Intermediate' },
-    { key: 'int', value: 'int', text: 'Intermediate' },
-    { key: 'upper', value: 'upper', text: 'Upper-Intermediate' },
-    { key: 'adv', value: 'adv', text: 'Advanced' }
-];
-
-const purposes = [
-    { key: 'null', value: '', text: '' },
-    { key: 'work', value: 'work', text: 'Для работы' },
-    { key: 'study', value: 'study', text: 'Для учебы' },
-    { key: 'interview', value: 'interview', text: 'Для собеседования' },
-    { key: 'travel', value: 'travel', text: 'Для путешествий' },
-    { key: 'hobby', value: 'hobby', text: 'Для себя (хобби)' }
-];
-
-const defaultEnrollment = {
-    status: 'pending',
-    domain: 'general',
-    type: '',
-    format: '',
-    age: '',
-    level: '',
-    experience: '',
-    purpose: '',
-    preferences: '',
-    trialLesson: [],
-    schedule: [],
-    note: '',
-};
 
 export default forwardRef(EnrollmentForm);
 
@@ -101,6 +48,16 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
     return (
         <Form ref={formRef} className="enrollment-form" onSubmit={handleSubmit} {...props}>
             <Layout column>
+                <Select
+                    name="status"
+                    value={data.status}
+                    label="Статус"
+                    options={statuses}
+                    filled
+                    required
+                    onChange={handleChange}
+                />
+
                 <Select
                     name="type"
                     value={data.type}

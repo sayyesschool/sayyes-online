@@ -19,13 +19,11 @@ module.exports = ({
 
     getOne: (req, res, next) => {
         Enrollment.findById(req.params.id)
-            .populate('manager', 'firstname lastname')
-            .populate('client', 'firstname lastname')
-            .populate('teacher', 'firstname lastname')
+            .populate('manager', 'firstname lastname imageUrl')
+            .populate('client', 'firstname lastname imageUrl')
+            .populate('teacher', 'firstname lastname imageUrl')
             .populate({ path: 'lessons', populate: { path: 'teacher', select: 'firstname lastname' } })
             .populate('payments')
-            .populate('courses', 'slug title image')
-            .populate('materials', 'slug title subtitle image')
             .then(enrollment => {
                 res.json({
                     ok: true,
@@ -48,18 +46,28 @@ module.exports = ({
     },
 
     update: (req, res, next) => {
-        Enrollment.findByIdAndUpdate(req.params.id, req.body, { new: true })
-            .populate('manager', 'firstname lastname')
-            .populate('client', 'firstname lastname')
-            .populate('teacher', 'firstname lastname')
-            .then(enrollment => {
-                res.json({
-                    ok: true,
-                    message: 'Обучение изменено',
-                    data: enrollment
-                });
-            })
-            .catch(next);
+        const keys = Object.keys(req.body);
+        const query = Enrollment.findByIdAndUpdate(req.params.id, req.body, {
+            projection: keys.join(' '),
+            new: true,
+            lean: true
+        });
+
+        if (keys.includes('client')) {
+            query.populate('client', 'firstname lastname');
+        } else if (keys.includes('manager')) {
+            query.populate('manager', 'firstname lastname');
+        } else if (keys.includes('teacher')) {
+            query.populate('teacher', 'firstname lastname');
+        }
+
+        query.then(enrollment => {
+            res.json({
+                ok: true,
+                message: 'Обучение изменено',
+                data: enrollment
+            });
+        }).catch(next);
     },
 
     delete: (req, res, next) => {

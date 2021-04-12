@@ -3,9 +3,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Page from 'shared/components/page';
 import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
+import FormDialog from 'shared/components/form-dialog';
 
 import { useStore } from 'app/hooks/store';
-import FormPanel from 'app/components/shared/form-panel';
 import EmptyState from 'app/components/shared/empty-state';
 import PaymentsTable from 'app/components/payments/payments-table';
 import PaymentForm from 'app/components/payments/payment-form';
@@ -69,18 +69,17 @@ export default function Payments({ match, history }) {
                 }
             </PageContent>
 
-            <FormPanel
+            <FormDialog
                 form="payment-form"
                 title={payment ? 'Редактирование платежа' : 'Новый платеж'}
                 open={isPaymentFormOpen}
-                modal
                 onClose={handleClose}
             >
                 <PaymentForm
                     payment={payment || undefined}
                     onSubmit={handleSubmit}
                 />
-            </FormPanel>
+            </FormDialog>
         </Page>
     );
 }

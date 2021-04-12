@@ -1,9 +1,7 @@
 import React, { useCallback } from 'react';
 import {
-    FormField,
     Layout,
     Select,
-    Switch,
     TextField
 } from 'mdc-react';
 import moment from 'moment';
@@ -25,7 +23,6 @@ const statuses = [
 
 const defaultLesson = {
     status: 'scheduled',
-    trial: false,
     duration: 60,
     date: new Date(),
     note: ''
@@ -50,14 +47,6 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
     return (
         <Form className="lesson-form" onSubmit={handleSubmit} {...props}>
             <Layout column>
-                <FormField label="Пробное">
-                    <Switch
-                        name="trial"
-                        checked={data.trial}
-                        onChange={handleChange}
-                    />
-                </FormField>
-
                 <Select
                     name="status"
                     value={data.status}

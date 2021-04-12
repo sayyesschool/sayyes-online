@@ -30,9 +30,10 @@ export default function App() {
     const [requests, requestActions] = useStore('requests.list');
     const [user, userActions] = useStore('user');
     const [notification, notificationActions] = useStore('notification');
-    const courseActions = useActions('courses');
     const managerActions = useActions('managers');
     const teacherActions = useActions('teachers');
+    const courseActions = useActions('courses');
+    const materialActions = useActions('materials');
 
     const [isSidenavOpen, setSidenavOpen] = useState(true);
 
@@ -40,6 +41,7 @@ export default function App() {
         userActions.getUser();
         requestActions.getRequests();
         courseActions.getCourses();
+        materialActions.getMaterials();
         managerActions.getManagers();
         teacherActions.getTeachers();
 

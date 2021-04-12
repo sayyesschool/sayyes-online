@@ -20,18 +20,21 @@ export default function EnrollmentMaterials({ enrollment }) {
     }, [enrollment]);
 
     const handleRemoveMaterial = useCallback(materialId => {
-        const materials = enrollment.materials.filter(material => material.id !== materialId);
+        const materials = enrollment.materials.filter(id => id !== materialId);
 
         actions.updateEnrollment(enrollment.id, { materials });
     }, [enrollment]);
 
-    const materialIds = materials?.map(material => material.id);
-    const items = enrollment.materials
-        .filter(material => !materialIds?.includes(material.id))
+    const enrollmentMaterials = materials
+        .filter(material => enrollment.materials.includes(material.id));
+
+    const items = materials
+        .filter(material => !enrollment.materials.includes(material.id))
         .map(material => ({
             key: material.id,
             graphic: <img src={material.imageUrl} />,
-            text: material.title,
+            primaryText: material.title,
+            secondaryText: material.subtitle,
             onClick: () => handleAddMaterial(material.id)
         }));
 
@@ -40,19 +43,20 @@ export default function EnrollmentMaterials({ enrollment }) {
             <Card>
                 <Card.Header
                     title="Пособия"
-                    subtitle={enrollment.materials.length === 0 && 'Пособий нет'}
+                    subtitle={enrollmentMaterials.length === 0 && 'Пособий нет'}
                     actions={
                         <MenuButton
                             icon="add"
+                            listProps={{ twoLine: true }}
                             items={items}
                         />
                     }
                 />
 
-                {enrollment.materials.length > 0 &&
+                {enrollmentMaterials.length > 0 &&
                     <Card.Section>
                         <List imageList twoLine>
-                            {enrollment.materials.map(material =>
+                            {enrollmentMaterials.map(material =>
                                 <List.Item
                                     key={material.id}
                                     graphic={<img src={material.imageUrl} />}

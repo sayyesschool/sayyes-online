@@ -1,69 +1,72 @@
 import React from 'react';
 import {
-    Card,
-    Chip,
-    Icon,
-    List
+    Icon
 } from 'mdc-react';
 
+import Stepper from 'shared/components/stepper';
 import MenuButton from 'shared/components/menu-button';
 
-export default function EnrollmentStatus({ enrollment }) {
-    const hasDetails = enrollment.type && enrollment.format && enrollment.level && enrollment.goal;
-    const hasTrialLesson = enrollment.lessons.find(lesson => lesson.trial);
-    const hasTeacher = enrollment.lessons.find(lesson => lesson.trial);
-    const hasTrialLessonDate = enrollment.lessons.find(lesson => lesson.trial && lesson.date);
+import { statuses } from 'app/data/enrollment';
+
+import './index.scss';
+
+export default function EnrollmentStatus({ enrollment, onUpdate }) {
+    const { status } = enrollment;
 
     return (
         <section className="enrollment-status">
-            <Card>
-                <Card.Header
-                    title="Статус"
-                    actions={
-                        <MenuButton
-                            button={
-                                <Chip
-                                    icon={<Icon>{enrollment.statusIcon}</Icon>}
-                                    text={enrollment.statusLabel}
-                                    trailingIcon={<Icon>arrow_drop_down</Icon>}
-                                />
-                            }
-                            items={[
-                                { key: 'pending', 'data-value': 'pending', text: 'В обработке' },
-                                { key: 'active', 'data-value': 'active', text: 'Актвное' },
-                                { key: 'postponed', 'data-value': 'postponed', text: 'Отложено' },
-                                { key: 'canceled', 'data-value': 'canceled', text: 'Отменено' },
-                                { key: 'completed', 'data-value': 'completed', text: 'Завершено' }
-                            ]}
-                            menuProps={{ top: true, right: true }}
-                        />
-                    }
+            <Stepper>
+                <Stepper.Step
+                    graphic={<Icon>pending</Icon>}
+                    label="Обработка"
+                    active={status === 'processing'}
+                    completed={status === 'trial' || status === 'payment'}
                 />
 
-                <Card.Section>
-                    <List>
-                        <List.Item
-                            graphic={<Icon>{hasDetails ? 'check_box' : 'check_box_outline_blank'}</Icon>}
-                            text="Узнать детали обучения"
-                        />
+                <Stepper.Divider />
 
-                        <List.Item
-                            graphic={<Icon>{hasTrialLesson ? 'check_box' : 'check_box_outline_blank'}</Icon>}
-                            text="Создать пробный урок"
-                        />
+                <Stepper.Step
+                    graphic={<Icon>event_available</Icon>}
+                    label="Пробный урок"
+                    active={status === 'trial'}
+                    completed={status === 'payment'}
+                />
 
-                        <List.Item
-                            graphic={<Icon>{hasTeacher ? 'check_box' : 'check_box_outline_blank'}</Icon>}
-                            text="Найти преподавателя"
-                        />
+                <Stepper.Divider />
 
-                        <List.Item
-                            graphic={<Icon>{hasTeacher ? 'check_box' : 'check_box_outline_blank'}</Icon>}
-                            text="Определить дату пробного урока"
-                        />
-                    </List>
-                </Card.Section>
-            </Card>
+                <Stepper.Step
+                    graphic={<Icon>payment</Icon>}
+                    label="Оплата"
+                    active={status === 'payment'}
+                />
+
+                <Stepper.Divider />
+
+                <Stepper.Step
+                    graphic={<Icon>school</Icon>}
+                    label="Обучение"
+                    active={status === 'active'}
+                />
+
+                <Stepper.Divider />
+
+                <Stepper.Step
+                    graphic={<Icon>check_circle</Icon>}
+                    label="Завершено"
+                    active={status === 'completed'}
+                />
+            </Stepper>
+
+            <MenuButton
+                icon="more_vert"
+                items={statuses.map(status => ({
+                    ...status,
+                    activated: status.value === enrollment.status,
+                    onClick: () => onUpdate({ status: status.value })
+                }))}
+                menuProps={{ top: true, right: true }}
+                listProps={{ dense: true }}
+            />
         </section>
     );
 }

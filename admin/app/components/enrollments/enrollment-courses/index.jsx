@@ -14,20 +14,22 @@ export default function EnrollmentCourses({ enrollment }) {
     const actions = useActions('enrollments');
 
     const handleAddCourse = useCallback(courseId => {
-        const courses = enrollment.courses.map(course => course.id).concat(courseId);
+        const courses = enrollment.courses.concat(courseId);
 
         actions.updateEnrollment(enrollment.id, { courses });
     }, [enrollment]);
 
     const handleRemoveCourse = useCallback(courseId => {
-        const courses = enrollment.courses.map(course => course.id).filter(id => id !== courseId);
+        const courses = enrollment.courses.filter(id => id !== courseId);
 
         actions.updateEnrollment(enrollment.id, { courses });
     }, [enrollment]);
 
-    const courseIds = enrollment.courses.map(course => course.id);
+    const enrollmentCourses = courses
+        .filter(course => enrollment.courses.includes(course.id));
+
     const items = courses
-        .filter(course => !courseIds.includes(course.id))
+        .filter(course => !enrollment.courses.includes(course.id))
         .map(course => ({
             key: course.id,
             graphic: <img src={course.imageUrl} />,
@@ -40,7 +42,7 @@ export default function EnrollmentCourses({ enrollment }) {
             <Card>
                 <Card.Header
                     title="Курсы"
-                    subtitle={enrollment.courses.length === 0 && 'Курсов нет'}
+                    subtitle={enrollmentCourses.length === 0 && 'Курсов нет'}
                     actions={
                         <MenuButton
                             icon="add"
@@ -49,25 +51,23 @@ export default function EnrollmentCourses({ enrollment }) {
                     }
                 />
 
-                {enrollment.courses.length > 0 &&
+                {enrollmentCourses.length > 0 &&
                     <Card.Section>
                         <List imageList>
-                            {enrollment.courses
-                                .map(course => typeof course === 'string' ? courses.find(course) : course)
-                                .map(course =>
-                                    <List.Item
-                                        key={course.id}
-                                        graphic={<img src={course.imageUrl} />}
-                                        text={course.title}
-                                        meta={
-                                            <IconButton
-                                                icon="remove"
-                                                title="Убрать курс"
-                                                onClick={() => handleRemoveCourse(course.id)}
-                                            />
-                                        }
-                                    />
-                                )}
+                            {enrollmentCourses.map(course =>
+                                <List.Item
+                                    key={course.id}
+                                    graphic={<img src={course.imageUrl} />}
+                                    text={course.title}
+                                    meta={
+                                        <IconButton
+                                            icon="remove"
+                                            title="Убрать курс"
+                                            onClick={() => handleRemoveCourse(course.id)}
+                                        />
+                                    }
+                                />
+                            )}
                         </List>
                     </Card.Section>
                 }

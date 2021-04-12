@@ -1,0 +1,11 @@
+.editable-text-card {
+    .mdc-text-field {
+        width: 100%;
+    }
+
+    .mdc-text-field,
+    .mdc-text-field:hover {
+        background-color: transparent;
+        border-radius: 0;
+    }
+}
