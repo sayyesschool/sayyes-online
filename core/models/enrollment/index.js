@@ -13,6 +13,7 @@ const Enrollment = new Schema({
     experience: { type: String, default: '' },
     purpose: { type: String, enum: Object.keys(Purpose), default: '' },
     preferences: { type: String, default: '' },
+    lessonDuration: { type: Number, default: 50 },
     trialLesson: [{
         date: String,
         from: String,
@@ -80,18 +81,6 @@ Enrollment.virtual('ageLabel').get(function() {
 Enrollment.virtual('scheduleLabel').get(function() {
     return this.schedule?.map(schedule => schedule.label).join(', ');
 });
-
-// Enrollment.virtual('packs').get(function() {
-//     const plan = Plans[this.age]?.[this.domain];
-//     const packs = plan?.packs;
-
-//     return Object.entries(packs).map(([key, value]) => ({
-//         price: value,
-//         numberOfLessons: key,
-//         basePricePerLesson: plan.basePricePerLesson,
-//         pricePerLesson: Math.round(value / key)
-//     }));
-// });
 
 Enrollment.virtual('imageSrc').get(function() {
     if (this.domain === 'general') {

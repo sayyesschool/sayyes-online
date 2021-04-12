@@ -1,13 +1,13 @@
 const { Schema } = require('mongoose');
 const moment = require('moment');
 
-const Message = require('../message');
+const Comment = require('../comment');
 
 const Post = new Schema({
     title: { type: String, trim: true },
     content: { type: String, default: '' },
     published: { type: Boolean, default: true },
-    comments: [Message],
+    comments: [Comment],
     user: { type: Schema.Types.ObjectId, ref: 'User' },
     enrollment: { type: Schema.Types.ObjectId, ref: 'Enrollment' }
 }, {
@@ -42,7 +42,7 @@ Post.virtual('timeSinceCreated')
     });
 
 Post.methods.isAuthor = function(user) {
-    return this.author.id === user.id;
+    return this.user.id === user.id;
 };
 
 module.exports = Post;

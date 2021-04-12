@@ -29,6 +29,7 @@ const Payment = new Schema({
     test: { type: Boolean },
     operator: { type: String, enum: Object.keys(OPERATORS) },
     client: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    manager: { type: Schema.Types.ObjectId, ref: 'User' },
     enrollment: { type: Schema.Types.ObjectId, ref: 'Enrollment' },
 }, {
     timestamps: true,

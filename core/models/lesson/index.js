@@ -27,7 +27,6 @@ const Status = {
 const Lesson = new Schema({
     date: { type: Date },
     status: { type: String, enum: Object.keys(Status), default: Status.scheduled.id },
-    trial: { type: Boolean, default: false },
     duration: { type: Number, default: 60 },
     note: { type: String, trim: true, default: '' },
     teacher: { type: Schema.Types.ObjectId, ref: 'User' },
@@ -60,10 +59,18 @@ Lesson.virtual('url').get(function() {
 });
 
 Lesson.virtual('dateLabel').get(function() {
+    return moment(this.date).tz('Europe/Moscow').format('dd, D MMM');
+});
+
+Lesson.virtual('timeLabel').get(function() {
+    return moment(this.date).tz('Europe/Moscow').format('H:mm МСК');
+});
+
+Lesson.virtual('dateTimeLabel').get(function() {
     return moment(this.date).tz('Europe/Moscow').format('dd, D MMM, H:mm МСК');
 });
 
-Lesson.virtual('dateLabelFromNow').get(function() {
+Lesson.virtual('timeFromNowLabel').get(function() {
     return moment(this.date).tz('Europe/Moscow').fromNow();
 });
 

@@ -3,19 +3,27 @@ const moment = require('moment');
 
 const ObjectId = Schema.Types.ObjectId;
 
-const Message = new Schema({
+const Comment = new Schema({
     user: { type: ObjectId, ref: 'User' },
     content: { type: String, required: true },
+    ref: {
+        type: Schema.Types.ObjectId,
+        refPath: 'refModel'
+    },
+    refModel: {
+        type: String,
+        enum: ['Client', 'Enrollment', 'Post']
+    }
 }, {
     timestamps: true
 });
 
-Message.virtual('datetime').get(function() {
+Comment.virtual('datetime').get(function() {
     return moment(this.createdAt).tz('Europe/Moscow').fromNow();
 });
 
-Message.virtual('publishedAt').get(function() {
+Comment.virtual('publishedAt').get(function() {
     return moment(this.createdAt).fromNow();
 });
 
-module.exports = Message;
+module.exports = Comment;

@@ -1,10 +1,9 @@
 const { model } = require('mongoose');
 
-const Assignment = require('./assignment');
-const Conversation = require('./conversation');
 const Course = require('./course');
 const Enrollment = require('./enrollment');
 const Lesson = require('./lesson');
+const Pack = require('./pack');
 const Payment = require('./payment');
 const Post = require('./post');
 const Request = require('./request');
@@ -21,13 +20,12 @@ const Teacher = User.discriminator('Teacher', UserSchema.Teacher, 'teacher');
 const Student = User.discriminator('Student', UserSchema.Student, 'student');
 
 module.exports = {
-    Assignment: model('Assignment', Assignment),
-    Conversation: model('Conversation', Conversation),
     Course: model('Course', Course),
     Enrollment: model('Enrollment', Enrollment),
     Lesson: model('Lesson', Lesson),
     Material: model('Material', Material),
     Meeting: model('Meeting', Meeting),
+    Pack: model('Pack', Pack),
     Payment: model('Payment', Payment),
     Post: model('Post', Post),
     Request: model('Request', Request),
