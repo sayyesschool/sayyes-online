@@ -1,16 +1,39 @@
 module.exports = ({
-    models: { Enrollment }
+    models: { Enrollment, Pack }
 }) => ({
     getMany: (req, res, next) => {
-        Enrollment.find({ client: req.user.id, ...req.query })
-            .populate('client', 'firstname lastname imageUrl')
-            .populate('teacher', 'firstname lastname imageUrl')
-            .populate('lessons', 'id trial')
-            .populate('currentPayment', 'status amount description')
-            .then(enrollments => {
+        Promise.all([
+            Enrollment.find({ client: req.user.id, ...req.query })
+                .populate('client', 'firstname lastname imageUrl')
+                .populate('teacher', 'firstname lastname imageUrl')
+                .populate('lessons', 'id')
+                .populate('currentPayment', 'status amount description'),
+            Pack.find()
+        ])
+            .then(([enrollments, packs]) => {
+                const data = enrollments.map(enrollment => enrollment.toJSON()).map(enrollment => {
+                    if (enrollment.status === 'payment') {
+                        const enrollmentPacks = packs.filter(pack =>
+                            pack.age === enrollment.age &&
+                            pack.domain === enrollment.domain &&
+                            pack.lessonDuration === enrollment.lessonDuration
+                        ).sort((a, b) => b.pricePerLesson - a.pricePerLesson);
+
+                        const basePricePerLesson = enrollmentPacks[0].pricePerLesson;
+
+                        enrollment.packs = enrollmentPacks.map(pack => pack.toJSON()).map(pack => {
+                            pack.basePricePerLesson = basePricePerLesson;
+
+                            return pack;
+                        });
+                    }
+
+                    return enrollment;
+                });
+
                 res.json({
                     ok: true,
-                    data: enrollments
+                    data
                 });
             })
             .catch(next);
@@ -22,7 +45,7 @@ module.exports = ({
             .populate('manager', 'firstname lastname imageUrl email phone')
             .populate('courses', 'title subtitle slug image units.id lessons.id exercises.id')
             .populate('materials')
-            .populate('lessons', 'id title date trial status')
+            .populate('lessons', 'id title date status')
             .then(enrollment => {
                 if (!enrollment) {
                     const error = new Error('Обучение не найдено');

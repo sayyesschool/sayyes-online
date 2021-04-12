@@ -38,7 +38,7 @@ export default function AccountPage() {
         <Page id="account-page">
             <PageHeader
                 overline="Мой аккаунт"
-                graphic={<Avatar className="user-avatar" text={user.initials} large />}
+                graphic={<Avatar text={user.initials} large />}
                 title={user.fullname}
                 withTabs
             >

@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import {
-    LayoutGrid,
-    Typography
+    LayoutGrid
 } from 'mdc-react';
 
 import api from 'shared/services/api';
@@ -18,7 +17,7 @@ import CalendarCard from 'shared/components/calendar-card';
 import EnrollmentDetailsCard from 'app/components/enrollments/enrollment-details-card';
 import EnrollmentStatusCard from 'app/components/enrollments/enrollment-status-card';
 import EnrollmentPayCard from 'app/components/enrollments/enrollment-pay-card';
-import MeetingCard from 'app/components/meetings/meeting-card';
+// import MeetingCard from 'app/components/meetings/meeting-card';
 
 import './index.scss';
 
@@ -98,7 +97,7 @@ export default function HomePage() {
                         />
                     </LayoutGrid.Cell>
 
-                    <LayoutGrid.Cell span="4">
+                    {/* <LayoutGrid.Cell span="4">
                         <section>
                             <Typography type="headline6">Мои встречи разговорного клуба</Typography>
 
@@ -113,7 +112,7 @@ export default function HomePage() {
                                 <Typography type="body1">Встреч пока не запланировано</Typography>
                             }
                         </section>
-                    </LayoutGrid.Cell>
+                    </LayoutGrid.Cell> */}
                 </LayoutGrid>
             </PageContent>
         </Page>

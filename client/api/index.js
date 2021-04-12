@@ -6,6 +6,7 @@ const enrollments = require('./enrollments');
 const lessons = require('./lessons');
 const materials = require('./materials');
 const meetings = require('./meetings');
+const packs = require('./packs');
 const payments = require('./payments');
 const posts = require('./posts');
 const user = require('./user');
@@ -19,6 +20,7 @@ module.exports = context => {
     router.use('/lessons', lessons(context));
     router.use('/materials', materials(context));
     router.use('/meetings', meetings(context));
+    router.use('/packs', packs(context));
     router.use('/payments', payments(context));
     router.use('/posts', posts(context));
     router.use('/user', user(context));

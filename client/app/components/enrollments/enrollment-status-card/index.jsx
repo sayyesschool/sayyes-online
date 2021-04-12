@@ -39,12 +39,18 @@ export default function EnrollmentStatusCard({ enrollment }) {
                         active={status === 'processing'}
                         completed={status === 'trial' || status === 'payment'}
                     />
+
+                    <Stepper.Divider />
+
                     <Stepper.Step
                         graphic={2}
                         label="Вводный урок"
                         active={status === 'trial'}
                         completed={status === 'payment'}
                     />
+
+                    <Stepper.Divider />
+
                     <Stepper.Step
                         graphic={3}
                         label="Оплата обучения"
