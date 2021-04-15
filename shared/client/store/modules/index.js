@@ -6,6 +6,7 @@ export * as managers from 'shared/store/modules/managers';
 export * as materials from 'shared/store/modules/materials';
 export * as meetings from 'shared/store/modules/meetings';
 export * as notification from 'shared/store/modules/notification';
+export * as packs from 'shared/store/modules/packs';
 export * as payments from 'shared/store/modules/payments';
 export * as requests from 'shared/store/modules/requests';
 export * as teachers from 'shared/store/modules/teachers';
