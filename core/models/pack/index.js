@@ -12,8 +12,7 @@ const Pack = new Schema({
 });
 
 Pack.virtual('price').get(function() {
-    console.log(this.numberOfLessons, this.pricePerLesson);
-    return this.numberOfLessons * this.pricePerLesson;
+    return Math.ceil((this.numberOfLessons * this.pricePerLesson) / 100) * 100;
 });
 
 module.exports = Pack;
