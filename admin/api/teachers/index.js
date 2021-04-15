@@ -12,7 +12,7 @@ module.exports = context => {
 
     router.route('/:id')
         .get(controller.getOne)
-        .patch(controller.update)
+        .put(controller.update)
         .delete(controller.delete);
 
     return router;

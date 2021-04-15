@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import {
     DataTable
@@ -6,7 +6,11 @@ import {
 
 import MenuButton from 'shared/components/menu-button';
 
+import DataContext from 'app/contexts/data';
+
 export default function TeachersTable({ teachers, onEdit, onDelete }) {
+    const data = useContext(DataContext);
+
     return (
         <DataTable className="teachers-table">
             <DataTable.Header>
@@ -37,13 +41,7 @@ export default function TeachersTable({ teachers, onEdit, onDelete }) {
                         </DataTable.Cell>
 
                         <DataTable.Cell>
-                            {teacher.birthdate &&
-                                `${teacher.birthdate} (${teacher.age})`
-                            }
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            {teacher.timezone}
+                            {teacher.timezone ? data.timezones.get(teacher.timezone) : '[Не указан]'}
                         </DataTable.Cell>
 
                         <DataTable.Cell numeric>
@@ -81,10 +79,6 @@ const columns = [
     {
         key: 'phone',
         text: 'Телефон'
-    },
-    {
-        key: 'dob',
-        text: 'День рождения'
     },
     {
         key: 'timezone',

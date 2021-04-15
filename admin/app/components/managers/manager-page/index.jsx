@@ -1,4 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import {
     LayoutGrid as Grid
 } from 'mdc-react';
@@ -6,12 +7,12 @@ import {
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
+import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
 import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 
 import { useStore } from 'app/hooks/store';
-import FormPanel from 'app/components/shared/form-panel';
 import ManagerForm from 'app/components/managers/manager-form';
 import ManagerDetails from 'app/components/managers/manager-details';
 import ManagerEnrollments from 'app/components/managers/manager-enrollments';
@@ -36,14 +37,14 @@ export default function ManagerPage({ match, location, history }) {
             });
     }, []);
 
-    const handleUpdate = useCallback(data => {
+    const updateManager = useCallback(data => {
         managerActions.updateManager(manager.id, data)
             .then(() => toggleManagerFormOpen(false));
     }, [manager]);
 
-    const handleDelete = useCallback(() => {
-        managerActions.deleteClient(client.id)
-            .then(() => history.push('/clients'));
+    const deleteManager = useCallback(() => {
+        managerActions.deleteClient(manager.id)
+            .then(() => history.push('/managers'));
     }, [manager]);
 
     if (!manager) return <LoadingIndicator />;
@@ -51,8 +52,17 @@ export default function ManagerPage({ match, location, history }) {
     return (
         <Page id="manager">
             <PageTopBar
-                title={manager.fullname}
+                breadcrumbs={[
+                    <Link to="/managers">Менеджеры</Link>
+                ]}
+                title={manager?.fullname}
                 actions={[
+                    {
+                        key: 'edit',
+                        title: 'Редактировать',
+                        icon: 'edit',
+                        onClick: toggleManagerFormOpen
+                    },
                     {
                         key: 'delete',
                         title: 'Удалить',
@@ -67,7 +77,7 @@ export default function ManagerPage({ match, location, history }) {
                     <Grid.Cell span="3">
                         <ManagerDetails
                             manager={manager}
-                            onEdit={() => toggleManagerFormOpen(true)}
+                            onEdit={toggleManagerFormOpen}
                         />
                     </Grid.Cell>
 
@@ -82,13 +92,12 @@ export default function ManagerPage({ match, location, history }) {
                     <Grid.Cell span="3">
                         <ManagerEnrollments
                             manager={manager}
-                            onCreate={() => setEnrollmentFormOpen(true)}
                         />
                     </Grid.Cell>
                 </Grid>
             </PageContent>
 
-            <FormPanel
+            <FormDialog
                 form="manager-form"
                 title="Данные менеджера"
                 open={isManagerFormOpen}
@@ -96,16 +105,17 @@ export default function ManagerPage({ match, location, history }) {
                 onClose={toggleManagerFormOpen}
             >
                 <ManagerForm
+                    id="manager-form"
                     manager={manager}
-                    onSubmit={handleUpdate}
+                    onSubmit={updateManager}
                 />
-            </FormPanel>
+            </FormDialog>
 
             <ConfirmationDialog
                 title="Подтвердите действие"
                 message="Вы действительно хотите удалить менеджера?"
                 open={isConfirmationDialogOpen}
-                onConfirm={handleDelete}
+                onConfirm={deleteManager}
                 onClose={toggleConfirmationDialogOpen}
             />
         </Page>

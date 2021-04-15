@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef, useRef, useImperativeHandle } from 'react';
 import {
     Layout,
     TextField
@@ -19,14 +19,26 @@ const defaultTeacher = {
     note: ''
 };
 
-export default function TeacherForm({ id = 'teacher-form', teacher = {}, onSubmit }) {
+export default forwardRef(TeacherForm);
+
+function TeacherForm({ teacher = {}, onSubmit, ...props }, ref) {
+    const formRef = useRef();
+
     const [data, handleChange] = useForm({
         ...defaultTeacher,
-        ...teacher
+        ...teacher,
+        enrollments: undefined,
+        payments: undefined,
+        lessons: undefined
     });
 
+    useImperativeHandle(ref, () => ({
+        get form() { return formRef.current; },
+        get data() { return data; }
+    }));
+
     return (
-        <Form id={id} onSubmit={() => onSubmit(data)}>
+        <Form ref={formRef} onSubmit={() => onSubmit(data)} {...props}>
             <Layout column>
                 <TextField
                     name="firstname"
@@ -84,6 +96,7 @@ export default function TeacherForm({ id = 'teacher-form', teacher = {}, onSubmi
 
                 <TimeZoneSelect
                     name="timezone"
+                    value={data.timezone}
                     onChange={handleChange}
                 />
 

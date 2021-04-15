@@ -11,15 +11,15 @@ import moment from 'moment';
 
 import MenuButton from 'shared/components/menu-button';
 
+import './index.scss';
+
 export default function RequestsTable({ requests, manager, onProcess, onEdit, onDelete }) {
     return (
-        <DataTable id="request-list">
+        <DataTable className="requests-table">
             <DataTable.Header>
                 <DataTable.HeaderRow>
                     {columns.map(col =>
-                        <DataTable.HeaderCell
-                            key={col.key}
-                        >
+                        <DataTable.HeaderCell key={col.key}>
                             {col.text}
                         </DataTable.HeaderCell>
                     )}

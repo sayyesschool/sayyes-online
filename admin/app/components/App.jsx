@@ -19,6 +19,7 @@ import Lessons from 'app/components/lessons';
 import Managers from 'app/components/managers';
 import Materials from 'app/components/materials';
 import Meetings from 'app/components/meetings';
+import Packs from 'app/components/packs';
 import Payments from 'app/components/payments';
 import Requests from 'app/components/requests';
 import Teachers from 'app/components/teachers';
@@ -82,6 +83,7 @@ export default function App() {
                     <Route path="/materials" component={Materials} />
                     <Route path="/managers" component={Managers} />
                     <Route path="/meetings" component={Meetings} />
+                    <Route path="/packs" component={Packs} />
                     <Route path="/payments" component={Payments} />
                     <Route path="/requests" component={Requests} />
                     <Route path="/teachers" component={Teachers} />

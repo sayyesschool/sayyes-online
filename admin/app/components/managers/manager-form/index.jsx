@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef, useRef, useImperativeHandle } from 'react';
 import {
     Layout,
     TextField
@@ -19,14 +19,26 @@ const defaultManager = {
     note: ''
 };
 
-export default function ManagerForm({ id = 'manager-form', manager = {}, onSubmit }) {
+export default forwardRef(ManagerForm);
+
+function ManagerForm({ manager = {}, onSubmit, ...props }, ref) {
+    const formRef = useRef();
+
     const [data, handleChange] = useForm({
         ...defaultManager,
-        ...manager
+        ...manager,
+        requests: undefined,
+        enrollments: undefined,
+        payments: undefined
     });
 
+    useImperativeHandle(ref, () => ({
+        get form() { return formRef.current; },
+        get data() { return data; }
+    }));
+
     return (
-        <Form id={id} onSubmit={() => onSubmit(data)}>
+        <Form ref={formRef} className="manager-form" onSubmit={() => onSubmit(data)} {...props}>
             <Layout column>
                 <TextField
                     name="firstname"
@@ -84,6 +96,7 @@ export default function ManagerForm({ id = 'manager-form', manager = {}, onSubmi
 
                 <TimeZoneSelect
                     name="timezone"
+                    value={data.timezone}
                     onChange={handleChange}
                 />
 
@@ -109,10 +122,4 @@ export default function ManagerForm({ id = 'manager-form', manager = {}, onSubmi
             </Layout>
         </Form>
     );
-}
-
-function generatePassword() {
-    const buf = new Uint8Array(6);
-    crypto.getRandomValues(buf);
-    return btoa(String.fromCharCode(...buf));
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import {
     LayoutGrid as Grid
 } from 'mdc-react';
@@ -6,12 +7,12 @@ import {
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
+import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
 import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 
 import { useStore } from 'app/hooks/store';
-import FormPanel from 'app/components/shared/form-panel';
 import TeacherForm from 'app/components/teachers/teacher-form';
 import TeacherDetails from 'app/components/teachers/teacher-details';
 
@@ -34,12 +35,12 @@ export default function TeacherPage({ match, location, history }) {
             });
     }, []);
 
-    const handleUpdate = useCallback(data => {
+    const updateTeacher = useCallback(data => {
         teacherActions.updateTeacher(teacher.id, data)
-            .then(() => setTeacherFormOpen(false));
+            .then(() => toggleTeacherFormOpen(false));
     }, [teacher]);
 
-    const handleDelete = useCallback(() => {
+    const deleteTeacher = useCallback(() => {
         teacherActions.deleteTeacher(teacher.id)
             .then(() => history.push('/teachers'));
     }, [teacher]);
@@ -49,8 +50,17 @@ export default function TeacherPage({ match, location, history }) {
     return (
         <Page id="teacher">
             <PageTopBar
+                breadcrumbs={[
+                    <Link to="/teachers">Преподаватели</Link>
+                ]}
                 title={teacher?.fullname}
                 actions={[
+                    {
+                        key: 'edit',
+                        title: 'Редактировать',
+                        icon: 'edit',
+                        onClick: toggleTeacherFormOpen
+                    },
                     {
                         key: 'delete',
                         title: 'Удалить',
@@ -65,7 +75,7 @@ export default function TeacherPage({ match, location, history }) {
                     <Grid.Cell span="3">
                         <TeacherDetails
                             teacher={teacher}
-                            onEdit={() => toggleTeacherFormOpen(true)}
+                            onEdit={toggleTeacherFormOpen}
                         />
                     </Grid.Cell>
 
@@ -78,24 +88,24 @@ export default function TeacherPage({ match, location, history }) {
                 </Grid>
             </PageContent>
 
-            <FormPanel
+            <FormDialog
                 form="teacher-form"
                 title="Данные преподавателя"
                 open={isTeacherFormOpen}
-                modal
-                onClose={() => toggleTeacherFormOpen()}
+                onClose={toggleTeacherFormOpen}
             >
                 <TeacherForm
+                    id="teacher-form"
                     teacher={teacher}
-                    onSubmit={handleUpdate}
+                    onSubmit={updateTeacher}
                 />
-            </FormPanel>
+            </FormDialog>
 
             <ConfirmationDialog
                 title="Подтвердите действие"
                 message="Вы действительно хотите удалить преподавателя?"
                 open={isConfirmationDialogOpen}
-                onConfirm={handleDelete}
+                onConfirm={deleteTeacher}
                 onClose={toggleConfirmationDialogOpen}
             />
         </Page>

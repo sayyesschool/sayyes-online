@@ -16,7 +16,7 @@ export default function ClientsPage({ history }) {
     const [clients, actions] = useStore('clients.list');
     const [client, setClient] = useState();
 
-    const [isClientFormOpen, toggleClientFormOpen] = useBoolean(false);
+    const [isFormOpen, toggleFormOpen] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     useEffect(() => {
@@ -25,7 +25,7 @@ export default function ClientsPage({ history }) {
 
     const createClient = useCallback(data => {
         actions.createClient(data)
-            .then(() => toggleClientFormOpen(false));
+            .then(() => toggleFormOpen(false));
     }, []);
 
     const deleteClient = useCallback(() => {
@@ -57,7 +57,7 @@ export default function ClientsPage({ history }) {
                         label: 'Создать',
                         icon: 'add',
                         unelevated: true,
-                        onClick: toggleClientFormOpen
+                        onClick: toggleFormOpen
                     }
                 ]}
             />
@@ -73,8 +73,8 @@ export default function ClientsPage({ history }) {
             <FormDialog
                 form="client-form"
                 title="Новый клиент"
-                open={isClientFormOpen}
-                onClose={toggleClientFormOpen}
+                open={isFormOpen}
+                onClose={toggleFormOpen}
             >
                 <ClientForm
                     id="client-form"

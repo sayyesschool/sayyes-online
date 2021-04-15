@@ -1,32 +1,44 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
+import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
+import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
 import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 
 import { useStore } from 'app/hooks/store';
-import FormPanel from 'app/components/shared/form-panel';
 import TeachersTable from 'app/components/teachers/teachers-table';
 import TeacherForm from 'app/components/teachers/teacher-form';
 
 export default function TeachersPage({ history }) {
     const [teachers, actions] = useStore('teachers.list');
+    const [teacher, setTeacher] = useState();
 
     const [isFormOpen, toggleFormOpen] = useBoolean(false);
+    const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
-    const handleSubmit = useCallback(data => {
+    const createTeacher = useCallback(data => {
         actions.createTeacher(data)
-            .then(() => toggleClientFormOpen(false));
+            .then(() => toggleFormOpen(false));
     }, []);
+
+    const deleteTeacher = useCallback(() => {
+        actions.deleteTeacher(teacher.id)
+            .then(() => {
+                setTeacher(null);
+                toggleConfirmationDialogOpen(false);
+            });
+    }, [teacher]);
 
     const handleEdit = useCallback(teacher => {
         history.push(teacher.url, { edit: true });
     }, []);
 
     const handleDelete = useCallback(teacher => {
-        history.push(teacher.url, { delete: true });
+        setTeacher(teacher);
+        toggleConfirmationDialogOpen(true);
     }, []);
 
     if (!teachers) return <LoadingIndicator />;
@@ -54,17 +66,25 @@ export default function TeachersPage({ history }) {
                 />
             </PageContent>
 
-            <FormPanel
+            <FormDialog
                 form="teacher-form"
                 title="Новый преподаватель"
                 open={isFormOpen}
-                modal
                 onClose={toggleFormOpen}
             >
                 <TeacherForm
-                    onSubmit={handleSubmit}
+                    id="teacher-form"
+                    onSubmit={createTeacher}
                 />
-            </FormPanel>
+            </FormDialog>
+
+            <ConfirmationDialog
+                title="Подтвердите действие"
+                message={`Вы действительно хотите удалить клиента ${teacher?.fullname}?`}
+                open={isConfirmationDialogOpen}
+                onConfirm={deleteTeacher}
+                onClose={toggleConfirmationDialogOpen}
+            />
         </Page>
     );
 }

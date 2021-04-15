@@ -29,6 +29,11 @@ export default {
         single: null
     },
 
+    packs: {
+        list: null,
+        single: null
+    },
+
     payments: {
         list: null,
         single: null

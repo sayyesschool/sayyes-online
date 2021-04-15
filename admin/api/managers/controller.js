@@ -30,7 +30,7 @@ module.exports = ({
             .then(manager => {
                 res.json({
                     ok: true,
-                    message: 'Пользователь создан',
+                    message: 'Менеджер создан',
                     data: manager
                 });
             })
@@ -42,7 +42,7 @@ module.exports = ({
             .then(manager => {
                 res.json({
                     ok: true,
-                    message: 'Пользователь изменен',
+                    message: 'Менеджер изменен',
                     data: manager
                 });
             })
@@ -54,7 +54,7 @@ module.exports = ({
             .then(() => {
                 res.json({
                     ok: true,
-                    message: 'Пользователь удален'
+                    message: 'Менеджер удален'
                 });
             })
             .catch(next);

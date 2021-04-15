@@ -2,37 +2,27 @@ import React, { useContext } from 'react';
 import {
     Card,
     Icon,
-    IconButton,
     List
 } from 'mdc-react';
 import moment from 'moment';
 
 import DataContext from 'app/contexts/data';
 
-export default function TeacherDetails({ teacher, onEdit }) {
+export default function TeacherDetails({ teacher }) {
     const data = useContext(DataContext);
 
     return (
         <section className="teacher-details">
             <Card>
-                <Card.Header
-                    title="Профиль"
-                    actions={
-                        <IconButton
-                            icon="edit"
-                            onClick={onEdit}
-                        />
-                    }
-                />
+                {teacher.imageUrl &&
+                    <Card.Media
+                        imageUrl={teacher.imageUrl}
+                        square
+                    />
+                }
 
                 <Card.Section>
                     <List twoLine>
-                        <List.Item
-                            graphic={<Icon>person</Icon>}
-                            primaryText={teacher.fullname}
-                            secondaryText="ФИО"
-                        />
-
                         <List.Item
                             graphic={<Icon>phone</Icon>}
                             primaryText={teacher.phone || '[Не указан]'}

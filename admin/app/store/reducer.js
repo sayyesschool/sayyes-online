@@ -8,6 +8,7 @@ import managers from 'shared/store/modules/managers';
 import materials from 'shared/store/modules/materials';
 import meetings from 'shared/store/modules/meetings';
 import notification from 'shared/store/modules/notification';
+import packs from 'shared/store/modules/packs';
 import payments from 'shared/store/modules/payments';
 import requests from 'shared/store/modules/requests';
 import teachers from 'shared/store/modules/teachers';
@@ -23,6 +24,7 @@ export default combineReducers({
     materials,
     meetings,
     notification,
+    packs,
     payments,
     requests,
     teachers,

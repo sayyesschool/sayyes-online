@@ -3,6 +3,7 @@ export default [
     null,
     { key: 'requests', url: '/requests', text: 'Заявки', icon: 'contact_phone', exact: false },
     { key: 'payments', url: '/payments', text: 'Платежи', icon: 'payments', exact: false },
+    { key: 'packs', url: '/packs', text: 'Пакеты', icon: 'sell', exact: false },
     null,
     { key: 'lessons', url: '/lessons', text: 'Уроки', icon: 'event', exact: false },
     { key: 'meetings', url: '/meetings', text: 'Встречи', icon: 'event', exact: false },

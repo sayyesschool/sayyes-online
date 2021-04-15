@@ -1,60 +1,60 @@
 module.exports = ({
-    models: { Teacher }
+    models: { Pack }
 }) => ({
     get: (req, res, next) => {
-        const query = req.query ? req.query : {};
-
-        Teacher.find(query)
-            .then(teachers => {
+        Pack.find(req.query)
+            .then(packs => {
                 res.json({
                     ok: true,
-                    data: teachers
+                    data: packs
                 });
             })
             .catch(next);
     },
 
     getOne: (req, res, next) => {
-        Teacher.findById(req.params.id)
-            .then(teacher => {
+        Pack.findById(req.params.id)
+            .then(pack => {
                 res.json({
                     ok: true,
-                    data: teacher
+                    data: pack
                 });
             })
             .catch(next);
     },
 
     create: (req, res, next) => {
-        Teacher.create(req.body)
-            .then(teacher => {
+        Pack.create(req.body)
+            .then(pack => {
                 res.json({
                     ok: true,
-                    message: 'Преподаватель создан',
-                    data: teacher
+                    message: 'Пакет создан',
+                    data: pack
                 });
             })
             .catch(next);
     },
 
     update: (req, res, next) => {
-        Teacher.findByIdAndUpdate(req.params.id, req.body, { new: true })
-            .then(teacher => {
+        Pack.findByIdAndUpdate(req.params.id, req.body, { new: true })
+            .then(pack => {
                 res.json({
                     ok: true,
-                    message: 'Преподаватель изменен',
-                    data: teacher
+                    message: 'Пакет изменен',
+                    data: pack
                 });
             })
             .catch(next);
     },
 
     delete: (req, res, next) => {
-        Teacher.findByIdAndDelete(req.params.id)
-            .then(() => {
+        Pack.findByIdAndDelete(req.params.id)
+            .select('id')
+            .then(pack => {
                 res.json({
                     ok: true,
-                    message: 'Преподаватель удален'
+                    message: 'Пакет удален',
+                    data: pack
                 });
             })
             .catch(next);
