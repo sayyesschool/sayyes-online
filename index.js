@@ -1,6 +1,7 @@
 const config = require('./config');
-const core = require('./core')(config);
+const shared = require('./shared');
 const db = require('./db');
+const core = require('./core')(config, shared);
 const server = require('./server')(config, db);
 const api = require('./api');
 const auth = require('./auth');

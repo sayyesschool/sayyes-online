@@ -36,7 +36,9 @@ module.exports = {
 
     YANDEX_METRIKA_ID: '61110085',
     GOOGLE_ANALYTICS_ID: 'UA-161447925-1',
-    FACEBOOK_PIXEL_ID: '758563291240040'
+    FACEBOOK_PIXEL_ID: '758563291240040',
+
+    STATIC_URL: 'https://static.sayes.ru'
 
     // paths: {
     //     public: path.join(APP_PATH, 'public'),
