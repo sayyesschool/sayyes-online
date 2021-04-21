@@ -12,6 +12,6 @@ export default [
     { key: 'materials', url: '/materials', text: 'Материалы', icon: 'book', exact: false },
     null,
     { key: 'clients', url: '/clients', text: 'Клиенты', icon: 'groups', exact: false, indent: true },
-    { key: 'teachers', url: '/teachers', text: 'Преподаватели', icon: 'people', exact: false, indent: true },
-    { key: 'managers', url: '/managers', text: 'Менеджеры', icon: 'people_alt', exact: false, indent: true },
+    { key: 'teachers', url: '/teachers', text: 'Преподаватели', icon: 'face', exact: false, indent: true },
+    { key: 'managers', url: '/managers', text: 'Менеджеры', icon: 'support_agent', exact: false, indent: true },
 ];

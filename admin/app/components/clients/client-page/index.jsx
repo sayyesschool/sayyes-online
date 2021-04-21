@@ -15,6 +15,7 @@ import PageContent from 'shared/components/page-content';
 import { useStore } from 'app/hooks/store';
 import ClientForm from 'app/components/clients/client-form';
 import ClientDetails from 'app/components/clients/client-details';
+import ClientContacts from 'app/components/clients/client-contacts';
 import ClientEnrollments from 'app/components/clients/client-enrollments';
 import ClientRequests from 'app/components/clients/client-requests';
 import ClientPayments from 'app/components/clients/client-payments';
@@ -39,12 +40,12 @@ export default function ClientPage({ match, location, history }) {
     }, []);
 
     const updateClient = useCallback(data => {
-        clientActions.updateClient(client.id, data)
+        return clientActions.updateClient(client.id, data)
             .then(() => toggleClientFormOpen(false));
     }, [client]);
 
     const deleteClient = useCallback(() => {
-        clientActions.deleteClient(client.id)
+        return clientActions.deleteClient(client.id)
             .then(() => history.push('/clients'));
     }, [client]);
 
@@ -58,6 +59,19 @@ export default function ClientPage({ match, location, history }) {
                 ]}
                 title={client?.fullname}
                 actions={[
+                    (client.hhid && {
+                        element: 'a',
+                        href: `https://sayes.t8s.ru/Profile/${client.hhid}`,
+                        target: '_blank',
+                        icon: 'link',
+                        title: 'Открыть в Hollihop'
+                    }),
+                    {
+                        key: 'edit',
+                        title: 'Редактировать',
+                        icon: 'edit',
+                        onClick: toggleClientFormOpen
+                    },
                     {
                         key: 'delete',
                         title: 'Удалить',
@@ -69,11 +83,19 @@ export default function ClientPage({ match, location, history }) {
 
             <PageContent>
                 <Grid>
-                    <Grid.Cell span="3">
-                        <ClientDetails
-                            client={client}
-                            onEdit={toggleClientFormOpen}
-                        />
+                    <Grid.Cell span="3" grid>
+                        <Grid.Cell span="12">
+                            <ClientDetails
+                                client={client}
+                            />
+                        </Grid.Cell>
+
+                        <Grid.Cell span="12">
+                            <ClientContacts
+                                client={client}
+                                onUpdate={updateClient}
+                            />
+                        </Grid.Cell>
                     </Grid.Cell>
 
                     <Grid.Cell span="3">

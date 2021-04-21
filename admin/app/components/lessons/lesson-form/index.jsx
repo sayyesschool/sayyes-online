@@ -23,7 +23,7 @@ const statuses = [
 
 const defaultLesson = {
     status: 'scheduled',
-    duration: 60,
+    duration: 50,
     date: new Date(),
     note: ''
 };

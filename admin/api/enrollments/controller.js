@@ -20,10 +20,23 @@ module.exports = ({
     getOne: (req, res, next) => {
         Enrollment.findById(req.params.id)
             .populate('manager', 'firstname lastname imageUrl')
-            .populate('client', 'firstname lastname imageUrl')
+            .populate('client', 'hhid firstname lastname imageUrl')
             .populate('teacher', 'firstname lastname imageUrl')
-            .populate({ path: 'lessons', populate: { path: 'teacher', select: 'firstname lastname' } })
             .populate('payments')
+            .populate({
+                path: 'lessons',
+                populate: {
+                    path: 'teacher',
+                    select: 'firstname lastname imageUrl'
+                }
+            })
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'author',
+                    select: 'firstname lastname imageUrl'
+                }
+            })
             .then(enrollment => {
                 res.json({
                     ok: true,
@@ -82,5 +95,15 @@ module.exports = ({
                 });
             })
             .catch(next);
-    }
+    },
+
+    getComments: () => {
+
+    },
+
+    createComment: () => { },
+
+    updateComment: () => { },
+
+    deleteComment: () => { }
 });

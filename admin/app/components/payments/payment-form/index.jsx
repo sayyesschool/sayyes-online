@@ -1,6 +1,7 @@
 import React, { forwardRef, useCallback, useRef, useImperativeHandle } from 'react';
 import {
     Layout,
+    Select,
     TextField
 } from 'mdc-react';
 import moment from 'moment';
@@ -8,31 +9,32 @@ import moment from 'moment';
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
 
-import PaymentMethodSelect from 'app/components/payments/payment-method-select';
-
-import './index.scss';
+import { paymentMethodOptions, operatorOptions } from 'shared/../data/payment';
 
 const defaultPayment = {
     amount: 0,
     description: '',
     paidAt: new Date(),
-    paymentMethod: ''
+    paymentMethod: '',
+    operator: ''
 };
+
+import './index.scss';
 
 export default forwardRef(PaymentForm);
 
 function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
     const formRef = useRef();
 
-    const [data, setData] = useForm({
-        ...defaultPayment,
-        ...payment
-    }, [payment]);
-
     useImperativeHandle(ref, () => ({
         get form() { return formRef.current; },
         get data() { return data; }
     }));
+
+    const [data, onChange] = useForm({
+        ...defaultPayment,
+        ...payment
+    }, [payment]);
 
     const handleSubmit = useCallback(() => {
         data.date = moment(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
@@ -51,7 +53,7 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
                     label="Описание"
                     filled
                     required
-                    onChange={setData}
+                    onChange={onChange}
                 />
 
                 <TextField
@@ -59,25 +61,41 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
                     name="amount"
                     value={data.amount}
                     label="Сумма"
+                    suffix="руб."
                     filled
                     min={1}
                     required
-                    onChange={setData}
+                    onChange={onChange}
                 />
 
                 <TextField
                     type="date"
-                    name="date"
+                    name="paidAt"
                     value={moment(data.paidAt).format('YYYY-MM-DD')}
                     label="Дата"
                     filled
-                    onChange={setData}
+                    onChange={onChange}
                 />
 
-                <PaymentMethodSelect
+                <Select
+                    name="paymentMethod"
                     value={data.paymentMethod}
-                    onChange={setData}
+                    label="Способ оплаты"
+                    filled
+                    options={paymentMethodOptions}
+                    onChange={onChange}
                 />
+
+                {(data.paymentMethod !== '' && data.paymentMethod !== 'cash') &&
+                    <Select
+                        name="operator"
+                        value={data.operator}
+                        label="Оператор"
+                        filled
+                        options={operatorOptions}
+                        onChange={onChange}
+                    />
+                }
 
                 <TextField
                     type="text"
@@ -86,7 +104,7 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
                     label="Заметка"
                     filled
                     textarea
-                    onChange={setData}
+                    onChange={onChange}
                 />
             </Layout>
         </Form>

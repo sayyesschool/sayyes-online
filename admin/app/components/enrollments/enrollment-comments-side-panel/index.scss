@@ -1,0 +1,32 @@
+.enrollment-comments-side-panel {
+    .comment-card {
+        border: none;
+        border-radius: 0;
+        
+        .mdc-card__section {
+            padding: .5rem 1rem;
+        }
+
+        + .comment-card {
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0,0,0,.12);
+        }
+    }
+
+    .comment-form {
+
+    }
+
+    .mdc-side-sheet__content {
+        padding: 1rem 0;
+    }
+
+    .side-panel__footer {
+        padding: 0;
+
+        .mdc-button {
+            width: 100%;
+            border-radius: 0;
+        }
+    }
+}

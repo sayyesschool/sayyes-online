@@ -14,7 +14,7 @@ import DateTimeSelect from 'shared/components/datetime-select';
 import './index.scss';
 
 export default function EnrollmentTrialLesson({ enrollment, onUpdate }) {
-    const [items, setItems] = useState(enrollment.trialLesson);
+    const [items, setItems] = useState(enrollment.trialLessonSchedule);
 
     const [isFormOpen, toggleFormOpen] = useBoolean(false);
 
@@ -23,16 +23,17 @@ export default function EnrollmentTrialLesson({ enrollment, onUpdate }) {
     }, []);
 
     const handleSubmit = useCallback(() => {
-        onUpdate({ trialLesson: items })
+        onUpdate({ trialLessonSchedule: items })
             .then(() => toggleFormOpen(false));
     }, [items]);
 
-    const hasItems = enrollment.trialLesson.length > 0;
+    const hasItems = enrollment.trialLessonSchedule.length > 0;
 
     return (
         <section className="enrollment-trial-lesson">
             <Card>
                 <Card.Header
+                    graphic={<Icon>event</Icon>}
                     title="Пробный урок"
                     subtitle={!hasItems && 'Не запланирован'}
                     actions={
@@ -45,13 +46,12 @@ export default function EnrollmentTrialLesson({ enrollment, onUpdate }) {
 
                 {hasItems &&
                     <Card.Section>
-                        <List twoLine>
-                            {enrollment.trialLesson.map(trialLesson =>
+                        <List>
+                            {enrollment.trialLessonSchedule.map(item =>
                                 <List.Item
-                                    key={trialLesson.id}
-                                    graphic={<Icon>event</Icon>}
-                                    primaryText={moment(trialLesson.date).format('DD.MM.YYYY')}
-                                    secondaryText={`${trialLesson.from} - ${trialLesson.to}`}
+                                    key={item.id}
+                                    text={moment(item.date).format('DD.MM.YYYY')}
+                                    meta={`${item.from} - ${item.to}`}
                                 />
                             )}
                         </List>

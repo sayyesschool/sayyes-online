@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import {
     Card,
+    Icon,
     IconButton,
     Typography
 } from 'mdc-react';
@@ -28,6 +29,7 @@ export default function ClientEnrollments({ client }) {
         <section className="client-enrollments">
             <Card>
                 <Card.Header
+                    graphic={<Icon>school</Icon>}
                     title="Обучение"
                     actions={
                         <IconButton

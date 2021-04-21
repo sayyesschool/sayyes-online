@@ -11,12 +11,14 @@ import RadioGroup from 'shared/components/radio-group';
 import TimeZoneSelect from 'shared/components/timezone-select';
 
 const defaultClient = {
+    hhid: '',
     firstname: '',
     lastname: '',
     patronym: '',
     email: '',
     phone: '',
     altPhone: '',
+    address: '',
     occupation: '',
     interests: '',
     timezone: '',
@@ -45,6 +47,15 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
     return (
         <Form ref={formRef} className="client-form" onSubmit={() => onSubmit(data)} {...props}>
             <Layout column>
+                <TextField
+                    type="text"
+                    name="hhid"
+                    value={data.hhid}
+                    label="Hollihop ID"
+                    filled
+                    onChange={handleChange}
+                />
+
                 <TextField
                     name="firstname"
                     value={data.firstname}
@@ -120,12 +131,29 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
                             onChange={handleChange}
                         />
 
+                        <TimeZoneSelect
+                            name="timezone"
+                            value={data.timezone}
+                            onChange={handleChange}
+                        />
+
+                        <TextField
+                            type="text"
+                            name="address"
+                            value={data.address}
+                            label="Адрес"
+                            filled
+                            textarea
+                            onChange={handleChange}
+                        />
+
                         <TextField
                             type="text"
                             name="occupation"
                             value={data.occupation}
                             label="Род деятельности"
                             filled
+                            textarea
                             onChange={handleChange}
                         />
 
@@ -135,12 +163,7 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
                             value={data.interests}
                             label="Интересы"
                             filled
-                            onChange={handleChange}
-                        />
-
-                        <TimeZoneSelect
-                            name="timezone"
-                            value={data.timezone}
+                            textarea
                             onChange={handleChange}
                         />
                     </>

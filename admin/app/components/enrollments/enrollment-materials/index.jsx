@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import {
     Card,
+    Icon,
     IconButton,
     List
 } from 'mdc-react';
@@ -42,6 +43,7 @@ export default function EnrollmentMaterials({ enrollment }) {
         <section className="enrollment-materials">
             <Card>
                 <Card.Header
+                    graphic={<Icon>book</Icon>}
                     title="Пособия"
                     subtitle={enrollmentMaterials.length === 0 && 'Пособий нет'}
                     actions={

@@ -7,6 +7,7 @@ import {
     Typography
 } from 'mdc-react';
 
+import { } from 'shared/../data/payment';
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
@@ -58,6 +59,7 @@ export default function ClientPayments({ client }) {
         <section className="client-payments">
             <Card>
                 <Card.Header
+                    graphic={<Icon>payment</Icon>}
                     title="Платежи"
                     actions={
                         <IconButton
@@ -125,7 +127,7 @@ export default function ClientPayments({ client }) {
                 message="Вы действительно хотите удалить платеж?"
                 open={isConfirmationDialogOpen}
                 onConfirm={deletePayment}
-                onClose={() => toggleConfirmationDialogOpen(false)}
+                onClose={toggleConfirmationDialogOpen}
             />
         </section>
     );

@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import {
     Card,
+    Icon,
     IconButton
 } from 'mdc-react';
 
@@ -29,6 +30,7 @@ export default function EnrollmentSchedule({ enrollment, onUpdate }) {
         <section className="enrollment-schedule">
             <Card>
                 <Card.Header
+                    graphic={<Icon>calendar_view_month</Icon>}
                     title="Расписание"
                     actions={
                         <IconButton

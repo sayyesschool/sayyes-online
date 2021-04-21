@@ -37,16 +37,6 @@ export default function ClientsTable({ clients, onEdit, onDelete }) {
                             {client.phone}
                         </DataTable.Cell>
 
-                        <DataTable.Cell>
-                            {client.birthdate &&
-                                `${client.birthdate} (${client.age})`
-                            }
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            {client.timezone}
-                        </DataTable.Cell>
-
                         <DataTable.Cell numeric>
                             <MenuButton
                                 items={[
@@ -84,13 +74,5 @@ const columns = [
     {
         key: 'phone',
         text: 'Телефон'
-    },
-    {
-        key: 'dob',
-        text: 'День рождения'
-    },
-    {
-        key: 'timezone',
-        text: 'Часовой пояс'
-    },
+    }
 ];

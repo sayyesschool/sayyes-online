@@ -12,7 +12,7 @@ import DateTimeSelect from 'shared/components/datetime-select';
 import PeopleSelect from 'shared/components/people-select';
 
 import { useStore } from 'app/hooks/store';
-import { statuses, types, formats, ages, levels, purposes, defaultEnrollment } from 'app/data/enrollment';
+import { domainOptions, types, formats, ages, levels, purposes, defaultEnrollment } from 'app/data/enrollment';
 
 import './index.scss';
 
@@ -49,10 +49,10 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
         <Form ref={formRef} className="enrollment-form" onSubmit={handleSubmit} {...props}>
             <Layout column>
                 <Select
-                    name="status"
-                    value={data.status}
-                    label="Статус"
-                    options={statuses}
+                    name="domain"
+                    value={data.domain}
+                    label="Направление"
+                    options={domainOptions}
                     filled
                     required
                     onChange={handleChange}
@@ -146,29 +146,33 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                     onChange={handleChange}
                 />
 
-                <PeopleSelect
-                    name="teacher"
-                    value={data.teacher}
-                    label="Преподаватель"
-                    options={teachers.map(teacher => ({
-                        key: teacher.id,
-                        value: teacher.id,
-                        text: teacher.fullname
-                    }))}
-                    onChange={handleChange}
-                />
+                {enrollment.id &&
+                    <>
+                        <PeopleSelect
+                            name="teacher"
+                            value={data.teacher}
+                            label="Преподаватель"
+                            options={teachers.map(teacher => ({
+                                key: teacher.id,
+                                value: teacher.id,
+                                text: teacher.fullname
+                            }))}
+                            onChange={handleChange}
+                        />
 
-                <PeopleSelect
-                    name="manager"
-                    value={data.manager}
-                    label="Менеджер"
-                    options={managers.map(manager => ({
-                        key: manager.id,
-                        value: manager.id,
-                        text: manager.fullname
-                    }))}
-                    onChange={handleChange}
-                />
+                        <PeopleSelect
+                            name="manager"
+                            value={data.manager}
+                            label="Менеджер"
+                            options={managers.map(manager => ({
+                                key: manager.id,
+                                value: manager.id,
+                                text: manager.fullname
+                            }))}
+                            onChange={handleChange}
+                        />
+                    </>
+                }
             </Layout>
         </Form >
     );

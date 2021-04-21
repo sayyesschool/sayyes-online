@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     Card,
+    Icon,
     Typography
 } from 'mdc-react';
 
@@ -11,6 +12,7 @@ export default function ClientRequests({ requests }) {
         <section className="client-requests">
             <Card>
                 <Card.Header
+                    graphic={<Icon>contact_phone</Icon>}
                     title="Заявки"
                 />
 

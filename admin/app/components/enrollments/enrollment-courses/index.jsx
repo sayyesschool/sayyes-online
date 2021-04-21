@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import {
     Card,
+    Icon,
     IconButton,
     List
 } from 'mdc-react';
@@ -41,6 +42,7 @@ export default function EnrollmentCourses({ enrollment }) {
         <section className="enrollment-courses">
             <Card>
                 <Card.Header
+                    graphic={<Icon>class</Icon>}
                     title="Курсы"
                     subtitle={enrollmentCourses.length === 0 && 'Курсов нет'}
                     actions={

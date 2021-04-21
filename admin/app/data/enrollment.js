@@ -1,3 +1,9 @@
+export const domainLabels = {
+    general: 'Общий разговорный курс',
+    business: 'Деловой английский',
+    prep: 'Подготовка к экзаменам'
+};
+
 export const statuses = [
     { key: 'processing', value: 'processing', text: 'В обработке' },
     { key: 'trial', value: 'trial', text: 'Пробный урок' },
@@ -6,6 +12,12 @@ export const statuses = [
     { key: 'postponed', value: 'postponed', text: 'Отложено' },
     { key: 'canceled', value: 'canceled', text: 'Отменено' },
     { key: 'completed', value: 'completed', text: 'Завершено' }
+];
+
+export const domainOptions = [
+    { key: 'general', value: 'general', text: domainLabels.general },
+    { key: 'business', value: 'business', text: domainLabels.business },
+    { key: 'prep', value: 'prep', text: domainLabels.prep }
 ];
 
 export const types = [
@@ -44,11 +56,13 @@ export const purposes = [
     { key: 'study', value: 'study', text: 'Для учебы' },
     { key: 'interview', value: 'interview', text: 'Для собеседования' },
     { key: 'travel', value: 'travel', text: 'Для путешествий' },
-    { key: 'hobby', value: 'hobby', text: 'Для себя (хобби)' }
+    { key: 'hobby', value: 'hobby', text: 'Для себя (хобби)' },
+    { key: 'exams', value: 'exams', text: 'Для сдачи экзамена' },
+    { key: 'immigration', value: 'immigration', text: 'Иммиграция' }
 ];
 
 export const defaultEnrollment = {
-    status: 'pending',
+    status: 'processing',
     domain: 'general',
     type: '',
     format: '',

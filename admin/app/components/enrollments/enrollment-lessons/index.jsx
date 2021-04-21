@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import {
     Card,
+    ChipSet, Chip,
     Icon,
     IconButton,
     List
@@ -12,6 +13,9 @@ import FormDialog from 'shared/components/form-dialog';
 
 import { useActions } from 'app/hooks/store';
 import LessonForm from 'app/components/lessons/lesson-form';
+import LessonsForm from 'app/components/lessons/lessons-form';
+
+import './index.scss';
 
 export default function EnrollmentLessons({ enrollment }) {
     const actions = useActions('lessons');
@@ -20,6 +24,7 @@ export default function EnrollmentLessons({ enrollment }) {
 
     const [isNewLessonFormOpen, toggleNewLessonFormOpen] = useBoolean(false);
     const [isEditLessonFormOpen, toggleEditLessonFormOpen] = useBoolean(false);
+    const [isLessonsFormOpen, toggleLessonsFormOpen] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     const handleCreateLesson = useCallback(data => {
@@ -27,6 +32,18 @@ export default function EnrollmentLessons({ enrollment }) {
 
         actions.createLesson(data)
             .then(() => toggleNewLessonFormOpen(false));
+    }, [enrollment]);
+
+    const createLessons = useCallback(lessons => {
+        lessons.forEach(lesson => {
+            lesson.enrollment = enrollment.id;
+            lesson.client = enrollment.client.id;
+        });
+
+        console.log(lessons);
+
+        actions.createLesson(lessons)
+            .then(() => toggleLessonsFormOpen(false));
     }, [enrollment]);
 
     const handleUpdateLesson = useCallback(data => {
@@ -57,34 +74,35 @@ export default function EnrollmentLessons({ enrollment }) {
                 <Card.Header
                     title="Занятия"
                     subtitle={enrollment.lessons.length === 0 && 'Занятий нет'}
-                    actions={
+                    actions={[
                         <IconButton
+                            key="add-lessons"
+                            icon="playlist_add"
+                            title="Создать несколько уроков"
+                            onClick={toggleLessonsFormOpen}
+                        />,
+
+                        <IconButton
+                            key="add-lesson"
                             icon="add"
+                            title="Создать урок"
                             onClick={toggleNewLessonFormOpen}
                         />
-                    }
+                    ]}
                 />
 
                 {enrollment.lessons.length > 0 &&
                     <Card.Section>
-                        <List twoLine>
+                        <ChipSet>
                             {enrollment.lessons.map(lesson =>
-                                <List.Item
+                                <Chip
                                     key={lesson.id}
-                                    graphic={<Icon>{lesson.statusIcon}</Icon>}
-                                    primaryText={lesson.dateLabel}
-                                    secondaryText={lesson.timeLabel}
-                                    meta={
-                                        <IconButton
-                                            icon="remove"
-                                            title="Удалить урок"
-                                            onClick={event => handleDelete(event, lesson)}
-                                        />
-                                    }
+                                    text={lesson.shortDateLabel}
+                                    trailingIcon={<Icon onClick={event => handleDelete(event, lesson)}>delete</Icon>}
                                     onClick={() => handleUpdate(lesson)}
                                 />
                             )}
-                        </List>
+                        </ChipSet>
                     </Card.Section>
                 }
             </Card>
@@ -115,6 +133,18 @@ export default function EnrollmentLessons({ enrollment }) {
                     id="edit-lesson-form"
                     lesson={lesson}
                     onSubmit={handleUpdateLesson}
+                />
+            </FormDialog>
+
+            <FormDialog
+                form="lessons-form"
+                title="Новые занятия"
+                open={isLessonsFormOpen}
+                onClose={toggleLessonsFormOpen}
+            >
+                <LessonsForm
+                    id="lessons-form"
+                    onSubmit={createLessons}
                 />
             </FormDialog>
 

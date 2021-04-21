@@ -62,6 +62,7 @@ export default function App() {
         }}>
             <AppHeader
                 user={user}
+                navigationIcon="menu"
                 onNavigationIconClick={() => setSidenavOpen(open => !open)}
                 fixed
             >
