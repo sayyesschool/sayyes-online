@@ -1,5 +1,9 @@
-export function generatePassword() {
+function generatePassword() {
     const buf = new Uint8Array(6);
     crypto.getRandomValues(buf);
     return btoa(String.fromCharCode(...buf));
 }
+
+module.exports = {
+    generatePassword
+};

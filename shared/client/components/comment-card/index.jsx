@@ -16,21 +16,21 @@ export default function CommentCard({ user, comment = {}, onUpdate, onDelete }) 
     const [isEditing, toggleEditing] = useBoolean(false);
 
     const handleUpdate = useCallback(data => {
-        onUpdate({ ...comment, ...data })
+        return onUpdate(comment.id, data)
             .then(() => toggleEditing(false));
     }, [comment]);
 
     const handleDelete = useCallback(() => {
-        onDelete(comment);
+        return onDelete(comment.id);
     }, [comment]);
 
     return (
         <Card className="comment-card" outlined>
             <Card.Header
-                graphic={<Avatar src={comment.user?.imageUrl} text={comment.user?.initials} />}
-                title={comment.user?.fullname}
-                subtitle={comment.datetime}
-                actions={user.id === comment.user.id && (isEditing ?
+                graphic={<Avatar src={comment.author?.imageUrl} text={comment.author?.initials} />}
+                title={comment.author?.fullname}
+                subtitle={comment.datetimeLabel}
+                actions={user.id === comment.author.id && (isEditing ?
                     [
                         <IconButton
                             icon="save"

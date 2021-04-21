@@ -18,6 +18,10 @@
     .mdc-card__section {
         padding: 8px 1rem 8px 72px;
 
+        p {
+            line-height: 1.4;
+        }
+
         p:last-child {
             margin-bottom: 0;
         }

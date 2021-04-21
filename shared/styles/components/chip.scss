@@ -2,6 +2,13 @@
     &.person-chip {
         padding-left: 0;
 
+        .mdc-avatar {
+            .mdc-avatar__text {
+                font-size: 16px;
+                line-height: 32px;
+            }
+        }
+
         .mdc-chip__icon--leading {
             width: 32px;
             height: 32px;

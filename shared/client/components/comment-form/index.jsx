@@ -11,7 +11,8 @@ export default function CommentForm({ comment = {}, onSubmit, ...props }) {
     const handleSubmit = useCallback(() => {
         const content = editorRef.current.editor.getData();
 
-        onSubmit({ content });
+        onSubmit({ content })
+            .then(() => editorRef.current.editor.setData(''));
     }, []);
 
     return (

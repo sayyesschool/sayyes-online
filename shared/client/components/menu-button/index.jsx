@@ -10,29 +10,32 @@ export default function MenuButton({
     icon,
     disabled,
     items = [],
+    buttonProps = {},
     listProps = {},
     menuProps = {},
     className
 }) {
     const anchorRef = useRef();
+
     const [isOpen, setOpen] = useState(false);
+
     const handleOpen = useCallback(() => setOpen(true), []);
     const handleClose = useCallback(() => setOpen(false), []);
 
     return (
-        <div ref={anchorRef}>
+        <div ref={anchorRef} className={classnames(className, 'menu-button')}>
             {React.isValidElement(button) ?
                 React.cloneElement(button, {
-                    className,
                     disabled,
-                    onClick: handleOpen
+                    onClick: handleOpen,
+                    ...buttonProps
                 })
                 :
                 <IconButton
-                    className={className}
                     icon={icon || 'more_vert'}
                     disabled={disabled}
                     onClick={handleOpen}
+                    {...buttonProps}
                 />
             }
 

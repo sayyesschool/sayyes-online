@@ -1,4 +1,5 @@
 export * as clients from 'shared/store/modules/clients';
+export * as comments from 'shared/store/modules/comments';
 export * as courses from 'shared/store/modules/courses';
 export * as enrollments from 'shared/store/modules/enrollments';
 export * as lessons from 'shared/store/modules/lessons';

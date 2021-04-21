@@ -1,6 +1,7 @@
 import { createAction, createReducer, combineReducers } from 'shared/store';
-import { createLesson, deleteLesson } from './lessons';
+import { createLesson, createLessons, deleteLesson } from './lessons';
 import { createPost } from './posts';
+import { createComment, updateComment, deleteComment } from './comments';
 
 export const getEnrollments = createAction('GET_ENROLLMENTS', () => ({
     request: {
@@ -58,15 +59,35 @@ export const enrollmentReducer = createReducer(null, {
     [getEnrollment]: (state, action) => action.data,
     [updateEnrollment]: (state, action) => ({ ...state, ...action.data }),
     [deleteEnrollment]: (state, action) => null,
+
     [createLesson]: (state, action) => state.id === action.data.enrollment ?
         { ...state, lessons: state.lessons.concat(action.data) } :
         state,
+    // [createLessons]: (state, action) => action.data.map(lesson => ) ?
+    //     { ...state, lessons: state.lessons.concat(...action.data) } :
+    //     state,
     [deleteLesson]: (state, action) => state.id === action.data.enrollment ?
         { ...state, lessons: state.lessons.filter(lesson => lesson.id !== action.data.id) } :
         state,
     // [createPost]: (state, action) => state.id === action.data.enrollment ?
     //     { ...state, lessons: state.posts.concat(action.data) } :
     //     state
+
+    [createComment]: (state, action) => state.id !== action.data.ref ? state : {
+        ...state,
+        comments: state.comments.concat(action.data)
+    },
+    [updateComment]: (state, action) => state.id !== action.data.ref ? state : {
+        ...state,
+        comments: state.comments.map(comment => comment.id !== action.data.id ? comment : {
+            ...comment,
+            ...action.data
+        })
+    },
+    [deleteComment]: (state, action) => state.id !== action.data.ref ? state : {
+        ...state,
+        comments: state.comments.filter(comment => comment.id !== action.data.id)
+    }
 });
 
 export default combineReducers({

@@ -32,7 +32,7 @@ export const updateTeacher = createAction('UPDATE_TEACHER', (id, data) => ({
 
 export const deleteTeacher = createAction('DELETE_TEACHER', (id, data) => ({
     request: {
-        method: 'put',
+        method: 'delete',
         url: `/teachers/${id}`,
         body: data
     }

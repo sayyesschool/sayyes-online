@@ -35,7 +35,7 @@ export const updatePack = createAction('UPDATE_PACK', (id, data) => ({
 
 export const deletePack = createAction('DELETE_PACK', (id, data) => ({
     request: {
-        method: 'put',
+        method: 'delete',
         url: `${path}/${id}`,
         body: data
     }

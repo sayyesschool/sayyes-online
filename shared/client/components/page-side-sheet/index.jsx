@@ -13,9 +13,7 @@ export default function PageSideSheet({ className, children, ...props }) {
             dismissible
             {...props}
         >
-            <SideSheet.Content>
-                {children}
-            </SideSheet.Content>
+            {children}
         </SideSheet>
     );
 }

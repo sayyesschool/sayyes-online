@@ -33,7 +33,7 @@ export const updateMaterial = createAction('UPDATE_MATERIAL', (id, data) => ({
 
 export const deleteMaterial = createAction('DELETE_MATERIAL', (id, data) => ({
     request: {
-        method: 'put',
+        method: 'delete',
         url: `/materials/${id}`,
         body: data
     }

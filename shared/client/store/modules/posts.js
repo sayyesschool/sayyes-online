@@ -50,7 +50,7 @@ export const createComment = createAction('CREATE_POST_COMMENT', (id, data) => (
 
 export const updateComment = createAction('UPDATE_POST_COMMENT', (postId, commentId, data) => ({
     request: {
-        method: 'put',
+        method: 'delete',
         url: `/posts/${postId}/comments/${commentId}`,
         body: data
     }

@@ -32,7 +32,7 @@ export const updateManager = createAction('UPDATE_MANAGER', (id, data) => ({
 
 export const deleteManager = createAction('DELETE_MANAGER', (id, data) => ({
     request: {
-        method: 'put',
+        method: 'delete',
         url: `/managers/${id}`,
         body: data
     }
