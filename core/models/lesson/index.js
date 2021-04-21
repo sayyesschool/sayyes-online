@@ -62,6 +62,10 @@ Lesson.virtual('dateLabel').get(function() {
     return moment(this.date).tz('Europe/Moscow').format('dd, D MMM');
 });
 
+Lesson.virtual('shortDateLabel').get(function() {
+    return moment(this.date).tz('Europe/Moscow').format('D.M');
+});
+
 Lesson.virtual('timeLabel').get(function() {
     return moment(this.date).tz('Europe/Moscow').format('H:mm МСК');
 });

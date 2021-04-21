@@ -4,7 +4,7 @@ const Twilio = require('./lib/twilio');
 const models = require('./models');
 const services = require('./services');
 
-module.exports = config => {
+module.exports = (config, shared) => {
     const mailjet = MailJet(config);
     const twilio = Twilio(config);
     const zoom = Zoom(config);

@@ -7,7 +7,6 @@ const Post = new Schema({
     title: { type: String, trim: true },
     content: { type: String, default: '' },
     published: { type: Boolean, default: true },
-    comments: [Comment],
     user: { type: Schema.Types.ObjectId, ref: 'User' },
     enrollment: { type: Schema.Types.ObjectId, ref: 'Enrollment' }
 }, {

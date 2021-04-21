@@ -1,21 +1,9 @@
 const { Schema } = require('mongoose');
 
-const RequestStatus = {
-    new: 'Новая',
-    processing: 'В обработке',
-    completed: 'Завершена',
-    canceled: 'Отменена'
-};
-
-const RequestStatusIcon = {
-    new: 'new_releases',
-    processing: 'edit',
-    completed: 'check_circle',
-    canceled: 'cancel'
-};
+const { statuses, statusIcons } = require('./constants');
 
 const Request = new Schema({
-    status: { type: String, enum: Object.keys(RequestStatus), default: 'new' },
+    status: { type: String, enum: Object.keys(statuses), default: 'new' },
     description: { type: String, default: 'Заявка на обучение' },
     contact: {
         name: { type: String },
@@ -46,11 +34,11 @@ Request.virtual('url').get(function() {
 });
 
 Request.virtual('statusLabel').get(function() {
-    return RequestStatus[this.status];
+    return statuses[this.status];
 });
 
 Request.virtual('statusIcon').get(function() {
-    return RequestStatusIcon[this.status];
+    return statusIcons[this.status];
 });
 
 module.exports = Request;

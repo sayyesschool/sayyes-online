@@ -1,5 +1,6 @@
 const { model } = require('mongoose');
 
+const Comment = require('./comment');
 const Course = require('./course');
 const Enrollment = require('./enrollment');
 const Lesson = require('./lesson');
@@ -20,6 +21,7 @@ const Teacher = User.discriminator('Teacher', UserSchema.Teacher, 'teacher');
 const Student = User.discriminator('Student', UserSchema.Student, 'student');
 
 module.exports = {
+    Comment: model('Comment', Comment),
     Course: model('Course', Course),
     Enrollment: model('Enrollment', Enrollment),
     Lesson: model('Lesson', Lesson),

@@ -7,8 +7,19 @@ const Client = new Schema({
         maxlength: 12,
         set: value => value.trim().replace(/[\s()\-\+]+/g, '')
     },
-    occupation: { type: 'String' },
-    interests: { type: 'String' }
+    address: { type: String },
+    occupation: { type: String },
+    interests: { type: String },
+    contacts: [{
+        relation: String,
+        firstname: String,
+        lastname: String,
+        patronym: String,
+        phone: String,
+        email: String,
+        occupation: String,
+        note: String
+    }]
 });
 
 Client.virtual('status').get(function() {

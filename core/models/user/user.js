@@ -47,8 +47,8 @@ const User = new Schema({
         set: value => value.trim().replace(/[\s()\-\+]+/g, '')
     },
     password: { type: String, trim: true },
-    dob: { type: Date },
     gender: { type: String, enum: ['man', 'woman'] },
+    dob: { type: Date },
     timezone: { type: String },
     imageUrl: { type: String },
     role: { type: String, enum: Object.keys(roles), default: 'client' },

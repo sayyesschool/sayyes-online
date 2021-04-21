@@ -1,9 +1,11 @@
 const { Schema } = require('mongoose');
 
 const { Status, StatusIcon, Type, Format, Age, Domain, Level, Purpose, Plans } = require('./constants');
-const Schedule = require('./schedule');
+const DateSchedule = require('./date-schedule');
+const WeekSchedule = require('./week-schedule');
 
 const Enrollment = new Schema({
+    hhid: { type: String },
     status: { type: String, default: 'processing' },
     domain: { type: String, enum: ['general', 'prep', 'business'], default: 'general' },
     type: { type: String, enum: Object.keys(Type), default: 'individual' },
@@ -14,12 +16,8 @@ const Enrollment = new Schema({
     purpose: { type: String, enum: Object.keys(Purpose), default: '' },
     preferences: { type: String, default: '' },
     lessonDuration: { type: Number, default: 50 },
-    trialLesson: [{
-        date: String,
-        from: String,
-        to: String
-    }],
-    schedule: [Schedule],
+    trialLessonSchedule: [DateSchedule],
+    schedule: [WeekSchedule],
     note: { type: String },
     client: { type: Schema.Types.ObjectId, ref: 'Client' },
     teacher: { type: Schema.Types.ObjectId, ref: 'Teacher', set: value => value || null },
@@ -91,15 +89,7 @@ Enrollment.virtual('imageSrc').get(function() {
 });
 
 Enrollment.virtual('numberOfScheduledLessons').get(function() {
-    return (this.lessons?.filter(lesson => lesson.status === 'scheduled')) || 0;
-});
-
-Enrollment.virtual('hasPayments').get(function() {
-    return this.payments?.length > 0 ? true : false;
-});
-
-Enrollment.virtual('hasUnresolvedPayments').get(function() {
-    return this.payments && this.payments.some(payment => !payment.isResolved);
+    return (this.lessons?.filter(lesson => lesson.status === 'scheduled')?.length) || 0;
 });
 
 Enrollment.virtual('payments', {
@@ -145,6 +135,15 @@ Enrollment.virtual('posts', {
     ref: 'Post',
     localField: '_id',
     foreignField: 'enrollment',
+    options: {
+        sort: { createdAt: -1 }
+    }
+});
+
+Enrollment.virtual('comments', {
+    ref: 'Comment',
+    localField: '_id',
+    foreignField: 'ref',
     options: {
         sort: { createdAt: -1 }
     }

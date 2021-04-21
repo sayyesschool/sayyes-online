@@ -41,8 +41,7 @@ const plans = {
 const Ticket = new Schema({
     user: { type: Schema.Types.ObjectId, ref: 'User' },
     meeting: { type: Schema.Types.ObjectId, ref: 'Meeting' },
-    plan: { type: String, enum: ['single', 'month', 'quarter'], default: 'single' },
-    payment: { type: Payment, default: undefined }
+    plan: { type: String, enum: ['single', 'month', 'quarter'], default: 'single' }
 }, {
     timestamps: true
 });

@@ -1,33 +1,22 @@
 const { Schema } = require('mongoose');
 const moment = require('moment');
 
+const { statuses, statusIcons, operators } = require('./constants');
 const PaymentMethod = require('./payment-method');
-
-const STATUSES = {
-    pending: { value: 'pending', label: 'В обработке', icon: 'hourglass_empty' },
-    waiting_for_capture: { value: 'waiting_for_capture', label: 'В ожидании', icon: 'warning' },
-    succeeded: { value: 'succeeded', label: 'Завершен', icon: 'done' },
-    canceled: { value: 'canceled', label: 'Отменен', icon: 'clear' },
-    refunded: { value: 'refunded', label: 'Возвращен', icon: 'clear' },
-};
-
-const OPERATORS = {
-    yookassa: { value: 'yookassa', label: 'YooKassa' }
-};
 
 const Payment = new Schema({
     uuid: { type: String },
     amount: { type: Number, default: 0, min: 0, required: true },
     currency: { type: String, default: 'RUB' },
-    status: { type: String, required: true, enum: Object.keys(STATUSES) },
+    status: { type: String, required: true, enum: Object.keys(statuses) },
     description: { type: String, trim: true },
     confirmationUrl: { type: String },
     method: PaymentMethod,
-    expiresAt: { type: Date },
     dueAt: { type: Date },
+    expiresAt: { type: Date },
     paidAt: { type: Date },
     test: { type: Boolean },
-    operator: { type: String, enum: Object.keys(OPERATORS) },
+    operator: { type: String, enum: Object.keys(operators) },
     client: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     manager: { type: Schema.Types.ObjectId, ref: 'User' },
     enrollment: { type: Schema.Types.ObjectId, ref: 'Enrollment' },
@@ -36,8 +25,6 @@ const Payment = new Schema({
     toObject: { getters: true, virtuals: true },
     toJSON: { getters: true, virtuals: true }
 });
-
-Payment.statics.STATUSES = Array.from(Object.values(STATUSES));
 
 Payment.virtual('url').get(function() {
     return `/payments/${this.id}`;
@@ -50,12 +37,12 @@ Payment.virtual('dateLabel')
 
 Payment.virtual('statusLabel')
     .get(function() {
-        return STATUSES[this.status].label;
+        return statuses[this.status];
     });
 
 Payment.virtual('statusIcon')
     .get(function() {
-        return STATUSES[this.status].icon;
+        return statusIcons[this.status];
     });
 
 Payment.virtual('isPending').get(function() {

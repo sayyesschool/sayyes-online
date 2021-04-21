@@ -18,6 +18,12 @@ const StatusIcon = {
     completed: 'check_circle'
 };
 
+const Domain = {
+    general: 'Общий разговорный курс', // bubbles, book, abc
+    business: 'Деловой английский', // business
+    prep: 'Подготовка к экзаменам' // cap
+};
+
 const Type = {
     individual: 'Индивидуально',
     group: 'В группе'
@@ -32,12 +38,6 @@ const Age = {
     adults: 'Взрослые',
     teenagers: 'Подростки',
     children: 'Дети'
-};
-
-const Domain = {
-    general: 'Общий разговорный курс', // bubbles, book, abc
-    business: 'Деловой английский', // business
-    prep: 'Подготовка к экзаменам' // cap
 };
 
 const Level = {
