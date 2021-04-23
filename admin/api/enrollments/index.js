@@ -15,10 +15,8 @@ module.exports = context => {
         .put(controller.update)
         .delete(controller.delete);
 
-    // router.route('/:id/comments')
-    //     .get(controller.get)
-    //     .post(controller.create)
-    //     .delete(controller.delete);
+    router.route('/:id/lessons')
+        .post(controller.createLessons);
 
     return router;
 };

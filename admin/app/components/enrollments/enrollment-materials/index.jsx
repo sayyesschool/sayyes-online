@@ -11,19 +11,19 @@ import MenuButton from 'shared/components/menu-button';
 import { useStore, useActions } from 'app/hooks/store';
 
 export default function EnrollmentMaterials({ enrollment }) {
-    const [materials] = useStore('materials.list');
-    const actions = useActions('enrollments');
+    const [materials = []] = useStore('materials.list');
+    const enrollmentActions = useActions('enrollments');
 
     const handleAddMaterial = useCallback(materialId => {
         const materials = enrollment.materials.concat(materialId);
 
-        actions.updateEnrollment(enrollment.id, { materials });
+        return enrollmentActions.updateEnrollment(enrollment.id, { materials });
     }, [enrollment]);
 
     const handleRemoveMaterial = useCallback(materialId => {
         const materials = enrollment.materials.filter(id => id !== materialId);
 
-        actions.updateEnrollment(enrollment.id, { materials });
+        return enrollmentActions.updateEnrollment(enrollment.id, { materials });
     }, [enrollment]);
 
     const enrollmentMaterials = materials

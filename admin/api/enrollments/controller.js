@@ -1,5 +1,5 @@
 module.exports = ({
-    models: { Enrollment }
+    models: { Enrollment, Lesson }
 }) => ({
     get: (req, res, next) => {
         Enrollment.find(req.query)
@@ -97,13 +97,23 @@ module.exports = ({
             .catch(next);
     },
 
-    getComments: () => {
+    createLessons: (req, res, next) => {
+        Enrollment.findById(req.params.id)
+            .then(enrollment => {
+                const lessons = enrollment.scheduleLessons(req.body.quantity, req.body.startDate);
 
-    },
-
-    createComment: () => { },
-
-    updateComment: () => { },
-
-    deleteComment: () => { }
+                Lesson.create(lessons)
+                    .then(lessons => {
+                        res.json({
+                            ok: true,
+                            message: 'Уроки созданы',
+                            data: {
+                                enrollmentId: enrollment.id,
+                                lessons
+                            }
+                        });
+                    });
+            })
+            .catch(next);
+    }
 });

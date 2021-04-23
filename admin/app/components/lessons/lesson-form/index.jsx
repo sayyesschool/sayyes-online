@@ -71,7 +71,8 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                     name="duration"
                     step="5"
                     value={data.duration}
-                    label="Продолжительность (мин.)"
+                    label="Продолжительность"
+                    suffix="мин."
                     filled
                     onChange={handleChange}
                 />

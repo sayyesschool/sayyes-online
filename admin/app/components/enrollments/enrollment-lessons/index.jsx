@@ -4,8 +4,9 @@ import {
     ChipSet, Chip,
     Icon,
     IconButton,
-    List
+    Typography
 } from 'mdc-react';
+import classnames from 'classnames';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
@@ -18,7 +19,8 @@ import LessonsForm from 'app/components/lessons/lessons-form';
 import './index.scss';
 
 export default function EnrollmentLessons({ enrollment }) {
-    const actions = useActions('lessons');
+    const lessonActions = useActions('lessons');
+    const enrollmentActions = useActions('enrollments');
 
     const [lesson, setLesson] = useState();
 
@@ -27,32 +29,25 @@ export default function EnrollmentLessons({ enrollment }) {
     const [isLessonsFormOpen, toggleLessonsFormOpen] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
-    const handleCreateLesson = useCallback(data => {
-        data.enrollment = enrollment.id;
-
-        actions.createLesson(data)
-            .then(() => toggleNewLessonFormOpen(false));
-    }, [enrollment]);
-
-    const createLessons = useCallback(lessons => {
-        lessons.forEach(lesson => {
-            lesson.enrollment = enrollment.id;
-            lesson.client = enrollment.client.id;
-        });
-
-        console.log(lessons);
-
-        actions.createLesson(lessons)
+    const createLessons = useCallback(data => {
+        return enrollmentActions.createLessons(enrollment.id, data)
             .then(() => toggleLessonsFormOpen(false));
     }, [enrollment]);
 
-    const handleUpdateLesson = useCallback(data => {
-        actions.updateLesson(lesson.id, data)
+    const createLesson = useCallback(data => {
+        data.enrollment = enrollment.id;
+
+        return lessonActions.createLesson(data)
+            .then(() => toggleNewLessonFormOpen(false));
+    }, [enrollment]);
+
+    const updateLesson = useCallback(data => {
+        return lessonActions.updateLesson(lesson.id, data)
             .then(() => toggleEditLessonFormOpen(false));
     }, [lesson]);
 
-    const handleDeleteLesson = useCallback(() => {
-        actions.deleteLesson(lesson.id)
+    const deleteLesson = useCallback(() => {
+        return lessonActions.deleteLesson(lesson.id)
             .then(() => toggleConfirmationDialogOpen(false));
     }, [lesson]);
 
@@ -97,7 +92,11 @@ export default function EnrollmentLessons({ enrollment }) {
                             {enrollment.lessons.map(lesson =>
                                 <Chip
                                     key={lesson.id}
-                                    text={lesson.shortDateLabel}
+                                    className={classnames('lesson-chip', `lesson-chip--${lesson.status}`)}
+                                    text={<>
+                                        <span className="lesson-date">{lesson.shortDateLabel}</span>
+                                        <span className="lesson-time">{lesson.timeLabel}</span>
+                                    </>}
                                     trailingIcon={<Icon onClick={event => handleDelete(event, lesson)}>delete</Icon>}
                                     onClick={() => handleUpdate(lesson)}
                                 />
@@ -119,7 +118,7 @@ export default function EnrollmentLessons({ enrollment }) {
                         client: enrollment?.client,
                         teacher: enrollment?.teacher
                     }}
-                    onSubmit={handleCreateLesson}
+                    onSubmit={createLesson}
                 />
             </FormDialog>
 
@@ -132,7 +131,7 @@ export default function EnrollmentLessons({ enrollment }) {
                 <LessonForm
                     id="edit-lesson-form"
                     lesson={lesson}
-                    onSubmit={handleUpdateLesson}
+                    onSubmit={updateLesson}
                 />
             </FormDialog>
 
@@ -142,6 +141,8 @@ export default function EnrollmentLessons({ enrollment }) {
                 open={isLessonsFormOpen}
                 onClose={toggleLessonsFormOpen}
             >
+                <Typography>{enrollment.scheduleLabel}</Typography>
+
                 <LessonsForm
                     id="lessons-form"
                     onSubmit={createLessons}
@@ -152,7 +153,7 @@ export default function EnrollmentLessons({ enrollment }) {
                 title="Подтвердите действие"
                 message="Вы действительно хотите удалить урок?"
                 open={isConfirmationDialogOpen}
-                onConfirm={handleDeleteLesson}
+                onConfirm={deleteLesson}
                 onClose={() => toggleConfirmationDialogOpen(false)}
             />
         </section>

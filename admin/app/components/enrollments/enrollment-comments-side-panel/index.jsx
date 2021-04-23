@@ -16,6 +16,8 @@ export default function EnrollmentCommentsSidePanel({ enrollment, ...props }) {
     const actions = useActions('comments');
 
     const createComment = useCallback(data => {
+        if (!data.content) return;
+
         data.author = user.id;
         data.ref = enrollment.id;
 
