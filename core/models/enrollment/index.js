@@ -1,3 +1,4 @@
+const moment = require('moment');
 const { Schema } = require('mongoose');
 
 const { Status, StatusIcon, Type, Format, Age, Domain, Level, Purpose, Plans } = require('./constants');
@@ -119,15 +120,9 @@ Enrollment.virtual('currentPayment', {
 Enrollment.virtual('lessons', {
     ref: 'Lesson',
     localField: '_id',
-    foreignField: 'enrollment'
-});
-
-Enrollment.virtual('assignments', {
-    ref: 'Assignment',
-    localField: '_id',
     foreignField: 'enrollment',
     options: {
-        sort: { createdAt: -1 }
+        sort: { date: 1 }
     }
 });
 
@@ -136,7 +131,7 @@ Enrollment.virtual('posts', {
     localField: '_id',
     foreignField: 'enrollment',
     options: {
-        sort: { createdAt: -1 }
+        sort: { date: -1 }
     }
 });
 
@@ -149,17 +144,29 @@ Enrollment.virtual('comments', {
     }
 });
 
-Enrollment.methods.getPrice = function(numberOfLessons) {
-    return Plans[this.age][this.domain].packs[numberOfLessons];
-};
+Enrollment.methods.scheduleLessons = function(quantity = 0, startDate = new Date()) {
+    const lessons = [];
+    const date = moment(startDate);
 
-Enrollment.methods.createLessons = function(quantity) {
-    return new Array(quantity).fill().map(() => ({
-        duration: this.lessonDuration,
-        enrollment: this.id,
-        client: this.client,
-        teacher: this.teacher
-    }));
+    for (let i = 0; i < quantity; i++) {
+        const schedule = this.schedule[i % this.schedule.length];
+        const currentWeekday = date.weekday();
+        const [hours, minutes] = schedule.from?.split(':');
+
+        if (schedule.day <= currentWeekday) {
+            date.weekday(7);
+        }
+
+        lessons.push({
+            date: date.weekday(schedule.day).hours(hours).minutes(minutes).seconds(0).clone(),
+            duration: this.lessonDuration,
+            enrollment: this.id,
+            client: this.client,
+            teacher: this.teacher
+        });
+    }
+
+    return lessons;
 };
 
 module.exports = Enrollment;

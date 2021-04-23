@@ -13,7 +13,7 @@ const WeekSchedule = new Schema({
 WeekSchedule.virtual('label').get(function() {
     let result = labels[this.day];
 
-    if (this.from) result += `@${this.from}`;
+    if (this.from) result += ` ${this.from}`;
     if (this.to) result += `-${this.to}`;
 
     return result;

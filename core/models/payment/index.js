@@ -1,14 +1,14 @@
 const { Schema } = require('mongoose');
 const moment = require('moment');
 
-const { statuses, statusIcons, operators } = require('./constants');
+const { Status, StatusLabel, StatusIcon, Operator } = require('./constants');
 const PaymentMethod = require('./payment-method');
 
 const Payment = new Schema({
     uuid: { type: String },
     amount: { type: Number, default: 0, min: 0, required: true },
     currency: { type: String, default: 'RUB' },
-    status: { type: String, required: true, enum: Object.keys(statuses) },
+    status: { type: String, required: true, enum: Object.keys(Status) },
     description: { type: String, trim: true },
     confirmationUrl: { type: String },
     method: PaymentMethod,
@@ -16,7 +16,7 @@ const Payment = new Schema({
     expiresAt: { type: Date },
     paidAt: { type: Date },
     test: { type: Boolean },
-    operator: { type: String, enum: Object.keys(operators) },
+    operator: { type: String, enum: Object.keys(Operator) },
     client: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     manager: { type: Schema.Types.ObjectId, ref: 'User' },
     enrollment: { type: Schema.Types.ObjectId, ref: 'Enrollment' },
@@ -37,12 +37,12 @@ Payment.virtual('dateLabel')
 
 Payment.virtual('statusLabel')
     .get(function() {
-        return statuses[this.status];
+        return StatusLabel[this.status];
     });
 
 Payment.virtual('statusIcon')
     .get(function() {
-        return statusIcons[this.status];
+        return StatusIcon[this.status];
     });
 
 Payment.virtual('isPending').get(function() {

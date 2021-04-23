@@ -4,22 +4,20 @@ moment.locale('ru');
 
 function createLessons(quantity) {
     const lessons = [];
-    let prevLesson = { date: getStartDateForSchedule(moment(), schedule) };
+    const date = moment();
 
     for (let i = 0; i < quantity; i++) {
         const schedule = this.schedule[i % this.schedule.length];
-        const diff = moment(prevLesson.date).weekday(schedule.day);
+        const currentWeekday = date.weekday();
+        const [hours, minutes] = schedule.from?.split(':');
 
-        const nextLesson = {
-            date: moment(prevLesson.date).weekday(schedule.day),
-            enrollment: this.id,
-            client: this.client,
-            teacher: this.teacher
-        };
+        if (schedule.day <= currentWeekday) {
+            date.weekday(7);
+        }
 
-        lessons.push(nextLesson);
-
-        prevLesson = nextLesson;
+        lessons.push({
+            date: date.weekday(schedule.day).hours(hours).minutes(minutes).seconds(0).clone()
+        });
     }
 
     return lessons;
@@ -40,16 +38,13 @@ function getStartDateForSchedule(from, schedule) {
 }
 
 describe('Enrollment', () => {
-    xdescribe('createLessons', () => {
+    describe('createLessons', () => {
         const enrollment = {
-            id: '123',
-            schedule: [{ day: 0 }, { day: 3 }],
-            client: 'client',
-            teacher: 'teacher',
+            schedule: [{ day: 0, from: '18:00' }, { day: 1, from: '16:00' }],
             createLessons
         };
 
-        it('should return an array', () => {
+        xit('should return an array', () => {
             const lessons = enrollment.createLessons(5);
 
             expect(Array.isArray(lessons)).toBe(true);
@@ -62,7 +57,7 @@ describe('Enrollment', () => {
         });
     });
 
-    describe('getStartDateForSchedule', () => {
+    xdescribe('getStartDateForSchedule', () => {
         const schedule = [{ day: 3 }];
 
         it('should return the correct date', () => {
