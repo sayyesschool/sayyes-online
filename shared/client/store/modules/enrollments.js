@@ -1,5 +1,5 @@
 import { createAction, createReducer, combineReducers } from 'shared/store';
-import { createLesson, createLessons, deleteLesson } from './lessons';
+import { createLesson, deleteLesson } from './lessons';
 import { createPost } from './posts';
 import { createComment, updateComment, deleteComment } from './comments';
 
@@ -40,6 +40,14 @@ export const deleteEnrollment = createAction('DELETE_ENROLLMENT', id => ({
     }
 }));
 
+export const createLessons = createAction('CREATE_ENROLLMENT_LESSONS', (id, data) => ({
+    request: {
+        method: 'post',
+        url: `/enrollments/${id}/lessons`,
+        body: data
+    }
+}));
+
 export const actions = {
     getEnrollments,
     getEnrollment,
@@ -60,22 +68,26 @@ export const enrollmentReducer = createReducer(null, {
     [updateEnrollment]: (state, action) => ({ ...state, ...action.data }),
     [deleteEnrollment]: (state, action) => null,
 
-    [createLesson]: (state, action) => state.id === action.data.enrollment ?
-        { ...state, lessons: state.lessons.concat(action.data) } :
+    [createLessons]: (state, action) => state.id !== action.data.enrollmentId ? state : {
+        ...state,
+        lessons: state.lessons.concat(...action.data.lessons)
+    },
+    [createLesson]: (state, action) => state.id !== action.data.enrollment ? state : {
+        ...state,
+        lessons: state.lessons.concat(action.data)
+    },
+    [deleteLesson]: (state, action) => state.id !== action.data.enrollment ? state : {
+        ...state,
+        lessons: state.lessons.filter(lesson => lesson.id !== action.data.id)
+    },
+
+    [createPost]: (state, action) => state.id === action.data.enrollment ?
+        { ...state, lessons: state.posts.concat(action.data) } :
         state,
-    // [createLessons]: (state, action) => action.data.map(lesson => ) ?
-    //     { ...state, lessons: state.lessons.concat(...action.data) } :
-    //     state,
-    [deleteLesson]: (state, action) => state.id === action.data.enrollment ?
-        { ...state, lessons: state.lessons.filter(lesson => lesson.id !== action.data.id) } :
-        state,
-    // [createPost]: (state, action) => state.id === action.data.enrollment ?
-    //     { ...state, lessons: state.posts.concat(action.data) } :
-    //     state
 
     [createComment]: (state, action) => state.id !== action.data.ref ? state : {
         ...state,
-        comments: state.comments.concat(action.data)
+        comments: [action.data, ...state.comments]
     },
     [updateComment]: (state, action) => state.id !== action.data.ref ? state : {
         ...state,
