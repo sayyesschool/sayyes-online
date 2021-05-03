@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import {
     Card,
     Icon,
@@ -8,23 +8,18 @@ import {
 import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
 import WeekSchedule from 'shared/components/week-schedule';
-import ScheduleSelect from 'shared/components/schedule-select';
+
+import EnrollmentScheduleForm from 'app/components/enrollments/enrollment-schedule-form';
 
 import './index.scss';
 
 export default function EnrollmentSchedule({ enrollment, onUpdate }) {
-    const [schedule, setSchedule] = useState(enrollment.schedule);
-
     const [isFormOpen, toggleFormOpen] = useBoolean(false);
 
-    const handleChange = useCallback((event, value) => {
-        setSchedule(value);
-    }, []);
-
-    const handleSubmit = useCallback(() => {
-        onUpdate({ schedule })
+    const handleSubmit = useCallback(data => {
+        onUpdate(data)
             .then(() => toggleFormOpen(false));
-    }, [schedule]);
+    }, []);
 
     return (
         <section className="enrollment-schedule">
@@ -47,14 +42,14 @@ export default function EnrollmentSchedule({ enrollment, onUpdate }) {
 
             <FormDialog
                 title="Изменение расписания"
+                form="enrollment-schedule-form"
                 open={isFormOpen}
                 onClose={toggleFormOpen}
-                onSubmit={handleSubmit}
             >
-                <ScheduleSelect
-                    label="Расписание"
-                    schedule={schedule}
-                    onChange={handleChange}
+                <EnrollmentScheduleForm
+                    id="enrollment-schedule-form"
+                    enrollment={enrollment}
+                    onSubmit={handleSubmit}
                 />
             </FormDialog>
         </section>

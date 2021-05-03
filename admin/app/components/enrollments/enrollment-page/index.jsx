@@ -1,10 +1,13 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
+    Badge,
+    IconButton,
     LayoutGrid as Grid
 } from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
+import { useEnrollment } from 'shared/hooks/enrollments';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import FormDialog from 'shared/components/form-dialog';
@@ -12,7 +15,6 @@ import Page from 'shared/components/page';
 import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 
-import { useStore } from 'app/hooks/store';
 import EnrollmentForm from 'app/components/enrollments/enrollment-form';
 import EnrollmentCommentsSidePanel from 'app/components/enrollments/enrollment-comments-side-panel';
 import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';
@@ -28,19 +30,19 @@ import EnrollmentTrialLesson from 'app/components/enrollments/enrollment-trial-l
 import './index.scss';
 
 export default function EnrollmentPage({ match, history }) {
-    const [enrollment, actions] = useStore('enrollments.single');
+    const [enrollment, actions] = useEnrollment(match.params.enrollmentId);
 
     const [isSidePanelOpen, toggleSidePanel] = useBoolean(false);
     const [isEnrollmentFormOpen, toggleEnrollmentFormOpen] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
-    useEffect(() => {
-        actions.getEnrollment(match.params.enrollmentId);
-    }, []);
-
     const updateEnrollment = useCallback(data => {
         return actions.updateEnrollment(enrollment.id, data)
             .then(() => toggleEnrollmentFormOpen(false));
+    }, [enrollment]);
+
+    const updateEnrollmentSchedule = useCallback(data => {
+        return actions.updateSchedule(enrollment.id, data);
     }, [enrollment]);
 
     const deleteEnrollment = useCallback(() => {
@@ -55,19 +57,12 @@ export default function EnrollmentPage({ match, history }) {
 
     return (
         <>
-            <EnrollmentCommentsSidePanel
-                enrollment={enrollment}
-                open={isSidePanelOpen}
-                modal
-                onClose={toggleSidePanel}
-            />
-
             <Page id="enrollment-page" loading={!enrollment}>
                 <PageTopBar
                     breadcrumbs={[
                         <Link to={enrollment?.client.url}>{enrollment.client.fullname}</Link>
                     ]}
-                    title={enrollment.title}
+                    title={enrollment.domainLabel}
                     actions={[
                         (enrollment.client && {
                             element: 'a',
@@ -76,12 +71,13 @@ export default function EnrollmentPage({ match, history }) {
                             icon: 'link',
                             title: 'Открыть в Hollihop'
                         }),
-                        {
-                            key: 'comment',
-                            title: 'Открыть комментарии',
-                            icon: 'comment',
-                            onClick: toggleSidePanel
-                        },
+                        <Badge key="comments" value={enrollment.comments.length} inset>
+                            <IconButton
+                                icon="comment"
+                                title="Открыть комментарии"
+                                onClick={toggleSidePanel}
+                            />
+                        </Badge>,
                         {
                             key: 'edit',
                             title: 'Изменить',
@@ -95,6 +91,13 @@ export default function EnrollmentPage({ match, history }) {
                             onClick: toggleConfirmationDialogOpen
                         }
                     ]}
+                />
+
+                <EnrollmentCommentsSidePanel
+                    enrollment={enrollment}
+                    open={isSidePanelOpen}
+                    dismissible
+                    onClose={toggleSidePanel}
                 />
 
                 <PageContent>
@@ -123,7 +126,7 @@ export default function EnrollmentPage({ match, history }) {
                                 <Grid.Cell span="12">
                                     <EnrollmentSchedule
                                         enrollment={enrollment}
-                                        onUpdate={updateEnrollment}
+                                        onUpdate={updateEnrollmentSchedule}
                                     />
                                 </Grid.Cell>
 

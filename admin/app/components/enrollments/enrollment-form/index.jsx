@@ -5,6 +5,11 @@ import {
     TextField
 } from 'mdc-react';
 
+import {
+    defaultEnrollment, domainOptions, typeOptions, formatOptions,
+    ageOptions, teacherTypeOptions, levelOptions, purposeOptions
+} from 'shared/../data/enrollment';
+
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
 import ScheduleSelect from 'shared/components/schedule-select';
@@ -12,7 +17,6 @@ import DateTimeSelect from 'shared/components/datetime-select';
 import PeopleSelect from 'shared/components/people-select';
 
 import { useStore } from 'app/hooks/store';
-import { domainOptions, types, formats, ages, levels, purposes, defaultEnrollment } from 'app/data/enrollment';
 
 import './index.scss';
 
@@ -62,7 +66,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                     name="type"
                     value={data.type}
                     label="Тип"
-                    options={types}
+                    options={typeOptions}
                     filled
                     required
                     onChange={handleChange}
@@ -72,7 +76,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                     name="format"
                     value={data.format}
                     label="Формат"
-                    options={formats}
+                    options={formatOptions}
                     filled
                     required
                     onChange={handleChange}
@@ -82,7 +86,25 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                     name="age"
                     value={data.age}
                     label="Возрастная группа"
-                    options={ages}
+                    options={ageOptions}
+                    filled
+                    onChange={handleChange}
+                />
+
+                <Select
+                    name="teacherType"
+                    value={data.teacherType}
+                    label="Тип преподавателя"
+                    options={teacherTypeOptions}
+                    filled
+                    onChange={handleChange}
+                />
+
+                <TextField
+                    type="number"
+                    name="lessonDuration"
+                    value={data.lessonDuration}
+                    label="Продолжительность урока"
                     filled
                     onChange={handleChange}
                 />
@@ -91,7 +113,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                     name="level"
                     value={data.level}
                     label="Уровень"
-                    options={levels}
+                    options={levelOptions}
                     filled
                     onChange={handleChange}
                 />
@@ -100,7 +122,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                     name="purpose"
                     value={data.purpose}
                     label="Цель"
-                    options={purposes}
+                    options={purposeOptions}
                     filled
                     onChange={handleChange}
                 />
@@ -126,7 +148,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 <DateTimeSelect
                     name="trialLesson"
                     label="Пробный урок"
-                    items={data.trialLesson}
+                    items={data.trialLessonSchedule}
                     onChange={handleChange}
                 />
 

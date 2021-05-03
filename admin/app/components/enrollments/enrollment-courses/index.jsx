@@ -44,7 +44,6 @@ export default function EnrollmentCourses({ enrollment }) {
                 <Card.Header
                     graphic={<Icon>class</Icon>}
                     title="Курсы"
-                    subtitle={enrollmentCourses.length === 0 && 'Курсов нет'}
                     actions={
                         <MenuButton
                             icon="add"

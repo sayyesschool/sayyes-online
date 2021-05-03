@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import {
-    Icon,
     IconButton,
+    Layout,
     Select,
     TextField,
     Typography
@@ -34,58 +34,65 @@ export default function ScheduleSelect({ name, label, schedule, onChange }) {
 
     return (
         <div className="schedule-select">
-            <header className="schedule-select__header">
+            {label &&
                 <Typography type="subtitle2">{label}</Typography>
-
-                <IconButton type="button" icon="add" onClick={handleAdd} />
-            </header>
-
-            {schedule.length > 0 ?
-                schedule.map((item, index) =>
-                    <div key={index} className="schedule-select-item">
-                        <Select
-                            label="День недели"
-                            name="day"
-                            value={String(item.day)}
-                            options={dayLabels.map((label, index) => ({
-                                key: label,
-                                value: String(index),
-                                text: label
-                            }))}
-                            filled
-                            onChange={event => handleDayChange(item, event.target)}
-                        />
-
-                        <TextField
-                            type="time"
-                            name="from"
-                            value={item.from}
-                            label="С"
-                            step="1800"
-                            filled
-                            onChange={event => handleTimeChange(item, event.target)}
-                        />
-
-                        <TextField
-                            type="time"
-                            name="to"
-                            value={item.to}
-                            label="До"
-                            step="1800"
-                            filled
-                            onChange={event => handleTimeChange(item, event.target)}
-                        />
-
-                        <IconButton
-                            type="button"
-                            icon={<Icon>delete</Icon>}
-                            onClick={() => handleDelete(item)}
-                        />
-                    </div>
-                )
-                :
-                <Typography type="body2">Нет расписания</Typography>
             }
+
+            {schedule?.map((item, index) =>
+                <div key={index} className="schedule-select-item">
+                    <Select
+                        label="День недели"
+                        name="day"
+                        value={String(item.day)}
+                        options={dayLabels.map((label, index) => ({
+                            key: label,
+                            value: String(index),
+                            text: label
+                        }))}
+                        filled
+                        onChange={event => handleDayChange(item, event.target)}
+                    />
+
+                    <TextField
+                        type="time"
+                        name="from"
+                        value={item.from}
+                        label="С"
+                        step="1800"
+                        filled
+                        onChange={event => handleTimeChange(item, event.target)}
+                    />
+
+                    <TextField
+                        type="time"
+                        name="to"
+                        value={item.to}
+                        label="До"
+                        step="1800"
+                        filled
+                        onChange={event => handleTimeChange(item, event.target)}
+                    />
+
+                    <IconButton
+                        type="button"
+                        icon="delete"
+                        onClick={() => handleDelete(item)}
+                    />
+                </div>
+            )}
+
+            <Layout row justifyContent="between" alignItems="center">
+                {schedule?.length === 0 &&
+                    <Typography type="body2" noMargin>Нет расписания</Typography>
+                }
+
+                <IconButton
+                    className="schedule-select-button--add"
+                    type="button"
+                    icon="add"
+                    onClick={handleAdd}
+                />
+            </Layout>
         </div>
     );
 }

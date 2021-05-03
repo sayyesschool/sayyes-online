@@ -43,18 +43,21 @@ export default function PageTopBar({ title, breadcrumbs, backTo, actions, childr
 
                 {actions &&
                     <TopAppBar.Section align="end">
-                        {actions.filter(action => Boolean(action)).map(({ icon, ...props }, index) =>
+                        {actions.filter(action => Boolean(action)).map((action, index) =>
                             <TopAppBar.ActionItem key={index}>
-                                {props.label ?
-                                    <Button
-                                        icon={icon && <Icon>{icon}</Icon>}
-                                        {...props}
-                                    />
-                                    :
-                                    <IconButton
-                                        icon={<Icon>{icon}</Icon>}
-                                        {...props}
-                                    />
+                                {React.isValidElement(action) ?
+                                    React.cloneElement(action) :
+                                    (action.label ?
+                                        <Button
+                                            {...action}
+                                            icon={action.icon && <Icon>{action.icon}</Icon>}
+                                        />
+                                        :
+                                        <IconButton
+                                            {...action}
+                                            icon={<Icon>{action.icon}</Icon>}
+                                        />
+                                    )
                                 }
                             </TopAppBar.ActionItem>
                         )}

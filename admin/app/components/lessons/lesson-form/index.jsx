@@ -1,7 +1,9 @@
 import React, { useCallback } from 'react';
 import {
     Layout,
+    FormField,
     Select,
+    Switch,
     TextField
 } from 'mdc-react';
 import moment from 'moment';
@@ -25,15 +27,17 @@ const defaultLesson = {
     status: 'scheduled',
     duration: 50,
     date: new Date(),
+    trial: false,
+    free: false,
     note: ''
 };
 
 export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
     const [teachers] = useStore('teachers.list');
+
     const [data, handleChange] = useForm({
         ...defaultLesson,
         ...lesson,
-        client: lesson.client?.id || '',
         teacher: lesson.teacher?.id || ''
     });
 
@@ -76,6 +80,22 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                     filled
                     onChange={handleChange}
                 />
+
+                <FormField label="Пробное">
+                    <Switch
+                        name="trial"
+                        checked={data.trial}
+                        onChange={handleChange}
+                    />
+                </FormField>
+
+                <FormField label="Бесплатное">
+                    <Switch
+                        name="free"
+                        checked={data.free}
+                        onChange={handleChange}
+                    />
+                </FormField>
 
                 <PeopleSelect
                     name="teacher"

@@ -15,7 +15,7 @@ export default function EnrollmentsList({ enrollments }) {
                     component={Link}
                     to={`${enrollment.url}`}
                     graphic={<Icon>{enrollment.statusIcon}</Icon>}
-                    primaryText={enrollment.title}
+                    primaryText={enrollment.domainLabel}
                     secondaryText={enrollment.statusLabel}
                     meta={enrollment.teacher &&
                         <Avatar

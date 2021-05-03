@@ -45,7 +45,6 @@ export default function EnrollmentMaterials({ enrollment }) {
                 <Card.Header
                     graphic={<Icon>book</Icon>}
                     title="Пособия"
-                    subtitle={enrollmentMaterials.length === 0 && 'Пособий нет'}
                     actions={
                         <MenuButton
                             icon="add"

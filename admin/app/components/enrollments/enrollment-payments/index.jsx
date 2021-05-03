@@ -58,7 +58,6 @@ export default function EnrollmentPayments({ enrollment }) {
             <Card>
                 <Card.Header
                     title="Платежи"
-                    subtitle={enrollment.payments.length === 0 && 'Платежей нет'}
                     actions={
                         <IconButton
                             icon="add"

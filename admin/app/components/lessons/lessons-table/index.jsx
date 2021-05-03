@@ -55,7 +55,15 @@ export default function LessonTable({ lessons, onView, onEdit, onDelete }) {
                         </DataTable.Cell>
 
                         <DataTable.Cell>
-                            {lesson.dateLabel}
+                            {lesson.dateLabel} в {lesson.timeLabel}
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
+                            {lesson.trial ? 'Да' : 'Нет'}
+                        </DataTable.Cell>
+
+                        <DataTable.Cell>
+                            {lesson.free ? 'Да' : 'Нет'}
                         </DataTable.Cell>
 
                         <DataTable.Cell numeric>
@@ -102,5 +110,13 @@ const columns = [
     {
         key: 'datetime',
         text: 'Дата и время'
+    },
+    {
+        key: 'trial',
+        text: 'Пробное'
+    },
+    {
+        key: 'free',
+        text: 'Бесплатное'
     }
 ];

@@ -21,6 +21,12 @@ export default function EnrollmentDetails({ enrollment }) {
                     <DetailsList
                         items={[
                             {
+                                key: 'type',
+                                graphic: <Icon>people</Icon>,
+                                primaryText: enrollment.typeLabel,
+                                secondaryText: 'Тип'
+                            },
+                            {
                                 key: 'format',
                                 graphic: <Icon>home_work</Icon>,
                                 primaryText: enrollment.formatLabel,
@@ -31,6 +37,18 @@ export default function EnrollmentDetails({ enrollment }) {
                                 graphic: <Icon>portrait</Icon>,
                                 primaryText: enrollment.ageLabel,
                                 secondaryText: 'Возрастная группа'
+                            },
+                            {
+                                key: 'teacherType',
+                                graphic: <Icon>person</Icon>,
+                                primaryText: enrollment.teacherTypeLabel,
+                                secondaryText: 'Тип преподавателя'
+                            },
+                            {
+                                key: 'lessonDuration',
+                                graphic: <Icon>timelapse</Icon>,
+                                primaryText: enrollment.lessonDuration + ' мин.',
+                                secondaryText: 'Продолжительность урока'
                             },
                             {
                                 key: 'level',

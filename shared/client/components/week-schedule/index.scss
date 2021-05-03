@@ -2,7 +2,6 @@
 
 .week-schedule {
     display: flex;
-    height: 128px;
 
     .day-schedule {
         flex: 1 1 40px;
@@ -17,7 +16,6 @@
 
     .day-name {
         display: flex;
-        flex-basis: 30px;
         align-items: center;
         min-height: 100%;
         padding: 4px;
@@ -42,7 +40,6 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        height: 170px;
         overflow: hidden;
         padding: 8px 4px;
     }

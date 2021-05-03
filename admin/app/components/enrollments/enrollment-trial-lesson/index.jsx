@@ -34,8 +34,7 @@ export default function EnrollmentTrialLesson({ enrollment, onUpdate }) {
             <Card>
                 <Card.Header
                     graphic={<Icon>event</Icon>}
-                    title="Пробный урок"
-                    subtitle={!hasItems && 'Не запланирован'}
+                    title="Расписание пробного урока"
                     actions={
                         <IconButton
                             icon="edit"
@@ -60,7 +59,7 @@ export default function EnrollmentTrialLesson({ enrollment, onUpdate }) {
             </Card>
 
             <FormDialog
-                title="Изменение пробного урока"
+                title="Расписание пробного урока"
                 open={isFormOpen}
                 onClose={toggleFormOpen}
                 onSubmit={handleSubmit}

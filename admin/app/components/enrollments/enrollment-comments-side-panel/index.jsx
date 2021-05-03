@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import {
-    Button
+    Button,
+    FAB,
+    Icon
 } from 'mdc-react';
 
 import SidePanel from 'app/components/shared/side-panel';
@@ -58,6 +60,10 @@ export default function EnrollmentCommentsSidePanel({ enrollment, ...props }) {
 
                 <Button type="submit" form="comment-form" unelevated>Отправить</Button>
             </SidePanel.Footer>
+
+            <FAB
+                icon={<Icon>comment</Icon>}
+            />
         </SidePanel>
     );
 }

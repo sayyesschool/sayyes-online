@@ -3,10 +3,9 @@ import {
     Icon
 } from 'mdc-react';
 
+import { statusOptions } from 'shared/../data/enrollment';
 import Stepper from 'shared/components/stepper';
 import MenuButton from 'shared/components/menu-button';
-
-import { statuses } from 'app/data/enrollment';
 
 import './index.scss';
 
@@ -59,7 +58,7 @@ export default function EnrollmentStatus({ enrollment, onUpdate }) {
 
             <MenuButton
                 icon="more_vert"
-                items={statuses.map(status => ({
+                items={statusOptions.map(status => ({
                     ...status,
                     activated: status.value === enrollment.status,
                     onClick: () => onUpdate({ status: status.value })
