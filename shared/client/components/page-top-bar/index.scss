@@ -16,6 +16,12 @@
         font-size: 1.5rem;
     }
 
+    .page-breadcrumbs {
+        a:hover {
+            text-decoration: underline;
+        }
+    }
+
     .mdc-top-app-bar__action-item {
         + .mdc-top-app-bar__action-item {
             margin-left: 4px;

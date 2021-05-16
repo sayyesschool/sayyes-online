@@ -17,6 +17,10 @@ export const getLesson = createAction('GET_LESSON', lessonId => ({
     }
 }));
 
+export const setLesson = createAction('SET_LESSON', lesson => ({
+    lesson
+}));
+
 export const unsetLesson = createAction('UNSET_LESSON');
 
 export const createLesson = createAction('CREATE_LESSON', data => ({
@@ -55,14 +59,15 @@ export const actions = {
     getLesson,
     unsetLesson,
     createLesson,
+    createLessons,
     updateLesson,
     deleteLesson
 };
 
 export const lessonsReducer = createReducer(null, {
     [getLessons]: (state, action) => action.data,
-    [createLesson]: (state, action) => state ? [...state, action.data] : [action.data],
-    [createLessons]: (state, action) => state ? [...state, ...action.data] : action.data,
+    // [createLesson]: (state, action) => state ? [...state, action.data] : [action.data],
+    // [createLessons]: (state, action) => state ? [...state, ...action.data] : action.data,
     // [updateLesson]: (state, action) => state.map(lesson => lesson.id === action.data.lesson.id ? ({ ...lesson, ...action.data.lesson }) : lesson),
     // [deleteLesson]: (state, action) => state.filter(lesson => lesson.id !== action.data.lessonId)
 });

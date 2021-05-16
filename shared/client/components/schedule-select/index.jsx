@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
 import {
+    Button,
+    Icon,
     IconButton,
-    Layout,
     Select,
     TextField,
     Typography
@@ -81,18 +82,14 @@ export default function ScheduleSelect({ name, label, schedule, onChange }) {
                 </div>
             )}
 
-            <Layout row justifyContent="between" alignItems="center">
-                {schedule?.length === 0 &&
-                    <Typography type="body2" noMargin>Нет расписания</Typography>
-                }
-
-                <IconButton
-                    className="schedule-select-button--add"
-                    type="button"
-                    icon="add"
-                    onClick={handleAdd}
-                />
-            </Layout>
+            <Button
+                className="schedule-select-button--add"
+                type="button"
+                icon={<Icon>add</Icon>}
+                label="Добавить"
+                outlined
+                onClick={handleAdd}
+            />
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import { createAction, createReducer, combineReducers } from 'shared/store';
-import { createLesson, deleteLesson } from './lessons';
+import { createLesson, createLessons, updateLesson, deleteLesson } from './lessons';
 import { createPost } from './posts';
 import { createComment, updateComment, deleteComment } from './comments';
 
@@ -40,10 +40,10 @@ export const deleteEnrollment = createAction('DELETE_ENROLLMENT', id => ({
     }
 }));
 
-export const createLessons = createAction('CREATE_ENROLLMENT_LESSONS', (id, data) => ({
+export const updateSchedule = createAction('UPDATE_ENROLLMENT_SCHEDULE', (id, data) => ({
     request: {
-        method: 'post',
-        url: `/enrollments/${id}/lessons`,
+        method: 'put',
+        url: `/enrollments/${id}/schedule`,
         body: data
     }
 }));
@@ -53,7 +53,8 @@ export const actions = {
     getEnrollment,
     createEnrollment,
     updateEnrollment,
-    deleteEnrollment
+    deleteEnrollment,
+    updateSchedule
 };
 
 export const enrollmentsReducer = createReducer(null, {
@@ -68,13 +69,20 @@ export const enrollmentReducer = createReducer(null, {
     [updateEnrollment]: (state, action) => ({ ...state, ...action.data }),
     [deleteEnrollment]: (state, action) => null,
 
-    [createLessons]: (state, action) => state.id !== action.data.enrollmentId ? state : {
+    [createLessons]: (state, action) => ({
         ...state,
-        lessons: state.lessons.concat(...action.data.lessons)
-    },
+        lessons: state.lessons.concat(...action.data.filter(lesson => lesson.enrollment === state.id))
+    }),
     [createLesson]: (state, action) => state.id !== action.data.enrollment ? state : {
         ...state,
         lessons: state.lessons.concat(action.data)
+    },
+    [updateLesson]: (state, action) => state.id !== action.data.enrollment ? state : {
+        ...state,
+        lessons: state.lessons.map(lesson => lesson.id !== action.data.id ? lesson : {
+            ...lesson,
+            ...action.data
+        })
     },
     [deleteLesson]: (state, action) => state.id !== action.data.enrollment ? state : {
         ...state,

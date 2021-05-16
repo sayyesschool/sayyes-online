@@ -4,7 +4,7 @@ import { useStore } from 'shared/hooks/store';
 import { actions as postActions } from 'shared/store/modules/posts';
 
 export function usePosts(query) {
-    const [posts, actions] = useStore(state => state.posts, postActions);
+    const [posts, actions] = useStore(state => 'list' in state.posts ? state.posts.list : state.posts, postActions);
 
     useEffect(() => {
         if (!posts) {
@@ -16,7 +16,7 @@ export function usePosts(query) {
 }
 
 export function usePost(id) {
-    const [post, actions] = useStore(state => state.post, postActions);
+    const [post, actions] = useStore(state => 'single' in state.posts ? state.posts.single : state.post, postActions);
 
     useEffect(() => {
         if (!id) return;

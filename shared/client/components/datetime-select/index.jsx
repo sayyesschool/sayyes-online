@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import {
+    Button,
     Icon,
     IconButton,
     TextField,
@@ -25,54 +26,57 @@ export default function DateTimeSelect({ name, label, items, onChange }) {
 
     return (
         <div className="datetime-select">
-            <header className="datetime-select__header">
+            {label &&
                 <Typography type="subtitle2">{label}</Typography>
-
-                <IconButton type="button" icon="add" onClick={handleAdd} />
-            </header>
-
-            {items.length > 0 ?
-                items.map((item, index) =>
-                    <div key={index} className="datetime-select-item">
-                        <TextField
-                            type="date"
-                            name="date"
-                            value={item.date}
-                            label="Дата"
-                            filled
-                            onChange={event => handleChange(item, event.target)}
-                        />
-
-                        <TextField
-                            type="time"
-                            name="from"
-                            value={item.from}
-                            label="С"
-                            step="1800"
-                            filled
-                            onChange={event => handleChange(item, event.target)}
-                        />
-
-                        <TextField
-                            type="time"
-                            name="to"
-                            value={item.to}
-                            label="До"
-                            step="1800"
-                            filled
-                            onChange={event => handleChange(item, event.target)}
-                        />
-
-                        <IconButton
-                            type="button"
-                            icon={<Icon>delete</Icon>}
-                            onClick={() => handleDelete(item)}
-                        />
-                    </div>
-                )
-                :
-                <Typography type="body2">Нет расписания</Typography>
             }
+
+            {items?.map((item, index) =>
+                <div key={index} className="datetime-select-item">
+                    <TextField
+                        type="date"
+                        name="date"
+                        value={item.date}
+                        label="Дата"
+                        filled
+                        onChange={event => handleChange(item, event.target)}
+                    />
+
+                    <TextField
+                        type="time"
+                        name="from"
+                        value={item.from}
+                        label="С"
+                        step="1800"
+                        filled
+                        onChange={event => handleChange(item, event.target)}
+                    />
+
+                    <TextField
+                        type="time"
+                        name="to"
+                        value={item.to}
+                        label="До"
+                        step="1800"
+                        filled
+                        onChange={event => handleChange(item, event.target)}
+                    />
+
+                    <IconButton
+                        type="button"
+                        icon={<Icon>delete</Icon>}
+                        onClick={() => handleDelete(item)}
+                    />
+                </div>
+            )}
+
+            <Button
+                className="datetime-select-button--add"
+                type="button"
+                icon={<Icon>add</Icon>}
+                label="Добавить"
+                outlined
+                onClick={handleAdd}
+            />
         </div>
     );
 }

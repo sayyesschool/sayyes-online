@@ -1,0 +1,59 @@
+@use '@material/chips';
+@use '@material/theme/color-palette';
+
+.lesson-chip-set {
+    padding: 0;
+    margin-left: -4px;
+    margin-right: -4px;
+
+    .lesson-chip {
+        height: auto;
+        padding: 4px 6px;
+        transition: width .2s;
+        @include chips.shape-radius(4px);
+
+        &--missed {
+            background-color: color-palette.$yellow-700;
+        }
+        
+        &--ended {
+            color: white;
+            background-color: color-palette.$green-700;
+        }
+
+        &--canceled {
+            color: white;
+            background-color: color-palette.$red-700;
+        }
+
+        .mdc-chip__text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+            text-align: left;
+        }
+
+        .mdc-chip__icon--trailing {
+            position: absolute;
+            top: 2px;
+            right: 4px;
+            font-size: 16px;
+        }
+
+        .lesson-date,
+        .lesson-weekday {
+            font-size: .75rem;
+            line-height: 1;
+        }
+
+        .lesson-date,
+        .lesson-time {
+            font-weight: 700;
+        }
+
+        .lesson-time,
+        .lesson-duration {
+            font-size: .6rem;
+        }
+    }
+}

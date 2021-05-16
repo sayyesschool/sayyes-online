@@ -12,7 +12,7 @@ const actionsToBind = {
 };
 
 export function useEnrollments() {
-    const [enrollments, actions] = useStore(state => state.enrollments?.list || state.enrollments, actionsToBind);
+    const [enrollments, actions] = useStore(state => 'list' in state.enrollments ? state.enrollments.list : state.enrollments, actionsToBind);
 
     useEffect(() => {
         if (!enrollments) {
@@ -24,8 +24,8 @@ export function useEnrollments() {
 }
 
 export function useEnrollment(id) {
-    const [enrollment, actions] = useStore(state => state.enrollments?.single || state.enrollment, actionsToBind);
-
+    const [enrollment, actions] = useStore(state => 'single' in state.enrollments ? state.enrollments?.single : state.enrollments, actionsToBind);
+    console.log(enrollment);
     useEffect(() => {
         if (!id) return;
 
