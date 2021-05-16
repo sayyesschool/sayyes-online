@@ -1,6 +1,7 @@
 const Status = {
     scheduled: 'scheduled',
     missed: 'missed',
+    started: 'started',
     ended: 'ended',
     canceled: 'canceled'
 };
@@ -8,6 +9,7 @@ const Status = {
 const StatusLabel = {
     scheduled: 'Запланировано',
     missed: 'Пропущено',
+    started: 'started',
     ended: 'Завершилось',
     canceled: 'Отменено'
 };

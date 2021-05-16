@@ -8,7 +8,8 @@ const Post = new Schema({
     content: { type: String, default: '' },
     published: { type: Boolean, default: true },
     user: { type: Schema.Types.ObjectId, ref: 'User' },
-    enrollment: { type: Schema.Types.ObjectId, ref: 'Enrollment' }
+    enrollment: { type: Schema.Types.ObjectId, ref: 'Enrollment' },
+    comments: [Comment]
 }, {
     timestamps: true
 });

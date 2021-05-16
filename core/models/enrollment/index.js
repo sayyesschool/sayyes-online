@@ -1,36 +1,33 @@
 const moment = require('moment');
 const { Schema } = require('mongoose');
 
-const { Status, StatusIcon, Type, Format, Age, Domain, Level, Purpose, Plans } = require('./constants');
+const constants = require('./constants');
 const DateSchedule = require('./date-schedule');
 const WeekSchedule = require('./week-schedule');
 
 const Enrollment = new Schema({
     hhid: { type: String },
-    status: { type: String, default: 'processing' },
-    domain: { type: String, enum: ['general', 'prep', 'business'], default: 'general' },
-    type: { type: String, enum: Object.keys(Type), default: 'individual' },
-    format: { type: String, enum: Object.keys(Format), default: 'online' },
-    age: { type: String, enum: Object.keys(Age), default: 'adults' },
-    level: { type: String, enum: Object.keys(Level), default: '' },
+    status: { type: String, default: constants.Status.processing },
+    domain: { type: String, default: constants.Domain.general },
+    type: { type: String, default: constants.Type.individual },
+    format: { type: String, default: constants.Format.online },
+    age: { type: String, default: constants.Age.adults },
+    level: { type: String, default: '' },
+    purpose: { type: String, default: '' },
     experience: { type: String, default: '' },
-    purpose: { type: String, enum: Object.keys(Purpose), default: '' },
     preferences: { type: String, default: '' },
     lessonDuration: { type: Number, default: 50 },
+    teacherType: { type: String },
     trialLessonSchedule: [DateSchedule],
     schedule: [WeekSchedule],
     note: { type: String },
     client: { type: Schema.Types.ObjectId, ref: 'Client' },
-    teacher: { type: Schema.Types.ObjectId, ref: 'Teacher', set: value => value || null },
-    manager: { type: Schema.Types.ObjectId, ref: 'Manager' },
+    teachers: [{ type: Schema.Types.ObjectId, ref: 'Teacher' }],
+    managers: [{ type: Schema.Types.ObjectId, ref: 'Manager' }],
     courses: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
     materials: [{ type: Schema.Types.ObjectId, ref: 'Material' }]
 }, {
     timestamps: true
-});
-
-Enrollment.virtual('title').get(function() {
-    return `${this.domainLabel}`;
 });
 
 Enrollment.virtual('url').get(function() {
@@ -41,40 +38,40 @@ Enrollment.virtual('classUrl').get(function() {
     return `/class/${this.id}`;
 });
 
-Enrollment.virtual('isActive').get(function() {
-    return this.status === 'active';
-});
-
 Enrollment.virtual('statusLabel').get(function() {
-    return Status[this.status];
+    return constants.StatusLabel[this.status];
 });
 
 Enrollment.virtual('statusIcon').get(function() {
-    return StatusIcon[this.status];
+    return constants.StatusIcon[this.status];
 });
 
 Enrollment.virtual('domainLabel').get(function() {
-    return Domain[this.domain];
+    return constants.DomainLabel[this.domain];
 });
 
 Enrollment.virtual('levelLabel').get(function() {
-    return Level[this.level];
+    return constants.LevelLabel[this.level];
 });
 
 Enrollment.virtual('typeLabel').get(function() {
-    return Type[this.type];
+    return constants.TypeLabel[this.type];
 });
 
 Enrollment.virtual('formatLabel').get(function() {
-    return Format[this.format];
+    return constants.FormatLabel[this.format];
 });
 
 Enrollment.virtual('purposeLabel').get(function() {
-    return Purpose[this.purpose];
+    return constants.PurposeLabel[this.purpose];
 });
 
 Enrollment.virtual('ageLabel').get(function() {
-    return Age[this.age];
+    return constants.AgeLabel[this.age];
+});
+
+Enrollment.virtual('teacherTypeLabel').get(function() {
+    return constants.TeacherTypeLabel[this.teacherType];
 });
 
 Enrollment.virtual('scheduleLabel').get(function() {
@@ -87,10 +84,6 @@ Enrollment.virtual('imageSrc').get(function() {
     } else {
         return `/enrollments/${this.domain}.png`;
     }
-});
-
-Enrollment.virtual('numberOfScheduledLessons').get(function() {
-    return (this.lessons?.filter(lesson => lesson.status === 'scheduled')?.length) || 0;
 });
 
 Enrollment.virtual('payments', {
@@ -143,30 +136,5 @@ Enrollment.virtual('comments', {
         sort: { createdAt: -1 }
     }
 });
-
-Enrollment.methods.scheduleLessons = function(quantity = 0, startDate = new Date()) {
-    const lessons = [];
-    const date = moment(startDate);
-
-    for (let i = 0; i < quantity; i++) {
-        const schedule = this.schedule[i % this.schedule.length];
-        const currentWeekday = date.weekday();
-        const [hours, minutes] = schedule.from?.split(':');
-
-        if (schedule.day <= currentWeekday) {
-            date.weekday(7);
-        }
-
-        lessons.push({
-            date: date.weekday(schedule.day).hours(hours).minutes(minutes).seconds(0).clone(),
-            duration: this.lessonDuration,
-            enrollment: this.id,
-            client: this.client,
-            teacher: this.teacher
-        });
-    }
-
-    return lessons;
-};
 
 module.exports = Enrollment;

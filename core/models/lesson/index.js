@@ -7,6 +7,8 @@ const Lesson = new Schema({
     status: { type: String, enum: Object.keys(Status), default: Status.scheduled },
     date: { type: Date },
     duration: { type: Number, default: 60 },
+    trial: { type: Boolean, default: false },
+    free: { type: Boolean, default: false },
     note: { type: String, trim: true, default: '' },
     teacher: { type: Schema.Types.ObjectId, ref: 'User' },
     client: { type: Schema.Types.ObjectId, ref: 'User' },
@@ -31,7 +33,7 @@ Lesson.virtual('url').get(function() {
 });
 
 Lesson.virtual('dateLabel').get(function() {
-    return moment(this.date).tz('Europe/Moscow').format('dd, D MMM');
+    return moment(this.date).tz('Europe/Moscow').format('D MMM, dd');
 });
 
 Lesson.virtual('shortDateLabel').get(function() {
@@ -42,12 +44,12 @@ Lesson.virtual('timeLabel').get(function() {
     return moment(this.date).tz('Europe/Moscow').format('H:mm');
 });
 
-Lesson.virtual('dateTimeLabel').get(function() {
-    return moment(this.date).tz('Europe/Moscow').format('dd, D MMM, H:mm МСК');
+Lesson.virtual('weekdayLabel').get(function() {
+    return moment(this.date).tz('Europe/Moscow').format('dd');
 });
 
-Lesson.virtual('timeFromNowLabel').get(function() {
-    return moment(this.date).tz('Europe/Moscow').fromNow();
+Lesson.virtual('durationLabel').get(function() {
+    return `${this.duration} мин.`;
 });
 
 Lesson.virtual('statusLabel').get(function() {

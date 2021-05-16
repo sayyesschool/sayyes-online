@@ -19,11 +19,7 @@ const Comment = new Schema({
 });
 
 Comment.virtual('datetimeLabel').get(function() {
-    return moment(this.createdAt).tz('Europe/Moscow').fromNow();
-});
-
-Comment.virtual('publishedAt').get(function() {
-    return moment(this.createdAt).fromNow();
+    return moment(this.createdAt).tz('Europe/Moscow').format('D MMM YYYY в H:mm');
 });
 
 module.exports = Comment;
