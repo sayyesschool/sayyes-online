@@ -1,6 +1,11 @@
-@use '@material/dialog';
-
 #enrollment-page {
-    max-width: 1280px;
-    margin: 2rem auto;
+    .page-header {
+        &__inner {
+            max-width: 1024px;
+        }
+    }
+
+    .page-content {
+        max-width: 1024px;
+    }
 }

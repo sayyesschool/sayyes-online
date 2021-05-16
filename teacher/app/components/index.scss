@@ -1,0 +1,43 @@
+@use '@material/dialog';
+
+body {
+    background-color: #f1f3f4;
+}
+
+.page {
+    .page-header {
+        &__inner {
+            max-width: 1280px;
+            margin: auto;
+            padding: 2rem 1rem;
+        }
+    }
+
+    .page-content {
+        max-width: 1280px;
+        margin: auto;
+        padding: 2rem 1rem;
+    }
+
+    .mdc-layout-grid {
+        padding: 0;
+        margin: 0;
+    }
+}
+
+.assignment-dialog,
+.post-dialog {
+    @include dialog.min-width(640px);
+
+    .mdc-dialog__surface {
+        height: calc(100% - 32px);
+    }
+
+    .mdc-dialog__content {
+        overflow: hidden;
+    }
+
+    .ck-editor {
+        margin-top: 1rem;
+    }
+}

@@ -1,67 +1,67 @@
-module.exports = ({ Lesson }) => ({
-    findOne: (req, res, next, id) => {
-        Lesson.getById(id)
-            .then(lesson => {
-                if (!lesson) {
-                    const error = new Error('Урок не найдн');
-                    error.status = 404;
-                    return next(error);
-                }
-
-                req.lesson = lesson;
-
-                next();
-            })
-            .catch(next);
-    },
-
-    getMany: (req, res, next) => {
-        Lesson.get({
-            $or: [
-                { date: { $gte: new Date() } },
-                { client: req.user }
-            ]
-        })
+module.exports = ({
+    models: { Lesson }
+}) => ({
+    get: (req, res, next) => {
+        Lesson.find({ teachers: req.user.id, ...req.query })
+            .sort({ date: 1 })
+            .populate('client')
             .then(lessons => {
                 res.json({
                     ok: true,
-                    data: lessons.map(lesson => map(lesson, req.user))
+                    data: lessons
                 });
             })
             .catch(next);
     },
 
     getOne: (req, res, next) => {
-        Lesson.getById(req.params.lessonId)
-            .populate('student', 'firstname lastname fullname')
-            .populate('teacher', 'firstname lastname fullname')
+        Lesson.findById(req.params.lessonId)
+            .populate('client')
             .then(lesson => {
-                if (!lesson) {
-                    const error = new Error('Урок не найдн');
-                    error.status = 404;
-                    return next(error);
-                }
-
-                const data = req.lesson.toJSON();
-
-                data.student = {
-                    id: lesson.client.id,
-                    name: lesson.client.fullname
-                };
-                data.teacher = {
-                    id: lesson.teacher.id,
-                    name: lesson.teacher.fullname
-                };
-
                 res.json({
                     ok: true,
-                    data
+                    data: lesson
+                });
+            })
+            .catch(next);
+    },
+
+    create: (req, res, next) => {
+        Lesson.create(req.body)
+            .then(lesson => {
+                res.json({
+                    ok: true,
+                    message: 'Урок создан',
+                    data: lesson
+                });
+            })
+            .catch(next);
+    },
+
+    update: (req, res, next) => {
+        Lesson.findByIdAndUpdate(req.params.lessonId, req.body, { new: true })
+            .then(lesson => {
+                res.json({
+                    ok: true,
+                    message: 'Урок изменен',
+                    data: lesson
+                });
+            })
+            .catch(next);
+    },
+
+    delete: (req, res, next) => {
+        Lesson.findByIdAndDelete(req.params.lessonId)
+            .then(lesson => {
+                res.json({
+                    ok: true,
+                    message: 'Урок удален',
+                    data: {
+                        id: lesson.id,
+                        enrollment: lesson.enrollment
+                    }
                 });
             })
             .catch(next);
     }
 });
-
-function map(lesson, user) {
-    return lesson;
-}

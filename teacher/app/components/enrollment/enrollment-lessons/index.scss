@@ -1,0 +1,26 @@
+.enrollment-lessons {
+    .mdc-avatar {
+        margin: 4px;
+
+        &__text {
+            font-size: 1rem;
+        }
+    }
+
+    .mdc-card {
+        .mdc-chip {
+            .mdc-chip__icon--trailing {
+                opacity: 0;
+                transform: translateX(-50%);
+                transition: opacity .1s, transform .2s;
+            }
+
+            &:hover {
+                .mdc-chip__icon--trailing {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+        }
+    }
+}

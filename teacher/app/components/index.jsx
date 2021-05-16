@@ -2,9 +2,11 @@ import React, { useEffect, useCallback } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import { useStore } from 'shared/hooks/store';
-import { hideNotification } from 'shared/store/modules/notification';
-import { getEnrollments } from 'shared/store/modules/enrollments';
 import { getUser } from 'shared/store/modules/user';
+import { getEnrollments } from 'shared/store/modules/enrollments';
+import { getCourses } from 'shared/store/modules/courses';
+import { getMaterials } from 'shared/store/modules/materials';
+import { hideNotification } from 'shared/store/modules/notification';
 import NotificationSnackbar from 'shared/components/notification-snackbar';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import AppHeader from 'shared/components/app-header';
@@ -12,15 +14,22 @@ import AppContent from 'shared/components/app-content';
 import NavBar from 'shared/components/nav-bar';
 
 import navItems from 'app/data/nav';
-import Account from './components/account';
-import Assignment from './components/assignment';
-import Courses from './components/courses';
-import Home from './components/home';
-import Enrollment from './components/enrollment';
-import Materials from './components/materials';
-import Post from './components/post';
+import Account from 'app/components/account';
+import Courses from 'app/components/courses';
+import Home from 'app/components/home';
+import Enrollment from 'app/components/enrollment';
+import Materials from 'app/components/materials';
+import Post from 'app/components/post';
 
-import './App.scss';
+import './index.scss';
+
+const actionsToBind = {
+    getUser,
+    getEnrollments,
+    getCourses,
+    getMaterials,
+    hideNotification
+};
 
 export default function App() {
     const [{ user, notification }, actions] = useStore(
@@ -28,12 +37,14 @@ export default function App() {
             user: state.user,
             notification: state.notification,
         }),
-        { hideNotification, getUser, getEnrollments }
+        actionsToBind
     );
 
     useEffect(() => {
         actions.getUser();
         actions.getEnrollments();
+        actions.getCourses();
+        actions.getMaterials();
     }, []);
 
     const handleSnackbarClose = useCallback(() => {
@@ -52,11 +63,10 @@ export default function App() {
                 <NavBar items={navItems} />
             </AppHeader>
 
-            <AppContent>
+            <AppContent fixedAdjust>
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <Route path="/account" component={Account} />
-                    <Route path="/assignments/:id" component={Assignment} />
                     <Route path="/courses" component={Courses} />
                     <Route path="/enrollments/:id" component={Enrollment} />
                     <Route path="/materials" component={Materials} />

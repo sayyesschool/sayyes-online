@@ -6,21 +6,24 @@ import {
     SegmentedButton
 } from 'mdc-react';
 
-import { useSelector } from 'shared/hooks/store';
-import Page from 'shared/components/page';
-import PageContent from 'shared/components/page-content';
+import api from 'shared/services/api';
+import { useUser } from 'shared/hooks/user';
+import { useEnrollments } from 'shared/hooks/enrollments';
+import { useLessons } from 'shared/hooks/lessons';
+import { useMeetings } from 'shared/hooks/meetings';
 import LoadingIndicator from 'shared/components/loading-indicator';
-import Calendar from 'shared/components/calendar';
+import Page from 'shared/components/page';
+import PageHeader from 'shared/components/page-header';
+import PageContent from 'shared/components/page-content';
+import CalendarCard from 'shared/components/calendar-card';
 
 import StudentList from 'app/components/students/student-list';
 
 import './index.scss';
 
 export default function HomePage() {
-    const enrollments = useSelector(store => store.enrollments.list);
-    //const lessons = useSelector(store => store.lessons);
-
-    const [view, setView] = useState('week');
+    const [user] = useUser();
+    const [enrollments] = useEnrollments();
 
     if (!enrollments) return <LoadingIndicator />;
 
@@ -32,9 +35,7 @@ export default function HomePage() {
         return student;
     });
 
-    const lessons = enrollments.reduce((lessons, enrollment) => {
-        return lessons.concat(...enrollment.lessons.map(lesson => ({ ...lesson, client: enrollment.client })));
-    }, []);
+    const lessons = [];
 
     return (
         <Page id="home-page">
@@ -54,33 +55,10 @@ export default function HomePage() {
                     </LayoutGrid.Cell>
 
                     <LayoutGrid.Cell span="8">
-                        <Card outlined>
-                            <Card.Header
-                                title="Расписание"
-                                actions={
-                                    <SegmentedButton>
-                                        <SegmentedButton.Segment
-                                            icon={<Icon>view_week</Icon>}
-                                            label="Неделя"
-                                            selected={view === 'week'}
-                                            onClick={() => setView('week')}
-                                        />
-
-                                        <SegmentedButton.Segment
-                                            icon={<Icon>today</Icon>}
-                                            label="Месяц"
-                                            selected={view === 'month'}
-                                            onClick={() => setView('month')}
-                                        />
-                                    </SegmentedButton>
-                                }
-                            />
-
-                            <Calendar
-                                view={view}
-                                events={lessons}
-                            />
-                        </Card>
+                        <CalendarCard
+                            title="Календарь"
+                            lessons={lessons}
+                        />
                     </LayoutGrid.Cell>
                 </LayoutGrid>
             </PageContent>

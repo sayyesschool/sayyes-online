@@ -6,48 +6,54 @@ import {
     List
 } from 'mdc-react';
 
+import { useBoolean } from 'shared/hooks/state';
+
 export default function EnrollmentDetails({ enrollment }) {
+    const [isOpen, toggleOpen] = useBoolean(false);
 
     return (
         <section className="enrollment-details">
-            <Card outlined>
-                <Card.Header
-                    title="Детали"
-                />
+            <Card>
+                <Card.PrimaryAction onClick={toggleOpen}>
+                    <Card.Header
+                        title="Детали"
+                        actions={
+                            <IconButton
+                                icon={isOpen ? 'expand_less' : 'expand_more'}
+                            />
+                        }
+                    />
+                </Card.PrimaryAction>
 
-                <Card.Section>
-                    <List twoLine>
-                        <List.Item
-                            graphic={<Icon>portrait</Icon>}
-                            primaryText={enrollment.ageLabel || '[Не указана]'}
-                            secondaryText="Возрастная группа"
-                        />
+                {isOpen &&
+                    <Card.Section>
+                        <List twoLine>
+                            <List.Item
+                                graphic={<Icon>portrait</Icon>}
+                                primaryText={enrollment.ageLabel || '[Не указана]'}
+                                secondaryText="Возрастная группа"
+                            />
 
-                        <List.Item
-                            graphic={<Icon>grade</Icon>}
-                            primaryText={enrollment.levelLabel || '[Не указан]'}
-                            secondaryText="Уровень"
-                        />
+                            <List.Item
+                                graphic={<Icon>grade</Icon>}
+                                primaryText={enrollment.levelLabel || '[Не указан]'}
+                                secondaryText="Уровень"
+                            />
 
-                        <List.Item
-                            graphic={<Icon>flag</Icon>}
-                            primaryText={enrollment.goal || '[Не указана]'}
-                            secondaryText="Цель"
-                        />
+                            <List.Item
+                                graphic={<Icon>flag</Icon>}
+                                primaryText={enrollment.goal || '[Не указана]'}
+                                secondaryText="Цель"
+                            />
 
-                        <List.Item
-                            graphic={<Icon>schedule</Icon>}
-                            primaryText={enrollment.schedule.map(s => s.label).join(', ') || '[Не указано]'}
-                            secondaryText="Расписание"
-                        />
-
-                        <List.Item
-                            graphic={<Icon>person</Icon>}
-                            primaryText={enrollment.manager?.fullname}
-                            secondaryText="Менеджер"
-                        />
-                    </List>
-                </Card.Section>
+                            <List.Item
+                                graphic={<Icon>person</Icon>}
+                                primaryText={enrollment.manager?.fullname}
+                                secondaryText="Менеджер"
+                            />
+                        </List>
+                    </Card.Section>
+                }
             </Card>
         </section>
     );

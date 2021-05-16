@@ -1,5 +1,4 @@
-import React, { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useCallback } from 'react';
 import {
     Card,
     Icon,
@@ -7,50 +6,79 @@ import {
     List
 } from 'mdc-react';
 
-import FormDialog from 'shared/components/form-dialog';
+import LoadingIndicator from 'shared/components/loading-indicator';
+import MenuButton from 'shared/components/menu-button';
 
-import AssignmentForm from 'app/components/assignment/assignment-form';
-import PostForm from 'app/components/post/post-form';
+import { useStore, useActions } from 'app/hooks/store';
 
-export default function EnrollmentMaterials({ enrollment, onAdd }) {
-    const [isPostFormOpen, setPostFormOpen] = useState(false);
-    const [isAssignmentFromOpen, setAssignmentFormOpen] = useState(false);
+export default function EnrollmentMaterials({ enrollment }) {
+    const [materials] = useStore('materials.list');
+    const enrollmentActions = useActions('enrollments');
 
-    const handlePostFormSubmit = useCallback(data => {
-        onCreatePost(data);
-        setPostFormOpen(false);
-    }, []);
+    const handleAddMaterial = useCallback(materialId => {
+        const materials = enrollment.materials.concat(materialId);
+
+        return enrollmentActions.updateEnrollment(enrollment.id, { materials });
+    }, [enrollment]);
+
+    const handleRemoveMaterial = useCallback(materialId => {
+        const materials = enrollment.materials.filter(id => id !== materialId);
+
+        return enrollmentActions.updateEnrollment(enrollment.id, { materials });
+    }, [enrollment]);
+
+    if (!materials) return <LoadingIndicator />;
+
+    const enrollmentMaterials = materials
+        .filter(material => enrollment.materials.includes(material.id));
+
+    const items = materials
+        .filter(material => !enrollment.materials.includes(material.id))
+        .map(material => ({
+            key: material.id,
+            graphic: <img src={material.imageUrl} />,
+            primaryText: material.title,
+            secondaryText: material.subtitle,
+            onClick: () => handleAddMaterial(material.id)
+        }));
 
     return (
-        <div className="enrollment-materials">
-            <Card outlined>
+        <section className="enrollment-materials">
+            <Card>
                 <Card.Header
-                    title="Дополнительные материалы"
-                    subtitle={(!enrollment.materials || enrollment.materials.length === 0) && 'Отчетов пока нет'}
+                    graphic={<Icon>book</Icon>}
+                    title="Пособия"
                     actions={
-                        <IconButton
+                        <MenuButton
                             icon="add"
-                            onClick={() => setPostFormOpen(true)}
+                            listProps={{ twoLine: true }}
+                            items={items}
                         />
                     }
                 />
 
-                {enrollment.materials &&
+                {enrollmentMaterials.length > 0 &&
                     <Card.Section>
-                        <List thumbnailList>
-                            {enrollment.materials?.map(material =>
+                        <List imageList twoLine>
+                            {enrollmentMaterials.map(material =>
                                 <List.Item
                                     key={material.id}
-                                    component={Link}
-                                    to={material.url}
                                     graphic={<img src={material.imageUrl} />}
-                                    text={material.title}
+                                    primaryText={material.title}
+                                    secondaryText={material.subtitle}
+                                    meta={
+                                        <IconButton
+                                            icon="remove"
+                                            title="Убрать курс"
+                                            onClick={() => handleRemoveMaterial(material.id)}
+                                        />
+                                    }
                                 />
                             )}
                         </List>
                     </Card.Section>
                 }
             </Card>
-        </div >
+        </section>
     );
 }

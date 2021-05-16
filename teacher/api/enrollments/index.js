@@ -9,7 +9,8 @@ module.exports = core => {
     router.get('/', controller.getMany);
 
     router.route('/:id')
-        .get(controller.getOne);
+        .get(controller.getOne)
+        .put(controller.update);
 
     return router;
 };

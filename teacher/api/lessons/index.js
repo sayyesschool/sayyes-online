@@ -2,14 +2,18 @@ const { Router } = require('express');
 
 const Controller = require('./controller');
 
-module.exports = services => {
+module.exports = context => {
     const router = Router();
-    const controller = Controller(services);
+    const controller = Controller(context);
 
-    router.param('lessonId', controller.findOne);
+    router.route('/')
+        .get(controller.get)
+        .post(controller.create);
 
-    router.get('/', controller.getMany);
-    router.get('/:lessonId', controller.getOne);
+    router.route('/:lessonId')
+        .get(controller.getOne)
+        .put(controller.update)
+        .delete(controller.delete);
 
     return router;
 };

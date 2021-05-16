@@ -1,65 +1,110 @@
 import React, { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
 import {
+    Avatar,
+    Button,
     Card,
     IconButton,
-    List
+    LayoutGrid,
+    TextField
 } from 'mdc-react';
 
-import FormDialog from 'shared/components/form-dialog';
+import { useBoolean } from 'shared/hooks/state';
+import { useUser } from 'shared/hooks/user';
+import { usePosts } from 'shared/hooks/posts';
+import LoadingIndicator from 'shared/components/loading-indicator';
+import PostCard from 'shared/components/post-card';
+import PostForm from 'shared/components/post-form';
 
-import PostForm from 'app/components/post/post-form';
+import './index.scss';
 
-export default function EnrollmentPosts({ enrollment, onCreate }) {
-    const [isFormOpen, setFormOpen] = useState(false);
+export default function EnrollmentPosts({ enrollment }) {
+    const [user] = useUser();
+    const [posts, actions] = usePosts({ enrollment: enrollment.id });
+    const [post] = useState(null);
 
-    const handleSubmit = useCallback(data => {
-        onCreate(data);
-        setFormOpen(false);
+    const [isPostFormOpen, togglePostFormOpen] = useBoolean(false);
+    const [isCommenting, toggleCommenting] = useBoolean(false);
+    const [isSearching, toggleSearching] = useBoolean(false);
+
+    const handleCreatePost = useCallback(data => {
+        data.enrollment = enrollment.id;
+
+        return actions.createPost(data)
+            .then(() => togglePostFormOpen());
+    }, [enrollment]);
+
+    const handleUpdatePost = useCallback((post, data) => {
+        return actions.updatePost(post.id, data);
     }, []);
+
+    const handleDeletePost = useCallback(post => {
+        return actions.deletePost(post.id, data);
+    }, []);
+
+    const handleCreateComment = useCallback((post, data) => {
+        return actions.createComment(post.id, data)
+            .then(() => toggleCommenting(false));
+    }, [post]);
+
+    const handleUpdateComment = useCallback((post, data) => {
+        return actions.updateComment(post.id, data.id, data);
+    }, [post]);
+
+    const handleDeleteComment = useCallback((post, comment) => {
+        return actions.deleteComment(post.id, comment.id);
+    }, [post]);
+
+    console.log(posts);
+
+    if (!posts) return <LoadingIndicator />;
 
     return (
         <div className="enrollment-posts">
-            <Card outlined>
-                <Card.Header
-                    title="Прогресс обучения"
-                    subtitle={(!enrollment.posts || enrollment.posts.length === 0) && 'Отчетов пока нет'}
-                    actions={
-                        <IconButton
-                            icon="add"
-                            onClick={() => setFormOpen(true)}
-                        />
-                    }
-                />
+            <LayoutGrid>
+                <LayoutGrid.Cell span="12">
+                    {isPostFormOpen ?
+                        <Card className="new-post-card">
+                            <Card.Header
+                                graphic={<Avatar src={user.imageUrl} text={user?.initials} />}
+                                title="Новая запись"
+                            />
 
-                {enrollment.posts &&
-                    <Card.Section>
-                        <List twoLine>
-                            {enrollment.posts?.map(post =>
-                                <List.Item
-                                    key={post.id}
-                                    component={Link}
-                                    to={post.url}
-                                    primaryText={post.title}
-                                    secondaryText={post.publishedAt}
+                            <PostForm
+                                onSubmit={handleCreatePost}
+                            />
+
+                            <Card.Actions>
+                                <Button onClick={togglePostFormOpen}>Отменить</Button>
+                                <Button type="submit" form="post-form" outlined>Сохранить</Button>
+                            </Card.Actions>
+                        </Card>
+                        :
+                        <Card>
+                            <Card.PrimaryAction onClick={togglePostFormOpen}>
+                                <Card.Header
+                                    graphic={<Avatar src={user.imageUrl} text={user?.initials} />}
+                                    subtitle="What's going on?"
                                 />
-                            )}
-                        </List>
-                    </Card.Section>
-                }
-            </Card>
+                            </Card.PrimaryAction>
+                        </Card>
+                    }
+                </LayoutGrid.Cell>
 
-            <FormDialog
-                className="post-dialog"
-                form="post-form"
-                title="Новая запись"
-                open={isFormOpen}
-                onClose={() => setFormOpen(false)}
-            >
-                <PostForm
-                    onSubmit={handleSubmit}
-                />
-            </FormDialog>
-        </div >
+                {posts.map(post =>
+                    <LayoutGrid.Cell span="12">
+                        <PostCard
+                            key={post.id}
+                            user={user}
+                            post={post}
+                            onUpdate={handleUpdatePost}
+                            onDelete={handleDeletePost}
+                            onCreateComment={handleCreateComment}
+                            onUpdateComment={handleUpdateComment}
+                            onDeleteComment={handleDeleteComment}
+                        />
+                    </LayoutGrid.Cell>
+                )}
+            </LayoutGrid>
+        </div>
     );
 }

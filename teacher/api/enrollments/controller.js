@@ -1,6 +1,6 @@
 module.exports = ({ Enrollment }) => ({
     getMany: (req, res, next) => {
-        Enrollment.find({ teacher: req.user.id, ...req.query })
+        Enrollment.find({ teachers: req.user.id, ...req.query })
             .populate('client', 'firstname lastname email')
             .then(enrollments => {
                 res.json({
@@ -14,15 +14,14 @@ module.exports = ({ Enrollment }) => ({
     getOne: (req, res, next) => {
         Enrollment.findById(req.params.id)
             .populate('client', 'firstname lastname email')
-            .populate('teacher', 'firstname lastname email')
             .populate('manager', 'firstname lastname email')
-            .populate('courses', 'title slug image units.id lessons.id exercises.id')
-            .populate('materials', 'title slug image')
-            .populate('assignments', 'id title')
+            .populate('lessons')
             .populate('posts', 'id title')
+            .populate('courses', 'title slug image')
+            .populate('materials', 'title slug image')
             .then(enrollment => {
                 if (!enrollment) {
-                    const error = new Error('Обучение не найдно');
+                    const error = new Error('Обучение не найдено');
                     error.status = 404;
                     return next(error);
                 }
@@ -33,5 +32,20 @@ module.exports = ({ Enrollment }) => ({
                 });
             })
             .catch(next);
-    }
+    },
+
+    update: (req, res, next) => {
+        const keys = Object.keys(req.body);
+
+        Enrollment.findByIdAndUpdate(req.params.id, req.body, {
+            projection: keys.join(' '),
+            new: true
+        }).then(enrollment => {
+            res.json({
+                ok: true,
+                message: 'Обучение изменено',
+                data: enrollment
+            });
+        }).catch(next);
+    },
 });

@@ -1,50 +1,81 @@
-import React, { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useCallback } from 'react';
 import {
     Card,
+    Icon,
     IconButton,
     List
 } from 'mdc-react';
 
-export default function EnrollmentCourses({ enrollment, onAdd }) {
-    const [isFromOpen, setFormOpen] = useState(false);
+import LoadingIndicator from 'shared/components/loading-indicator';
+import MenuButton from 'shared/components/menu-button';
 
-    const handleSubmit = useCallback(data => {
-        setFormOpen(false);
-        onCreate(data);
-    }, []);
+import { useStore, useActions } from 'app/hooks/store';
+
+export default function EnrollmentCourses({ enrollment }) {
+    const [courses] = useStore('courses.list');
+    const enrollmentActions = useActions('enrollments');
+
+    const handleAddCourse = useCallback(courseId => {
+        const courses = enrollment.courses.concat(courseId);
+
+        enrollmentActions.updateEnrollment(enrollment.id, { courses });
+    }, [enrollment]);
+
+    const handleRemoveCourse = useCallback(courseId => {
+        const courses = enrollment.courses.filter(id => id !== courseId);
+
+        enrollmentActions.updateEnrollment(enrollment.id, { courses });
+    }, [enrollment]);
+
+    if (!courses) return <LoadingIndicator />;
+
+    const enrollmentCourses = courses
+        .filter(course => enrollment.courses.includes(course.id));
+
+    const items = courses
+        .filter(course => !enrollment.courses.includes(course.id))
+        .map(course => ({
+            key: course.id,
+            graphic: <img src={course.imageUrl} />,
+            text: course.title,
+            onClick: () => handleAddCourse(course.id)
+        }));
 
     return (
-        <div className="enrollment-courses">
-            <Card outlined>
+        <section className="enrollment-courses">
+            <Card>
                 <Card.Header
+                    graphic={<Icon>class</Icon>}
                     title="Курсы"
-                    subtitle={(!enrollment.courses || enrollment.courses.length === 0) && 'Курсов пока нет'}
                     actions={
-                        <IconButton
+                        <MenuButton
                             icon="add"
-                            onClick={onAdd}
+                            items={items}
                         />
                     }
                 />
 
-                {enrollment.courses &&
+                {enrollmentCourses.length > 0 &&
                     <Card.Section>
-                        <List twoLine imageList>
-                            {enrollment.courses?.map(course =>
+                        <List imageList>
+                            {enrollmentCourses.map(course =>
                                 <List.Item
                                     key={course.id}
-                                    component={Link}
-                                    to={course.uri}
                                     graphic={<img src={course.imageUrl} />}
-                                    primaryText={course.title}
-                                    secondaryText={`${course.units.length} юнитов`}
+                                    text={course.title}
+                                    meta={
+                                        <IconButton
+                                            icon="remove"
+                                            title="Убрать курс"
+                                            onClick={() => handleRemoveCourse(course.id)}
+                                        />
+                                    }
                                 />
                             )}
                         </List>
                     </Card.Section>
                 }
             </Card>
-        </div>
+        </section>
     );
 }
