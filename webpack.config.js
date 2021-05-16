@@ -37,6 +37,9 @@ function config(name, env) {
                             presets: [
                                 '@babel/preset-env',
                                 '@babel/preset-react'
+                            ],
+                            plugins: [
+                                '@babel/plugin-proposal-export-default-from'
                             ]
                         }
                     }
@@ -128,6 +131,9 @@ function config(name, env) {
 
             alias: {
                 'app': path.resolve(__dirname, name, 'app'),
+                'core': path.resolve(__dirname, 'core'),
+                'shared/utils': path.resolve(__dirname, 'shared', 'utils'),
+                'shared/data': path.resolve(__dirname, 'shared', 'data'),
                 'shared': path.resolve(__dirname, 'shared', 'client')
             },
 
