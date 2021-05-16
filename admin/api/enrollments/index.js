@@ -15,8 +15,8 @@ module.exports = context => {
         .put(controller.update)
         .delete(controller.delete);
 
-    router.route('/:id/lessons')
-        .post(controller.createLessons);
+    router.route('/:id/schedule')
+        .put(controller.updateSchedule);
 
     return router;
 };

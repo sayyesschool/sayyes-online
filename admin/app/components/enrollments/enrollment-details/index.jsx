@@ -41,7 +41,7 @@ export default function EnrollmentDetails({ enrollment }) {
                             {
                                 key: 'teacherType',
                                 graphic: <Icon>person</Icon>,
-                                primaryText: enrollment.teacherTypeLabel,
+                                primaryText: enrollment.teacherTypeLabel || '[Не указан]',
                                 secondaryText: 'Тип преподавателя'
                             },
                             {

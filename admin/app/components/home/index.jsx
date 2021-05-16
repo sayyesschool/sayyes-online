@@ -30,7 +30,7 @@ export default function HomePage() {
                 <Grid>
                     <Grid.Cell span="3">
                         <Card outlined>
-                            <Card.Header title="Заявки" />
+                            <Card.Header title="Заявки в обработке" />
 
                             {requests &&
                                 <RequestsList

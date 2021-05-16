@@ -3,7 +3,9 @@ import {
     Card,
     Icon,
     IconButton,
-    List
+    Layout,
+    List,
+    Typography
 } from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
@@ -55,60 +57,58 @@ export default function ClientContacts({ client, onUpdate }) {
 
     return (
         <section className="client-contacts">
-            <Card>
-                <Card.Header
-                    graphic={<Icon>contacts</Icon>}
-                    title="Контакты"
-                    actions={
-                        <IconButton
-                            icon="add"
-                            title="Добавить контакт"
-                            onClick={toggleCreateForm}
-                        />
-                    }
-                />
+            <header className="client-contacts__header">
+                <Typography type="headline6" noMargin>Контакты</Typography>
 
-                {client.contacts?.length > 0 &&
+                <IconButton
+                    icon="add"
+                    title="Добавить контакт"
+                    onClick={toggleCreateForm}
+                />
+            </header>
+
+            {client.contacts?.map(contact =>
+                <Card>
+                    <Card.Header
+                        title={`${contact.firstname} ${contact.lastname}`}
+                        subtitle={contact.relation}
+                        actions={
+                            <MenuButton
+                                icon="more_vert"
+                                items={[
+                                    {
+                                        key: 'edit',
+                                        text: 'Редактировать',
+                                        onClick: () => handleEdit(contact)
+                                    },
+                                    {
+                                        key: 'delete',
+                                        text: 'Удалить',
+                                        onClick: () => handleDelete(contact)
+                                    },
+                                ]}
+                                menuProps={{ top: true, right: true }}
+                            />
+                        }
+                    />
+
                     <Card.Section>
                         <List twoLine>
-                            {client.contacts.map(contact =>
-                                <List.Item
-                                    key={contact.id}
-                                    primaryText={`${contact.firstname} ${contact.lastname}`}
-                                    secondaryText={contact.relation}
-                                    meta={
-                                        <MenuButton
-                                            icon="more_vert"
-                                            items={[
-                                                {
-                                                    key: 'phone',
-                                                    text: contact.phone
-                                                },
-                                                {
-                                                    key: 'email',
-                                                    text: contact.email
-                                                },
-                                                {
-                                                    key: 'edit',
-                                                    text: 'Редактировать',
-                                                    onClick: () => handleEdit(contact)
-                                                },
-                                                {
-                                                    key: 'delete',
-                                                    text: 'Удалить',
-                                                    onClick: () => handleDelete(contact)
-                                                },
-                                            ]}
-                                            menuProps={{ top: true, right: true }}
-                                            listProps={{ dense: true }}
-                                        />
-                                    }
-                                />
-                            )}
+                            <List.Item
+                                graphic={<Icon>phone</Icon>}
+                                primaryText={contact.phone}
+                                secondaryText="Телефон"
+                            />
+
+                            <List.Item
+                                graphic={<Icon>email</Icon>}
+                                primaryText={contact.email}
+                                secondaryText="Телефон"
+                            />
                         </List>
                     </Card.Section>
-                }
-            </Card>
+                </Card>
+            )}
 
             <FormDialog
                 form="contact-form"

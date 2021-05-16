@@ -4,8 +4,8 @@ module.exports = ({
     get: (req, res, next) => {
         Enrollment.find(req.query)
             .select('-messages')
-            .populate('manager', 'firstname lastname')
             .populate('client', 'firstname lastname')
+            .populate('managers', 'firstname lastname')
             .populate('lessons', 'status')
             .sort({ createdAt: 1 })
             .then(enrollments => {
@@ -19,17 +19,11 @@ module.exports = ({
 
     getOne: (req, res, next) => {
         Enrollment.findById(req.params.id)
-            .populate('manager', 'firstname lastname imageUrl')
             .populate('client', 'hhid firstname lastname imageUrl')
-            .populate('teacher', 'firstname lastname imageUrl')
+            .populate('managers', 'firstname lastname imageUrl')
+            .populate('teachers', 'firstname lastname imageUrl')
             .populate('payments')
-            .populate({
-                path: 'lessons',
-                populate: {
-                    path: 'teacher',
-                    select: 'firstname lastname imageUrl'
-                }
-            })
+            .populate('lessons')
             .populate({
                 path: 'comments',
                 populate: {
@@ -60,18 +54,22 @@ module.exports = ({
 
     update: (req, res, next) => {
         const keys = Object.keys(req.body);
+
         const query = Enrollment.findByIdAndUpdate(req.params.id, req.body, {
             projection: keys.join(' '),
-            new: true,
-            lean: true
+            new: true
         });
 
         if (keys.includes('client')) {
             query.populate('client', 'firstname lastname');
-        } else if (keys.includes('manager')) {
-            query.populate('manager', 'firstname lastname');
-        } else if (keys.includes('teacher')) {
-            query.populate('teacher', 'firstname lastname');
+        }
+
+        if (keys.includes('manager')) {
+            query.populate('manager', 'firstname lastname imageUrl');
+        }
+
+        if (keys.includes('teacher')) {
+            query.populate('teacher', 'firstname lastname imageUrl');
         }
 
         query.then(enrollment => {
@@ -98,7 +96,7 @@ module.exports = ({
     },
 
     createLessons: (req, res, next) => {
-        Enrollment.findById(req.params.id)
+        Enrollment.findByIdAndUpdate(req.params.id)
             .then(enrollment => {
                 const lessons = enrollment.scheduleLessons(req.body.quantity, req.body.startDate);
 
@@ -107,6 +105,40 @@ module.exports = ({
                         res.json({
                             ok: true,
                             message: 'Уроки созданы',
+                            data: {
+                                enrollmentId: enrollment.id,
+                                lessons
+                            }
+                        });
+                    });
+            })
+            .catch(next);
+    },
+
+    updateSchedule: (req, res, next) => {
+        Enrollment.findByIdAndUpdate(req.params.id, {
+            schedule: req.body.schedule
+        }, {
+            new: true,
+            projection: { schedule: true }
+        })
+            .then(enrollment => {
+                const ops = req.body.lessons.map(lesson => ({
+                    updateOne: {
+                        filter: { _id: lesson.id },
+                        update: { $set: { date: lesson.date } }
+                    }
+                }));
+
+                return Lesson.bulkWrite(ops)
+                    .then(() => Lesson.find({
+                        enrollment: enrollment.id,
+                        date: { $gte: req.body.startDate }
+                    }))
+                    .then(lessons => {
+                        res.json({
+                            ok: true,
+                            message: 'Уроки изменены',
                             data: {
                                 enrollmentId: enrollment.id,
                                 lessons

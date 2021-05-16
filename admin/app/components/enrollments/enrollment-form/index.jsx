@@ -25,7 +25,6 @@ export default forwardRef(EnrollmentForm);
 function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
     const formRef = useRef();
 
-    const [user] = useStore('user');
     const [teachers] = useStore('teachers.list');
     const [managers] = useStore('managers.list');
 
@@ -33,8 +32,8 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
         ...defaultEnrollment,
         ...enrollment,
         client: enrollment.client?.id || '',
-        teacher: enrollment.teacher?.id || '',
-        manager: enrollment.manager?.id || user.id,
+        teachers: enrollment.teachers.map(t => t.id || t),
+        managers: enrollment.managers.map(m => m.id || m),
         courses: undefined,
         lessons: undefined,
         payments: undefined
@@ -171,26 +170,28 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 {enrollment.id &&
                     <>
                         <PeopleSelect
-                            name="teacher"
-                            value={data.teacher}
-                            label="Преподаватель"
-                            options={teachers.map(teacher => ({
-                                key: teacher.id,
-                                value: teacher.id,
-                                text: teacher.fullname
-                            }))}
-                            onChange={handleChange}
-                        />
-
-                        <PeopleSelect
-                            name="manager"
-                            value={data.manager}
-                            label="Менеджер"
+                            name="managers"
+                            value={data.managers}
+                            label="Менеджеры"
                             options={managers.map(manager => ({
                                 key: manager.id,
                                 value: manager.id,
                                 text: manager.fullname
                             }))}
+                            multiple
+                            onChange={handleChange}
+                        />
+
+                        <PeopleSelect
+                            name="teachers"
+                            value={data.teachers}
+                            label="Преподаватели"
+                            options={teachers.map(teacher => ({
+                                key: teacher.id,
+                                value: teacher.id,
+                                text: teacher.fullname
+                            }))}
+                            multiple
                             onChange={handleChange}
                         />
                     </>

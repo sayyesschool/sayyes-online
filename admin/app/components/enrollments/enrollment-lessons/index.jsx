@@ -1,12 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import {
     Card,
-    ChipSet, Chip,
-    Icon,
     IconButton,
     Typography
 } from 'mdc-react';
-import classnames from 'classnames';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
@@ -15,12 +12,12 @@ import FormDialog from 'shared/components/form-dialog';
 import { useActions } from 'app/hooks/store';
 import LessonForm from 'app/components/lessons/lesson-form';
 import LessonsForm from 'app/components/lessons/lessons-form';
+import LessonChipSet from 'app/components/lessons/lesson-chip-set';
 
 import './index.scss';
 
 export default function EnrollmentLessons({ enrollment }) {
     const lessonActions = useActions('lessons');
-    const enrollmentActions = useActions('enrollments');
 
     const [lesson, setLesson] = useState();
 
@@ -29,8 +26,14 @@ export default function EnrollmentLessons({ enrollment }) {
     const [isLessonsFormOpen, toggleLessonsFormOpen] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
-    const createLessons = useCallback(data => {
-        return enrollmentActions.createLessons(enrollment.id, data)
+    const createLessons = useCallback(lessons => {
+        lessons.forEach(lesson => {
+            lesson.enrollment = enrollment.id;
+            lesson.client = enrollment.client?.id || enrollment.client;
+            lesson.teacher = enrollment.teacher?.id || enrollment.teacher;
+        });
+
+        return lessonActions.createLessons(lessons)
             .then(() => toggleLessonsFormOpen(false));
     }, [enrollment]);
 
@@ -63,17 +66,21 @@ export default function EnrollmentLessons({ enrollment }) {
         toggleConfirmationDialogOpen(true);
     }, []);
 
+    const lessonsDuration = enrollment.lessons.reduce((total, lesson) => total + lesson.duration, 0);
+    const lessonsDurationDelta = enrollment.lessonDuration * enrollment.lessons.length - lessonsDuration;
+
     return (
         <section className="enrollment-lessons">
             <Card>
                 <Card.Header
                     title="Занятия"
-                    subtitle={enrollment.lessons.length === 0 && 'Занятий нет'}
+                    subtitle={lessonsDurationDelta !== 0 && ((lessonsDurationDelta < 0 ? 'Превышение на' : 'Осталось') + ` ${Math.abs(lessonsDurationDelta)} мин.`)}
                     actions={[
                         <IconButton
                             key="add-lessons"
                             icon="playlist_add"
                             title="Создать несколько уроков"
+                            disabled={enrollment.schedule?.length === 0}
                             onClick={toggleLessonsFormOpen}
                         />,
 
@@ -87,21 +94,12 @@ export default function EnrollmentLessons({ enrollment }) {
                 />
 
                 {enrollment.lessons.length > 0 &&
-                    <Card.Section>
-                        <ChipSet>
-                            {enrollment.lessons.map(lesson =>
-                                <Chip
-                                    key={lesson.id}
-                                    className={classnames('lesson-chip', `lesson-chip--${lesson.status}`)}
-                                    text={<>
-                                        <span className="lesson-date">{lesson.shortDateLabel}</span>
-                                        <span className="lesson-time">{lesson.timeLabel}</span>
-                                    </>}
-                                    trailingIcon={<Icon onClick={event => handleDelete(event, lesson)}>delete</Icon>}
-                                    onClick={() => handleUpdate(lesson)}
-                                />
-                            )}
-                        </ChipSet>
+                    <Card.Section secondary>
+                        <LessonChipSet
+                            lessons={enrollment.lessons}
+                            onClick={handleUpdate}
+                            onDelete={handleDelete}
+                        />
                     </Card.Section>
                 }
             </Card>
@@ -115,6 +113,7 @@ export default function EnrollmentLessons({ enrollment }) {
                 <LessonForm
                     id="new-lesson-form"
                     lesson={{
+                        duration: enrollment.lessonDuration,
                         client: enrollment?.client,
                         teacher: enrollment?.teacher
                     }}
@@ -145,6 +144,7 @@ export default function EnrollmentLessons({ enrollment }) {
 
                 <LessonsForm
                     id="lessons-form"
+                    enrollment={enrollment}
                     onSubmit={createLessons}
                 />
             </FormDialog>

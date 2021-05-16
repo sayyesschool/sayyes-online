@@ -15,8 +15,8 @@ export default function RequestsList({ requests }) {
                     component={Link}
                     to={request.url}
                     graphic={<Icon>{request.statusIcon}</Icon>}
-                    primaryText={`${request.contact.name} • ${request.contact.phone}`}
-                    secondaryText={request.statusLabel}
+                    primaryText={`${request.contact.name}`}
+                    secondaryText={request.contact.phone}
                     meta={request.manager &&
                         <Avatar
                             text={request.manager.initials}

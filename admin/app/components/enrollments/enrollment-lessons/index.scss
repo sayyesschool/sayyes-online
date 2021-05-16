@@ -1,6 +1,3 @@
-@use '@material/chips';
-@use '@material/theme/color-palette';
-
 .enrollment-lessons {
     .mdc-avatar {
         margin: 4px;
@@ -23,50 +20,6 @@
                     opacity: 1;
                     transform: translateX(0);
                 }
-            }
-        }
-
-        .lesson-chip {
-            height: auto;
-            padding: 4px 6px;
-            transition: width .2s;
-            @include chips.shape-radius(4px);
-
-            &--missed {
-                background-color: color-palette.$yellow-700;
-            }
-            
-            &--ended {
-                color: white;
-                background-color: color-palette.$green-700;
-            }
-
-            &--canceled {
-                color: white;
-                background-color: color-palette.$red-700;
-            }
-
-            .mdc-chip__text {
-                display: flex;
-                flex-direction: column;
-                line-height: 1;
-                text-align: left;
-            }
-
-            .lesson-date,
-            .lesson-weekday {
-                font-size: .75rem;
-                line-height: 1;
-            }
-
-            .lesson-date,
-            .lesson-time {
-                font-weight: 700;
-            }
-
-            .lesson-time,
-            .lesson-duration {
-                font-size: .6rem;
             }
         }
     }

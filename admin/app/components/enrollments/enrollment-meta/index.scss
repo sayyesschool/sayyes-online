@@ -2,6 +2,19 @@
     display: flex;
     align-items: center;
 
+    &__section {
+        display: flex;
+        align-items: center;
+
+        .mdc-typography {
+            margin-right: 8px;
+        }
+    }
+
+    &__section + &__section {
+        margin-left: 1rem;
+    }
+
     .mdc-chip-set {
         + .mdc-chip-set {
             position: relative;

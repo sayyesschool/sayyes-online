@@ -1,21 +1,26 @@
 import React, { useCallback } from 'react';
 import {
+    Card,
     Button,
     FAB,
-    Icon
+    Icon,
+    IconButton
 } from 'mdc-react';
 
-import SidePanel from 'app/components/shared/side-panel';
+import { useBoolean } from 'shared/hooks/state';
 import CommentCard from 'shared/components/comment-card';
 import CommentForm from 'shared/components/comment-form';
 
 import { useStore, useActions } from 'app/hooks/store';
+import SidePanel from 'app/components/shared/side-panel';
 
 import './index.scss';
 
 export default function EnrollmentCommentsSidePanel({ enrollment, ...props }) {
     const [user] = useStore('user');
     const actions = useActions('comments');
+
+    const [isCommenting, toggleCommenting] = useBoolean(false);
 
     const createComment = useCallback(data => {
         if (!data.content) return;
@@ -52,17 +57,35 @@ export default function EnrollmentCommentsSidePanel({ enrollment, ...props }) {
                 )}
             </SidePanel.Content>
 
-            <SidePanel.Footer>
-                <CommentForm
-                    id="comment-form"
-                    onSubmit={createComment}
-                />
+            {isCommenting &&
+                <SidePanel.Footer>
+                    <Card>
+                        <Card.Header
+                            title="Новый комментарий"
+                            actions={
+                                <IconButton
+                                    icon="close"
+                                    onClick={toggleCommenting}
+                                />
+                            }
+                        />
 
-                <Button type="submit" form="comment-form" unelevated>Отправить</Button>
-            </SidePanel.Footer>
+                        <CommentForm
+                            id="comment-form"
+                            onSubmit={createComment}
+                        />
+
+                        <Card.Actions>
+                            <Button type="submit" form="comment-form" unelevated>Отправить</Button>
+                        </Card.Actions>
+                    </Card>
+                </SidePanel.Footer>
+            }
 
             <FAB
                 icon={<Icon>comment</Icon>}
+                exited={isCommenting}
+                onClick={toggleCommenting}
             />
         </SidePanel>
     );

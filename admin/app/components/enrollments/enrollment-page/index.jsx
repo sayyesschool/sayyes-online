@@ -64,7 +64,7 @@ export default function EnrollmentPage({ match, history }) {
                     ]}
                     title={enrollment.domainLabel}
                     actions={[
-                        (enrollment.client && {
+                        (enrollment.client?.hhid && {
                             element: 'a',
                             href: `https://sayes.t8s.ru/Profile/${enrollment.client.hhid}`,
                             target: '_blank',

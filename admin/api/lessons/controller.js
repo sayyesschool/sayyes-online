@@ -29,11 +29,12 @@ module.exports = ({
     },
 
     create: (req, res, next) => {
+        console.log(req.body);
         Lesson.create(req.body)
             .then(lesson => {
                 res.json({
                     ok: true,
-                    message: 'Урок создан',
+                    message: req.body.length > 0 ? 'Уроки созданы' : 'Урок создан',
                     data: lesson
                 });
             })

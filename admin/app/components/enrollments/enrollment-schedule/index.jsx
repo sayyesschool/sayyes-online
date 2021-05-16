@@ -26,7 +26,7 @@ export default function EnrollmentSchedule({ enrollment, onUpdate }) {
             <Card>
                 <Card.Header
                     graphic={<Icon>calendar_view_month</Icon>}
-                    title="Расписание"
+                    title="Расписание занятий"
                     actions={
                         <IconButton
                             icon="edit"
@@ -35,13 +35,15 @@ export default function EnrollmentSchedule({ enrollment, onUpdate }) {
                     }
                 />
 
-                <Card.Section>
-                    <WeekSchedule schedule={enrollment.schedule} />
-                </Card.Section>
+                {enrollment.schedule?.length > 0 &&
+                    <Card.Section>
+                        <WeekSchedule schedule={enrollment.schedule} />
+                    </Card.Section>
+                }
             </Card>
 
             <FormDialog
-                title="Изменение расписания"
+                title="Расписание занятий"
                 form="enrollment-schedule-form"
                 open={isFormOpen}
                 onClose={toggleFormOpen}

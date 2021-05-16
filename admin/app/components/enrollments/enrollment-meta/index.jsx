@@ -1,7 +1,8 @@
 import React from 'react';
 import {
     Avatar,
-    Chip
+    Chip,
+    Typography
 } from 'mdc-react';
 
 import './index.scss';
@@ -9,23 +10,35 @@ import './index.scss';
 export default function EnrollmentMeta({ enrollment }) {
     return (
         <section className="enrollment-meta">
-            <Chip
-                className="person-chip"
-                icon={<Avatar src={enrollment.manager?.imageUrl} text={enrollment.manager?.initials} />}
-                text={enrollment.manager?.fullname}
-                title="Менеджер"
-                outlined
-            />
+            <div className="enrollment-meta__section">
+                <Typography type="subtitle2" noMargin>Менеджеры: </Typography>
 
-            {enrollment.teacher &&
-                <Chip
-                    className="person-chip"
-                    icon={<Avatar src={enrollment.teacher?.imageUrl} text={enrollment.teacher?.initials} />}
-                    text={enrollment.teacher?.fullname}
-                    title="Преподаватель"
-                    outlined
-                />
-            }
+                {enrollment.managers.map(manager =>
+                    <Chip
+                        key={manager.id}
+                        className="person-chip"
+                        icon={<Avatar src={manager?.imageUrl} text={manager?.initials} />}
+                        text={manager?.fullname}
+                        title="Менеджер"
+                        outlined
+                    />
+                )}
+            </div>
+
+            <div className="enrollment-meta__section">
+                <Typography type="subtitle2" noMargin>Преподаватели: </Typography>
+
+                {enrollment.teachers.map(teacher =>
+                    <Chip
+                        key={teacher.id}
+                        className="person-chip"
+                        icon={<Avatar src={teacher?.imageUrl} text={teacher?.initials} />}
+                        text={teacher?.fullname}
+                        title="Преподаватель"
+                        outlined
+                    />
+                )}
+            </div>
         </section>
     );
 }
