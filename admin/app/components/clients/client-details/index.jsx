@@ -5,7 +5,8 @@ import {
 } from 'mdc-react';
 import moment from 'moment';
 
-import DataContext from 'app/contexts/data';
+import DataContext from 'shared/contexts/data';
+
 import DetailsList from 'app/components/shared/details-list';
 
 import './index.scss';
@@ -48,17 +49,17 @@ export default function ClientDetails({ client }) {
                                 primaryText: client.dob ? moment(client.dob).format('DD.MM.YYYY') : '[Не указана]',
                                 secondaryText: 'Дата рождения'
                             },
-                            {
-                                key: 'timezone',
-                                graphic: <Icon>public</Icon>,
-                                primaryText: client.timezone ? data.timezones.get(client.timezone) : '[Не указан]',
-                                secondaryText: 'Часовой пояс'
-                            },
                             client.address && {
                                 key: 'address',
                                 graphic: <Icon>location_city</Icon>,
                                 primaryText: client.address,
                                 secondaryText: 'Адрес'
+                            },
+                            {
+                                key: 'timezone',
+                                graphic: <Icon>public</Icon>,
+                                primaryText: client.timezone ? data.timezones.get(client.timezone) : '[Не указан]',
+                                secondaryText: 'Часовой пояс'
                             },
                             client.occupation && {
                                 key: 'occupation',

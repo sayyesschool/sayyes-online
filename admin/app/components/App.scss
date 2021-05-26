@@ -6,10 +6,13 @@ body {
     background-color: #f4f4f4;
 }
 
+.page {
+    padding: 1rem;
+}
+
 .page-top-bar {
     max-width: 1280px;
     margin: auto;
-    padding-top: 1rem;
     @include top-app-bar.fill-color-accessible(#f4f4f4);
     @include top-app-bar.icon-ink-color(theme.accessible-ink-color(#f4f4f4, secondary));
 
@@ -19,14 +22,12 @@ body {
     }
 
     .mdc-top-app-bar__section--align-start {
-        display: block;
         padding-left: 1rem;
     }
-}
 
-.page-title {
-    font-size: 1.5rem;
-    line-height: 1.5;
+    .mdc-top-app-bar__section--align-end {
+        padding-right: 1rem;
+    }
 }
 
 .page-content {
@@ -41,6 +42,11 @@ body {
 
 .page-side-sheet {
     
+}
+
+.page-title {
+    font-size: 1.5rem;
+    line-height: 1.5;
 }
 
 .mdc-card {
