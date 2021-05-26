@@ -31,15 +31,17 @@ Post.virtual('statusIcon').get(function() {
 });
 
 
-Post.virtual('dateCreated')
-    .get(function() {
-        return moment(this.createdAt).format('DD.MM.YY');
-    });
+Post.virtual('dateCreated').get(function() {
+    return moment(this.createdAt).format('DD.MM.YY');
+});
 
-Post.virtual('timeSinceCreated')
-    .get(function() {
-        return moment(this.createdAt).fromNow();
-    });
+Post.virtual('datetimeLabel').get(function() {
+    return moment(this.createdAt).tz('Europe/Moscow').format('D MMM YYYY в H:mm');
+});
+
+Post.virtual('timeSinceCreated').get(function() {
+    return moment(this.createdAt).fromNow();
+});
 
 Post.methods.isAuthor = function(user) {
     return this.user.id === user.id;

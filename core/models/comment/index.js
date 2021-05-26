@@ -18,6 +18,10 @@ const Comment = new Schema({
     timestamps: true
 });
 
+Comment.virtual('postId').get(function() {
+    return this.parent()?.id;
+});
+
 Comment.virtual('datetimeLabel').get(function() {
     return moment(this.createdAt).tz('Europe/Moscow').format('D MMM YYYY в H:mm');
 });
