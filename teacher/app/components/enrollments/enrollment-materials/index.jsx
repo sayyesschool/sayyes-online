@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import {
     Card,
     Icon,
@@ -63,6 +64,8 @@ export default function EnrollmentMaterials({ enrollment }) {
                             {enrollmentMaterials.map(material =>
                                 <List.Item
                                     key={material.id}
+                                    component={Link}
+                                    to={material.uri}
                                     graphic={<img src={material.imageUrl} />}
                                     primaryText={material.title}
                                     secondaryText={material.subtitle}

@@ -3,14 +3,14 @@ import {
     Avatar,
     Button,
     Card,
-    IconButton,
     LayoutGrid,
-    TextField
+    Typography
 } from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
 import { usePosts } from 'shared/hooks/posts';
+import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import PostCard from 'shared/components/post-card';
 import PostForm from 'shared/components/post-form';
@@ -24,37 +24,37 @@ export default function EnrollmentPosts({ enrollment }) {
 
     const [isPostFormOpen, togglePostFormOpen] = useBoolean(false);
     const [isCommenting, toggleCommenting] = useBoolean(false);
-    const [isSearching, toggleSearching] = useBoolean(false);
+    const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     const handleCreatePost = useCallback(data => {
         data.enrollment = enrollment.id;
+        data.teacher = enrollment.teacher;
+        data.client = enrollment.client;
 
         return actions.createPost(data)
             .then(() => togglePostFormOpen());
     }, [enrollment]);
 
-    const handleUpdatePost = useCallback((post, data) => {
-        return actions.updatePost(post.id, data);
+    const handleUpdatePost = useCallback((postId, data) => {
+        return actions.updatePost(postId, data);
     }, []);
 
     const handleDeletePost = useCallback(post => {
-        return actions.deletePost(post.id, data);
+        return actions.deletePost(post.id);
     }, []);
 
-    const handleCreateComment = useCallback((post, data) => {
-        return actions.createComment(post.id, data)
+    const handleCreateComment = useCallback((postId, data) => {
+        return actions.createComment(postId, data)
             .then(() => toggleCommenting(false));
-    }, [post]);
+    }, []);
 
-    const handleUpdateComment = useCallback((post, data) => {
-        return actions.updateComment(post.id, data.id, data);
-    }, [post]);
+    const handleUpdateComment = useCallback((postId, commentId, data) => {
+        return actions.updateComment(postId, commentId, data);
+    }, []);
 
-    const handleDeleteComment = useCallback((post, comment) => {
-        return actions.deleteComment(post.id, comment.id);
-    }, [post]);
-
-    console.log(posts);
+    const handleDeleteComment = useCallback((postId, commentId) => {
+        return actions.deleteComment(postId, commentId);
+    }, []);
 
     if (!posts) return <LoadingIndicator />;
 
@@ -90,21 +90,33 @@ export default function EnrollmentPosts({ enrollment }) {
                     }
                 </LayoutGrid.Cell>
 
-                {posts.map(post =>
-                    <LayoutGrid.Cell span="12">
-                        <PostCard
-                            key={post.id}
-                            user={user}
-                            post={post}
-                            onUpdate={handleUpdatePost}
-                            onDelete={handleDeletePost}
-                            onCreateComment={handleCreateComment}
-                            onUpdateComment={handleUpdateComment}
-                            onDeleteComment={handleDeleteComment}
-                        />
-                    </LayoutGrid.Cell>
-                )}
+                <LayoutGrid.Cell span="12">
+                    {posts.length > 0 ?
+                        posts.map(post =>
+                            <PostCard
+                                key={post.id}
+                                user={user}
+                                post={post}
+                                onUpdate={handleUpdatePost}
+                                onDelete={toggleConfirmationDialogOpen}
+                                onCreateComment={handleCreateComment}
+                                onUpdateComment={handleUpdateComment}
+                                onDeleteComment={handleDeleteComment}
+                            />
+                        ) : (
+                            <Typography align="center">Записей пока нет</Typography>
+                        )
+                    }
+                </LayoutGrid.Cell>
             </LayoutGrid>
+
+            <ConfirmationDialog
+                title="Подтвердите действие"
+                message="Вы действительно хотите удалить запись?"
+                open={isConfirmationDialogOpen}
+                onConfirm={handleDeletePost}
+                onClose={toggleConfirmationDialogOpen}
+            />
         </div>
     );
 }

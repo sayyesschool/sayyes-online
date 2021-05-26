@@ -8,7 +8,7 @@ export default function MaterialRouter() {
     return (
         <Switch>
             <Route exact path="/materials" component={Materials} />
-            <Route exact path="/materials/:slug" component={Material} />
+            <Route exact path="/materials/:id" component={Material} />
         </Switch>
     );
 }

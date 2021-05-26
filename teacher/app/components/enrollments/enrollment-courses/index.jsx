@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import {
     Card,
     Icon,
@@ -45,7 +46,7 @@ export default function EnrollmentCourses({ enrollment }) {
         <section className="enrollment-courses">
             <Card>
                 <Card.Header
-                    graphic={<Icon>class</Icon>}
+                    graphic={<Icon>web</Icon>}
                     title="Курсы"
                     actions={
                         <MenuButton
@@ -61,6 +62,8 @@ export default function EnrollmentCourses({ enrollment }) {
                             {enrollmentCourses.map(course =>
                                 <List.Item
                                     key={course.id}
+                                    component={Link}
+                                    to={course.uri}
                                     graphic={<img src={course.imageUrl} />}
                                     text={course.title}
                                     meta={

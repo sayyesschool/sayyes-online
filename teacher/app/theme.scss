@@ -10,7 +10,7 @@ $ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
     &--raised,
     &--unelevated {
         @include button.filled-accessible(variables.$secondary-color);
-        @include button.shape-radius(24px);
+        //@include button.shape-radius(24px);
     }
 }
 

@@ -17,7 +17,7 @@ import navItems from 'app/data/nav';
 import Account from 'app/components/account';
 import Courses from 'app/components/courses';
 import Home from 'app/components/home';
-import Enrollment from 'app/components/enrollment';
+import Enrollment from 'app/components/enrollments';
 import Materials from 'app/components/materials';
 import Post from 'app/components/post';
 

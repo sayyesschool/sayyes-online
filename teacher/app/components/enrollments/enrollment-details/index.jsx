@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Button,
     Card,
     Icon,
     IconButton,
@@ -16,7 +17,8 @@ export default function EnrollmentDetails({ enrollment }) {
             <Card>
                 <Card.PrimaryAction onClick={toggleOpen}>
                     <Card.Header
-                        title="Детали"
+                        graphic={<Icon>description</Icon>}
+                        title="Детали обучения"
                         actions={
                             <IconButton
                                 icon={isOpen ? 'expand_less' : 'expand_more'}

@@ -1,26 +1,26 @@
 import React from 'react';
 
-import { useMaterials } from 'shared/hooks/materials';
+import { useCourses } from 'shared/hooks/courses';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
-import MaterialsGrid from 'shared/components/materials-grid';
+import CoursesGrid from 'shared/components/courses-grid';
 
-export default function MaterialsPage() {
-    const [materials] = useMaterials();
+export default function CoursesPage() {
+    const [courses] = useCourses();
 
-    if (!materials) return <LoadingIndicator />;
+    if (!courses) return <LoadingIndicator />;
 
     return (
-        <Page id="materials-page">
+        <Page id="courses">
             <PageTopBar
-                title="Материалы"
+                title="Курсы"
             />
 
             <PageContent>
-                <MaterialsGrid
-                    materials={materials}
+                <CoursesGrid
+                    courses={courses}
                 />
             </PageContent>
         </Page>

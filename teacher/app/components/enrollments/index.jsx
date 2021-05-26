@@ -12,44 +12,18 @@ import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
 
-import EnrollmentCourses from './enrollment-courses';
-import EnrollmentDetails from './enrollment-details';
-import EnrollmentLessons from './enrollment-lessons';
-import EnrollmentMaterials from './enrollment-materials';
-import EnrollmentPosts from './enrollment-posts';
-import EnrollmentSchedule from './enrollment-schedule';
+import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';
+import EnrollmentDetails from 'app/components/enrollments/enrollment-details';
+import EnrollmentLessons from 'app/components/enrollments/enrollment-lessons';
+import EnrollmentMaterials from 'app/components/enrollments/enrollment-materials';
+import EnrollmentPosts from 'app/components/enrollments/enrollment-posts';
+import EnrollmentSchedule from 'app/components/enrollments/enrollment-schedule';
+import StudentDetails from 'app/components/students/student-details';
 
 import './index.scss';
 
 export default function EnrollmentPage({ match }) {
-    const [user] = useUser();
-    const [enrollment, actions] = useEnrollment(match.params.id);
-
-    const handleCreateLesson = useCallback(data => {
-        data.client = enrollment.client.id;
-        data.teacher = enrollment.teacher.id;
-        data.enrollment = enrollment.id;
-
-        actions.createLesson(data);
-    }, [enrollment]);
-
-    const handleCreateAssignment = useCallback(data => {
-        data.client = enrollment.client.id;
-        data.teacher = enrollment.teacher.id;
-        data.enrollment = enrollment.id;
-
-        actions.createAssignment(data);
-    }, [enrollment]);
-
-    const handleCreatePost = useCallback(data => {
-        data.client = enrollment.client.id;
-        data.teacher = enrollment.teacher.id;
-        data.enrollment = enrollment.id;
-
-        actions.createPost(data);
-    }, [enrollment]);
-
-    console.log(enrollment);
+    const [enrollment] = useEnrollment(match.params.id);
 
     if (!enrollment) return <LoadingIndicator />;
 
@@ -78,6 +52,12 @@ export default function EnrollmentPage({ match }) {
                     </LayoutGrid.Cell>
 
                     <LayoutGrid.Cell grid span="4">
+                        <LayoutGrid.Cell span="12">
+                            <StudentDetails
+                                student={enrollment.client}
+                            />
+                        </LayoutGrid.Cell>
+
                         <LayoutGrid.Cell span="12">
                             <EnrollmentDetails
                                 enrollment={enrollment}

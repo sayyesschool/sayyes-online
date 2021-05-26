@@ -1,7 +1,10 @@
 .enrollment-posts {
     .new-post-card {
+        overflow: visible;
+
         .mdc-card__actions {
             border-top: 1px solid #e0e0e0;
+            justify-content: space-between;
         }
     }
 }
