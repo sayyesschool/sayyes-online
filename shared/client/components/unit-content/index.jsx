@@ -8,7 +8,7 @@ import {
 
 import './index.scss';
 
-export default function UnitContent({ enrollmentId, course, unit, onSelectLesson }) {
+export default function UnitContent({ course, unit, onSelectLesson }) {
     const lessons = unit.lessons.map(id => course.lessonsById.get(id));
 
     return (
@@ -21,12 +21,15 @@ export default function UnitContent({ enrollmentId, course, unit, onSelectLesson
                 </Card>
                 :
                 <Card>
+                    {unit.imageUrl &&
+                        <Card.Media
+                            imageUrl={unit.imageUrl}
+                            wide
+                        />
+                    }
+
                     <Card.Header
                         title={unit.title}
-                    />
-
-                    <Card.Media
-                        imageUrl={`https://static.sayes.ru/courses/${course.slug}/images/${unit.image}`}
                     />
 
                     <Card.Section primary>
@@ -39,7 +42,7 @@ export default function UnitContent({ enrollmentId, course, unit, onSelectLesson
                                 <List.Item
                                     key={lesson.id}
                                     component={!onSelectLesson ? Link : undefined}
-                                    to={!onSelectLesson ? `/${enrollmentId}${lesson.uri}` : undefined}
+                                    to={!onSelectLesson ? lesson.uri : undefined}
                                     graphic={<Avatar text={index + 1} />}
                                     primaryText={lesson.title}
                                     secondaryText={`${lesson.exercises.length} уроков`}

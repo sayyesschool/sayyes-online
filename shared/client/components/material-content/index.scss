@@ -1,0 +1,14 @@
+.material-content {
+    height: calc(100vh - 64px - 32px);
+    overflow: hidden;
+
+    image {
+        width: auto;
+        height: 100%;
+    }
+
+    iframe {
+        height: 100%;
+        border: none;
+    }
+}

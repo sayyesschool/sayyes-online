@@ -29,8 +29,8 @@ export default function FormDialog({
             </Dialog.Content>
 
             <Dialog.Actions>
-                <Button type="button" outlined onClick={onClose}>Закрыть</Button>
-                <Button type="submit" form={form} unelevated onClick={onSubmit}>{submitButtonText}</Button>
+                <Button type="button" onClick={onClose}>Закрыть</Button>
+                <Button type="submit" form={form} outlined onClick={onSubmit}>{submitButtonText}</Button>
             </Dialog.Actions>
         </Dialog>
     );

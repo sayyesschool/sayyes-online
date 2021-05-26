@@ -1,4 +1,6 @@
 .comment-card {
+    box-shadow: none;
+    
     .mdc-card__header {
         .mdc-card__header__title {
             line-height: 1.4;
@@ -35,5 +37,9 @@
         .mdc-card__header__actions {
             opacity: 1;
         }
+    }
+
+    &--editing {
+        margin: 1rem;
     }
 }

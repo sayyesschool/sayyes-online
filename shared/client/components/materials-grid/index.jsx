@@ -7,8 +7,8 @@ import MaterialCard from 'shared/components/material-card';
 
 export default function MaterialGrid({ materials, ...props }) {
     return (
-        <LayoutGrid {...props}>
-            {materials.map(material =>
+        <LayoutGrid className="materials-grid" {...props}>
+            {materials?.map(material =>
                 <LayoutGrid.Cell span="2">
                     <MaterialCard
                         material={material}

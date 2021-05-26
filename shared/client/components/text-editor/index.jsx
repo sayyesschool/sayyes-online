@@ -13,6 +13,11 @@ function TextEditor({ value, defaultValue = value }, ref) {
                 ref={ref}
                 editor={ClassicEditor}
                 data={defaultValue}
+                config={{
+                    mediaEmbed: {
+                        previewsInData: true
+                    }
+                }}
             />
         </div>
     );

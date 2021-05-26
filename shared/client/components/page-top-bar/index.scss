@@ -20,6 +20,18 @@
         a:hover {
             text-decoration: underline;
         }
+
+        a + a {
+            margin-left: 8px;
+            padding-left: 10px;
+            position: relative;
+
+            &::before {
+                content: '›';
+                position: absolute;
+                left: 0;
+            }
+        }
     }
 
     .mdc-top-app-bar__action-item {

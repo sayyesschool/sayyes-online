@@ -15,6 +15,8 @@ export const getMaterial = createAction('GET_MATERIAL', id => ({
     }
 }));
 
+export const unsetMaterial = createAction('UNSET_MATERIAL');
+
 export const createMaterial = createAction('CREATE_MATERIAL', data => ({
     request: {
         method: 'post',
@@ -42,6 +44,7 @@ export const deleteMaterial = createAction('DELETE_MATERIAL', (id, data) => ({
 export const actions = {
     getMaterials,
     getMaterial,
+    unsetMaterial,
     createMaterial,
     updateMaterial,
     deleteMaterial
@@ -54,6 +57,7 @@ export const materialsReducer = createReducer(null, {
 
 export const materialReducer = createReducer(null, {
     [getMaterial]: (state, action) => action.data,
+    [unsetMaterial]: (state, action) => null,
     [updateMaterial]: (state, action) => action.data,
     [deleteMaterial]: (state, action) => null
 });

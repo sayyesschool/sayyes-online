@@ -10,6 +10,10 @@
 
     .post-content {
         padding: 1rem 2rem;
+
+        .media {
+            margin: 1rem 0;
+        }
     }
 
     .post-form {
@@ -17,12 +21,11 @@
     }
     
     .comment-card {
-        border: none;
         margin-top: 1rem;
         margin-bottom: 1rem;
     }
 
-    .comment-form {
+    #create-comment-form {
         border-top: 1px solid #e0e0e0;
         border-bottom: 1px solid #e0e0e0;
     }

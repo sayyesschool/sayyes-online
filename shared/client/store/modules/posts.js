@@ -50,7 +50,7 @@ export const createComment = createAction('CREATE_POST_COMMENT', (id, data) => (
 
 export const updateComment = createAction('UPDATE_POST_COMMENT', (postId, commentId, data) => ({
     request: {
-        method: 'delete',
+        method: 'put',
         url: `/posts/${postId}/comments/${commentId}`,
         body: data
     }
@@ -103,22 +103,22 @@ export const postsReducer = createReducer(null, {
 export const postReducer = createReducer(null, {
     [getPost]: (state, action) => action.data,
     [unsetPost]: (state, action) => null,
-    [updatePost]: (state, action) => ({ ...state, ...action.data }),
+    [updatePost]: (state, action) => state && ({ ...state, ...action.data }),
     [deletePost]: (state, action) => null,
     [createComment]: (state, action) => ({
         ...state,
-        comments: state.comments.concat(action.data)
+        comments: state && state.comments.concat(action.data)
     }),
     [updateComment]: (state, action) => ({
         ...state,
-        comments: state.comments.map(comment => comment.id !== action.data.id ?
+        comments: state && state.comments.map(comment => comment.id !== action.data.id ?
             comment :
             action.data
         )
     }),
     [deleteComment]: (state, action) => ({
         ...state,
-        comments: state.comments.filter(comment => comment.id !== action.data.id)
+        comments: state && state.comments.filter(comment => comment.id !== action.data.id)
     })
 });
 

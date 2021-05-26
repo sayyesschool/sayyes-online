@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
     Avatar,
     Button,
     Card,
-    Icon,
-    IconButton
+    Icon
 } from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
@@ -18,14 +17,32 @@ import './index.scss';
 
 export default function PostCard({ user, post, onUpdate, onDelete, onCreateComment, onUpdateComment, onDeleteComment }) {
     const [isEditing, toggleEditing] = useBoolean(false);
-    const [isCommenting, toggleCommenting] = useBoolean(false);
+    const [isCreating, toggleCreating] = useBoolean(false);
+
+    const handleUpdate = useCallback(data => {
+        return onUpdate(post.id, data)
+            .then(() => toggleEditing(false));
+    }, [post]);
+
+    const handleCreateComment = useCallback(data => {
+        return onCreateComment(post.id, data)
+            .then(() => toggleCreating(false));
+    }, [post]);
+
+    const handleUpdateComment = useCallback((commentId, data) => {
+        return onUpdateComment(post.id, commentId, data);
+    }, [post]);
+
+    const handleDeleteComment = useCallback(commentId => {
+        return onDeleteComment(post.id, commentId);
+    }, [post]);
 
     return (
         <Card element="article" className="post-card">
             <Card.Header
                 graphic={<Avatar src={post.user.imageUrl} text={post.user?.initials} large />}
-                title={post.user.fullname}
-                subtitle={post.timeSinceCreated}
+                title={post.title || post.user.fullname}
+                subtitle={post.datetimeLabel}
                 actions={user.id === post.user.id && (!isEditing &&
                     <MenuButton
                         items={[
@@ -50,7 +67,8 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
                 {isEditing ?
                     <PostForm
                         id="update-post-form"
-                        onSubmit={onUpdate}
+                        post={post}
+                        onSubmit={handleUpdate}
                     />
                     :
                     <PostContent
@@ -66,18 +84,18 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
                             key={comment.id}
                             user={user}
                             comment={comment}
-                            onUpdate={onUpdateComment}
-                            onDelete={onDeleteComment}
+                            onUpdate={handleUpdateComment}
+                            onDelete={handleDeleteComment}
                         />
                     )}
                 </Card.Section>
             }
 
-            {isCommenting &&
+            {isCreating &&
                 <Card.Section>
                     <CommentForm
                         id="create-comment-form"
-                        onSubmit={data => onCreateComment(post, data)}
+                        onSubmit={handleCreateComment}
                     />
                 </Card.Section>
             }
@@ -89,13 +107,13 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
                         <Button type="submit" form="update-post-form" outlined>Сохранить</Button>
                     </>
                     :
-                    (isCommenting ?
+                    (isCreating ?
                         <>
-                            <Button onClick={toggleCommenting}>Отменить</Button>
+                            <Button onClick={toggleCreating}>Отменить</Button>
                             <Button type="submit" form="create-comment-form" outlined>Отправить</Button>
                         </>
                         :
-                        <Button onClick={toggleCommenting}>Ответить</Button>
+                        <Button onClick={toggleCreating}>Ответить</Button>
                     )
                 }
             </Card.Actions>

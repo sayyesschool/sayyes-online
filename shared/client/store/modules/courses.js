@@ -19,6 +19,8 @@ export const getCourse = createAction('GET_COURSE', courseId => ({
     }
 }));
 
+export const unsetCourse = createAction('UNSET_COURSE');
+
 export const createCourse = createAction('CREATE_COURSE', data => ({
     request: {
         method: 'post',
@@ -120,6 +122,7 @@ export const deleteExercise = createAction('DELETE_COURSE_EXERCISE', (courseId, 
 export const actions = {
     getCourses,
     getCourse,
+    unsetCourse,
     createCourse,
     updateCourse,
     deleteCourse,
@@ -145,19 +148,15 @@ export const coursesReducer = createReducer(null, {
 });
 
 export const courseReducer = createReducer(null, {
-    // Course
-
     [getCourse]: (state, action) => action.data,
+    [unsetCourse]: (state, action) => null,
     [updateCourse]: (state, action) => ({ ...state, ...action.data }),
     [deleteCourse]: (state, action) => null,
-
-    // Unit
 
     [createUnit]: (state, action) => ({
         ...state,
         units: state.units.concat(action.data)
     }),
-
     [updateUnit]: (state, action) => ({
         ...state,
         units: state.units.map(unit => unit.id !== action.data.id ? unit : {
@@ -165,15 +164,12 @@ export const courseReducer = createReducer(null, {
             ...action.data
         })
     }, action.data),
-
     [deleteUnit]: (state, action) => ({
         ...state,
         units: state.units.filter(unit => unit.id !== action.data.id),
         lessons: state.lessons.filter(lesson => lesson._unit !== action.data.id),
         exercises: state.exercises.filter(exercise => exercise._unit !== action.data.id)
     }),
-
-    // Lesson
 
     [createLesson]: (state, action) => ({
         ...state,
@@ -183,7 +179,6 @@ export const courseReducer = createReducer(null, {
             _lessons: unit._lessons.concat(action.data.id)
         })
     }),
-
     [updateLesson]: (state, action) => ({
         ...state,
         lessons: state.lessons.map(lesson => lesson.id !== action.data.id ? lesson : {
@@ -191,7 +186,6 @@ export const courseReducer = createReducer(null, {
             ...action.data
         })
     }),
-
     [deleteLesson]: (state, action) => ({
         ...state,
         lessons: state.lessons.filter(lesson => lesson.id !== action.data.id),
@@ -202,8 +196,6 @@ export const courseReducer = createReducer(null, {
         exercises: state.exercises.filter(exercise => exercise._lesson !== action.data.id)
     }),
 
-    // Exercise
-
     [createExercise]: (state, action) => ({
         ...state,
         exercises: state.exercises.concat(action.data),
@@ -212,7 +204,6 @@ export const courseReducer = createReducer(null, {
             _exercises: lesson._exercises.concat(action.data.id)
         })
     }),
-
     [updateExercise]: (state, action) => ({
         ...state,
         exercises: state.exercises.map(lesson => lesson.id !== action.data.id ? lesson : {
@@ -220,7 +211,6 @@ export const courseReducer = createReducer(null, {
             ...action.data
         })
     }),
-
     [deleteExercise]: (state, action) => ({
         ...state,
         exercises: state.exercises.filter(exercise => exercise.id !== action.data.id),

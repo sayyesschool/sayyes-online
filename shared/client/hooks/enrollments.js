@@ -24,8 +24,8 @@ export function useEnrollments() {
 }
 
 export function useEnrollment(id) {
-    const [enrollment, actions] = useStore(state => 'single' in state.enrollments ? state.enrollments?.single : state.enrollments, actionsToBind);
-    console.log(enrollment);
+    const [enrollment, actions] = useStore(state => (state.enrollments && 'single' in state.enrollments) ? state.enrollments.single : state.enrollment, actionsToBind);
+
     useEffect(() => {
         if (!id) return;
 

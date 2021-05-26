@@ -5,6 +5,7 @@ import {
     Icon,
     IconButton
 } from 'mdc-react';
+import classnames from 'classnames';
 
 import { useBoolean } from 'shared/hooks/state';
 import CommentForm from 'shared/components/comment-form';
@@ -25,7 +26,9 @@ export default function CommentCard({ user, comment = {}, onUpdate, onDelete }) 
     }, [comment]);
 
     return (
-        <Card className="comment-card" outlined>
+        <Card className={classnames('comment-card', {
+            'comment-card--editing': isEditing
+        })} outlined={isEditing}>
             <Card.Header
                 graphic={<Avatar src={comment.author?.imageUrl} text={comment.author?.initials} />}
                 title={comment.author?.fullname}
