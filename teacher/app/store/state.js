@@ -1,11 +1,6 @@
 export default {
     user: null,
 
-    assignments: {
-        list: null,
-        single: null
-    },
-
     courses: {
         list: null,
         single: null

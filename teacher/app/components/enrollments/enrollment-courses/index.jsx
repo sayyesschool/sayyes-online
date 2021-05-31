@@ -46,7 +46,6 @@ export default function EnrollmentCourses({ enrollment }) {
         <section className="enrollment-courses">
             <Card>
                 <Card.Header
-                    graphic={<Icon>web</Icon>}
                     title="Курсы"
                     actions={
                         <MenuButton

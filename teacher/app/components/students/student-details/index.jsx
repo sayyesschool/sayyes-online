@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import {
-    Button,
     Card,
     Icon,
     IconButton,
@@ -10,6 +9,7 @@ import moment from 'moment';
 
 import { useBoolean } from 'shared/hooks/state';
 import DataContext from 'shared/contexts/data';
+import DetailsList from 'shared/components/details-list';
 
 export default function StudentDetails({ student, onUpdate }) {
     const data = useContext(DataContext);
@@ -21,7 +21,6 @@ export default function StudentDetails({ student, onUpdate }) {
             <Card>
                 <Card.PrimaryAction onClick={toggleOpen}>
                     <Card.Header
-                        graphic={<Icon>contact_page</Icon>}
                         title="Детали студента"
                         actions={
                             <IconButton
@@ -33,7 +32,7 @@ export default function StudentDetails({ student, onUpdate }) {
 
                 {isOpen &&
                     <Card.Section>
-                        <List twoLine>
+                        <DetailsList>
                             <List.Item
                                 graphic={<Icon>phone</Icon>}
                                 primaryText={student.phone || '[Не указан]'}
@@ -80,10 +79,10 @@ export default function StudentDetails({ student, onUpdate }) {
                                 <List.Item
                                     graphic={<Icon>notes</Icon>}
                                     primaryText={student.note}
-                                    secondaryText="Интересы"
+                                    secondaryText="Заметки"
                                 />
                             }
-                        </List>
+                        </DetailsList>
                     </Card.Section>
                 }
             </Card>

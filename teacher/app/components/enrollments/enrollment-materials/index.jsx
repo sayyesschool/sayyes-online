@@ -47,7 +47,6 @@ export default function EnrollmentMaterials({ enrollment }) {
         <section className="enrollment-materials">
             <Card>
                 <Card.Header
-                    graphic={<Icon>book</Icon>}
                     title="Пособия"
                     actions={
                         <MenuButton

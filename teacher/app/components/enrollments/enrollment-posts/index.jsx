@@ -3,8 +3,7 @@ import {
     Avatar,
     Button,
     Card,
-    LayoutGrid,
-    Typography
+    LayoutGrid
 } from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
@@ -12,6 +11,7 @@ import { useUser } from 'shared/hooks/user';
 import { usePosts } from 'shared/hooks/posts';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
+import EmptyState from 'shared/components/empty-state';
 import PostCard from 'shared/components/post-card';
 import PostForm from 'shared/components/post-form';
 
@@ -20,13 +20,13 @@ import './index.scss';
 export default function EnrollmentPosts({ enrollment }) {
     const [user] = useUser();
     const [posts, actions] = usePosts({ enrollment: enrollment.id });
-    const [post] = useState(null);
+    const [postId, setPostId] = useState(null);
 
     const [isPostFormOpen, togglePostFormOpen] = useBoolean(false);
     const [isCommenting, toggleCommenting] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
-    const handleCreatePost = useCallback(data => {
+    const createPost = useCallback(data => {
         data.enrollment = enrollment.id;
         data.teacher = enrollment.teacher;
         data.client = enrollment.client;
@@ -35,24 +35,30 @@ export default function EnrollmentPosts({ enrollment }) {
             .then(() => togglePostFormOpen());
     }, [enrollment]);
 
-    const handleUpdatePost = useCallback((postId, data) => {
+    const updatePost = useCallback((postId, data) => {
         return actions.updatePost(postId, data);
     }, []);
 
-    const handleDeletePost = useCallback(post => {
-        return actions.deletePost(post.id);
+    const deletePost = useCallback(() => {
+        return actions.deletePost(postId)
+            .then(() => toggleConfirmationDialogOpen(false));
+    }, [postId]);
+
+    const handleDeletePost = useCallback(postId => {
+        setPostId(postId);
+        toggleConfirmationDialogOpen(true);
     }, []);
 
-    const handleCreateComment = useCallback((postId, data) => {
+    const createComment = useCallback((postId, data) => {
         return actions.createComment(postId, data)
             .then(() => toggleCommenting(false));
     }, []);
 
-    const handleUpdateComment = useCallback((postId, commentId, data) => {
+    const updateComment = useCallback((postId, commentId, data) => {
         return actions.updateComment(postId, commentId, data);
     }, []);
 
-    const handleDeleteComment = useCallback((postId, commentId) => {
+    const deleteComment = useCallback((postId, commentId) => {
         return actions.deleteComment(postId, commentId);
     }, []);
 
@@ -70,7 +76,7 @@ export default function EnrollmentPosts({ enrollment }) {
                             />
 
                             <PostForm
-                                onSubmit={handleCreatePost}
+                                onSubmit={createPost}
                             />
 
                             <Card.Actions>
@@ -97,14 +103,17 @@ export default function EnrollmentPosts({ enrollment }) {
                                 key={post.id}
                                 user={user}
                                 post={post}
-                                onUpdate={handleUpdatePost}
-                                onDelete={toggleConfirmationDialogOpen}
-                                onCreateComment={handleCreateComment}
-                                onUpdateComment={handleUpdateComment}
-                                onDeleteComment={handleDeleteComment}
+                                onUpdate={updatePost}
+                                onDelete={handleDeletePost}
+                                onCreateComment={createComment}
+                                onUpdateComment={updateComment}
+                                onDeleteComment={deleteComment}
                             />
                         ) : (
-                            <Typography align="center">Записей пока нет</Typography>
+                            <EmptyState
+                                icon="feed"
+                                title="Записей пока нет"
+                            />
                         )
                     }
                 </LayoutGrid.Cell>
@@ -112,9 +121,9 @@ export default function EnrollmentPosts({ enrollment }) {
 
             <ConfirmationDialog
                 title="Подтвердите действие"
-                message="Вы действительно хотите удалить запись?"
+                message="Вы действительно хотите удалить запись и комментарии к ней?"
                 open={isConfirmationDialogOpen}
-                onConfirm={handleDeletePost}
+                onConfirm={deletePost}
                 onClose={toggleConfirmationDialogOpen}
             />
         </div>

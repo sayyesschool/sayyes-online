@@ -13,8 +13,8 @@ module.exports = ({ Enrollment }) => ({
 
     getOne: (req, res, next) => {
         Enrollment.findById(req.params.id)
-            .populate('client', 'firstname lastname email')
-            .populate('managers', 'firstname lastname email')
+            .populate('client')
+            .populate('manager', 'firstname lastname email')
             .populate('lessons')
             .populate('posts', 'id title')
             .then(enrollment => {

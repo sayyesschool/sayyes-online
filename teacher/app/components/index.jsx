@@ -17,7 +17,7 @@ import navItems from 'app/data/nav';
 import Account from 'app/components/account';
 import Courses from 'app/components/courses';
 import Home from 'app/components/home';
-import Enrollment from 'app/components/enrollments';
+import Enrollments from 'app/components/enrollments';
 import Materials from 'app/components/materials';
 import Post from 'app/components/post';
 
@@ -57,7 +57,6 @@ export default function App() {
         <React.Fragment>
             <AppHeader
                 user={user}
-                onNotificationIconClick={() => setSideSheetOpen(true)}
                 fixed
             >
                 <NavBar items={navItems} />
@@ -68,7 +67,7 @@ export default function App() {
                     <Route exact path="/" component={Home} />
                     <Route path="/account" component={Account} />
                     <Route path="/courses" component={Courses} />
-                    <Route path="/enrollments/:id" component={Enrollment} />
+                    <Route path="/enrollments" component={Enrollments} />
                     <Route path="/materials" component={Materials} />
                     <Route path="/posts/:id" component={Post} />
                 </Switch>
