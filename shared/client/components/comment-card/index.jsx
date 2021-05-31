@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import {
     Avatar,
+    Button,
     Card,
-    Icon,
-    IconButton
+    Icon
 } from 'mdc-react';
 import classnames from 'classnames';
 
@@ -33,20 +33,7 @@ export default function CommentCard({ user, comment = {}, onUpdate, onDelete }) 
                 graphic={<Avatar src={comment.author?.imageUrl} text={comment.author?.initials} />}
                 title={comment.author?.fullname}
                 subtitle={comment.datetimeLabel}
-                actions={user.id === comment.author.id && (isEditing ?
-                    [
-                        <IconButton
-                            icon="save"
-                            type="submit"
-                            form="update-comment-form"
-                        />,
-
-                        <IconButton
-                            icon="cancel"
-                            onClick={toggleEditing}
-                        />
-                    ]
-                    :
+                actions={(user.id === comment.author.id && !isEditing) &&
                     <MenuButton
                         items={[
                             {
@@ -63,18 +50,33 @@ export default function CommentCard({ user, comment = {}, onUpdate, onDelete }) 
                             }
                         ]}
                     />
-                )}
+                }
             />
 
             {isEditing ?
-                <CommentForm
-                    id="update-comment-form"
-                    comment={comment}
-                    onSubmit={handleUpdate}
-                />
+                <>
+                    <Card.Section>
+                        <CommentForm
+                            id="update-comment-form"
+                            comment={comment}
+                            onSubmit={handleUpdate}
+                        />
+                    </Card.Section>
+
+                    <Card.Actions>
+                        <Card.Action button>
+                            <Button type="button" onClick={toggleEditing}>Отменить</Button>
+                        </Card.Action>
+
+                        <Card.Action button>
+                            <Button type="submit" from="update-comment-form" outlined>Сохранить</Button>
+                        </Card.Action>
+                    </Card.Actions>
+                </>
                 :
                 <Card.Section
                     dangerouslySetInnerHTML={{ __html: comment.content }}
+                    primary
                 />
             }
         </Card>

@@ -109,16 +109,16 @@ export const postReducer = createReducer(null, {
         ...state,
         comments: state && state.comments.concat(action.data)
     }),
-    [updateComment]: (state, action) => ({
+    [updateComment]: (state, action) => state && ({
         ...state,
-        comments: state && state.comments.map(comment => comment.id !== action.data.id ?
+        comments: state.comments.map(comment => comment.id !== action.data.id ?
             comment :
             action.data
         )
     }),
-    [deleteComment]: (state, action) => ({
+    [deleteComment]: (state, action) => state && ({
         ...state,
-        comments: state && state.comments.filter(comment => comment.id !== action.data.id)
+        comments: state.comments.filter(comment => comment.id !== action.data.id)
     })
 });
 

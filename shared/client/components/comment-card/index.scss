@@ -1,5 +1,6 @@
 .comment-card {
     box-shadow: none;
+    overflow: visible;
     
     .mdc-card__header {
         .mdc-card__header__title {
@@ -17,7 +18,7 @@
         }
     }
 
-    .mdc-card__section {
+    .mdc-card__section.mdc-card__section--primary {
         padding: 8px 1rem 8px 72px;
 
         p {
@@ -31,6 +32,7 @@
 
     .mdc-card__actions {
         justify-content: space-between;
+        border-top: 1px solid #e0e0e0;
     }
 
     &:hover {

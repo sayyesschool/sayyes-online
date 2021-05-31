@@ -24,6 +24,10 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
             .then(() => toggleEditing(false));
     }, [post]);
 
+    const handleDelete = useCallback(() => {
+        return onDelete(post.id);
+    }, [post]);
+
     const handleCreateComment = useCallback(data => {
         return onCreateComment(post.id, data)
             .then(() => toggleCreating(false));
@@ -56,7 +60,7 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
                                 key: 'delete',
                                 graphic: <Icon>delete</Icon>,
                                 text: 'Удалить',
-                                onClick: () => onDelete(post)
+                                onClick: handleDelete
                             }
                         ]}
                     />

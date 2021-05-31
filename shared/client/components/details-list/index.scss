@@ -1,0 +1,56 @@
+.details-list.mdc-list {
+    .mdc-list-item {
+        height: auto;
+        min-height: 48px;
+
+        &__text {
+            padding: 8px 0;
+        }
+
+        &__primary-text {
+            margin-bottom: 0;
+
+            &::before {
+                content: none;
+            }
+
+            &::after {
+                content: none;
+            }
+        }
+
+        &__secondary-text {
+            &::before {
+                content: none;
+            }
+        }
+    }
+
+    &--two-line .mdc-list-item {
+        height: auto;
+        min-height: 64px;
+        align-items: flex-start;
+
+        &__graphic {
+            margin-top: 1rem;
+        }
+
+        &__text {
+            display: flex;
+            flex-direction: column-reverse;
+            text-overflow: initial;
+            white-space: initial;
+            overflow: initial;
+        }
+
+        &__primary-text {
+            text-overflow: initial;
+            white-space: initial;
+            overflow: initial;
+        }
+
+        &__meta {
+            margin: 12px 0 0 auto;
+        }
+    }
+}
