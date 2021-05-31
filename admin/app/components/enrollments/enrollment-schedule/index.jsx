@@ -8,8 +8,7 @@ import {
 import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
 import WeekSchedule from 'shared/components/week-schedule';
-
-import EnrollmentScheduleForm from 'app/components/enrollments/enrollment-schedule-form';
+import EnrollmentScheduleForm from 'shared/components/enrollment-schedule-form';
 
 import './index.scss';
 

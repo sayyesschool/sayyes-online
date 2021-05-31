@@ -9,8 +9,7 @@ import { scheduleLessons } from 'shared/utils/enrollment';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
-
-import LessonChipSet from 'app/components/lessons/lesson-chip-set';
+import LessonChipSet from 'shared/components/lesson-chip-set';
 
 import './index.scss';
 

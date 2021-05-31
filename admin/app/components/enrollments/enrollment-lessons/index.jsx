@@ -8,11 +8,11 @@ import {
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
+import LessonChipSet from 'shared/components/lesson-chip-set';
 
 import { useActions } from 'app/hooks/store';
 import LessonForm from 'app/components/lessons/lesson-form';
 import LessonsForm from 'app/components/lessons/lessons-form';
-import LessonChipSet from 'app/components/lessons/lesson-chip-set';
 
 import './index.scss';
 
