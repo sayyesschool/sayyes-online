@@ -137,4 +137,11 @@ Enrollment.virtual('comments', {
     }
 });
 
+Enrollment.virtual('manager', {
+    ref: 'Manager',
+    localField: 'managers',
+    foreignField: '_id',
+    justOne: true
+});
+
 module.exports = Enrollment;
