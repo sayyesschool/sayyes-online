@@ -13,10 +13,12 @@ module.exports = context => {
         Object.assign(app.locals, parent.locals);
     });
 
-    //app.use(auth);
+    app.use(auth);
     app.use('/api', api(context));
-    app.use('/:id?', context.middleware.tokens(context.lib.twilio));
-    app.use((req, res) => res.render('index'));
+    app.use('/:id?',
+        context.middleware.tokens(context.lib.twilio),
+        (req, res) => res.render('index', { ENROLLMENT_ID: req.params.id })
+    );
 
     return app;
 };

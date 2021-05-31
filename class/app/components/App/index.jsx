@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useRouteMatch } from 'react-router-dom';
 import { Icon, FAB } from 'mdc-react';
 
 import { useUser } from 'shared/hooks/user';
@@ -22,9 +21,8 @@ import './index.scss';
 export default function App() {
     const roomState = useRoomState();
     const height = useHeight();
-    const match = useRouteMatch('/:id');
     const [user] = useUser();
-    const [enrollment] = useEnrollment(match.params.id);
+    const [enrollment] = useEnrollment(ENROLLMENT_ID);
     useVisibilityHandler();
 
     const [isChatOpen, setChatOpen] = useState(false);
@@ -52,7 +50,6 @@ export default function App() {
 
                     <AppContent className="class-content">
                         <Room
-                            enrollmentId={enrollment.id}
                             courseId={enrollment.courses[0].id}
                         />
 

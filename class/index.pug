@@ -5,5 +5,7 @@ append head
     link(rel="stylesheet" href="/build/class.main.css")
 
 append body
+    script.
+        window.ENROLLMENT_ID = '#{ENROLLMENT_ID}';
     script(src="/build/class.vendors.js")
     script(src="/build/class.main.js")

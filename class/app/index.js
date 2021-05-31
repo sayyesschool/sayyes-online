@@ -12,7 +12,7 @@ import Root from './components';
 ReactDOM.render(
     <Provider store={store}>
         <AppStateProvider>
-            <Router basename="/class">
+            <Router basename={`/class/${ENROLLMENT_ID}`}>
                 <Root />
             </Router>
         </AppStateProvider>
