@@ -6,8 +6,7 @@ import {
 import moment from 'moment';
 
 import DataContext from 'shared/contexts/data';
-
-import DetailsList from 'app/components/shared/details-list';
+import DetailsList from 'shared/components/details-list';
 
 import './index.scss';
 

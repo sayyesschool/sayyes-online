@@ -4,9 +4,9 @@ import Page from 'shared/components/page';
 import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 import FormDialog from 'shared/components/form-dialog';
+import EmptyState from 'shared/components/empty-state';
 
 import { useStore } from 'app/hooks/store';
-import EmptyState from 'app/components/shared/empty-state';
 import PaymentsTable from 'app/components/payments/payments-table';
 import PaymentForm from 'app/components/payments/payment-form';
 

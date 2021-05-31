@@ -4,7 +4,7 @@ import {
     Icon,
 } from 'mdc-react';
 
-import DetailsList from 'app/components/shared/details-list';
+import DetailsList from 'shared/components/details-list';
 
 import './index.scss';
 
@@ -70,7 +70,7 @@ export default function EnrollmentDetails({ enrollment }) {
                             },
                             {
                                 key: 'preferences',
-                                graphic: <Icon>psychology</Icon>,
+                                graphic: <Icon>checklist</Icon>,
                                 primaryText: enrollment.preferences || 'Нет предпочтений',
                                 secondaryText: 'Предпочтения'
                             },

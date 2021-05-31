@@ -5,10 +5,10 @@ import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
+import EmptyState from 'shared/components/empty-state';
 
 import { useStore, useActions } from 'app/hooks/store';
 import FormPanel from 'app/components/shared/form-panel';
-import EmptyState from 'app/components/shared/empty-state';
 import RequestsTable from 'app/components/requests/requests-table';
 import RequestForm from 'app/components/requests/request-form';
 import RequestProcessFormDialog from 'app/components/requests/request-process-form-dialog';
