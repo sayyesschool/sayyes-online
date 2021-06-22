@@ -14,6 +14,7 @@ module.exports = {
     APP_DOMAIN: process.env.APP_DOMAIN,
     APP_URL: process.env.APP_URL,
     APP_PATH: path.normalize(process.env.APP_PATH || process.cwd()),
+    STATIC_URL: process.env.STATIC_URL,
 
     MAILJET_API_KEY: process.env.MAILJET_API_KEY,
     MAILJET_API_SECRET: process.env.MAILJET_API_SECRET,
