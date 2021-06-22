@@ -1,11 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import {
     Icon,
     LayoutGrid,
     FAB
 } from 'mdc-react';
 
-import { useUser } from 'shared/hooks/user';
 import { useEnrollment } from 'shared/hooks/enrollments';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';

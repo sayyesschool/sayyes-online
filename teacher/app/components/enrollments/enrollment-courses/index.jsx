@@ -1,14 +1,11 @@
 import React, { useCallback } from 'react';
-import { Link } from 'react-router-dom';
 import {
-    Card,
-    Icon,
-    IconButton,
-    List
+    Card
 } from 'mdc-react';
 
 import LoadingIndicator from 'shared/components/loading-indicator';
 import MenuButton from 'shared/components/menu-button';
+import CoursesList from 'shared/components/courses-list';
 
 import { useStore, useActions } from 'app/hooks/store';
 
@@ -57,24 +54,10 @@ export default function EnrollmentCourses({ enrollment }) {
 
                 {enrollmentCourses.length > 0 &&
                     <Card.Section>
-                        <List imageList>
-                            {enrollmentCourses.map(course =>
-                                <List.Item
-                                    key={course.id}
-                                    component={Link}
-                                    to={course.uri}
-                                    graphic={<img src={course.imageUrl} />}
-                                    text={course.title}
-                                    meta={
-                                        <IconButton
-                                            icon="remove"
-                                            title="Убрать курс"
-                                            onClick={() => handleRemoveCourse(course.id)}
-                                        />
-                                    }
-                                />
-                            )}
-                        </List>
+                        <CoursesList
+                            courses={enrollmentCourses}
+                            onRemove={handleRemoveCourse}
+                        />
                     </Card.Section>
                 }
             </Card>

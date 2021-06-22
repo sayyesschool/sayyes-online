@@ -1,13 +1,8 @@
 import React, { useCallback } from 'react';
-import {
-    Card,
-    Icon,
-    IconButton
-} from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
-import WeekSchedule from 'shared/components/week-schedule';
+import ScheduleCard from 'shared/components/schedule-card';
 import EnrollmentScheduleForm from 'shared/components/enrollment-schedule-form';
 
 import './index.scss';
@@ -22,23 +17,10 @@ export default function EnrollmentSchedule({ enrollment, onUpdate }) {
 
     return (
         <section className="enrollment-schedule">
-            <Card>
-                <Card.Header
-                    title="Расписание занятий"
-                    actions={
-                        <IconButton
-                            icon="edit"
-                            onClick={toggleFormOpen}
-                        />
-                    }
-                />
-
-                {enrollment.schedule?.length > 0 &&
-                    <Card.Section>
-                        <WeekSchedule schedule={enrollment.schedule} />
-                    </Card.Section>
-                }
-            </Card>
+            <ScheduleCard
+                schedule={enrollment.schedule}
+                editable
+            />
 
             <FormDialog
                 title="Расписание занятий"

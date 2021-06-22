@@ -22,7 +22,10 @@ export default function EnrollmentMaterials({ enrollment }) {
         return enrollmentActions.updateEnrollment(enrollment.id, { materials });
     }, [enrollment]);
 
-    const handleRemoveMaterial = useCallback(materialId => {
+    const handleRemoveMaterial = useCallback((event, materialId) => {
+        event.preventDefault();
+        event.stopPropagation();
+
         const materials = enrollment.materials.filter(id => id !== materialId);
 
         return enrollmentActions.updateEnrollment(enrollment.id, { materials });
@@ -72,7 +75,7 @@ export default function EnrollmentMaterials({ enrollment }) {
                                         <IconButton
                                             icon="remove"
                                             title="Убрать курс"
-                                            onClick={() => handleRemoveMaterial(material.id)}
+                                            onClick={event => handleRemoveMaterial(event, material.id)}
                                         />
                                     }
                                 />
