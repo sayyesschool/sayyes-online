@@ -21,11 +21,13 @@ export default function useParticipants() {
     }, [dominantSpeaker]);
 
     useEffect(() => {
-        const participantConnected = participant =>
+        function participantConnected(participant) {
             setParticipants(prevParticipants => [...prevParticipants, participant]);
+        }
 
-        const participantDisconnected = participant =>
+        function participantDisconnected(participant) {
             setParticipants(prevParticipants => prevParticipants.filter(p => p !== participant));
+        }
 
         room.on('participantConnected', participantConnected);
         room.on('participantDisconnected', participantDisconnected);

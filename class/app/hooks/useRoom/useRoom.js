@@ -19,18 +19,16 @@ export default function useRoom(localTracks, onError, options) {
         setIsConnecting(true);
 
         return Video.connect(token, { ...optionsRef.current, tracks: localTracks })
-            .then(newRoom => {
+            .then(room => {
                 function disconnect() {
-                    newRoom.disconnect();
+                    room.disconnect();
                 }
-
-                window.twilioRoom = newRoom;
 
                 // This app can add up to 13 'participantDisconnected' listeners to the room object, which can trigger
                 // a warning from the EventEmitter object. Here we increase the max listeners to suppress the warning.
-                newRoom.setMaxListeners(15);
+                room.setMaxListeners(15);
 
-                newRoom.once('disconnected', () => {
+                room.once('disconnected', () => {
                     // Reset the room only after all other `disconnected` listeners have been called.
                     setTimeout(() => setRoom(new EventEmitter()));
 
@@ -44,7 +42,7 @@ export default function useRoom(localTracks, onError, options) {
                 // All video tracks are published with 'low' priority because the video track
                 // that is displayed in the 'MainParticipant' component will have it's priority
                 // set to 'high' via track.setPriority()
-                newRoom.localParticipant.videoTracks.forEach(publication => publication.setPriority('low'));
+                room.localParticipant.videoTracks.forEach(publication => publication.setPriority('low'));
 
                 // Add a listener to disconnect from the room when a user closes their browser
                 window.addEventListener('beforeunload', disconnect);
@@ -54,7 +52,7 @@ export default function useRoom(localTracks, onError, options) {
                     window.addEventListener('pagehide', disconnect);
                 }
 
-                setRoom(newRoom);
+                setRoom(room);
                 setIsConnecting(false);
             })
             .catch(error => {

@@ -1,27 +1,58 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { useLocation, Route, NavLink } from 'react-router-dom';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useLocation, Route } from 'react-router-dom';
 import {
     Icon,
-    TabBar, Tab
+    FAB
 } from 'mdc-react';
 import classnames from 'classnames';
 
 import { useFullScreen } from 'shared/hooks/screen';
 
+import useRoomContext from 'app/hooks/useRoomContext';
+import useSharedState from 'app/hooks/useSharedState';
 import useLocalAudio from 'app/hooks/useLocalAudio';
+import useParticipants from 'app/hooks/useParticipants';
+
 import RoomHeader from 'app/components/RoomHeader';
 import RoomContent from 'app/components/RoomContent';
+import RoomSideSheet from 'app/components/RoomSideSheet';
+import ScreenShareBanner from 'app/components/ScreenShareBanner';
+import Chat from 'shared/components/chat';
 import MainParticipant from 'app/components/MainParticipant';
 import ParticipantList from 'app/components/ParticipantList';
-import Course from 'app/components/course';
+import Courses from 'app/components/Courses';
+import Course from 'app/components/Course';
+import Whiteboard from 'app/components/Whiteboard';
 
-export default function Room({ courseId }) {
+export default function Room({ user, enrollment }) {
+    const rootRef = useRef();
     const location = useLocation();
-    const roomElementRef = useRef();
-    const [isFullscreen, toggleFullscreen] = useFullScreen(roomElementRef);
+    const sharedState = useSharedState();
+    const participants = useParticipants();
+    const { room, isSharingScreen, toggleScreenShare } = useRoomContext();
     const [localAudio, setLocalAudioEnabled] = useLocalAudio();
+    const [isFullscreen, toggleFullscreen] = useFullScreen(rootRef);
     const [shouldBeUnmuted, setShouldBeUnmuted] = useState();
-    const [tab, setTab] = useState(location.pathname.includes('courses') ? 'content' : 'video');
+    const [isChatOpen, setChatOpen] = useState(false);
+
+    useEffect(() => {
+        const namesById = {
+            [enrollment.client.id]: enrollment.client.fullname,
+            [enrollment.teacher.id]: enrollment.teacher.fullname
+        };
+
+        room.localParticipant.name = namesById[user.id];
+
+        participants.forEach(participant => {
+            participant.name = namesById[participant.identity];
+        });
+    }, [participants]);
+
+    const handleSync = useCallback(() => {
+        sharedState.update({
+            path: location.pathname
+        });
+    }, [location]);
 
     const handleMedia = useCallback(media => {
         if (!localAudio) return;
@@ -40,35 +71,42 @@ export default function Room({ courseId }) {
     }, [localAudio, shouldBeUnmuted]);
 
     return (
-        <div ref={roomElementRef} className={classnames('room', {
-            'room--showing-content': tab === 'content'
+        <div ref={rootRef} className={classnames('room', {
+            'room--showing-content': location.pathname !== '/'
         })}>
             <RoomHeader
+                user={user}
+                location={location}
+                isSharingScreen={isSharingScreen}
                 isFullscreen={isFullscreen}
-                handleFullscreen={toggleFullscreen}
-            >
-                <TabBar value={tab} minWidth align="center" onChange={setTab}>
-                    <Tab
-                        component={NavLink}
-                        to="/"
-                        value="video"
-                        icon={<Icon>video_camera_front</Icon>}
-                        label="Видео"
-                    />
+                onFullscreen={toggleFullscreen}
+                onSync={handleSync}
+            />
 
-                    <Tab
-                        component={NavLink}
-                        to={`/courses/${courseId}`}
-                        value="content"
-                        icon={<Icon>book</Icon>}
-                        label="Курс"
-                    />
-                </TabBar>
-            </RoomHeader>
+            <ScreenShareBanner
+                open={isSharingScreen}
+                onDisableSharing={toggleScreenShare}
+            />
+
+            <RoomSideSheet
+                open={isChatOpen}
+                onClose={() => setChatOpen(false)}
+            >
+                <Chat
+                    name={enrollment.id}
+                    user={user}
+                />
+            </RoomSideSheet>
 
             <RoomContent>
-                <Route exact path="/:id">
+                <Route exact path="/">
                     <MainParticipant />
+                </Route>
+
+                <Route exact path="/courses">
+                    <Courses
+                        courses={enrollment.courses}
+                    />
                 </Route>
 
                 <Route
@@ -78,11 +116,27 @@ export default function Room({ courseId }) {
                         '/courses/:courseId'
                     ]}
                 >
-                    <Course onMedia={handleMedia} />
+                    <Course
+                        user={user}
+                        sharedState={sharedState}
+                        onMedia={handleMedia}
+                    />
+                </Route>
+
+                <Route path="/whiteboard">
+                    <Whiteboard />
                 </Route>
 
                 <ParticipantList />
             </RoomContent>
+
+            <FAB
+                className="chat-button"
+                icon={<Icon>forum</Icon>}
+                label="Чат"
+                exited={isChatOpen}
+                onClick={() => setChatOpen(true)}
+            />
         </div>
     );
 }

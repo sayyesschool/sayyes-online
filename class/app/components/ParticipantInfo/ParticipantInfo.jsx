@@ -59,7 +59,7 @@ export default function ParticipantInfo({
                         <AudioLevelIndicator audioTrack={audioTrack} />
 
                         <Typography element="span" type="body1">
-                            {participant.identity}
+                            {participant.name}
 
                             {isLocalParticipant && ' (Вы)'}
                         </Typography>

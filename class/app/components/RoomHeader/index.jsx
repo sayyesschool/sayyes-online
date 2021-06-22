@@ -1,86 +1,122 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import {
-    Banner,
     Button,
     Icon,
     IconButton,
+    TabBar, Tab,
     TopAppBar
 } from 'mdc-react';
 
 import { formatTime } from 'app/utils';
-import useRoomContext from 'app/hooks/useRoomContext';
+
 import useRoomState from 'app/hooks/useRoomState';
 import useConnectedTime from 'app/hooks/useConnectedTime';
+
 import ToggleAudioButton from 'app/components/ToggleAudioButton';
 import ToggleVideoButton from 'app/components/ToggleVideoButton';
 import ToggleScreenShareButton from 'app/components/ToggleScreenShareButton';
 
 import './index.scss';
 
-export default function RoomHeader({ isFullscreen, handleFullscreen, children, ...props }) {
-    const { room, isSharingScreen, toggleScreenShare } = useRoomContext();
+export default function RoomHeader({
+    user,
+    location,
+    isSharingScreen,
+    isFullscreen,
+    onFullscreen,
+    onSync,
+    children,
+    ...props
+}) {
     const roomState = useRoomState();
     const connectedTime = useConnectedTime();
 
     const isReconnecting = roomState === 'reconnecting';
+    const path = location.pathname.split('/')[1] || '/';
 
     return (
-        <>
-            <TopAppBar className="room__header" {...props}>
-                <TopAppBar.Row>
-                    <TopAppBar.Section className="room__header__text" align="start">
-                        <TopAppBar.Title>{formatTime(connectedTime)}</TopAppBar.Title>
-                    </TopAppBar.Section>
+        <TopAppBar className="room-header" {...props}>
+            <TopAppBar.Row>
+                <TopAppBar.Section className="room-header__text" align="start">
+                    <TopAppBar.Title>{formatTime(connectedTime)}</TopAppBar.Title>
+                </TopAppBar.Section>
 
-                    <TopAppBar.Section className="room__header__tabs" align="center">
-                        {children}
-                    </TopAppBar.Section>
+                <TopAppBar.Section className="room-header__tabs" align="center">
+                    <TabBar
+                        value={path}
+                        align="center"
+                        minWidth
+                    >
+                        <Tab
+                            component={NavLink}
+                            to="/"
+                            value="/"
+                            icon={<Icon>video_camera_front</Icon>}
+                            label="Видео"
+                        />
 
-                    <TopAppBar.Section className="room__header__actions" align="end">
-                        <TopAppBar.ActionItem>
-                            <ToggleAudioButton disabled={isReconnecting} />
-                        </TopAppBar.ActionItem>
+                        <Tab
+                            component={NavLink}
+                            to="/courses"
+                            value="courses"
+                            icon={<Icon>book</Icon>}
+                            label="Курс"
+                        />
 
-                        <TopAppBar.ActionItem>
-                            <ToggleVideoButton disabled={isReconnecting} />
-                        </TopAppBar.ActionItem>
+                        <Tab
+                            component={NavLink}
+                            to="/whiteboard"
+                            value="whiteboard"
+                            icon={<Icon>draw</Icon>}
+                            label="Доска"
+                        />
+                    </TabBar>
+                </TopAppBar.Section>
 
-                        {!isSharingScreen &&
-                            <TopAppBar.ActionItem>
-                                <ToggleScreenShareButton disabled={isReconnecting} />
-                            </TopAppBar.ActionItem>
-                        }
-
+                <TopAppBar.Section className="room-header__actions" align="end">
+                    {user.role === 'teacher' &&
                         <TopAppBar.ActionItem>
                             <IconButton
-                                icon={isFullscreen ? 'fullscreen_exit' : 'fullscreen'}
-                                title={isFullscreen ? 'Полный экран' : 'Отключить полный экран'}
-                                onClick={handleFullscreen}
+                                key="sync"
+                                icon="sync"
+                                onClick={onSync}
                             />
                         </TopAppBar.ActionItem>
+                    }
 
+                    <TopAppBar.ActionItem>
+                        <ToggleAudioButton disabled={isReconnecting} />
+                    </TopAppBar.ActionItem>
+
+                    <TopAppBar.ActionItem>
+                        <ToggleVideoButton disabled={isReconnecting} />
+                    </TopAppBar.ActionItem>
+
+                    {!isSharingScreen &&
                         <TopAppBar.ActionItem>
-                            <Button
-                                className="end-call-button"
-                                label="Завершить"
-                                unelevated
-                                onClick={() => room.disconnect()}
-                            />
+                            <ToggleScreenShareButton disabled={isReconnecting} />
                         </TopAppBar.ActionItem>
-                    </TopAppBar.Section>
-                </TopAppBar.Row>
-            </TopAppBar>
+                    }
 
-            <Banner
-                className="screen-sharing-banner"
-                open={isSharingScreen}
-                icon={<Icon>screen_share</Icon>}
-                text="Вы делитесь своим экраном"
-                action={
-                    <Button onClick={() => toggleScreenShare()}>Остановить</Button>
-                }
-                centered
-            />
-        </>
+                    <TopAppBar.ActionItem>
+                        <IconButton
+                            icon={isFullscreen ? 'fullscreen_exit' : 'fullscreen'}
+                            title={isFullscreen ? 'Полный экран' : 'Отключить полный экран'}
+                            onClick={onFullscreen}
+                        />
+                    </TopAppBar.ActionItem>
+
+                    <TopAppBar.ActionItem>
+                        <Button
+                            className="end-call-button"
+                            label="Завершить"
+                            unelevated
+                            onClick={() => room.disconnect()}
+                        />
+                    </TopAppBar.ActionItem>
+                </TopAppBar.Section>
+            </TopAppBar.Row>
+        </TopAppBar>
     );
 }

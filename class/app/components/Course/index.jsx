@@ -1,14 +1,13 @@
-import React, { useCallback, useState } from 'react';
-import { Route, Link, useHistory, useLocation, useParams } from 'react-router-dom';
+import React, { useCallback, useRef, useState } from 'react';
+import { Route, Link, useParams } from 'react-router-dom';
 import {
+    Card,
     Dialog,
-    Icon,
-    IconButton
+    Icon
 } from 'mdc-react';
 
 import { useUpdated } from 'shared/hooks/lifecycle';
-import { useSyncDoc } from 'shared/hooks/twilio/sync';
-import { useUser } from 'shared/hooks/user';
+import { useScrollClassName } from 'shared/hooks/screen';
 import { useCourse } from 'shared/hooks/courses';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import PageHeader from 'shared/components/page-header';
@@ -21,24 +20,22 @@ import AudioPlayer from 'shared/components/audio-player';
 import VideoPlayer from 'shared/components/video-player';
 import MenuButton from 'shared/components/menu-button';
 
+import Canvas from 'app/components/Canvas';
+
 import './index.scss';
 
-export default function Course({ onMedia }) {
-    const history = useHistory();
-    const location = useLocation();
+export default function CoursePage({ user, sharedState, updateSharedState, onMedia }) {
     const params = useParams();
-    const [sharedState, setSharedState] = useSyncDoc(window.TWILIO_SYNC_TOKEN, window.ENROLLMENT_ID);
-    const [user] = useUser();
+
     const [course] = useCourse(params.courseId);
+    const rootRef = useRef();
 
     const [audio, setAudio] = useState(null);
     const [video, setVideo] = useState(null);
 
-    useUpdated(() => {
-        if (sharedState?.path) {
-            history.push(sharedState.path);
-        }
+    useScrollClassName(rootRef, 'course-page--scrolling', [course]);
 
+    useUpdated(() => {
         if (sharedState?.audio) {
             setAudio(course.audiosByFilename.get(sharedState.audio));
         }
@@ -46,45 +43,31 @@ export default function Course({ onMedia }) {
         if (sharedState?.video) {
             setVideo(course.videosByFilename.get(sharedState.video));
         }
-
-        setSharedState({});
     }, [course, sharedState]);
-
-    useUpdated(() => {
-        onMedia(audio);
-    }, [audio]);
-
-    useUpdated(() => {
-        onMedia(video);
-    }, [video]);
 
     const handleAudio = useCallback(audio => {
         setAudio(audio);
 
         if (user.role === 'teacher') {
-            setSharedState({
-                audio: audio.filename,
-                path: location.pathname
+            updateSharedState({
+                audio: audio.filename
             });
         }
-    }, [user, location]);
+
+        onMedia(audio);
+    }, [user, onMedia]);
 
     const handleVideo = useCallback(video => {
         setVideo(video);
 
         if (user.role === 'teacher') {
-            setSharedState({
-                video: video.filename,
-                path: location.pathname
+            updateSharedState({
+                video: video.filename
             });
         }
-    }, [user, location]);
 
-    const handleSync = useCallback(() => {
-        setSharedState({
-            path: location.pathname
-        });
-    }, [location]);
+        onMedia(video);
+    }, [user]);
 
     if (!course) return <LoadingIndicator />;
 
@@ -92,17 +75,17 @@ export default function Course({ onMedia }) {
     const lesson = course.lessonsById.get(params.lessonId);
 
     return (
-        <div className="course">
+        <div ref={rootRef} className="course-page">
             <PageHeader
                 breadcrumbs={[
-                    <Link to={`/courses/${course.id}`}>{course.title}</Link>,
                     (unit &&
-                        <Link to={`/courses/${course.id}`}>{unit.title}</Link>
+                        <Link to={`/courses/${course.id}`}>{course.title}</Link>
                     ),
                     (lesson &&
-                        <Link to={`/courses/${course.id}/units/${unit.id}`}>{lesson?.title}</Link>
+                        <Link to={`/courses/${course.id}`}>{unit.title}</Link>
                     )
                 ].filter(v => !!v)}
+                title={lesson?.title || unit?.title || course.title}
                 actions={
                     [
                         (lesson?.audios?.length > 0 &&
@@ -132,13 +115,6 @@ export default function Course({ onMedia }) {
                                     onClick: () => handleVideo(video)
                                 }))}
                             />
-                        ),
-                        (user.role === 'teacher' &&
-                            <IconButton
-                                key="sync"
-                                icon="sync"
-                                onClick={handleSync}
-                            />
                         )
                     ]
                 }
@@ -159,11 +135,20 @@ export default function Course({ onMedia }) {
                 </Route>
 
                 <Route exact path="/courses/:courseId/units/:unitId/lessons/:lessonId">
-                    <LessonContent
-                        course={course}
-                        unit={unit}
-                        lesson={lesson}
-                    />
+                    {lesson?.image ?
+                        <Card>
+                            <Canvas
+                                type={user.role === 'teacher' ? 'local' : 'remote'}
+                                imageSrc={lesson.imageUrl}
+                            />
+                        </Card>
+                        :
+                        <LessonContent
+                            course={course}
+                            unit={unit}
+                            lesson={lesson}
+                        />
+                    }
                 </Route>
             </PageContent>
 

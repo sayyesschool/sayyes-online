@@ -1,0 +1,17 @@
+.courses {
+    .page-header {
+        &__inner {
+            padding: 1rem;
+        }
+    }
+
+    .page-content {
+        max-width: 1024px;
+        margin: auto;
+        padding: 1rem;
+    }
+
+    .courses-grid {
+        padding: 0;
+    }
+}

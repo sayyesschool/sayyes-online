@@ -46,7 +46,7 @@ export default function MainParticipantInfo({ participant, children }) {
                     <AudioLevelIndicator audioTrack={audioTrack} />
 
                     <Typography variant="body1" noMargin>
-                        {participant.identity}
+                        {participant.name}
                         {isLocal && ' (Вы)'}
                         {screenSharePublication && ' - Экран'}
                     </Typography>

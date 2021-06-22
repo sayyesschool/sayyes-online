@@ -1,10 +1,9 @@
 @use 'shared/styles/mixins' as *;
 
 .participant-list {
-    padding: 2em;
+    padding: 1rem;
     background: rgb(79, 83, 85);
     overflow-y: auto;
-    z-index: 5;
 
     @include breakpoint(lt-md) {
         display: flex;

@@ -1,14 +1,11 @@
 import React from 'react';
 
+import AppContent from 'shared/components/app-content';
+
 import './index.scss';
 
-export default function RoomContent({
-    children,
-    ...props
-}) {
+export default function RoomContent({ ...props }) {
     return (
-        <section className="room__content" {...props}>
-            {children}
-        </section>
+        <AppContent className="room-content" {...props} />
     );
 }

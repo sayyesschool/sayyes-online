@@ -1,0 +1,27 @@
+@use '@material/icon-button';
+
+.whiteboard {
+    position: relative;
+
+    &__canvas {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        cursor: crosshair;
+    }
+
+    &__controls {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: flex;
+        justify-content: flex-end;
+        padding: 8px;
+    }
+
+    .mdc-icon-button {
+        @include icon-button.ink-color(text-secondary-on-dark);
+    }
+}

@@ -2,6 +2,7 @@ module.exports = ({ Enrollment }) => ({
     getMany: (req, res, next) => {
         Enrollment.find({ teacher: req.user.id, ...req.query })
             .populate('client', 'firstname lastname fullname email')
+            .populate('courses', 'slug title subtitle image')
             .then(enrollments => {
                 res.json({
                     ok: true,
