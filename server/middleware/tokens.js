@@ -1,6 +1,7 @@
 module.exports = twilio => (req, res, next) => {
     const options = {
-        identity: req.user.firstname,
+        identity: req.user.id,
+        friendlyName: req.user.fullname,
         room: req.params.id
     };
 
