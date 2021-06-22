@@ -9,7 +9,7 @@ export default function CoursesGrid({ courses }) {
     return (
         <LayoutGrid className="courses-grid">
             {courses.map(course =>
-                <LayoutGrid.Cell key={course.id} span="3">
+                <LayoutGrid.Cell key={course.id} span="4">
                     <Card>
                         <Card.PrimaryAction
                             component={Link}

@@ -56,7 +56,12 @@
         font-weight: 700
     )
 );
+@use '@material/icon-button';
 
 .material-icons {
     font-family: 'Material Icons Round';
+}
+
+.mdc-icon-button {
+    @include icon-button.disabled-ink-color(text-disabled-on-light);
 }

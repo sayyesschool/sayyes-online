@@ -35,18 +35,18 @@ export function useSync(token) {
         clientRef.current = client;
 
         return () => clientRef.current?.shutdown();
-    }, []);
+    }, [token]);
 
     return clientRef;
 }
 
 export function useSyncDoc(token, docId) {
-    const clientRef = useSync(token);
+    const syncRef = useSync(token);
     const docRef = useRef();
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        clientRef.current?.document(docId).then(doc => {
+        syncRef.current?.document(docId).then(doc => {
             doc.on('updated', data => {
                 if (data.isLocal) return;
 
@@ -57,12 +57,23 @@ export function useSyncDoc(token, docId) {
             docRef.current = doc;
         });
 
-        return () => docRef.current?.close();
+        return () => {
+            docRef.current?.set({});
+            docRef.current?.close();
+        };
     }, []);
 
     const updateDoc = useCallback(data => {
         docRef.current?.set(data);
     }, []);
 
-    return [data, updateDoc];
+    const clearDoc = useCallback(() => {
+        docRef.current?.set({});
+    }, []);
+
+    return {
+        data,
+        updateDoc,
+        clearDoc
+    };
 }

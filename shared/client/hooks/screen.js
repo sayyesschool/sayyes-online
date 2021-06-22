@@ -61,3 +61,17 @@ export function useScrollToTop(elementRef, deps) {
         });
     }, deps);
 }
+
+export function useScrollClassName(elementRef, className, deps = []) {
+    useEffect(() => {
+        if (!elementRef.current) return;
+
+        function handleScroll(event) {
+            event.target.classList.toggle(className, event.target.scrollTop > 0);
+        }
+
+        elementRef.current.addEventListener('scroll', handleScroll);
+
+        return () => elementRef.current.removeEventListener('scroll', handleScroll);
+    }, deps);
+}

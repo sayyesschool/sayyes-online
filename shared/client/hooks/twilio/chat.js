@@ -1,7 +1,7 @@
 import { useRef, useState, useCallback, useMemo } from 'react';
 import { Client } from 'twilio-chat';
 
-export function useChat(token) {
+export function useChat(token, identity) {
     const clientRef = useRef();
     const channelRef = useRef();
 
@@ -11,7 +11,7 @@ export function useChat(token) {
 
     const connect = useCallback(({ name, onConnected = Function.prototype }) => {
         function tokenExpired() {
-            fetch()
+            fetch(`/twilio/tokens/chat?identity=${identity}&room=${name}`)
                 .then(token => {
                     client.updateToken(token);
                 })
@@ -55,7 +55,7 @@ export function useChat(token) {
             .catch(() => {
                 return clientRef.current.createChannel({
                     uniqueName: name,
-                    isPrivate: true
+                    isPrivate: false
                 });
             })
             .then(channel => {
@@ -91,11 +91,11 @@ export function useChat(token) {
 
     const disconnect = useCallback(() => {
         channelRef.current.leave().then(leftChannel => {
-            // leftChannel.removeListener('messageAdded', messageAdded);
-            // leftChannel.removeListener('memberJoined', memberJoined);
-            // leftChannel.removeListener('memberLeft', memberLeft);
-            // leftChannel.removeListener('typingStarted', typingStarted);
-            // leftChannel.removeListener('typingEnded', typingEnded);
+            leftChannel.removeListener('messageAdded', messageAdded);
+            leftChannel.removeListener('memberJoined', memberJoined);
+            leftChannel.removeListener('memberLeft', memberLeft);
+            leftChannel.removeListener('typingStarted', typingStarted);
+            leftChannel.removeListener('typingEnded', typingEnded);
         });
         clientRef.current?.shutdown();
     }, []);

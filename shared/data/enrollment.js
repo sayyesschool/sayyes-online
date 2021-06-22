@@ -8,12 +8,15 @@ const defaultEnrollment = {
     age: '',
     teacherType: '',
     level: '',
-    experience: '',
     purpose: '',
+    experience: '',
     preferences: '',
-    trialLesson: [],
+    lessonDuration: 50,
+    trialLessonSchedule: [],
     schedule: [],
     note: '',
+    teachers: [],
+    managers: []
 };
 
 const statusOptions = [

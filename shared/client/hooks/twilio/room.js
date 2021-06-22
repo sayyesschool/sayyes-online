@@ -44,8 +44,6 @@ export function useRoom(token, { localWebcamRef, remoteWebcamRef, remoteScreenRe
             video: (video || isVideoOn) && { name: 'camera' }
         })
             .then(room => {
-                console.log('Connected to Room: ', room);
-
                 room.localParticipant.tracks.forEach(publication => {
                     const track = publication.track;
 

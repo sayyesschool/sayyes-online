@@ -27,6 +27,8 @@ export default function Chat({ name, user }) {
     const handleSubmit = useCallback(event => {
         event.preventDefault();
 
+        if (!inputRef.current.value) return;
+
         chat.sendMessage(inputRef.current.value);
 
         inputRef.current.value = '';
@@ -35,7 +37,7 @@ export default function Chat({ name, user }) {
     const handleDelete = useCallback(event => {
         setMessage(null);
         chat.deleteMessage(message);
-    }, [chat]);
+    }, [chat, message]);
 
     const handleKeyPress = useCallback(() => {
         //onTyping();

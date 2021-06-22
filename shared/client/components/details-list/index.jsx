@@ -12,7 +12,7 @@ export default function DetailsList({ items = [], children }) {
                 <List.Item
                     key={item.key}
                     graphic={item.graphic}
-                    primaryText={item.primaryText}
+                    primaryText={item.primaryText || '[Не указано]'}
                     secondaryText={item.secondaryText}
                     meta={item.meta}
                 />

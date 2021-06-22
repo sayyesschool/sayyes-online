@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export function scheduleLessons({ schedule, quantity = 0, duration, startDate = new Date() }) {
+export function scheduleLessons({ schedule, quantity = 0, startDate = new Date(), duration }) {
     const lessons = [];
     const date = moment(startDate);
 

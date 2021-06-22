@@ -37,8 +37,9 @@ $ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
 
         &.page-header__section--actions {
             display: flex;
+            align-items: center;
 
-            .mdc-fab + .mdc-fab {
+            > :not(:only-child) {
                 margin-left: 8px;
             }
         }

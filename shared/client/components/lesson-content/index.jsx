@@ -23,7 +23,7 @@ export default function LessonContent({ course, unit, lesson }) {
 
                 {lesson.image &&
                     <img
-                        src={`https://static.sayes.ru/courses/${course.slug}/images/${lesson.image}`}
+                        src={lesson.imageUrl}
                     />
                 }
 

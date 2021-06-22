@@ -34,8 +34,6 @@ export default function Conversation({ name, localParticipant, remoteParticipant
         chat.connect({
             name,
             onConnected: channel => {
-                console.log('Joined channel', channel);
-
                 channel.members.forEach(member => {
                     if (member.identity === remoteParticipant.id) {
                         setParticipantOnline(true);

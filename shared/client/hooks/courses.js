@@ -4,7 +4,7 @@ import { useStore } from 'shared/hooks/store';
 import { actions as courseActions } from 'shared/store/modules/courses';
 
 export function useCourses(query) {
-    const [courses, actions] = useStore(state => 'list' in state.courses ? state.courses.list : state.courses, courseActions);
+    const [courses, actions] = useStore(state => (state.courses && 'list' in state.courses) ? state.courses.list : state.courses, courseActions);
 
     useEffect(() => {
         if (!courses) {
@@ -16,17 +16,22 @@ export function useCourses(query) {
 }
 
 export function useCourse(id) {
-    const [course, actions] = useStore(state => state.courses?.single || state.course, courseActions);
+    const [course, actions] = useStore(state => (state.courses && 'single' in state.courses) ? state.courses.single : state.course, courseActions);
 
     useEffect(() => {
-        actions.unsetCourse();
         actions.getCourse(id);
+        actions.unsetCourse();
     }, [id]);
 
-    return [useMemo(() => course && mapCourse(course), [course]), actions];
+    return [
+        useMemo(() => mapCourse(course), [course]),
+        actions
+    ];
 }
 
 function mapCourse(course) {
+    if (!course) return;
+
     course.unitsById = course.units.reduce((map, unit) => map.set(unit.id, unit), new Map());
     course.lessonsById = course.lessons.reduce((map, lesson) => map.set(lesson.id, lesson), new Map());
     course.exercisesById = course.exercises.reduce((map, exercise) => map.set(exercise.id, exercise), new Map());

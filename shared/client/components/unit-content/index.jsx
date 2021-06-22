@@ -32,9 +32,10 @@ export default function UnitContent({ course, unit, onSelectLesson }) {
                         title={unit.title}
                     />
 
-                    <Card.Section primary>
-                        {unit.description}
-                    </Card.Section>
+                    <Card.Section
+                        dangerouslySetInnerHTML={{ __html: unit.content }}
+                        primary
+                    />
 
                     <Card.Section>
                         <List avatarList twoLine>

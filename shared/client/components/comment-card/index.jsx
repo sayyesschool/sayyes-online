@@ -69,7 +69,7 @@ export default function CommentCard({ user, comment = {}, onUpdate, onDelete }) 
                         </Card.Action>
 
                         <Card.Action button>
-                            <Button type="submit" from="update-comment-form" outlined>Сохранить</Button>
+                            <Button type="submit" form="update-comment-form" outlined>Сохранить</Button>
                         </Card.Action>
                     </Card.Actions>
                 </>
