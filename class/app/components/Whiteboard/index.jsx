@@ -25,7 +25,6 @@ export default function WhiteboardPage({ children, ...props }) {
 
             canvasRef.current.width = width;
             canvasRef.current.height = height;
-            console.log('ROOT RECT', width, height, canvasRef.current);
         }
 
         handleResize();
@@ -38,8 +37,6 @@ export default function WhiteboardPage({ children, ...props }) {
     }, []);
 
     useEffect(() => {
-        console.log('WHITEBOARD USE_EFFECT', type, dataTrack);
-
         if (!dataTrack) return;
 
         const type = user.role === 'teacher' ? 'local' : 'remote';
@@ -57,8 +54,6 @@ export default function WhiteboardPage({ children, ...props }) {
                 whiteboardRef.current.destroy();
             };
         } else if (type === 'remote') {
-            console.log('WHITEBOARD CREATED', canvasRef.current);
-
             whiteboardRef.current = new Whiteboard(canvasRef.current);
 
             function handleData(data) {

@@ -29,7 +29,6 @@ module.exports = ({
     },
 
     create: (req, res, next) => {
-        console.log(req.body);
         Lesson.create(req.body)
             .then(lesson => {
                 res.json({

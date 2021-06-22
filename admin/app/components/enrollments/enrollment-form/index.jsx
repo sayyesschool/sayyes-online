@@ -39,8 +39,6 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
         payments: undefined
     });
 
-    console.log(data);
-
     useImperativeHandle(ref, () => ({
         get form() { return formRef.current; },
         get data() { return data; }

@@ -32,14 +32,12 @@ export default function useDataTrack(type) {
         });
 
         function handleTrackSubscribed(track) {
-            console.log('Sub to remote track', track);
             if (track?.kind === 'data') {
                 setDataTrack(track);
             }
         }
 
         function handleTrackUnsubscribed(track) {
-            console.log('Unsub from remote track', track);
             if (track?.kind === 'data') {
                 setDataTrack(null);
             }
