@@ -8,7 +8,7 @@ import {
 import {
     defaultEnrollment, domainOptions, typeOptions, formatOptions,
     ageOptions, teacherTypeOptions, levelOptions, purposeOptions
-} from 'shared/../data/enrollment';
+} from 'shared/data/enrollment';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
@@ -32,12 +32,14 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
         ...defaultEnrollment,
         ...enrollment,
         client: enrollment.client?.id || '',
-        teachers: enrollment.teachers.map(t => t.id || t),
-        managers: enrollment.managers.map(m => m.id || m),
+        teachers: enrollment.teachers?.map(t => t.id || t),
+        managers: enrollment.managers?.map(m => m.id || m),
         courses: undefined,
         lessons: undefined,
         payments: undefined
     });
+
+    console.log(data);
 
     useImperativeHandle(ref, () => ({
         get form() { return formRef.current; },

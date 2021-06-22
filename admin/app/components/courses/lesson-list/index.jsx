@@ -20,10 +20,10 @@ export default function LessonList({ lessons, onDelete }) {
                 <List.Item
                     key={lesson.id}
                     component={Link}
-                    to={lesson.url}
+                    to={lesson.uri}
                     graphic={<Avatar text={index + 1} />}
                     primaryText={lesson.title}
-                    secondaryText={`${lesson.exercises.length} упражнений`}
+                    secondaryText={`${lesson.exercises?.length} упражнений`}
                     meta={
                         <IconButton
                             icon="delete"

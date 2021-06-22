@@ -1,7 +1,6 @@
 import React, { useRef, useCallback } from 'react';
 import {
     Layout,
-    LayoutGrid,
     TextField
 } from 'mdc-react';
 
@@ -10,7 +9,9 @@ import Form from 'shared/components/form';
 import FileInput from 'shared/components/file-input';
 
 export default function UnitForm({ unit = {}, onSubmit }) {
+    const editorRef = useRef();
     const fileInputRef = useRef();
+
     const [data, handleChange, getData] = useForm({
         title: unit.title,
         slug: unit.slug,
@@ -19,75 +20,62 @@ export default function UnitForm({ unit = {}, onSubmit }) {
     }, [unit]);
 
     const handleSubmit = useCallback(() => {
+        const content = editorRef.current.editor.getData();
         const file = fileInputRef.current.input.files[0];
 
         if (file) {
             file.path = `courses/${unit.course.id}/images/`;
         }
 
-        getData(data => onSubmit(Object.assign(data, { file })));
+        getData(data => onSubmit(Object.assign(data, { content, file })));
+
         fileInputRef.current.reset();
     }, [onSubmit]);
 
     return (
         <Form id="unit-form" onSubmit={handleSubmit}>
-            <LayoutGrid>
-                <LayoutGrid.Cell span="6">
-                    <Layout column>
-                        <TextField
-                            name="title"
-                            label="Название"
-                            value={data.title}
-                            filled
-                            onChange={handleChange}
-                        />
+            <Layout column>
+                <TextField
+                    name="title"
+                    label="Название"
+                    value={data.title}
+                    filled
+                    onChange={handleChange}
+                />
 
-                        <TextField
-                            name="slug"
-                            label="Слаг"
-                            value={data.slug}
-                            filled
-                            onChange={handleChange}
-                        />
+                <TextField
+                    name="slug"
+                    label="Слаг"
+                    value={data.slug}
+                    filled
+                    onChange={handleChange}
+                />
 
-                        <TextField
-                            name="document"
-                            label="Документ"
-                            value={data.document}
-                            filled
-                            onChange={handleChange}
-                        />
+                <TextField
+                    name="description"
+                    label="Описание"
+                    value={data.description}
+                    filled
+                    textarea
+                    onChange={handleChange}
+                />
 
-                        <FileInput
-                            ref={fileInputRef}
-                            name="file"
-                            label="Изображение"
-                            url={data.image && unit.imageUrl}
-                            caption={data.image}
-                        />
-                    </Layout>
-                </LayoutGrid.Cell>
+                <TextField
+                    name="document"
+                    label="Документ"
+                    value={data.document}
+                    filled
+                    onChange={handleChange}
+                />
 
-                <LayoutGrid.Cell span="6">
-                    <TextField
-                        name="description"
-                        label="Описание"
-                        value={data.description}
-                        filled
-                        textarea
-                        onChange={handleChange}
-                    />
-                </LayoutGrid.Cell>
-            </LayoutGrid>
+                <FileInput
+                    ref={fileInputRef}
+                    name="file"
+                    label="Изображение"
+                    url={data.image && unit.imageUrl}
+                    caption={data.image}
+                />
+            </Layout>
         </Form>
     );
 }
-
-UnitForm.defaultProps = {
-    unit: {
-        title: '',
-        slug: '',
-        description: '',
-        image: ''
-    }
-};

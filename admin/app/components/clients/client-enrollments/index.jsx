@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
     Card,
     Icon,
@@ -14,6 +15,7 @@ import EnrollmentForm from 'app/components/enrollments/enrollment-form';
 import EnrollmentsList from 'app/components/enrollments/enrollments-list';
 
 export default function ClientEnrollments({ client }) {
+    const history = useHistory();
     const enrollmentActions = useActions('enrollments');
 
     const [isEnrollmentFormOpen, toggleEnrollmentFormOpen] = useBoolean(false);

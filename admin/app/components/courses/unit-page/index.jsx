@@ -1,26 +1,23 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import {
+    LayoutGrid
+} from 'mdc-react';
 
+import { useCourse } from 'shared/hooks/courses';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
-import FormDialog from 'shared/components/form-dialog';
 
-import { useStore } from 'app/hooks/store';
 import UnitDetails from 'app/components/courses/unit-details';
-import LessonForm from 'app/components/courses/lesson-form';
+import UnitLessons from 'app/components/courses/unit-lessons';
+import UnitContent from 'app/components/courses/unit-content';
 
 import './index.scss';
 
 export default function UnitPage({ match, history }) {
-    const [course, actions] = useStore('courses.single');
-
-    const [isLessonFormOpen, setLessonFormOpen] = useState(false);
-
-    useEffect(() => {
-        actions.getCourse(match.params.courseId);
-    }, []);
+    const [course, actions] = useCourse(match.params.courseId);
 
     const handleUpdateUnit = useCallback(data => {
         actions.updateUnit(course.id, unit.id, data);
@@ -46,10 +43,6 @@ export default function UnitPage({ match, history }) {
         }
     }, [course, unit]);
 
-    const toggleLessonForm = useCallback(() => {
-        setLessonFormOpen(isOpen => !isOpen);
-    }, []);
-
     if (!course) return <LoadingIndicator />;
 
     const unit = course.unitsById.get(match.params.unitId);
@@ -72,24 +65,33 @@ export default function UnitPage({ match, history }) {
             />
 
             <PageContent>
-                <UnitDetails
-                    unit={unit}
-                    onUpdate={handleUpdateUnit}
-                    onAddLesson={toggleLessonForm}
-                    onDeleteLesson={handleDeleteLesson}
-                />
-            </PageContent>
+                <LayoutGrid>
+                    <LayoutGrid.Cell span="4" grid>
+                        <LayoutGrid.Cell span="12">
+                            <UnitDetails
+                                unit={unit}
+                                onUpdate={handleUpdateUnit}
+                            />
+                        </LayoutGrid.Cell>
 
-            <FormDialog
-                title="Новый урок"
-                form="lesson-form"
-                open={isLessonFormOpen}
-                onClose={toggleLessonForm}
-            >
-                <LessonForm
-                    onSubmit={handleCreateLesson}
-                />
-            </FormDialog>
+                        <LayoutGrid.Cell span="12">
+                            <UnitLessons
+                                course={course}
+                                unit={unit}
+                                onCreate={handleCreateLesson}
+                                onDelete={handleDeleteLesson}
+                            />
+                        </LayoutGrid.Cell>
+                    </LayoutGrid.Cell>
+
+                    <LayoutGrid.Cell span="8">
+                        <UnitContent
+                            unit={unit}
+                            onUpdate={handleUpdateUnit}
+                        />
+                    </LayoutGrid.Cell>
+                </LayoutGrid>
+            </PageContent>
         </Page>
     );
 }

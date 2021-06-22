@@ -41,6 +41,8 @@ module.exports = ({
     },
 
     create: (req, res, next) => {
+        req.body.managers = [req.user.id];
+
         Enrollment.create(req.body)
             .then(enrollment => {
                 res.json({
@@ -64,12 +66,12 @@ module.exports = ({
             query.populate('client', 'firstname lastname');
         }
 
-        if (keys.includes('manager')) {
-            query.populate('manager', 'firstname lastname imageUrl');
+        if (keys.includes('managers')) {
+            query.populate('managers', 'firstname lastname imageUrl');
         }
 
-        if (keys.includes('teacher')) {
-            query.populate('teacher', 'firstname lastname imageUrl');
+        if (keys.includes('teachers')) {
+            query.populate('teachers', 'firstname lastname imageUrl');
         }
 
         query.then(enrollment => {
@@ -123,6 +125,14 @@ module.exports = ({
             projection: { schedule: true }
         })
             .then(enrollment => {
+                if (!req.body.lessons) {
+                    return res.json({
+                        ok: true,
+                        message: 'Расписание изменено',
+                        data: enrollment
+                    });
+                }
+
                 const ops = req.body.lessons.map(lesson => ({
                     updateOne: {
                         filter: { _id: lesson.id },

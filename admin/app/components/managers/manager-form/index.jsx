@@ -105,8 +105,8 @@ function ManagerForm({ manager = {}, onSubmit, ...props }, ref) {
                     value={data.gender}
                     label="Пол"
                     options={[
-                        { value: 'man', label: 'Мужчина' },
-                        { value: 'woman', label: 'Женщина' }
+                        { value: 'male', label: 'Мужской' },
+                        { value: 'female', label: 'Женский' }
                     ]}
                     onChange={handleChange}
                 />

@@ -41,7 +41,7 @@ export default function EnrollmentDetails({ enrollment }) {
                             {
                                 key: 'teacherType',
                                 graphic: <Icon>person</Icon>,
-                                primaryText: enrollment.teacherTypeLabel || '[Не указан]',
+                                primaryText: enrollment.teacherTypeLabel,
                                 secondaryText: 'Тип преподавателя'
                             },
                             {
@@ -65,13 +65,13 @@ export default function EnrollmentDetails({ enrollment }) {
                             {
                                 key: 'experience',
                                 graphic: <Icon>star</Icon>,
-                                primaryText: enrollment.experience || 'Нет опыта',
+                                primaryText: enrollment.experience,
                                 secondaryText: 'Опыт',
                             },
                             {
                                 key: 'preferences',
                                 graphic: <Icon>checklist</Icon>,
-                                primaryText: enrollment.preferences || 'Нет предпочтений',
+                                primaryText: enrollment.preferences,
                                 secondaryText: 'Предпочтения'
                             },
                             enrollment.note && {

@@ -10,6 +10,7 @@ import {
 import { useBoolean } from 'shared/hooks/state';
 import CommentCard from 'shared/components/comment-card';
 import CommentForm from 'shared/components/comment-form';
+import EmptyState from 'shared/components/empty-state';
 
 import { useStore, useActions } from 'app/hooks/store';
 import SidePanel from 'app/components/shared/side-panel';
@@ -28,7 +29,8 @@ export default function EnrollmentCommentsSidePanel({ enrollment, ...props }) {
         data.author = user.id;
         data.ref = enrollment.id;
 
-        return actions.createComment(data);
+        return actions.createComment(data)
+            .then(() => toggleCommenting(false));
     }, [user, enrollment]);
 
     const updateComment = useCallback((commentId, data) => {
@@ -46,15 +48,22 @@ export default function EnrollmentCommentsSidePanel({ enrollment, ...props }) {
             {...props}
         >
             <SidePanel.Content>
-                {enrollment.comments.map(comment =>
-                    <CommentCard
-                        key={comment.id}
-                        user={user}
-                        comment={comment}
-                        onUpdate={updateComment}
-                        onDelete={deleteComment}
-                    />
-                )}
+                {enrollment.comments?.length > 0 ?
+                    enrollment.comments.map(comment =>
+                        <CommentCard
+                            key={comment.id}
+                            user={user}
+                            comment={comment}
+                            onUpdate={updateComment}
+                            onDelete={deleteComment}
+                        />
+                    ) : (
+                        <EmptyState
+                            icon="comment"
+                            title="Комментариев нет"
+                        />
+                    )
+                }
             </SidePanel.Content>
 
             {isCommenting &&

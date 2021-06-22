@@ -4,18 +4,16 @@
     @include mixins.width(50%);
     box-shadow: 0 8px 10px -5px rgb(0 0 0 / 20%), 0 16px 24px 2px rgb(0 0 0 / 14%), 0 6px 30px 5px rgb(0 0 0 / 12%);
 
-    .mdc-card {
-        border: none;
-        border-radius: 0;
-        box-shadow: none;
+    .mdc-side-sheet__content {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem 0;
     }
 
     .comment-card {
-        border: none;
-        border-radius: 0;
-        
-        .mdc-card__section {
-            padding: .5rem 1rem;
+        &:not(.comment-card--editing) {
+            border: none;
+            border-radius: 0;
         }
 
         + .comment-card {
@@ -28,14 +26,14 @@
 
     }
 
+    .empty-state {
+        margin: auto;
+    }
+
     .mdc-fab {
         position: absolute;
         bottom: 1rem;
         right: 1rem;
-    }
-
-    .mdc-side-sheet__content {
-        padding: 1rem 0;
     }
 
     .side-panel__footer {
@@ -43,7 +41,6 @@
 
         .mdc-button {
             width: 100%;
-            border-radius: 0;
         }
     }
 }

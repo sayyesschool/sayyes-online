@@ -22,23 +22,22 @@ export default function EnrollmentPayments({ enrollment }) {
     const [isEditFormOpen, toggleEditFormOpen] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
-    const handleCreatePayment = useCallback(data => {
+    const createPayment = useCallback(data => {
         data.client = enrollment.client.id;
         data.enrollment = enrollment.id;
 
-        actions.createPayment(data)
+        return actions.createPayment(data)
             .then(() => toggleCreateFormOpen(false));
     }, [enrollment]);
 
-    const handleUpdatePayment = useCallback(data => {
-        actions.updatePayment(payment.id, data)
+    const updatePayment = useCallback(data => {
+        return actions.updatePayment(payment.id, data)
             .then(() => toggleEditFormOpen(false));
     }, [payment]);
 
-    const handleDeletePayment = useCallback(() => {
-        if (confirm('Вы уверены что хотите удалить платеж?')) {
-            actions.deletePayment(payment.id);
-        }
+    const deletePayment = useCallback(() => {
+        return actions.deletePayment(payment.id)
+            .then(() => toggleConfirmationDialogOpen(false));
     }, [payment]);
 
     const handleUpdate = useCallback(payment => {
@@ -94,13 +93,12 @@ export default function EnrollmentPayments({ enrollment }) {
                 form="create-payment-form"
                 title="Новый платеж"
                 open={isCreateFormOpen}
-                modal
                 onClose={toggleCreateFormOpen}
             >
                 <PaymentForm
                     id="create-payment-form"
                     payment={{}}
-                    onSubmit={handleCreatePayment}
+                    onSubmit={createPayment}
                 />
             </FormDialog>
 
@@ -113,7 +111,7 @@ export default function EnrollmentPayments({ enrollment }) {
                 <PaymentForm
                     id="edit-payment-form"
                     payment={payment}
-                    onSubmit={handleUpdatePayment}
+                    onSubmit={updatePayment}
                 />
             </FormDialog>
 
@@ -121,7 +119,7 @@ export default function EnrollmentPayments({ enrollment }) {
                 title="Подтвердите действие"
                 message="Вы действительно хотите удалить платеж?"
                 open={isConfirmationDialogOpen}
-                onConfirm={handleDeletePayment}
+                onConfirm={deletePayment}
                 onClose={() => toggleConfirmationDialogOpen(false)}
             />
         </section>

@@ -105,17 +105,32 @@ export default function EnrollmentLessons({ enrollment }) {
             </Card>
 
             <FormDialog
-                form="new-lesson-form"
+                form="lessons-form"
+                title="Новые занятия"
+                open={isLessonsFormOpen}
+                onClose={toggleLessonsFormOpen}
+            >
+                <Typography>{enrollment.scheduleLabel}</Typography>
+
+                <LessonsForm
+                    id="lessons-form"
+                    enrollment={enrollment}
+                    onSubmit={createLessons}
+                />
+            </FormDialog>
+
+            <FormDialog
+                form="create-lesson-form"
                 title="Новое занятие"
                 open={isNewLessonFormOpen}
                 onClose={toggleNewLessonFormOpen}
             >
                 <LessonForm
-                    id="new-lesson-form"
+                    id="create-lesson-form"
                     lesson={{
                         duration: enrollment.lessonDuration,
                         client: enrollment?.client,
-                        teacher: enrollment?.teacher
+                        teacher: enrollment?.teachers[0]
                     }}
                     onSubmit={createLesson}
                 />
@@ -131,21 +146,6 @@ export default function EnrollmentLessons({ enrollment }) {
                     id="edit-lesson-form"
                     lesson={lesson}
                     onSubmit={updateLesson}
-                />
-            </FormDialog>
-
-            <FormDialog
-                form="lessons-form"
-                title="Новые занятия"
-                open={isLessonsFormOpen}
-                onClose={toggleLessonsFormOpen}
-            >
-                <Typography>{enrollment.scheduleLabel}</Typography>
-
-                <LessonsForm
-                    id="lessons-form"
-                    enrollment={enrollment}
-                    onSubmit={createLessons}
                 />
             </FormDialog>
 

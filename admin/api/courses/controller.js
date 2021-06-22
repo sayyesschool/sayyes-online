@@ -66,7 +66,9 @@ module.exports = ({
 
     units: {
         create: (req, res, next) => {
-            Course.update(req.params.course, {
+            Course.findByIdAndUpdate({
+                _id: req.params.course
+            }, {
                 $push: { units: req.body }
             }, {
                 new: true,
@@ -91,7 +93,9 @@ module.exports = ({
                     return data;
                 }, {});
 
-            Course.update(req.params.course, {
+            Course.findByIdAndUpdate({
+                _id: req.params.course
+            }, {
                 $set: data
             }, {
                 new: true,
