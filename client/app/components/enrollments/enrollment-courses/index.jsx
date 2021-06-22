@@ -1,32 +1,26 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import {
-    Card,
-    LayoutGrid,
-    Typography
+    Card
 } from 'mdc-react';
+
+import CoursesList from 'shared/components/courses-list';
 
 export default function EnrollmentCourses({ enrollment }) {
     return (
-        <div className="enrollment-courses">
-            {enrollment.courses?.length > 0 ?
-                <LayoutGrid>
-                    {enrollment.courses.map(course =>
-                        <LayoutGrid.Cell key={course.id} span="12">
-                            <Card component={Link} to={`${enrollment.url}${course.uri}`}>
-                                <Card.Media imageUrl={course.imageUrl} wide />
+        <section className="enrollment-courses">
+            <Card>
+                <Card.Header
+                    title="Курсы"
+                />
 
-                                <Card.Header
-                                    title={course.title}
-                                    subtitle={course.subtitle}
-                                />
-                            </Card>
-                        </LayoutGrid.Cell>
-                    )}
-                </LayoutGrid>
-                :
-                <Typography>Курсы пока не назначены</Typography>
-            }
-        </div>
+                {enrollment.courses.length > 0 &&
+                    <Card.Section>
+                        <CoursesList
+                            courses={enrollment.courses}
+                        />
+                    </Card.Section>
+                }
+            </Card>
+        </section>
     );
 }

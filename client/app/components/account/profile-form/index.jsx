@@ -5,9 +5,9 @@ import {
     TextField
 } from 'mdc-react';
 
-import { timezones } from 'shared/../data';
+import { timezones } from 'shared/data';
 import useForm from 'shared/hooks/form';
-import Form from 'shared/components/Form';
+import Form from 'shared/components/form';
 
 export default function ProfileForm({ profile, onSubmit, ...props }) {
     const [data, handleChange, getData] = useForm({

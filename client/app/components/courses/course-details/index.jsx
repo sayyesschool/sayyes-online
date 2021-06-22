@@ -4,7 +4,6 @@ import {
 } from 'mdc-react';
 
 export default function CourseDetails({ course }) {
-    console.log(course);
     return (
         <section className="course-details">
             <Typography type="subtitle2"><b>Юниты</b>: {course.units.length}</Typography>

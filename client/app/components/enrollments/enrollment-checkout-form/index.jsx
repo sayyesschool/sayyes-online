@@ -7,7 +7,7 @@ import {
 
 import { pluralize } from 'shared/utils/format';
 import { useBoolean } from 'shared/hooks/state';
-import Form from 'shared/components/Form';
+import Form from 'shared/components/form';
 
 import './index.scss';
 

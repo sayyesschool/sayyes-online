@@ -15,7 +15,6 @@ import AppContent from 'shared/components/app-content';
 import navItems from 'app/data/nav';
 import Account from 'app/components/account';
 import Home from 'app/components/home';
-import Assignments from 'app/components/assignments';
 import Enrollments from 'app/components/enrollments';
 import Courses from 'app/components/courses';
 import Materials from 'app/components/materials';
@@ -58,11 +57,9 @@ export default function App() {
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <Route path="/account" component={Account} />
-                    <Route path="/enrollments/:id/assignments" component={Assignments} />
-                    <Route path="*/courses" component={Courses} />
-                    <Route path="/enrollments/:id/materials" component={Materials} />
-                    <Route path="/enrollments/:id/posts" component={Posts} />
+                    <Route path="/courses" component={Courses} />
                     <Route path="/enrollments" component={Enrollments} />
+                    <Route path="/materials" component={Materials} />
                     <Route path="/meetings" component={Meetings} />
                 </Switch>
             </AppContent>

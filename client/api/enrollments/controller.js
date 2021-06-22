@@ -41,10 +41,10 @@ module.exports = ({
 
     getOne: (req, res, next) => {
         Enrollment.findById(req.params.id)
-            .populate('teacher', 'firstname lastname imageUrl')
+            .populate('teacher', 'firstname lastname imageUrl zoomUrl')
             .populate('manager', 'firstname lastname imageUrl email phone')
             .populate('courses', 'title subtitle slug image units.id lessons.id exercises.id')
-            .populate('materials')
+            .populate('materials', 'slug title subtitle')
             .populate('lessons', 'id title date status')
             .then(enrollment => {
                 if (!enrollment) {

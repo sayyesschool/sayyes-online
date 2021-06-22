@@ -5,25 +5,24 @@ import {
     LayoutGrid
 } from 'mdc-react';
 
+import MaterialsList from 'shared/components/materials-list';
+
 export default function EnrollmentMaterials({ enrollment }) {
     return (
-        <div className="enrollment-materials">
-            {enrollment.materials?.length > 0 &&
-                <LayoutGrid>
-                    {enrollment.materials.map(material =>
-                        <LayoutGrid.Cell key={material.id} span="6">
-                            <Card component={Link} to={`${enrollment.url}${material.url}`} outlined>
-                                <img src={material.imageUrl} />
+        <section className="enrollment-materials">
+            <Card>
+                <Card.Header
+                    title="Пособия"
+                />
 
-                                <Card.Header
-                                    title={material.title}
-                                    subtitle={material.subtitle}
-                                />
-                            </Card>
-                        </LayoutGrid.Cell>
-                    )}
-                </LayoutGrid>
-            }
-        </div>
+                {enrollment.materials.length > 0 &&
+                    <Card.Section>
+                        <MaterialsList
+                            materials={enrollment.materials}
+                        />
+                    </Card.Section>
+                }
+            </Card>
+        </section>
     );
 };
