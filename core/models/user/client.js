@@ -1,5 +1,7 @@
 const { Schema } = require('mongoose');
 
+const Contact = require('./contact');
+
 const Client = new Schema({
     altPhone: {
         type: String,
@@ -10,16 +12,8 @@ const Client = new Schema({
     address: { type: String },
     occupation: { type: String },
     interests: { type: String },
-    contacts: [{
-        relation: String,
-        firstname: String,
-        lastname: String,
-        patronym: String,
-        phone: String,
-        email: String,
-        occupation: String,
-        note: String
-    }]
+    contacts: { type: [Contact] },
+    teacherNote: { type: String }
 });
 
 Client.virtual('status').get(function() {

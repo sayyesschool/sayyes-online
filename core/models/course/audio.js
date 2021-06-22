@@ -9,7 +9,7 @@ const Audio = new Schema({
 Audio.virtual('url').get(function() {
     const parent = this.parent();
 
-    return `https://static.sayes.ru${parent ? parent.url : ''}/audios/${this.filename}`;
+    return `${process.env.STATIC_URL}${parent ? parent.url : ''}/audios/${this.filename}`;
 });
 
 module.exports = Audio;

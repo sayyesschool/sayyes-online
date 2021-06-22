@@ -4,7 +4,8 @@ const Teacher = new Schema({
     languages: { type: [String] },
     levels: { type: [String] },
     formats: { type: [String] },
-    ages: { type: [String] }
+    ages: { type: [String] },
+    zoomUrl: { type: String }
 });
 
 Teacher.virtual('lessons', {

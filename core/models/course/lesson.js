@@ -20,11 +20,11 @@ Lesson.virtual('url').get(function() {
 });
 
 Lesson.virtual('documentUrl').get(function() {
-    return this.document && `https://static.sayes.ru${this.parent().url}/documents/${this.document}`;
+    return this.document && `${process.env.STATIC_URL}${this.parent().url}/documents/${this.document}`;
 });
 
 Lesson.virtual('imageUrl').get(function() {
-    return this.image && `https://static.sayes.ru${this.parent().url}/images/${this.image}`;
+    return this.image && `${process.env.STATIC_URL}${this.parent().url}/images/${this.image}`;
 });
 
 module.exports = Lesson;

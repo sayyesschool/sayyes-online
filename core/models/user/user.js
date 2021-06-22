@@ -1,9 +1,9 @@
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
-const mongoose = require('mongoose');
+const { Schema, models } = require('mongoose');
 const moment = require('moment');
 
-const { Schema } = mongoose;
+const Person = require('./person');
 
 const roles = {
     admin: 'Администратор',
@@ -13,57 +13,23 @@ const roles = {
     teacher: 'Преподаватель'
 };
 
-const User = new Schema({
-    firstname: {
-        type: String,
-        trim: true,
-        minlength: [2, 'Имя слишком короткое.'],
-        maxlength: [64, 'Имя слишком длинное.'],
-        match: [/^[^0-9 ]+$/, 'В имени не должно быть пробелов и цифр.']
-    },
-    lastname: {
-        type: String,
-        trim: true,
-        maxlength: [64, 'Фамилия слишком длинная.'],
-        match: [/^[^0-9 ]+$/, 'В фамилии не должно быть пробелов и цифр.']
-    },
-    patronym: {
-        type: String,
-        trim: true,
-        maxlength: [64, 'Отчество слишком длинная.'],
-        match: [/^[^0-9 ]+$/, 'В отчестве не должно быть пробелов и цифр.']
-    },
-    email: {
-        type: String,
-        trim: true,
-        maxlength: [256, 'Адрес электронный почты слишком длинный.'],
-        match: [/^[a-zA-Z0-9'._%+-]+@[a-zA-Z0-9-][a-zA-Z0-9.-]*\.[a-zA-Z]{2,63}$/, 'Неверный формат адреса электронной почты.']
-    },
-    phone: {
-        type: String,
-        trim: true,
-        minlength: 8,
-        maxlength: 12,
-        set: value => value.trim().replace(/[\s()\-\+]+/g, '')
-    },
+const User = new Schema([Person, {
     password: { type: String, trim: true },
-    gender: { type: String, enum: ['man', 'woman'] },
-    dob: { type: Date },
+    role: { type: String, enum: Object.keys(roles), default: 'client' },
+    blocked: { type: Boolean, default: false, alias: 'isBlocked' },
+    activated: { type: Boolean, default: false, alias: 'isActivated' },
     timezone: { type: String },
     imageUrl: { type: String },
-    role: { type: String, enum: Object.keys(roles), default: 'client' },
     socialAccounts: [{
         provider: { type: 'String' },
         value: { type: 'String' }
     }],
-    blocked: { type: Boolean, default: false, alias: 'isBlocked' },
-    activated: { type: Boolean, default: false, alias: 'isActivated' },
+    note: { type: String, trim: true },
     activationToken: String,
     activationTokenExpiresAt: Date,
     resetPasswordToken: String,
-    resetPasswordTokenExpiresAt: Date,
-    note: { type: String, trim: true }
-}, {
+    resetPasswordTokenExpiresAt: Date
+}], {
     timestamps: true,
     discriminatorKey: 'role',
     toJSON: {
@@ -103,7 +69,6 @@ User.virtual('timezoneLabel').get(function() {
 User.virtual('url').get(function() {
     return `/${this.role}s/${this.id}`;
 });
-
 
 /* Statics */
 
@@ -160,7 +125,7 @@ User.pre('save', function(next) {
 User.pre('save', function(next) {
     if (!this.isModified('email') || this.email === '') return next();
 
-    mongoose.models.User.findOne({ email: this.email })
+    models.User.findOne({ email: this.email })
         .then(user => {
             if (user) next(new Error('Пользователь с таким адресом электронной почты уже зарегистрирован'));
             else next();

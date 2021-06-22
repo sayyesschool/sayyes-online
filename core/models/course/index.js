@@ -30,7 +30,7 @@ Course.virtual('url').get(function() {
 });
 
 Course.virtual('imageUrl').get(function() {
-    return this.image && `https://static.sayes.ru${this.url}/images/${this.image}`;
+    return this.image && `${process.env.STATIC_URL}${this.url}/images/${this.image}`;
 });
 
 module.exports = Course;

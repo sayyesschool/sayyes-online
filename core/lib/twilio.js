@@ -37,8 +37,6 @@ module.exports = ({
                 TWILIO_API_KEY,
                 TWILIO_API_SECRET
             );
-            const appName = 'TwilioChat';
-            //const endpointId = appName + ':' + identity + ':' + deviceId;
             const chatGrant = new ChatGrant({
                 serviceSid: TWILIO_CHAT_SERVICE_ID
             });

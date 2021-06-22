@@ -4,6 +4,7 @@ const Unit = new Schema({
     slug: { type: String },
     title: { type: String },
     description: { type: String },
+    content: { type: String },
     document: { type: String },
     image: { type: String },
     audios: [String],
@@ -20,11 +21,11 @@ Unit.virtual('url').get(function() {
 });
 
 Unit.virtual('documentUrl').get(function() {
-    return this.document && `https://static.sayes.ru${this.parent().url}/documents/${this.document}`;
+    return this.document && `${process.env.STATIC_URL}${this.parent().url}/documents/${this.document}`;
 });
 
 Unit.virtual('imageUrl').get(function() {
-    return this.image && `https://static.sayes.ru${this.parent().url}/images/${this.image}`;
+    return this.image && `${process.env.STATIC_URL}${this.parent().url}/images/${this.image}`;
 });
 
 module.exports = Unit;

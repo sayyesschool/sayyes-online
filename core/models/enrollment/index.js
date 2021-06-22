@@ -1,4 +1,3 @@
-const moment = require('moment');
 const { Schema } = require('mongoose');
 
 const constants = require('./constants');
@@ -12,12 +11,12 @@ const Enrollment = new Schema({
     type: { type: String, default: constants.Type.individual },
     format: { type: String, default: constants.Format.online },
     age: { type: String, default: constants.Age.adults },
+    teacherType: { type: String, default: constants.TeacherType.russian },
     level: { type: String, default: '' },
     purpose: { type: String, default: '' },
     experience: { type: String, default: '' },
     preferences: { type: String, default: '' },
     lessonDuration: { type: Number, default: 50 },
-    teacherType: { type: String },
     trialLessonSchedule: [DateSchedule],
     schedule: [WeekSchedule],
     note: { type: String },
@@ -78,6 +77,10 @@ Enrollment.virtual('scheduleLabel').get(function() {
     return this.schedule?.map(schedule => schedule.label).join(', ');
 });
 
+Enrollment.virtual('hasLessons').get(function() {
+    return this.lessons?.length > 0;
+});
+
 Enrollment.virtual('imageSrc').get(function() {
     if (this.domain === 'general') {
         return `/enrollments/${this.domain}-${this.age}.png`;
@@ -135,6 +138,13 @@ Enrollment.virtual('comments', {
     options: {
         sort: { createdAt: -1 }
     }
+});
+
+Enrollment.virtual('teacher', {
+    ref: 'Teacher',
+    localField: 'teachers',
+    foreignField: '_id',
+    justOne: true
 });
 
 Enrollment.virtual('manager', {

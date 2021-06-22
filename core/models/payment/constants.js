@@ -38,6 +38,7 @@ const PaymentMethod = {
 };
 
 const Operator = {
+    '': '',
     yookassa: 'YooKassa',
     tochka: 'Точка'
 };

@@ -12,15 +12,15 @@ const Exercise = new Schema({
 });
 
 Exercise.virtual('imageUrl').get(function() {
-    return `https://static.sayes.ru${this.ownerDocument()?.uri}/images/${this.image}`;
+    return `${process.env.STATIC_URL}${this.ownerDocument()?.uri}/images/${this.image}`;
 });
 
 Exercise.virtual('audioUrl').get(function() {
-    return this.audio && `https://static.sayes.ru${this.ownerDocument()?.uri}/audios/${this.audio}`;
+    return this.audio && `${process.env.STATIC_URL}${this.ownerDocument()?.uri}/audios/${this.audio}`;
 });
 
 Exercise.virtual('videoUrl').get(function() {
-    return this.video && `https://static.sayes.ru${this.ownerDocument()?.uri}/videos/${this.video}`;
+    return this.video && `${process.env.STATIC_URL}${this.ownerDocument()?.uri}/videos/${this.video}`;
 });
 
 module.exports = Exercise;
