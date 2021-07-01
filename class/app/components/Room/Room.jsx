@@ -70,6 +70,10 @@ export default function Room({ user, enrollment }) {
         }
     }, [localAudio, shouldBeUnmuted]);
 
+    const handleDisconnect = useCallback(() => {
+        room.disconnect();
+    }, []);
+
     return (
         <div ref={rootRef} className={classnames('room', {
             'room--showing-content': location.pathname !== '/'
@@ -81,6 +85,7 @@ export default function Room({ user, enrollment }) {
                 isFullscreen={isFullscreen}
                 onFullscreen={toggleFullscreen}
                 onSync={handleSync}
+                onDisconnect={handleDisconnect}
             />
 
             <ScreenShareBanner

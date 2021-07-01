@@ -26,6 +26,7 @@ export default function RoomHeader({
     isFullscreen,
     onFullscreen,
     onSync,
+    onDisconnect,
     children,
     ...props
 }) {
@@ -112,7 +113,7 @@ export default function RoomHeader({
                             className="end-call-button"
                             label="Завершить"
                             unelevated
-                            onClick={() => room.disconnect()}
+                            onClick={onDisconnect}
                         />
                     </TopAppBar.ActionItem>
                 </TopAppBar.Section>

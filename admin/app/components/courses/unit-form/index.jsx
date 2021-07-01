@@ -8,16 +8,19 @@ import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
 import FileInput from 'shared/components/file-input';
 
-export default function UnitForm({ unit = {}, onSubmit }) {
+const defaultUnit = {
+    title: '',
+    slug: '',
+    description: '',
+    document: '',
+    image: ''
+};
+
+export default function UnitForm({ unit = defaultUnit, onSubmit }) {
     const editorRef = useRef();
     const fileInputRef = useRef();
 
-    const [data, handleChange, getData] = useForm({
-        title: unit.title,
-        slug: unit.slug,
-        description: unit.description,
-        image: unit.image
-    }, [unit]);
+    const [data, handleChange, getData] = useForm(unit, [unit]);
 
     const handleSubmit = useCallback(() => {
         const content = editorRef.current.editor.getData();
