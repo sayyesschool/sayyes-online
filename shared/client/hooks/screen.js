@@ -72,6 +72,6 @@ export function useScrollClassName(elementRef, className, deps = []) {
 
         elementRef.current.addEventListener('scroll', handleScroll);
 
-        return () => elementRef.current.removeEventListener('scroll', handleScroll);
+        return () => elementRef.current?.removeEventListener('scroll', handleScroll);
     }, deps);
 }
