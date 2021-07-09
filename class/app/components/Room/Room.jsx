@@ -16,7 +16,7 @@ import useParticipants from 'app/hooks/useParticipants';
 import RoomHeader from 'app/components/RoomHeader';
 import RoomContent from 'app/components/RoomContent';
 import RoomSideSheet from 'app/components/RoomSideSheet';
-import ScreenShareBanner from 'app/components/ScreenShareBanner';
+import ScreenShareSnackbar from 'app/components/ScreenShareSnackbar';
 import Chat from 'shared/components/chat';
 import MainParticipant from 'app/components/MainParticipant';
 import ParticipantList from 'app/components/ParticipantList';
@@ -88,11 +88,6 @@ export default function Room({ user, enrollment }) {
                 onDisconnect={handleDisconnect}
             />
 
-            <ScreenShareBanner
-                open={isSharingScreen}
-                onDisableSharing={toggleScreenShare}
-            />
-
             <RoomSideSheet
                 open={isChatOpen}
                 onClose={() => setChatOpen(false)}
@@ -133,6 +128,11 @@ export default function Room({ user, enrollment }) {
                 </Route>
 
                 <ParticipantList />
+
+                <ScreenShareSnackbar
+                    open={isSharingScreen}
+                    onDisableSharing={toggleScreenShare}
+                />
             </RoomContent>
 
             <FAB

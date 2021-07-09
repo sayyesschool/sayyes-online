@@ -1,25 +1,26 @@
 import React from 'react';
 import {
-    Banner,
+    Snackbar,
     Button,
     Icon
 } from 'mdc-react';
 
 import './index.scss';
 
-export default function ScreenShareButton({
+export default function ScreenShareSnackbar({
     onDisableSharing,
     ...props
 }) {
     return (
-        <Banner
-            className="screen-sharing-banner"
+        <Snackbar
+            className="screen-sharing-snackbar"
             icon={<Icon>screen_share</Icon>}
-            text="Вы делитесь своим экраном"
+            label="Вы делитесь своим экраном"
             action={
                 <Button onClick={onDisableSharing}>Остановить</Button>
             }
-            centered
+            leading
+            dismissible={false}
             {...props}
         />
     );

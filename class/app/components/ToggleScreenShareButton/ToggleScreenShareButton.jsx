@@ -39,7 +39,7 @@ export default function ToggleScreenShareButton({ disabled }) {
         >
             <span>
                 <IconButton
-                    icon="screen_share"
+                    icon={isSharingScreen ? 'stop_screen_share' : 'screen_share'}
                     disabled={isDisabled}
                     onClick={toggleScreenShare}
                 />

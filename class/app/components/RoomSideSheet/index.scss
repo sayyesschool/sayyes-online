@@ -1,0 +1,20 @@
+.room-side-sheet {
+    border-left: 1px solid rgba(0,0,0,.8);
+    z-index: auto;
+
+    .mdc-side-sheet__header {
+        background: #222;
+    }
+
+    .mdc-side-sheet__content {
+        background: #222;
+    }
+
+    .mdc-side-sheet__title {
+        color: rgba(255, 255, 255, .7);
+    }
+
+    .mdc-side-sheet__close-button {
+        color: rgba(255, 255, 255, .38);
+    }
+}

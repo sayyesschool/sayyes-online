@@ -1,10 +1,9 @@
+@use '@material/icon-button';
+
 .chat {
     display: flex;
     flex-direction: column;
-    background-color: #eee;
-    background-image: url(https://static.sayes.ru/images/backgrounds/pattern.png);
-    background-repeat: repeat;
-    background-size: 80%;
+    background-color: #222;
 
     .mdc-circular-progress {
         margin: auto;
@@ -40,7 +39,7 @@
 
             &__time {
                 font-size: 10px;
-                color: rgba(0, 0, 0, 0.54);
+                color: rgba(255, 255, 255, 0.54);
                 margin-top: 4px;
             }
 
@@ -95,8 +94,8 @@
     .message-form {
         display: flex;
         margin-top: auto;
-        border-top: 1px solid rgba(0, 0, 0, .12);
-        background-color: white;
+        border-top: 1px solid rgba(255, 255, 255, .12);
+        background-color: #222;
         padding: 4px;
 
         input {
@@ -104,6 +103,12 @@
             border: none;
             padding: 8px;
             outline: none;
+            background-color: #222;
+            color: white;
+        }
+
+        .mdc-icon-button {
+            @include icon-button.ink-color(#e71985);
         }
     }
 }
