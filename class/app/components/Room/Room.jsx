@@ -34,6 +34,7 @@ export default function Room({ user, enrollment }) {
     const [isFullscreen, toggleFullscreen] = useFullScreen(rootRef);
     const [shouldBeUnmuted, setShouldBeUnmuted] = useState();
     const [isChatOpen, setChatOpen] = useState(false);
+    const [numberOfUnreadMessages, setNumberOfUnreadMessages] = useState();
 
     useEffect(() => {
         const namesById = {
@@ -47,6 +48,12 @@ export default function Room({ user, enrollment }) {
             participant.name = namesById[participant.identity];
         });
     }, [participants]);
+
+    useEffect(() => {
+        if (isChatOpen) {
+            setNumberOfUnreadMessages(undefined);
+        }
+    }, [isChatOpen]);
 
     const handleSync = useCallback(() => {
         sharedState.update({
@@ -69,6 +76,14 @@ export default function Room({ user, enrollment }) {
             }
         }
     }, [localAudio, shouldBeUnmuted]);
+
+    const handleChatConnected = useCallback(channel => {
+        channel.getUnconsumedMessagesCount()
+            .then(unconsumedMessagesCount => {
+                setNumberOfUnreadMessages(unconsumedMessagesCount);
+                channel.setAllMessagesConsumed();
+            });
+    }, []);
 
     const handleDisconnect = useCallback(() => {
         room.disconnect();
@@ -95,6 +110,7 @@ export default function Room({ user, enrollment }) {
                 <Chat
                     name={enrollment.id}
                     user={user}
+                    onConnected={handleChatConnected}
                 />
             </RoomSideSheet>
 
@@ -140,6 +156,7 @@ export default function Room({ user, enrollment }) {
                 icon={<Icon>forum</Icon>}
                 label="Чат"
                 exited={isChatOpen}
+                data-count={numberOfUnreadMessages || undefined}
                 onClick={() => setChatOpen(true)}
             />
         </div>

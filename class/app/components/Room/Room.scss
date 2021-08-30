@@ -17,4 +17,40 @@
     .participant-list {
         border-left: 1px solid #3b3b3b;
     }
+
+    .mdc-fab {
+        &[data-count]::after {
+            content: attr(data-count);
+    
+            position: absolute;
+
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+            
+            font-weight: 600;
+            font-size: 12px;
+            box-sizing: border-box;
+            min-width: 20px;
+            height: 20px;
+            line-height: 1;
+            border: 1px solid white;
+            border-radius: 10px;
+    
+            top: 4px;
+            right: 4px;
+            transform: scale(1) translate(50%, -50%);
+            transform-origin: 100% 0%;
+    
+            background: #e71985;
+            color: white;
+            z-index: 1;
+            
+            transform: scale(1) translate(50%, -50%);
+            transform-origin: 100% 0%;
+        }
+    }
 }
