@@ -174,9 +174,9 @@ export const courseReducer = createReducer(null, {
     [createLesson]: (state, action) => ({
         ...state,
         lessons: state.lessons.concat(action.data),
-        units: state.units.map(unit => unit.id !== action.data._unit ? unit : {
+        units: state.units.map(unit => unit.id !== action.data.unit ? unit : {
             ...unit,
-            _lessons: unit._lessons.concat(action.data.id)
+            lessons: unit.lessons.concat(action.data.id)
         })
     }),
     [updateLesson]: (state, action) => ({
@@ -189,19 +189,19 @@ export const courseReducer = createReducer(null, {
     [deleteLesson]: (state, action) => ({
         ...state,
         lessons: state.lessons.filter(lesson => lesson.id !== action.data.id),
-        units: state.units.map(unit => unit.id !== action.data._unit ? unit : {
+        units: state.units.map(unit => unit.id !== action.data.unit ? unit : {
             ...unit,
-            _lessons: unit._lessons.filter(id => id !== action.data.id)
+            lessons: unit.lessons.filter(id => id !== action.data.id)
         }),
-        exercises: state.exercises.filter(exercise => exercise._lesson !== action.data.id)
+        exercises: state.exercises.filter(exercise => exercise.lesson !== action.data.id)
     }),
 
     [createExercise]: (state, action) => ({
         ...state,
         exercises: state.exercises.concat(action.data),
-        lessons: state.lessons.map(lesson => lesson.id !== action.data._lesson ? lesson : {
+        lessons: state.lessons.map(lesson => lesson.id !== action.data.lesson ? lesson : {
             ...lesson,
-            _exercises: lesson._exercises.concat(action.data.id)
+            exercises: lesson.exercises.concat(action.data.id)
         })
     }),
     [updateExercise]: (state, action) => ({
@@ -214,12 +214,52 @@ export const courseReducer = createReducer(null, {
     [deleteExercise]: (state, action) => ({
         ...state,
         exercises: state.exercises.filter(exercise => exercise.id !== action.data.id),
-        lessons: state.lessons.map(lesson => lesson.id !== action.data._lesson ? lesson : {
+        lessons: state.lessons.map(lesson => lesson.id !== action.data.lesson ? lesson : {
             ...lesson,
-            _exercises: lesson._exercises.filter(id => id !== action.data.id)
+            exercises: lesson.exercises.filter(id => id !== action.data.id)
         })
     })
 });
+
+export function mapCourse(course) {
+    if (!course) return;
+
+    course.audiosByFilename = course.audios.reduce((map, audio) => map.set(audio.filename, audio), new Map());
+    course.videosByFilename = course.videos.reduce((map, video) => map.set(video.filename, video), new Map());
+    course.unitsById = course.units.reduce((map, unit) => map.set(unit.id, unit), new Map());
+    course.lessonsById = course.lessons.reduce((map, lesson) => map.set(lesson.id, lesson), new Map());
+    course.exercisesById = course.exercises.reduce((map, exercise) => map.set(exercise.id, exercise), new Map());
+
+    // course.units.forEach(unit => {
+    //     unit.lessons = unit._lessons.map(id => {
+    //         const lesson = course.lessonsById.get(id);
+
+    //         if (lesson) {
+    //             lesson.unit = unit;
+    //         }
+
+    //         return lesson;
+    //     });
+    // });
+
+    // course.lessons.forEach(lesson => {
+    //     lesson.exercises = lesson._exercises.map(id => {
+    //         const exercise = course.exercisesById.get(id);
+
+    //         if (exercise) {
+    //             exercise.lesson = lesson;
+    //         }
+
+    //         return exercise;
+    //     });
+    // });
+
+    // course.exercises.forEach(exercise => {
+    //     exercise.lesson = course.lessonsById.get(exercise._lesson);
+    // });
+
+    return course;
+}
 
 export default combineReducers({
     list: coursesReducer,

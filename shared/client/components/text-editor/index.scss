@@ -2,12 +2,20 @@
     .ck-editor {
         .ck-toolbar {
             border: none;
+            border-radius: 10px 10px 0 0;
             border-bottom: 1px solid rgba(0,0,0,.12) !important;
         }
 
         .ck-content {
             padding: 0 1rem;
             border: none !important;
+            border-radius: 0 0 10px 10px;
+        }
+    }
+
+    .mdc-card & {
+        .ck-content {
+            border-radius: 0 0 10px 10px !important;
         }
     }
 }

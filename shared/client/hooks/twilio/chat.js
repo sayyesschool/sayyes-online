@@ -9,7 +9,14 @@ export function useChat(token, identity) {
     const [messages, setMessages] = useState();
     const [isTyping, setTyping] = useState(false);
 
-    const connect = useCallback(({ name, onConnected = Function.prototype }) => {
+    const connect = useCallback(({
+        name,
+        onConnected = Function.prototype,
+        onMemberJoined = Function.prototype,
+        onMemberLeft = Function.prototype,
+        onMessageAdded = Function.prototype,
+        onMessageRemoved = Function.prototype
+    }) => {
         function tokenExpired() {
             fetch(`/twilio/tokens/chat?identity=${identity}&room=${name}`)
                 .then(token => {
@@ -21,18 +28,24 @@ export function useChat(token, identity) {
         }
 
         function memberJoined(member) {
-            // onMemberJoined(member);
+            onMemberJoined(member);
         }
 
         function memberLeft(member) {
-            // onMemberLeft(member);
+            onMemberLeft(member);
         }
 
         function messageAdded(message) {
+            message.id = message.sid;
+            message.isLocal = message.author === identity;
+            message.isRemote = message.author !== identity;
+
+            onMessageAdded(message);
             setMessages(messages => messages.concat(message));
         }
 
         function messageRemoved(message) {
+            onMessageRemoved(message);
             setMessages(messages => messages.filter(m => m.sid !== message.sid));
         }
 
@@ -87,7 +100,7 @@ export function useChat(token, identity) {
             .catch(error => {
                 console.error(error);
             });
-    }, [token]);
+    }, [token, identity]);
 
     const disconnect = useCallback(() => {
         channelRef.current.leave().then(leftChannel => {
@@ -122,11 +135,14 @@ export function useChat(token, identity) {
             return messages?.map(message => ({
                 id: message.sid,
                 author: message.author,
+                isLocal: message.author === identity,
+                isRemote: message.author !== identity,
                 body: message.body,
                 datetime: message.dateCreated,
                 type: message.type
             }));
         },
+        state,
         connect,
         disconnect,
         sendMessage,

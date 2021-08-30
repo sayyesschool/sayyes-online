@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import {
     IconButton,
     Menu
@@ -11,18 +11,54 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 
 import './index.scss';
 
-export default function Chat({ name, user }) {
-    const chat = useChat(window.TWILIO_CHAT_TOKEN);
+export default function Chat({ name, user, onConnected }) {
+    const chat = useChat(window.TWILIO_CHAT_TOKEN, user.id);
 
+    const mainRef = useRef();
     const inputRef = useRef();
+    const audioRef = useRef();
 
     const [message, setMessage] = useState();
     const [isMenuOpen, setMenuOpen] = useState(false);
     const [anchor, setAnchor] = useState();
+    const [needsToScroll, setNeedsToScroll] = useState();
 
     useEffect(() => {
-        chat.connect({ name });
+        chat.connect({
+            name,
+            onConnected: handleConnected,
+            onMessageAdded: handleMessageAdded
+        });
+
+        return () => chat.disconnect();
     }, [name]);
+
+    useEffect(() => {
+        if (needsToScroll) {
+            const timeoutId = setTimeout(() => {
+                const mainElement = mainRef.current;
+
+                mainElement.scrollTop = mainElement.scrollHeight - mainElement.clientHeight;
+
+                clearTimeout(timeoutId);
+            }, 0);
+        }
+    }, [needsToScroll]);
+
+    const handleConnected = useCallback(channel => {
+        audioRef.current = new Audio('https://static.sayyesonline.ru/assets/audios/chat-new-message.mp3');
+        onConnected(channel);
+    }, [onConnected]);
+
+    const handleMessageAdded = useCallback(message => {
+        if (message.isRemote) {
+            audioRef.current?.play();
+        }
+
+        const needsToScroll = (Math.trunc(mainRef.current.scrollTop) + mainRef.current.clientHeight) === mainRef.current.scrollHeight;
+
+        setNeedsToScroll(needsToScroll);
+    }, []);
 
     const handleSubmit = useCallback(event => {
         event.preventDefault();
@@ -62,35 +98,40 @@ export default function Chat({ name, user }) {
 
     return (
         <article className="chat">
-            <ul className="message-list">
-                {chat.messages.map(message =>
-                    <li
-                        key={message.id}
-                        className={classnames('message', {
-                            'message--local': message.author === user.id,
-                            'message--remote': message.author !== user.id,
-                            [`message--${message.type}`]: message.type
-                        })}
-                        onContextMenu={event => handleContextMenu(event, message)}
-                    >
-                        <span className="message__time">{moment(message.datetime).format('HH:mm')}</span>
-                        <span className="message__text">{message.body}</span>
-                    </li>
-                )}
-            </ul>
+            <section ref={mainRef} className="chat__main">
+                <ul className="message-list">
+                    {chat.messages.map(message =>
+                        <li
+                            id={message.id}
+                            key={message.id}
+                            className={classnames('message', {
+                                'message--local': message.author === user.id,
+                                'message--remote': message.author !== user.id,
+                                [`message--${message.type}`]: message.type
+                            })}
+                            onContextMenu={event => handleContextMenu(event, message)}
+                        >
+                            <span className="message__time">{moment(message.datetime).format('HH:mm')}</span>
+                            <span className="message__text">{message.body}</span>
+                        </li>
+                    )}
+                </ul>
+            </section>
 
-            <form className="message-form" onSubmit={handleSubmit}>
-                <input
-                    ref={inputRef}
-                    placeholder="Сообщение"
-                    onKeyPress={handleKeyPress}
-                />
+            <footer className="chat__footer">
+                <form className="message-form" onSubmit={handleSubmit}>
+                    <input
+                        ref={inputRef}
+                        placeholder="Сообщение"
+                        onKeyPress={handleKeyPress}
+                    />
 
-                <IconButton
-                    type="submit"
-                    icon="send"
-                />
-            </form>
+                    <IconButton
+                        type="submit"
+                        icon="send"
+                    />
+                </form>
+            </footer>
 
             <Menu
                 open={isMenuOpen}

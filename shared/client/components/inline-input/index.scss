@@ -1,0 +1,26 @@
+.inline-input {
+    position: relative;
+    display: inline-block;
+    min-width: 1rem;
+    height: 24px;
+    line-height: 24px;
+    padding: 0 8px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    text-align: center;
+    outline: none;
+    cursor: pointer;
+    box-sizing: content-box;
+    letter-spacing: normal;
+    vertical-align: baseline;
+
+    &--correct {
+        color: forestgreen;
+        background-color: rgba(34, 139, 34, .12);
+    }
+
+    &--incorrect {
+        color: firebrick;
+        background-color: rgba(178, 34, 34, .12);
+    }
+}

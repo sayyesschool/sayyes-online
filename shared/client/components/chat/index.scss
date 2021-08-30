@@ -5,6 +5,18 @@
     flex-direction: column;
     background-color: #222;
 
+    &__main {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    &__footer {
+        margin-top: auto;
+        border-top: 1px solid rgba(255, 255, 255, .12);
+        background-color: #222;
+        padding: 4px;
+    }
+
     .mdc-circular-progress {
         margin: auto;
     }
@@ -17,8 +29,6 @@
         justify-content: flex-end;
         margin: 0;
         padding: 1rem;
-        overflow-y: auto;
-        overflow-x: hidden;
 
         .message {
             display: flex;
@@ -93,11 +103,7 @@
 
     .message-form {
         display: flex;
-        margin-top: auto;
-        border-top: 1px solid rgba(255, 255, 255, .12);
-        background-color: #222;
-        padding: 4px;
-
+        
         input {
             flex: 1;
             border: none;

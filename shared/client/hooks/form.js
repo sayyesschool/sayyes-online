@@ -37,10 +37,6 @@ export default function useForm(initialData, deps = []) {
                 }));
             }
         },
-        fn => setData(data => {
-            fn(data);
-            return data;
-        }),
-        fn => setData(fn)
+        setData
     ];
 }
