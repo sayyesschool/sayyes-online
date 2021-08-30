@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import React, { createElement, useCallback } from 'react';
 import {
     Layout,
     Select,
@@ -7,31 +7,104 @@ import {
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
-import FileInput from 'shared/components/file-input';
 
-export default function ExerciseForm({ exercise = {}, course, onSubmit }) {
-    const fileInputRef = useRef();
-    const [data, handleChange, getData] = useForm({
-        description: exercise.description,
-        image: exercise.image,
-        audio: exercise.audio,
-        video: exercise.video
-    }, [exercise]);
+import BooleanExerciseForm from './boolean-exercise-form';
+import ChoiceExerciseForm from './choice-exercise-form';
+import TextExerciseForm from './text-exercise-form';
+import FIBExerciseForm from './fib-exercise-form';
+import EssayExerciseForm from './essay-exercise-form';
+
+import './index.scss';
+
+const ComponentsByType = {
+    boolean: BooleanExerciseForm,
+    choice: ChoiceExerciseForm,
+    text: TextExerciseForm,
+    fib: FIBExerciseForm,
+    essay: EssayExerciseForm
+};
+
+const typeOptions = [
+    {
+        key: 'null',
+        value: '',
+        text: ''
+    },
+    {
+        key: 'boolean',
+        value: 'boolean',
+        text: 'Да / Нет'
+    },
+    {
+        key: 'choice',
+        value: 'choice',
+        text: 'Выбор'
+    },
+    {
+        key: 'text',
+        value: 'text',
+        text: 'Текст'
+    },
+    {
+        key: 'fib',
+        value: 'fib',
+        text: 'Заполнить пробелы'
+    },
+    {
+        key: 'essay',
+        value: 'essay',
+        text: 'Эссе'
+    }
+];
+
+const defaultExercise = {
+    type: '',
+    title: '',
+    description: '',
+    text: '',
+    image: '',
+    audio: '',
+    video: '',
+    items: []
+};
+
+export default function ExerciseForm({ course, exercise = defaultExercise, onSubmit, ...props }) {
+    const [data, handleChange, setData] = useForm(exercise);
 
     const handleSubmit = useCallback(() => {
-        const file = fileInputRef.current.input.files[0];
-
-        if (file) {
-            file.path = `courses/${course.id}/images/`;
-        }
-
-        getData(data => onSubmit(Object.assign(data, { file })));
-        fileInputRef.current.reset();
+        setData(data => {
+            onSubmit(data);
+            return data;
+        });
     }, [onSubmit]);
 
+    const handleUpdate = useCallback(exercise => {
+        setData(data => ({
+            ...data,
+            ...exercise
+        }));
+    }, [setData]);
+
     return (
-        <Form id="exercise-form" onSubmit={handleSubmit}>
+        <Form id="exercise-form" className={`exercise-form exercise-form--${exercise.type}`} onSubmit={handleSubmit} {...props}>
             <Layout column>
+                <Select
+                    name="type"
+                    label="Тип"
+                    value={data.type}
+                    options={typeOptions}
+                    filled
+                    onChange={handleChange}
+                />
+
+                <TextField
+                    name="title"
+                    label="Название"
+                    value={data.title}
+                    filled
+                    onChange={handleChange}
+                />
+
                 <TextField
                     name="description"
                     label="Описание"
@@ -67,21 +140,12 @@ export default function ExerciseForm({ exercise = {}, course, onSubmit }) {
                     onChange={handleChange}
                 />
 
-                <FileInput
-                    ref={fileInputRef}
-                    name="image"
-                    label="Изображение"
-                />
+                {data.type && createElement(ComponentsByType[data.type], {
+                    key: exercise.id,
+                    exercise: data,
+                    onUpdate: handleUpdate
+                })}
             </Layout>
         </Form>
     );
 }
-
-ExerciseForm.defaultProps = {
-    exercise: {
-        description: '',
-        image: '',
-        audio: '',
-        video: ''
-    }
-};

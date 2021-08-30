@@ -14,7 +14,7 @@ export default function CourseRouter() {
             <Route exact path="/courses/:courseId" component={Course} />
             <Route exact path="/courses/:courseId/units/:unitId" component={Unit} />
             <Route exact path="/courses/:courseId/units/:unitId/lessons/:lessonId" component={Lesson} />
-            <Route path="/courses/:courseId/units/:unitId/lessons/:lessonId/exercises/:exerciseId" component={Lesson} />
+            <Route path="/courses/:courseId/units/:unitId/lessons/:lessonId/exercises/:exerciseId" component={Exercise} />
         </Switch>
     );
 }

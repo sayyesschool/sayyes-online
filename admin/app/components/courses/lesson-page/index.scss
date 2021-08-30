@@ -1,3 +1,7 @@
 #lesson-page {
-    
+    .mdc-card {
+        &__section--primary {
+            padding-bottom: 1rem;
+        }
+    }
 }

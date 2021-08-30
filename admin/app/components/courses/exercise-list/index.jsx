@@ -6,7 +6,7 @@ import {
     List
 } from 'mdc-react';
 
-export default function ExerciseList({ exercise: activeExercise, exercises, onDelete }) {
+export default function ExerciseList({ exercises, exercise: activeExercise, onDelete }) {
     const handleClick = useCallback((event, exercise) => {
         event.preventDefault();
         event.stopPropagation();
@@ -22,7 +22,7 @@ export default function ExerciseList({ exercise: activeExercise, exercises, onDe
                     component={Link}
                     to={exercise.url}
                     graphic={<Avatar text={index + 1} />}
-                    text={exercise.description}
+                    text={exercise.title}
                     meta={
                         <IconButton
                             icon="delete"

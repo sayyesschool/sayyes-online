@@ -115,7 +115,7 @@ module.exports = ({
         },
 
         delete: (req, res, next) => {
-            Course.update(req.params.course, {
+            Course.findByIdAndUpdate(req.params.course, {
                 $pull: {
                     units: { _id: req.params.unit },
                     lessons: { unit: req.params.unit },
@@ -148,6 +148,7 @@ module.exports = ({
                     'units.$[u].lessons': lesson.id
                 }
             }, {
+                new: true,
                 arrayFilters: [{ 'u._id': lesson.unit }],
                 projection: {
                     id: true,
@@ -170,7 +171,7 @@ module.exports = ({
                     return data;
                 }, {});
 
-            Course.update(req.params.course, {
+            Course.findByIdAndUpdate(req.params.course, {
                 $set: data
             }, {
                 new: true,
@@ -190,7 +191,7 @@ module.exports = ({
         },
 
         delete: (req, res, next) => {
-            Course.update(req.params.course, {
+            Course.findByIdAndUpdate(req.params.course, {
                 $pull: {
                     lessons: { _id: req.params.lesson },
                     'units.$[u].lessons': req.params.lesson,
@@ -218,9 +219,9 @@ module.exports = ({
 
     exercises: {
         create: (req, res, next) => {
-            const exercise = new Course.model().exercises.create(req.body);
+            const exercise = new Course().exercises.create(req.body);
 
-            Course.update(req.params.course, {
+            Course.findByIdAndUpdate(req.params.course, {
                 $push: {
                     exercises: exercise,
                     'lessons.$[l].exercises': exercise.id
@@ -253,7 +254,7 @@ module.exports = ({
                     return data;
                 }, {});
 
-            Course.update(req.params.course, {
+            Course.findByIdAndUpdate(req.params.course, {
                 $set: data
             }, {
                 new: true,
@@ -273,7 +274,7 @@ module.exports = ({
         },
 
         delete: (req, res, next) => {
-            Course.update(req.params.course, {
+            Course.findByIdAndUpdate(req.params.course, {
                 $pull: {
                     exercises: { _id: req.params.exercise },
                     'lessons.$[l].exercises': req.params.exercise

@@ -1,0 +1,74 @@
+.exercise-form {
+    .elements-label {
+        margin: 1rem 0;
+    }
+
+    .new-item-button {
+        width: 100%;
+    }
+
+    .exercise-item {
+        + .exercise-item {
+            margin-top: 8px;
+        }
+
+        &.mdc-list-item {
+            height: auto;
+            min-height: 48px;
+            align-items: flex-start;
+            padding-top: 6px;
+            padding-bottom: 6px;
+
+            .mdc-list-item__graphic {
+                margin-top: 6px;
+            }
+
+            .mdc-list-item__text {
+                margin: 8px 0;
+            }
+
+            .mdc-text-field {
+                width: 100%;
+            }
+        }
+    }
+
+    &--boolean {
+
+    }
+
+    &--choice {    
+
+    }
+
+    &--text {
+        .exercise-item {
+            .mdc-text-field {
+                width: 100%;
+            }
+
+            .mdc-form-field {
+                margin: 0;
+
+                &__label {
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+
+    &--fib {
+        .mdc-text-field {
+            
+        }
+
+        .mdc-form-field {
+            margin: 0;
+        }
+
+        .text-editor {
+            border: 1px solid rgba(0,0,0,.12);
+            border-radius: 4px;
+        }
+    }
+}

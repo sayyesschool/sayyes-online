@@ -23,7 +23,10 @@ export default function LessonForm({ lesson = {}, course, onSubmit }) {
             file.path = `courses/${course.id}/images/`;
         }
 
-        getData(data => onSubmit(Object.assign(data, { file })));
+        getData(data => {
+            onSubmit(Object.assign(data, { file }));
+            return data;
+        });
         fileInputRef.current.reset();
     }, [onSubmit]);
 

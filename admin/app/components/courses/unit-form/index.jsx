@@ -17,20 +17,18 @@ const defaultUnit = {
 };
 
 export default function UnitForm({ unit = defaultUnit, onSubmit }) {
-    const editorRef = useRef();
     const fileInputRef = useRef();
 
     const [data, handleChange, getData] = useForm(unit, [unit]);
 
     const handleSubmit = useCallback(() => {
-        const content = editorRef.current.editor.getData();
         const file = fileInputRef.current.input.files[0];
 
         if (file) {
             file.path = `courses/${unit.course.id}/images/`;
         }
 
-        getData(data => onSubmit(Object.assign(data, { content, file })));
+        getData(data => onSubmit(Object.assign(data, { file })));
 
         fileInputRef.current.reset();
     }, [onSubmit]);

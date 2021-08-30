@@ -20,12 +20,12 @@ export default function UnitPage({ match, history }) {
     const [course, actions] = useCourse(match.params.courseId);
 
     const handleUpdateUnit = useCallback(data => {
-        actions.updateUnit(course.id, unit.id, data);
+        return actions.updateUnit(course.id, unit.id, data);
     }, [course, unit]);
 
     const handleDeleteUnit = useCallback(() => {
         if (confirm('Удалить юнит?')) {
-            actions.deleteUnit(course.id, unit.id)
+            return actions.deleteUnit(course.id, unit.id)
                 .then(() => history.push(course.url));
         }
     }, [course, unit]);
@@ -33,13 +33,12 @@ export default function UnitPage({ match, history }) {
     const handleCreateLesson = useCallback(data => {
         data.unit = unit.id;
 
-        actions.createLesson(course.id, data)
-            .then(() => setLessonFormOpen(false));
+        return actions.createLesson(course.id, data);
     }, [course, unit]);
 
     const handleDeleteLesson = useCallback(lesson => {
         if (confirm('Удалить урок?')) {
-            actions.deleteLesson(course.id, lesson.id);
+            return actions.deleteLesson(course.id, lesson.id);
         }
     }, [course, unit]);
 
@@ -51,7 +50,7 @@ export default function UnitPage({ match, history }) {
         <Page id="unit-page">
             <PageTopBar
                 breadcrumbs={[
-                    <Link to={course.url}>{course.title}</Link>
+                    <Link to={course.uri}>{course.title}</Link>
                 ]}
                 title={unit.title}
                 actions={[
@@ -66,9 +65,16 @@ export default function UnitPage({ match, history }) {
 
             <PageContent>
                 <LayoutGrid>
-                    <LayoutGrid.Cell span="4" grid>
+                    <LayoutGrid.Cell span="4">
+                        <UnitDetails
+                            unit={unit}
+                            onUpdate={handleUpdateUnit}
+                        />
+                    </LayoutGrid.Cell>
+
+                    <LayoutGrid.Cell span="8" grid>
                         <LayoutGrid.Cell span="12">
-                            <UnitDetails
+                            <UnitContent
                                 unit={unit}
                                 onUpdate={handleUpdateUnit}
                             />
@@ -82,13 +88,6 @@ export default function UnitPage({ match, history }) {
                                 onDelete={handleDeleteLesson}
                             />
                         </LayoutGrid.Cell>
-                    </LayoutGrid.Cell>
-
-                    <LayoutGrid.Cell span="8">
-                        <UnitContent
-                            unit={unit}
-                            onUpdate={handleUpdateUnit}
-                        />
                     </LayoutGrid.Cell>
                 </LayoutGrid>
             </PageContent>

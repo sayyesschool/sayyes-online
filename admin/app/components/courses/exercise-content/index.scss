@@ -1,0 +1,17 @@
+.exercise-content {
+    &--boolean {
+        .mdc-list {
+            padding: 0;
+        }
+
+        .mdc-list-item {
+            padding: 0;
+            cursor: default;
+            overflow: visible;
+
+            &__ripple {
+                display: none;
+            }
+        }
+    }
+}

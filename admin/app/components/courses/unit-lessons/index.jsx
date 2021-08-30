@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
     Card,
     Icon,
@@ -14,7 +14,12 @@ import LessonForm from 'app/components/courses/lesson-form';
 export default function UnitLessons({ course, unit, onCreate, onDelete }) {
     const [isLessonFormOpen, toggleLessonFormOpen] = useBoolean(false);
 
-    const lessons = unit.lessons.map(id => course.lessonsById.get(id));
+    const lessons = unit.lessons.map(id => course.lessonsById.get(id)).filter(id => id !== undefined);
+
+    const handleSubmit = useCallback(data => {
+        onCreate(data)
+            .then(() => toggleLessonFormOpen(false));
+    }, [onCreate]);
 
     return (
         <section className="unit-lessons">
@@ -47,7 +52,7 @@ export default function UnitLessons({ course, unit, onCreate, onDelete }) {
                 onClose={toggleLessonFormOpen}
             >
                 <LessonForm
-                    onSubmit={onCreate}
+                    onSubmit={handleSubmit}
                 />
             </FormDialog>
         </section>
