@@ -44,6 +44,56 @@ export const deleteCourse = createAction('DELETE_COURSE', courseId => ({
     }
 }));
 
+// Audios
+
+export const createAudio = createAction('CREATE_COURSE_AUDIO', (courseId, data) => ({
+    request: {
+        method: 'post',
+        url: `/courses/${courseId}/audios`,
+        body: data
+    }
+}));
+
+export const updateAudio = createAction('UPDATE_COURSE_AUDIO', (courseId, audioId, data) => ({
+    request: {
+        method: 'put',
+        url: `/courses/${courseId}/audios/${audioId}`,
+        body: data
+    }
+}));
+
+export const deleteAudio = createAction('DELETE_COURSE_AUDIO', (courseId, audioId) => ({
+    request: {
+        method: 'delete',
+        url: `/courses/${courseId}/audios/${audioId}`
+    }
+}));
+
+// Videos
+
+export const createVideo = createAction('CREATE_COURSE_VIDEO', (courseId, data) => ({
+    request: {
+        method: 'post',
+        url: `/courses/${courseId}/videos`,
+        body: data
+    }
+}));
+
+export const updateVideo = createAction('UPDATE_COURSE_VIDEO', (courseId, videoId, data) => ({
+    request: {
+        method: 'put',
+        url: `/courses/${courseId}/videos/${videoId}`,
+        body: data
+    }
+}));
+
+export const deleteVideo = createAction('DELETE_COURSE_VIDEO', (courseId, videoId) => ({
+    request: {
+        method: 'delete',
+        url: `/courses/${courseId}/videos/${videoId}`
+    }
+}));
+
 // Units
 
 export const createUnit = createAction('CREATE_COURSE_UNIT', (courseId, data) => ({
@@ -127,6 +177,14 @@ export const actions = {
     updateCourse,
     deleteCourse,
 
+    createAudio,
+    updateAudio,
+    deleteAudio,
+
+    createVideo,
+    updateVideo,
+    deleteVideo,
+
     createUnit,
     updateUnit,
     deleteUnit,
@@ -152,6 +210,62 @@ export const courseReducer = createReducer(null, {
     [unsetCourse]: (state, action) => null,
     [updateCourse]: (state, action) => ({ ...state, ...action.data }),
     [deleteCourse]: (state, action) => null,
+
+    [createAudio]: (state, action) => ({
+        ...state,
+        audios: state.audios.concat(action.data)
+    }),
+    [updateAudio]: (state, action) => ({
+        ...state,
+        audios: state.audios.map(audio => audio.id !== action.data.id ? audio : {
+            ...audio,
+            ...action.data
+        })
+    }, action.data),
+    [deleteAudio]: (state, action) => ({
+        ...state,
+        audios: state.audios.filter(audio => audio.id !== action.data.id),
+        units: state.units.map(unit => !unit.audios.includes(action.data.id) ? unit : {
+            ...unit,
+            audios: unit.audios.filter(audioId => audioId !== action.data.id)
+        }),
+        lessons: state.lessons.map(lesson => !lesson.audios.includes(action.data.id) ? lesson : {
+            ...lesson,
+            audios: lesson.audios.filter(audioId => audioId !== action.data.id)
+        }),
+        exercises: state.exercises.map(exercise => !exercise.audios.includes(action.data.id) ? exercise : {
+            ...exercise,
+            audios: exercise.audios.filter(audioId => audioId !== action.data.id)
+        })
+    }),
+
+    [createVideo]: (state, action) => ({
+        ...state,
+        videos: state.videos.concat(action.data)
+    }),
+    [updateVideo]: (state, action) => ({
+        ...state,
+        videos: state.videos.map(video => video.id !== action.data.id ? video : {
+            ...video,
+            ...action.data
+        })
+    }, action.data),
+    [deleteVideo]: (state, action) => ({
+        ...state,
+        videos: state.videos.filter(video => video.id !== action.data.id),
+        units: state.units.map(unit => !unit.videos.includes(action.data.id) ? unit : {
+            ...unit,
+            videos: unit.videos.filter(videoId => videoId !== action.data.id)
+        }),
+        lessons: state.lessons.map(lesson => !lesson.videos.includes(action.data.id) ? lesson : {
+            ...lesson,
+            videos: lesson.videos.filter(videoId => videoId !== action.data.id)
+        }),
+        exercises: state.exercises.map(exercise => !exercise.videos.includes(action.data.id) ? exercise : {
+            ...exercise,
+            videos: exercise.videos.filter(videoId => videoId !== action.data.id)
+        })
+    }),
 
     [createUnit]: (state, action) => ({
         ...state,
@@ -254,9 +368,13 @@ export function mapCourse(course) {
     //     });
     // });
 
-    // course.exercises.forEach(exercise => {
-    //     exercise.lesson = course.lessonsById.get(exercise._lesson);
-    // });
+    course.exercises.forEach(exercise => {
+        exercise.lesson = course.lessonsById.get(exercise._lesson);
+
+        if (exercise.audio) {
+            exercise.audio = course.audiosByFilename.get(exercise.audio);
+        }
+    });
 
     return course;
 }

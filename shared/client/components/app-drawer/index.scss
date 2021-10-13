@@ -1,6 +1,64 @@
-#app-drawer {
+@use '@material/drawer';
+@use 'shared/styles/variables';
+
+.app-drawer {
     position: fixed;
     top: 64px;
+    width: 72px;
     height: calc(100% - 64px);
     z-index: 3;
+
+    @include drawer.width(72px);
+    // @include drawer.fill-color-accessible(variables.$primary-color);
+    // @include drawer.item-activated-icon-ink-color(white);
+    // @include drawer.item-activated-text-ink-color(white);
+    @include drawer.item-shape-radius(0);
+
+    .mdc-list {
+        padding: 0;
+    }
+
+    .mdc-list-item {
+        height: auto;
+        flex-direction: column;
+        margin: 0;
+        padding: 10px 6px;
+        white-space: nowrap;
+
+        &__graphic {
+            margin-right: 0;
+            margin-bottom: 4px;
+        }
+
+        &__text {
+            width: 100%;
+            font-size: 10px;
+            line-height: 1.2;
+            white-space: normal;
+            text-align: center;
+            font-weight: 400;
+        }
+
+        &__meta {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 16px;
+            height: 16px;
+            line-height: 16px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            background-color: #e71985;
+            color: white;
+            border-radius: 100%;
+            // border: 2px solid #5a1294;
+            box-sizing: content-box;
+        }
+
+        // &--activated {
+        //     border-left: 2px solid white;
+        //     padding-left: 4px;
+        // }
+    }
 }

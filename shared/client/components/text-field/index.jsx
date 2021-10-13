@@ -1,18 +1,21 @@
 import React, { forwardRef, useLayoutEffect, useRef, useImperativeHandle } from 'react';
+import {
+    TextField
+} from 'mdc-react';
 
 import './index.scss';
 
 export default forwardRef(TextArea);
 
 function TextArea({ autoResize, ...props }, ref) {
-    const elementRef = useRef();
+    const textFieldRef = useRef();
 
-    useImperativeHandle(ref, () => elementRef.current);
+    useImperativeHandle(ref, () => textFieldRef.current);
 
     useLayoutEffect(() => {
-        if (!elementRef.current || !autoResize) return;
+        if (!textFieldRef.current || !autoResize) return;
 
-        const element = elementRef.current;
+        const element = textFieldRef.current.control;
 
         function setHeight() {
             element.style.height = '1rem';
@@ -27,8 +30,9 @@ function TextArea({ autoResize, ...props }, ref) {
     }, [autoResize]);
 
     return (
-        <div className="text-field">
-            <textarea ref={elementRef} {...props} />
-        </div>
+        <TextField
+            ref={textFieldRef}
+            {...props}
+        />
     );
 }

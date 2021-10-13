@@ -2,38 +2,30 @@ import { createElement } from 'react';
 
 import Input from 'shared/components/inline-input';
 import Select from 'shared/components/inline-select';
+import Textarea from 'shared/components/inline-textarea';
 
 const componentsByType = {
     input: Input,
-    select: Select
+    select: Select,
+    textarea: Textarea
 };
 
 const elementTypeBySymbol = {
     '{': 'input',
-    '[': 'select'
+    '[': 'textarea',
+    '/': 'select'
 };
 
 const elementStringBySymbol = {
     '{': (values) => `<input data-values="${values}">`,
-    '[': (values) => `<select>${values.map(value => `<option value="${value}">${value}</option>`).join('')}</select>`
+    '[': (values) => `<textarea data-values="${values}"></textarea>`,
+    '/': (values) => `<select>${values.map(value => `<option value="${value}">${value}</option>`).join('')}</select>`
 };
 
 export const regex = /{}|{[^{][^}]*}|\[\]|\[[^[][^\]]*\]/gm;
 
 export function textToJsx(string) {
-    const parts = parseText(string);
-
-    return parts.map(item => typeof item === 'string' ? item : elementToJsx(item));
-}
-
-export function htmlToJsx(string) {
-    const html = parseHtml(string);
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    const div = document.createElement('div');
-    div.append(...doc.body.children);
-
-    return elementToJsx(div);
+    return parseText(string);
 }
 
 export function parseText(string) {
@@ -53,6 +45,16 @@ export function parseText(string) {
     result.push(string.slice(lastEndIndex));
 
     return result;
+}
+
+export function htmlToJsx(string) {
+    const html = parseHtml(string);
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const div = document.createElement('div');
+    div.append(...doc.body.children);
+
+    return elementToJsx(div);
 }
 
 export function parseHtml(string) {
@@ -82,6 +84,8 @@ function elementToJsx(element) {
         return element.textContent === '\n' ? undefined : element.textContent;
     } else if (type === 'input' && element.type === 'text') {
         return createElement(Input, { values: element.dataset.values.split(',') });
+    } else if (type === 'textarea' && element.type === 'textarea') {
+        return createElement(Textarea, { values: element.dataset.values.split(',') });
     } else if (type === 'select') {
         return createElement(Select, { values: Array.from(element.children).map(option => option.value) });
     } else if (element.childNodes.length === 0) {

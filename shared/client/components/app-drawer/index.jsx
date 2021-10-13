@@ -5,9 +5,15 @@ import {
 
 import './index.scss';
 
-export default function AppDrawer({ open, children }) {
+export default function AppDrawer({ open, children, ...props }) {
     return (
-        <Drawer id="app-drawer" dismissible open={open} appear>
+        <Drawer
+            className="app-drawer"
+            open={open}
+            appear
+            dismissible
+            {...props}
+        >
             <Drawer.Content>
                 {children}
             </Drawer.Content>

@@ -1,0 +1,13 @@
+.audio-field {
+    input[type="file"] {
+        display: none;
+    }
+
+    .mdc-text-field {
+        width: 100%;
+
+        .mdc-text-field__icon--trailing {
+            margin-right: 8px;
+        }
+    }
+}

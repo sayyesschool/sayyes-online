@@ -22,11 +22,11 @@ export default function PageTopBar({ title, breadcrumbs, backTo, actions, childr
 
                     <div>
                         {breadcrumbs?.length > 0 &&
-                            <div className="page-breadcrumbs">
+                            <nav className="page-breadcrumbs">
                                 {breadcrumbs.map((item, index) =>
-                                    React.cloneElement(item, { key: index, className: 'mdc-typography--subtitle1' })
+                                    React.cloneElement(item, { key: index, className: 'mdc-typography--overline' })
                                 )}
-                            </div>
+                            </nav>
                         }
 
                         {title &&

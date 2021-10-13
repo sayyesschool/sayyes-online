@@ -3,14 +3,12 @@ import classnames from 'classnames';
 
 import './index.scss';
 
-export default function AppContent({ children, fixedAdjust, className, ...props }) {
-    const classNames = classnames(className, {
+export default function AppContent({ fixedAdjust, className, ...props }) {
+    const classNames = classnames('app-content', {
         'mdc-top-app-bar--fixed-adjust': fixedAdjust
-    });
+    }, className);
 
     return (
-        <div id="app-content" className={classNames}>
-            {children}
-        </div>
+        <div className={classNames} {...props} />
     );
 }

@@ -1,0 +1,27 @@
+.audio-content {
+    .mdc-card {
+        .mdc-card__section--primary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px !important;
+        }
+
+        .mdc-icon-button {
+            color: rgba(0,0,0,.54);
+        }
+    }
+
+    .audio-player {
+        flex: 1;
+
+        .plyr__controls {
+            padding: 0;
+        }
+    }
+
+    .audio-script {
+        max-height: 480px;
+        overflow: auto;
+    }
+}

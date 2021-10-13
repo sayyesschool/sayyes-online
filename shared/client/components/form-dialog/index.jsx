@@ -7,12 +7,12 @@ import {
 import './index.scss';
 
 export default function FormDialog({
-    form,
     title,
     open,
     submitButtonText = 'Сохранить',
     children,
     confirmation,
+    form = children?.props.id,
     onClose,
     onSubmit,
     ...props
@@ -20,8 +20,8 @@ export default function FormDialog({
     return (
         <Dialog
             className="form-dialog"
-            open={open}
             title={title}
+            open={open}
             {...props}
         >
             <Dialog.Content>

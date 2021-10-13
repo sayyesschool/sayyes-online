@@ -1,4 +1,7 @@
 .text-editor {
+    border: 1px solid rgba(0,0,0,.12);
+    border-radius: 4px;
+
     .ck-editor {
         .ck-toolbar {
             border: none;
@@ -9,7 +12,7 @@
         .ck-content {
             padding: 0 1rem;
             border: none !important;
-            border-radius: 0 0 10px 10px;
+            box-shadow: none !important;
         }
     }
 

@@ -18,7 +18,7 @@ export default function AppHeader({
     ...props
 }) {
     return (
-        <TopAppBar id="app-header" fixed {...props}>
+        <TopAppBar className="app-header" fixed {...props}>
             <TopAppBar.Row>
                 <TopAppBar.Section align="start">
                     {navigationIcon &&
