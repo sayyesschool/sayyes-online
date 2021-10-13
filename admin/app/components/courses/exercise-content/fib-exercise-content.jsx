@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { textToJsx, htmlToJsx } from 'shared/utils/exercise';
 
 export default function FIBExerciseContent({ exercise }) {
-    return exercise.items.map(item =>
-        <React.Fragment key={item.id}>
-            {item.html ?
-                htmlToJsx(item.text) :
-                textToJsx(item.text)
-            }
-        </React.Fragment>
+    return (
+        <form autoComplete="off">
+            {exercise.items.map((item, index) =>
+                item.html ?
+                    <Fragment key={index}>
+                        {htmlToJsx(item.text)}
+                    </Fragment>
+                    :
+                    <p key={index}>{textToJsx(item.text)}</p>
+            )}
+        </form>
     );
 }

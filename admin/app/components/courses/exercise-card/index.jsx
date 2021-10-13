@@ -3,6 +3,7 @@ import {
     IconButton,
     Card
 } from 'mdc-react';
+import classnames from 'classnames';
 
 import { useBoolean } from 'shared/hooks/state';
 
@@ -14,9 +15,10 @@ import './index.scss';
 const ExerciseTypeLabel = {
     boolean: 'Да / Нет',
     choice: 'Выбор',
-    text: 'Текст',
+    essay: 'Эссе',
     fib: 'Заполнить пробелы',
-    essay: 'Эссе'
+    input: 'Ввод',
+    text: 'Текст'
 };
 
 export default function ExerciseCard({ course, exercise, onUpdate, onDelete }) {
@@ -35,9 +37,11 @@ export default function ExerciseCard({ course, exercise, onUpdate, onDelete }) {
         onDelete(exercise.id);
     }, [exercise, onDelete]);
 
+    const classNames = classnames('exercise-card', `exercise-card--${exercise.type}`);
+
     return isEditing ?
         (
-            <Card className="exercise-card" outlined>
+            <Card className={classNames}>
                 <Card.PrimaryAction onClick={toggleCollapsed}>
                     <Card.Header
                         title="Редактирование упражнения"
@@ -70,7 +74,7 @@ export default function ExerciseCard({ course, exercise, onUpdate, onDelete }) {
         )
         :
         (
-            <Card className="exercise-card" outlined>
+            <Card className={classNames}>
                 <Card.PrimaryAction onClick={toggleCollapsed}>
                     <Card.Header
                         title={exercise.title}

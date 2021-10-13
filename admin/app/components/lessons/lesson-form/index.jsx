@@ -38,7 +38,7 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
     const [data, handleChange] = useForm({
         ...defaultLesson,
         ...lesson,
-        teacher: lesson.teacher?.id || ''
+        teacher: lesson.teacher?.id || lesson.teacher || ''
     });
 
     const handleSubmit = useCallback(() => {
@@ -81,22 +81,6 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                     onChange={handleChange}
                 />
 
-                <FormField label="Пробное">
-                    <Switch
-                        name="trial"
-                        checked={data.trial}
-                        onChange={handleChange}
-                    />
-                </FormField>
-
-                <FormField label="Бесплатное">
-                    <Switch
-                        name="free"
-                        checked={data.free}
-                        onChange={handleChange}
-                    />
-                </FormField>
-
                 <PeopleSelect
                     name="teacher"
                     value={data.teacher}
@@ -108,6 +92,30 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                     }))}
                     onChange={handleChange}
                 />
+
+                <FormField label="Пробное" alignEnd spaceBetween>
+                    <Switch
+                        name="trial"
+                        checked={data.trial}
+                        onChange={handleChange}
+                    />
+                </FormField>
+
+                <FormField label="Бесплатное" alignEnd spaceBetween>
+                    <Switch
+                        name="free"
+                        checked={data.free}
+                        onChange={handleChange}
+                    />
+                </FormField>
+
+                <FormField label="Подтвержденное" alignEnd spaceBetween>
+                    <Switch
+                        name="confirmed"
+                        checked={data.confirmed}
+                        onChange={handleChange}
+                    />
+                </FormField>
 
                 <TextField
                     name="note"

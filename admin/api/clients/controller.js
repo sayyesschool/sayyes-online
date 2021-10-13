@@ -27,11 +27,6 @@ module.exports = ({
                 populate: { path: 'manager', select: 'firstname lastname' }
             })
             .populate({
-                path: 'lessons',
-                select: 'status teacher trial',
-                populate: { path: 'teacher', select: 'firstname lastname' }
-            })
-            .populate({
                 path: 'payments',
                 select: 'description status amount'
             })

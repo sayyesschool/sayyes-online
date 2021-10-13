@@ -12,18 +12,8 @@ import UI from 'app/contexts/ui';
 import { useStore, useActions } from 'app/hooks/store';
 import NavList from 'app/components/shared/nav-list';
 import Search from 'app/components/shared/search';
-import Home from 'app/components/home';
-import Clients from 'app/components/clients';
-import Courses from 'app/components/courses';
-import Lessons from 'app/components/lessons';
-import Managers from 'app/components/managers';
-import Materials from 'app/components/materials';
-import Meetings from 'app/components/meetings';
-import Packs from 'app/components/packs';
-import Payments from 'app/components/payments';
-import Requests from 'app/components/requests';
-import Teachers from 'app/components/teachers';
-import Tickets from 'app/components/tickets';
+
+import routes from './routes';
 
 import './App.scss';
 
@@ -75,20 +65,14 @@ export default function App() {
                 <NavList items={navItems} requests={requests} />
             </AppDrawer>
 
-            <AppContent className="mdc-top-app-bar--fixed-adjust">
+            <AppContent>
                 <Switch>
-                    <Route exact path="/" component={Home} />
-                    <Route path="/clients" component={Clients} />
-                    <Route path="/courses" component={Courses} />
-                    <Route path="/lessons" component={Lessons} />
-                    <Route path="/materials" component={Materials} />
-                    <Route path="/managers" component={Managers} />
-                    <Route path="/meetings" component={Meetings} />
-                    <Route path="/packs" component={Packs} />
-                    <Route path="/payments" component={Payments} />
-                    <Route path="/requests" component={Requests} />
-                    <Route path="/teachers" component={Teachers} />
-                    <Route path="/tickets" component={Tickets} />
+                    {routes.map(route =>
+                        <Route
+                            key={route.path}
+                            {...route}
+                        />
+                    )}
                 </Switch>
             </AppContent>
 

@@ -22,6 +22,18 @@ export default function FIBExerciseForm({ exercise, onUpdate }) {
         });
     }, [exercise, onUpdate]);
 
+    const handleUpdateItem = useCallback((itemId, data) => {
+        onUpdate({
+            items: exercise.items.map(item => item.id !== itemId ? item : { ...item, ...data })
+        });
+    }, [exercise, onUpdate]);
+
+    const handleDeleteItem = useCallback(itemId => {
+        onUpdate({
+            items: exercise.items.filter(a => a.id !== itemId)
+        });
+    }, [exercise, onUpdate]);
+
     return (
         <section>
             <Typography className="elements-label">Элементы</Typography>
@@ -30,6 +42,8 @@ export default function FIBExerciseForm({ exercise, onUpdate }) {
                 <FIBExerciseItemForm
                     key={item.id}
                     item={item}
+                    onUpdate={handleUpdateItem}
+                    onDelete={handleDeleteItem}
                 />
             )}
 
@@ -45,9 +59,15 @@ export default function FIBExerciseForm({ exercise, onUpdate }) {
     );
 }
 
-function FIBExerciseItemForm({ item }) {
-    const [text, setText] = useState(item.text);
-    const [isHtml, setHtml] = useState(false);
+function FIBExerciseItemForm({ item, onUpdate, onDelete }) {
+    const [isHtml, setHtml] = useState(item.html);
+
+    const handleChange = useCallback((event, value) => {
+        onUpdate(item.id, {
+            text: value,
+            html: isHtml
+        });
+    }, [item, isHtml]);
 
     return (
         <div className="exercise-item">
@@ -60,14 +80,15 @@ function FIBExerciseItemForm({ item }) {
 
             {isHtml ?
                 <TextEditor
-                    text={item.text}
+                    value={item.text}
+                    onChange={handleChange}
                 />
                 :
                 <TextField
                     value={item.text}
                     filled
                     textarea
-                    onChange={event => setText(event.target.value)}
+                    onChange={handleChange}
                 />
             }
         </div>

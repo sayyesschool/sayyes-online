@@ -16,6 +16,11 @@ module.exports = ({
 
     getOne: (req, res, next) => {
         Teacher.findById(req.params.id)
+            .populate({
+                path: 'enrollments',
+                select: 'status type domain format client schedules',
+                populate: { path: 'client', select: 'firstname lastname' }
+            })
             .then(teacher => {
                 res.json({
                     ok: true,

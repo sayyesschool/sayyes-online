@@ -1,79 +1,37 @@
 import React, { useCallback } from 'react';
 import {
-    Button,
-    ChipSet, Chip,
-    FormField,
-    Icon,
-    TextField,
-    Typography
+    Card
 } from 'mdc-react';
+
+import TextEditor from 'shared/components/text-editor';
 
 import './index.scss';
 
 export default function TextExerciseForm({ exercise, onUpdate }) {
-    const handleAddItem = useCallback(() => {
+    const handleUpdate = useCallback((event, value) => {
         onUpdate({
-            ...exercise,
-            items: exercise.items.concat({
-                id: Date.now(),
-                text: '',
-                answers: []
-            })
+            text: value
         });
-    }, [exercise, onUpdate]);
-
-    const handleUpdateItem = useCallback((itemId, data) => {
-        console.log(itemId, data);
-        onUpdate({
-            items: exercise.items.map(item => item.id !== itemId ? item : { ...item, ...data })
-        });
-    }, [exercise, onUpdate]);
-
-    const handleDeleteItem = useCallback(itemId => {
-        onUpdate({
-            items: exercise.items.filter(a => a.id !== itemId)
-        });
-    }, [exercise, onUpdate]);
+    }, []);
 
     return (
-        <section>
-            <Typography className="elements-label">Элементы</Typography>
-
-            {exercise.items.map(item =>
-                <TextExerciseItemForm
-                    key={item.id}
-                    item={item}
-                    onUpdate={handleUpdateItem}
-                    onDelete={handleDeleteItem}
-                />
-            )}
-
-            <Button
-                className="new-item-button"
-                type="button"
-                icon={<Icon>add</Icon>}
-                label="Добавить элемент"
-                outlined
-                onClick={handleAddItem}
+        <Card outlined>
+            <TextEditor
+                value={exercise.text}
+                onChange={handleUpdate}
             />
-        </section>
+        </Card>
     );
 }
 
 function TextExerciseItemForm({ item, onUpdate, onDelete }) {
-    const handleUpdateText = useCallback(event => {
+    const handleUpdate = useCallback(event => {
         onUpdate(item.id, {
             text: event.target.value
         });
     }, [item]);
 
-    const handleAddAnswer = useCallback(values => {
-        onUpdate(item.id, {
-            answers: values
-        });
-    }, [item]);
-
-    const handleDeleteAnswer = useCallback(answer => {
+    const handleDelete = useCallback(answer => {
         onUpdate(item.id, {
             answers: item.answers.filter(a => a !== answer)
         });
@@ -81,25 +39,10 @@ function TextExerciseItemForm({ item, onUpdate, onDelete }) {
 
     return (
         <div className="exercise-item">
-            <TextField
+            <TextEditor
                 value={item.text}
-                trailingIcon={<Icon onClick={() => onDelete(item)}>delete</Icon>}
-                filled
-                onChange={handleUpdateText}
+                onChange={handleChange}
             />
-
-            <FormField label="Варианты ответа:" alignEnd>
-                <ChipSet value={item.answers} input onChange={handleAddAnswer}>
-                    {item.answers?.map(answer =>
-                        <Chip
-                            text={answer}
-                            trailingIcon={
-                                <Icon onClick={() => handleDeleteAnswer(answer)}>delete</Icon>
-                            }
-                        />
-                    )}
-                </ChipSet>
-            </FormField>
         </div>
     );
 }

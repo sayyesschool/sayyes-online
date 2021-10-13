@@ -3,9 +3,7 @@ import {
     Card,
     Icon,
     IconButton,
-    Layout,
-    List,
-    Typography
+    List
 } from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
@@ -57,58 +55,47 @@ export default function ClientContacts({ client, onUpdate }) {
 
     return (
         <section className="client-contacts">
-            <header className="client-contacts__header">
-                <Typography type="headline6" noMargin>Контакты</Typography>
-
-                <IconButton
-                    icon="add"
-                    title="Добавить контакт"
-                    onClick={toggleCreateForm}
+            <Card>
+                <Card.Header
+                    graphic={<Icon>contacts</Icon>}
+                    title="Контакты"
+                    actions={[
+                        <IconButton
+                            icon="add"
+                            title="Добавить контакт"
+                            onClick={toggleCreateForm}
+                        />
+                    ]}
                 />
-            </header>
 
-            {client.contacts?.map(contact =>
-                <Card>
-                    <Card.Header
-                        title={`${contact.firstname} ${contact.lastname}`}
-                        subtitle={contact.relation}
-                        actions={
-                            <MenuButton
-                                icon="more_vert"
-                                items={[
-                                    {
-                                        key: 'edit',
-                                        text: 'Редактировать',
-                                        onClick: () => handleEdit(contact)
-                                    },
-                                    {
-                                        key: 'delete',
-                                        text: 'Удалить',
-                                        onClick: () => handleDelete(contact)
-                                    },
-                                ]}
-                                menuProps={{ top: true, right: true }}
-                            />
-                        }
-                    />
-
-                    <Card.Section>
-                        <List twoLine>
-                            <List.Item
-                                graphic={<Icon>phone</Icon>}
-                                primaryText={contact.phone}
-                                secondaryText="Телефон"
-                            />
-
-                            <List.Item
-                                graphic={<Icon>email</Icon>}
-                                primaryText={contact.email}
-                                secondaryText="Телефон"
-                            />
-                        </List>
-                    </Card.Section>
-                </Card>
-            )}
+                {client.contacts?.map(contact =>
+                    <List>
+                        <List.Item
+                            overline={contact.relation}
+                            primaryText={contact.fullname}
+                            secondaryText={`${contact.phone} ${contact.email}`}
+                            meta={
+                                <MenuButton
+                                    icon="more_vert"
+                                    items={[
+                                        {
+                                            key: 'edit',
+                                            text: 'Редактировать',
+                                            onClick: () => handleEdit(contact)
+                                        },
+                                        {
+                                            key: 'delete',
+                                            text: 'Удалить',
+                                            onClick: () => handleDelete(contact)
+                                        },
+                                    ]}
+                                    menuProps={{ top: true, right: true }}
+                                />
+                            }
+                        />
+                    </List>
+                )}
+            </Card>
 
             <FormDialog
                 form="contact-form"

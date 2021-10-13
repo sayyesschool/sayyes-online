@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
 import {
-    Card,
-    IconButton
+    IconButton,
+    Layout,
+    Typography
 } from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
@@ -23,38 +24,33 @@ export default function LessonExercises({
     const [isFormOpen, setFormOpen] = useBoolean(false);
 
     const handleCreate = useCallback(data => {
-        onCreate(data).then(() => setFormOpen(false));
+        return onCreate(data).then(() => setFormOpen(false));
     }, []);
 
     const exercises = lesson.exercises.map(id => course.exercisesById.get(id));
 
     return (
         <section className="lesson-exercises">
-            <Card>
-                <Card.Header
-                    title="Упражнения"
-                    actions={
-                        <IconButton
-                            icon="add"
-                            onClick={setFormOpen}
-                        />
-                    }
-                />
+            <header>
+                <Typography type="headline6" noMargin>Упражнения</Typography>
 
-                {exercises.length > 0 &&
-                    <Card.Section primary>
-                        {exercises?.map(exercise =>
-                            <ExerciseCard
-                                key={exercise.id}
-                                course={course}
-                                exercise={exercise}
-                                onUpdate={onUpdate}
-                                onDelete={onDelete}
-                            />
-                        )}
-                    </Card.Section>
-                }
-            </Card>
+                <IconButton
+                    icon="add"
+                    onClick={setFormOpen}
+                />
+            </header>
+
+            <div>
+                {exercises?.map(exercise =>
+                    <ExerciseCard
+                        key={exercise.id}
+                        course={course}
+                        exercise={exercise}
+                        onUpdate={onUpdate}
+                        onDelete={onDelete}
+                    />
+                )}
+            </div>
 
             <FormDialog
                 title="Новое упражнение"

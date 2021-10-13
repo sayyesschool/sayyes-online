@@ -24,12 +24,12 @@ export default function ManagersPage({ history }) {
     }, []);
 
     const createManager = useCallback(data => {
-        actions.createManager(data)
+        return actions.createManager(data)
             .then(() => toggleManagerFormOpen(false));
     }, []);
 
     const deleteManager = useCallback(() => {
-        actions.deleteManager(manager.id)
+        return actions.deleteManager(manager.id)
             .then(() => {
                 setClient(null);
                 toggleConfirmationDialogOpen(false);
@@ -56,7 +56,7 @@ export default function ManagersPage({ history }) {
                         key: 'add',
                         label: 'Создать',
                         icon: 'add',
-                        unelevated: true,
+                        outlined: true,
                         onClick: toggleManagerFormOpen
                     }
                 ]}

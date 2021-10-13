@@ -22,12 +22,14 @@ export default function BooleanExerciseContent({ exercise, checked }) {
 function BooleanExerciseItem({ item, checked }) {
     const [correct, setCorrect] = useState(false);
 
+    const classNames = classnames('boolean-exercise-item', checked && {
+        'mdc-list-item--correct': item.correct === correct,
+        'mdc-list-item--incorrect': item.correct !== correct,
+    });
+
     return (
         <ListItem
-            className={classnames('boolean-exercise-item', checked && {
-                'mdc-list-item--correct': item.correct === correct,
-                'mdc-list-item--incorrect': item.correct !== correct,
-            })}
+            className={classNames}
             text={item.text}
             meta={
                 <Switch

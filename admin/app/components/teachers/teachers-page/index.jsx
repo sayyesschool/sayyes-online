@@ -20,12 +20,12 @@ export default function TeachersPage({ history }) {
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     const createTeacher = useCallback(data => {
-        actions.createTeacher(data)
+        return actions.createTeacher(data)
             .then(() => toggleFormOpen(false));
     }, []);
 
     const deleteTeacher = useCallback(() => {
-        actions.deleteTeacher(teacher.id)
+        return actions.deleteTeacher(teacher.id)
             .then(() => {
                 setTeacher(null);
                 toggleConfirmationDialogOpen(false);
@@ -52,7 +52,7 @@ export default function TeachersPage({ history }) {
                         key: 'add',
                         label: 'Создать',
                         icon: 'add',
-                        unelevated: true,
+                        outlined: true,
                         onClick: toggleFormOpen
                     }
                 ]}

@@ -15,6 +15,7 @@ import PageContent from 'shared/components/page-content';
 import { useStore } from 'app/hooks/store';
 import TeacherForm from 'app/components/teachers/teacher-form';
 import TeacherDetails from 'app/components/teachers/teacher-details';
+import TeacherEnrollments from 'app/components/teachers/teacher-enrollments';
 
 import './index.scss';
 
@@ -36,12 +37,12 @@ export default function TeacherPage({ match, location, history }) {
     }, []);
 
     const updateTeacher = useCallback(data => {
-        teacherActions.updateTeacher(teacher.id, data)
+        return teacherActions.updateTeacher(teacher.id, data)
             .then(() => toggleTeacherFormOpen(false));
     }, [teacher]);
 
     const deleteTeacher = useCallback(() => {
-        teacherActions.deleteTeacher(teacher.id)
+        return teacherActions.deleteTeacher(teacher.id)
             .then(() => history.push('/teachers'));
     }, [teacher]);
 
@@ -80,10 +81,9 @@ export default function TeacherPage({ match, location, history }) {
                     </Grid.Cell>
 
                     <Grid.Cell span="3">
-                        {/* <TeacherEnrollments
+                        <TeacherEnrollments
                             teacher={teacher}
-                            onCreate={() => setEnrollmentFormOpen(true)}
-                        /> */}
+                        />
                     </Grid.Cell>
                 </Grid>
             </PageContent>

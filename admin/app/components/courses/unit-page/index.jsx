@@ -1,7 +1,8 @@
-import React, { useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    LayoutGrid
+    Icon,
+    TabBar, Tab
 } from 'mdc-react';
 
 import { useCourse } from 'shared/hooks/courses';
@@ -12,12 +13,13 @@ import PageContent from 'shared/components/page-content';
 
 import UnitDetails from 'app/components/courses/unit-details';
 import UnitLessons from 'app/components/courses/unit-lessons';
-import UnitContent from 'app/components/courses/unit-content';
 
 import './index.scss';
 
 export default function UnitPage({ match, history }) {
     const [course, actions] = useCourse(match.params.courseId);
+
+    const [activeTab, setActiveTab] = useState('details');
 
     const handleUpdateUnit = useCallback(data => {
         return actions.updateUnit(course.id, unit.id, data);
@@ -61,35 +63,38 @@ export default function UnitPage({ match, history }) {
                         onClick: handleDeleteUnit
                     }
                 ]}
-            />
+            >
+                <TabBar value={activeTab} onChange={setActiveTab} minWidth>
+                    <Tab
+                        value="details"
+                        label="Детали"
+                        icon={<Icon>article</Icon>}
+                    />
+
+                    <Tab
+                        value="lessons"
+                        label="Уроки"
+                        icon={<Icon>segment</Icon>}
+                    />
+                </TabBar>
+            </PageTopBar>
 
             <PageContent>
-                <LayoutGrid>
-                    <LayoutGrid.Cell span="4">
-                        <UnitDetails
-                            unit={unit}
-                            onUpdate={handleUpdateUnit}
-                        />
-                    </LayoutGrid.Cell>
+                {activeTab === 'details' &&
+                    <UnitDetails
+                        unit={unit}
+                        onUpdate={handleUpdateUnit}
+                    />
+                }
 
-                    <LayoutGrid.Cell span="8" grid>
-                        <LayoutGrid.Cell span="12">
-                            <UnitContent
-                                unit={unit}
-                                onUpdate={handleUpdateUnit}
-                            />
-                        </LayoutGrid.Cell>
-
-                        <LayoutGrid.Cell span="12">
-                            <UnitLessons
-                                course={course}
-                                unit={unit}
-                                onCreate={handleCreateLesson}
-                                onDelete={handleDeleteLesson}
-                            />
-                        </LayoutGrid.Cell>
-                    </LayoutGrid.Cell>
-                </LayoutGrid>
+                {activeTab === 'lessons' &&
+                    <UnitLessons
+                        course={course}
+                        unit={unit}
+                        onCreate={handleCreateLesson}
+                        onDelete={handleDeleteLesson}
+                    />
+                }
             </PageContent>
         </Page>
     );

@@ -56,137 +56,136 @@ export default function EnrollmentPage({ match, history }) {
     if (!enrollment) return <LoadingIndicator />;
 
     return (
-        <>
-            <Page id="enrollment-page" loading={!enrollment}>
-                <PageTopBar
-                    breadcrumbs={[
-                        <Link to={enrollment?.client.url}>{enrollment.client.fullname}</Link>
-                    ]}
-                    title={enrollment.domainLabel}
-                    actions={[
-                        (enrollment.client?.hhid && {
-                            element: 'a',
-                            href: `https://sayes.t8s.ru/Profile/${enrollment.client.hhid}`,
-                            target: '_blank',
-                            icon: 'link',
-                            title: 'Открыть в Hollihop'
-                        }),
-                        <Badge key="comments" value={enrollment.comments.length} inset>
-                            <IconButton
-                                icon="comment"
-                                title="Открыть комментарии"
-                                onClick={toggleSidePanel}
-                            />
-                        </Badge>,
-                        {
-                            key: 'edit',
-                            title: 'Изменить',
-                            icon: 'edit',
-                            onClick: toggleEnrollmentFormOpen
-                        },
-                        {
-                            key: 'delete',
-                            title: 'Удалить',
-                            icon: 'delete',
-                            onClick: toggleConfirmationDialogOpen
-                        }
-                    ]}
-                />
+        <Page id="enrollment-page" loading={!enrollment}>
+            <PageTopBar
+                breadcrumbs={[
+                    <Link to={enrollment?.client.url}>{enrollment.client.fullname}</Link>
+                ]}
+                title={enrollment.domainLabel}
+                actions={[
+                    (enrollment.client?.hhid && {
+                        element: 'a',
+                        href: `https://sayes.t8s.ru/Profile/${enrollment.client.hhid}`,
+                        target: '_blank',
+                        icon: 'link',
+                        title: 'Открыть в Hollihop'
+                    }),
+                    <Badge key="comments" value={enrollment.comments.length} inset>
+                        <IconButton
+                            icon="comment"
+                            title="Открыть комментарии"
+                            onClick={toggleSidePanel}
+                        />
+                    </Badge>,
+                    {
+                        key: 'edit',
+                        title: 'Изменить',
+                        icon: 'edit',
+                        onClick: toggleEnrollmentFormOpen
+                    },
+                    {
+                        key: 'delete',
+                        title: 'Удалить',
+                        icon: 'delete',
+                        onClick: toggleConfirmationDialogOpen
+                    }
+                ]}
+            />
 
-                <EnrollmentCommentsSidePanel
-                    enrollment={enrollment}
-                    open={isSidePanelOpen}
-                    dismissible
-                    onClose={toggleSidePanel}
-                />
+            <EnrollmentCommentsSidePanel
+                enrollment={enrollment}
+                open={isSidePanelOpen}
+                dismissible
+                onClose={toggleSidePanel}
+            />
 
-                <PageContent>
-                    <Grid>
-                        <Grid.Cell span="12">
-                            <EnrollmentMeta
-                                enrollment={enrollment}
-                            />
-                        </Grid.Cell>
+            <PageContent>
+                <Grid>
+                    <Grid.Cell span="12">
+                        <EnrollmentMeta
+                            enrollment={enrollment}
+                        />
+                    </Grid.Cell>
 
-                        <Grid.Cell span="12">
-                            <EnrollmentStatus
-                                enrollment={enrollment}
-                                onUpdate={updateEnrollment}
-                            />
-                        </Grid.Cell>
+                    <Grid.Cell span="12">
+                        <EnrollmentStatus
+                            enrollment={enrollment}
+                            onUpdate={updateEnrollment}
+                        />
+                    </Grid.Cell>
 
-                        <Grid.Cell desktop="3" tablet="4" mobile="4">
-                            <EnrollmentDetails
-                                enrollment={enrollment}
-                            />
-                        </Grid.Cell>
+                    <Grid.Cell desktop="3" tablet="4" mobile="4">
+                        <EnrollmentDetails
+                            enrollment={enrollment}
+                        />
+                    </Grid.Cell>
 
-                        <Grid.Cell desktop="3" tablet="4" mobile="4">
-                            <Grid.Cell grid>
-                                <Grid.Cell span="12">
-                                    <EnrollmentSchedule
-                                        enrollment={enrollment}
-                                        onUpdate={updateEnrollmentSchedule}
-                                    />
-                                </Grid.Cell>
+                    <Grid.Cell desktop="3" tablet="4" mobile="4">
+                        <Grid.Cell grid>
+                            <Grid.Cell span="12">
+                                <EnrollmentSchedule
+                                    enrollment={enrollment}
+                                    onUpdate={updateEnrollmentSchedule}
+                                />
+                            </Grid.Cell>
 
-                                <Grid.Cell span="12">
-                                    <EnrollmentTrialLesson
-                                        enrollment={enrollment}
-                                        onUpdate={updateEnrollment}
-                                    />
-                                </Grid.Cell>
+                            <Grid.Cell span="12">
+                                <EnrollmentLessons
+                                    enrollment={enrollment}
+                                />
 
-                                <Grid.Cell span="12">
-                                    <EnrollmentCourses
-                                        enrollment={enrollment}
-                                    />
-                                </Grid.Cell>
-
-                                <Grid.Cell span="12">
-                                    <EnrollmentMaterials
-                                        enrollment={enrollment}
-                                    />
-                                </Grid.Cell>
+                                {/* <EnrollmentTrialLesson
+                                    enrollment={enrollment}
+                                    onUpdate={updateEnrollment}
+                                /> */}
                             </Grid.Cell>
                         </Grid.Cell>
+                    </Grid.Cell>
 
-                        <Grid.Cell desktop="3" tablet="4" mobile="4">
-                            <EnrollmentLessons
-                                enrollment={enrollment}
-                            />
+                    <Grid.Cell desktop="3" tablet="4" mobile="4">
+                        <EnrollmentPayments
+                            enrollment={enrollment}
+                        />
+                    </Grid.Cell>
 
+                    <Grid.Cell desktop="3" tablet="4" mobile="4">
+                        <Grid.Cell grid>
+                            <Grid.Cell span="12">
+                                <EnrollmentCourses
+                                    enrollment={enrollment}
+                                />
+                            </Grid.Cell>
+
+                            <Grid.Cell span="12">
+                                <EnrollmentMaterials
+                                    enrollment={enrollment}
+                                />
+                            </Grid.Cell>
                         </Grid.Cell>
+                    </Grid.Cell>
+                </Grid>
+            </PageContent>
 
-                        <Grid.Cell desktop="3" tablet="4" mobile="4">
-                            <EnrollmentPayments
-                                enrollment={enrollment}
-                            />
-                        </Grid.Cell>
-                    </Grid>
-                </PageContent>
-
-                <FormDialog
-                    form="enrollment-form"
-                    title="Редактирование обучения"
-                    open={isEnrollmentFormOpen}
-                    onClose={toggleEnrollmentFormOpen}
-                >
-                    <EnrollmentForm
-                        id="enrollment-form"
-                        enrollment={enrollment}
-                        onSubmit={updateEnrollment}
-                    />
-                </FormDialog>
-
-                <ConfirmationDialog
-                    title="Подтвердите действие"
-                    message="Вы действительно хотите удалить обучение?"
-                    open={isConfirmationDialogOpen}
-                    onConfirm={deleteEnrollment}
-                    onClose={toggleConfirmationDialogOpen}
+            <FormDialog
+                form="enrollment-form"
+                title="Редактирование обучения"
+                open={isEnrollmentFormOpen}
+                onClose={toggleEnrollmentFormOpen}
+            >
+                <EnrollmentForm
+                    id="enrollment-form"
+                    enrollment={enrollment}
+                    onSubmit={updateEnrollment}
                 />
-            </Page>
-        </>
+            </FormDialog>
+
+            <ConfirmationDialog
+                title="Подтвердите действие"
+                message="Вы действительно хотите удалить обучение?"
+                open={isConfirmationDialogOpen}
+                onConfirm={deleteEnrollment}
+                onClose={toggleConfirmationDialogOpen}
+            />
+        </Page>
     );
 }

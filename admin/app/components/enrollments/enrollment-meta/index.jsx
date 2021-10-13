@@ -11,7 +11,7 @@ export default function EnrollmentMeta({ enrollment }) {
     return (
         <section className="enrollment-meta">
             <div className="enrollment-meta__section">
-                <Typography type="subtitle2" noMargin>Менеджеры: </Typography>
+                <Typography type="subtitle2" noMargin>{enrollment.managers.length > 1 ? 'Менеджеры' : 'Менеджер'}: </Typography>
 
                 {enrollment.managers.map(manager =>
                     <Chip
@@ -26,7 +26,7 @@ export default function EnrollmentMeta({ enrollment }) {
             </div>
 
             <div className="enrollment-meta__section">
-                <Typography type="subtitle2" noMargin>Преподаватели: </Typography>
+                <Typography type="subtitle2" noMargin>{enrollment.managers.length > 1 ? 'Преподаватели' : 'Преподаватель'}: </Typography>
 
                 {enrollment.teachers.map(teacher =>
                     <Chip

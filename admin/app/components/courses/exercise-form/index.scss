@@ -41,7 +41,22 @@
 
     }
 
-    &--text {
+    &--fib {
+        .mdc-text-field {
+            
+        }
+
+        .mdc-form-field {
+            margin: 0;
+        }
+
+        .text-editor {
+            border: 1px solid rgba(0,0,0,.12);
+            border-radius: 4px;
+        }
+    }
+
+    &--input {
         .exercise-item {
             .mdc-text-field {
                 width: 100%;
@@ -57,18 +72,9 @@
         }
     }
 
-    &--fib {
-        .mdc-text-field {
-            
-        }
-
-        .mdc-form-field {
-            margin: 0;
-        }
-
-        .text-editor {
-            border: 1px solid rgba(0,0,0,.12);
-            border-radius: 4px;
+    &--text {
+        .mdc-card {
+            margin-top: 1rem;
         }
     }
 }

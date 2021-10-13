@@ -1,7 +1,8 @@
-import React, { useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    LayoutGrid
+    Icon,
+    TabBar, Tab
 } from 'mdc-react';
 
 import { useCourse } from 'shared/hooks/courses';
@@ -17,6 +18,8 @@ import './index.scss';
 
 export default function LessonPage({ match, history }) {
     const [course, actions] = useCourse(match.params.courseId);
+
+    const [activeTab, setActiveTab] = useState('details');
 
     const handleUpdateLesson = useCallback(data => {
         return actions.updateLesson(course.id, lesson.id, data);
@@ -55,8 +58,8 @@ export default function LessonPage({ match, history }) {
         <Page id="lesson-page">
             <PageTopBar
                 breadcrumbs={[
-                    <Link to={course.url}>{course.title}</Link>,
-                    <Link to={unit.url}>{unit.title}</Link>
+                    <Link to={course.uri}>{course.title}</Link>,
+                    <Link to={unit.uri}>{unit.title}</Link>
                 ]}
                 title={lesson.title}
                 actions={[
@@ -67,27 +70,39 @@ export default function LessonPage({ match, history }) {
                         onClick: handleDeleteLesson
                     }
                 ]}
-            />
+            >
+                <TabBar value={activeTab} onChange={setActiveTab} minWidth>
+                    <Tab
+                        value="details"
+                        label="Детали"
+                        icon={<Icon>article</Icon>}
+                    />
+
+                    <Tab
+                        value="exercises"
+                        label="Упражнения"
+                        icon={<Icon>segment</Icon>}
+                    />
+                </TabBar>
+            </PageTopBar>
 
             <PageContent>
-                <LayoutGrid>
-                    <LayoutGrid.Cell span="4">
-                        <LessonDetails
-                            lesson={lesson}
-                            onUpdate={handleUpdateLesson}
-                        />
-                    </LayoutGrid.Cell>
+                {activeTab === 'details' &&
+                    <LessonDetails
+                        lesson={lesson}
+                        onUpdate={handleUpdateLesson}
+                    />
+                }
 
-                    <LayoutGrid.Cell span="8">
-                        <LessonExercises
-                            course={course}
-                            lesson={lesson}
-                            onCreate={handleCreateExercise}
-                            onUpdate={handleUpdateExercise}
-                            onDelete={handleDeleteExercise}
-                        />
-                    </LayoutGrid.Cell>
-                </LayoutGrid>
+                {activeTab === 'exercises' &&
+                    <LessonExercises
+                        course={course}
+                        lesson={lesson}
+                        onCreate={handleCreateExercise}
+                        onUpdate={handleUpdateExercise}
+                        onDelete={handleDeleteExercise}
+                    />
+                }
             </PageContent>
         </Page>
     );

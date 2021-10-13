@@ -56,7 +56,7 @@ export default function ClientsPage({ history }) {
                         key: 'add',
                         label: 'Создать',
                         icon: 'add',
-                        unelevated: true,
+                        outlined: true,
                         onClick: toggleFormOpen
                     }
                 ]}

@@ -8,6 +8,7 @@ import classnames from 'classnames';
 
 export default function ChoiceExerciseContent({ exercise, checked }) {
     const isMultiple = useMemo(() => exercise.items.filter(item => item.correct).length > 1);
+
     const [chosenItem, setChosenItem] = useState();
     const [chosenItems, setChosenItems] = useState([]);
 

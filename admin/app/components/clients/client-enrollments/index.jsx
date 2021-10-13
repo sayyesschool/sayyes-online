@@ -3,8 +3,7 @@ import { useHistory } from 'react-router-dom';
 import {
     Card,
     Icon,
-    IconButton,
-    Typography
+    IconButton
 } from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
@@ -21,7 +20,7 @@ export default function ClientEnrollments({ client }) {
     const [isEnrollmentFormOpen, toggleEnrollmentFormOpen] = useBoolean(false);
 
     const createEnrollment = useCallback(data => {
-        enrollmentActions.createEnrollment(data)
+        return enrollmentActions.createEnrollment(data)
             .then(({ data }) => history.push(`/clients/${client?.id}/enrollments/${data?.id}`));
     }, [client]);
 
@@ -42,14 +41,10 @@ export default function ClientEnrollments({ client }) {
                     }
                 />
 
-                {enrollments && enrollments.length > 0 ?
+                {enrollments?.length > 0 &&
                     <EnrollmentsList
                         enrollments={enrollments}
                     />
-                    :
-                    <Card.Section primary>
-                        <Typography noMargin>Обучений пока нет</Typography>
-                    </Card.Section>
                 }
             </Card>
 

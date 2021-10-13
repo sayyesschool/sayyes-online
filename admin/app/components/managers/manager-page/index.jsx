@@ -38,12 +38,12 @@ export default function ManagerPage({ match, location, history }) {
     }, []);
 
     const updateManager = useCallback(data => {
-        managerActions.updateManager(manager.id, data)
+        return managerActions.updateManager(manager.id, data)
             .then(() => toggleManagerFormOpen(false));
     }, [manager]);
 
     const deleteManager = useCallback(() => {
-        managerActions.deleteClient(manager.id)
+        return managerActions.deleteClient(manager.id)
             .then(() => history.push('/managers'));
     }, [manager]);
 

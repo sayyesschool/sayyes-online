@@ -4,7 +4,7 @@ module.exports = ({
     get: (req, res, next) => {
         const query = req.query ? req.query : {};
 
-        Manager.find(query, 'firstname lastname email')
+        Manager.find(query, 'firstname lastname email timezone note')
             .then(managers => {
                 res.json({
                     ok: true,
@@ -16,6 +16,11 @@ module.exports = ({
 
     getOne: (req, res, next) => {
         Manager.findById(req.params.id)
+            .populate({
+                path: 'enrollments',
+                select: 'status type domain format student schedules',
+                populate: { path: 'student', select: 'firstname lastname' }
+            })
             .then(manager => {
                 res.json({
                     ok: true,

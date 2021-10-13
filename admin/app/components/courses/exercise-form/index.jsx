@@ -10,18 +10,20 @@ import Form from 'shared/components/form';
 
 import BooleanExerciseForm from './boolean-exercise-form';
 import ChoiceExerciseForm from './choice-exercise-form';
-import TextExerciseForm from './text-exercise-form';
-import FIBExerciseForm from './fib-exercise-form';
 import EssayExerciseForm from './essay-exercise-form';
+import FIBExerciseForm from './fib-exercise-form';
+import InputExerciseForm from './input-exercise-form';
+import TextExerciseForm from './text-exercise-form';
 
 import './index.scss';
 
 const ComponentsByType = {
     boolean: BooleanExerciseForm,
     choice: ChoiceExerciseForm,
-    text: TextExerciseForm,
+    essay: EssayExerciseForm,
     fib: FIBExerciseForm,
-    essay: EssayExerciseForm
+    input: InputExerciseForm,
+    text: TextExerciseForm
 };
 
 const typeOptions = [
@@ -41,9 +43,9 @@ const typeOptions = [
         text: 'Выбор'
     },
     {
-        key: 'text',
-        value: 'text',
-        text: 'Текст'
+        key: 'essay',
+        value: 'essay',
+        text: 'Эссе'
     },
     {
         key: 'fib',
@@ -51,9 +53,14 @@ const typeOptions = [
         text: 'Заполнить пробелы'
     },
     {
-        key: 'essay',
-        value: 'essay',
-        text: 'Эссе'
+        key: 'input',
+        value: 'input',
+        text: 'Ввод'
+    },
+    {
+        key: 'text',
+        value: 'text',
+        text: 'Текст'
     }
 ];
 
@@ -73,6 +80,7 @@ export default function ExerciseForm({ course, exercise = defaultExercise, onSub
 
     const handleSubmit = useCallback(() => {
         setData(data => {
+            console.log(data);
             onSubmit(data);
             return data;
         });

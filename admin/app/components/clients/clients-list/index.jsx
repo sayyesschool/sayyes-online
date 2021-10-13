@@ -4,9 +4,9 @@ import {
     List
 } from 'mdc-react';
 
-export default function ClientList({ clients }) {
+export default function ClientsList({ clients }) {
     return (
-        <List className="client-list" twoLine>
+        <List className="clients-list" twoLine>
             {clients.map(client =>
                 <List.Item
                     key={client.id}

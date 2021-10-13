@@ -8,6 +8,8 @@ body {
 
 .page {
     padding: 1rem;
+    max-height: calc(100vh - 64px);
+    overflow: auto;
 }
 
 .page-top-bar {

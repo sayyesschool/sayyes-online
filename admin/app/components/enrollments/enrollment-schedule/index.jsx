@@ -25,7 +25,7 @@ export default function EnrollmentSchedule({ enrollment, onUpdate }) {
             <Card>
                 <Card.Header
                     graphic={<Icon>calendar_view_month</Icon>}
-                    title="Расписание занятий"
+                    title="Расписание"
                     actions={
                         <IconButton
                             icon="edit"

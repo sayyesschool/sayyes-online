@@ -1,3 +1,11 @@
 .lesson-exercises {
+    max-width: 960px;
+    margin: auto;
 
+    > header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
 }

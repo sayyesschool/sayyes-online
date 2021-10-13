@@ -1,10 +1,26 @@
 .exercise-content {
+    .exercise-description {
+        margin-bottom: 1rem;
+    }
+
+    .exercise-image {
+        margin-bottom: 1rem;
+    }
+
+    .exercise-audio {
+        margin-bottom: 1rem;
+    }
+
+    .exercise-video {
+        margin-bottom: 1rem;
+    }
+
     &--boolean {
         .mdc-list {
             padding: 0;
         }
 
-        .mdc-list-item {
+        .boolean-exercise-item {
             padding: 0;
             cursor: default;
             overflow: visible;
@@ -12,6 +28,24 @@
             &__ripple {
                 display: none;
             }
+        }
+    }
+
+    &--input {
+        .input-exercise-item {
+            .mdc-text-field {
+                width: 100%;
+            }
+
+            + .input-exercise-item {
+                margin-top: 1rem;
+            }
+        }
+    }
+
+    &--text {
+        p:last-child {
+            margin-bottom: 0;
         }
     }
 }

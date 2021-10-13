@@ -1,6 +1,7 @@
 import React, { useRef, useCallback } from 'react';
 import {
     Layout,
+    LayoutGrid,
     TextField
 } from 'mdc-react';
 
@@ -27,7 +28,7 @@ export default function CourseForm({ course = {}, onSubmit }) {
 
         getData(data => onSubmit(Object.assign(data, { file })));
         fileInputRef.current.reset();
-    }, []);
+    }, [course]);
 
     const handleTitleBlur = useCallback(() => {
         setData(data => ({ ...data, slug: slugify(data.title) }));
@@ -35,41 +36,47 @@ export default function CourseForm({ course = {}, onSubmit }) {
 
     return (
         <Form id="course-form" onSubmit={handleSubmit}>
-            <Layout column>
-                <TextField
-                    name="title"
-                    label="Название"
-                    value={data.title}
-                    filled
-                    onChange={handleChange}
-                    onBlur={handleTitleBlur}
-                />
+            <LayoutGrid>
+                <LayoutGrid.Cell span="4">
+                    <Layout column>
+                        <TextField
+                            name="title"
+                            label="Название"
+                            value={data.title}
+                            filled
+                            onChange={handleChange}
+                            onBlur={handleTitleBlur}
+                        />
 
-                <TextField
-                    name="slug"
-                    label="Слаг"
-                    value={data.slug}
-                    filled
-                    onChange={handleChange}
-                />
+                        <TextField
+                            name="slug"
+                            label="Слаг"
+                            value={data.slug}
+                            filled
+                            onChange={handleChange}
+                        />
 
-                <TextField
-                    name="description"
-                    label="Описание"
-                    value={data.description}
-                    filled
-                    textarea
-                    onChange={handleChange}
-                />
+                        <FileInput
+                            ref={fileInputRef}
+                            name="file"
+                            label="Изображение"
+                            url={data.image && course.imageUrl}
+                            caption={data.image}
+                        />
+                    </Layout>
+                </LayoutGrid.Cell>
 
-                <FileInput
-                    ref={fileInputRef}
-                    name="file"
-                    label="Изображение"
-                    url={data.image && course.imageUrl}
-                    caption={data.image}
-                />
-            </Layout>
+                <LayoutGrid.Cell span="8">
+                    <TextField
+                        name="description"
+                        label="Описание"
+                        value={data.description}
+                        filled
+                        textarea
+                        onChange={handleChange}
+                    />
+                </LayoutGrid.Cell>
+            </LayoutGrid>
         </Form>
     );
 }

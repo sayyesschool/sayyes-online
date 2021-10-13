@@ -1,8 +1,14 @@
 @use '@material/ripple/ripple-theme';
 
 .exercise-card {
+    overflow: visible !important;
+
     + .exercise-card {
         margin-top: 1rem;
+    }
+
+    .mdc-card {
+        overflow: visible;
     }
 
     .mdc-list-item {
@@ -76,5 +82,12 @@
 
     .new-item-button {
         width: 100%;
+    }
+
+    &--essay {
+        .mdc-card__section--primary {
+            border-top: 1px solid #e0e0e0;
+            padding: 0 !important;
+        }
     }
 }

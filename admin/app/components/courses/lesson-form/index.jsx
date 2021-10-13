@@ -1,68 +1,73 @@
 import React, { useRef, useCallback } from 'react';
 import {
-    Layout,
+    LayoutGrid,
     TextField
 } from 'mdc-react';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
 import FileInput from 'shared/components/file-input';
+import TextEditor from 'shared/components/text-editor';
 
-export default function LessonForm({ lesson = {}, course, onSubmit }) {
+const defaultLesson = {
+    title: '',
+    slug: '',
+    description: '',
+    document: '',
+    image: ''
+};
+
+export default function LessonForm({ lesson = {}, onSubmit }) {
     const fileInputRef = useRef();
-    const [data, handleChange, getData] = useForm({
-        title: lesson.title,
-        slug: lesson.slug,
-        image: lesson.image
-    }, [lesson]);
+    const editorRef = useRef();
+
+    const [data, handleChange, getData] = useForm(Object.assign(defaultLesson, lesson), [lesson.id]);
 
     const handleSubmit = useCallback(() => {
+        const content = editorRef.current.editor.getData();
         const file = fileInputRef.current.input.files[0];
 
-        if (file) {
-            file.path = `courses/${course.id}/images/`;
-        }
+        data.content = content;
 
-        getData(data => {
-            onSubmit(Object.assign(data, { file }));
-            return data;
-        });
+        getData(data => onSubmit(data, file));
+
         fileInputRef.current.reset();
     }, [onSubmit]);
 
     return (
         <Form id="lesson-form" onSubmit={handleSubmit}>
-            <Layout column>
-                <TextField
-                    name="title"
-                    label="Название"
-                    value={data.title}
-                    filled
-                    onChange={handleChange}
-                />
+            <LayoutGrid>
+                <LayoutGrid.Cell span="4">
+                    <TextField
+                        name="title"
+                        label="Название"
+                        value={data.title}
+                        filled
+                        onChange={handleChange}
+                    />
 
-                <TextField
-                    name="slug"
-                    label="Слаг"
-                    value={data.slug}
-                    filled
-                    onChange={handleChange}
-                />
+                    <TextField
+                        name="slug"
+                        label="Слаг"
+                        value={data.slug}
+                        filled
+                        onChange={handleChange}
+                    />
 
-                <FileInput
-                    ref={fileInputRef}
-                    name="image"
-                    label="Изображение"
-                />
-            </Layout>
+                    <FileInput
+                        ref={fileInputRef}
+                        name="image"
+                        label="Изображение"
+                    />
+                </LayoutGrid.Cell>
+
+                <LayoutGrid.Cell span="8">
+                    <TextEditor
+                        ref={editorRef}
+                        defaultValue={lesson.content}
+                    />
+                </LayoutGrid.Cell>
+            </LayoutGrid>
         </Form>
     );
 }
-
-LessonForm.defaultProps = {
-    lesson: {
-        title: '',
-        slug: '',
-        image: ''
-    }
-};

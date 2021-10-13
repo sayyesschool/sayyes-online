@@ -9,21 +9,18 @@ import classnames from 'classnames';
 export default function NavList({ items, requests }) {
     return (
         <List element="nav" className="nav-list">
-            {items.map((item, index) =>
-                item ?
-                    <List.Item
-                        key={item.key}
-                        component={NavLink}
-                        to={item.url}
-                        exact={item.exact}
-                        className={classnames({ 'mdc-list-item--indented': item.indent })}
-                        activeClassName="mdc-list-item--activated"
-                        graphic={<Icon>{item.icon}</Icon>}
-                        text={item.text}
-                        meta={item.key === 'requests' && requests?.length > 0 && requests.length}
-                    />
-                    :
-                    <List.Divider key={index} />
+            {items.map(item =>
+                <List.Item
+                    key={item.key}
+                    component={NavLink}
+                    to={item.url}
+                    exact={item.exact}
+                    className={classnames({ 'mdc-list-item--indented': item.indent })}
+                    activeClassName="mdc-list-item--activated"
+                    graphic={<Icon>{item.icon}</Icon>}
+                    text={item.text}
+                    meta={item.key === 'requests' && requests?.length > 0 && requests.length}
+                />
             )}
         </List>
     );

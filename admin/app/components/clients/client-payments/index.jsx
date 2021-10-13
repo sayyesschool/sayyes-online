@@ -2,18 +2,16 @@ import React, { useState, useCallback } from 'react';
 import {
     Card,
     Icon,
-    IconButton,
-    List,
-    Typography
+    IconButton
 } from 'mdc-react';
 
-import { } from 'shared/../data/payment';
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 
 import { useActions } from 'app/hooks/store';
 import PaymentForm from 'app/components/payments/payment-form';
+import PaymentsList from 'app/components/payments/payments-list';
 
 export default function ClientPayments({ client }) {
     const actions = useActions('payments');
@@ -27,17 +25,17 @@ export default function ClientPayments({ client }) {
     const createPayment = useCallback(data => {
         data.client = client.id;
 
-        actions.createPayment(data)
+        return actions.createPayment(data)
             .then(() => toggleCreateFormOpen(false));
     }, [client]);
 
     const updatePayment = useCallback(data => {
-        actions.updatePayment(payment.id, data)
+        return actions.updatePayment(payment.id, data)
             .then(() => toggleEditFormOpen(false));
     }, [payment]);
 
     const deletePayment = useCallback(() => {
-        actions.deletePayment(payment.id)
+        return actions.deletePayment(payment.id)
             .then(() => toggleConfirmationDialogOpen(false));
     }, [payment]);
 
@@ -70,29 +68,12 @@ export default function ClientPayments({ client }) {
                     }
                 />
 
-                {payments?.length > 0 ?
-                    <List className="payments-list" twoLine>
-                        {payments.map(payment =>
-                            <List.Item
-                                key={payment.id}
-                                graphic={<Icon>{payment.statusIcon}</Icon>}
-                                primaryText={payment.description}
-                                secondaryText={`${payment.amount} руб.`}
-                                meta={
-                                    <IconButton
-                                        icon="remove"
-                                        title="Удалить платеж"
-                                        onClick={event => handleDelete(event, payment)}
-                                    />
-                                }
-                                onClick={() => handleUpdate(payment)}
-                            />
-                        )}
-                    </List>
-                    :
-                    <Card.Section primary>
-                        <Typography noMargin>Платежей нет</Typography>
-                    </Card.Section>
+                {payments?.length > 0 &&
+                    <PaymentsList
+                        payments={payments}
+                        onUpdate={handleUpdate}
+                        onDelete={handleDelete}
+                    />
                 }
             </Card>
 
