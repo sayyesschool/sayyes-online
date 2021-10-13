@@ -1,4 +1,5 @@
 const { Schema } = require('mongoose');
+const moment = require('moment');
 
 const Person = new Schema({
     firstname: {
@@ -35,6 +36,22 @@ const Person = new Schema({
     },
     gender: { type: String, enum: ['male', 'female'] },
     dob: { type: Date }
+});
+
+Person.virtual('fullname').get(function() {
+    return `${this.firstname} ${this.lastname}`;
+});
+
+Person.virtual('initials').get(function() {
+    return `${this.firstname[0]}${this.lastname[0]}`;
+});
+
+Person.virtual('birthdate').get(function() {
+    return this.dob && moment(this.dob).format('DD.MM.YYYY');
+});
+
+Person.virtual('age').get(function() {
+    return this.dob && moment().diff(this.dob, 'years');
 });
 
 module.exports = Person;

@@ -1,9 +1,10 @@
 const { Schema } = require('mongoose');
 
 const Audio = new Schema({
-    filename: String,
     title: String,
-    duration: String
+    duration: Number,
+    filename: String,
+    script: String
 });
 
 Audio.virtual('url').get(function() {

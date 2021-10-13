@@ -8,6 +8,12 @@ const Teacher = new Schema({
     zoomUrl: { type: String }
 });
 
+Teacher.virtual('enrollments', {
+    ref: 'Enrollment',
+    localField: '_id',
+    foreignField: 'teachers'
+});
+
 Teacher.virtual('lessons', {
     ref: 'Lesson',
     localField: '_id',

@@ -3,6 +3,8 @@ const { Schema } = require('mongoose');
 const Lesson = new Schema({
     slug: { type: String, required: true },
     title: { type: String },
+    description: { type: String },
+    content: { type: String },
     document: { type: String },
     image: { type: String },
     audios: [String],

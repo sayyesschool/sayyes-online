@@ -9,6 +9,7 @@ const Lesson = new Schema({
     duration: { type: Number, default: 60 },
     trial: { type: Boolean, default: false },
     free: { type: Boolean, default: false },
+    confirmed: { type: Boolean, default: false },
     note: { type: String, trim: true, default: '' },
     teacher: { type: Schema.Types.ObjectId, ref: 'User' },
     client: { type: Schema.Types.ObjectId, ref: 'User' },

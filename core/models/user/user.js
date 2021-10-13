@@ -1,7 +1,6 @@
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const { Schema, models } = require('mongoose');
-const moment = require('moment');
 
 const Person = require('./person');
 
@@ -41,22 +40,6 @@ const User = new Schema([Person, {
 });
 
 /* Virtuals */
-
-User.virtual('fullname').get(function() {
-    return `${this.firstname} ${this.lastname}`;
-});
-
-User.virtual('initials').get(function() {
-    return `${this.firstname[0]}${this.lastname[0]}`;
-});
-
-User.virtual('birthdate').get(function() {
-    return this.dob && moment(this.dob).format('DD.MM.YYYY');
-});
-
-User.virtual('age').get(function() {
-    return this.dob && moment().diff(this.dob, 'years');
-});
 
 User.virtual('roleLabel').get(function() {
     return roles[this.role];
