@@ -1,19 +1,42 @@
 const path = require('path');
 const webpack = require('webpack');
+const autoprefixer = require('autoprefixer');
 const CssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const { STATIC_URL, YANDEX_METRIKA_ID, GOOGLE_ANALYTICS_ID } = require('./config');
 
 module.exports = [
-    env => config('admin', env),
-    env => config('class', env),
-    env => config('client', env),
-    env => config('teacher', env)
+    env => config({ name: 'admin', env }),
+    env => config({ name: 'class', env }),
+    env => config({ name: 'client', env }),
+    env => config({
+        name: 'main',
+        env,
+        override: {
+            entry: [
+                './main/shared/styles/index.scss',
+                './main/shared/scripts.js'
+            ],
+            output: {
+                path: path.resolve(__dirname, 'public'),
+                filename: 'build/js/[name].js'
+            },
+            plugins: [
+                new CssExtractPlugin({
+                    filename: 'build/css/[name].css'
+                })
+            ],
+            optimization: {
+                minimize: true
+            }
+        }
+    }),
+    env => config({ name: 'teacher', env })
 ];
 
-function config(name, env) {
+function config({ name, env, rules = [], plugins = [], override = {} }) {
     const APP_URL = env === 'development' ? 'http://localhost' : 'https://sayyesonline.ru';
 
     return {
@@ -36,7 +59,9 @@ function config(name, env) {
                         options: {
                             presets: [
                                 '@babel/preset-env',
-                                '@babel/preset-react'
+                                ['@babel/preset-react', {
+                                    'runtime': 'automatic'
+                                }]
                             ],
                             plugins: [
                                 '@babel/plugin-proposal-export-default-from'
@@ -58,14 +83,13 @@ function config(name, env) {
                             loader: 'postcss-loader',
                             options: {
                                 postcssOptions: {
-                                    plugins: ['postcss-preset-env']
+                                    plugins: [autoprefixer]
                                 }
                             }
                         },
                         {
                             loader: 'sass-loader',
                             options: {
-                                webpackImporter: false,
                                 sassOptions: {
                                     includePaths: [
                                         path.resolve('node_modules'),
@@ -73,7 +97,8 @@ function config(name, env) {
                                     ]
                                 }
                             }
-                        }
+                        },
+                        ...rules
                     ]
                 }
             ]
@@ -92,7 +117,8 @@ function config(name, env) {
             }),
             new CssExtractPlugin({
                 filename: `${name}.[name].css`
-            })
+            }),
+            ...plugins
         ],
 
         optimization: {
@@ -117,17 +143,12 @@ function config(name, env) {
                     },
                     extractComments: false
                 }),
-                new OptimizeCSSAssetsPlugin({})
+                new CssMinimizerPlugin()
             ]
         },
 
         resolve: {
             extensions: ['.js', '.json', '.jsx', '*'],
-
-            // modules: [
-            //     path.resolve(__dirname, '..', 'node_modules'),
-            //     path.resolve(__dirname, '..', 'shared', 'client')
-            // ],
 
             alias: {
                 'app': path.resolve(__dirname, name, 'app'),
@@ -140,6 +161,7 @@ function config(name, env) {
             fallback: {
                 util: require.resolve('util/')
             }
-        }
+        },
+        ...override
     };
 }
