@@ -1,4 +1,3 @@
-import React from 'react';
 import { ComboBox } from '@fluentui/react';
 
 const options = [

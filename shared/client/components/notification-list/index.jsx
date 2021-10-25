@@ -1,38 +1,29 @@
-import React from 'react';
 import {
-    Icon,
     IconButton,
-    List, ListItem
+    List
 } from 'mdc-react';
 
 import './index.scss';
 
 export default function NotificationList({ notifications, onClick, onDelete }) {
     return (
-        <List className="notification-list" twoLine dense>
+        <List className="notification-list">
             {notifications.map(notification =>
-                <ListItem
+                <List.Item
                     key={notification.id}
+                    leadingIcon={notification.icon}
+                    primaryText={notification.title}
+                    secondaryText={notification.publishedAt}
                     activated={!notification.read}
-                >
-                    <ListItem.Graphic>
-                        <Icon>{notification.icon}</Icon>
-                    </ListItem.Graphic>
-
-                    <ListItem.Text
-                        primary={notification.title}
-                        secondary={notification.publishedAt}
-                        onClick={() => onClick(notification)}
-                    />
-
-                    <ListItem.Meta>
+                    trailingIcon={
                         <IconButton
                             icon="clear"
                             onClick={() => onDelete(notification)}
                         />
-                    </ListItem.Meta>
-                </ListItem>
+                    }
+                    onClick={() => onClick(notification)}
+                />
             )}
-        </List >
+        </List>
     );
 }

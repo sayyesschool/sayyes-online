@@ -12,17 +12,17 @@ const componentsByType = {
 
 const elementTypeBySymbol = {
     '{': 'input',
-    '[': 'textarea',
-    '/': 'select'
+    '{{': 'textarea',
+    '[': 'select'
 };
 
 const elementStringBySymbol = {
-    '{': (values) => `<input data-values="${values}">`,
-    '[': (values) => `<textarea data-values="${values}"></textarea>`,
-    '/': (values) => `<select>${values.map(value => `<option value="${value}">${value}</option>`).join('')}</select>`
+    '{': values => `<input data-values="${values}">`,
+    '{{': values => `<textarea data-values="${values}"></textarea>`,
+    '[': values => `<select>${values.map(value => `<option value="${value}">${value}</option>`).join('')}</select>`
 };
 
-export const regex = /{}|{[^{][^}]*}|\[\]|\[[^[][^\]]*\]/gm;
+export const regex = /{}|{[^{][^}]*}|{{}}|{{[^{][^}]*}}|\[\]|\[[^[][^\]]*\]/gm;
 
 export function textToJsx(string) {
     return parseText(string);
@@ -48,13 +48,14 @@ export function parseText(string) {
 }
 
 export function htmlToJsx(string) {
-    const html = parseHtml(string);
     const parser = new DOMParser();
+    const html = parseHtml(string);
     const doc = parser.parseFromString(html, 'text/html');
     const div = document.createElement('div');
     div.append(...doc.body.children);
-
-    return elementToJsx(div);
+    const jsx = elementToJsx(div);
+    console.log(jsx);
+    return jsx;
 }
 
 export function parseHtml(string) {
@@ -80,6 +81,8 @@ function elementToJsx(element) {
     const type = element.nodeName.toLowerCase();
     const props = {};
 
+    console.log('element', element);
+
     if (type === '#text') {
         return element.textContent === '\n' ? undefined : element.textContent;
     } else if (type === 'input' && element.type === 'text') {
@@ -90,8 +93,6 @@ function elementToJsx(element) {
         return createElement(Select, { values: Array.from(element.children).map(option => option.value) });
     } else if (element.childNodes.length === 0) {
         return createElement(type, props, element.textContent || undefined);
-    } else if (element.childNodes.length === 1) {
-        return createElement(type, props, element.childNodes[0].textContent);
     } else {
         return createElement(type, props, ...Array.from(element.childNodes).map(child => elementToJsx(child)).filter(child => child !== undefined));
     }

@@ -19,10 +19,10 @@ export function useCourse(id) {
     const [course, actions] = useStore(state => (state.courses && 'single' in state.courses) ? state.courses.single : state.course, courseActions);
 
     useEffect(() => {
-        if (course?.id === id) return;
+        if (course?.id === id || course?.slug === id) return;
 
-        actions.getCourse(id);
         actions.unsetCourse();
+        actions.getCourse(id);
     }, [id]);
 
     return [

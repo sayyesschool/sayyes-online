@@ -1,5 +1,3 @@
-import React from 'react';
-
 import './index.scss';
 
 const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];

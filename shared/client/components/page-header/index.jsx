@@ -1,4 +1,4 @@
-import React from 'react';
+import { cloneElement, isValidElement } from 'react';
 import {
     Button,
     Icon,
@@ -26,24 +26,24 @@ export default function PageHeader({ title, subtitle, overline, graphic, breadcr
                             <Breadcrumbs items={breadcrumbs} />
                         }
 
-                        {overline && (React.isValidElement(overline) ?
+                        {overline && (isValidElement(overline) ?
                             React.cloneElement(overline, { className: 'page-header__overline' })
                             :
                             <Typography element="div" className="page-header__overline" type="overline">{overline}</Typography>
                         )}
 
                         {graphic &&
-                            React.cloneElement(graphic, { className: 'page-header__graphic' })
+                            cloneElement(graphic, { className: 'page-header__graphic' })
                         }
 
-                        {title && (React.isValidElement(title) ?
-                            React.cloneElement(title, { className: 'page-header__title' })
+                        {title && (isValidElement(title) ?
+                            cloneElement(title, { className: 'page-header__title' })
                             :
                             <Typography className="page-header__title" type="headline4" noMargin>{title}</Typography>
                         )}
 
-                        {subtitle && (React.isValidElement(subtitle) ?
-                            React.cloneElement(subtitle, { className: 'page-header__subtitle' })
+                        {subtitle && (isValidElement(subtitle) ?
+                            cloneElement(subtitle, { className: 'page-header__subtitle' })
                             :
                             <Typography className="page-header__subtitle" type="headline6" noMargin>{subtitle}</Typography>
                         )}
@@ -52,8 +52,8 @@ export default function PageHeader({ title, subtitle, overline, graphic, breadcr
                     {actions &&
                         <div className="page-header__section page-header__section--actions">
                             {actions.filter(action => Boolean(action)).map(action =>
-                                React.isValidElement(action) ?
-                                    React.cloneElement(action) :
+                                isValidElement(action) ?
+                                    cloneElement(action) :
                                     (action.label ?
                                         <Button
                                             key={action.key}

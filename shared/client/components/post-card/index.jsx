@@ -1,9 +1,8 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import {
     Avatar,
     Button,
-    Card,
-    Icon
+    Card
 } from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
@@ -52,13 +51,13 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
                         items={[
                             {
                                 key: 'edit',
-                                graphic: <Icon>edit</Icon>,
+                                icon: 'edit',
                                 text: 'Редактировать',
                                 onClick: toggleEditing
                             },
                             {
                                 key: 'delete',
-                                graphic: <Icon>delete</Icon>,
+                                icon: 'delete',
                                 text: 'Удалить',
                                 onClick: handleDelete
                             }

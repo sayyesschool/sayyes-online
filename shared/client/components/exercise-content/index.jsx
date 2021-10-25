@@ -1,48 +1,75 @@
-import React from 'react';
+import { createElement } from 'react';
 import {
-    Avatar,
-    Card
+    Typography
 } from 'mdc-react';
+import classnames from 'classnames';
 
-import AudioPlayer from 'shared/components/audio-player';
+import AudioContent from 'shared/components/audio-content';
 import VideoPlayer from 'shared/components/video-player';
+
+import BooleanExerciseContent from './boolean-exercise-content';
+import ChoiceExerciseContent from './choice-exercise-content';
+import EssayExerciseContent from './essay-exercise-content';
+import FIBExerciseContent from './fib-exercise-content';
+import InputExerciseContent from './input-exercise-content';
+import TextExerciseContent from './text-exercise-content';
 
 import './index.scss';
 
-export default function ExerciseContent({ number, exercise }) {
+const Components = {
+    boolean: BooleanExerciseContent,
+    choice: ChoiceExerciseContent,
+    essay: EssayExerciseContent,
+    fib: FIBExerciseContent,
+    input: InputExerciseContent,
+    text: TextExerciseContent
+};
+
+export default function ExerciseContent({ exercise, checked }) {
+    const classNames = classnames('exercise-content', `exercise-content--${exercise.type}`, {
+        'exercise-content--checked': checked
+    });
+
     return (
-        <Card className="exercise-content" outlined>
-            <Card.Header
-                graphic={<Avatar className="exercise-number" text={number} />}
-                title={exercise.description}
-            />
+        <div className={classNames}>
+            {exercise.description &&
+                <Typography className="exercise-description" type="subtitle1">{exercise.description}</Typography>
+            }
 
             {exercise.image &&
                 <img
+                    className="exercise-image"
                     src={exercise.imageUrl}
+                    alt=""
                 />
-
             }
 
             {exercise.audio &&
-                <AudioPlayer
-                    src={exercise.audio.src}
-                    width="100%"
+                <AudioContent
+                    className="exercise-audio"
+                    audio={exercise.audio}
                 />
             }
 
             {exercise.video &&
-                <Card.Media wide>
+                <section className="exercise-video">
                     <VideoPlayer
                         id="video-player"
-                        src={exercise.video.src}
-                        controls={false}
+                        src={exercise.video.url}
+                        controls
                         options={{
                             stretching: 'fill'
                         }}
                     />
-                </Card.Media>
+                </section>
             }
-        </Card>
+
+            {exercise.type &&
+                createElement(Components[exercise.type], {
+                    exercise,
+                    checked
+                })
+            }
+        </div>
     );
 }

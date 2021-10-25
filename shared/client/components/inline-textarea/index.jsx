@@ -1,8 +1,8 @@
-import React, { forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
+import { forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
 
 import './index.scss';
 
-export default forwardRef(function InlineTextarea({ values }, ref) {
+export default forwardRef(function InlineTextarea({ values, ...props }, ref) {
     const elementRef = useRef();
 
     const [value, setValue] = useState('');
@@ -32,6 +32,7 @@ export default forwardRef(function InlineTextarea({ values }, ref) {
             className="inline-textarea"
             value={value}
             onChange={event => setValue(event.target.value)}
+            {...props}
         />
     );
 });

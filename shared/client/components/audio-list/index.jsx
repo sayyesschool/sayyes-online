@@ -1,6 +1,5 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import {
-    Icon,
     IconButton,
     List
 } from 'mdc-react';
@@ -9,7 +8,7 @@ import { formatDuration } from 'shared/utils/format';
 
 export default function AudioList({ audios, selectedAudio, onClick, onDelete }) {
     return (
-        <List className="audio-list" twoLine>
+        <List className="audio-list">
             {audios.map(audio =>
                 <AudioListItem
                     key={audio}
@@ -36,10 +35,10 @@ function AudioListItem({ audio, playing, onClick, onDelete, ...props }) {
 
     return (
         <List.Item
+            icon="audiotrack"
             primaryText={audio.title}
             secondaryText={formatDuration(audio.duration)}
-            graphic={<Icon>audiotrack</Icon>}
-            meta={
+            trailingIcon={
                 <IconButton
                     icon="delete"
                     onClickCapture={handleDelete}

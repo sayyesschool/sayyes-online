@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
     IconButton,
@@ -13,13 +13,13 @@ export default function MaterialsList({ materials, onRemove }) {
     }, []);
 
     return (
-        <List imageList twoLine>
+        <List>
             {materials.map(material =>
                 <List.Item
                     key={material.id}
                     component={Link}
                     to={material.uri}
-                    graphic={<img src={material.imageUrl} />}
+                    leadingThumbnail={<img src={material.imageUrl} />}
                     primaryText={material.title}
                     secondaryText={material.subtitle}
                     meta={onRemove &&

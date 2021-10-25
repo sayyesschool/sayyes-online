@@ -1,8 +1,7 @@
-import React, { useRef, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
     Avatar,
     Button,
-    Dialog,
     Icon,
     IconButton,
     Typography

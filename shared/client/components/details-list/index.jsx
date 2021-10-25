@@ -1,13 +1,12 @@
-import React from 'react';
 import {
-    List,
+    List
 } from 'mdc-react';
 
 import './index.scss';
 
 export default function DetailsList({ items = [], children }) {
     return (
-        <List className="details-list" twoLine>
+        <List className="details-list">
             {items.filter(item => item).map(item =>
                 <List.Item
                     key={item.key}

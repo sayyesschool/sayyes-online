@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     ChipSet, Chip,
     Icon,
@@ -8,14 +7,18 @@ import moment from 'moment';
 
 import './index.scss';
 
-export default function LessonChipSet({ lessons, onClick = Function.prototype, onDelete }) {
+export default function LessonChipSet({
+    lessons,
+    onClick = Function.prototype,
+    onDelete
+}) {
     return (
         <ChipSet className="lesson-chip-set">
             {lessons.map(lesson => ({ ...lesson, date: moment(lesson.date) })).map(lesson =>
                 <Chip
                     key={lesson.id || lesson.date.valueOf()}
                     className={classnames('lesson-chip', `lesson-chip--${lesson.status}`)}
-                    icon={lesson.trial && <Icon>tour</Icon>}
+                    icon={lesson.trial && 'tour'}
                     text={<>
                         <span>
                             <span className="lesson-date">{lesson.date.format('D.M')}</span>
@@ -27,7 +30,9 @@ export default function LessonChipSet({ lessons, onClick = Function.prototype, o
                             <span className="lesson-duration"> {`${lesson.duration} мин.`}</span>
                         </span>
                     </>}
-                    trailingIcon={onDelete && <Icon onClick={event => onDelete(event, lesson)}>delete</Icon>}
+                    trailingIcon={onDelete &&
+                        <Icon onClick={event => onDelete(event, lesson)}>delete</Icon>
+                    }
                     onClick={() => onClick(lesson)}
                 />
             )}

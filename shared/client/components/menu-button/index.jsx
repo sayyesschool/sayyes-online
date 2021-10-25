@@ -1,7 +1,7 @@
-import React, { useRef, useState, useCallback } from 'react';
+import { cloneElement, isValidElement, useCallback, useRef, useState } from 'react';
 import {
     IconButton,
-    Menu, MenuItem
+    Menu
 } from 'mdc-react';
 import classnames from 'classnames';
 
@@ -24,31 +24,30 @@ export default function MenuButton({
 
     return (
         <div ref={anchorRef} className={classnames(className, 'menu-button')}>
-            {React.isValidElement(button) ?
-                React.cloneElement(button, {
-                    disabled,
-                    onClick: handleOpen,
-                    ...buttonProps
-                })
-                :
-                <IconButton
-                    icon={icon || 'more_vert'}
-                    disabled={disabled}
-                    onClick={handleOpen}
-                    {...buttonProps}
-                />
-            }
+
 
             <Menu
-                anchor={anchorRef.current}
+                anchor={isValidElement(button) ?
+                    cloneElement(button, {
+                        disabled,
+                        onClick: handleOpen,
+                        ...buttonProps
+                    })
+                    :
+                    <IconButton
+                        icon={icon || 'more_vert'}
+                        disabled={disabled}
+                        onClick={handleOpen}
+                        {...buttonProps}
+                    />
+                }
                 open={isOpen}
                 onClose={handleClose}
-                top right
                 listProps={listProps}
                 {...menuProps}
             >
                 {items.filter(item => !!item).map(item =>
-                    <MenuItem {...item} />
+                    <Menu.Item {...item} />
                 )}
             </Menu>
         </div>

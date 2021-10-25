@@ -31,11 +31,11 @@
         min-height: 64px;
         align-items: flex-start;
 
-        &__graphic {
+        &__start {
             margin-top: 1rem;
         }
 
-        &__text {
+        &__content {
             display: flex;
             flex-direction: column-reverse;
             text-overflow: initial;
@@ -49,7 +49,7 @@
             overflow: initial;
         }
 
-        &__meta {
+        &__end {
             margin: 12px 0 0 auto;
         }
     }

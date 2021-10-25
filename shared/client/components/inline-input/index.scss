@@ -1,12 +1,11 @@
 .inline-input {
     display: inline-flex;
     position: relative;
-    margin-left: .5rem;
     vertical-align: middle;
 
     span {
         min-width: 32px;
-        height: 32px;
+        height: 24px;
         padding: 0 8px;
         opacity: 0;
     }
@@ -22,7 +21,7 @@
         outline: none;
         cursor: pointer;
         letter-spacing: normal;
-        background-color: #e0e0e0;
+        background-color: #e3e3e3;
     }
 
     &--correct {

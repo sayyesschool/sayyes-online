@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 import classnames from 'classnames';
 
 import LoadingIndicator from 'shared/components/loading-indicator';

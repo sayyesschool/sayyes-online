@@ -1,5 +1,5 @@
-@use '@material/list';
+@use '@material/list/evolution-mixins' as list;
 
 .mdc-list {
-    @include list.icon-margin(16px);
+    @include list.item-start-spacing(16px);
 }

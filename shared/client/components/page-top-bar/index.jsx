@@ -1,4 +1,4 @@
-import React from 'react';
+import { cloneElement, isValidElement } from 'react';
 import { Link } from 'react-router-dom';
 import {
     Button,
@@ -24,7 +24,7 @@ export default function PageTopBar({ title, breadcrumbs, backTo, actions, childr
                         {breadcrumbs?.length > 0 &&
                             <nav className="page-breadcrumbs">
                                 {breadcrumbs.map((item, index) =>
-                                    React.cloneElement(item, { key: index, className: 'mdc-typography--overline' })
+                                    cloneElement(item, { key: index, className: 'mdc-typography--overline' })
                                 )}
                             </nav>
                         }
@@ -45,8 +45,8 @@ export default function PageTopBar({ title, breadcrumbs, backTo, actions, childr
                     <TopAppBar.Section align="end">
                         {actions.filter(action => Boolean(action)).map((action, index) =>
                             <TopAppBar.ActionItem key={index}>
-                                {React.isValidElement(action) ?
-                                    React.cloneElement(action) :
+                                {isValidElement(action) ?
+                                    cloneElement(action) :
                                     (action.label ?
                                         <Button
                                             {...action}

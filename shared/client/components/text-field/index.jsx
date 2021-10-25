@@ -1,4 +1,4 @@
-import React, { forwardRef, useLayoutEffect, useRef, useImperativeHandle } from 'react';
+import { forwardRef, useImperativeHandle, useLayoutEffect, useRef } from 'react';
 import {
     TextField
 } from 'mdc-react';

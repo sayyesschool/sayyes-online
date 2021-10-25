@@ -1,4 +1,3 @@
-import React from 'react';
 import 'moment/locale/ru';
 
 import MonthView from './MonthView';

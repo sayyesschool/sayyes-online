@@ -1,45 +1,19 @@
-import React from 'react';
-import {
-    Avatar,
-    Card,
-    LayoutGrid,
-    List
-} from 'mdc-react';
-
-//import PDFViewer from 'shared/components/pdf-viewer';
-import ExerciseContent from 'shared/components/exercise-content';
+import ExerciseCard from 'shared/components/exercise-card';
 
 import './index.scss';
 
 export default function LessonContent({ course, unit, lesson }) {
+    const exercises = lesson.exercises.map(id => course.exercisesById.get(id));
+
     return (
         <section className="lesson-content">
-            <Card>
-                {/* {lesson.document &&
-                    <PDFViewer
-                        file={`https://static.sayes.ru/courses/${course.slug}/documents/${lesson.document}`}
-                    />
-                } */}
-
-                {lesson.image &&
-                    <img
-                        src={lesson.imageUrl}
-                    />
-                }
-
-                {lesson.exercises &&
-                    lesson.exercises.map((exercise, index) =>
-                        <ExerciseContent
-                            key={exercise.id}
-                            number={index + 1}
-                            course={course}
-                            unit={unit}
-                            lesson={lesson}
-                            exercise={exercise}
-                        />
-                    )
-                }
-            </Card>
+            {exercises?.map((exercise, index) =>
+                <ExerciseCard
+                    key={exercise.id}
+                    number={index + 1}
+                    exercise={exercise}
+                />
+            )}
         </section>
     );
 }

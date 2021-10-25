@@ -1,4 +1,3 @@
-import React from 'react';
 import { Drawer } from 'mdc-react';
 import classnames from 'classnames';
 

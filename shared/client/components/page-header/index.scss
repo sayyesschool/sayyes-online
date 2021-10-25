@@ -74,9 +74,9 @@ $ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
 
     .mdc-chip {
         background-color: transparent;
-        @include chips.ink-color($ink-color);
-        @include chips.selected-ink-color($ink-color);
-        @include chips.leading-icon-color($ink-color);
+        @include chips.text-label-color($ink-color);
+        @include chips.selected-text-label-color($ink-color);
+        @include chips.icon-color($ink-color);
     }
 
     .mdc-tab {

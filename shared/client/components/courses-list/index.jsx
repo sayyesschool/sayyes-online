@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
     IconButton,
@@ -13,15 +13,15 @@ export default function CoursesList({ courses, onRemove }) {
     }, []);
 
     return (
-        <List imageList>
+        <List>
             {courses.map(course =>
                 <List.Item
                     key={course.id}
                     component={Link}
-                    to={course.uri}
+                    to={course.url}
                     graphic={<img src={course.imageUrl} />}
                     text={course.title}
-                    meta={
+                    meta={onRemove &&
                         <IconButton
                             icon="remove"
                             title="Убрать курс"

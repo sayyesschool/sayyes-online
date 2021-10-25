@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 
 import Form from 'shared/components/form';
 import TextEditor from 'shared/components/text-editor';

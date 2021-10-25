@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Button,
     Dialog
@@ -22,16 +21,14 @@ export default function FormDialog({
             className="form-dialog"
             title={title}
             open={open}
+            actions={[
+                <Button key="close" type="button" onClick={onClose}>Закрыть</Button>,
+                <Button key="submit" type="submit" form={form} outlined onClick={onSubmit}>{submitButtonText}</Button>
+            ]}
+            onClose={onClose}
             {...props}
         >
-            <Dialog.Content>
-                {children}
-            </Dialog.Content>
-
-            <Dialog.Actions>
-                <Button type="button" onClick={onClose}>Закрыть</Button>
-                <Button type="submit" form={form} outlined onClick={onSubmit}>{submitButtonText}</Button>
-            </Dialog.Actions>
+            {children}
         </Dialog>
     );
 }

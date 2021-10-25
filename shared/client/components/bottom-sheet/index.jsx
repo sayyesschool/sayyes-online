@@ -1,7 +1,5 @@
-import React from 'react';
 import classnames from 'classnames';
 import {
-    Dialog,
     IconButton
 } from 'mdc-react';
 

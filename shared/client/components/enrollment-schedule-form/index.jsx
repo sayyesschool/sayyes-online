@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
     Checkbox,
     FormField,
@@ -9,7 +9,7 @@ import {
 import moment from 'moment';
 
 import { useBoolean } from 'shared/hooks/state';
-import { rescheduleLessons } from 'shared/utils/enrollment';
+import { rescheduleLessons } from 'shared/libs/enrollment';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';

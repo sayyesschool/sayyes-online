@@ -1,9 +1,8 @@
-import React, { useRef, useState, useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import {
     Chip,
-    DataTable,
     Icon,
     IconButton,
     Typography

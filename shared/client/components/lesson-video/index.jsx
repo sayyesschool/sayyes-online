@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Dialog } from 'mdc-react';
 
 import VideoPlayer from 'shared/components/video-player';

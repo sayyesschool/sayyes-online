@@ -1,8 +1,8 @@
 @use 'shared/styles/variables';
-@use 'mdc-react/src/SideSheet/mixins';
+@use 'mdc-react/src/side-sheet';
 
 .app-side-sheet {
-    @include mixins.width(360px);
+    @include side-sheet.width(360px);
 
     &.mdc-side-sheet--dismissible {
         position: fixed;

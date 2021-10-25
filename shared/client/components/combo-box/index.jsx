@@ -1,5 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react';
-import classnames from 'classnames';
+import { useCallback, useRef, useState } from 'react';
 import {
     Chip, ChipSet,
     LineRipple

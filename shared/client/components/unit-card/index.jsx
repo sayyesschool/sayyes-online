@@ -1,16 +1,17 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import {
     Avatar,
     Card
 } from 'mdc-react';
 
+import './index.scss';
+
 export default function UnitCard({ number, unit, onSelectUnit }) {
     return (
         <Card
+            className="unit-card"
             component={!onSelectUnit ? Link : undefined}
-            to={!onSelectUnit ? unit.uri : undefined}
-            outlined
+            to={!onSelectUnit ? unit.url : undefined}
             onClick={onSelectUnit && (() => onSelectUnit(unit))}
         >
             <Card.Media

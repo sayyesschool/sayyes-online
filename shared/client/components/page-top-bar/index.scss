@@ -17,8 +17,16 @@
     }
 
     .page-breadcrumbs {
-        a:hover {
-            text-decoration: underline;
+        display: inline-block;
+        line-height: 1;
+
+        a {
+            display: inline-block;
+            line-height: 1;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
 
         a + a {

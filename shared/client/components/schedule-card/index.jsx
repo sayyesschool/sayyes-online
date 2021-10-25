@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Card
 } from 'mdc-react';
@@ -11,7 +10,7 @@ export default function ScheduleCard({ schedule }) {
     return (
         <Card className="schedule-card">
             <Card.Header
-                title="Расписание занятий"
+                title="Расписание"
             />
 
             {schedule?.length > 0 &&

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 import AudioPlayer from 'shared/components/audio-player';
 import AudioList from 'shared/components/audio-list';

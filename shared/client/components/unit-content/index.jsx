@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import {
     Avatar,
@@ -38,13 +37,13 @@ export default function UnitContent({ course, unit, onSelectLesson }) {
                     />
 
                     <Card.Section>
-                        <List avatarList twoLine>
+                        <List>
                             {lessons.map((lesson, index) =>
                                 <List.Item
                                     key={lesson.id}
                                     component={!onSelectLesson ? Link : undefined}
-                                    to={!onSelectLesson ? lesson.uri : undefined}
-                                    graphic={<Avatar text={index + 1} />}
+                                    to={!onSelectLesson ? unit.url + `/lessons/${lesson.slug}` : undefined}
+                                    leadingAvatar={<Avatar text={index + 1} />}
                                     primaryText={lesson.title}
                                     secondaryText={`${lesson.exercises.length} уроков`}
                                     onClick={onSelectLesson && (() => onSelectLesson(unit, lesson))}

@@ -341,7 +341,9 @@ export function mapCourse(course) {
     course.audiosByFilename = course.audios.reduce((map, audio) => map.set(audio.filename, audio), new Map());
     course.videosByFilename = course.videos.reduce((map, video) => map.set(video.filename, video), new Map());
     course.unitsById = course.units.reduce((map, unit) => map.set(unit.id, unit), new Map());
+    course.unitsBySlug = course.units.reduce((map, unit) => map.set(unit.slug, unit), new Map());
     course.lessonsById = course.lessons.reduce((map, lesson) => map.set(lesson.id, lesson), new Map());
+    course.lessonsBySlug = course.lessons.reduce((map, lesson) => map.set(lesson.slug, lesson), new Map());
     course.exercisesById = course.exercises.reduce((map, exercise) => map.set(exercise.id, exercise), new Map());
 
     // course.units.forEach(unit => {

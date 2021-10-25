@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, useEffect, useImperativeHandle } from 'react';
+import { forwardRef, useImperativeHandle, useEffect, useRef } from 'react';
 import Plyr from 'plyr';
 
 import { defaultI18n } from './constants';

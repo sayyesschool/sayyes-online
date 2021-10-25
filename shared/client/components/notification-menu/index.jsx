@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
     Card,
@@ -40,52 +40,49 @@ export default function NotificationMenu() {
     const hasNotifications = notifications.length > 0;
 
     return (
-        <React.Fragment>
-            <IconButton
-                ref={anchorRef}
-                className="notification-button"
-                onClick={handleOpenMenu}
-            >
-                <Badge value={hasNotifications ? notifications.length : undefined}>
-                    <Icon>{hasNotifications ? 'notifications_active' : 'notifications_none'}</Icon>
-                </Badge>
-            </IconButton>
-
-            <MenuSurface
-                open={isOpen}
-                top right
-                fixed
-                anchor={anchorRef.current}
-                onClose={handleCloseMenu}
-            >
-                <Card>
-                    <Card.Header
-                        title="Уведомления"
-                        graphic={
-                            <Icon>{hasNotifications ? 'notifications_active' : 'notifications_none'}</Icon>
-                        }
-                        actions={hasNotifications &&
-                            <IconButton
-                                icon="clear_all"
-                                title="Отметить все как прочитанные"
-                                onClick={actions.deleteNotifications}
-                            />
-                        }
-                    />
-
-                    {hasNotifications ?
-                        <NotificationList
-                            notifications={notifications}
-                            onClick={handleClickNotification}
-                            onDelete={handleDeleteNotification}
-                        />
-                        :
-                        <Card.Section primary>
-                            <Typography type="body2" noMargin>Новых уведомлений пока нет</Typography>
-                        </Card.Section>
+        <MenuSurface
+            anchor={
+                <IconButton
+                    ref={anchorRef}
+                    className="notification-button"
+                    onClick={handleOpenMenu}
+                >
+                    <Badge value={hasNotifications ? notifications.length : undefined}>
+                        <Icon>{hasNotifications ? 'notifications_active' : 'notifications_none'}</Icon>
+                    </Badge>
+                </IconButton>
+            }
+            open={isOpen}
+            fixed
+            onClose={handleCloseMenu}
+        >
+            <Card>
+                <Card.Header
+                    title="Уведомления"
+                    graphic={
+                        <Icon>{hasNotifications ? 'notifications_active' : 'notifications_none'}</Icon>
                     }
-                </Card>
-            </MenuSurface>
-        </React.Fragment>
+                    actions={hasNotifications &&
+                        <IconButton
+                            icon="clear_all"
+                            title="Отметить все как прочитанные"
+                            onClick={actions.deleteNotifications}
+                        />
+                    }
+                />
+
+                {hasNotifications ?
+                    <NotificationList
+                        notifications={notifications}
+                        onClick={handleClickNotification}
+                        onDelete={handleDeleteNotification}
+                    />
+                    :
+                    <Card.Section primary>
+                        <Typography type="body2" noMargin>Новых уведомлений пока нет</Typography>
+                    </Card.Section>
+                }
+            </Card>
+        </MenuSurface>
     );
 }
