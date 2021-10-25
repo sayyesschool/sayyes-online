@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { useMaterial } from 'shared/hooks/materials';
 import LoadingIndicator from 'shared/components/loading-indicator';

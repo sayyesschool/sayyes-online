@@ -1,7 +1,5 @@
-import React from 'react';
 import {
     Card,
-    Icon,
     IconButton,
     List
 } from 'mdc-react';
@@ -21,37 +19,37 @@ export default function ProfileCard({ user }) {
             />
 
             <Card.Section>
-                <List twoLine>
+                <List>
                     <List.Item
-                        graphic={<Icon>person</Icon>}
+                        icon="person"
                         primaryText={user.fullname}
                         secondaryText="Имя и фамилия"
                     />
 
                     <List.Item
-                        graphic={<Icon>email</Icon>}
+                        icon="email"
                         primaryText={user.email}
                         secondaryText="Электронная почта"
                     />
 
                     <List.Item
-                        graphic={<Icon>phone</Icon>}
+                        icon="phone"
                         primaryText={user.phone || '[Не указан]'}
                         secondaryText="Телефон"
-                        meta={!user.phone && <Icon>warning</Icon>}
+                        trailingIcon={!user.phone && 'warning'}
                     />
 
                     <List.Item
-                        graphic={<Icon>cake</Icon>}
+                        icon="cake"
                         primaryText={moment(user.dob).format('DD.MM.YYYY')}
                         secondaryText="Дата рождения"
                     />
 
                     <List.Item
-                        graphic={<Icon>public</Icon>}
+                        icon="public"
                         primaryText={user.timezone || '[Не указан]'}
                         secondaryText="Часовой пояс"
-                        meta={!user.timezone && <Icon>warning</Icon>}
+                        trailingIcon={!user.timezone && 'warning'}
                     />
                 </List>
             </Card.Section>

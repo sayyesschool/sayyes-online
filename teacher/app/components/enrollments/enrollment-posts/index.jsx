@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 
 import PostsFeed from 'shared/components/posts-feed';
 

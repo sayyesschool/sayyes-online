@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useMaterials } from 'shared/hooks/materials';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';

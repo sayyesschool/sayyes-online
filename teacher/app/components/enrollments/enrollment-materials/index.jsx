@@ -1,8 +1,7 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
     Card,
-    Icon,
     IconButton,
     List
 } from 'mdc-react';
@@ -40,7 +39,7 @@ export default function EnrollmentMaterials({ enrollment }) {
         .filter(material => !enrollment.materials.includes(material.id))
         .map(material => ({
             key: material.id,
-            graphic: <img src={material.imageUrl} />,
+            leadingThumbnail: <img src={material.imageUrl} />,
             primaryText: material.title,
             secondaryText: material.subtitle,
             onClick: () => handleAddMaterial(material.id)
@@ -54,7 +53,6 @@ export default function EnrollmentMaterials({ enrollment }) {
                     actions={
                         <MenuButton
                             icon="add"
-                            listProps={{ twoLine: true }}
                             items={items}
                         />
                     }
@@ -62,16 +60,16 @@ export default function EnrollmentMaterials({ enrollment }) {
 
                 {enrollmentMaterials.length > 0 &&
                     <Card.Section>
-                        <List imageList twoLine>
+                        <List>
                             {enrollmentMaterials.map(material =>
                                 <List.Item
                                     key={material.id}
                                     component={Link}
                                     to={material.uri}
-                                    graphic={<img src={material.imageUrl} />}
+                                    leadingThumbnail={<img src={material.imageUrl} />}
                                     primaryText={material.title}
                                     secondaryText={material.subtitle}
-                                    meta={
+                                    trailingIcon={
                                         <IconButton
                                             icon="remove"
                                             title="Убрать курс"

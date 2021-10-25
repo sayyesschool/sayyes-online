@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import { useStore } from 'shared/hooks/store';

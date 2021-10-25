@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Route, Link } from 'react-router-dom';
 import {
-    Dialog,
-    Icon
+    Dialog
 } from 'mdc-react';
 
 import { useCourse } from 'shared/hooks/courses';
@@ -49,10 +48,9 @@ export default function CoursePage({ match }) {
                             <MenuButton
                                 key="audio"
                                 icon="audiotrack"
-                                listProps={{ twoLine: true }}
                                 items={lesson.audios.map(audio => course.audiosByFilename.get(audio)).map(audio => ({
                                     key: audio.filename,
-                                    graphic: <Icon>audiotrack</Icon>,
+                                    icon: 'audiotrack',
                                     primaryText: audio.title,
                                     secondaryText: audio.duration,
                                     onClick: () => setAudio(audio)
@@ -63,10 +61,9 @@ export default function CoursePage({ match }) {
                             <MenuButton
                                 key="video"
                                 icon="movie"
-                                listProps={{ twoLine: true }}
                                 items={lesson.videos.map(video => course.videosByFilename.get(video)).map(video => ({
                                     key: video.filename,
-                                    graphic: <Icon>movie</Icon>,
+                                    icon: 'movie',
                                     primaryText: video.title,
                                     secondaryText: video.duration,
                                     onClick: () => setVideo(video)

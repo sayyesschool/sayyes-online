@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import {
     Card,
     Icon,
@@ -34,50 +34,50 @@ export default function StudentDetails({ student, onUpdate }) {
                     <Card.Section>
                         <DetailsList>
                             <List.Item
-                                graphic={<Icon>phone</Icon>}
+                                icon="phone"
                                 primaryText={student.phone || '[Не указан]'}
                                 secondaryText="Телефон"
                             />
 
                             <List.Item
-                                graphic={<Icon>email</Icon>}
+                                icon="email"
                                 primaryText={student.email || '[Не указан]'}
                                 secondaryText="Электронная почта"
                             />
 
                             <List.Item
-                                graphic={<Icon>cake</Icon>}
+                                icon="cake"
                                 primaryText={student.dob ? moment(student.dob).format('DD.MM.YYYY') : '[Не указана]'}
                                 secondaryText="Дата рождения"
                             />
 
                             <List.Item
-                                graphic={<Icon>public</Icon>}
+                                icon="public"
                                 primaryText={student.timezone ? data.timezones.get(student.timezone) : '[Не указан]'}
                                 secondaryText="Часовой пояс"
                             />
 
                             <List.Item
-                                graphic={<Icon>location_city</Icon>}
+                                icon="location_city"
                                 primaryText={student.address || '[Не указан]'}
                                 secondaryText="Адрес"
                             />
 
                             <List.Item
-                                graphic={<Icon>work</Icon>}
+                                icon="work"
                                 primaryText={student.occupation || '[Не указана]'}
                                 secondaryText="Род деятельности"
                             />
 
                             <List.Item
-                                graphic={<Icon>golf_course</Icon>}
+                                icon="golf_course"
                                 primaryText={student.interests || '[Не указаны]'}
                                 secondaryText="Интересы"
                             />
 
                             {student.note &&
                                 <List.Item
-                                    graphic={<Icon>notes</Icon>}
+                                    icon="notes"
                                     primaryText={student.note}
                                     secondaryText="Заметки"
                                 />

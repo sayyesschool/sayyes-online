@@ -1,8 +1,6 @@
-import React from 'react';
 import {
     Avatar,
     Card,
-    Icon,
     IconButton,
     List
 } from 'mdc-react';
@@ -31,47 +29,47 @@ export default function EnrollmentDetails({ enrollment }) {
                     <Card.Section>
                         <DetailsList>
                             <List.Item
-                                graphic={<Icon>portrait</Icon>}
+                                icon="portrait"
                                 primaryText={enrollment.ageLabel || '[Не указана]'}
                                 secondaryText="Возрастная группа"
                             />
 
                             <List.Item
-                                graphic={<Icon>timelapse</Icon>}
+                                icon="timelapse"
                                 primaryText={enrollment.lessonDuration + ' мин.'}
                                 secondaryText="Продолжительность урока"
                             />
 
                             <List.Item
-                                graphic={<Icon>signal_cellular_alt</Icon>}
+                                icon="signal_cellular_alt"
                                 primaryText={enrollment.levelLabel || '[Не указан]'}
                                 secondaryText="Уровень"
                             />
 
                             <List.Item
-                                graphic={<Icon>flag</Icon>}
+                                icon="flag"
                                 primaryText={enrollment.goal || '[Не указана]'}
                                 secondaryText="Цель"
                             />
 
                             <List.Item
-                                graphic={<Icon>star</Icon>}
+                                icon="star"
                                 primaryText={enrollment.experience || '[Не указан]'}
                                 secondaryText="Опыт"
                             />
 
                             <List.Item
-                                graphic={<Icon>checklist</Icon>}
+                                icon="checklist"
                                 primaryText={enrollment.preferences || '[Не указаны]'}
                                 secondaryText="Предпочтения"
                             />
 
                             {enrollment.manager &&
                                 <List.Item
-                                    graphic={<Icon>person</Icon>}
+                                    icon="person"
                                     primaryText={enrollment.manager.fullname}
                                     secondaryText="Менеджер"
-                                    meta={
+                                    end={
                                         <Avatar
                                             src={enrollment.manager.imageUrl}
                                             text={enrollment.manager.initials}
@@ -82,7 +80,7 @@ export default function EnrollmentDetails({ enrollment }) {
 
                             {enrollment.note &&
                                 <List.Item
-                                    graphic={<Icon>notes</Icon>}
+                                    icon="notes"
                                     primaryText={enrollment.note}
                                     secondaryText="Заметки"
                                 />

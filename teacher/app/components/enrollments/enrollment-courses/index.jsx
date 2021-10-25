@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import {
     Card
 } from 'mdc-react';
@@ -34,7 +34,7 @@ export default function EnrollmentCourses({ enrollment }) {
         .filter(course => !enrollment.courses.includes(course.id))
         .map(course => ({
             key: course.id,
-            graphic: <img src={course.imageUrl} />,
+            leadingThumbnail: <img src={course.imageUrl} />,
             text: course.title,
             onClick: () => handleAddCourse(course.id)
         }));

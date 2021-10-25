@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import {
     Avatar,
@@ -7,12 +6,12 @@ import {
 
 export default function EnrollmentList({ enrollments }) {
     return (
-        <List twoLine avatarList>
+        <List>
             {enrollments.map(enrollment =>
                 <List.Item
                     component={Link}
                     to={enrollment.url}
-                    graphic={<Avatar text={enrollment.client.initials} />}
+                    leadingAvatar={<Avatar text={enrollment.client.initials} />}
                     primaryText={enrollment.client.fullname}
                     secondaryText={enrollment.domainLabel}
                 />

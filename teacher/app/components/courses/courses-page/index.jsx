@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useCourses } from 'shared/hooks/courses';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
