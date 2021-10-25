@@ -25,7 +25,9 @@ Unit.virtual('documentUrl').get(function() {
 });
 
 Unit.virtual('imageUrl').get(function() {
-    return this.image && `${process.env.STATIC_URL}${this.parent().url}/images/${this.image}`;
+    const baseUrl = `${process.env.STATIC_URL}${this.parent().url}/images/`;
+
+    return baseUrl + (this.image || `${this.id}.png`);
 });
 
 module.exports = Unit;
