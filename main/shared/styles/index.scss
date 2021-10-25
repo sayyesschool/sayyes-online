@@ -1,5 +1,7 @@
 @use 'shared/styles/index';
 @use 'node_modules/mdc-pug';
 
-@use './shared/styles';
-@use './front';
+@use '../../front';
+
+@use './icon-block';
+@use './slick';
