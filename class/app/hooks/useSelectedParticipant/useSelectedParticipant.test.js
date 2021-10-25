@@ -1,5 +1,4 @@
 import { EventEmitter } from 'events';
-import React from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 
 import useSelectedParticipant, { SelectedParticipantProvider } from './useSelectedParticipant';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { TwilioError } from 'twilio-video';
 
@@ -8,7 +7,7 @@ import usePasscodeAuth from './usePasscodeAuth/usePasscodeAuth';
 
 jest.mock('./useFirebaseAuth/useFirebaseAuth', () => jest.fn(() => ({ user: 'firebaseUser' })));
 jest.mock('./usePasscodeAuth/usePasscodeAuth', () => jest.fn(() => ({ user: 'passcodeUser' })));
-jest.mock('./useActiveSinkId/useActiveSinkId.ts', () => () => ['default', () => {}]);
+jest.mock('./useActiveSinkId/useActiveSinkId.ts', () => () => ['default', () => { }]);
 
 const mockUsePasscodeAuth = usePasscodeAuth as jest.Mock<any>;
 
@@ -124,7 +123,7 @@ describe('the useAppState hook', () => {
       expect(result.current.isFetching).toEqual(false);
 
       await act(async () => {
-        result.current.getToken('test', 'test').catch(() => {});
+        result.current.getToken('test', 'test').catch(() => { });
         await waitForNextUpdate();
         expect(result.current.isFetching).toEqual(true);
         jest.runOnlyPendingTimers();

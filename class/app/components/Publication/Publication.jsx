@@ -1,5 +1,3 @@
-import React from 'react';
-
 import useTrack from 'app/hooks/useTrack';
 import AudioTrack from 'app/components/AudioTrack';
 import VideoTrack from 'app/components/VideoTrack';

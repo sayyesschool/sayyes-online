@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { interval } from 'd3-timer';
 
 import useIsTrackEnabled from 'app/hooks/useIsTrackEnabled';

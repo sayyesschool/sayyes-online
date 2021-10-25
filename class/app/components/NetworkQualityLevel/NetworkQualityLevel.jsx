@@ -1,5 +1,3 @@
-import React from 'react';
-
 import useParticipantNetworkQualityLevel from 'app/hooks/useParticipantNetworkQualityLevel';
 
 const STEP = 3;

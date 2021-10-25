@@ -1,5 +1,3 @@
-import React from 'react';
-
 import ParticipantInfo from 'app/components/ParticipantInfo';
 import ParticipantTracks from 'app/components/ParticipantTracks';
 

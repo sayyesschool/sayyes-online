@@ -1,5 +1,3 @@
-import React from 'react';
-
 import useRoomContext from 'app/hooks/useRoomContext';
 import AudioLevelIndicator from 'app/components/AudioLevelIndicator';
 

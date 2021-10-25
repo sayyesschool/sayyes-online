@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import useLocalDataTrack from 'app/hooks/useLocalDataTrack';
 import useRemoteDataTrack from 'app/hooks/useRemoteDataTrack';

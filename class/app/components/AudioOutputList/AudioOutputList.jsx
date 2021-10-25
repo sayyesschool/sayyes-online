@@ -1,4 +1,3 @@
-import React from 'react';
 import { Select, Typography } from 'mdc-react';
 
 import useAppState from 'app/hooks/useAppState';

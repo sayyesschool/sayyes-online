@@ -1,4 +1,3 @@
-import React from 'react';
 import usePreflightTest from './usePreflightTest/usePreflightTest';
 import { makeStyles, Typography, Grid } from '@material-ui/core';
 import useGetPreflightTokens from './useGetPreflightTokens/useGetPreflightTokens';
@@ -27,7 +26,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ResultItem({ children, icon }: { children: React.ReactNode; icon: React.ReactNode }) {
+function ResultItem({ children, icon }: { children: React.ReactNode; icon: React.ReactNode; }) {
   const classes = useStyles();
 
   return (
@@ -40,7 +39,7 @@ function ResultItem({ children, icon }: { children: React.ReactNode; icon: React
   );
 }
 
-export function Result({ networkCondition, error }: { networkCondition?: NetworkCondition; error?: Error }) {
+export function Result({ networkCondition, error }: { networkCondition?: NetworkCondition; error?: Error; }) {
   if (error) {
     return <ResultItem icon={<ErrorIcon />}>There was a problem connecting to the network</ResultItem>;
   }

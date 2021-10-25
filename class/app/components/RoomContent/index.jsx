@@ -1,5 +1,3 @@
-import React from 'react';
-
 import AppContent from 'shared/components/app-content';
 
 import './index.scss';

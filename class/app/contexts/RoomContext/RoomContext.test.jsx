@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
-import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { Room, TwilioError } from 'twilio-video';
+
 import { VideoProvider } from './index';
 import useLocalTracks from './useLocalTracks/useLocalTracks';
 import useRoom from './useRoom/useRoom';
@@ -12,14 +12,14 @@ import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 const mockRoom = new EventEmitter() as Room;
 const mockOnDisconnect = jest.fn();
-jest.mock('./useRoom/useRoom', () => jest.fn(() => ({ room: mockRoom, isConnecting: false, connect: () => {} })));
+jest.mock('./useRoom/useRoom', () => jest.fn(() => ({ room: mockRoom, isConnecting: false, connect: () => { } })));
 jest.mock('./useLocalTracks/useLocalTracks', () =>
   jest.fn(() => ({
     localTracks: [{ name: 'mockTrack' }],
-    getLocalVideoTrack: () => {},
-    getLocalAudioTrack: () => {},
+    getLocalVideoTrack: () => { },
+    getLocalAudioTrack: () => { },
     isAcquiringLocalTracks: true,
-    removeLocalVideoTrack: () => {},
+    removeLocalVideoTrack: () => { },
   }))
 );
 jest.mock('./useHandleRoomDisconnectionErrors/useHandleRoomDisconnectionErrors');
@@ -30,7 +30,7 @@ jest.mock('./useHandleOnDisconnect/useHandleOnDisconnect');
 describe('the VideoProvider component', () => {
   it('should correctly return the Video Context object', () => {
     const wrapper: React.FC = ({ children }) => (
-      <VideoProvider onError={() => {}} onDisconnect={mockOnDisconnect} options={{ dominantSpeaker: true }}>
+      <VideoProvider onError={() => { }} onDisconnect={mockOnDisconnect} options={{ dominantSpeaker: true }}>
         {children}
       </VideoProvider>
     );

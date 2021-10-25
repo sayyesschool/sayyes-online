@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useUser } from 'shared/hooks/user';
 import { useEnrollment } from 'shared/hooks/enrollments';
 import LoadingIndicator from 'shared/components/loading-indicator';

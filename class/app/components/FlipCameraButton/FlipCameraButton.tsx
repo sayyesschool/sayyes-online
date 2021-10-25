@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button } from '@material-ui/core';
 import { DEFAULT_VIDEO_CONSTRAINTS } from '../../../constants';
 import FlipCameraIcon from './FlipCameraIcon';

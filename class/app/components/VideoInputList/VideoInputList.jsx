@@ -1,4 +1,3 @@
-import React from 'react';
 import { Select, Typography } from 'mdc-react';
 
 import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_VIDEO_INPUT_KEY } from 'app/constants';

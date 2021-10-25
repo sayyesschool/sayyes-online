@@ -1,5 +1,3 @@
-import React from 'react';
-
 import usePublications from 'app/hooks/usePublications';
 import Publication from 'app/components/Publication';
 
@@ -16,7 +14,7 @@ export default function ParticipantTracks({
     isLocalParticipant,
     videoOnly,
     videoPriority,
-    enableScreenShare,
+    enableScreenShare
 }) {
     const publications = usePublications(participant);
 
@@ -24,18 +22,14 @@ export default function ParticipantTracks({
         publications.filter(p => !p.trackName.includes('camera')) :
         publications.filter(p => !p.trackName.includes('screen'));
 
-    return (
-        <>
-            {filteredPublications.map(publication => (
-                <Publication
-                    key={publication.kind}
-                    publication={publication}
-                    participant={participant}
-                    isLocalParticipant={isLocalParticipant}
-                    videoOnly={videoOnly}
-                    videoPriority={videoPriority}
-                />
-            ))}
-        </>
-    );
+    return filteredPublications.map(publication => (
+        <Publication
+            key={publication.kind}
+            publication={publication}
+            participant={participant}
+            isLocalParticipant={isLocalParticipant}
+            videoOnly={videoOnly}
+            videoPriority={videoPriority}
+        />
+    ));
 }

@@ -1,8 +1,8 @@
-import React from 'react';
+import { shallow } from 'enzyme';
+
 import getNetworkCondition from './getNetworkCondition/getNetworkCondition';
 import PreflightTest, { NetworkCondition, Result } from './PreflightTest';
 import ProgressIndicator from './ProgressIndicator/ProgressIndicator';
-import { shallow } from 'enzyme';
 import useGetPreflightTokens from './useGetPreflightTokens/useGetPreflightTokens';
 import usePreflightTest from './usePreflightTest/usePreflightTest';
 

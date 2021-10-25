@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
-import React from 'react';
-import ParticipantList from './ParticipantList';
 import { shallow } from 'enzyme';
+
+import ParticipantList from './ParticipantList';
 import useMainParticipant from '../../hooks/useMainParticipant/useMainParticipant';
 import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useSelectedParticipant from '../VideoProvider/useSelectedParticipant/useSelectedParticipant';
@@ -20,14 +20,14 @@ describe('the ParticipantList component', () => {
   let mockRoom: any;
 
   beforeEach(() => {
-    mockUseSelectedParticipant.mockImplementation(() => [null, () => {}]);
+    mockUseSelectedParticipant.mockImplementation(() => [null, () => { }]);
     mockRoom = new EventEmitter();
     mockRoom.localParticipant = 'localParticipant';
   });
 
   it('should correctly render Participant components', () => {
     const mockParticipant = { sid: 2 };
-    mockUseSelectedParticipant.mockImplementation(() => [mockParticipant, () => {}]);
+    mockUseSelectedParticipant.mockImplementation(() => [mockParticipant, () => { }]);
     mockRoom.participants = new Map([
       [0, { sid: 0 }],
       [1, { sid: 1 }],
@@ -41,7 +41,7 @@ describe('the ParticipantList component', () => {
 
   it('should add the isSelected prop to the first remote participant when it is selected', () => {
     const mockParticipant = { sid: 0 };
-    mockUseSelectedParticipant.mockImplementation(() => [mockParticipant, () => {}]);
+    mockUseSelectedParticipant.mockImplementation(() => [mockParticipant, () => { }]);
     mockRoom.participants = new Map([
       [0, mockParticipant],
       [1, { sid: 1 }],
@@ -94,7 +94,7 @@ describe('the ParticipantList component', () => {
       [1, { sid: 1 }],
     ]);
     mockUseMainParticipant.mockImplementation(() => mockParticipant);
-    mockUseSelectedParticipant.mockImplementation(() => [mockParticipant, () => {}]);
+    mockUseSelectedParticipant.mockImplementation(() => [mockParticipant, () => { }]);
     mockedVideoContext.mockImplementation(() => ({ room: mockRoom }));
     const wrapper = shallow(<ParticipantList />);
     expect(

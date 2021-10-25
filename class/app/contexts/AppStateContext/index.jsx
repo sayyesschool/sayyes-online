@@ -1,4 +1,4 @@
-import React, { createContext, useState, useReducer } from 'react';
+import { createContext, useReducer, useState } from 'react';
 
 import { initialSettings } from 'app/data/settings';
 import useActiveSinkId from 'app/hooks/useActiveSinkId';

@@ -1,5 +1,4 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
@@ -10,7 +9,7 @@ import { AppStateProvider } from './contexts/AppStateContext';
 import { SharedStateProvider } from './contexts/SharedStateContext';
 import Root from './components';
 
-ReactDOM.render(
+render(
     <Provider store={store}>
         <SharedStateProvider token={TWILIO_SYNC_TOKEN} docIc={ENROLLMENT_ID}>
             <AppStateProvider>

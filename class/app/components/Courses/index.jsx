@@ -1,5 +1,3 @@
-import React from 'react';
-
 import LoadingIndicator from 'shared/components/loading-indicator';
 import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';

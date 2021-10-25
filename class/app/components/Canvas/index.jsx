@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import Whiteboard from 'app/lib/Whiteboard';
 import useDataTrack from 'app/hooks/useDataTrack';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { DEFAULT_VIDEO_CONSTRAINTS } from '../../../constants';
 import { fireEvent, render } from '@testing-library/react';
 import FlipCameraButton from './FlipCameraButton';

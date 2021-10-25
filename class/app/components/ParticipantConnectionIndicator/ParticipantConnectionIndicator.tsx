@@ -1,4 +1,3 @@
-import React from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { Participant } from 'twilio-video';
@@ -19,7 +18,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ParticipantConnectionIndicator({ participant }: { participant: Participant }) {
+export default function ParticipantConnectionIndicator({ participant }: { participant: Participant; }) {
   const isReconnecting = useParticipantIsReconnecting(participant);
   const classes = useStyles();
   return (

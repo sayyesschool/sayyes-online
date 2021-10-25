@@ -1,5 +1,3 @@
-import React from 'react';
-
 import useRoomContext from 'app/hooks/useRoomContext';
 import useMainParticipant from 'app/hooks/useMainParticipant';
 import useSelectedParticipant from 'app/hooks/useSelectedParticipant';
@@ -14,11 +12,10 @@ export default function MainParticipant() {
     const [selectedParticipant] = useSelectedParticipant();
     const screenShareParticipant = useScreenShareParticipant();
 
-    const videoPriority =
-        (mainParticipant === selectedParticipant || mainParticipant === screenShareParticipant) &&
-            mainParticipant !== localParticipant
-            ? 'high'
-            : null;
+    const videoPriority = mainParticipant !== localParticipant && (
+        mainParticipant === selectedParticipant ||
+        mainParticipant === screenShareParticipant
+    ) ? 'high' : null;
 
     return (
         /* audio is disabled for this participant component because this participant's audio 

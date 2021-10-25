@@ -1,5 +1,5 @@
-import React from 'react';
 import { render } from '@testing-library/react';
+
 import VideoTrack from './VideoTrack';
 import useVideoTrackDimensions from '../../hooks/useVideoTrackDimensions/useVideoTrackDimensions';
 

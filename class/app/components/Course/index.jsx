@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { Route, Link, useParams } from 'react-router-dom';
 import {
     Card,
@@ -92,7 +92,6 @@ export default function CoursePage({ user, sharedState, updateSharedState, onMed
                             <MenuButton
                                 key="audio"
                                 icon="audiotrack"
-                                listProps={{ twoLine: true }}
                                 items={lesson.audios.map(audio => course.audiosByFilename.get(audio)).map(audio => ({
                                     key: audio.filename,
                                     graphic: <Icon>audiotrack</Icon>,
@@ -106,7 +105,6 @@ export default function CoursePage({ user, sharedState, updateSharedState, onMed
                             <MenuButton
                                 key="video"
                                 icon="movie"
-                                listProps={{ twoLine: true }}
                                 items={lesson.videos.map(video => course.videosByFilename.get(video)).map(video => ({
                                     key: video.filename,
                                     graphic: <Icon>movie</Icon>,

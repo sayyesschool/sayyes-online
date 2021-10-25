@@ -1,4 +1,3 @@
-import React from 'react';
 import DeviceSelectionScreen from './DeviceSelectionScreen';
 import { shallow } from 'enzyme';
 import { Steps } from '../PreJoinScreens';
@@ -31,7 +30,7 @@ describe('the DeviceSelectionScreen component', () => {
       isConnecting: true,
     }));
 
-    const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
+    const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => { }} />);
 
     it('should disable the Join Now button', () => {
       expect(wrapper.find({ children: 'Join Now' }).prop('disabled')).toBe(true);
@@ -53,7 +52,7 @@ describe('the DeviceSelectionScreen component', () => {
       isConnecting: false,
     }));
 
-    const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
+    const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => { }} />);
 
     it('should disable the Join Now, toggle video, and toggle audio buttons', () => {
       expect(wrapper.find({ children: 'Join Now' }).prop('disabled')).toBe(true);
@@ -75,7 +74,7 @@ describe('the DeviceSelectionScreen component', () => {
       isConnecting: false,
     }));
     mockUseAppState.mockImplementationOnce(() => ({ getToken: mockGetToken, isFetching: true }));
-    const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
+    const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => { }} />);
 
     it('should disable the Join Now button', () => {
       expect(wrapper.find({ children: 'Join Now' }).prop('disabled')).toBe(true);
@@ -91,7 +90,7 @@ describe('the DeviceSelectionScreen component', () => {
   });
 
   it('should not disable the Join Now button by default', () => {
-    const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
+    const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => { }} />);
     expect(wrapper.find({ children: 'Join Now' }).prop('disabled')).toBe(false);
   });
 
@@ -103,7 +102,7 @@ describe('the DeviceSelectionScreen component', () => {
   });
 
   it('should fetch a token and connect to a room when the Join Now button is clicked', done => {
-    const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => {}} />);
+    const wrapper = shallow(<DeviceSelectionScreen name="test name" roomName="test room name" setStep={() => { }} />);
     wrapper.find({ children: 'Join Now' }).simulate('click');
 
     expect(mockGetToken).toHaveBeenCalledWith('test name', 'test room name');

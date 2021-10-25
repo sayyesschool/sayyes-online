@@ -1,5 +1,3 @@
-import React from 'react';
-
 import useAppState from 'app/hooks/useAppState';
 import useConnectionOptions from 'app/hooks/useConnectionOptions';
 import { RoomProvider } from 'app/contexts/RoomContext';

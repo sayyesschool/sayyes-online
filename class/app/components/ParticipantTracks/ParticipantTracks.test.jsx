@@ -1,6 +1,5 @@
-import React from 'react';
-import ParticipantTracks from './ParticipantTracks';
 import { shallow } from 'enzyme';
+import ParticipantTracks from './ParticipantTracks';
 import usePublications from '../../hooks/usePublications/usePublications';
 
 jest.mock('../../hooks/usePublications/usePublications', () =>
