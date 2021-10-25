@@ -1,9 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import {
     Avatar,
     Icon,
-    TabBar, Tab,
-    Typography
+    TabBar, Tab
 } from 'mdc-react';
 
 import { useStore } from 'shared/hooks/store';

@@ -45,7 +45,7 @@ module.exports = ({
             .populate('manager', 'firstname lastname imageUrl email phone')
             .populate('courses', 'title subtitle slug image units.id lessons.id exercises.id')
             .populate('materials', 'slug title subtitle')
-            .populate('lessons', 'id title date status')
+            .populate('lessons', 'id title status date duration')
             .then(enrollment => {
                 if (!enrollment) {
                     const error = new Error('Обучение не найдено');

@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Card,
     Icon,
@@ -46,7 +45,7 @@ export default function ProfileCard({ user }) {
                 </Card.Section>
                 :
                 <Card.Section>
-                    <List twoLine>
+                    <List>
                         <List.Item
                             graphic={<Icon>person</Icon>}
                             primaryText={user.fullname}

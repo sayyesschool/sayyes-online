@@ -1,5 +1,3 @@
-import React from 'react';
-
 import ScheduleCard from 'shared/components/schedule-card';
 
 import './index.scss';

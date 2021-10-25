@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
     Button,
     Card, CardHeader, CardSection, CardActions, CardAction,

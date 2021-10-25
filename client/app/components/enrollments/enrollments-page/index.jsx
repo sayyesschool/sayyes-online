@@ -1,8 +1,4 @@
-import React from 'react';
-import { Redirect, useRouteMatch } from 'react-router-dom';
-import {
-    LayoutGrid
-} from 'mdc-react';
+import { Redirect } from 'react-router-dom';
 
 import { useEnrollments } from 'shared/hooks/enrollments';
 import LoadingIndicator from 'shared/components/loading-indicator';

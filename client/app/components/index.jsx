@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { SideSheet } from 'mdc-react';
 
@@ -53,7 +53,7 @@ export default function App() {
                 <NavBar items={navItems} />
             </AppHeader>
 
-            <AppContent fixedAdjust>
+            <AppContent>
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <Route path="/account" component={Account} />

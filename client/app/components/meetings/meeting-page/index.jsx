@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
     Card,
@@ -118,7 +118,7 @@ export default function MeetingPage({ match }) {
 
                 <Typography align="center">
                     <strong>Внимание!</strong> Выбирайте встречу строго для вашего уровня!
-                            <Button onClick={() => setLevelDialogOpen(true)}>Подробнее</Button>
+                    <Button onClick={() => setLevelDialogOpen(true)}>Подробнее</Button>
                 </Typography>
             </PageContent>
 

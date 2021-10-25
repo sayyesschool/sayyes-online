@@ -1,8 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 import {
-    Card,
-    LayoutGrid
+    Card
 } from 'mdc-react';
 
 import MaterialsList from 'shared/components/materials-list';

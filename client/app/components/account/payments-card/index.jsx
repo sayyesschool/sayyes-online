@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Card,
     Icon,
@@ -15,7 +14,7 @@ export default function PaymentsCard({ payments }) {
 
             {payments.length > 0 ?
                 <Card.Section>
-                    <List twoLine>
+                    <List>
                         {payments.map(payment =>
                             <ListItem key={payment.id}>
                                 <ListItemGraphic>

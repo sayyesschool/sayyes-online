@@ -1,22 +1,29 @@
-import React from 'react';
+import {
+    Card
+} from 'mdc-react';
 
-import CalendarCard from 'shared/components/calendar-card';
+import LessonChipSet from 'shared/components/lesson-chip-set';
 
 export default function EnrollmentLessons({ enrollment }) {
-    const events = enrollment.lessons.map(lesson => ({
-        id: lesson.id,
-        title: 'Урок',
-        icon: 'school',
-        date: new Date(lesson.date),
-        url: lesson.url
-    }));
+    const lessonsDuration = enrollment.lessons.reduce((total, lesson) => total + lesson.duration, 0);
+    const lessonsDurationDelta = enrollment.lessonDuration * enrollment.lessons.length - lessonsDuration;
 
     return (
-        <div className="enrollment-lessons">
-            <CalendarCard
-                title="Занятия"
-                events={events}
-            />
-        </div >
+        <section className="enrollment-lessons">
+            <Card>
+                <Card.Header
+                    title="Занятия"
+                    subtitle={lessonsDurationDelta !== 0 && ((lessonsDurationDelta < 0 ? 'Превышение на' : 'Осталось') + ` ${Math.abs(lessonsDurationDelta)} мин.`)}
+                />
+
+                {enrollment.lessons.length > 0 &&
+                    <Card.Section secondary>
+                        <LessonChipSet
+                            lessons={enrollment.lessons}
+                        />
+                    </Card.Section>
+                }
+            </Card>
+        </section>
     );
 }

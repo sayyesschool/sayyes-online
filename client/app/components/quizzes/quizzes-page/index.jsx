@@ -1,4 +1,3 @@
-import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -25,7 +24,7 @@ class Quizzes extends React.Component {
 
     render() {
         const { quizzes } = this.props;
-        
+
         return (
             <AppContent>
                 <AppHeader

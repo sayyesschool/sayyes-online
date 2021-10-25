@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Card,
     Icon,
@@ -13,7 +12,7 @@ export default function MeetingsCard({ meetings }) {
 
             {meetings.length > 0 ?
                 <Card.Section>
-                    <List twoLine nonInteractive>
+                    <List>
                         {meetings.map(meeting =>
                             <ListItem key={meeting.id}>
                                 <ListItemGraphic>

@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Button,
     Icon,
@@ -21,7 +20,7 @@ export default function MeetingLevelDialog({ onClose, ...props }) {
             <DialogContent>
                 <Typography noMargin>Для всех студентов, обучающихся по курсу "Touchstone" или "Viewpoint" приводим соответствие:</Typography>
 
-                <List twoLine avatarList>
+                <List>
                     <ListItem className="meeting-level meeting-level--beginner">
                         <ListItemGraphic>
                             <Icon>star</Icon>

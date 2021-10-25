@@ -1,9 +1,14 @@
 @use 'mdc-react/src/side-sheet';
 
-.course-page {
-    &#ge2 {
-        --course-bg-color: #2c4181;
-        --course-bg-color-dark: #172656;
+.page.lesson-page {
+    .page-header {
+        &__inner {
+            max-width: 1024px;
+        }
+    }
+    
+    .page-content {
+        max-width: 720px;
     }
 
     .mdc-side-sheet {
