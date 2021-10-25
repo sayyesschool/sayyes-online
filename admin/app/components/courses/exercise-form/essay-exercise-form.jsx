@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import {
     Card
 } from 'mdc-react';
@@ -7,7 +7,7 @@ import TextEditor from 'shared/components/text-editor';
 
 import './index.scss';
 
-export default function EssayExerciseForm({ exercise }) {
+export default function EssayExerciseForm({ exercise, onUpdate }) {
     const handleUpdate = useCallback((event, value) => {
         onUpdate({
             text: value

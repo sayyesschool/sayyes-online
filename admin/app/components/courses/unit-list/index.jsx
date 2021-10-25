@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
     IconButton,
@@ -14,16 +14,16 @@ export default function UnitList({ units, onDelete }) {
     }, []);
 
     return (
-        <List className="unit-list" twoLine imageList>
+        <List className="unit-list">
             {units.map(unit =>
                 <List.Item
                     key={unit.id}
                     component={Link}
                     to={unit.uri}
-                    graphic={<img src={unit.imageUrl} />}
+                    leadingThumbnail={<img src={unit.imageUrl} />}
                     primaryText={unit.title}
                     secondaryText={`${unit.lessons.length} уроков`}
-                    meta={
+                    trailingIcon={
                         <IconButton
                             icon="delete"
                             onClick={event => handleClick(event, unit)}

@@ -1,23 +1,23 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import {
     Avatar,
-    Icon,
     List
 } from 'mdc-react';
 
 export default function LessonList({ lessons }) {
     return (
-        <List className="request-list" twoLine>
+        <List className="request-list">
             {lessons.map(lesson =>
                 <List.Item
                     key={lesson.id}
                     component={Link}
                     to={lesson.url}
-                    graphic={<Icon>{lesson.lessonStatus}</Icon>}
+                    leadingIcon={lesson.lessonStatus}
                     primaryText={lesson.dateLabel}
                     secondaryText={lesson.timeLabel}
-                    meta={lesson.teacher && <Avatar text={lesson.teacher.initials} title={lesson.teacher.fullname} />}
+                    end={lesson.teacher &&
+                        <Avatar text={lesson.teacher.initials} title={lesson.teacher.fullname} />
+                    }
                 />
             )}
         </List>

@@ -1,9 +1,9 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
     Badge,
     IconButton,
-    LayoutGrid as Grid
+    LayoutGrid
 } from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
@@ -100,36 +100,36 @@ export default function EnrollmentPage({ match, history }) {
             />
 
             <PageContent>
-                <Grid>
-                    <Grid.Cell span="12">
+                <LayoutGrid>
+                    <LayoutGrid.Cell span="12">
                         <EnrollmentMeta
                             enrollment={enrollment}
                         />
-                    </Grid.Cell>
+                    </LayoutGrid.Cell>
 
-                    <Grid.Cell span="12">
+                    <LayoutGrid.Cell span="12">
                         <EnrollmentStatus
                             enrollment={enrollment}
                             onUpdate={updateEnrollment}
                         />
-                    </Grid.Cell>
+                    </LayoutGrid.Cell>
 
-                    <Grid.Cell desktop="3" tablet="4" mobile="4">
+                    <LayoutGrid.Cell desktop="3" tablet="4" mobile="4">
                         <EnrollmentDetails
                             enrollment={enrollment}
                         />
-                    </Grid.Cell>
+                    </LayoutGrid.Cell>
 
-                    <Grid.Cell desktop="3" tablet="4" mobile="4">
-                        <Grid.Cell grid>
-                            <Grid.Cell span="12">
+                    <LayoutGrid.Cell desktop="3" tablet="4" mobile="4">
+                        <LayoutGrid.Cell LayoutGrid>
+                            <LayoutGrid.Cell span="12">
                                 <EnrollmentSchedule
                                     enrollment={enrollment}
                                     onUpdate={updateEnrollmentSchedule}
                                 />
-                            </Grid.Cell>
+                            </LayoutGrid.Cell>
 
-                            <Grid.Cell span="12">
+                            <LayoutGrid.Cell span="12">
                                 <EnrollmentLessons
                                     enrollment={enrollment}
                                 />
@@ -138,32 +138,32 @@ export default function EnrollmentPage({ match, history }) {
                                     enrollment={enrollment}
                                     onUpdate={updateEnrollment}
                                 /> */}
-                            </Grid.Cell>
-                        </Grid.Cell>
-                    </Grid.Cell>
+                            </LayoutGrid.Cell>
+                        </LayoutGrid.Cell>
+                    </LayoutGrid.Cell>
 
-                    <Grid.Cell desktop="3" tablet="4" mobile="4">
+                    <LayoutGrid.Cell desktop="3" tablet="4" mobile="4">
                         <EnrollmentPayments
                             enrollment={enrollment}
                         />
-                    </Grid.Cell>
+                    </LayoutGrid.Cell>
 
-                    <Grid.Cell desktop="3" tablet="4" mobile="4">
-                        <Grid.Cell grid>
-                            <Grid.Cell span="12">
+                    <LayoutGrid.Cell desktop="3" tablet="4" mobile="4">
+                        <LayoutGrid.Cell LayoutGrid>
+                            <LayoutGrid.Cell span="12">
                                 <EnrollmentCourses
                                     enrollment={enrollment}
                                 />
-                            </Grid.Cell>
+                            </LayoutGrid.Cell>
 
-                            <Grid.Cell span="12">
+                            <LayoutGrid.Cell span="12">
                                 <EnrollmentMaterials
                                     enrollment={enrollment}
                                 />
-                            </Grid.Cell>
-                        </Grid.Cell>
-                    </Grid.Cell>
-                </Grid>
+                            </LayoutGrid.Cell>
+                        </LayoutGrid.Cell>
+                    </LayoutGrid.Cell>
+                </LayoutGrid>
             </PageContent>
 
             <FormDialog

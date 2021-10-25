@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import {
     Card,
     Icon,
@@ -127,7 +127,7 @@ function MeetingRegistrationListGroup({
         <ListGroup>
             <ListGroupSubheader>{title} ({registrations.length})</ListGroupSubheader>
 
-            <List twoLine nonInteractive>
+            <List>
                 {registrations.map(registration =>
                     <ListItem key={registration.id}>
                         <ListItemGraphic>

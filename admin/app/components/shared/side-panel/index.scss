@@ -1,12 +1,12 @@
 @use 'shared/styles/variables';
-@use 'mdc-react/src/SideSheet/mixins';
+@use 'mdc-react/src/side-sheet';
 
 .side-panel {
     &.mdc-side-sheet--dismissible {
         position: fixed;
         top: 64px;
         height: calc(100% - 64px);
-        @include mixins.width(360px);
+        @include side-sheet.width(360px);
 
         @media #{variables.$lt-md} {
             top: 56px;
@@ -15,7 +15,7 @@
     }
 
     &.mdc-side-sheet--modal {
-        @include mixins.width(480px);
+        @include side-sheet.width(480px);
     }
 
     .mdc-side-sheet__content {

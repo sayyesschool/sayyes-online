@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Card,
     IconButton,
@@ -22,7 +21,7 @@ export default function MeetingParticipants({ participants, onAdd }) {
             />
 
             <Card.Section>
-                <List twoLine>
+                <List>
                     {participants.map(participant =>
                         <List.Item
                             key={participant.id}

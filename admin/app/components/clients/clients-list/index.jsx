@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import {
     List
@@ -6,7 +5,7 @@ import {
 
 export default function ClientsList({ clients }) {
     return (
-        <List className="clients-list" twoLine>
+        <List className="clients-list">
             {clients.map(client =>
                 <List.Item
                     key={client.id}

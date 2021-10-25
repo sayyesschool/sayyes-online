@@ -1,6 +1,5 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import {
-    Button,
     Layout,
     TextField
 } from 'mdc-react';

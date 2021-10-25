@@ -1,4 +1,3 @@
-import React from 'react';
 import { Card } from 'mdc-react';
 
 import Calendar from 'shared/components/calendar';

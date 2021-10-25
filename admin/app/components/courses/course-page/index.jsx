@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
-    Icon,
     TabBar, Tab
 } from 'mdc-react';
 
@@ -18,7 +17,7 @@ import CourseUnits from 'app/components/courses/course-units';
 export default function CoursePage({ match, history }) {
     const [course, actions] = useStore('courses.single');
 
-    const [activeTab, setActiveTab] = useState('details');
+    const [activeTab, setActiveTab] = useState('units');
 
     useEffect(() => {
         actions.getCourse(match.params.courseId);
@@ -67,42 +66,42 @@ export default function CoursePage({ match, history }) {
             >
                 <TabBar value={activeTab} onChange={setActiveTab} minWidth>
                     <Tab
+                        value="units"
+                        label="Юниты"
+                        icon="segment"
+                    />
+
+                    <Tab
                         value="details"
                         label="Детали"
-                        icon={<Icon>article</Icon>}
+                        icon="article"
                     />
 
                     <Tab
-                        label="Юниты"
-                        value="units"
-                        icon={<Icon>segment</Icon>}
-                    />
-
-                    <Tab
-                        label="Аудио"
                         value="audio"
-                        icon={<Icon>audiotrack</Icon>}
+                        label="Аудио"
+                        icon="audiotrack"
                     />
 
                     <Tab
-                        label="Видео"
                         value="video"
-                        icon={<Icon>movie</Icon>}
+                        label="Видео"
+                        icon="movie"
                     />
                 </TabBar>
             </PageTopBar>
 
             <PageContent>
+                {activeTab === 'units' &&
+                    <CourseUnits
+                        course={course}
+                    />
+                }
+
                 {activeTab === 'details' &&
                     <CourseDetails
                         course={course}
                         onUpdate={handleUpdateCourse}
-                    />
-                }
-
-                {activeTab === 'units' &&
-                    <CourseUnits
-                        course={course}
                     />
                 }
 

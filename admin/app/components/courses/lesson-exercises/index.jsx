@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import {
+    FAB,
     IconButton,
-    Layout,
     Typography
 } from 'mdc-react';
 
@@ -31,19 +31,11 @@ export default function LessonExercises({
 
     return (
         <section className="lesson-exercises">
-            <header>
-                <Typography type="headline6" noMargin>Упражнения</Typography>
-
-                <IconButton
-                    icon="add"
-                    onClick={setFormOpen}
-                />
-            </header>
-
             <div>
-                {exercises?.map(exercise =>
+                {exercises?.map((exercise, index) =>
                     <ExerciseCard
                         key={exercise.id}
+                        number={index + 1}
                         course={course}
                         exercise={exercise}
                         onUpdate={onUpdate}
@@ -55,6 +47,7 @@ export default function LessonExercises({
             <FormDialog
                 title="Новое упражнение"
                 form="exercise-form"
+                fullscreen
                 open={isFormOpen}
                 onClose={setFormOpen}
             >
@@ -64,6 +57,12 @@ export default function LessonExercises({
                     onSubmit={handleCreate}
                 />
             </FormDialog>
+
+            <FAB
+                icon="add"
+                exited={isFormOpen}
+                onClick={setFormOpen}
+            />
         </section>
     );
 }

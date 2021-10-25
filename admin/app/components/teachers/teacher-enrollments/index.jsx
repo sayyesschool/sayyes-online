@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import {
     Avatar,
@@ -16,7 +15,7 @@ export default function TeacherEnrollments({ teacher }) {
                 />
 
                 {teacher.enrollments?.length > 0 &&
-                    <List twoLine>
+                    <List>
                         {teacher.enrollments.map(enrollment =>
                             <List.Item
                                 key={enrollment.id}

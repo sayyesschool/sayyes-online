@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import {
     Avatar,
@@ -8,7 +7,7 @@ import {
 
 export default function EnrollmentsList({ enrollments }) {
     return (
-        <List className="enrollments-list" twoLine>
+        <List className="enrollments-list">
             {enrollments.map(enrollment =>
                 <List.Item
                     key={enrollment.id}

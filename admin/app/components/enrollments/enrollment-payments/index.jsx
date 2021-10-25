@@ -1,7 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import {
     Card,
-    Icon,
     IconButton,
     List
 } from 'mdc-react';
@@ -67,14 +66,14 @@ export default function EnrollmentPayments({ enrollment }) {
 
                 {enrollment.payments.length > 0 &&
                     <Card.Section>
-                        <List className="payments-list" twoLine>
+                        <List className="payments-list">
                             {enrollment.payments.map(payment =>
                                 <List.Item
                                     key={payment.id}
-                                    graphic={<Icon>{payment.statusIcon}</Icon>}
+                                    leadingIcon={payment.statusIcon}
                                     primaryText={payment.description}
                                     secondaryText={`${payment.amount} руб.`}
-                                    meta={
+                                    trailingIcon={
                                         <IconButton
                                             icon="remove"
                                             title="Удалить платеж"

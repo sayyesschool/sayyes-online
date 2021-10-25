@@ -1,7 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    Icon,
     TabBar, Tab
 } from 'mdc-react';
 
@@ -19,7 +18,7 @@ import './index.scss';
 export default function UnitPage({ match, history }) {
     const [course, actions] = useCourse(match.params.courseId);
 
-    const [activeTab, setActiveTab] = useState('details');
+    const [activeTab, setActiveTab] = useState('lessons');
 
     const handleUpdateUnit = useCallback(data => {
         return actions.updateUnit(course.id, unit.id, data);
@@ -66,33 +65,33 @@ export default function UnitPage({ match, history }) {
             >
                 <TabBar value={activeTab} onChange={setActiveTab} minWidth>
                     <Tab
-                        value="details"
-                        label="Детали"
-                        icon={<Icon>article</Icon>}
+                        value="lessons"
+                        label="Уроки"
+                        icon="segment"
                     />
 
                     <Tab
-                        value="lessons"
-                        label="Уроки"
-                        icon={<Icon>segment</Icon>}
+                        value="details"
+                        label="Детали"
+                        icon="article"
                     />
                 </TabBar>
             </PageTopBar>
 
             <PageContent>
-                {activeTab === 'details' &&
-                    <UnitDetails
-                        unit={unit}
-                        onUpdate={handleUpdateUnit}
-                    />
-                }
-
                 {activeTab === 'lessons' &&
                     <UnitLessons
                         course={course}
                         unit={unit}
                         onCreate={handleCreateLesson}
                         onDelete={handleDeleteLesson}
+                    />
+                }
+
+                {activeTab === 'details' &&
+                    <UnitDetails
+                        unit={unit}
+                        onUpdate={handleUpdateUnit}
                     />
                 }
             </PageContent>

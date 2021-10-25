@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Layout,
     TextField
@@ -13,7 +12,7 @@ export default function MeetingRegistrationForm({ onSubmit }) {
         lastname: '',
         email: ''
     });
-    
+
     return (
         <Form id="meeting-registration-form" onSubmit={() => onSubmit(data)}>
             <Layout column>

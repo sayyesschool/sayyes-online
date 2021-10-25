@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
     Card,
     IconButton
@@ -10,7 +10,7 @@ import AudioList from 'shared/components/audio-list';
 import AudioForm from 'shared/components/audio-form';
 import FormDialog from 'shared/components/form-dialog';
 
-export default function CourseAudio({ course, onCreate, onDelete }) {
+export default function CourseAudios({ course, onCreate, onDelete }) {
     const [audio, setAudio] = useState();
 
     const handleSubmit = useCallback((data, file) => {
@@ -34,7 +34,7 @@ export default function CourseAudio({ course, onCreate, onDelete }) {
     }, []);
 
     return (
-        <section className="course-audio">
+        <section className="course-audios">
             <Card>
                 <Card.Header
                     title="Аудио"

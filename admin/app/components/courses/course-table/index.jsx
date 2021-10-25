@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import {
     DataTable
@@ -31,11 +30,13 @@ export default function CourseTable({ courses, onEdit, onDelete }) {
                                 items={[
                                     {
                                         key: 'edit',
+                                        icon: 'edit',
                                         text: 'Изменить',
                                         onClick: () => onEdit(course)
                                     },
                                     {
                                         key: 'delete',
+                                        icon: 'delete',
                                         text: 'Удалить',
                                         onClick: () => onDelete(course)
                                     }

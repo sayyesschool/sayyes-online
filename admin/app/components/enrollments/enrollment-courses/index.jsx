@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import {
     Card,
     Icon,
@@ -54,7 +54,7 @@ export default function EnrollmentCourses({ enrollment }) {
 
                 {enrollmentCourses.length > 0 &&
                     <Card.Section>
-                        <List imageList>
+                        <List>
                             {enrollmentCourses.map(course =>
                                 <List.Item
                                     key={course.id}

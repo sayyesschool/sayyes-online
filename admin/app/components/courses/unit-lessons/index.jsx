@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import {
     Card,
     Icon,
@@ -49,6 +49,7 @@ export default function UnitLessons({ course, unit, onCreate, onDelete }) {
                 title="Новый урок"
                 form="lesson-form"
                 open={isLessonFormOpen}
+                fullscreen
                 onClose={toggleLessonFormOpen}
             >
                 <LessonForm

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
     Typography
 } from 'mdc-react';
 
-import { parseText } from 'shared/utils/exercise';
+import { parseText } from 'shared/libs/exercise';
 import TextField from 'shared/components/text-field';
 
 export default function InputExerciseContent({ exercise, checked }) {

@@ -1,14 +1,11 @@
-import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useRef, useState } from 'react';
 import {
-    Avatar,
     Button,
     Card,
     Icon,
     IconButton,
     LayoutGrid, LayoutGridCell,
     List, ListGroup, ListGroupSubheader,
-    TextField
 } from 'mdc-react';
 import moment from 'moment';
 
@@ -28,12 +25,12 @@ export default function RequestDetails({ request }) {
                         <Card.Header title="Общая информация" />
 
                         <Card.Section>
-                            <List twoLine>
+                            <List>
                                 <List.Item
-                                    graphic={<Icon>{request.statusIcon}</Icon>}
+                                    leadingIcon={request.statusIcon}
                                     primaryText={request.statusLabel}
                                     secondaryText="Статус"
-                                    meta={
+                                    trailingIcon={
                                         <MenuButton
                                             icon="edit"
                                             items={[
@@ -47,44 +44,46 @@ export default function RequestDetails({ request }) {
                                 />
 
                                 <List.Item
-                                    graphic={<Icon>event</Icon>}
+                                    icon="event"
                                     primaryText={moment(request.createdAt).format('DD.MM.YYYY, HH:mm')}
                                     secondaryText="Дата создания"
                                 />
 
                                 <List.Item
-                                    graphic={<Icon>person</Icon>}
+                                    leadingIcon="person"
                                     primaryText={request.client.fullname}
                                     secondaryText="Клиент"
-                                    meta={
-                                        <IconButton title="Отвязать от клиента">
-                                            <Icon>cancel</Icon>
-                                        </IconButton>
+                                    trailingIcon={
+                                        <IconButton
+                                            icon="cancel"
+                                            title="Отвязать от клиента"
+                                        />
                                     }
                                 />
 
                                 <List.Item
-                                    graphic={<Icon>person</Icon>}
+                                    icon="person"
                                     primaryText={request.manager.fullname}
                                     secondaryText="Менеджер"
                                 />
 
                                 {request.lesson &&
                                     <List.Item
-                                        graphic={<Icon>event</Icon>}
+                                        leadingIcon="event"
                                         primaryText={request.lesson.datetime}
                                         secondaryText="Дата пробного урока"
-                                        meta={
-                                            <IconButton title="Отменить урок">
-                                                <Icon>cancel</Icon>
-                                            </IconButton>
+                                        trailingIcon={
+                                            <IconButton
+                                                icon="cancel"
+                                                title="Отменить урок"
+                                            />
                                         }
                                     />
                                 }
 
                                 {request.contactAt &&
                                     <List.Item
-                                        graphic={<Icon>event</Icon>}
+                                        icon="event"
                                         primaryText={moment(request.createdAt).format('DD.MM.YYYY, HH:mm')}
                                         secondaryText="Дата связи"
                                     />
@@ -102,7 +101,7 @@ export default function RequestDetails({ request }) {
                         />
 
                         <Card.Section>
-                            <List twoLine>
+                            <List>
                                 <List.Item
                                     graphic={<Icon>portrait</Icon>}
                                     primaryText={request.study.ageLabel}
@@ -152,7 +151,7 @@ export default function RequestDetails({ request }) {
 
                         <Card.Section>
                             <ListGroup>
-                                <List twoLine>
+                                <List>
                                     <List.Item
                                         primaryText={request.channel}
                                         secondaryText="Канал связи"
@@ -166,7 +165,7 @@ export default function RequestDetails({ request }) {
 
                                 <ListGroupSubheader>UTM</ListGroupSubheader>
 
-                                <List twoLine>
+                                <List>
                                     {request.utm.source &&
                                         <List.Item
                                             primaryText={request.utm.source}

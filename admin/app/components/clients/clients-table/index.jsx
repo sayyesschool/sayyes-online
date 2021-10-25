@@ -1,8 +1,6 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-    DataTable,
-    Icon
+    DataTable
 } from 'mdc-react';
 
 import MenuButton from 'shared/components/menu-button';
@@ -43,13 +41,13 @@ export default function ClientsTable({ clients, onEdit, onDelete }) {
                                     {
                                         key: 'edit',
                                         text: 'Изменить',
-                                        graphic: <Icon>edit</Icon>,
+                                        icon: 'edit',
                                         onClick: () => onEdit(client)
                                     },
                                     {
                                         key: 'delete',
                                         text: 'Удалить',
-                                        graphic: <Icon>delete</Icon>,
+                                        icon: 'delete',
                                         onClick: () => onDelete(client)
                                     }
                                 ]}

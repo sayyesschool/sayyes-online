@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import {
     Avatar,
@@ -7,7 +6,7 @@ import {
 
 export default function MeetingList({ meetings }) {
     return (
-        <List className="meeting-list" twoLine>
+        <List className="meeting-list">
             {meetings.map(meeting =>
                 <List.Item
                     key={meeting.id}
@@ -15,7 +14,9 @@ export default function MeetingList({ meetings }) {
                     to={meeting.url}
                     primaryText={meeting.title}
                     secondaryText={meeting.datetime}
-                    meta={meeting.host && <Avatar text={meeting.host.initials} title={meeting.host.fullname} />}
+                    end={meeting.host &&
+                        <Avatar text={meeting.host.initials} title={meeting.host.fullname} />
+                    }
                 />
             )}
         </List>

@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import {
     Checkbox,
     List, ListItem,
@@ -41,13 +41,14 @@ export default function ChoiceExerciseContent({ exercise, checked }) {
                         'mdc-list-item--correct': item.correct,
                         'mdc-list-item--incorrect': !item.correct && isItemChosen(item)
                     })}
-                    graphic={isMultiple ?
+                    leadingCheckbox={isMultiple &&
                         <Checkbox
                             checked={chosenItems.includes(item.id)}
                             onChange={() => handleChange(item)}
                             disabled={checked}
                         />
-                        :
+                    }
+                    leadingRadio={!isMultiple &&
                         <Radio
                             checked={item === chosenItem}
                             onChange={() => handleChange(item)}

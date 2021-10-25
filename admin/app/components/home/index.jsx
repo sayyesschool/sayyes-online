@@ -1,7 +1,6 @@
-import React from 'react';
 import {
     Card,
-    LayoutGrid as Grid
+    LayoutGrid
 } from 'mdc-react';
 
 import Page from 'shared/components/page';
@@ -27,8 +26,8 @@ export default function HomePage() {
             />
 
             <PageContent>
-                <Grid>
-                    <Grid.Cell span="3">
+                <LayoutGrid>
+                    <LayoutGrid.Cell span="3">
                         <Card outlined>
                             <Card.Header title="Заявки в обработке" />
 
@@ -38,11 +37,13 @@ export default function HomePage() {
                                 />
                             }
                         </Card>
-                    </Grid.Cell>
+                    </LayoutGrid.Cell>
 
-                    <Grid.Cell span="3">
+                    <LayoutGrid.Cell span="3">
                         <Card outlined>
-                            <Card.Header title="Уроки" subtitle="Сегодня" />
+                            <Card.Header
+                                title="Уроки"
+                            />
 
                             {lessons &&
                                 <LessonList
@@ -50,11 +51,13 @@ export default function HomePage() {
                                 />
                             }
                         </Card>
-                    </Grid.Cell>
+                    </LayoutGrid.Cell>
 
-                    <Grid.Cell span="3">
+                    <LayoutGrid.Cell span="3">
                         <Card outlined>
-                            <Card.Header title="Встречи" subtitle="Сегодня" />
+                            <Card.Header
+                                title="Встречи"
+                            />
 
                             {meetings &&
                                 <MeetingList
@@ -62,8 +65,8 @@ export default function HomePage() {
                                 />
                             }
                         </Card>
-                    </Grid.Cell>
-                </Grid>
+                    </LayoutGrid.Cell>
+                </LayoutGrid>
             </PageContent>
         </Page>
     );

@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Card,
     IconButton
@@ -6,9 +5,9 @@ import {
 
 import VideoList from 'shared/components/video-list';
 
-export default function CourseAudio({ course }) {
+export default function CourseVideos({ course }) {
     return (
-        <section className="course-video">
+        <section className="course-videos">
             <Card>
                 <Card.Header
                     title="Видео"

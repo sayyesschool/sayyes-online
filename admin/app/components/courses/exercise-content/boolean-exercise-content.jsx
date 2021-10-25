@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
     List, ListItem,
     Switch
@@ -31,7 +31,7 @@ function BooleanExerciseItem({ item, checked }) {
         <ListItem
             className={classNames}
             text={item.text}
-            meta={
+            trailingSwitch={
                 <Switch
                     checked={correct}
                     disabled={checked}

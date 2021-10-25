@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     SideSheet
 } from 'mdc-react';

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
     LayoutGrid as Grid

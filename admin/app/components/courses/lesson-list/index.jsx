@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
     Avatar,
@@ -15,16 +15,16 @@ export default function LessonList({ lessons, onDelete }) {
     }, []);
 
     return (
-        <List className="lesson-list" twoLine avatarList>
+        <List className="lesson-list">
             {lessons.map((lesson, index) =>
                 <List.Item
                     key={lesson.id}
                     component={Link}
                     to={lesson.uri}
-                    graphic={<Avatar text={index + 1} />}
+                    leadingAvatar={<Avatar text={index + 1} />}
                     primaryText={lesson.title}
                     secondaryText={`${lesson.exercises?.length} упражнений`}
-                    meta={
+                    trailingIcon={
                         <IconButton
                             icon="delete"
                             onClick={event => handleClick(event, lesson)}

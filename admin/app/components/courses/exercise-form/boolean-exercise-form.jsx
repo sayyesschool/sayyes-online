@@ -1,14 +1,13 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import {
-    Button,
-    Icon,
     IconButton,
     List, ListItem,
-    Switch,
-    Typography
+    Switch
 } from 'mdc-react';
 
 import TextField from 'shared/components/text-field';
+
+import ExerciseItemsSection from 'app/components/courses/exercise-items-section';
 
 import './index.scss';
 
@@ -45,15 +44,13 @@ export default function BooleanExerciseForm({ exercise, onUpdate }) {
     }, [exercise, onUpdate]);
 
     return (
-        <section>
-            <Typography className="elements-label">Элементы</Typography>
-
+        <ExerciseItemsSection onAddItem={handleAddItem}>
             <List>
                 {exercise.items.map(item =>
                     <ListItem
                         key={item.id}
                         className="exercise-item"
-                        graphic={
+                        leadingSwitch={
                             <Switch
                                 checked={item.correct}
                                 onChange={() => handleItemCorrect(item.id)}
@@ -66,7 +63,7 @@ export default function BooleanExerciseForm({ exercise, onUpdate }) {
                                 onChange={event => handleUpdateItem(item.id, event.target.value)}
                             />
                         }
-                        meta={
+                        trailingIcon={
                             <IconButton
                                 icon="delete"
                                 onClick={() => handleDeleteItem(item.id)}
@@ -75,15 +72,6 @@ export default function BooleanExerciseForm({ exercise, onUpdate }) {
                     />
                 )}
             </List>
-
-            <Button
-                className="new-item-button"
-                type="button"
-                icon={<Icon>add</Icon>}
-                label="Добавить элемент"
-                outlined
-                onClick={handleAddItem}
-            />
-        </section>
+        </ExerciseItemsSection>
     );
 }

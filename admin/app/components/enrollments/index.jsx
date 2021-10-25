@@ -1,11 +1,11 @@
 import { Switch, Route } from 'react-router-dom';
 
-import Payments from './payments-page';
+import Enrollment from './enrollment-page';
 
 export default function ClientsRouter() {
     return (
         <Switch>
-            <Route path="/payments/:id?" component={Payments} />
+            <Route path="/enrollments/:enrollmentId" component={Enrollment} />
         </Switch>
     );
 }

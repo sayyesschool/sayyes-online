@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import Page from 'shared/components/page';
 import PageTopBar from 'shared/components/page-top-bar';

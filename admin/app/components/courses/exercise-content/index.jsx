@@ -1,4 +1,4 @@
-import React, { createElement } from 'react';
+import { createElement } from 'react';
 import {
     Typography
 } from 'mdc-react';
@@ -30,10 +30,6 @@ export default function ExerciseContent({ exercise }) {
 
     return (
         <div className={classNames}>
-            {exercise.description &&
-                <Typography className="exercise-description" type="subtitle1">{exercise.description}</Typography>
-            }
-
             {exercise.image &&
                 <img
                     className="exercise-image"
@@ -60,6 +56,10 @@ export default function ExerciseContent({ exercise }) {
                         }}
                     />
                 </section>
+            }
+
+            {exercise.text &&
+                <div dangerouslySetInnerHTML={{ __html: exercise.text }} />
             }
 
             {exercise.type &&

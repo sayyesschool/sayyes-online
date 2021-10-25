@@ -1,12 +1,13 @@
-import React, { createElement, useCallback } from 'react';
+import { createElement, useCallback, useRef } from 'react';
 import {
-    Layout,
+    LayoutGrid,
     Select,
     TextField
 } from 'mdc-react';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
+import TextEditor from 'shared/components/text-editor';
 
 import BooleanExerciseForm from './boolean-exercise-form';
 import ChoiceExerciseForm from './choice-exercise-form';
@@ -76,11 +77,19 @@ const defaultExercise = {
 };
 
 export default function ExerciseForm({ course, exercise = defaultExercise, onSubmit, ...props }) {
-    const [data, handleChange, setData] = useForm(exercise);
+    const textEditorRef = useRef();
+
+    const [data, handleChange, setData] = useForm({
+        ...exercise,
+        audio: exercise.audio?.id || exercise.audio
+    }, [exercise.updatedAt]);
 
     const handleSubmit = useCallback(() => {
         setData(data => {
-            console.log(data);
+            const text = textEditorRef.current.editor.getData();
+
+            data.text = text;
+
             onSubmit(data);
             return data;
         });
@@ -95,65 +104,92 @@ export default function ExerciseForm({ course, exercise = defaultExercise, onSub
 
     return (
         <Form id="exercise-form" className={`exercise-form exercise-form--${exercise.type}`} onSubmit={handleSubmit} {...props}>
-            <Layout column>
-                <Select
-                    name="type"
-                    label="Тип"
-                    value={data.type}
-                    options={typeOptions}
-                    filled
-                    onChange={handleChange}
-                />
+            <LayoutGrid>
+                <LayoutGrid.Cell span="4">
+                    <Select
+                        name="type"
+                        label="Тип"
+                        value={data.type}
+                        options={typeOptions}
+                        filled
+                        menuProps={{ modal: true, fixed: true }}
+                        onChange={handleChange}
+                    />
 
-                <TextField
-                    name="title"
-                    label="Название"
-                    value={data.title}
-                    filled
-                    onChange={handleChange}
-                />
+                    <TextField
+                        name="title"
+                        label="Название"
+                        value={data.title}
+                        filled
+                        onChange={handleChange}
+                    />
 
-                <TextField
-                    name="description"
-                    label="Описание"
-                    value={data.description}
-                    filled
-                    textarea
-                    onChange={handleChange}
-                />
+                    <TextField
+                        name="description"
+                        label="Описание"
+                        value={data.description}
+                        textarea
+                        filled
+                        autoResize
+                        onChange={handleChange}
+                    />
 
-                <Select
-                    name="audio"
-                    label="Аудио"
-                    value={data.audio}
-                    options={course.audios.map(audio => ({
-                        key: audio.filename,
-                        value: audio.filename,
-                        text: audio.title
-                    }))}
-                    filled
-                    onChange={handleChange}
-                />
+                    <Select
+                        name="audio"
+                        label="Аудио"
+                        value={data.audio}
+                        options={[
+                            {
+                                key: 'null',
+                                value: '',
+                                text: ' '
+                            },
+                            ...course.audios.map(audio => ({
+                                key: audio.filename,
+                                value: audio.filename,
+                                text: audio.title
+                            }))
+                        ]}
+                        filled
+                        menuProps={{ modal: true, fixed: true }}
+                        onChange={handleChange}
+                    />
 
-                <Select
-                    name="video"
-                    label="Видео"
-                    value={data.video}
-                    options={course.videos.map(video => ({
-                        key: video.filename,
-                        value: video.filename,
-                        text: video.title
-                    }))}
-                    filled
-                    onChange={handleChange}
-                />
+                    <Select
+                        name="video"
+                        label="Видео"
+                        value={data.video}
+                        options={[
+                            {
+                                key: 'null',
+                                value: '',
+                                text: ' '
+                            },
+                            ...course.videos.map(video => ({
+                                key: video.filename,
+                                value: video.filename,
+                                text: video.title
+                            }))
+                        ]}
+                        filled
+                        menuProps={{ modal: true, fixed: true }}
+                        onChange={handleChange}
+                    />
+                </LayoutGrid.Cell>
 
-                {data.type && createElement(ComponentsByType[data.type], {
-                    key: exercise.id,
-                    exercise: data,
-                    onUpdate: handleUpdate
-                })}
-            </Layout>
+                <LayoutGrid.Cell span="8">
+                    <TextEditor
+                        ref={textEditorRef}
+                        value={data.text}
+                    />
+                </LayoutGrid.Cell>
+            </LayoutGrid>
+
+            {data.type && createElement(ComponentsByType[data.type], {
+                key: exercise.id,
+                exercise: data,
+                onUpdate: handleUpdate
+            })}
         </Form>
     );
 }

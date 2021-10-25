@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-import { textToJsx, htmlToJsx } from 'shared/utils/exercise';
+import { Fragment } from 'react';
+import { textToJsx, htmlToJsx } from 'shared/libs/exercise';
 
 export default function FIBExerciseContent({ exercise }) {
     return (

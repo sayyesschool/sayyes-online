@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
     Layout,
     TextField
 } from 'mdc-react';
 import moment from 'moment';
 
-import { scheduleLessons } from 'shared/utils/enrollment';
+import { scheduleLessons } from 'shared/libs/enrollment';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';

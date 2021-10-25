@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Avatar,
     Icon,
@@ -12,7 +11,7 @@ import {
 export default function Conversation({ messages }) {
     return (
         <section>
-            <List avatarList twoLine>
+            <List>
                 {messages.map(message =>
                     <>
                         <List.Item

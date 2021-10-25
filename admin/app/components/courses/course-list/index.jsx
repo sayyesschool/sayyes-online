@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import {
     Avatar,
@@ -8,16 +7,18 @@ import {
 
 export default function CourseList({ courses }) {
     return (
-        <List className="course-list" twoLine>
+        <List className="course-list">
             {courses.map(course =>
                 <List.Item
                     key={course.id}
                     component={Link}
                     to={course.url}
-                    graphic={<Icon>{course.courseStatus}</Icon>}
+                    start={<Icon>{course.courseStatus}</Icon>}
                     primaryText={course.trial ? 'Пробный урок' : 'Урок'}
                     secondaryText={`${course.statusLabel} • ${course.datetime}`}
-                    meta={course.teacher && <Avatar text={course.teacher.initials} title={lesson.teacher.fullname} />}
+                    end={course.teacher &&
+                        <Avatar text={course.teacher.initials} title={lesson.teacher.fullname} />
+                    }
                 />
             )}
         </List>

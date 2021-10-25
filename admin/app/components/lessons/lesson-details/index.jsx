@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Card, CardHeader, CardSection,
     Icon,
@@ -13,40 +12,20 @@ export default function MeetingDetails({ meeting }) {
             />
 
             <CardSection>
-                <List twoLine nonInteractive>
-                    <ListItem>
-                        <ListItemGraphic>
-                            <Icon>event</Icon>
-                        </ListItemGraphic>
+                <List>
+                    <ListItem
+                        leadingIcon="event"
+                        primary={meeting.datetime || 'Дата и время не указаны'}
+                        secondary="Дата и время"
+                        trailingIcon={!meeting.datetime && 'warning'}
+                    />
 
-                        <ListItemText
-                            primary={meeting.datetime || 'Дата и время не указаны'}
-                            secondary="Дата и время"
-                        />
-
-                        {!meeting.datetime &&
-                            <ListItemMeta>
-                                <Icon>warning</Icon>
-                            </ListItemMeta>
-                        }
-                    </ListItem>
-
-                    <ListItem>
-                        <ListItemGraphic>
-                            <Icon>person</Icon>
-                        </ListItemGraphic>
-
-                        <ListItemText
-                            primary={(meeting.host && meeting.host.fullname) || 'Ведущий не указан'}
-                            secondary="Ведущий"
-                        />
-
-                        {!meeting.host &&
-                            <ListItemMeta>
-                                <Icon>warning</Icon>
-                            </ListItemMeta>
-                        }
-                    </ListItem>
+                    <ListItem
+                        leadingIcon="person"
+                        primary={(meeting.host && meeting.host.fullname) || 'Ведущий не указан'}
+                        secondary="Ведущий"
+                        trailingIcon={!meeting.host && 'warning'}
+                    />
 
                     <ListItem>
                         <ListItemGraphic>
@@ -99,7 +78,7 @@ export default function MeetingDetails({ meeting }) {
                             />
 
                             <ListItemMeta>
-                                <img src={meeting.thumbnailUrl} style={{width: 'auto', height: '64px'}} />
+                                <img src={meeting.thumbnailUrl} style={{ width: 'auto', height: '64px' }} />
                             </ListItemMeta>
                         </ListItem>
                     }

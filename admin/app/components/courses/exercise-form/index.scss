@@ -1,4 +1,17 @@
 .exercise-form {
+    .mdc-layout-grid {
+        padding: 0;
+    }
+
+    .mdc-text-field,
+    .mdc-select {
+        width: 100%;
+    }
+
+    .text-editor {
+        height: 100%;
+    }
+
     .elements-label {
         margin: 1rem 0;
     }
@@ -19,11 +32,11 @@
             padding-top: 6px;
             padding-bottom: 6px;
 
-            .mdc-list-item__graphic {
+            .mdc-list-item__start {
                 margin-top: 6px;
             }
 
-            .mdc-list-item__text {
+            .mdc-list-item__content {
                 margin: 8px 0;
             }
 

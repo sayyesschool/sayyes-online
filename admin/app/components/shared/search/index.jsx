@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo, useCallback } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
     CircularProgress,
@@ -64,17 +64,12 @@ export default function Search() {
             />
 
             <Menu
-                anchor={anchorRef.current}
+                anchorRef={anchorRef.current}
                 open={isMenuOpen}
-                onClose={handleMenuClose}
                 fixed
                 belowAnchor
-                top left
                 fullWidth
-                listProps={{
-                    dense: true,
-                    twoLine: true
-                }}
+                onClose={handleMenuClose}
             >
                 {results.map(item =>
                     <MenuItem

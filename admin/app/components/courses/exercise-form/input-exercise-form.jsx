@@ -1,13 +1,13 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import {
-    Button,
     ChipSet, Chip,
     FormField,
     Icon,
     IconButton,
-    TextField,
-    Typography
+    TextField
 } from 'mdc-react';
+
+import ExerciseItemsSection from 'app/components/courses/exercise-items-section';
 
 import './index.scss';
 
@@ -36,9 +36,7 @@ export default function InputExerciseForm({ exercise, onUpdate }) {
     }, [exercise, onUpdate]);
 
     return (
-        <section>
-            <Typography type="subtitle2" className="elements-label">Элементы</Typography>
-
+        <ExerciseItemsSection onAddItem={handleAddItem}>
             {exercise.items.map(item =>
                 <InputExerciseItemForm
                     key={item.id}
@@ -47,16 +45,7 @@ export default function InputExerciseForm({ exercise, onUpdate }) {
                     onDelete={handleDeleteItem}
                 />
             )}
-
-            <Button
-                className="new-item-button"
-                type="button"
-                icon={<Icon>add</Icon>}
-                label="Добавить элемент"
-                outlined
-                onClick={handleAddItem}
-            />
-        </section>
+        </ExerciseItemsSection>
     );
 }
 

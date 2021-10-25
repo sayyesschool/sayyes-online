@@ -1,7 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    Icon,
     TabBar, Tab
 } from 'mdc-react';
 
@@ -19,7 +18,7 @@ import './index.scss';
 export default function LessonPage({ match, history }) {
     const [course, actions] = useCourse(match.params.courseId);
 
-    const [activeTab, setActiveTab] = useState('details');
+    const [activeTab, setActiveTab] = useState('exercises');
 
     const handleUpdateLesson = useCallback(data => {
         return actions.updateLesson(course.id, lesson.id, data);
@@ -73,27 +72,20 @@ export default function LessonPage({ match, history }) {
             >
                 <TabBar value={activeTab} onChange={setActiveTab} minWidth>
                     <Tab
-                        value="details"
-                        label="Детали"
-                        icon={<Icon>article</Icon>}
+                        value="exercises"
+                        label="Упражнения"
+                        icon="segment"
                     />
 
                     <Tab
-                        value="exercises"
-                        label="Упражнения"
-                        icon={<Icon>segment</Icon>}
+                        value="details"
+                        label="Детали"
+                        icon="article"
                     />
                 </TabBar>
             </PageTopBar>
 
             <PageContent>
-                {activeTab === 'details' &&
-                    <LessonDetails
-                        lesson={lesson}
-                        onUpdate={handleUpdateLesson}
-                    />
-                }
-
                 {activeTab === 'exercises' &&
                     <LessonExercises
                         course={course}
@@ -101,6 +93,13 @@ export default function LessonPage({ match, history }) {
                         onCreate={handleCreateExercise}
                         onUpdate={handleUpdateExercise}
                         onDelete={handleDeleteExercise}
+                    />
+                }
+
+                {activeTab === 'details' &&
+                    <LessonDetails
+                        lesson={lesson}
+                        onUpdate={handleUpdateLesson}
                     />
                 }
             </PageContent>

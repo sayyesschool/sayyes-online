@@ -1,5 +1,4 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import moment from 'moment';
@@ -11,7 +10,7 @@ import './index.scss';
 import store from './store';
 import App from './components/App';
 
-ReactDOM.render(
+render(
     <Provider store={store}>
         <Router basename="/admin">
             <App />

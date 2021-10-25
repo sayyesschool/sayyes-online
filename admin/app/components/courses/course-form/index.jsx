@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import {
     Layout,
     LayoutGrid,
@@ -80,12 +80,3 @@ export default function CourseForm({ course = {}, onSubmit }) {
         </Form>
     );
 }
-
-CourseForm.defaultProps = {
-    course: {
-        title: '',
-        slug: '',
-        description: '',
-        image: ''
-    }
-};

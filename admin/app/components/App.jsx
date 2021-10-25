@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import AppHeader from 'shared/components/app-header';

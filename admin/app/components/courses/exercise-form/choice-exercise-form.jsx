@@ -1,14 +1,13 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import {
-    Button,
     Checkbox,
-    Icon,
     IconButton,
-    List, ListItem,
-    Typography
+    List, ListItem
 } from 'mdc-react';
 
 import TextField from 'shared/components/text-field';
+
+import ExerciseItemsSection from 'app/components/courses/exercise-items-section';
 
 import './index.scss';
 
@@ -45,16 +44,14 @@ export default function ChoiceExerciseForm({ exercise, onUpdate }) {
     }, [exercise, onUpdate]);
 
     return (
-        <section>
-            <Typography className="elements-label">Элементы</Typography>
-
+        <ExerciseItemsSection buttonLabel="Добавить ответ" onAddItem={handleAddItem}>
             <List>
                 {exercise.items.map(item =>
                     <ListItem
                         key={item.id}
                         className="exercise-item"
                         selected={item.correct}
-                        graphic={
+                        leadingCheckbox={
                             <Checkbox
                                 checked={item.correct}
                                 onChange={() => handleMarkItemCorrect(item.id)}
@@ -67,7 +64,7 @@ export default function ChoiceExerciseForm({ exercise, onUpdate }) {
                                 onChange={event => handleUpdateItem(item.id, event.target.value)}
                             />
                         }
-                        meta={
+                        trailingIcon={
                             <IconButton
                                 icon="delete"
                                 onClick={() => handleDeleteItem(item.id)}
@@ -76,15 +73,6 @@ export default function ChoiceExerciseForm({ exercise, onUpdate }) {
                     />
                 )}
             </List>
-
-            <Button
-                className="new-item-button"
-                type="button"
-                icon={<Icon>add</Icon>}
-                label="Добавить ответ"
-                outlined
-                onClick={handleAddItem}
-            />
-        </section>
+        </ExerciseItemsSection>
     );
 }

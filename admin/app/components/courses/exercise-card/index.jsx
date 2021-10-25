@@ -1,5 +1,6 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import {
+    Avatar,
     IconButton,
     Card
 } from 'mdc-react';
@@ -12,16 +13,7 @@ import ExerciseForm from 'app/components/courses/exercise-form';
 
 import './index.scss';
 
-const ExerciseTypeLabel = {
-    boolean: 'Да / Нет',
-    choice: 'Выбор',
-    essay: 'Эссе',
-    fib: 'Заполнить пробелы',
-    input: 'Ввод',
-    text: 'Текст'
-};
-
-export default function ExerciseCard({ course, exercise, onUpdate, onDelete }) {
+export default function ExerciseCard({ course, exercise, number, onUpdate, onDelete }) {
     const [isCollapsed, toggleCollapsed] = useBoolean(true);
     const [isEditing, toggleEditing] = useBoolean(false);
     const [isDeleting, toggleDeleting] = useBoolean(false);
@@ -77,8 +69,12 @@ export default function ExerciseCard({ course, exercise, onUpdate, onDelete }) {
             <Card className={classNames}>
                 <Card.PrimaryAction onClick={toggleCollapsed}>
                     <Card.Header
+                        graphic={
+                            <Avatar text={number} />
+                        }
+                        overline={exercise.label}
                         title={exercise.title}
-                        subtitle={ExerciseTypeLabel[exercise.type]}
+                        subtitle={exercise.description}
                         actions={[
                             <IconButton
                                 key="edit"

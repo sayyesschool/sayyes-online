@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
     Avatar,
@@ -15,15 +15,15 @@ export default function ExerciseList({ exercises, exercise: activeExercise, onDe
     }, []);
 
     return (
-        <List className="exercise-list" avatarList>
+        <List className="exercise-list">
             {exercises.map((exercise, index) =>
                 <List.Item
                     key={exercise.id}
                     component={Link}
                     to={exercise.url}
-                    graphic={<Avatar text={index + 1} />}
+                    leadingAvatar={<Avatar text={index + 1} />}
                     text={exercise.title}
-                    meta={
+                    trailingIcon={
                         <IconButton
                             icon="delete"
                             onClick={event => handleClick(event, exercise)}

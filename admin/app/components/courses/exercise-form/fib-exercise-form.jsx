@@ -1,14 +1,13 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
-    Button,
-    Icon,
     FormField,
     Switch,
-    TextField,
-    Typography
+    TextField
 } from 'mdc-react';
 
 import TextEditor from 'shared/components/text-editor';
+
+import ExerciseItemsSection from 'app/components/courses/exercise-items-section';
 
 export default function FIBExerciseForm({ exercise, onUpdate }) {
     const handleAddItem = useCallback(() => {
@@ -35,9 +34,7 @@ export default function FIBExerciseForm({ exercise, onUpdate }) {
     }, [exercise, onUpdate]);
 
     return (
-        <section>
-            <Typography className="elements-label">Элементы</Typography>
-
+        <ExerciseItemsSection onAddItem={handleAddItem}>
             {exercise.items.map(item =>
                 <FIBExerciseItemForm
                     key={item.id}
@@ -46,16 +43,7 @@ export default function FIBExerciseForm({ exercise, onUpdate }) {
                     onDelete={handleDeleteItem}
                 />
             )}
-
-            <Button
-                className="new-item-button"
-                type="button"
-                icon={<Icon>add</Icon>}
-                label="Добавить элемент"
-                outlined
-                onClick={handleAddItem}
-            />
-        </section>
+        </ExerciseItemsSection>
     );
 }
 
@@ -73,7 +61,7 @@ function FIBExerciseItemForm({ item, onUpdate, onDelete }) {
         <div className="exercise-item">
             <FormField label="Текст с форматированием">
                 <Switch
-                    checked={isHtml}
+                    selected={isHtml}
                     onChange={() => setHtml(v => !v)}
                 />
             </FormField>

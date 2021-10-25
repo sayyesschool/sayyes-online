@@ -1,7 +1,7 @@
-@use 'mdc-react/src/SideSheet/mixins';
+@use 'mdc-react/src/side-sheet';
 
 .enrollment-comments-side-panel.side-panel {
-    @include mixins.width(50%);
+    @include side-sheet.width(50%);
     box-shadow: 0 8px 10px -5px rgb(0 0 0 / 20%), 0 16px 24px 2px rgb(0 0 0 / 14%), 0 6px 30px 5px rgb(0 0 0 / 12%);
 
     .mdc-side-sheet__content {
