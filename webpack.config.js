@@ -153,8 +153,9 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
             alias: {
                 'app': path.resolve(__dirname, name, 'app'),
                 'core': path.resolve(__dirname, 'core'),
-                'shared/utils': path.resolve(__dirname, 'shared', 'utils'),
                 'shared/data': path.resolve(__dirname, 'shared', 'data'),
+                'shared/libs': path.resolve(__dirname, 'shared', 'libs'),
+                'shared/utils': path.resolve(__dirname, 'shared', 'utils'),
                 'shared': path.resolve(__dirname, 'shared', 'client')
             },
 
