@@ -1,7 +1,6 @@
 import { forwardRef, useCallback } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import '@ckeditor/ckeditor5-build-classic/build/translations/ru';
+import ClassicEditor from '@sayyes/ckeditor5-classic';
 
 import './index.scss';
 
@@ -9,21 +8,11 @@ export default forwardRef(TextEditor);
 
 const config = {
     language: 'ru',
-    // toolbar: [
-    //     'heading', '|',
-    //     'fontfamily', 'fontsize', '|',
-    //     'alignment', '|',
-    //     'fontColor', 'fontBackgroundColor', '|',
-    //     'bold', 'italic', 'strikethrough', 'underline', '|',
-    //     'link', '|',
-    //     'outdent', 'indent', '|',
-    //     'bulletedList', 'numberedList', '|',
-    //     'insertTable', '|',
-    //     'uploadImage', 'blockQuote', '|',
-    //     'undo', 'redo'
-    // ],
     mediaEmbed: {
         previewsInData: true
+    },
+    ckfinder: {
+        uploadUrl: 'https://static.sayyesonline.ru/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&responseType=json'
     }
 };
 

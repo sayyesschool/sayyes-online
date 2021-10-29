@@ -30,11 +30,11 @@ export default function ExerciseCard({ exercise }) {
         <Card className={classNames}>
             <Card.PrimaryAction onClick={toggleCollapsed}>
                 <Card.Header
-                    title={exercise.title}
-                    subtitle={ExerciseTypeLabel[exercise.type]}
                     graphic={
-                        <IconButton icon="radio_button_unchecked" />
+                        <Avatar text={number} size="medium" />
                     }
+                    title={exercise.title}
+                    subtitle={exercise.description}
                     actions={[
                         <IconButton
                             key="toggle"

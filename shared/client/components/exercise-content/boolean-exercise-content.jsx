@@ -33,7 +33,7 @@ function BooleanExerciseItem({ item, checked }) {
             text={item.text}
             meta={
                 <Switch
-                    checked={correct}
+                    selected={correct}
                     disabled={checked}
                     onChange={() => setCorrect(v => !v)}
                 />

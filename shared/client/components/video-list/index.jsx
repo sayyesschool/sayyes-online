@@ -8,7 +8,6 @@ export default function VideoList({ videos, selectedVideo, onClick }) {
             {videos.map(video =>
                 <List.Item
                     key={video.id}
-                    icon="movie"
                     primaryText={video.title}
                     secondaryText={video.duration}
                     activated={video === selectedVideo}

@@ -1,8 +1,4 @@
 .exercise-content {
-    .exercise-description {
-        margin-bottom: 1rem;
-    }
-
     .exercise-image {
         margin-bottom: 1rem;
     }
@@ -15,12 +11,20 @@
         margin-bottom: 1rem;
     }
 
+    .exercise-text {
+        line-height: 1.4;
+        
+        &:not(:last-child) {
+            margin-bottom: 2rem;
+        }
+    }
+
     &--boolean {
         .mdc-list {
             padding: 0;
         }
 
-        .boolean-exercise-item {
+        .mdc-list-item {
             padding: 0;
             cursor: default;
             overflow: visible;
@@ -28,6 +32,16 @@
             &__ripple {
                 display: none;
             }
+
+            &__end {
+                margin-right: 0;
+            }
+        }
+    }
+
+    &--fib {
+        p:last-child {
+            margin-bottom: 0;
         }
     }
 
@@ -46,6 +60,17 @@
     &--text {
         p:last-child {
             margin-bottom: 0;
+        }
+    }
+
+    table {
+        margin: auto;
+        border-collapse: collapse;
+
+        td, th {
+            min-width: 2em;
+            padding: .4em;
+            border: 1px solid #bfbfbf;
         }
     }
 }

@@ -6,7 +6,7 @@ import {
 
 import { formatDuration } from 'shared/utils/format';
 
-export default function AudioList({ audios, selectedAudio, onClick, onDelete }) {
+export default function AudioList({ audios, selectedAudio, onSelect, onDelete }) {
     return (
         <List className="audio-list">
             {audios.map(audio =>
@@ -14,7 +14,7 @@ export default function AudioList({ audios, selectedAudio, onClick, onDelete }) 
                     key={audio}
                     audio={audio}
                     activated={audio === selectedAudio}
-                    onClick={onClick}
+                    onClick={onSelect}
                     onDelete={onDelete}
                 />
             )}
@@ -35,10 +35,9 @@ function AudioListItem({ audio, playing, onClick, onDelete, ...props }) {
 
     return (
         <List.Item
-            icon="audiotrack"
             primaryText={audio.title}
             secondaryText={formatDuration(audio.duration)}
-            trailingIcon={
+            end={
                 <IconButton
                     icon="delete"
                     onClickCapture={handleDelete}

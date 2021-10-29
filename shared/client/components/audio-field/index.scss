@@ -9,5 +9,19 @@
         .mdc-text-field__icon--trailing {
             margin-right: 8px;
         }
+
+        .mdc-notched-outline__leading {
+            border-bottom-left-radius: 0;
+        }
+
+        .mdc-notched-outline__trailing {
+            border-bottom-right-radius: 0;
+        }
+    }
+
+    .audio-player {
+        border: 1px solid rgba(0,0,0,.38);
+        border-radius: 0 0 4px 4px;
+        border-top: 0;
     }
 }

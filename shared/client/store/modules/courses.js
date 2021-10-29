@@ -221,21 +221,13 @@ export const courseReducer = createReducer(null, {
             ...audio,
             ...action.data
         })
-    }, action.data),
+    }),
     [deleteAudio]: (state, action) => ({
         ...state,
         audios: state.audios.filter(audio => audio.id !== action.data.id),
-        units: state.units.map(unit => !unit.audios.includes(action.data.id) ? unit : {
-            ...unit,
-            audios: unit.audios.filter(audioId => audioId !== action.data.id)
-        }),
-        lessons: state.lessons.map(lesson => !lesson.audios.includes(action.data.id) ? lesson : {
-            ...lesson,
-            audios: lesson.audios.filter(audioId => audioId !== action.data.id)
-        }),
-        exercises: state.exercises.map(exercise => !exercise.audios.includes(action.data.id) ? exercise : {
+        exercises: state.exercises.map(exercise => exercise.audio !== action.data.id ? exercise : {
             ...exercise,
-            audios: exercise.audios.filter(audioId => audioId !== action.data.id)
+            audio: null
         })
     }),
 
@@ -249,21 +241,13 @@ export const courseReducer = createReducer(null, {
             ...video,
             ...action.data
         })
-    }, action.data),
+    }),
     [deleteVideo]: (state, action) => ({
         ...state,
         videos: state.videos.filter(video => video.id !== action.data.id),
-        units: state.units.map(unit => !unit.videos.includes(action.data.id) ? unit : {
-            ...unit,
-            videos: unit.videos.filter(videoId => videoId !== action.data.id)
-        }),
-        lessons: state.lessons.map(lesson => !lesson.videos.includes(action.data.id) ? lesson : {
-            ...lesson,
-            videos: lesson.videos.filter(videoId => videoId !== action.data.id)
-        }),
-        exercises: state.exercises.map(exercise => !exercise.videos.includes(action.data.id) ? exercise : {
+        exercises: state.exercises.map(exercise => exercise.video !== action.data.id ? exercise : {
             ...exercise,
-            videos: exercise.videos.filter(videoId => videoId !== action.data.id)
+            video: null
         })
     }),
 

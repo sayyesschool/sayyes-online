@@ -1,5 +1,5 @@
 .text-editor {
-    border: 1px solid rgba(0,0,0,.12);
+    border: 1px solid rgba(0,0,0,.38);
     border-radius: 4px;
 
     .ck-editor {
@@ -13,6 +13,11 @@
             padding: 0 1rem;
             border: none !important;
             box-shadow: none !important;
+
+            p {
+                line-height: 1.4;
+                margin-bottom: 1rem;
+            }
         }
     }
 

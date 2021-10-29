@@ -1,5 +1,12 @@
 @use '@material/list/evolution-mixins' as list;
 
 .mdc-list {
-    @include list.item-start-spacing(16px);
+    .mdc-list-item {
+        @include list.two-line-item-start-alignment(center, 0);
+        @include list.two-line-item-end-alignment(center, 0);
+
+        &__end {
+            pointer-events: all;
+        }
+    }
 }

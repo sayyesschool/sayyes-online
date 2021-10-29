@@ -71,7 +71,7 @@ function AudioField({
                     />
                 }
                 helperText={file.size && `Размер: ${Math.ceil(file.size / 1000)} КБ`}
-                filled
+                outlined
                 readOnly
             />
 

@@ -1,7 +1,4 @@
 import { createElement } from 'react';
-import {
-    Typography
-} from 'mdc-react';
 import classnames from 'classnames';
 
 import AudioContent from 'shared/components/audio-content';
@@ -25,17 +22,11 @@ const Components = {
     text: TextExerciseContent
 };
 
-export default function ExerciseContent({ exercise, checked }) {
-    const classNames = classnames('exercise-content', `exercise-content--${exercise.type}`, {
-        'exercise-content--checked': checked
-    });
+export default function ExerciseContent({ exercise }) {
+    const classNames = classnames('exercise-content', `exercise-content--${exercise.type}`);
 
     return (
         <div className={classNames}>
-            {exercise.description &&
-                <Typography className="exercise-description" type="subtitle1">{exercise.description}</Typography>
-            }
-
             {exercise.image &&
                 <img
                     className="exercise-image"
@@ -64,10 +55,13 @@ export default function ExerciseContent({ exercise, checked }) {
                 </section>
             }
 
+            {exercise.text &&
+                <div className="exercise-text" dangerouslySetInnerHTML={{ __html: exercise.text }} />
+            }
+
             {exercise.type &&
                 createElement(Components[exercise.type], {
-                    exercise,
-                    checked
+                    exercise
                 })
             }
         </div>

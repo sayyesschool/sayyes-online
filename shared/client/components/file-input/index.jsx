@@ -54,7 +54,7 @@ function FileInput({
             <TextField
                 label={label}
                 defaultValue={caption}
-                filled
+                outlined
                 readOnly
                 trailingIcon={
                     <IconButton
