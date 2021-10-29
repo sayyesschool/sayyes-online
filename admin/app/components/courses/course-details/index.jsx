@@ -1,7 +1,4 @@
-import {
-    Card,
-    IconButton
-} from 'mdc-react';
+import PageFAB from 'shared/components/page-fab';
 
 import CourseForm from 'app/components/courses/course-form';
 
@@ -10,25 +7,17 @@ import './index.scss';
 export default function CourseDetails({ course, onUpdate }) {
     return (
         <section className="course-details">
-            <Card outlined>
-                <Card.Header
-                    title="Детали"
-                    actions={
-                        <IconButton
-                            icon="save"
-                            type="submit"
-                            form="course-form"
-                        />
-                    }
-                />
+            <CourseForm
+                id="course-form"
+                course={course}
+                onSubmit={onUpdate}
+            />
 
-                <Card.Section primary>
-                    <CourseForm
-                        course={course}
-                        onSubmit={onUpdate}
-                    />
-                </Card.Section>
-            </Card>
+            <PageFAB
+                icon="save"
+                type="submit"
+                form="course-form"
+            />
         </section>
     );
 }

@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
+    Card,
     TabBar, Tab
 } from 'mdc-react';
 
@@ -70,7 +71,7 @@ export default function LessonPage({ match, history }) {
                     }
                 ]}
             >
-                <TabBar value={activeTab} onChange={setActiveTab} minWidth>
+                <TabBar value={activeTab} onChange={setActiveTab} minWidth minWidthIndicator>
                     <Tab
                         value="exercises"
                         label="Упражнения"
@@ -97,10 +98,14 @@ export default function LessonPage({ match, history }) {
                 }
 
                 {activeTab === 'details' &&
-                    <LessonDetails
-                        lesson={lesson}
-                        onUpdate={handleUpdateLesson}
-                    />
+                    <Card>
+                        <Card.Section primary>
+                            <LessonDetails
+                                lesson={lesson}
+                                onUpdate={handleUpdateLesson}
+                            />
+                        </Card.Section>
+                    </Card>
                 }
             </PageContent>
         </Page>

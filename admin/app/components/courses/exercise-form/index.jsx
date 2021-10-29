@@ -111,8 +111,8 @@ export default function ExerciseForm({ course, exercise = defaultExercise, onSub
                         label="Тип"
                         value={data.type}
                         options={typeOptions}
-                        filled
-                        menuProps={{ modal: true, fixed: true }}
+                        outlined
+                        menuProps={{ modal: true }}
                         onChange={handleChange}
                     />
 
@@ -120,7 +120,7 @@ export default function ExerciseForm({ course, exercise = defaultExercise, onSub
                         name="title"
                         label="Название"
                         value={data.title}
-                        filled
+                        outlined
                         onChange={handleChange}
                     />
 
@@ -129,7 +129,7 @@ export default function ExerciseForm({ course, exercise = defaultExercise, onSub
                         label="Описание"
                         value={data.description}
                         textarea
-                        filled
+                        outlined
                         autoResize
                         onChange={handleChange}
                     />
@@ -150,8 +150,8 @@ export default function ExerciseForm({ course, exercise = defaultExercise, onSub
                                 text: audio.title
                             }))
                         ]}
-                        filled
-                        menuProps={{ modal: true, fixed: true }}
+                        outlined
+                        menuProps={{ modal: true }}
                         onChange={handleChange}
                     />
 
@@ -171,8 +171,8 @@ export default function ExerciseForm({ course, exercise = defaultExercise, onSub
                                 text: video.title
                             }))
                         ]}
-                        filled
-                        menuProps={{ modal: true, fixed: true }}
+                        outlined
+                        menuProps={{ modal: true }}
                         onChange={handleChange}
                     />
                 </LayoutGrid.Cell>

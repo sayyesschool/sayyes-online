@@ -1,10 +1,7 @@
 import { useCallback, useState } from 'react';
-import {
-    Card,
-    IconButton
-} from 'mdc-react';
 
 import FormDialog from 'shared/components/form-dialog';
+import PageFAB from 'shared/components/page-fab';
 
 import UnitList from 'app/components/courses/unit-list';
 import UnitForm from 'app/components/courses/unit-form';
@@ -18,36 +15,27 @@ export default function CourseUnits({ course, onCreate, onUpdate, onDelete }) {
 
     return (
         <section className="course-units">
-            <Card>
-                <Card.Header
-                    title="Юниты"
-                    actions={
-                        <IconButton
-                            icon="add"
-                            onClick={handleAdd}
-                        />
-                    }
-                />
-
-                <Card.Section>
-                    <UnitList
-                        units={course.units}
-                        onDelete={onDelete}
-                    />
-                </Card.Section>
-            </Card>
+            <UnitList
+                units={course.units}
+                onDelete={onDelete}
+            />
 
             <FormDialog
                 title="Новый юнит"
                 form="unit-form"
                 open={isFormOpen}
-                fullScreen
+                fullscreen
                 onClose={() => setFormOpen(false)}
             >
                 <UnitForm
                     onSubmit={onCreate}
                 />
             </FormDialog>
+
+            <PageFAB
+                icon="add"
+                onClick={handleAdd}
+            />
         </section>
     );
 }

@@ -1,12 +1,8 @@
 import { useCallback } from 'react';
-import {
-    FAB,
-    IconButton,
-    Typography
-} from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
+import PageFAB from 'shared/components/page-fab';
 
 import ExerciseCard from 'app/components/courses/exercise-card';
 import ExerciseForm from 'app/components/courses/exercise-form';
@@ -58,7 +54,7 @@ export default function LessonExercises({
                 />
             </FormDialog>
 
-            <FAB
+            <PageFAB
                 icon="add"
                 exited={isFormOpen}
                 onClick={setFormOpen}

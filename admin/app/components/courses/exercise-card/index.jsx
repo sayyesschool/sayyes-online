@@ -7,8 +7,8 @@ import {
 import classnames from 'classnames';
 
 import { useBoolean } from 'shared/hooks/state';
+import ExerciseContent from 'shared/components/exercise-content';
 
-import ExerciseContent from 'app/components/courses/exercise-content';
 import ExerciseForm from 'app/components/courses/exercise-form';
 
 import './index.scss';
@@ -70,9 +70,8 @@ export default function ExerciseCard({ course, exercise, number, onUpdate, onDel
                 <Card.PrimaryAction onClick={toggleCollapsed}>
                     <Card.Header
                         graphic={
-                            <Avatar text={number} />
+                            <Avatar text={number} size="medium" />
                         }
-                        overline={exercise.label}
                         title={exercise.title}
                         subtitle={exercise.description}
                         actions={[

@@ -8,6 +8,18 @@
         color: rgba(0,0,0, .8);
     }
 
+    .mdc-card__header__graphic {
+        align-self: flex-start;
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+
+    .mdc-card__header__actions {
+        align-self: flex-start;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
     + .exercise-card {
         margin-top: 1rem;
     }

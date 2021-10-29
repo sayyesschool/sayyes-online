@@ -10,7 +10,7 @@ import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
 import FileInput from 'shared/components/file-input';
 
-export default function CourseForm({ course = {}, onSubmit }) {
+export default function CourseForm({ course = {}, onSubmit, ...props }) {
     const fileInputRef = useRef();
     const [data, handleChange, getData, setData] = useForm({
         title: course.title,
@@ -35,7 +35,7 @@ export default function CourseForm({ course = {}, onSubmit }) {
     }, [data.title]);
 
     return (
-        <Form id="course-form" onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} {...props}>
             <LayoutGrid>
                 <LayoutGrid.Cell span="4">
                     <Layout column>
@@ -43,7 +43,7 @@ export default function CourseForm({ course = {}, onSubmit }) {
                             name="title"
                             label="Название"
                             value={data.title}
-                            filled
+                            outlined
                             onChange={handleChange}
                             onBlur={handleTitleBlur}
                         />
@@ -52,7 +52,7 @@ export default function CourseForm({ course = {}, onSubmit }) {
                             name="slug"
                             label="Слаг"
                             value={data.slug}
-                            filled
+                            outlined
                             onChange={handleChange}
                         />
 
@@ -71,7 +71,7 @@ export default function CourseForm({ course = {}, onSubmit }) {
                         name="description"
                         label="Описание"
                         value={data.description}
-                        filled
+                        outlined
                         textarea
                         onChange={handleChange}
                     />

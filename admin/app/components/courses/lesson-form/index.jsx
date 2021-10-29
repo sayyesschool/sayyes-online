@@ -42,7 +42,7 @@ export default function LessonForm({ lesson = {}, onSubmit }) {
                         name="title"
                         label="Название"
                         value={data.title}
-                        filled
+                        outlined
                         onChange={handleChange}
                     />
 
@@ -50,7 +50,7 @@ export default function LessonForm({ lesson = {}, onSubmit }) {
                         name="slug"
                         label="Слаг"
                         value={data.slug}
-                        filled
+                        outlined
                         onChange={handleChange}
                     />
 

@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
+    Card,
     TabBar, Tab
 } from 'mdc-react';
 
@@ -63,7 +64,7 @@ export default function UnitPage({ match, history }) {
                     }
                 ]}
             >
-                <TabBar value={activeTab} onChange={setActiveTab} minWidth>
+                <TabBar value={activeTab} onChange={setActiveTab} minWidth minWidthIndicator>
                     <Tab
                         value="lessons"
                         label="Уроки"
@@ -79,21 +80,27 @@ export default function UnitPage({ match, history }) {
             </PageTopBar>
 
             <PageContent>
-                {activeTab === 'lessons' &&
-                    <UnitLessons
-                        course={course}
-                        unit={unit}
-                        onCreate={handleCreateLesson}
-                        onDelete={handleDeleteLesson}
-                    />
-                }
+                <Card>
+                    {activeTab === 'lessons' &&
+                        <Card.Section>
+                            <UnitLessons
+                                course={course}
+                                unit={unit}
+                                onCreate={handleCreateLesson}
+                                onDelete={handleDeleteLesson}
+                            />
+                        </Card.Section>
+                    }
 
-                {activeTab === 'details' &&
-                    <UnitDetails
-                        unit={unit}
-                        onUpdate={handleUpdateUnit}
-                    />
-                }
+                    {activeTab === 'details' &&
+                        <Card.Section primary>
+                            <UnitDetails
+                                unit={unit}
+                                onUpdate={handleUpdateUnit}
+                            />
+                        </Card.Section>
+                    }
+                </Card>
             </PageContent>
         </Page>
     );

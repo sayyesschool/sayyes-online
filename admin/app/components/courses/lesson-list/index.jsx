@@ -24,7 +24,7 @@ export default function LessonList({ lessons, onDelete }) {
                     leadingAvatar={<Avatar text={index + 1} />}
                     primaryText={lesson.title}
                     secondaryText={`${lesson.exercises?.length} упражнений`}
-                    trailingIcon={
+                    end={
                         <IconButton
                             icon="delete"
                             onClick={event => handleClick(event, lesson)}

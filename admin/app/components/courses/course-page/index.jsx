@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import {
+    Card,
     TabBar, Tab
 } from 'mdc-react';
 
@@ -13,6 +14,8 @@ import CourseDetails from 'app/components/courses/course-details';
 import CourseAudios from 'app/components/courses/course-audios';
 import CourseVideos from 'app/components/courses/course-videos';
 import CourseUnits from 'app/components/courses/course-units';
+
+import './index.scss';
 
 export default function CoursePage({ match, history }) {
     const [course, actions] = useStore('courses.single');
@@ -32,10 +35,6 @@ export default function CoursePage({ match, history }) {
             return actions.deleteCourse(course.id)
                 .then(() => history.push('/courses'));
         }
-    }, [course]);
-
-    const handleCreateAudio = useCallback(data => {
-        return actions.createAudio(course.id, data);
     }, [course]);
 
     const handleCreateUnit = useCallback(data => {
@@ -64,7 +63,7 @@ export default function CoursePage({ match, history }) {
                     }
                 ]}
             >
-                <TabBar value={activeTab} onChange={setActiveTab} minWidth>
+                <TabBar value={activeTab} onChange={setActiveTab} minWidth minWidthIndicator>
                     <Tab
                         value="units"
                         label="Юниты"
@@ -92,31 +91,43 @@ export default function CoursePage({ match, history }) {
             </PageTopBar>
 
             <PageContent>
-                {activeTab === 'units' &&
-                    <CourseUnits
-                        course={course}
-                    />
-                }
+                <Card>
+                    {activeTab === 'units' &&
+                        <Card.Section>
+                            <CourseUnits
+                                course={course}
+                            />
+                        </Card.Section>
+                    }
 
-                {activeTab === 'details' &&
-                    <CourseDetails
-                        course={course}
-                        onUpdate={handleUpdateCourse}
-                    />
-                }
+                    {activeTab === 'details' &&
+                        <Card.Section primary>
+                            <CourseDetails
+                                course={course}
+                                onUpdate={handleUpdateCourse}
+                            />
+                        </Card.Section>
+                    }
 
-                {activeTab === 'audio' &&
-                    <CourseAudios
-                        course={course}
-                        onCreate={handleCreateAudio}
-                    />
-                }
+                    {activeTab === 'audio' &&
+                        <Card.Section>
+                            <CourseAudios
+                                course={course}
+                                onCreate={actions.createAudio}
+                                onUpdate={actions.updateAudio}
+                                onDelete={actions.deleteAudio}
+                            />
+                        </Card.Section>
+                    }
 
-                {activeTab === 'video' &&
-                    <CourseVideos
-                        course={course}
-                    />
-                }
+                    {activeTab === 'video' &&
+                        <Card.Section>
+                            <CourseVideos
+                                course={course}
+                            />
+                        </Card.Section>
+                    }
+                </Card>
             </PageContent>
         </Page>
     );

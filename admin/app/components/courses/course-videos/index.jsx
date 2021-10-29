@@ -1,29 +1,17 @@
-import {
-    Card,
-    IconButton
-} from 'mdc-react';
+import PageFAB from 'shared/components/page-fab';
 
 import VideoList from 'shared/components/video-list';
 
 export default function CourseVideos({ course }) {
     return (
         <section className="course-videos">
-            <Card>
-                <Card.Header
-                    title="Видео"
-                    actions={
-                        <IconButton
-                            icon="add"
-                        />
-                    }
-                />
+            <VideoList
+                videos={course.videos}
+            />
 
-                <Card.Section>
-                    <VideoList
-                        videos={course.videos}
-                    />
-                </Card.Section>
-            </Card>
+            <PageFAB
+                icon="add"
+            />
         </section>
     );
 }

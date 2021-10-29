@@ -14,7 +14,7 @@ export default function UnitList({ units, onDelete }) {
     }, []);
 
     return (
-        <List className="unit-list">
+        <List element="nav" className="unit-list">
             {units.map(unit =>
                 <List.Item
                     key={unit.id}
@@ -23,7 +23,7 @@ export default function UnitList({ units, onDelete }) {
                     leadingThumbnail={<img src={unit.imageUrl} />}
                     primaryText={unit.title}
                     secondaryText={`${unit.lessons.length} уроков`}
-                    trailingIcon={
+                    end={
                         <IconButton
                             icon="delete"
                             onClick={event => handleClick(event, unit)}

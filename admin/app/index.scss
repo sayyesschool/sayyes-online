@@ -3,8 +3,8 @@
 @use 'styles/base';
 @use 'styles/material';
 @use 'mdc-react';
+@use 'styles/components';
 @use 'plyr/src/sass/plyr.scss' with (
     $plyr-color-main: variables.$primary-color,
     $plyr-audio-controls-background: transparent
 );
-@use 'styles/components';

@@ -42,7 +42,7 @@ export default function UnitForm({ unit = {}, onSubmit }) {
                         name="title"
                         label="Название"
                         value={data.title}
-                        filled
+                        outlined
                         onChange={handleChange}
                     />
 
@@ -50,7 +50,7 @@ export default function UnitForm({ unit = {}, onSubmit }) {
                         name="slug"
                         label="Слаг"
                         value={data.slug}
-                        filled
+                        outlined
                         onChange={handleChange}
                     />
 
@@ -58,7 +58,7 @@ export default function UnitForm({ unit = {}, onSubmit }) {
                         name="document"
                         label="Документ"
                         value={data.document}
-                        filled
+                        outlined
                         onChange={handleChange}
                     />
 
@@ -66,7 +66,7 @@ export default function UnitForm({ unit = {}, onSubmit }) {
                         name="description"
                         label="Описание"
                         value={data.description}
-                        filled
+                        outlined
                         textarea
                         onChange={handleChange}
                     />
