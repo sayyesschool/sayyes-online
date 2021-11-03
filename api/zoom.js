@@ -1,6 +1,6 @@
 const { Router } = require('express');
 
-module.exports = ({ Meeting }) => {
+module.exports = ({ models: { Meeting } }) => {
     const router = Router();
 
     router.post('/meetings', (req, res, next) => {

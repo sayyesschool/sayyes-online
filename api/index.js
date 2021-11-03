@@ -1,5 +1,6 @@
 const express = require('express');
 
+const storage = require('./storage');
 const twilio = require('./twilio');
 const yookassa = require('./yookassa');
 const zoom = require('./zoom');
@@ -7,9 +8,10 @@ const zoom = require('./zoom');
 module.exports = context => {
     const api = express();
 
+    api.use('/storage', storage(context));
+    api.use('/twilio', twilio(context));
     api.use('/yookassa', yookassa(context));
-    api.use('/twilio', twilio(context.lib.twilio));
-    api.use('/zoom', zoom(context.models));
+    api.use('/zoom', zoom(context));
 
     api.use((error, req, res, next) => {
         console.log(error);

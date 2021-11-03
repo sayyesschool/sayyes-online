@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-module.exports = twilio => {
+module.exports = ({ libs: { twilio } }) => {
     router.get('/tokens/:type', (req, res, next) => {
         const { type } = req.params;
         const { identity, room, device = 'browser' } = req.query;
