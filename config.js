@@ -14,7 +14,10 @@ module.exports = {
     APP_DOMAIN: process.env.APP_DOMAIN,
     APP_URL: process.env.APP_URL,
     APP_PATH: path.normalize(process.env.APP_PATH || process.cwd()),
-    STATIC_URL: process.env.STATIC_URL,
+
+    FACEBOOK_PIXEL_ID: '758563291240040',
+
+    GOOGLE_ANALYTICS_ID: 'UA-161447925-1',
 
     MAILJET_API_KEY: process.env.MAILJET_API_KEY,
     MAILJET_API_SECRET: process.env.MAILJET_API_SECRET,
@@ -22,6 +25,7 @@ module.exports = {
     MONGODB_URI: process.env.DB_CONNECTION_STRING,
 
     SESSION_SECRET: 'BHve6rr4mAAP2w4G93qK',
+    STATIC_URL: process.env.STATIC_URL,
 
     TWILIO_ACCOUNT_ID: process.env.TWILIO_ACCOUNT_ID,
     TWILIO_API_KEY: process.env.TWILIO_API_KEY,
@@ -29,22 +33,15 @@ module.exports = {
     TWILIO_CHAT_SERVICE_ID: process.env.TWILIO_CHAT_SERVICE_ID,
     TWILIO_SYNC_SERVICE_ID: process.env.TWILIO_SYNC_SERVICE_ID,
 
+    YANDEX_CLOUD_STORAGE_ENDPOINT: process.env.YANDEX_CLOUD_STORAGE_ENDPOINT,
+    YANDEX_CLOUD_ACCESS_KEY_ID: process.env.YANDEX_CLOUD_ACCESS_KEY_ID,
+    YANDEX_CLOUD_SECRET_ACCESS_KEY: process.env.YANDEX_CLOUD_SECRET_ACCESS_KEY,
+
+    YANDEX_METRIKA_ID: '61110085',
+
     YANDEX_KASSA_SHOP_ID: process.env.YANDEX_KASSA_SHOP_ID,
     YANDEX_KASSA_SECRET: process.env.YANDEX_KASSA_SECRET,
 
     ZOOM_API_KEY: process.env.ZOOM_API_KEY,
-    ZOOM_API_SECRET: process.env.ZOOM_API_SECRET,
-
-    YANDEX_METRIKA_ID: '61110085',
-    GOOGLE_ANALYTICS_ID: 'UA-161447925-1',
-    FACEBOOK_PIXEL_ID: '758563291240040',
-
-    STATIC_URL: 'https://static.sayes.ru'
-
-    // paths: {
-    //     public: path.join(APP_PATH, 'public'),
-    //     favicon: path.join(APP_PATH, 'public', 'favicon.ico'),
-    //     views: path.join(APP_PATH, 'shared', 'views'),
-    //     lib: path.join(APP_PATH, 'node_modules')
-    // }
+    ZOOM_API_SECRET: process.env.ZOOM_API_SECRET
 };
