@@ -9,15 +9,15 @@ module.exports = (config, shared) => {
     const twilio = Twilio(config);
     const zoom = Zoom(config);
 
-    const lib = {
+    const libs = {
         mailjet,
         twilio,
         zoom
     };
 
     return {
-        lib,
+        libs,
         models,
-        services: services(config, lib, models)
+        services: services(config, libs, models)
     };
 };

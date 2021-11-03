@@ -16,7 +16,7 @@ module.exports = context => {
     app.use(auth);
     app.use('/api', api(context));
     app.use('/:id?',
-        context.middleware.tokens(context.lib.twilio),
+        context.middleware.tokens(context.libs.twilio),
         (req, res) => res.render('index', { ENROLLMENT_ID: req.params.id })
     );
 
