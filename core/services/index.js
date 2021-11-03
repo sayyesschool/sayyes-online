@@ -4,6 +4,7 @@ const Club = require('./club');
 const File = require('./file');
 const Mail = require('./mail');
 const Newsletter = require('./newsletter');
+const Storage = require('./storage');
 
 module.exports = (config, lib, models) => {
     const mail = Mail(lib.mailjet);
@@ -36,6 +37,11 @@ module.exports = (config, lib, models) => {
     const checkout = Checkout(config, models);
     const club = Club(lib.zoom, models, { mail: Mail, newsletter: Newsletter, checkout: Checkout });
     const file = File();
+    const storage = new Storage({
+        endpoint: 'https://storage.yandexcloud.net',
+        region: 'ru-central1',
+        bucket: 'sayyesonline'
+    });
 
     return {
         Auth: auth,
@@ -43,6 +49,7 @@ module.exports = (config, lib, models) => {
         Club: club,
         File: file,
         Mail: mail,
-        Newsletter: newsletter
+        Newsletter: newsletter,
+        Storage: storage
     };
 };
