@@ -81,8 +81,6 @@ function elementToJsx(element) {
     const type = element.nodeName.toLowerCase();
     const props = {};
 
-    console.log('element', element);
-
     if (type === '#text') {
         return element.textContent === '\n' ? undefined : element.textContent;
     } else if (type === 'input' && element.type === 'text') {

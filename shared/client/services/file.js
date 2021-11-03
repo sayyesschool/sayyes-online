@@ -7,7 +7,7 @@ export function uploadFile(file, { name = nanoid(16), path }) {
     formData.append('file', file, filename);
     formData.append('path', file.path || path);
 
-    return fetch(`${STATIC_URL}/upload-image.php`, {
+    return fetch(`${STATIC_URL}/upload.php`, {
         method: 'POST',
         body: formData
     }).then(response => response.json());
