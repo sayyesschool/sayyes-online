@@ -74,8 +74,9 @@ function FIBExerciseItemForm({ item, onUpdate, onDelete }) {
                 :
                 <TextField
                     value={item.text}
-                    filled
+                    outlined
                     textarea
+                    autoResize
                     onChange={handleChange}
                 />
             }

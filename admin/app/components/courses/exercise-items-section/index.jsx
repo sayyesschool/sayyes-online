@@ -3,7 +3,7 @@ import {
     Typography
 } from 'mdc-react';
 
-export default function ExerciseItemsSection({ label = 'Элементы', children, onCreate }) {
+export default function ExerciseItemsSection({ label = 'Элементы', children, onAddItem }) {
     return (
         <section className="exercise-items-section">
             <Typography className="elements-label">{label}</Typography>
@@ -16,7 +16,7 @@ export default function ExerciseItemsSection({ label = 'Элементы', child
                 icon="add"
                 label="Добавить элемент"
                 outlined
-                onClick={onCreate}
+                onClick={onAddItem}
             />
         </section>
     );
