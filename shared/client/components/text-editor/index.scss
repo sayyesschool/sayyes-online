@@ -3,6 +3,8 @@
     border-radius: 4px;
 
     .ck-editor {
+        --ck-border-radius: 4px;
+
         .ck-toolbar {
             border: none;
             border-radius: 10px 10px 0 0;
@@ -15,8 +17,8 @@
             box-shadow: none !important;
 
             p {
-                line-height: 1.4;
-                margin-bottom: 1rem;
+                line-height: 1.5;
+                margin-bottom: 0.75rem;
             }
         }
     }

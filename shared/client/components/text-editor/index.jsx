@@ -2,6 +2,8 @@ import { forwardRef, useCallback } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@sayyes/ckeditor5-classic';
 
+import { UploadAdapterPlugin } from 'shared/libs/upload-adapter';
+
 import './index.scss';
 
 export default forwardRef(TextEditor);
@@ -11,9 +13,7 @@ const config = {
     mediaEmbed: {
         previewsInData: true
     },
-    ckfinder: {
-        uploadUrl: 'https://static.sayyesonline.ru/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&responseType=json'
-    }
+    extraPlugins: [UploadAdapterPlugin]
 };
 
 function TextEditor({

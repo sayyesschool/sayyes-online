@@ -12,7 +12,15 @@
     }
 
     .exercise-text {
-        line-height: 1.4;
+        line-height: 1.5;
+
+        p {
+            margin-bottom: 0.75rem;
+            
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
         
         &:not(:last-child) {
             margin-bottom: 2rem;
@@ -43,6 +51,10 @@
         p:last-child {
             margin-bottom: 0;
         }
+
+        form {
+            white-space: pre-line;
+        }
     }
 
     &--input {
@@ -70,7 +82,7 @@
         td, th {
             min-width: 2em;
             padding: .4em;
-            border: 1px solid #bfbfbf;
+            // border: 1px solid #bfbfbf;
         }
     }
 }
