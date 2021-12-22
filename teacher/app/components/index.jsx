@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { Fragment, useCallback, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import { useStore } from 'shared/hooks/store';
@@ -54,7 +54,7 @@ export default function App() {
     if (!user) return <LoadingIndicator />;
 
     return (
-        <React.Fragment>
+        <Fragment>
             <AppHeader
                 user={user}
                 fixed
@@ -79,6 +79,6 @@ export default function App() {
                 text={notification.text}
                 onClose={handleSnackbarClose}
             />
-        </React.Fragment>
+        </Fragment>
     );
 }
