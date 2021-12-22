@@ -9,5 +9,13 @@ module.exports = context => {
     router.route('/:course')
         .get(controller.getOne);
 
+    router.route('/:course/exercises/:exercise')
+        .patch(controller.updateExerciseProgress);
+
+    router.route('/:course/exercises/:exercise/comments/:comment?')
+        .post(controller.createExerciseComment)
+        .put(controller.updateExerciseComment)
+        .delete(controller.deleteExerciseComment);
+
     return router;
 };

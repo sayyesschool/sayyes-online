@@ -84,17 +84,22 @@ export default function EnrollmentPage({ match }) {
                             />
                         </LayoutGrid.Cell>
 
-                        <LayoutGrid.Cell span="12">
-                            <EnrollmentCourses
-                                enrollment={enrollment}
-                            />
-                        </LayoutGrid.Cell>
+                        {enrollment.courses?.length > 0 &&
+                            <LayoutGrid.Cell span="12">
 
-                        <LayoutGrid.Cell span="12">
-                            <EnrollmentMaterials
-                                enrollment={enrollment}
-                            />
-                        </LayoutGrid.Cell>
+                                <EnrollmentCourses
+                                    enrollment={enrollment}
+                                />
+                            </LayoutGrid.Cell>
+                        }
+
+                        {enrollment.materials?.length > 0 &&
+                            <LayoutGrid.Cell span="12">
+                                <EnrollmentMaterials
+                                    enrollment={enrollment}
+                                />
+                            </LayoutGrid.Cell>
+                        }
                     </LayoutGrid.Cell>
                 </LayoutGrid>
             </PageContent>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { SideSheet } from 'mdc-react';
 
@@ -46,7 +46,7 @@ export default function App() {
     if (!user) return <LoadingIndicator />;
 
     return (
-        <React.Fragment>
+        <Fragment>
             <AppHeader
                 user={user}
             >
@@ -79,6 +79,6 @@ export default function App() {
             >
 
             </SideSheet>
-        </React.Fragment>
+        </Fragment>
     );
 }

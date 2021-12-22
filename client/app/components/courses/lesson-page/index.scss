@@ -1,21 +1,11 @@
-@use 'mdc-react/src/side-sheet';
+.lesson-page {
+    .lesson-exercises {
+        position: sticky;
+        top: 86px;
 
-.page.lesson-page {
-    .page-header {
-        &__inner {
-            max-width: 1024px;
+        .exercises-list {
+            max-height: calc(100vh - 293px);
+            overflow-y: auto;
         }
-    }
-    
-    .page-content {
-        max-width: 720px;
-    }
-
-    .mdc-side-sheet {
-        top: 0;
-        right: 0;
-        z-index: 4;
-        position: absolute;
-        @include side-sheet.width(360px);
     }
 }

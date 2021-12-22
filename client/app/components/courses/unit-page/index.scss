@@ -8,14 +8,6 @@
     }
     
     .page-content {
-        max-width: 720px;
-    }
-
-    .mdc-side-sheet {
-        top: 0;
-        right: 0;
-        z-index: 4;
-        position: absolute;
-        @include side-sheet.width(360px);
+        max-width: 1024px;
     }
 }

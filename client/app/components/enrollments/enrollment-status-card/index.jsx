@@ -1,3 +1,4 @@
+import { createElement } from 'react';
 import {
     Avatar,
     Button,
@@ -57,7 +58,7 @@ export default function EnrollmentStatusCard({ enrollment }) {
                     />
                 </Stepper>
 
-                {React.createElement(contentByStatus[enrollment.status], {
+                {createElement(contentByStatus[enrollment.status], {
                     enrollment
                 })}
             </Card.Section>
