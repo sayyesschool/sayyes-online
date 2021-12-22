@@ -25,7 +25,7 @@
     "@aws-sdk/client-s3": "^3.39.0",
     "@ckeditor/ckeditor5-react": "^3.0.3",
     "@reduxjs/toolkit": "^1.6.2",
-    "@sayyes/ckeditor5-classic": "^3.3.0",
+    "@sayyes/ckeditor5-classic": "^3.4.0",
     "axios": "^0.23.0",
     "babel-runtime": "^6.26.0",
     "bcryptjs": "^2.4.3",
@@ -39,7 +39,7 @@
     "jsonwebtoken": "^8.5.1",
     "material-components-web": "^13.0.0",
     "mdc-pug": "^3.0.0-beta.5",
-    "mdc-react": "^1.0.0-beta.4",
+    "mdc-react": "^1.0.0-beta.7",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "mongoose": "^5.11.11",
@@ -67,7 +67,8 @@
     "twilio-chat": "^5.0.2",
     "twilio-sync": "^2.0.1",
     "twilio-video": "^2.18.0",
-    "yandex-kassa": "0.0.3"
+    "uuid": "^8.3.2",
+    "yookassa": "^0.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
