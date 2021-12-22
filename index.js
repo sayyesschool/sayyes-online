@@ -17,8 +17,8 @@ const context = {
     middleware: server.middleware
 };
 
-server.use('/api', api(context));
 server.use(auth(context));
+server.use('/api', api(context));
 server.use('/admin', admin(context));
 server.use('/class', classroom(context));
 server.use('/teacher', teacher(context));
