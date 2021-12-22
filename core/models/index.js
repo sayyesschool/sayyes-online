@@ -7,6 +7,7 @@ const Lesson = require('./lesson');
 const Pack = require('./pack');
 const Payment = require('./payment');
 const Post = require('./post');
+const Progress = require('./progress');
 const Request = require('./request');
 const Material = require('./material');
 const Meeting = require('./meeting');
@@ -30,6 +31,7 @@ module.exports = {
     Pack: model('Pack', Pack),
     Payment: model('Payment', Payment),
     Post: model('Post', Post),
+    Progress: model('Progress', Progress, 'progress'),
     Request: model('Request', Request),
     Ticket: model('Ticket', Ticket),
     User,

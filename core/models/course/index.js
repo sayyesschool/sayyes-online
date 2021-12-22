@@ -33,4 +33,10 @@ Course.virtual('imageUrl').get(function() {
     return this.image && `${process.env.STATIC_URL}${this.url}/images/${this.image}`;
 });
 
+Course.virtual('progress', {
+    ref: 'Progress',
+    localField: '_id',
+    foreignField: 'course'
+});
+
 module.exports = Course;

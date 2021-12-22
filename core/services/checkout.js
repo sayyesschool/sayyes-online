@@ -1,7 +1,10 @@
-const YooKassa = require('yandex-kassa');
+const YooKassa = require('yookassa');
 
-module.exports = ({ YANDEX_KASSA_SHOP_ID, YANDEX_KASSA_SECRET, APP_URL }, { Payment }) => {
-    const kassa = new YooKassa(YANDEX_KASSA_SHOP_ID, YANDEX_KASSA_SECRET);
+module.exports = ({ YOOKASSA_SHOP_ID, YOOKASSA_SECRET_KEY, APP_URL }, { Payment }) => {
+    const kassa = new YooKassa({
+        shopId: YOOKASSA_SHOP_ID,
+        secretKey: YOOKASSA_SECRET_KEY
+    });
 
     return {
         createPayment({ amount, description, method, returnUrl, email, metadata }) {

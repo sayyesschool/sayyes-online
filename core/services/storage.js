@@ -24,16 +24,19 @@ class Storage {
                 url: `${this.endpoint}/${this.bucket}/${key}`
             };
         }).catch(error => {
-            console.error("There was an error uploading your photo: ", error.message);
+            console.error('There was an error uploading your file: ', error.message);
             return error;
         });
     }
 
     delete(key) {
         return this.storage.send(new DeleteObjectCommand({
-            Bucket: albumBucketName,
+            Bucket: this.bucket,
             Key: key
-        }));
+        })).catch(error => {
+            console.error('There was an error deleting your file: ', error.message);
+            return error;
+        });
     }
 }
 

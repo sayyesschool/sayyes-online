@@ -15,14 +15,23 @@ const Exercise = new Schema({
     items: [Item],
     unit: { type: Schema.Types.ObjectId },
     lesson: { type: Schema.Types.ObjectId }
+}, {
+    toJSON: {
+        transform: (exercise, object) => {
+            const progress = exercise.parent()?.progress?.find(item => item.exercise.toString() === exercise.id);
+
+            if (progress) {
+                object.isCompleted = progress.completed;
+                object.state = progress.state;
+            }
+
+            return object;
+        }
+    }
 });
 
 Exercise.virtual('uri').get(function() {
     return `${this.parent().uri}/units/${this.unit}/lessons/${this.lesson}/exercises/${this.id}`;
-});
-
-Exercise.virtual('url').get(function() {
-    return this.uri;
 });
 
 Exercise.virtual('imageUrl').get(function() {
