@@ -6,6 +6,7 @@ export default function UnitDetails({ unit, onUpdate }) {
     return (
         <section className="unit-details">
             <UnitForm
+                id="unit-form"
                 unit={unit}
                 onSubmit={onUpdate}
             />

@@ -22,7 +22,7 @@
 
     .exercise-item {
         .mdc-text-field {
-            margin: 0 !important;
+            margin: 0;
         }
 
         &.mdc-list-item {
@@ -32,12 +32,8 @@
             padding-top: 6px;
             padding-bottom: 6px;
 
-            .mdc-list-item__start {
-                margin-top: 6px;
-            }
-
             .mdc-list-item__content {
-                margin: 8px 0;
+                pointer-events: all;
             }
 
             .mdc-text-field {
@@ -81,6 +77,25 @@
     &--text {
         .mdc-card {
             margin-top: 1rem;
+        }
+    }
+
+    &--input {
+        .exercise-item {
+            .mdc-text-field {
+                margin-bottom: .5rem;
+            }
+    
+            .mdc-form-field {
+                label {
+                    margin-left: 0;
+                }
+
+                .inline-input {
+                    display: inline-flex;
+                    margin-left: 8px;
+                }
+            }
         }
     }
 }

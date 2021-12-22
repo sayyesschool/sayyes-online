@@ -52,7 +52,7 @@ export default function BooleanExerciseForm({ exercise, onUpdate }) {
                         className="exercise-item"
                         leadingSwitch={
                             <Switch
-                                checked={item.correct}
+                                selected={item.correct}
                                 onChange={() => handleItemCorrect(item.id)}
                             />
                         }
@@ -63,7 +63,7 @@ export default function BooleanExerciseForm({ exercise, onUpdate }) {
                                 onChange={event => handleUpdateItem(item.id, event.target.value)}
                             />
                         }
-                        trailingIcon={
+                        meta={
                             <IconButton
                                 icon="delete"
                                 onClick={() => handleDeleteItem(item.id)}

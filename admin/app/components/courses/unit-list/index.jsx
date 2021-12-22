@@ -5,6 +5,8 @@ import {
     List
 } from 'mdc-react';
 
+import './index.scss';
+
 export default function UnitList({ units, onDelete }) {
     const handleClick = useCallback((event, unit) => {
         event.preventDefault();
@@ -20,7 +22,7 @@ export default function UnitList({ units, onDelete }) {
                     key={unit.id}
                     component={Link}
                     to={unit.uri}
-                    leadingThumbnail={<img src={unit.imageUrl} />}
+                    leadingImage={<img src={unit.imageUrl} />}
                     primaryText={unit.title}
                     secondaryText={`${unit.lessons.length} уроков`}
                     end={

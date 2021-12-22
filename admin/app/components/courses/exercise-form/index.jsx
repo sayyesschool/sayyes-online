@@ -145,8 +145,8 @@ export default function ExerciseForm({ course, exercise = defaultExercise, onSub
                                 text: ' '
                             },
                             ...course.audios.map(audio => ({
-                                key: audio.filename,
-                                value: audio.filename,
+                                key: audio.id,
+                                value: audio.id,
                                 text: audio.title
                             }))
                         ]}

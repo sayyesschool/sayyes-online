@@ -7,6 +7,8 @@ import {
     TextField
 } from 'mdc-react';
 
+import InlineInput from 'shared/components/inline-input';
+
 import ExerciseItemsSection from 'app/components/courses/exercise-items-section';
 
 import './index.scss';
@@ -56,16 +58,24 @@ function InputExerciseItemForm({ item, onUpdate, onDelete }) {
         });
     }, [item, onUpdate]);
 
-    const handleAddAnswer = useCallback(values => {
-        onUpdate(item.id, {
-            answers: values
-        });
-    }, [item, onUpdate]);
-
     const handleDeleteAnswer = useCallback(answer => {
         onUpdate(item.id, {
             answers: item.answers.filter(a => a !== answer)
         });
+    }, [item, onUpdate]);
+
+    const handleKeyPress = useCallback(event => {
+        if (event.code == 'Enter') {
+            event.preventDefault();
+
+            onUpdate(item.id, {
+                answers: item.answers.concat(event.target.value)
+            });
+
+            event.target.value = '';
+
+            return false;
+        }
     }, [item, onUpdate]);
 
     return (
@@ -83,16 +93,20 @@ function InputExerciseItemForm({ item, onUpdate, onDelete }) {
             />
 
             <FormField label="Варианты ответа:" alignEnd>
-                <ChipSet value={item.answers} input onChange={handleAddAnswer}>
-                    {item.answers?.map(answer =>
-                        <Chip
-                            text={answer}
-                            trailingIcon={
-                                <Icon onClick={() => handleDeleteAnswer(answer)}>delete</Icon>
-                            }
-                        />
-                    )}
-                </ChipSet>
+                <>
+                    <ChipSet input>
+                        {item.answers?.map(answer =>
+                            <Chip
+                                text={answer}
+                                trailingIcon={
+                                    <Icon onClick={() => handleDeleteAnswer(answer)}>delete</Icon>
+                                }
+                            />
+                        )}
+                    </ChipSet>
+
+                    <InlineInput defaultValue="" onKeyPress={handleKeyPress} />
+                </>
             </FormField>
         </div>
     );

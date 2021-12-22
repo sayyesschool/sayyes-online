@@ -93,7 +93,7 @@ export default function UnitPage({ match, history }) {
                     }
 
                     {activeTab === 'details' &&
-                        <Card.Section primary>
+                        <Card.Section>
                             <UnitDetails
                                 unit={unit}
                                 onUpdate={handleUpdateUnit}

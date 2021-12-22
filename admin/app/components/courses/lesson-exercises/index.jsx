@@ -1,8 +1,13 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
+import {
+    Card,
+    IconButton,
+    LayoutGrid
+} from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
-import PageFAB from 'shared/components/page-fab';
+import ExercisesList from 'shared/components/exercises-list';
 
 import ExerciseCard from 'app/components/courses/exercise-card';
 import ExerciseForm from 'app/components/courses/exercise-form';
@@ -17,28 +22,54 @@ export default function LessonExercises({
     onUpdate,
     onDelete
 }) {
+    const [exerciseIndex, setExerciseIndex] = useState(0);
     const [isFormOpen, setFormOpen] = useBoolean(false);
 
     const handleCreate = useCallback(data => {
         return onCreate(data).then(() => setFormOpen(false));
     }, []);
 
+    const handleSelect = useCallback((exercise, index) => {
+        setExerciseIndex(index);
+    }, []);
+
     const exercises = lesson.exercises.map(id => course.exercisesById.get(id));
+    const exercise = exercises[exerciseIndex];
 
     return (
         <section className="lesson-exercises">
-            <div>
-                {exercises?.map((exercise, index) =>
+            <LayoutGrid>
+                <LayoutGrid.Cell span="8">
                     <ExerciseCard
                         key={exercise.id}
-                        number={index + 1}
                         course={course}
                         exercise={exercise}
                         onUpdate={onUpdate}
                         onDelete={onDelete}
                     />
-                )}
-            </div>
+                </LayoutGrid.Cell>
+
+                <LayoutGrid.Cell span="4">
+                    <Card>
+                        <Card.Header
+                            title="Упражнения"
+                            actions={[
+                                <IconButton
+                                    key="create"
+                                    icon="add"
+                                    onClick={setFormOpen}
+                                />
+                            ]}
+                        />
+
+                        <ExercisesList
+                            exercises={exercises}
+                            selectedExerciseIndex={exerciseIndex}
+                            onSelect={handleSelect}
+                        />
+                    </Card>
+                </LayoutGrid.Cell>
+            </LayoutGrid>
 
             <FormDialog
                 title="Новое упражнение"
@@ -53,12 +84,6 @@ export default function LessonExercises({
                     onSubmit={handleCreate}
                 />
             </FormDialog>
-
-            <PageFAB
-                icon="add"
-                exited={isFormOpen}
-                onClick={setFormOpen}
-            />
         </section>
     );
 }

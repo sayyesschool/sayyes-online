@@ -1,0 +1,7 @@
+@use 'mdc-react/src/list';
+
+.unit-list {
+    .mdc-list-item {
+        @include list.item-start-size(132px, 64px);
+    }
+}

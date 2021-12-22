@@ -99,12 +99,10 @@ export default function LessonPage({ match, history }) {
 
                 {activeTab === 'details' &&
                     <Card>
-                        <Card.Section primary>
-                            <LessonDetails
-                                lesson={lesson}
-                                onUpdate={handleUpdateLesson}
-                            />
-                        </Card.Section>
+                        <LessonDetails
+                            lesson={lesson}
+                            onUpdate={handleUpdateLesson}
+                        />
                     </Card>
                 }
             </PageContent>

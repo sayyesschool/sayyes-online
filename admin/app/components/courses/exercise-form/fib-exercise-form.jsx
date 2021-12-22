@@ -1,6 +1,8 @@
 import { useCallback, useState } from 'react';
 import {
     FormField,
+    IconButton,
+    Layout,
     Switch,
     TextField
 } from 'mdc-react';
@@ -29,7 +31,7 @@ export default function FIBExerciseForm({ exercise, onUpdate }) {
 
     const handleDeleteItem = useCallback(itemId => {
         onUpdate({
-            items: exercise.items.filter(a => a.id !== itemId)
+            items: exercise.items.filter(item => item.id !== itemId)
         });
     }, [exercise, onUpdate]);
 
@@ -57,14 +59,25 @@ function FIBExerciseItemForm({ item, onUpdate, onDelete }) {
         });
     }, [item, isHtml]);
 
+    const handleDelete = useCallback(() => {
+        onDelete(item.id);
+    }, []);
+
     return (
         <div className="exercise-item">
-            <FormField label="Текст с форматированием">
-                <Switch
-                    selected={isHtml}
-                    onChange={() => setHtml(v => !v)}
+            <Layout row alignItems="center" justifyContent="between">
+                <FormField label="Текст с форматированием">
+                    <Switch
+                        selected={isHtml}
+                        onChange={() => setHtml(v => !v)}
+                    />
+                </FormField>
+
+                <IconButton
+                    icon="delete"
+                    onClick={handleDelete}
                 />
-            </FormField>
+            </Layout>
 
             {isHtml ?
                 <TextEditor

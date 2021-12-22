@@ -17,7 +17,7 @@ const defaultUnit = {
     image: ''
 };
 
-export default function UnitForm({ unit = {}, onSubmit }) {
+export default function UnitForm({ unit = {}, onSubmit, ...props }) {
     const fileInputRef = useRef();
     const editorRef = useRef();
 
@@ -35,7 +35,7 @@ export default function UnitForm({ unit = {}, onSubmit }) {
     }, [onSubmit]);
 
     return (
-        <Form className="unit-form" onSubmit={handleSubmit}>
+        <Form className="unit-form" onSubmit={handleSubmit} {...props}>
             <LayoutGrid>
                 <LayoutGrid.Cell span="4">
                     <TextField
