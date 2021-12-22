@@ -6,8 +6,10 @@ const router = Router();
 module.exports = ({ services: { Storage } }) => {
     router.post('/put', upload.single('file'), (req, res, next) => {
         const file = req.file;
+        const filename = `${req.user.id}_${file.originalname}`;
+        const key = req.body.path ? (req.body.path + filename) : filename;
 
-        Storage.put(file.originalname, file.buffer)
+        Storage.put(key, file.buffer)
             .then(response => {
                 res.json({
                     ok: true,

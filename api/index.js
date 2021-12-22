@@ -8,7 +8,7 @@ const zoom = require('./zoom');
 module.exports = context => {
     const api = express();
 
-    api.use('/storage', storage(context));
+    api.use('/storage', context.middleware.auth.authenticatedRoute, storage(context));
     api.use('/twilio', twilio(context));
     api.use('/yookassa', yookassa(context));
     api.use('/zoom', zoom(context));
