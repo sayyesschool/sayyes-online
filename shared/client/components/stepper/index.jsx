@@ -1,3 +1,4 @@
+import { Children, isValidElement, cloneElement } from 'react';
 import {
     Icon
 } from 'mdc-react';
@@ -8,9 +9,9 @@ import './index.scss';
 function Stepper({ steps, children = steps }) {
     return (
         <div className="stepper">
-            {React.Children.map(children, (step, index) =>
-                React.isValidElement(step) ?
-                    React.cloneElement(step) :
+            {Children.map(children, (step, index) =>
+                isValidElement(step) ?
+                    cloneElement(step) :
                     <Step key={step.id} graphic={index} {...step} />
             )}
         </div>

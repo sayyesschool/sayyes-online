@@ -26,14 +26,19 @@
             background-color: color-palette.$red-700;
         }
 
-        .mdc-chip__text {
+        .mdc-evolution-chip__action {
+            padding: 0;
+        }
+
+        .mdc-evolution-chip__text-label {
             display: flex;
             flex-direction: column;
             line-height: 1;
             text-align: left;
+            color: inherit;
         }
 
-        .mdc-chip__icon--trailing {
+        .mdc-evolution-chip__icon--trailing {
             position: absolute;
             top: 2px;
             right: 4px;

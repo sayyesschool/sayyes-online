@@ -2,8 +2,7 @@ import { useCallback, useState } from 'react';
 import {
     Avatar,
     Button,
-    Card,
-    LayoutGrid
+    Card
 } from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
@@ -25,7 +24,6 @@ export default function PostsFeed({ query, beforeCreate = noop }) {
     const [postId, setPostId] = useState(null);
 
     const [isPostFormOpen, togglePostFormOpen] = useBoolean(false);
-    const [isCommenting, toggleCommenting] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     const createPost = useCallback(data => {
@@ -48,8 +46,7 @@ export default function PostsFeed({ query, beforeCreate = noop }) {
     }, []);
 
     const createComment = useCallback((postId, data) => {
-        return actions.createComment(postId, data)
-            .then(() => toggleCommenting(false));
+        return actions.createComment(postId, data);
     }, []);
 
     const updateComment = useCallback((postId, commentId, data) => {
@@ -64,58 +61,55 @@ export default function PostsFeed({ query, beforeCreate = noop }) {
 
     return (
         <div className="posts-feed">
-            <LayoutGrid>
-                <LayoutGrid.Cell span="12">
-                    {isPostFormOpen ?
-                        <Card className="new-post-card">
-                            <Card.Header
-                                graphic={<Avatar src={user.imageUrl} text={user?.initials} />}
-                                title="Новая запись"
-                            />
+            {isPostFormOpen ?
+                <Card className="new-post-card">
+                    <Card.Header
+                        graphic={<Avatar src={user.imageUrl} text={user?.initials} size="medium" />}
+                        title="Новая запись"
+                    />
 
-                            <PostForm
-                                onSubmit={createPost}
-                            />
+                    <Card.Section primary>
+                        <PostForm
+                            user={user}
+                            onSubmit={createPost}
+                        />
+                    </Card.Section>
 
-                            <Card.Actions>
-                                <Button onClick={togglePostFormOpen}>Отменить</Button>
-                                <Button type="submit" form="post-form" outlined>Сохранить</Button>
-                            </Card.Actions>
-                        </Card>
-                        :
-                        <Card>
-                            <Card.PrimaryAction onClick={togglePostFormOpen}>
-                                <Card.Header
-                                    graphic={<Avatar src={user.imageUrl} text={user?.initials} />}
-                                    subtitle="What's going on?"
-                                />
-                            </Card.PrimaryAction>
-                        </Card>
-                    }
-                </LayoutGrid.Cell>
+                    <Card.Actions>
+                        <Button onClick={togglePostFormOpen}>Отменить</Button>
+                        <Button type="submit" form="post-form" outlined>Сохранить</Button>
+                    </Card.Actions>
+                </Card>
+                :
+                <Card>
+                    <Card.PrimaryAction onClick={togglePostFormOpen}>
+                        <Card.Header
+                            graphic={<Avatar src={user.imageUrl} text={user?.initials} size="medium" />}
+                            subtitle="What's going on?"
+                        />
+                    </Card.PrimaryAction>
+                </Card>
+            }
 
-                <LayoutGrid.Cell span="12">
-                    {posts.length > 0 ?
-                        posts.map(post =>
-                            <PostCard
-                                key={post.id}
-                                user={user}
-                                post={post}
-                                onUpdate={updatePost}
-                                onDelete={handleDeletePost}
-                                onCreateComment={createComment}
-                                onUpdateComment={updateComment}
-                                onDeleteComment={deleteComment}
-                            />
-                        ) : (
-                            <EmptyState
-                                icon="feed"
-                                title="Записей пока нет"
-                            />
-                        )
-                    }
-                </LayoutGrid.Cell>
-            </LayoutGrid>
+            {posts.length > 0 ?
+                posts.map(post =>
+                    <PostCard
+                        key={post.id}
+                        user={user}
+                        post={post}
+                        onUpdate={updatePost}
+                        onDelete={handleDeletePost}
+                        onCreateComment={createComment}
+                        onUpdateComment={updateComment}
+                        onDeleteComment={deleteComment}
+                    />
+                ) : (
+                    <EmptyState
+                        icon="feed"
+                        title="Записей пока нет"
+                    />
+                )
+            }
 
             <ConfirmationDialog
                 title="Подтвердите действие"

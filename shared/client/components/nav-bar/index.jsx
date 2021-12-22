@@ -1,14 +1,14 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import {
     Icon,
-    Tab
+    TabBar, Tab
 } from 'mdc-react';
 
 export default function NavBar({ items }) {
     const location = useLocation();
 
     return (
-        <nav className="nav-bar mdc-tab-bar">
+        <TabBar element="nav" className="nav-bar">
             {items.map(item =>
                 <Tab
                     key={item.key}
@@ -21,6 +21,6 @@ export default function NavBar({ items }) {
                     minWidth
                 />
             )}
-        </nav>
+        </TabBar>
     );
 }

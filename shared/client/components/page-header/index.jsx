@@ -23,11 +23,11 @@ export default function PageHeader({ title, subtitle, overline, graphic, breadcr
                 <div className="page-header__row">
                     <div className="page-header__section page-header__section--main">
                         {breadcrumbs?.length > 0 &&
-                            <Breadcrumbs items={breadcrumbs} />
+                            <Breadcrumbs className="page-header__breadcrumbs" items={breadcrumbs} />
                         }
 
                         {overline && (isValidElement(overline) ?
-                            React.cloneElement(overline, { className: 'page-header__overline' })
+                            cloneElement(overline, { className: 'page-header__overline' })
                             :
                             <Typography element="div" className="page-header__overline" type="overline">{overline}</Typography>
                         )}

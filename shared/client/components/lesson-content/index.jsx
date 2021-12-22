@@ -2,7 +2,7 @@ import ExerciseCard from 'shared/components/exercise-card';
 
 import './index.scss';
 
-export default function LessonContent({ course, unit, lesson }) {
+export default function LessonContent({ course, unit, lesson, onExerciseStatusChange }) {
     const exercises = lesson.exercises.map(id => course.exercisesById.get(id));
 
     return (
@@ -12,6 +12,7 @@ export default function LessonContent({ course, unit, lesson }) {
                     key={exercise.id}
                     number={index + 1}
                     exercise={exercise}
+                    onStatusChange={onExerciseStatusChange}
                 />
             )}
         </section>

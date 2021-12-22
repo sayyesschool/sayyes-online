@@ -46,12 +46,16 @@ $ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
     }
 
     &__overline {
-        margin-bottom: .5rem;
+        line-height: 1.5;
     }
 
     &__graphic {
         margin-bottom: 1rem;
         border: 3px solid variables.$secondary-color;
+    }
+
+    &__breadcrumbs {
+        margin-bottom: .5rem;
     }
 
     .mdc-icon,
@@ -126,9 +130,7 @@ $ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
 
         + .page-content {
             @include breakpoint(gt-md) {
-                position: relative;
-                top: -96px;
-                margin-bottom: -96px;
+                margin-top: -96px;
             }
         }
     }

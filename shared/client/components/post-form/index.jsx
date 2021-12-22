@@ -1,6 +1,5 @@
 import { useCallback, useRef } from 'react';
 import {
-    Layout,
     TextField
 } from 'mdc-react';
 
@@ -27,20 +26,18 @@ export default function PostForm({ id = 'post-form', post = {}, onSubmit }) {
 
     return (
         <Form id={id} className="post-form" onSubmit={handleSubmit}>
-            <Layout column>
-                <TextField
-                    name="title"
-                    value={data.title}
-                    label="Название"
-                    filled
-                    onChange={handleChange}
-                />
+            <TextField
+                name="title"
+                value={data.title}
+                label="Название"
+                outlined
+                onChange={handleChange}
+            />
 
-                <TextEditor
-                    ref={editorRef}
-                    defaultValue={data.content}
-                />
-            </Layout>
+            <TextEditor
+                ref={editorRef}
+                defaultValue={data.content}
+            />
         </Form>
     );
 }

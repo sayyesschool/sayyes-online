@@ -21,6 +21,12 @@
                 margin-bottom: 0.75rem;
             }
         }
+
+        .ck-sticky-panel {
+            .ck-sticky-panel__content_sticky {
+                top: 64px;
+            }
+        }
     }
 
     .mdc-card & {

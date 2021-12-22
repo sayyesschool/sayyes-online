@@ -1,32 +1,16 @@
-import { createElement } from 'react';
+const regex = /{}|{[^{][^}]*}|{{}}|{{[^{][^}]*}}|\[\]|\[[^[][^\]]*\]/gm;
 
-import Input from 'shared/components/inline-input';
-import Select from 'shared/components/inline-select';
-import Textarea from 'shared/components/inline-textarea';
-
-const componentsByType = {
-    input: Input,
-    select: Select,
-    textarea: Textarea
-};
-
-const elementTypeBySymbol = {
+const typeBySymbol = {
     '{': 'input',
     '{{': 'textarea',
     '[': 'select'
 };
 
-const elementStringBySymbol = {
+const htmlBySymbol = {
     '{': values => `<input data-values="${values}">`,
     '{{': values => `<textarea data-values="${values}"></textarea>`,
     '[': values => `<select>${values.map(value => `<option value="${value}">${value}</option>`).join('')}</select>`
 };
-
-export const regex = /{}|{[^{][^}]*}|{{}}|{{[^{][^}]*}}|\[\]|\[[^[][^\]]*\]/gm;
-
-export function textToJsx(string) {
-    return parseText(string);
-}
 
 export function parseText(string) {
     let result = [];
@@ -35,37 +19,37 @@ export function parseText(string) {
     for (let match of string.matchAll(regex)) {
         const prevPart = string.slice(lastEndIndex, match.index);
         const token = string.slice(match.index, match.index + match[0].length);
-        const element = createJSXElement(token);
+        const component = tokenToObject(token);
 
-        result.push(prevPart, element);
+        result.push(prevPart, component);
 
         lastEndIndex = match.index + match[0].length;
     }
 
     result.push(string.slice(lastEndIndex));
 
-    return result;
+    return {
+        type: 'p',
+        children: result
+    };
 }
 
-export function htmlToJsx(string) {
+export function parseHTML(string) {
     const parser = new DOMParser();
-    const html = parseHtml(string);
+    const html = transformPlaceholders(string);
     const doc = parser.parseFromString(html, 'text/html');
-    const div = document.createElement('div');
-    div.append(...doc.body.children);
-    const jsx = elementToJsx(div);
-    console.log(jsx);
-    return jsx;
+
+    return Array.from(doc.body.children).map(elementToObject);
 }
 
-export function parseHtml(string) {
+function transformPlaceholders(string) {
     let result = '';
     let lastEndIndex = 0;
 
     for (let match of string.matchAll(regex)) {
         const prevPart = string.slice(lastEndIndex, match.index);
         const token = string.slice(match.index, match.index + match[0].length);
-        const control = parseToken(token);
+        const control = tokenToHtml(token);
 
         result += prevPart + control;
 
@@ -77,36 +61,81 @@ export function parseHtml(string) {
     return result;
 }
 
-function elementToJsx(element) {
+function elementToObject(element) {
     const type = element.nodeName.toLowerCase();
-    const props = {};
 
     if (type === '#text') {
         return element.textContent === '\n' ? undefined : element.textContent;
     } else if (type === 'input' && element.type === 'text') {
-        return createElement(Input, { values: element.dataset.values.split(',') });
+        const values = element.dataset.values.split(',');
+
+        return {
+            type: 'input',
+            props: {
+                values,
+                required: values?.length > 0
+            }
+        };
     } else if (type === 'textarea' && element.type === 'textarea') {
-        return createElement(Textarea, { values: element.dataset.values.split(',') });
+        const values = element.dataset.values.split(',');
+
+        return {
+            type: 'textarea',
+            props: {
+                values,
+                required: values?.length > 0
+            }
+        };
     } else if (type === 'select') {
-        return createElement(Select, { values: Array.from(element.children).map(option => option.value) });
+        const values = Array.from(element.children).map(option => option.value);
+
+        return {
+            type: 'select',
+            props: {
+                values,
+                required: values?.length > 0
+            }
+        };
     } else if (element.childNodes.length === 0) {
-        return createElement(type, props, element.textContent || undefined);
+        return {
+            type,
+            props: {},
+            children: element.textContent || undefined
+        };
+    } else if (element.childNodes.length === 1) {
+        return {
+            type,
+            props: {},
+            children: elementToObject(element.childNodes[0])
+        };
     } else {
-        return createElement(type, props, ...Array.from(element.childNodes).map(child => elementToJsx(child)).filter(child => child !== undefined));
+        return {
+            type,
+            props: {},
+            children: Array.from(element.childNodes).map(child => elementToObject(child)).filter(child => child !== undefined)
+        };
     }
 }
 
-function createJSXElement(token) {
-    const type = elementTypeBySymbol[token[0]];
-    const Component = componentsByType[type];
-    const values = token.slice(1, -1).split('|').map(token => token.trim());
+function tokenToObject(token) {
+    const type = typeBySymbol[token[0]];
+    const values = parseValues(token);
 
-    return createElement(Component, { values });
+    return {
+        type,
+        props: {
+            values
+        }
+    };
 }
 
-function parseToken(token) {
+function tokenToHtml(token) {
     const typeSymbol = token[0];
-    const values = token.slice(1, -1).split('|').map(token => token.trim());
+    const values = parseValues(token);
 
-    return elementStringBySymbol[typeSymbol](values);
+    return htmlBySymbol[typeSymbol](values);
+}
+
+function parseValues(token) {
+    return token.slice(1, -1).split('|').map(token => token.trim());
 }

@@ -2,6 +2,7 @@
     display: inline-flex;
     position: relative;
     vertical-align: middle;
+    border-radius: 4px;
 
     span {
         min-width: 32px;
@@ -17,7 +18,7 @@
         padding: 0 8px;
         text-align: center;
         border: none;
-        border-radius: 4px;
+        border-radius: inherit;
         outline: none;
         cursor: pointer;
         letter-spacing: normal;

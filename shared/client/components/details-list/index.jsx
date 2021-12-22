@@ -10,7 +10,7 @@ export default function DetailsList({ items = [], children }) {
             {items.filter(item => item).map(item =>
                 <List.Item
                     key={item.key}
-                    graphic={item.graphic}
+                    icon={item.icon}
                     primaryText={item.primaryText || '[Не указано]'}
                     secondaryText={item.secondaryText}
                     meta={item.meta}

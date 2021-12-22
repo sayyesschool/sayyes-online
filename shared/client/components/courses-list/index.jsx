@@ -19,7 +19,9 @@ export default function CoursesList({ courses, onRemove }) {
                     key={course.id}
                     component={Link}
                     to={course.url}
-                    graphic={<img src={course.imageUrl} />}
+                    thumbnail={course.imageUrl &&
+                        <img src={course.imageUrl} alt="" />
+                    }
                     text={course.title}
                     meta={onRemove &&
                         <IconButton

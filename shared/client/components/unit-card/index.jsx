@@ -20,7 +20,7 @@ export default function UnitCard({ number, unit, onSelectUnit }) {
             />
 
             <Card.Header
-                graphic={<Avatar text={number} />}
+                graphic={<Avatar text={number} size="medium" />}
                 title={unit.title}
                 subtitle={unit.lessons && `${unit.lessons?.length} уроков`}
             />

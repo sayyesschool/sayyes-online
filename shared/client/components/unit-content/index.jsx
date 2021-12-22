@@ -1,58 +1,57 @@
-import { Link } from 'react-router-dom';
 import {
-    Avatar,
     Card,
-    List
+    LayoutGrid
 } from 'mdc-react';
+
+import LessonsList from 'shared/components/lessons-list';
 
 import './index.scss';
 
-export default function UnitContent({ course, unit, onSelectLesson }) {
+export default function UnitContent({ course, unit }) {
     const lessons = unit.lessons.map(id => course.lessonsById.get(id));
 
     return (
         <section className="unit-content">
-            {unit.document ?
-                <Card>
-                    <iframe
-                        src={unit.documentUrl}
-                    />
-                </Card>
-                :
-                <Card>
-                    {unit.imageUrl &&
-                        <Card.Media
-                            imageUrl={unit.imageUrl}
-                            wide
-                        />
-                    }
-
-                    <Card.Header
-                        title={unit.title}
-                    />
-
-                    <Card.Section
-                        dangerouslySetInnerHTML={{ __html: unit.content }}
-                        primary
-                    />
-
-                    <Card.Section>
-                        <List>
-                            {lessons.map((lesson, index) =>
-                                <List.Item
-                                    key={lesson.id}
-                                    component={!onSelectLesson ? Link : undefined}
-                                    to={!onSelectLesson ? unit.url + `/lessons/${lesson.slug}` : undefined}
-                                    leadingAvatar={<Avatar text={index + 1} />}
-                                    primaryText={lesson.title}
-                                    secondaryText={`${lesson.exercises.length} уроков`}
-                                    onClick={onSelectLesson && (() => onSelectLesson(unit, lesson))}
+            <LayoutGrid>
+                <LayoutGrid.Cell span="8">
+                    {unit.document ?
+                        <Card>
+                            <iframe
+                                src={unit.documentUrl}
+                            />
+                        </Card>
+                        :
+                        <Card>
+                            {unit.imageUrl &&
+                                <Card.Media
+                                    imageUrl={unit.imageUrl}
+                                    wide
                                 />
-                            )}
-                        </List>
-                    </Card.Section>
-                </Card>
-            }
+                            }
+
+                            <Card.Header
+                                title={unit.title}
+                            />
+
+                            <Card.Section
+                                dangerouslySetInnerHTML={{ __html: unit.content }}
+                                primary
+                            />
+                        </Card>
+                    }
+                </LayoutGrid.Cell>
+
+                <LayoutGrid.Cell span="4">
+                    <Card>
+                        <Card.Header title="Уроки" />
+
+                        <LessonsList
+                            unit={unit}
+                            lessons={lessons}
+                        />
+                    </Card>
+                </LayoutGrid.Cell>
+            </LayoutGrid>
         </section>
     );
 }

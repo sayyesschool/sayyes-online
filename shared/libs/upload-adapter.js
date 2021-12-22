@@ -58,6 +58,7 @@ export class UploadAdapter {
         const data = new FormData();
 
         data.append('file', file);
+        data.append('path', 'images/');
 
         // Important note: This is the right place to implement security mechanisms
         // like authentication and CSRF protection. For instance, you can use

@@ -1,4 +1,9 @@
 .post-content {
+    .media {
+        margin: 1rem 0;
+    }
+    
+    .media:last-child,
     p:last-child {
         margin-bottom: 0;
     }

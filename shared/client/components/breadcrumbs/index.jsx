@@ -1,11 +1,16 @@
+import { Children, isValidElement, cloneElement } from 'react';
+import classnames from 'classnames';
+
 import './index.scss';
 
-export default function Breadcrumbs({ items }) {
+export default function Breadcrumbs({ items, className }) {
+    const classNames = classnames('breadcrumbs', className);
+
     return (
-        <div className="breadcrumbs">
-            {React.Children.map(items, item =>
-                React.isValidElement(item) ?
-                    React.cloneElement(item, { className: 'breadcrumbs__item' }) :
+        <div className={classNames}>
+            {Children.map(items, item =>
+                isValidElement(item) ?
+                    cloneElement(item, { className: 'breadcrumbs__item' }) :
                     <span className="breadcrumbs__item">{item}</span>
             )}
         </div>

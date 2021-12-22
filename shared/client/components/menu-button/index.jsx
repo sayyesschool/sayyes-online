@@ -24,8 +24,6 @@ export default function MenuButton({
 
     return (
         <div ref={anchorRef} className={classnames(className, 'menu-button')}>
-
-
             <Menu
                 anchor={isValidElement(button) ?
                     cloneElement(button, {
@@ -44,6 +42,8 @@ export default function MenuButton({
                 open={isOpen}
                 onClose={handleClose}
                 listProps={listProps}
+                anchorOrigin="top right"
+                transformOrigin="top right"
                 {...menuProps}
             >
                 {items.filter(item => !!item).map(item =>

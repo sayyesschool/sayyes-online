@@ -1,28 +1,47 @@
+import { useCallback, useRef } from 'react';
 import {
+    Avatar,
     Button,
     Card,
-    Icon,
     IconButton
 } from 'mdc-react';
 import classnames from 'classnames';
 
 import { useBoolean } from 'shared/hooks/state';
 import ExerciseContent from 'shared/components/exercise-content';
+import CommentCard from 'shared/components/comment-card';
 
 import './index.scss';
 
-const ExerciseTypeLabel = {
-    boolean: 'Да / Нет',
-    choice: 'Выбор',
-    essay: 'Эссе',
-    fib: 'Заполнить пробелы',
-    input: 'Ввод',
-    text: 'Текст'
-};
+export default function ExerciseCard({ number, user, exercise, onProgressChange }) {
+    const exerciseContent = useRef();
 
-export default function ExerciseCard({ exercise }) {
-    const [isChecked, toggleChecked] = useBoolean(false);
     const [isCollapsed, toggleCollapsed] = useBoolean(true);
+    const [isCommenting, toggleCommenting] = useBoolean(false);
+    const [isSaving, setSaving] = useBoolean(false);
+
+    const handleSave = useCallback(() => {
+        setSaving(true);
+
+        return onProgressChange(exercise, { state: exerciseContent.current.state }).then(() => setSaving(false));
+    }, []);
+
+    const handleStatus = useCallback(() => {
+        return onProgressChange(exercise, { completed: !exercise.isCompleted });
+    }, []);
+
+    const handleCreateComment = useCallback((_, data) => {
+        return onCreateComment(exercise.id, data)
+            .then(() => toggleCommenting(false));
+    }, [exercise]);
+
+    const handleUpdateComment = useCallback((commentId, data) => {
+        return onUpdateComment(exercise.id, commentId, data);
+    }, [exercise]);
+
+    const handleDeleteComment = useCallback(commentId => {
+        return onDeleteComment(exercise.id, commentId);
+    }, [exercise]);
 
     const classNames = classnames('exercise-card', `exercise-card--${exercise.type}`);
 
@@ -48,26 +67,68 @@ export default function ExerciseCard({ exercise }) {
                 <>
                     <Card.Section primary>
                         <ExerciseContent
+                            ref={exerciseContent}
                             exercise={exercise}
-                            checked={isChecked}
                         />
                     </Card.Section>
 
+                    {exercise.type !== 'text' &&
+                        <Card.Actions>
+                            <Card.Action button>
+                                <Button
+                                    label="Сохранить"
+                                    icon="save"
+                                    outlined
+                                    disabled={isSaving}
+                                    onClick={handleSave}
+                                />
+                            </Card.Action>
+                        </Card.Actions>
+                    }
+
+                    {exercise.comments?.length > 0 &&
+                        <Card.Section secondary>
+                            <Typography type="subtitle2">Комментарии</Typography>
+
+                            {exercise.comments.map(comment =>
+                                <CommentCard
+                                    key={comment.id}
+                                    user={user}
+                                    comment={comment}
+                                    onSave={handleUpdateComment}
+                                    onDelete={handleDeleteComment}
+                                />
+                            )}
+                        </Card.Section>
+                    }
+
+                    {isCommenting &&
+                        <Card.Section secondary>
+                            <CommentCard
+                                user={user}
+                                editing
+                                onToggle={toggleCommenting}
+                                onSave={handleCreateComment}
+                            />
+                        </Card.Section>
+                    }
+
                     <Card.Actions>
-                        <Card.Action button>
+                        {/* <Card.Action button>
                             <Button
                                 label="Проверить"
-                                icon={<Icon>done_all</Icon>}
+                                icon="done_all"
                                 outlined
-                                onClick={() => toggleChecked(true)}
+                                onClick={handleStatus}
                             />
-                        </Card.Action>
+                        </Card.Action> */}
 
                         <Card.Action button>
                             <Button
-                                label="Сохранить"
-                                icon={<Icon>save</Icon>}
+                                label="Оставить комментарий"
+                                icon="comment"
                                 outlined
+                                onClick={toggleCommenting}
                             />
                         </Card.Action>
                     </Card.Actions>

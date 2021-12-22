@@ -1,8 +1,9 @@
-import { createElement } from 'react';
+import { createElement, forwardRef, useImperativeHandle, useState } from 'react';
 import classnames from 'classnames';
 
 import AudioContent from 'shared/components/audio-content';
-import VideoPlayer from 'shared/components/video-player';
+import VideoContent from 'shared/components/video-content';
+import TextContent from 'shared/components/text-content';
 
 import BooleanExerciseContent from './boolean-exercise-content';
 import ChoiceExerciseContent from './choice-exercise-content';
@@ -22,11 +23,17 @@ const Components = {
     text: TextExerciseContent
 };
 
-export default function ExerciseContent({ exercise }) {
+export default forwardRef(function ExerciseContent({ exercise, checked }, ref) {
+    const [state, setState] = useState(exercise?.state);
+
+    useImperativeHandle(ref, () => ({
+        get state() { return state; }
+    }));
+
     const classNames = classnames('exercise-content', `exercise-content--${exercise.type}`);
 
     return (
-        <div className={classNames}>
+        <article className={classNames}>
             {exercise.image &&
                 <img
                     className="exercise-image"
@@ -43,27 +50,27 @@ export default function ExerciseContent({ exercise }) {
             }
 
             {exercise.video &&
-                <section className="exercise-video">
-                    <VideoPlayer
-                        id="video-player"
-                        src={exercise.video.url}
-                        controls
-                        options={{
-                            stretching: 'fill'
-                        }}
-                    />
-                </section>
+                <VideoContent
+                    className="exercise-video"
+                    video={exercise.video}
+                />
             }
 
             {exercise.text &&
-                <div className="exercise-text" dangerouslySetInnerHTML={{ __html: exercise.text }} />
+                <TextContent
+                    className="exercise-text"
+                    text={exercise.text}
+                />
             }
 
             {exercise.type &&
                 createElement(Components[exercise.type], {
-                    exercise
+                    exercise,
+                    checked,
+                    state,
+                    setState
                 })
             }
-        </div>
+        </article>
     );
-}
+});

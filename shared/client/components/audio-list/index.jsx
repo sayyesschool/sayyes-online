@@ -11,7 +11,7 @@ export default function AudioList({ audios, selectedAudio, onSelect, onDelete })
         <List className="audio-list">
             {audios.map(audio =>
                 <AudioListItem
-                    key={audio}
+                    key={audio.id}
                     audio={audio}
                     activated={audio === selectedAudio}
                     onClick={onSelect}

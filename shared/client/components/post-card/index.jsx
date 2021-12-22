@@ -2,7 +2,8 @@ import { useCallback } from 'react';
 import {
     Avatar,
     Button,
-    Card
+    Card,
+    Typography
 } from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
@@ -10,13 +11,12 @@ import MenuButton from 'shared/components/menu-button';
 import PostContent from 'shared/components/post-content';
 import PostForm from 'shared/components/post-form';
 import CommentCard from 'shared/components/comment-card';
-import CommentForm from 'shared/components/comment-form';
 
 import './index.scss';
 
 export default function PostCard({ user, post, onUpdate, onDelete, onCreateComment, onUpdateComment, onDeleteComment }) {
     const [isEditing, toggleEditing] = useBoolean(false);
-    const [isCreating, toggleCreating] = useBoolean(false);
+    const [isCommenting, toggleCommenting] = useBoolean(false);
 
     const handleUpdate = useCallback(data => {
         return onUpdate(post.id, data)
@@ -27,9 +27,9 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
         return onDelete(post.id);
     }, [post]);
 
-    const handleCreateComment = useCallback(data => {
+    const handleCreateComment = useCallback((_, data) => {
         return onCreateComment(post.id, data)
-            .then(() => toggleCreating(false));
+            .then(() => toggleCommenting(false));
     }, [post]);
 
     const handleUpdateComment = useCallback((commentId, data) => {
@@ -43,7 +43,7 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
     return (
         <Card element="article" className="post-card">
             <Card.Header
-                graphic={<Avatar src={post.user.imageUrl} text={post.user?.initials} large />}
+                graphic={<Avatar src={post.user.imageUrl} text={post.user?.initials} size="medium" />}
                 title={post.title || post.user.fullname}
                 subtitle={post.datetimeLabel}
                 actions={user.id === post.user.id && (!isEditing &&
@@ -66,7 +66,7 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
                 )}
             />
 
-            <Card.Section>
+            <Card.Section primary>
                 {isEditing ?
                     <PostForm
                         id="update-post-form"
@@ -80,46 +80,45 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
                 }
             </Card.Section>
 
-            {!isEditing &&
-                <Card.Section>
+            {!isEditing && post.comments.length > 0 &&
+                <Card.Section secondary>
+                    <Typography type="subtitle2">Комментарии</Typography>
+
                     {post.comments.map(comment =>
                         <CommentCard
                             key={comment.id}
                             user={user}
                             comment={comment}
-                            onUpdate={handleUpdateComment}
+                            onSave={handleUpdateComment}
                             onDelete={handleDeleteComment}
                         />
                     )}
                 </Card.Section>
             }
 
-            {isCreating &&
-                <Card.Section>
-                    <CommentForm
-                        id="create-comment-form"
-                        onSubmit={handleCreateComment}
+            {isCommenting &&
+                <Card.Section secondary>
+                    <CommentCard
+                        user={user}
+                        editing
+                        onToggle={toggleCommenting}
+                        onSave={handleCreateComment}
                     />
                 </Card.Section>
             }
 
-            <Card.Actions>
-                {isEditing ?
-                    <>
-                        <Button onClick={toggleEditing}>Отменить</Button>
-                        <Button type="submit" form="update-post-form" outlined>Сохранить</Button>
-                    </>
-                    :
-                    (isCreating ?
-                        <>
-                            <Button onClick={toggleCreating}>Отменить</Button>
-                            <Button type="submit" form="create-comment-form" outlined>Отправить</Button>
-                        </>
-                        :
-                        <Button onClick={toggleCreating}>Ответить</Button>
-                    )
-                }
-            </Card.Actions>
+            {isEditing ?
+                <Card.Actions>
+                    <Button onClick={toggleEditing}>Отменить</Button>
+                    <Button type="submit" form="update-post-form" outlined>Сохранить</Button>
+                </Card.Actions>
+                :
+                (!isCommenting &&
+                    <Card.Actions>
+                        <Button className="reply-button" outlined onClick={toggleCommenting}>Ответить</Button>
+                    </Card.Actions>
+                )
+            }
         </Card>
     );
 }

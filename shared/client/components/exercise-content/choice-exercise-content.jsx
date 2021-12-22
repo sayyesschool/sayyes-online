@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import {
     Checkbox,
     List, ListItem,
@@ -6,30 +6,32 @@ import {
 } from 'mdc-react';
 import classnames from 'classnames';
 
-export default function ChoiceExerciseContent({ exercise, checked }) {
+export default function ChoiceExerciseContent({
+    exercise,
+    checked,
+    state = getDefaultState(exercise),
+    setState
+}) {
     const isMultiple = useMemo(() => exercise.items.filter(item => item.correct).length > 1);
-
-    const [chosenItem, setChosenItem] = useState();
-    const [chosenItems, setChosenItems] = useState([]);
 
     const handleChange = useCallback(item => {
         if (isMultiple) {
-            setChosenItems(correct => correct.includes(item.id) ?
-                correct.filter(id => id !== item.id) :
-                correct.concat(item.id)
+            setState(chosenItems => chosenItems.includes(item.id) ?
+                chosenItems.filter(id => id !== item.id) :
+                chosenItems.concat(item.id)
             );
         } else {
-            setChosenItem(item);
+            setState(item.id);
         }
     }, []);
 
     const isItemChosen = useCallback(item => {
         if (isMultiple) {
-            return chosenItems.includes(item.id);
+            return state.includes(item.id);
         } else {
-            return item === chosenItem;
+            return item.id === state;
         }
-    }, [chosenItem, chosenItems]);
+    }, [state]);
 
     return (
         <List element="div">
@@ -43,14 +45,14 @@ export default function ChoiceExerciseContent({ exercise, checked }) {
                     })}
                     leadingCheckbox={isMultiple &&
                         <Checkbox
-                            checked={chosenItems.includes(item.id)}
+                            checked={state.includes(item.id)}
                             onChange={() => handleChange(item)}
                             disabled={checked}
                         />
                     }
-                    leadingRadio={isMultiple &&
+                    leadingRadio={!isMultiple &&
                         <Radio
-                            checked={item === chosenItem}
+                            checked={item.id === state}
                             onChange={() => handleChange(item)}
                             disabled={checked}
                         />
@@ -61,4 +63,8 @@ export default function ChoiceExerciseContent({ exercise, checked }) {
             )}
         </List>
     );
+}
+
+function getDefaultState(exercise) {
+    return exercise.items.filter(item => item.correct).length > 1 ? [] : undefined;
 }
