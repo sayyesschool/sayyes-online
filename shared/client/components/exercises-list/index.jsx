@@ -5,7 +5,7 @@ import {
 
 import './index.scss';
 
-export default function ExercisesList({ exercises, selectedExerciseIndex, onSelect }) {
+export default function ExercisesList({ exercises, selectedExercise, selectedExerciseId, selectedExerciseIndex, onSelect }) {
     return (
         <List className="exercises-list">
             {exercises.map((exercise, index) =>
@@ -16,7 +16,11 @@ export default function ExercisesList({ exercises, selectedExerciseIndex, onSele
                     }
                     overlineText={exercise.title}
                     primaryText={exercise.description}
-                    selected={index === selectedExerciseIndex}
+                    selected={
+                        exercise.id === selectedExercise?.id ||
+                        exercise.id === selectedExerciseId ||
+                        index === selectedExerciseIndex
+                    }
                     onClick={typeof onSelect === 'function' ? () => onSelect(exercise, index) : undefined}
                 />
             )}

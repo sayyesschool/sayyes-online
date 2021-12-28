@@ -2,7 +2,8 @@ import { useCallback, useState } from 'react';
 import {
     Card,
     IconButton,
-    LayoutGrid
+    LayoutGrid,
+    Typography
 } from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
@@ -22,31 +23,44 @@ export default function LessonExercises({
     onUpdate,
     onDelete
 }) {
-    const [exerciseIndex, setExerciseIndex] = useState(0);
-    const [isFormOpen, setFormOpen] = useBoolean(false);
+    const [selectedExerciseId, setSelectedExerciseId] = useState(lesson.exercises[0]);
+    const [isFormOpen, toggleFormOpen] = useBoolean(false);
+    const [isLoading, toggleLoading] = useBoolean(false);
 
     const handleCreate = useCallback(data => {
-        return onCreate(data).then(() => setFormOpen(false));
-    }, []);
+        toggleLoading(true);
 
-    const handleSelect = useCallback((exercise, index) => {
-        setExerciseIndex(index);
+        return onCreate(data)
+            .then(response => {
+                setSelectedExerciseId(response.data.id);
+            })
+            .finally(() => {
+                toggleLoading(false);
+                toggleFormOpen(false);
+            });
+    }, [lesson.exercises]);
+
+    const handleSelect = useCallback((exercise) => {
+        setSelectedExerciseId(exercise.id);
     }, []);
 
     const exercises = lesson.exercises.map(id => course.exercisesById.get(id));
-    const exercise = exercises[exerciseIndex];
+    const exercise = exercises.find(exercise => exercise.id === selectedExerciseId);
 
     return (
         <section className="lesson-exercises">
             <LayoutGrid>
                 <LayoutGrid.Cell span="8">
-                    <ExerciseCard
-                        key={exercise.id}
-                        course={course}
-                        exercise={exercise}
-                        onUpdate={onUpdate}
-                        onDelete={onDelete}
-                    />
+                    {exercise ?
+                        <ExerciseCard
+                            course={course}
+                            exercise={exercise}
+                            onUpdate={onUpdate}
+                            onDelete={onDelete}
+                        />
+                        :
+                        <Typography type="headline6">Упражнение не выбрано</Typography>
+                    }
                 </LayoutGrid.Cell>
 
                 <LayoutGrid.Cell span="4">
@@ -57,16 +71,18 @@ export default function LessonExercises({
                                 <IconButton
                                     key="create"
                                     icon="add"
-                                    onClick={setFormOpen}
+                                    onClick={toggleFormOpen}
                                 />
                             ]}
                         />
 
-                        <ExercisesList
-                            exercises={exercises}
-                            selectedExerciseIndex={exerciseIndex}
-                            onSelect={handleSelect}
-                        />
+                        {exercises?.length > 0 &&
+                            <ExercisesList
+                                exercises={exercises}
+                                selectedExerciseId={selectedExerciseId}
+                                onSelect={handleSelect}
+                            />
+                        }
                     </Card>
                 </LayoutGrid.Cell>
             </LayoutGrid>
@@ -74,9 +90,10 @@ export default function LessonExercises({
             <FormDialog
                 title="Новое упражнение"
                 form="exercise-form"
-                fullscreen
                 open={isFormOpen}
-                onClose={setFormOpen}
+                primaryActionDisabled={isLoading}
+                fullscreen
+                onClose={toggleFormOpen}
             >
                 <ExerciseForm
                     id="exercise-form"

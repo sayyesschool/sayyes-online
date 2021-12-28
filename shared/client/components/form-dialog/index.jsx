@@ -11,6 +11,7 @@ export default function FormDialog({
     submitButtonText = 'Сохранить',
     children,
     confirmation,
+    primaryActionDisabled,
     form = children?.props.id,
     onClose,
     onSubmit,
@@ -23,7 +24,7 @@ export default function FormDialog({
             open={open}
             actions={[
                 <Button key="close" type="button" onClick={onClose}>Закрыть</Button>,
-                <Button key="submit" type="submit" form={form} outlined onClick={onSubmit}>{submitButtonText}</Button>
+                <Button key="submit" type="submit" form={form} outlined disabled={primaryActionDisabled} onClick={onSubmit}>{submitButtonText}</Button>
             ]}
             onClose={onClose}
             {...props}

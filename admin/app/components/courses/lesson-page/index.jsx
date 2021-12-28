@@ -29,6 +29,8 @@ export default function LessonPage({ match, history }) {
         if (confirm('Удалить урок?')) {
             return actions.deleteLesson(course.id, lesson.id)
                 .then(() => history.push(unit.url));
+        } else {
+            return Promise.resolve();
         }
     }, [course, unit, lesson]);
 
@@ -46,6 +48,8 @@ export default function LessonPage({ match, history }) {
     const handleDeleteExercise = useCallback(exerciseId => {
         if (confirm('Удалить упражнение?')) {
             return actions.deleteExercise(course.id, exerciseId);
+        } else {
+            return Promise.resolve();
         }
     }, [course]);
 

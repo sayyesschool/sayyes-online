@@ -32,8 +32,8 @@ export default function ExerciseCard({ course, exercise, onUpdate, onDelete }) {
     const handleDelete = useCallback(event => {
         event.stopPropagation();
 
-        toggleDeleting(true);
-        onDelete(exercise.id);
+        onDelete(exercise.id)
+            .finally(() => toggleDeleting(false));
     }, [exercise, onDelete]);
 
     const classNames = classnames('exercise-card', `exercise-card--${exercise.type}`);

@@ -13,9 +13,7 @@ export default function BooleanExerciseContent({ exercise, checked, state = {}, 
         }));
     }, []);
 
-    console.log('BooleanExerciseContent', state);
-
-    return (
+    return exercise.items?.length > 0 && (
         <List>
             {exercise.items.map(item =>
                 <BooleanExerciseItem
