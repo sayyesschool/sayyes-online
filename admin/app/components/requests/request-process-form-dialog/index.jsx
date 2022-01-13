@@ -50,59 +50,64 @@ export default function RequestProcessFormDialog({ request, open, onSubmit, onCl
     return (
         <Dialog
             className="request-process-dialog"
-            title="Обработка заявки"
+            header={
+                <Dialog.Header
+                    title="Обработка заявки"
+                >
+                    <TabBar
+                        value={activeTab}
+                        onChange={setActiveTab}
+                        minWidth
+                    >
+                        <Tab
+                            value="client"
+                            icon={<Icon>person</Icon>}
+                            label="Клиент"
+                        />
+
+                        <Tab
+                            value="enrollment"
+                            icon={<Icon>school</Icon>}
+                            label="Обучение"
+                        />
+
+                        <Tab
+                            value="request"
+                            icon={<Icon>assignment</Icon>}
+                            label="Обращение"
+                        />
+                    </TabBar>
+                </Dialog.Header>
+            }
+            content={
+                <Dialog.Content>
+                    <ClientForm
+                        ref={clientFormRef}
+                        client={client}
+                        style={{ display: activeTab === 'client' ? 'block' : 'none' }}
+                    />
+
+                    <EnrollmentForm
+                        ref={enrollmentFormRef}
+                        style={{ display: activeTab === 'enrollment' ? 'block' : 'none' }}
+                    />
+
+                    <RequestForm
+                        ref={requestFormRef}
+                        request={request}
+                        style={{ display: activeTab === 'request' ? 'block' : 'none' }}
+                    />
+                </Dialog.Content>
+            }
+            actions={
+                <Dialog.Actions>
+                    <Button type="button" outlined onClick={onClose}>Отменить</Button>
+
+                    <Button type="button" unelevated onClick={handleSubmit}>{activeTab === 'request' ? 'Сохранить' : 'Далее'}</Button>
+                </Dialog.Actions>
+            }
             open={open}
             onClose={onClose}
-        >
-            <TabBar
-                value={activeTab}
-                onChange={setActiveTab}
-                minWidth
-            >
-                <Tab
-                    value="client"
-                    icon={<Icon>person</Icon>}
-                    label="Клиент"
-                />
-
-                <Tab
-                    value="enrollment"
-                    icon={<Icon>school</Icon>}
-                    label="Обучение"
-                />
-
-                <Tab
-                    value="request"
-                    icon={<Icon>assignment</Icon>}
-                    label="Обращение"
-                />
-            </TabBar>
-
-            <Dialog.Content>
-                <ClientForm
-                    ref={clientFormRef}
-                    client={client}
-                    style={{ display: activeTab === 'client' ? 'block' : 'none' }}
-                />
-
-                <EnrollmentForm
-                    ref={enrollmentFormRef}
-                    style={{ display: activeTab === 'enrollment' ? 'block' : 'none' }}
-                />
-
-                <RequestForm
-                    ref={requestFormRef}
-                    request={request}
-                    style={{ display: activeTab === 'request' ? 'block' : 'none' }}
-                />
-            </Dialog.Content>
-
-            <Dialog.Actions>
-                <Button type="button" outlined onClick={onClose}>Отменить</Button>
-
-
-                <Button type="button" unelevated onClick={handleSubmit}>{activeTab === 'request' ? 'Сохранить' : 'Далее'}</Button>
-            </Dialog.Actions>
-        </Dialog >
+        />
     );
 }

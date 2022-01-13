@@ -77,12 +77,11 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                             }
                         </DataTable.Cell>
 
-                        <DataTable.Cell>
-                            <Typography noMargin>{request.note}</Typography>
-                        </DataTable.Cell>
-
                         <DataTable.Cell numeric>
                             <MenuButton
+                                menuProps={{
+                                    modal: true
+                                }}
                                 items={[
                                     {
                                         key: 'process',
@@ -137,7 +136,7 @@ const columns = [
         text: 'Менеджер'
     },
     {
-        key: 'note',
-        text: 'Заметка'
+        key: 'actions',
+        text: ''
     }
 ];

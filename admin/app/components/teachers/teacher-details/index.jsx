@@ -14,10 +14,6 @@ export default function TeacherDetails({ teacher }) {
     return (
         <section className="teacher-details">
             <Card>
-                <Card.Header
-                    title="Общая информация"
-                />
-
                 {teacher.imageUrl &&
                     <Card.Media
                         imageUrl={teacher.imageUrl}
@@ -25,36 +21,40 @@ export default function TeacherDetails({ teacher }) {
                     />
                 }
 
+                <Card.Header
+                    title="Общая информация"
+                />
+
                 <Card.Section>
                     <DetailsList
                         items={[
                             {
                                 key: 'phone',
-                                graphic: <Icon>phone</Icon>,
+                                icon: 'phone',
                                 primaryText: teacher.phone || '[Не указан]',
                                 secondaryText: 'Телефон'
                             },
                             {
                                 key: 'email',
-                                graphic: <Icon>email</Icon>,
+                                icon: 'email',
                                 primaryText: teacher.email || '[Не указана]',
                                 secondaryText: 'Электронная почта'
                             },
                             {
                                 key: 'dob',
-                                graphic: <Icon>cake</Icon>,
+                                icon: 'cake',
                                 primaryText: teacher.dob ? moment(teacher.dob).format('DD.MM.YYYY') : '[Не указана]',
                                 secondaryText: 'Дата рождения'
                             },
                             {
                                 key: 'timezone',
-                                graphic: <Icon>public</Icon>,
+                                icon: 'public',
                                 primaryText: teacher.timezone ? data.timezones.get(teacher.timezone) : '[Не указан]',
                                 secondaryText: 'Часовой пояс'
                             },
                             teacher.note && {
                                 key: 'note',
-                                graphic: <Icon>notes</Icon>,
+                                icon: 'notes',
                                 primaryText: teacher.note,
                                 secondaryText: 'Примечание'
                             }

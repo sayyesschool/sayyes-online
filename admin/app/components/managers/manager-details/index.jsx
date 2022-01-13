@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import {
-    Card,
-    Icon
+    Card
 } from 'mdc-react';
 import moment from 'moment';
 
@@ -14,6 +13,13 @@ export default function ManagerDetails({ manager }) {
     return (
         <section className="manager-details">
             <Card>
+                {manager.imageUrl &&
+                    <Card.Media
+                        imageUrl={manager.imageUrl}
+                        square
+                    />
+                }
+
                 <Card.Header
                     title="Общая информация"
                 />
@@ -23,31 +29,31 @@ export default function ManagerDetails({ manager }) {
                         items={[
                             {
                                 key: 'phone',
-                                graphic: <Icon>phone</Icon>,
+                                icon: 'phone',
                                 primaryText: manager.phone || '[Не указан]',
                                 secondaryText: 'Телефон'
                             },
                             {
                                 key: 'email',
-                                graphic: <Icon>email</Icon>,
+                                icon: 'email',
                                 primaryText: manager.email || '[Не указана]',
                                 secondaryText: 'Электронная почта'
                             },
                             {
                                 key: 'dob',
-                                graphic: <Icon>cake</Icon>,
+                                icon: 'cake',
                                 primaryText: manager.dob ? moment(manager.dob).format('DD.MM.YYYY') : '[Не указана]',
                                 secondaryText: 'Дата рождения'
                             },
                             {
                                 key: 'timezone',
-                                graphic: <Icon>public</Icon>,
+                                icon: 'public',
                                 primaryText: manager.timezone ? data.timezones.get(manager.timezone) : '[Не указан]',
                                 secondaryText: 'Часовой пояс'
                             },
                             manager.note && {
                                 key: 'note',
-                                graphic: <Icon>notes</Icon>,
+                                icon: 'notes',
                                 primaryText: manager.note,
                                 secondaryText: 'Примечание'
                             }

@@ -62,18 +62,6 @@
 
     }
 
-    &--input {
-        .exercise-item {
-            .mdc-form-field {
-                margin: 0;
-
-                &__label {
-                    margin-left: 0;
-                }
-            }
-        }
-    }
-
     &--text {
         .mdc-card {
             margin-top: 1rem;
@@ -82,17 +70,27 @@
 
     &--input {
         .exercise-item {
-            .mdc-text-field {
+            > .mdc-text-field {
                 margin-bottom: .5rem;
             }
-    
+
             .mdc-form-field {
+                margin: 0;
+                flex-shrink: 0;
+
                 label {
                     margin-left: 0;
+                    flex-shrink: 0;
+                    align-self: center;
                 }
 
-                .inline-input {
-                    display: inline-flex;
+                .mdc-evolution-chip-set {
+                    flex-shrink: 0;
+                }
+
+                .mdc-text-field {
+                    margin: 0;
+                    padding: 0;
                     margin-left: 8px;
                 }
             }

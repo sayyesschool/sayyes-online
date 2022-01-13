@@ -7,8 +7,6 @@ import {
     TextField
 } from 'mdc-react';
 
-import InlineInput from 'shared/components/inline-input';
-
 import ExerciseItemsSection from 'app/components/courses/exercise-items-section';
 
 import './index.scss';
@@ -33,7 +31,7 @@ export default function InputExerciseForm({ exercise, onUpdate }) {
 
     const handleDeleteItem = useCallback(itemId => {
         onUpdate({
-            items: exercise.items.filter(a => a.id !== itemId)
+            items: exercise.items.filter(i => i.id !== itemId)
         });
     }, [exercise, onUpdate]);
 
@@ -78,6 +76,10 @@ function InputExerciseItemForm({ item, onUpdate, onDelete }) {
         }
     }, [item, onUpdate]);
 
+    const handleDelete = useCallback(() => {
+        onDelete(item.id);
+    }, [item, onDelete]);
+
     return (
         <div className="exercise-item">
             <TextField
@@ -85,7 +87,8 @@ function InputExerciseItemForm({ item, onUpdate, onDelete }) {
                 trailingIcon={
                     <IconButton
                         icon="delete"
-                        onClick={() => onDelete(item)}
+                        type="button"
+                        onClick={handleDelete}
                     />
                 }
                 filled
@@ -105,7 +108,11 @@ function InputExerciseItemForm({ item, onUpdate, onDelete }) {
                         )}
                     </ChipSet>
 
-                    <InlineInput defaultValue="" onKeyPress={handleKeyPress} />
+                    <TextField
+                        element="div"
+                        defaultValue=""
+                        onKeyPress={handleKeyPress}
+                    />
                 </>
             </FormField>
         </div>
