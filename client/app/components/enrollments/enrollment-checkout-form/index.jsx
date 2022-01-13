@@ -11,7 +11,7 @@ import Form from 'shared/components/form';
 
 import './index.scss';
 
-export default function EnrollmentCheckoutForm({ enrollment, pack, onSubmit }) {
+export default function EnrollmentCheckoutForm({ enrollment, pack = {}, onSubmit }) {
     const textFieldRef = useRef();
     const [isEnteringPromoCode, toggleEnteringPromoCode] = useBoolean(false);
     const [isPromoCodeCorrect, togglePromoCodeCorrect] = useBoolean(false);

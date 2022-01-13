@@ -12,21 +12,23 @@ module.exports = ({
         ])
             .then(([enrollments, packs]) => {
                 const data = enrollments.map(enrollment => enrollment.toJSON()).map(enrollment => {
-                    if (enrollment.status === 'payment') {
-                        const enrollmentPacks = packs.filter(pack =>
-                            pack.age === enrollment.age &&
-                            pack.domain === enrollment.domain &&
-                            pack.lessonDuration === enrollment.lessonDuration
-                        ).sort((a, b) => b.pricePerLesson - a.pricePerLesson);
+                    const enrollmentPacks = packs.filter(pack =>
+                        pack.age === enrollment.age &&
+                        pack.domain === enrollment.domain &&
+                        pack.lessonDuration === enrollment.lessonDuration
+                    ).sort((a, b) => b.pricePerLesson - a.pricePerLesson);
 
-                        const basePricePerLesson = enrollmentPacks[0].pricePerLesson;
+                    const basePricePerLesson = enrollmentPacks[0]?.pricePerLesson;
 
-                        enrollment.packs = enrollmentPacks.map(pack => pack.toJSON()).map(pack => {
-                            pack.basePricePerLesson = basePricePerLesson;
+                    enrollment.packs = enrollmentPacks.map(pack => pack.toJSON()).map(pack => {
+                        pack.basePricePerLesson = basePricePerLesson;
 
-                            return pack;
-                        });
-                    }
+                        return pack;
+                    });
+
+                    enrollment.packs = packs.slice(4);
+
+                    console.log(enrollmentPacks);
 
                     return enrollment;
                 });

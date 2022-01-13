@@ -48,7 +48,7 @@ export default function HomePage() {
 
     return (
         <Page id="home-page">
-            <PageHeader pullContent />
+            <PageHeader />
 
             <PageContent>
                 <LayoutGrid>
@@ -78,14 +78,14 @@ export default function HomePage() {
                         </LayoutGrid.Cell>
                     }
 
-                    {events.length > 0 &&
+                    {/* {events.length > 0 &&
                         <LayoutGrid.Cell span="12">
                             <CalendarCard
                                 title="Календарь"
                                 events={events}
                             />
                         </LayoutGrid.Cell>
-                    }
+                    } */}
 
                     {/* <LayoutGrid.Cell span="4">
                         <section>

@@ -15,7 +15,7 @@ import EnrollmentCheckoutForm from 'app/components/enrollments/enrollment-checko
 import './index.scss';
 
 export default function EnrollmentPayCard({ enrollment, onCheckout, onCancel, ...props }) {
-    const [selectedPack, setSelectedPack] = useState(enrollment.packs[0]);
+    const [selectedPack, setSelectedPack] = useState(enrollment?.packs[0]);
     const [isConfirmed, setConfirmed] = useState(true);
 
     return (
