@@ -1,7 +1,8 @@
 import { useCallback, useRef } from 'react';
 import {
     Button,
-    Card
+    Card,
+    IconButton
 } from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
@@ -37,6 +38,11 @@ export default function ExerciseContentCard({ exercise, onProgressChange }) {
 
     return (
         <Card className="exercise-content-card">
+            <Card.Header
+                overline={exercise.title}
+                title={exercise.description}
+            />
+
             <Card.Section primary>
                 <ExerciseContent
                     ref={exerciseContent}

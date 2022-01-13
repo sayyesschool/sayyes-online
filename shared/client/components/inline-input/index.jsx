@@ -13,6 +13,7 @@ export default function InlineInput({ values, checked, onChange = Function.proto
     }, [onChange]);
 
     const isCorrect = values?.includes(value);
+
     const classNames = classnames('inline-input', {
         'inline-input--correct': checked && isCorrect,
         'inline-input--incorrect': checked && !isCorrect

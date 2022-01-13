@@ -16,12 +16,22 @@ export default function ConfirmationDialog({
             open={open}
             title={title}
             content={message}
+            actions={[
+                <Button
+                    key="no"
+                    type="button"
+                    label="Нет"
+                    onClick={onClose}
+                />,
+                <Button
+                    key="yes"
+                    type="button"
+                    label="Да"
+                    outlined
+                    onClick={onConfirm}
+                />
+            ]}
             {...props}
-        >
-            <Dialog.Actions>
-                <Button type="button" label="Нет" onClick={onClose} />
-                <Button type="button" label="Да" outlined onClick={onConfirm} />
-            </Dialog.Actions>
-        </Dialog>
+        />
     );
 }
