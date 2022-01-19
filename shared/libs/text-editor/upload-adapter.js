@@ -1,6 +1,7 @@
 export class UploadAdapter {
-    constructor(loader) {
+    constructor(loader, options = {}) {
         this.loader = loader;
+        this.options = options;
         this.xhr = null;
     }
 
@@ -20,7 +21,7 @@ export class UploadAdapter {
     _initRequest() {
         const xhr = new XMLHttpRequest();
 
-        xhr.open('POST', '/api/storage/put', true);
+        xhr.open('POST', this.options.uploadUrl, true);
         xhr.responseType = 'json';
 
         this.xhr = xhr;
@@ -58,7 +59,6 @@ export class UploadAdapter {
         const data = new FormData();
 
         data.append('file', file);
-        data.append('path', 'images/');
 
         // Important note: This is the right place to implement security mechanisms
         // like authentication and CSRF protection. For instance, you can use
@@ -70,7 +70,9 @@ export class UploadAdapter {
 }
 
 export function UploadAdapterPlugin(editor) {
+    const config = editor.config.get('uploadAdapter');
+
     editor.plugins.get('FileRepository').createUploadAdapter = loader => {
-        return new UploadAdapter(loader);
+        return new UploadAdapter(loader, config);
     };
 }
