@@ -5,11 +5,11 @@ import {
     Typography
 } from 'mdc-react';
 
-export default forwardRef(FileInput);
+export default forwardRef(ImageField);
 
 import './index.scss';
 
-function FileInput({
+function ImageField({
     name = 'file',
     label,
     accept = 'image/jpeg,image/png,image/jpeg',
@@ -41,7 +41,7 @@ function FileInput({
     }, []);
 
     return (
-        <div className="file-input">
+        <div className="image-field">
             <input
                 ref={inputRef}
                 type="file"
@@ -65,20 +65,17 @@ function FileInput({
                 }
             />
 
-            {(!file && url) &&
-                <img src={url} alt={caption} />
-            }
+            <figure className="file-preview">
+                <img src={url || file?.url} alt={caption} />
 
-            {file && <figure className="file-preview">
-                <img src={file.url} />
+                {file &&
+                    <figcaption className="file-meta">
+                        <Typography type="caption">Имя: <strong>{file.name}</strong></Typography>
 
-                <figcaption className="file-meta">
-                    <Typography type="caption">Имя: <strong>{file.name}</strong></Typography>
-
-                    <Typography type="caption">Размер: <strong>{Math.ceil(file.size / 1000)} КБ</strong></Typography>
-                </figcaption>
+                        <Typography type="caption">Размер: <strong>{Math.ceil(file.size / 1000)} КБ</strong></Typography>
+                    </figcaption>
+                }
             </figure>
-            }
         </div>
     );
 }

@@ -4,12 +4,15 @@ import {
     Button,
     Icon,
     IconButton,
-    TopAppBar
+    TopAppBar,
+    Typography
 } from 'mdc-react';
+
+import Breadcrumbs from 'shared/components/breadcrumbs';
 
 import './index.scss';
 
-export default function PageTopBar({ title, breadcrumbs, backTo, actions, children }) {
+export default function PageTopBar({ title, overline, breadcrumbs, backTo, actions, children }) {
     return (
         <TopAppBar className="page-top-bar">
             <TopAppBar.Row>
@@ -22,11 +25,13 @@ export default function PageTopBar({ title, breadcrumbs, backTo, actions, childr
 
                     <div>
                         {breadcrumbs?.length > 0 &&
-                            <nav className="page-breadcrumbs">
-                                {breadcrumbs.map((item, index) =>
-                                    cloneElement(item, { key: index, className: 'mdc-typography--overline' })
-                                )}
-                            </nav>
+                            <Breadcrumbs
+                                items={breadcrumbs}
+                            />
+                        }
+
+                        {overline &&
+                            <Typography type="overline" noMargin>{overline}</Typography>
                         }
 
                         {title &&

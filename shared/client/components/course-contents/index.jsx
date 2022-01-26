@@ -10,7 +10,7 @@ export default function CourseContents({ course }) {
                         key={unit.id}
                         component={NavLink}
                         to={unit.uri}
-                        activeClassName={'mdc-list-item--activated'}
+                        activeClassName="mdc-list-item--activated"
                         graphic={<Avatar text={index + 1} />}
                         text={unit.title}
                     />
