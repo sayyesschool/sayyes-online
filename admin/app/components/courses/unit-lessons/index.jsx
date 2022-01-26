@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
-
-import PageFAB from 'shared/components/page-fab';
+import {
+    Card,
+    IconButton
+} from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
@@ -20,10 +22,25 @@ export default function UnitLessons({ course, unit, onCreate, onDelete }) {
 
     return (
         <section className="unit-lessons">
-            <LessonList
-                lessons={lessons}
-                onDelete={onDelete}
-            />
+            <Card>
+                <Card.Header
+                    title="Уроки"
+                    actions={[
+                        <IconButton
+                            icon="add"
+                            onClick={toggleLessonFormOpen}
+                        />
+                    ]}
+                />
+
+                <Card.Section>
+                    <LessonList
+                        lessons={lessons}
+                        onDelete={onDelete}
+                    />
+                </Card.Section>
+            </Card>
+
 
             <FormDialog
                 title="Новый урок"
@@ -36,11 +53,6 @@ export default function UnitLessons({ course, unit, onCreate, onDelete }) {
                     onSubmit={handleSubmit}
                 />
             </FormDialog>
-
-            <PageFAB
-                icon="add"
-                onClick={toggleLessonFormOpen}
-            />
         </section>
     );
 }

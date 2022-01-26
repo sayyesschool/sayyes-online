@@ -1,13 +1,12 @@
 import { createElement, useCallback, useRef } from 'react';
 import {
-    LayoutGrid,
     Select,
     TextField
 } from 'mdc-react';
 
-import { useBoolean } from 'shared/hooks/state';
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
+import ImageField from 'shared/components/image-field';
 import TextEditor from 'shared/components/text-editor';
 
 import BooleanExerciseForm from './boolean-exercise-form';
@@ -74,11 +73,13 @@ const defaultExercise = {
     image: '',
     audio: '',
     video: '',
+    notes: '',
     items: []
 };
 
 export default function ExerciseForm({ course, exercise = defaultExercise, onSubmit, ...props }) {
     const textEditorRef = useRef();
+    const imageFieldRef = useRef();
 
     const [data, handleChange, setData] = useForm({
         ...exercise,
@@ -105,86 +106,88 @@ export default function ExerciseForm({ course, exercise = defaultExercise, onSub
 
     return (
         <Form id="exercise-form" className={`exercise-form exercise-form--${exercise.type}`} onSubmit={handleSubmit} {...props}>
-            <LayoutGrid>
-                <LayoutGrid.Cell span="4">
-                    <Select
-                        name="type"
-                        label="Тип"
-                        value={data.type}
-                        options={typeOptions}
-                        outlined
-                        menuProps={{ modal: true }}
-                        onChange={handleChange}
-                    />
+            <Select
+                name="type"
+                label="Тип"
+                value={data.type}
+                options={typeOptions}
+                outlined
+                menuProps={{ modal: true }}
+                onChange={handleChange}
+            />
 
-                    <TextField
-                        name="title"
-                        label="Название"
-                        value={data.title}
-                        outlined
-                        onChange={handleChange}
-                    />
+            <TextField
+                name="title"
+                label="Название"
+                value={data.title}
+                outlined
+                onChange={handleChange}
+            />
 
-                    <TextField
-                        name="description"
-                        label="Описание"
-                        value={data.description}
-                        textarea
-                        outlined
-                        autoResize
-                        onChange={handleChange}
-                    />
+            <TextField
+                name="description"
+                label="Описание"
+                value={data.description}
+                textarea
+                outlined
+                autoResize
+                onChange={handleChange}
+            />
 
-                    <Select
-                        name="audio"
-                        label="Аудио"
-                        value={data.audio}
-                        options={[
-                            {
-                                key: 'null',
-                                value: '',
-                                text: ' '
-                            },
-                            ...course.audios.map(audio => ({
-                                key: audio.id,
-                                value: audio.id,
-                                text: audio.title
-                            }))
-                        ]}
-                        outlined
-                        menuProps={{ modal: true }}
-                        onChange={handleChange}
-                    />
+            <Select
+                name="audio"
+                label="Аудио"
+                value={data.audio}
+                options={[
+                    {
+                        key: 'null',
+                        value: '',
+                        text: ' '
+                    },
+                    ...course.audios.map(audio => ({
+                        key: audio.id,
+                        value: audio.id,
+                        text: audio.title
+                    }))
+                ]}
+                outlined
+                menuProps={{ modal: true }}
+                onChange={handleChange}
+            />
 
-                    <Select
-                        name="video"
-                        label="Видео"
-                        value={data.video}
-                        options={[
-                            {
-                                key: 'null',
-                                value: '',
-                                text: ' '
-                            },
-                            ...course.videos.map(video => ({
-                                key: video.filename,
-                                value: video.filename,
-                                text: video.title
-                            }))
-                        ]}
-                        outlined
-                        menuProps={{ modal: true }}
-                        onChange={handleChange}
-                    />
-                </LayoutGrid.Cell>
+            <Select
+                name="video"
+                label="Видео"
+                value={data.video}
+                options={[
+                    {
+                        key: 'null',
+                        value: '',
+                        text: ' '
+                    },
+                    ...course.videos.map(video => ({
+                        key: video.filename,
+                        value: video.filename,
+                        text: video.title
+                    }))
+                ]}
+                outlined
+                menuProps={{ modal: true }}
+                onChange={handleChange}
+            />
 
-                <LayoutGrid.Cell span="8">
-                    <TextEditor
-                        ref={textEditorRef}
-                        value={data.text}
-                    />
-                </LayoutGrid.Cell>
-            </LayoutGrid>
+            <ImageField
+                ref={imageFieldRef}
+                name="image"
+                label="Изображение"
+                url={data.image && exercise.imageUrl}
+                caption={data.image}
+            />
+
+            <TextEditor
+                ref={textEditorRef}
+                value={data.text}
+            />
 
             {data.type && createElement(ComponentsByType[data.type], {
                 key: exercise.id,

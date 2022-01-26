@@ -1,7 +1,6 @@
 import { useCallback, useRef } from 'react';
 import {
     Card,
-    Icon,
     IconButton
 } from 'mdc-react';
 
@@ -12,7 +11,7 @@ import './index.scss';
 export default function UnitContent({ unit = {}, onUpdate }) {
     const editorRef = useRef();
 
-    const handleSubmit = useCallback(() => {
+    const handleSave = useCallback(() => {
         const content = editorRef.current.editor.getData();
 
         onUpdate({ content });
@@ -22,17 +21,16 @@ export default function UnitContent({ unit = {}, onUpdate }) {
         <section className="unit-content">
             <Card>
                 <Card.Header
-                    graphic={<Icon>article</Icon>}
                     title="Содержание"
                     actions={
                         <IconButton
                             icon="save"
-                            onClick={handleSubmit}
+                            onClick={handleSave}
                         />
                     }
                 />
 
-                <Card.Section>
+                <Card.Section primary>
                     <TextEditor
                         ref={editorRef}
                         defaultValue={unit.content}

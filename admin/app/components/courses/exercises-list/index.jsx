@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {
     Avatar,
     IconButton,
     List
 } from 'mdc-react';
 
-export default function ExerciseList({ exercises, exercise: activeExercise, onDelete }) {
+export default function ExercisesList({ exercises, exercise: activeExercise, onDelete }) {
     const handleClick = useCallback((event, exercise) => {
         event.preventDefault();
         event.stopPropagation();
@@ -15,21 +15,24 @@ export default function ExerciseList({ exercises, exercise: activeExercise, onDe
     }, []);
 
     return (
-        <List className="exercise-list">
+        <List className="exercises-list">
             {exercises.map((exercise, index) =>
                 <List.Item
                     key={exercise.id}
-                    component={Link}
-                    to={exercise.url}
-                    leadingAvatar={<Avatar text={index + 1} />}
-                    text={exercise.title}
-                    trailingIcon={
+                    component={NavLink}
+                    to={exercise.uri}
+                    avatar={<Avatar key={exercise.id} text={index + 1} />}
+                    overlineText={exercise.type}
+                    primaryText={exercise.title}
+                    secondaryText={exercise.description}
+                    trailingIcon={onDelete &&
                         <IconButton
                             icon="delete"
                             onClick={event => handleClick(event, exercise)}
                         />
                     }
                     activated={exercise === activeExercise}
+                    activeClassName="mdc-list-item--activated"
                 />
             )}
         </List>

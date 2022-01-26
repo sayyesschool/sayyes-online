@@ -1,8 +1,7 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    Card,
-    TabBar, Tab
+    LayoutGrid
 } from 'mdc-react';
 
 import { useCourse } from 'shared/hooks/courses';
@@ -11,6 +10,7 @@ import Page from 'shared/components/page';
 import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
 
+import UnitContent from 'app/components/courses/unit-content';
 import UnitDetails from 'app/components/courses/unit-details';
 import UnitLessons from 'app/components/courses/unit-lessons';
 
@@ -18,8 +18,6 @@ import './index.scss';
 
 export default function UnitPage({ match, history }) {
     const [course, actions] = useCourse(match.params.courseId);
-
-    const [activeTab, setActiveTab] = useState('lessons');
 
     const handleUpdateUnit = useCallback(data => {
         return actions.updateUnit(course.id, unit.id, data);
@@ -63,44 +61,34 @@ export default function UnitPage({ match, history }) {
                         onClick: handleDeleteUnit
                     }
                 ]}
-            >
-                <TabBar value={activeTab} onChange={setActiveTab} minWidth minWidthIndicator>
-                    <Tab
-                        value="lessons"
-                        label="Уроки"
-                        icon="segment"
-                    />
-
-                    <Tab
-                        value="details"
-                        label="Детали"
-                        icon="article"
-                    />
-                </TabBar>
-            </PageTopBar>
+            />
 
             <PageContent>
-                <Card>
-                    {activeTab === 'lessons' &&
-                        <Card.Section>
+                <LayoutGrid>
+                    <LayoutGrid.Cell span="8" grid>
+                        <LayoutGrid.Cell span="12">
+                            <UnitContent
+                                unit={unit}
+                            />
+                        </LayoutGrid.Cell>
+
+                        <LayoutGrid.Cell span="12">
                             <UnitLessons
                                 course={course}
                                 unit={unit}
                                 onCreate={handleCreateLesson}
                                 onDelete={handleDeleteLesson}
                             />
-                        </Card.Section>
-                    }
+                        </LayoutGrid.Cell>
+                    </LayoutGrid.Cell>
 
-                    {activeTab === 'details' &&
-                        <Card.Section>
-                            <UnitDetails
-                                unit={unit}
-                                onUpdate={handleUpdateUnit}
-                            />
-                        </Card.Section>
-                    }
-                </Card>
+                    <LayoutGrid.Cell span="4">
+                        <UnitDetails
+                            unit={unit}
+                            onUpdate={handleUpdateUnit}
+                        />
+                    </LayoutGrid.Cell>
+                </LayoutGrid>
             </PageContent>
         </Page>
     );

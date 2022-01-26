@@ -9,10 +9,10 @@ import {
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
-import FileInput from 'shared/components/file-input';
+import ImageField from 'shared/components/image-field';
 
 export default function MaterialForm({ material = {}, onSubmit }) {
-    const fileInputRef = useRef();
+    const imageFieldRef = useRef();
     const [data, setData] = useForm({
         title: material.title,
         slug: material.slug,
@@ -22,14 +22,14 @@ export default function MaterialForm({ material = {}, onSubmit }) {
     });
 
     const handleSubmit = useCallback(() => {
-        const file = fileInputRef.current.input.files[0];
+        const file = imageFieldRef.current.input.files[0];
 
         if (file) {
             file.path = `materials/`;
         }
 
         getData(data => onSubmit(Object.assign(data, { file })));
-        fileInputRef.current.reset();
+        imageFieldRef.current.reset();
     }, []);
 
     return (
@@ -78,8 +78,8 @@ export default function MaterialForm({ material = {}, onSubmit }) {
                     />
                 </FormField>
 
-                <FileInput
-                    ref={fileInputRef}
+                <ImageField
+                    ref={imageFieldRef}
                     name="file"
                     label="Изображение"
                     url={data.image && STATIC_URL + material.imageUrl}

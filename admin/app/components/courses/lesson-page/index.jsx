@@ -1,8 +1,8 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
     Card,
-    TabBar, Tab
+    LayoutGrid
 } from 'mdc-react';
 
 import { useCourse } from 'shared/hooks/courses';
@@ -18,8 +18,6 @@ import './index.scss';
 
 export default function LessonPage({ match, history }) {
     const [course, actions] = useCourse(match.params.courseId);
-
-    const [activeTab, setActiveTab] = useState('exercises');
 
     const handleUpdateLesson = useCallback(data => {
         return actions.updateLesson(course.id, lesson.id, data);
@@ -74,41 +72,27 @@ export default function LessonPage({ match, history }) {
                         onClick: handleDeleteLesson
                     }
                 ]}
-            >
-                <TabBar value={activeTab} onChange={setActiveTab} minWidth minWidthIndicator>
-                    <Tab
-                        value="exercises"
-                        label="Упражнения"
-                        icon="segment"
-                    />
-
-                    <Tab
-                        value="details"
-                        label="Детали"
-                        icon="article"
-                    />
-                </TabBar>
-            </PageTopBar>
+            />
 
             <PageContent>
-                {activeTab === 'exercises' &&
-                    <LessonExercises
-                        course={course}
-                        lesson={lesson}
-                        onCreate={handleCreateExercise}
-                        onUpdate={handleUpdateExercise}
-                        onDelete={handleDeleteExercise}
-                    />
-                }
-
-                {activeTab === 'details' &&
-                    <Card>
+                <LayoutGrid>
+                    <LayoutGrid.Cell span="8">
                         <LessonDetails
                             lesson={lesson}
                             onUpdate={handleUpdateLesson}
                         />
-                    </Card>
-                }
+                    </LayoutGrid.Cell>
+
+                    <LayoutGrid.Cell span="4">
+                        <LessonExercises
+                            course={course}
+                            lesson={lesson}
+                            onCreate={handleCreateExercise}
+                            onUpdate={handleUpdateExercise}
+                            onDelete={handleDeleteExercise}
+                        />
+                    </LayoutGrid.Cell>
+                </LayoutGrid>
             </PageContent>
         </Page>
     );

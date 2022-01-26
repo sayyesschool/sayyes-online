@@ -6,7 +6,7 @@ import {
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
-import FileInput from 'shared/components/file-input';
+import ImageField from 'shared/components/image-field';
 import TextEditor from 'shared/components/text-editor';
 
 const defaultLesson = {
@@ -18,20 +18,20 @@ const defaultLesson = {
 };
 
 export default function LessonForm({ lesson = {}, onSubmit }) {
-    const fileInputRef = useRef();
+    const imageFieldRef = useRef();
     const editorRef = useRef();
 
     const [data, handleChange, getData] = useForm(Object.assign(defaultLesson, lesson), [lesson.id]);
 
     const handleSubmit = useCallback(() => {
         const content = editorRef.current.editor.getData();
-        const file = fileInputRef.current.input.files[0];
+        const file = imageFieldRef.current.input.files[0];
 
         data.content = content;
 
         getData(data => onSubmit(data, file));
 
-        fileInputRef.current.reset();
+        imageFieldRef.current.reset();
     }, [onSubmit]);
 
     return (
@@ -54,8 +54,8 @@ export default function LessonForm({ lesson = {}, onSubmit }) {
                         onChange={handleChange}
                     />
 
-                    <FileInput
-                        ref={fileInputRef}
+                    <ImageField
+                        ref={imageFieldRef}
                         name="image"
                         label="Изображение"
                     />

@@ -8,10 +8,10 @@ import {
 import { slugify } from 'shared/utils/format';
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
-import FileInput from 'shared/components/file-input';
+import ImageField from 'shared/components/image-field';
 
 export default function CourseForm({ course = {}, onSubmit, ...props }) {
-    const fileInputRef = useRef();
+    const imageFieldRef = useRef();
     const [data, handleChange, getData, setData] = useForm({
         title: course.title,
         slug: course.slug,
@@ -20,14 +20,14 @@ export default function CourseForm({ course = {}, onSubmit, ...props }) {
     }, [course]);
 
     const handleSubmit = useCallback(() => {
-        const file = fileInputRef.current.input.files[0];
+        const file = imageFieldRef.current.input.files[0];
 
         if (file) {
             file.path = `courses/${course.id}/images/`;
         }
 
         getData(data => onSubmit(Object.assign(data, { file })));
-        fileInputRef.current.reset();
+        imageFieldRef.current.reset();
     }, [course]);
 
     const handleTitleBlur = useCallback(() => {
@@ -56,8 +56,8 @@ export default function CourseForm({ course = {}, onSubmit, ...props }) {
                             onChange={handleChange}
                         />
 
-                        <FileInput
-                            ref={fileInputRef}
+                        <ImageField
+                            ref={imageFieldRef}
                             name="file"
                             label="Изображение"
                             url={data.image && course.imageUrl}
