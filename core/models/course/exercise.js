@@ -12,6 +12,7 @@ const Exercise = new Schema({
     image: { type: String },
     audio: { type: String },
     video: { type: String },
+    notes: { type: String },
     items: [Item],
     unit: { type: Schema.Types.ObjectId },
     lesson: { type: Schema.Types.ObjectId }
