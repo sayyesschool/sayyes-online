@@ -7,19 +7,19 @@ import { getEnrollments } from 'shared/store/modules/enrollments';
 import { getCourses } from 'shared/store/modules/courses';
 import { getMaterials } from 'shared/store/modules/materials';
 import { hideNotification } from 'shared/store/modules/notification';
-import NotificationSnackbar from 'shared/components/notification-snackbar';
-import LoadingIndicator from 'shared/components/loading-indicator';
 import AppHeader from 'shared/components/app-header';
 import AppContent from 'shared/components/app-content';
-import NavBar from 'shared/components/nav-bar';
+import LoadingIndicator from 'shared/components/loading-indicator';
+import NotificationAlert from 'shared/components/notification-alert';
+//import NavBar from 'shared/components/nav-bar';
 
-import navItems from 'app/data/nav';
+// import navItems from 'app/data/nav';
 import Account from 'app/components/account';
-import Courses from 'app/components/courses';
+// import Courses from 'app/components/courses';
 import Home from 'app/components/home';
-import Enrollments from 'app/components/enrollments';
-import Materials from 'app/components/materials';
-import Post from 'app/components/post';
+// import Enrollments from 'app/components/enrollments';
+// import Materials from 'app/components/materials';
+// import Post from 'app/components/post';
 
 import './index.scss';
 
@@ -57,23 +57,22 @@ export default function App() {
         <Fragment>
             <AppHeader
                 user={user}
-                fixed
             >
-                <NavBar items={navItems} />
+                {/* <NavBar items={navItems} /> */}
             </AppHeader>
 
-            <AppContent fixedAdjust>
+            <AppContent>
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <Route path="/account" component={Account} />
-                    <Route path="/courses" component={Courses} />
+                    {/* <Route path="/courses" component={Courses} />
                     <Route path="/enrollments" component={Enrollments} />
                     <Route path="/materials" component={Materials} />
-                    <Route path="/posts/:id" component={Post} />
+                    <Route path="/posts/:id" component={Post} /> */}
                 </Switch>
             </AppContent>
 
-            <NotificationSnackbar
+            <NotificationAlert
                 open={notification.active}
                 type={notification.type}
                 text={notification.text}

@@ -1,96 +1,81 @@
-import { useCallback } from 'react';
-import {
-    Layout,
-    FormField,
-    Select,
-    Switch,
-    TextField
-} from 'mdc-react';
 import moment from 'moment';
 
-import useForm from 'shared/hooks/form';
+import { useForm } from 'shared/hooks/form';
 import Form from 'shared/components/form';
+import FormInput from 'shared/components/form-input';
+import FormSelect from 'shared/components/form-select';
+import FormTextArea from 'shared/components/form-textarea';
 
 import './index.scss';
 
 const statuses = [
-    { key: 'scheduled', value: 'scheduled', text: 'Запланировано' },
-    { key: 'ended', value: 'ended', text: 'Завершилось' },
-    { key: 'canceled', value: 'canceled', text: 'Отменено' }
+    { key: 'scheduled', value: 'scheduled', content: 'Запланирован' },
+    { key: 'ended', value: 'ended', content: 'Завершился' },
+    { key: 'missed', value: 'missed', content: 'Пропущен' },
+    { key: 'canceled', value: 'canceled', content: 'Отменен' }
 ];
 
 const defaultLesson = {
     status: 'scheduled',
     duration: 50,
-    date: new Date(),
-    trial: false,
-    free: false,
+    date: moment().format('YYYY-MM-DDTHH:mm'),
     note: ''
 };
 
-export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
-    const [data, handleChange] = useForm({
-        ...defaultLesson,
-        ...lesson
+const minDate = moment().subtract(1, 'hour');
+
+export default function LessonForm({ lesson = defaultLesson, onSubmit, ...props }) {
+    const { data, handleChange, handleSubmit } = useForm({
+        values: {
+            'status*': lesson.status,
+            duration: lesson.duration,
+            date: lesson.date,
+            note: ''
+        },
+        onSubmit
     });
-
-    const handleSubmit = useCallback(() => {
-        data.date = moment(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
-        data.teacher = data.teacher || undefined;
-
-        onSubmit(data);
-    }, [data]);
 
     return (
         <Form className="lesson-form" onSubmit={handleSubmit} {...props}>
-            <Layout column>
-                <Select
-                    name="status"
-                    value={data.status}
-                    label="Статус"
-                    options={statuses}
-                    filled
-                    required
-                    onChange={handleChange}
-                />
+            <FormSelect
+                name="status"
+                value={data.status.value}
+                options={statuses}
+                label="Статус"
+                required
+                fluid
+                onChange={handleChange}
+            />
 
-                <TextField
-                    type="datetime-local"
-                    name="date"
-                    value={moment(data.date).format('YYYY-MM-DDTHH:mm')}
-                    label="Дата и время"
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                type="datetime-local"
+                name="date"
+                value={moment(data.date.value).format('YYYY-MM-DDTHH:mm')}
+                label="Дата и время"
+                min={data.status.value === 'scheduled' && minDate.format('YYYY-MM-DDTHH:mm')}
+                message={`Московское время: ${moment(data.date.value).utc().add(3, 'hours').format('HH:mm')}`}
+                required
+                fluid
+                onChange={handleChange}
+            />
 
-                <TextField
-                    type="number"
-                    name="duration"
-                    step="5"
-                    value={data.duration}
-                    label="Продолжительность"
-                    suffix="мин."
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                type="number"
+                name="duration"
+                step="5"
+                value={data.duration.value}
+                label="Продолжительность, мин."
+                fluid
+                onChange={handleChange}
+            />
 
-                <FormField label="Бесплатное">
-                    <Switch
-                        name="free"
-                        checked={data.free}
-                        onChange={handleChange}
-                    />
-                </FormField>
-
-                <TextField
-                    name="note"
-                    value={data.note}
-                    label="Примечание"
-                    filled
-                    textarea
-                    onChange={handleChange}
-                />
-            </Layout>
+            <FormTextArea
+                name="note"
+                value={data.note.value}
+                label="Примечание"
+                fluid
+                onChange={handleChange}
+            />
         </Form>
     );
 }

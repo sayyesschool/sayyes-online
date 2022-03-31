@@ -1,14 +1,15 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import {
-    Button,
-    Card,
-    Typography
-} from 'mdc-react';
+    Button
+} from '@fluentui/react-northstar';
 
 import { useStore } from 'shared/hooks/store';
 import { actions as userActions } from 'shared/store/modules/user';
+import Icon from 'shared/components/material-icon';
 import Page from 'shared/components/page';
 import PageContent from 'shared/components/page-content';
+import PageHeader from 'shared/components/page-header';
+import PageSection from 'shared/components/page-section';
 
 import ProfileForm from 'app/components/account/profile-form';
 
@@ -18,33 +19,32 @@ export default function AccountPage() {
     const [user, actions] = useStore(state => state.user, userActions);
 
     const handleProfileFormSubmit = useCallback(data => {
-        actions.updateProfile(data)
-            .then(() => setProfileDialogOpen(false));
+        actions.updateProfile(data);
     }, []);
 
     return (
         <Page id="account-page">
+            <PageHeader
+                title="Мой аккаунт"
+            />
+
             <PageContent>
-                <Typography element="h1" type="headline4">Мой аккаунт</Typography>
-
-                <Card>
-                    <Card.Header
-                        title="Профиль"
-                    />
-
-                    <Card.Section primary>
-                        <ProfileForm
-                            user={user}
-                            onSubmit={handleProfileFormSubmit}
+                <PageSection
+                    title="Профиль"
+                    actions={
+                        <Button
+                            icon={<Icon>save</Icon>}
+                            iconOnly
+                            text
+                            title="Сохранить"
                         />
-                    </Card.Section>
-
-                    <Card.Actions>
-                        <Card.Action>
-                            <Button>Сохранить</Button>
-                        </Card.Action>
-                    </Card.Actions>
-                </Card>
+                    }
+                >
+                    <ProfileForm
+                        user={user}
+                        onSubmit={handleProfileFormSubmit}
+                    />
+                </PageSection>
             </PageContent>
         </Page>
     );

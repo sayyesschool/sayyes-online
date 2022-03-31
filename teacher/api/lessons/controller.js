@@ -1,10 +1,11 @@
 module.exports = ({
-    models: { Lesson }
+    models: { Lesson, Room }
 }) => ({
     get: (req, res, next) => {
-        Lesson.find({ teachers: req.user.id, ...req.query })
+        Lesson.find({ teacher: req.user.id, ...req.query })
             .sort({ date: 1 })
-            .populate('client')
+            .populate('client', 'firstname lastname email')
+            .populate('room', 'title login password')
             .then(lessons => {
                 res.json({
                     ok: true,
@@ -27,19 +28,38 @@ module.exports = ({
     },
 
     create: (req, res, next) => {
-        Lesson.create(req.body)
+        req.body.teacher = req.user.id;
+
+        Lesson.findConflicting(req.body.date, req.body.duration)
             .then(lesson => {
-                res.json({
-                    ok: true,
-                    message: 'Урок создан',
-                    data: lesson
-                });
+                if (lesson) throw new Error('Не удалось запланировать урок. Время уже занято.');
+
+                return Room.findAvailable(req.body.date, req.body.duration);
+            })
+            .then(room => {
+                if (!room) throw new Error('Не удалось запланировать урок. Нет свободной аудитории.');
+
+                req.body.room = room.id;
+
+                return Lesson.create(req.body)
+                    .then(lesson => {
+                        lesson.room = room;
+
+                        res.json({
+                            ok: true,
+                            message: 'Урок создан',
+                            data: lesson
+                        });
+                    });
             })
             .catch(next);
     },
 
     update: (req, res, next) => {
-        Lesson.findByIdAndUpdate(req.params.lessonId, req.body, { new: true })
+        Lesson.findByIdAndUpdate(req.params.lessonId, req.body, {
+            new: true,
+            select: Object.keys(req.body).join(' ')
+        })
             .then(lesson => {
                 res.json({
                     ok: true,
