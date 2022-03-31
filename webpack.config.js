@@ -37,7 +37,7 @@ module.exports = [
 ];
 
 function config({ name, env, rules = [], plugins = [], override = {} }) {
-    const APP_URL = env === 'development' ? 'http://localhost' : 'https://sayyesonline.ru';
+    const APP_URL = env.development ? 'http://localhost' : 'https://sayyesonline.ru';
 
     return {
         name,
@@ -104,7 +104,7 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
             ]
         },
 
-        devtool: (env === 'development') ? 'eval-source-map' : undefined,
+        devtool: env.development ? 'eval-source-map' : undefined,
 
         plugins: [
             new webpack.DefinePlugin({
