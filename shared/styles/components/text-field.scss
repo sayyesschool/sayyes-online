@@ -2,4 +2,10 @@
     .mdc-text-field__icon--trailing.mdc-icon-button {
         margin-right: 8px;
     }
+
+    input {
+        &::-webkit-calendar-picker-indicator {
+            display: inline-block;
+        }
+    }
 }

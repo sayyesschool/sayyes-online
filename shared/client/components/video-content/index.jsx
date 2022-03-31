@@ -1,7 +1,7 @@
-import classnames from 'classnames';
 import {
-    Card
-} from 'mdc-react';
+    Segment
+} from '@fluentui/react-northstar';
+import classnames from 'classnames';
 
 import VideoPlayer from 'shared/components/video-player';
 
@@ -11,17 +11,15 @@ export default function VideoContent({ audio, className, ...props }) {
     const classNames = classnames('video-content', className);
 
     return (
-        <section className={classNames} {...props}>
-            <Card outlined>
-                <VideoPlayer
-                    id="video-player"
-                    src={exercise.video.url}
-                    controls
-                    options={{
-                        stretching: 'fill'
-                    }}
-                />
-            </Card>
-        </section>
+        <Segment as="section" className={classNames} {...props}>
+            <VideoPlayer
+                id="video-player"
+                src={exercise.video.url}
+                controls
+                options={{
+                    stretching: 'fill'
+                }}
+            />
+        </Segment>
     );
 }

@@ -66,10 +66,10 @@ export const actions = {
 
 export const lessonsReducer = createReducer(null, {
     [getLessons]: (state, action) => action.data,
-    // [createLesson]: (state, action) => state ? [...state, action.data] : [action.data],
+    [createLesson]: (state, action) => state ? [...state, action.data] : [action.data],
     // [createLessons]: (state, action) => state ? [...state, ...action.data] : action.data,
-    // [updateLesson]: (state, action) => state.map(lesson => lesson.id === action.data.lesson.id ? ({ ...lesson, ...action.data.lesson }) : lesson),
-    // [deleteLesson]: (state, action) => state.filter(lesson => lesson.id !== action.data.lessonId)
+    [updateLesson]: (state, action) => state.map(lesson => lesson.id === action.data.id ? ({ ...lesson, ...action.data }) : lesson),
+    [deleteLesson]: (state, action) => state.filter(lesson => lesson.id !== action.data.id)
 });
 
 export const lessonReducer = createReducer(null, {

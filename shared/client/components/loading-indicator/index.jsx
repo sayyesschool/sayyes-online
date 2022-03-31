@@ -1,11 +1,12 @@
-import { CircularProgress } from 'mdc-react';
+import { Loader } from '@fluentui/react-northstar';
+import classnames from 'classnames';
 
 import './index.scss';
 
-export default function LoadingIndicator() {
+export default function LoadingIndicator({ className }) {
     return (
-        <div className="loading-indicator">
-            <CircularProgress size="large" indeterminate />
+        <div className={classnames('loading-indicator', className)}>
+            <Loader label="Загрузка" />
         </div>
     );
 }

@@ -1,23 +1,28 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import moment from 'moment';
 import {
-    Chip,
-    DataTable,
-    Icon,
-    IconButton,
-    Typography
-} from 'mdc-react';
+    Button,
+    Text
+} from '@fluentui/react-northstar';
+import moment from 'moment';
 
+import Icon from 'shared/components/material-icon';
 import { formatTime } from 'shared/utils/format';
+
+import WeekTimeEvent from './WeekTimeEvent';
 import { getWeekData, getWeekLabel } from './utils';
 
-const hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
+const defaultHours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+const defaultWeekDayNames = Array.of(...moment.weekdaysMin().slice(1), moment.weekdaysMin()[0]);
 
-export default function WeekView({ eventsByDate }) {
-    const todayRef = useRef(new Date());
+export default function WeekTimeView({
+    hours = defaultHours,
+    weekdayNames = defaultWeekDayNames,
+    events,
+    onEventClick
+}) {
     const dateRef = useRef(moment());
-    const [week, setWeek] = useState(dateRef.current.month());
+
+    const [week, setWeek] = useState(dateRef.current.week());
 
     const handlePrevWeekButtonClick = useCallback(() => {
         setWeek(dateRef.current.subtract(1, 'week').week());
@@ -27,79 +32,88 @@ export default function WeekView({ eventsByDate }) {
         setWeek(dateRef.current.add(1, 'week').week());
     }, []);
 
-    const data = useMemo(() => getWeekData(dateRef.current), [week]);
+    const weekData = useMemo(() => getWeekData(dateRef.current, events), [events, week]);
     const label = getWeekLabel(dateRef.current);
 
     return (
-        <article className="calendar calendar--week-view">
+        <article className="calendar calendar--week-view calendar--week-time-view">
             <header className="calendar__header">
-                <IconButton onClick={handlePrevWeekButtonClick}>
-                    <Icon>chevron_left</Icon>
-                </IconButton>
+                <Button
+                    icon={<Icon>chevron_left</Icon>}
+                    title="Предыдущая неделя"
+                    iconOnly
+                    flat
+                    onClick={handlePrevWeekButtonClick}
+                />
 
-                <Typography element="span" noMargin>{label}</Typography>
+                <Text>{label}</Text>
 
-                <IconButton onClick={handleNextWeekButtonClick}>
-                    <Icon>chevron_right</Icon>
-                </IconButton>
+                <Button
+                    icon={<Icon>chevron_right</Icon>}
+                    title="Следующая неделя"
+                    iconOnly
+                    flat
+                    onClick={handleNextWeekButtonClick}
+                />
             </header>
 
             <section className="calendar__week">
-                <DataTable>
-                    <DataTable.Header>
-                        <DataTable.HeaderRow>
-                            <DataTable.HeaderCell />
-
-                            {data.map(date =>
-                                <DataTable.HeaderCell key={date.valueOf()} className={date.isSame(todayRef.current) && 'today'}>
-                                    <Typography type="overline">{date.format('dd')}, {date.date()}</Typography>
-                                </DataTable.HeaderCell>
-                            )}
-                        </DataTable.HeaderRow>
-                    </DataTable.Header>
-
-                    <DataTable.Content>
-                        {hours.map(hour =>
-                            <DataTable.Row>
-                                <DataTable.Cell>
-                                    {formatTime(hour, 0)}
-                                </DataTable.Cell>
-
-                                {data.map(date =>
-                                    <DataTable.Cell>
-                                        <CalendarEvent
-                                            date={date}
-                                            hour={hour}
-                                            eventsByDate={eventsByDate}
-                                        />
-                                    </DataTable.Cell>
-                                )}
-                            </DataTable.Row>
+                <table>
+                    <colgroup>
+                        <col />
+                        {weekData.map(day =>
+                            <col
+                                key={day.weekday}
+                                span="1"
+                                className={`day${day.isToday ? ' today' : ''}`}
+                            />
                         )}
-                    </DataTable.Content>
-                </DataTable>
+                    </colgroup>
+
+                    <thead>
+                        <tr>
+                            <th scope="col" />
+                            {weekData.map(day =>
+                                <th
+                                    key={day.weekday}
+                                    scope="col"
+                                    className={day.isToday ? 'today' : undefined}
+                                >
+                                    <Text color={day.isToday ? 'brand' : undefined}>{day.label}</Text>
+                                </th>
+                            )}
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {hours.map(hour =>
+                            <tr key={hour}>
+                                <th scope="row">
+                                    {formatTime(hour, 0)}
+                                </th>
+
+                                {weekData.map(day =>
+                                    <td key={day.weekday}>
+                                        {day.eventsByHour.get(hour)?.map((event, index, array) =>
+                                            <WeekTimeEvent
+                                                key={event.id}
+                                                event={event}
+                                                style={{
+                                                    width: `${100 / array.length}%`,
+                                                    height: `${event.duration * 100 / 60}%`,
+                                                    top: `${event.startTime.minutes * 100 / 60}%`,
+                                                    left: `${100 / array.length * index}%`
+                                                }}
+                                                onClick={onEventClick}
+                                            />
+                                        )}
+                                    </td>
+                                )}
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
             </section>
         </article>
     );
 }
-
-function CalendarEvent({ date, hour, eventsByDate }) {
-    const key = date.utc().hours(hour).minutes(0).seconds(0).millisecond(0).toISOString();
-    const event = eventsByDate.get(key);
-
-    return event ? (
-        <Chip
-            component={Link}
-            to={event.url}
-            icon={<Icon>{event.icon}</Icon>}
-            text={event.title}
-            title={event.title}
-            outlined
-        />
-    ) : null;
-}
-
-WeekView.defaultProps = {
-    weekdayNames: Array.of(...moment.weekdaysMin().slice(1), moment.weekdaysMin()[0]),
-    onChange: Function.prototype
-};

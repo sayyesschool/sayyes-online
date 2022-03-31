@@ -1,8 +1,9 @@
 import {
-    Avatar
-} from 'mdc-react';
+    Avatar,
+    MenuButton
+} from '@fluentui/react-northstar';
 
-import MenuButton from 'shared/components/menu-button';
+import './index.scss';
 
 export default function UserMenu({
     user,
@@ -12,8 +13,15 @@ export default function UserMenu({
     return (
         <MenuButton
             className="user-menu"
-            button={<Avatar className="user-avatar" text={user.initials} />}
-            items={items}
+            trigger={
+                <Avatar
+                    className="user-avatar"
+                    image={user.imageUrl}
+                    name={user.fullname}
+                />
+            }
+            menu={items}
+            on="click"
             {...props}
         />
     );

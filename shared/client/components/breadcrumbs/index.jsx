@@ -1,18 +1,27 @@
-import { Children, isValidElement, cloneElement } from 'react';
-import classnames from 'classnames';
+import { Fragment } from 'react';
+import { Link } from 'react-router-dom';
+import { Breadcrumb } from '@fluentui/react-northstar';
+
+import Icon from 'shared/components/material-icon';
 
 import './index.scss';
 
-export default function Breadcrumbs({ items, className }) {
-    const classNames = classnames('breadcrumbs', className);
-
+export default function Breadcrumbs({ items, ...props }) {
     return (
-        <div className={classNames}>
-            {Children.map(items, item =>
-                isValidElement(item) ?
-                    cloneElement(item, { className: 'breadcrumbs__item' }) :
-                    <span className="breadcrumbs__item">{item}</span>
+        <Breadcrumb aria-label="breadcrumb" {...props}>
+            {items.map((item, index, items) =>
+                <Fragment key={index}>
+                    <Breadcrumb.Item>
+                        <Breadcrumb.Link as={Link} to={item.url}>{item.text}</Breadcrumb.Link>
+                    </Breadcrumb.Item>
+
+                    {(index < (items.length - 1)) &&
+                        <Breadcrumb.Divider>
+                            <Icon>chevron_right</Icon>
+                        </Breadcrumb.Divider>
+                    }
+                </Fragment>
             )}
-        </div>
+        </Breadcrumb>
     );
 }

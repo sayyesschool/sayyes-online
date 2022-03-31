@@ -1,42 +1,36 @@
-import 'moment/locale/ru';
-
 import MonthView from './MonthView';
 import WeekView from './WeekView';
+import WeekTimeView from './WeekTimeView';
 
 import './index.scss';
+
+const ComponentByView = {
+    'week': WeekView,
+    'week-time': WeekTimeView,
+    'month': MonthView
+};
 
 function Calendar({
     value,
     view = 'week',
-    events = [],
+    events,
     ...props
 }) {
-    const eventsByDate = events.reduce((map, event) => {
-        return map.set(event.date.toLocaleDateString(), event);
-    }, new Map());
+    const Component = ComponentByView[view];
 
-    if (view === 'week') {
-        return (
-            <WeekView
-                selectedDate={value}
-                eventsByDate={eventsByDate}
-                {...props}
-            />
-        );
-    }
+    if (!Component) return null;
 
-    if (view === 'month') {
-        return (
-            <MonthView
-                selectedDate={value}
-                eventsByDate={eventsByDate}
-                {...props}
-            />
-        );
-    }
+    return (
+        <Component
+            selectedDate={value}
+            events={events}
+            {...props}
+        />
+    );
 }
 
 Calendar.WeekView = WeekView;
+Calendar.WeekTimeView = WeekTimeView;
 Calendar.MonthView = MonthView;
 
-export { Calendar as default, WeekView, MonthView };
+export { Calendar as default, WeekView, WeekTimeView, MonthView };

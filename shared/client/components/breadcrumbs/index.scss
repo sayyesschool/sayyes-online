@@ -1,16 +1,7 @@
-@use '@material/typography';
-
-.breadcrumbs {
-    &__item {
-        & + &:before {
-            display: inline-block;
-            content: '›';
-            margin: 0 8px;
-        }
-
-        &:hover {
-            cursor: pointer;
-            text-decoration: underline;
+.ui-breadcrumb {
+    .ui-breadcrumb__divider {
+        .material-icons-round {
+            vertical-align: top;
         }
     }
 }

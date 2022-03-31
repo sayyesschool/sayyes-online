@@ -74,18 +74,18 @@ export const enrollmentReducer = createReducer(null, {
         ...state,
         lessons: state.lessons.concat(...action.data.filter(lesson => lesson.enrollment === state.id))
     }),
-    [createLesson]: (state, action) => state.id !== action.data.enrollment ? state : {
+    [createLesson]: (state, action) => (!state || state.id !== action.data.enrollment) ? state : {
         ...state,
         lessons: state.lessons.concat(action.data)
     },
-    [updateLesson]: (state, action) => state.id !== action.data.enrollment ? state : {
+    [updateLesson]: (state, action) => (!state || state?.id !== action.data.enrollment) ? state : {
         ...state,
         lessons: state.lessons.map(lesson => lesson.id !== action.data.id ? lesson : {
             ...lesson,
             ...action.data
         })
     },
-    [deleteLesson]: (state, action) => state.id !== action.data.enrollment ? state : {
+    [deleteLesson]: (state, action) => (!state || state?.id !== action.data.enrollment) ? state : {
         ...state,
         lessons: state.lessons.filter(lesson => lesson.id !== action.data.id)
     },

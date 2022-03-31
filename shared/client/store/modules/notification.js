@@ -1,7 +1,11 @@
 import { createAction, createReducer } from 'shared/store/utils';
 
 export const showNotification = createAction('SHOW_NOTIFICATION', data => ({
-    notification: { active: true, type: data.type, text: data.text }
+    notification: {
+        active: true,
+        type: data.type,
+        text: data.text
+    }
 }));
 
 export const hideNotification = createAction('HIDE_NOTIFICATION');
@@ -16,6 +20,15 @@ export default createReducer({
     type: '',
     text: ''
 }, {
-    [showNotification]: (state, action) => action.notification,
-    [hideNotification]: (state, action) => ({ ...state, active: false })
+    [showNotification]: (state, action) => ({
+        ...state,
+        active: true,
+        ...action.notification
+    }),
+
+    [hideNotification]: (state, action) => ({
+        ...state,
+        active: false,
+        ...action.notification
+    })
 });

@@ -1,0 +1,31 @@
+.page-section {
+    &.ui-segment {
+        padding: 0;
+        border: 1px solid rgba(0,0,0, .12);
+        border-radius: 4px;
+        box-shadow: none;
+    }
+
+    &__header {
+        padding: 8px 8px 8px 16px;
+
+        .ui-header {
+            margin: 0;
+
+            &__description {
+                font-size: 1rem;
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    &__content {
+        .ui-form {
+            padding: 8px 16px 16px;
+        }
+
+        > .text-editor {
+            border-top: 1px solid rgba(0,0,0,.12);
+        }
+    }
+}

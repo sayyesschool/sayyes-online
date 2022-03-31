@@ -7,7 +7,10 @@ function handleApiResponse(response) {
         delete response.ok;
         return response;
     } else {
-        throw new Error(response.error);
+        const error = new Error(response.error.message || response.error);
+        error.code = response.error?.code;
+
+        throw error;
     }
 }
 

@@ -1,9 +1,9 @@
 import { useCallback, useMemo } from 'react';
 import {
     Checkbox,
-    List, ListItem,
-    Radio
-} from 'mdc-react';
+    List,
+    RadioGroupItem
+} from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
 export default function ChoiceExerciseContent({
@@ -36,28 +36,28 @@ export default function ChoiceExerciseContent({
     return (
         <List element="div">
             {exercise.items.map(item =>
-                <ListItem
+                <List.Item
                     key={item.id}
-                    element="label"
+                    as="label"
                     className={classnames('choice-exercise-item', checked && {
                         'mdc-list-item--correct': item.correct,
                         'mdc-list-item--incorrect': !item.correct && isItemChosen(item)
                     })}
-                    leadingCheckbox={isMultiple &&
+                    media={isMultiple &&
                         <Checkbox
                             checked={state.includes(item.id)}
                             onChange={() => handleChange(item)}
                             disabled={checked}
                         />
                     }
-                    leadingRadio={!isMultiple &&
-                        <Radio
+                    content={item.text}
+                    endMedia={!isMultiple &&
+                        <RadioGroupItem
                             checked={item.id === state}
                             onChange={() => handleChange(item)}
                             disabled={checked}
                         />
                     }
-                    text={item.text}
                     activated={checked && (item.correct || isItemChosen(item))}
                 />
             )}

@@ -9,7 +9,7 @@ import './index.scss';
 
 export default forwardRef(TextEditor);
 
-const config = {
+const defaultConfig = {
     language: 'ru',
     mediaEmbed: {
         previewsInData: true
@@ -37,6 +37,7 @@ const config = {
 function TextEditor({
     value,
     defaultValue = value,
+    config,
     onChange = Function.prototype,
     ...props
 }, ref) {
@@ -50,7 +51,10 @@ function TextEditor({
                 ref={ref}
                 editor={ClassicEditor}
                 data={defaultValue}
-                config={config}
+                config={config ? {
+                    ...defaultConfig,
+                    ...config
+                } : defaultConfig}
                 onChange={handleChange}
                 {...props}
             />

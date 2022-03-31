@@ -1,35 +1,65 @@
-import {
-    Button,
-    Dialog
-} from 'mdc-react';
+import { cloneElement, useCallback, useEffect, useRef } from 'react';
+import { Dialog } from '@fluentui/react-northstar';
+
+import { useBoolean } from 'shared/hooks/state';
+import Icon from 'shared/components/material-icon';
 
 import './index.scss';
 
 export default function FormDialog({
-    title,
     open,
+    title,
+    content,
     submitButtonText = 'Сохранить',
-    children,
-    confirmation,
-    primaryActionDisabled,
+    children = content,
     form = children?.props.id,
     onClose,
-    onSubmit,
     ...props
 }) {
+    const onSubmitRef = useRef(children.props.onSubmit);
+
+    const [isSubmitting, toggleSubmitting] = useBoolean(false);
+
+    useEffect(() => {
+        if (!open) {
+            toggleSubmitting(false);
+        }
+    }, [open]);
+
+    useEffect(() => {
+        onSubmitRef.current = children.props.onSubmit;
+    }, [children.props.onSubmit]);
+
+    const handleSubmit = useCallback(event => {
+        toggleSubmitting(true);
+
+        onSubmitRef?.current(event);
+    }, []);
+
     return (
         <Dialog
             className="form-dialog"
-            title={title}
             open={open}
-            actions={[
-                <Button key="close" type="button" onClick={onClose}>Закрыть</Button>,
-                <Button key="submit" type="submit" form={form} outlined disabled={primaryActionDisabled} onClick={onSubmit}>{submitButtonText}</Button>
-            ]}
+            header={title}
+            headerAction={{
+                icon: <Icon>close</Icon>,
+                title: 'Закрыть',
+                onClick: onClose
+            }}
+            content={{
+                content: cloneElement(children, {
+                    onSubmit: handleSubmit
+                })
+            }}
+            confirmButton={{
+                type: 'submit',
+                form,
+                content: submitButtonText,
+                disabled: isSubmitting,
+                loading: isSubmitting
+            }}
             onClose={onClose}
             {...props}
-        >
-            {children}
-        </Dialog>
+        />
     );
 }

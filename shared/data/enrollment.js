@@ -20,74 +20,74 @@ const defaultEnrollment = {
 };
 
 const statusOptions = [
-    { key: 'null', value: '', text: '' },
+    { key: 'null', value: '', content: '' },
     ...Object.entries(constants.StatusLabel).map(([key, value]) => ({
         key,
         value: key,
-        text: value
+        content: value
     }))
 ];
 
 const domainOptions = [
-    { key: 'null', value: '', text: '' },
+    { key: 'null', value: '', content: '' },
     ...Object.entries(constants.DomainLabel).map(([key, value]) => ({
         key,
         value: key,
-        text: value
+        content: value
     }))
 ];
 
 const typeOptions = [
-    { key: 'null', value: '', text: '' },
+    { key: 'null', value: '', content: '' },
     ...Object.entries(constants.TypeLabel).map(([key, value]) => ({
         key,
         value: key,
-        text: value
+        content: value
     }))
 ];
 
 const formatOptions = [
-    { key: 'null', value: '', text: '' },
+    { key: 'null', value: '', content: '' },
     ...Object.entries(constants.FormatLabel).map(([key, value]) => ({
         key,
         value: key,
-        text: value
+        content: value
     }))
 ];
 
 const ageOptions = [
-    { key: 'null', value: '', text: '' },
+    { key: 'null', value: '', content: '' },
     ...Object.entries(constants.AgeLabel).map(([key, value]) => ({
         key,
         value: key,
-        text: value
+        content: value
     }))
 ];
 
 const levelOptions = [
-    { key: 'null', value: '', text: '' },
+    { key: 'null', value: '', content: '' },
     ...Object.entries(constants.LevelLabel).map(([key, value]) => ({
         key,
         value: key,
-        text: value
+        content: value
     }))
 ];
 
 const purposeOptions = [
-    { key: 'null', value: '', text: '' },
+    { key: 'null', value: '', content: '' },
     ...Object.entries(constants.PurposeLabel).map(([key, value]) => ({
         key,
         value: key,
-        text: value
+        content: value
     }))
 ];
 
 const teacherTypeOptions = [
-    { key: 'null', value: '', text: '' },
+    { key: 'null', value: '', content: '' },
     ...Object.entries(constants.TeacherTypeLabel).map(([key, value]) => ({
         key,
         value: key,
-        text: value
+        content: value
     }))
 ];
 

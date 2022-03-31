@@ -1,6 +1,6 @@
 import {
-    Select
-} from 'mdc-react';
+    FormDropdown
+} from '@fluentui/react-northstar';
 
 import timezones from 'shared/../data/timezones';
 
@@ -11,19 +11,15 @@ export default function TimeZoneSelect({
     ...props
 }) {
     return (
-        <Select
+        <FormDropdown
             name={name}
             label={label}
-            options={timezones.map(item => ({
+            items={timezones.map(item => ({
                 key: item.value,
                 value: item.value,
-                text: item.text
+                content: item.text
             }))}
-            menuProps={{
-                fullWidth: true,
-                style: { maxHeight: '300px' }
-            }}
-            filled
+            fluid
             {...props}
         />
     );

@@ -1,36 +1,24 @@
-import { forwardRef, useCallback } from 'react';
+import { forwardRef } from 'react';
+import { Form as FluentForm } from '@fluentui/react-northstar';
 
 export default forwardRef(Form);
 
 function Form({
     preventDefault = true,
-    novalidate = false,
     onSubmit = Function.prototype,
 
     children,
     ...props
 }, ref) {
-    const handleSubmit = useCallback(event => {
-        if (event && preventDefault) {
-            event.preventDefault();
-        }
-
-        if (novalidate || event.target.checkValidity()) {
-            onSubmit(event);
-        } else {
-            event.target.reportValidity();
-        }
-    }, [preventDefault, novalidate, onSubmit]);
-
     return (
-        <form
+        <FluentForm
             ref={ref}
-            onSubmit={handleSubmit}
+            onSubmit={onSubmit}
             {...props}
         >
             <input type="hidden" name="_csrf" value={window.CSRF_TOKEN} />
 
             {children}
-        </form>
+        </FluentForm>
     );
 }

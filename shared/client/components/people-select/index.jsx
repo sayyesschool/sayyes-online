@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import {
-    Select
-} from 'mdc-react';
+import { FormDropdown } from '@fluentui/react-northstar';
 
 import api from 'shared/services/api';
 
@@ -19,9 +17,12 @@ export default function PeopleSelect({ resolveUrl, ...props }) {
     };
 
     return (
-        <Select
+        <FormDropdown
             className="people-select"
-            filled
+            //placeholder="Start typing a name"
+            multiple
+            search
+            noResultsMessage="We couldn't find any matches."
             {...props}
         />
     );

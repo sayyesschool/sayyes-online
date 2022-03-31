@@ -1,12 +1,7 @@
 @use 'shared/styles/variables';
 
-.mdc-data-table {
+.ui-table {
     width: 100%;
-
-    &__header-cell,
-    &__cell {
-        height: 48px;
-    }
 
     &__cell {
         a {
@@ -15,6 +10,10 @@
             &:hover {
                 text-decoration: underline;
             }
+        }
+
+        &--actions {
+            justify-content: flex-end;
         }
     }
 }

@@ -6,13 +6,13 @@ const notificationMiddleware = store => next => action => {
             type: 'SHOW_NOTIFICATION',
             notification: {
                 active: true,
-                type: 'info',
+                type: action.type || 'success',
                 text: action.message
             }
         });
     } else if (action.error) {
         next({ type: 'HIDE_NOTIFICATION' });
-        
+
         next({
             type: 'SHOW_NOTIFICATION',
             notification: {

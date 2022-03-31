@@ -1,81 +1,144 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
 import {
-    IconButton,
-    TextField,
-    Typography
-} from 'mdc-react';
+    Button,
+    Card,
+    FormFieldCustom, FormLabel,
+    Image,
+    Input
+} from '@fluentui/react-northstar';
 
-export default forwardRef(ImageField);
+import storage from 'shared/services/storage';
+import Icon from 'shared/components/material-icon';
 
 import './index.scss';
 
+export default forwardRef(ImageField);
+
+const defaultValue = {
+    src: '',
+    alt: ''
+};
+
 function ImageField({
-    name = 'file',
+    name,
     label,
     accept = 'image/jpeg,image/png,image/jpeg',
-    url,
-    caption,
+    value = defaultValue,
+    src = value.src,
+    alt: _alt = value.alt,
+    error,
+    errorMessage,
+    onChange,
     ...props
 }, ref) {
-    const inputRef = useRef();
-    const [file, setFile] = useState();
+    const fileInputRef = useRef();
+    const altInputRef = useRef();
+
+    const [alt, setAlt] = useState(_alt);
 
     useImperativeHandle(ref, () => ({
-        get input() { return inputRef.current; },
-        reset: () => setFile(undefined)
+        get input() { return fileInputRef.current; },
+        get file() { return fileInputRef.current.files[0]; },
+        reset: () => fileInputRef.current.reset()
     }));
+
+    const handleAdd = useCallback(() => {
+        fileInputRef.current.click();
+    }, []);
 
     const handleChange = useCallback(event => {
         const file = event.target.files[0];
 
         if (file) {
-            const url = URL.createObjectURL(file);
-            file.url = url;
-
-            setFile(file);
+            storage.upload(file, {
+                path: 'courses/foo/images/'
+            }).then(response => {
+                onChange(null, {
+                    name,
+                    value: {
+                        src: response.data.url,
+                        alt: altInputRef.current.value
+                    }
+                });
+            }).catch(console.error);
         }
-    }, []);
+    }, [name]);
 
-    const handleClick = useCallback(() => {
-        inputRef.current.click();
-    }, []);
+    const handleDelete = useCallback(() => {
+        const path = new URL(src).pathname.split('/').slice(2).join('/');
+
+        storage.delete(path)
+            .then(() => {
+                onChange(null, {
+                    name,
+                    value: undefined
+                });
+            })
+            .catch(console.error);
+    }, [name, src]);
 
     return (
-        <div className="image-field">
+        <FormFieldCustom className="image-field" {...props}>
             <input
-                ref={inputRef}
+                ref={fileInputRef}
                 type="file"
                 name={name}
                 accept={accept}
                 onChange={handleChange}
-                {...props}
             />
 
-            <TextField
-                label={label}
-                defaultValue={caption}
-                outlined
-                readOnly
-                trailingIcon={
-                    <IconButton
+            {label &&
+                <FormLabel>
+                    {label}
+
+                    <Button
                         type="button"
-                        icon="insert_photo"
-                        onClick={handleClick}
+                        icon={<Icon>add</Icon>}
+                        iconOnly
+                        text
+                        onClick={handleAdd}
                     />
-                }
-            />
+                </FormLabel>
+            }
 
-            <figure className="file-preview">
-                <img src={url || file?.url} alt={caption} />
+            {src &&
+                <Card compact ghost>
+                    <Card.TopControls>
+                        <Button
+                            type="button"
+                            icon={<Icon>edit</Icon>}
+                            iconOnly
+                            text
+                            onClick={handleAdd}
+                        />
 
-                {file &&
-                    <figcaption className="file-meta">
-                        <Typography type="caption">Имя: <strong>{file.name}</strong></Typography>
+                        <Button
+                            type="button"
+                            icon={<Icon>delete</Icon>}
+                            iconOnly
+                            text
+                            onClick={handleDelete}
+                        />
+                    </Card.TopControls>
 
-                        <Typography type="caption">Размер: <strong>{Math.ceil(file.size / 1000)} КБ</strong></Typography>
-                    </figcaption>
-                }
-            </figure>
-        </div>
+                    <Card.Preview fitted>
+                        <Image
+                            src={src}
+                            alt={alt}
+                            fluid
+                        />
+                    </Card.Preview>
+
+                    <Card.Footer>
+                        <Input
+                            ref={altInputRef}
+                            label="Описание"
+                            labelPosition="inside"
+                            fluid
+                        />
+                    </Card.Footer>
+                </Card>
+            }
+        </FormFieldCustom>
     );
 }

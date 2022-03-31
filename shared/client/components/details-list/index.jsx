@@ -1,6 +1,8 @@
 import {
     List
-} from 'mdc-react';
+} from '@fluentui/react-northstar';
+
+import MaterialIcon from 'shared/components/material-icon';
 
 import './index.scss';
 
@@ -10,10 +12,10 @@ export default function DetailsList({ items = [], children }) {
             {items.filter(item => item).map(item =>
                 <List.Item
                     key={item.key}
-                    icon={item.icon}
-                    primaryText={item.primaryText || '[Не указано]'}
-                    secondaryText={item.secondaryText}
-                    meta={item.meta}
+                    icon={<MaterialIcon icon={item.icon} />}
+                    header={item.primaryText || '[Не указано]'}
+                    content={item.secondaryText}
+                    contentMedia={item.meta}
                 />
             )}
 

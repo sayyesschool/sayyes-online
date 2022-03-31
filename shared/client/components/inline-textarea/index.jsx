@@ -1,4 +1,5 @@
 import { forwardRef, useCallback, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
+import { TextArea } from '@fluentui/react-northstar';
 
 import './index.scss';
 
@@ -16,7 +17,7 @@ export default forwardRef(function InlineTextarea({ onChange = Function.prototyp
 
         function setHeight() {
             element.style.height = '36px';
-            element.style.height = `${element.scrollHeight}px`;
+            element.style.height = `${element.scrollHeight + 3}px`;
         }
 
         setHeight();
@@ -33,7 +34,7 @@ export default forwardRef(function InlineTextarea({ onChange = Function.prototyp
     }, [onChange]);
 
     return (
-        <textarea
+        <TextArea
             ref={elementRef}
             className="inline-textarea"
             value={value}

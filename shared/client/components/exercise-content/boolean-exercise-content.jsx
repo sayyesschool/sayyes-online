@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import {
-    List, ListItem,
-    Switch
-} from 'mdc-react';
+    Checkbox,
+    List
+} from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
 export default function BooleanExerciseContent({ exercise, checked, state = {}, setState }) {
@@ -35,14 +35,14 @@ function BooleanExerciseItem({ item, selected, checked, onChange }) {
     });
 
     return (
-        <ListItem
+        <List.Item
             className={classNames}
-            text={item.text}
-            meta={
-                <Switch
-                    key={item.id}
-                    selected={selected}
-                    disabled={checked}
+            content={item.text}
+            contentMedia={
+                <Checkbox
+                    checked={selected}
+                    disabled={selected}
+                    toggle
                     onChange={() => onChange(item, !selected)}
                 />
             }

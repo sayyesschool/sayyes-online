@@ -1,4 +1,4 @@
-import { uploadFile, deleteFile } from 'shared/services/file';
+import { uploadFile, deleteFile } from 'shared/services/storage';
 
 const fileMiddleware = store => next => action => {
     if (!action.request?.body?.file) return next(action);

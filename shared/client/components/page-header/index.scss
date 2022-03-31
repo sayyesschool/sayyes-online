@@ -1,25 +1,24 @@
-@use '@material/button';
-@use '@material/chips';
-@use '@material/tab';
-@use '@material/tab-indicator';
-@use '@material/textfield';
-@use '@material/textfield/icon';
-@use '@material/theme';
 @use 'shared/styles/variables';
 @use 'shared/styles/mixins' as *;
-
-$fill-color: variables.$primary-color;
-$ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
 
 .page-header {
     position: relative;
     overflow: hidden;
 
+    .ui-header {
+        margin: 0;
+
+        &__description {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+    }
+
     &__inner {
-        max-width: 1024px;
+        max-width: 1280px;
         position: relative;
         margin: 0 auto;
-        padding: 2rem 1rem 1rem;
+        padding: 1rem;
 
         @include breakpoint(lt-md) {
             padding: 1rem;
@@ -45,80 +44,25 @@ $ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
         }
     }
 
-    &__overline {
-        line-height: 1.5;
-    }
-
-    &__graphic {
-        margin-bottom: 1rem;
-        border: 3px solid variables.$secondary-color;
-    }
-
     &__breadcrumbs {
-        margin-bottom: .5rem;
-    }
-
-    .mdc-icon,
-    .mdc-typography {
-        @include theme.property(color, $ink-color);
-    }
-
-    .mdc-button {
-        &.mdc-button--outlined {
-            @include button.container-fill-color($fill-color);
-            @include button.icon-color($ink-color);
-            @include button.ink-color($ink-color);
-            @include button.outline-color($ink-color);
+        margin-bottom: 8px;
+        
+        .ui-breadcrumb__item:first-of-type {
+            padding-left: 0;
         }
     }
 
-    .mdc-chip-set {
-        justify-content: center;
-    }
-
-    .mdc-chip {
-        background-color: transparent;
-        @include chips.text-label-color($ink-color);
-        @include chips.selected-text-label-color($ink-color);
-        @include chips.icon-color($ink-color);
-    }
-
-    .mdc-tab {
-        @include tab.text-label-color($ink-color);
-        @include tab.icon-color($ink-color);
-
-        .mdc-tab-indicator {
-            @include tab-indicator.underline-color($ink-color);
-            @include tab-indicator.icon-color($ink-color);
-        }
-
-        .mdc-tab__ripple {
-            @include tab.states-color($ink-color);
-        }
-    }
-
-    .mdc-text-field {    
-        @include textfield.height(48px);
-        @include textfield.ink-color(rgba(255, 255, 255));
-        @include textfield.placeholder-color(rgba(255, 255, 255.6));
-        @include textfield.caret-color(rgba(255, 255, 255.8));
-        @include textfield.fill-color(rgba(255, 255, 255, .1));
-        @include icon.leading-icon-color(rgba(255, 255, 255.8));
-        @include icon.trailing-icon-color(rgba(255, 255, 255.8));
-    }
-
-    .icon-block {
-        .icon-block__icon {
-            color: white;
-        }
-
-        .icon-block__title {
-            @include theme.property(color, $ink-color);
-        }
-
-        .icon-block__subtitle {
-            @include theme.property(color, theme.accessible-ink-color(variables.$primary-color, secondary));
-        }
+    &__overline {
+        font-size: 0.75rem;
+        line-height: 2rem;
+        font-weight: 500;
+        letter-spacing: 0.1666666667em;
+        text-decoration: none;
+        text-transform: uppercase;
+        color: rgba(0, 0, 0, 0.54);
+        margin: 0;
+        display: block;
+        line-height: normal;
     }
 
     &.page-header--pull-content {

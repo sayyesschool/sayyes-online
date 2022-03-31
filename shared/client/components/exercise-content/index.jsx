@@ -2,8 +2,9 @@ import { createElement, forwardRef, useImperativeHandle, useState } from 'react'
 import classnames from 'classnames';
 
 import AudioContent from 'shared/components/audio-content';
-import VideoContent from 'shared/components/video-content';
+import ImagesContent from 'shared/components/images-content';
 import TextContent from 'shared/components/text-content';
+import VideoContent from 'shared/components/video-content';
 
 import BooleanExerciseContent from './boolean-exercise-content';
 import ChoiceExerciseContent from './choice-exercise-content';
@@ -34,11 +35,10 @@ export default forwardRef(function ExerciseContent({ exercise, checked }, ref) {
 
     return (
         <article className={classNames}>
-            {exercise.image &&
-                <img
-                    className="exercise-image"
-                    src={exercise.imageUrl}
-                    alt=""
+            {exercise.images?.length > 0 &&
+                <ImagesContent
+                    className="exercise-images"
+                    images={exercise.images}
                 />
             }
 

@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+
 import TextEditor from 'shared/components/text-editor';
 
 export default function EssayExerciseContent({ exercise, state, setState }) {

@@ -1,16 +1,22 @@
 form {
+    &.ui-form {
+        display: block;
+
+        .text-editor {
+            border: 1px solid rgba(0,0,0,.12);
+            border-radius: 4px;
+        }
+    }
+
     .mdc-layout-grid {
         padding: 0;
     }
 
-    .mdc-text-field {
-        width: 100%;
+    .mdc-text-field
 
-        input {
-            &::-webkit-calendar-picker-indicator {
-                display: inline-block;
-            }
-        }
+    .mdc-text-field,
+    .mdc-select {
+        width: 100%;
     }
 
     .mdc-text-field:not(:only-child):not(:first-child),

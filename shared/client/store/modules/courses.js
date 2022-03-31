@@ -234,8 +234,8 @@ export const actions = {
 export const coursesReducer = createReducer(null, {
     [getCourses]: (state, action) => action.data,
     [createCourse]: (state, action) => state ? [...state, action.data] : [action.data],
-    [updateCourse]: (state, action) => state.map(course => course.id === action.data.course.id ? ({ ...course, ...action.data.course }) : course),
-    [deleteCourse]: (state, action) => state.filter(course => course.id !== action.data.courseId)
+    [updateCourse]: (state, action) => state.map(course => course.id === action.data.id ? ({ ...course, ...action.data }) : course),
+    [deleteCourse]: (state, action) => state.filter(course => course.id !== action.data.id)
 });
 
 export const courseReducer = createReducer(null, {
@@ -359,16 +359,21 @@ export const courseReducer = createReducer(null, {
     }),
 });
 
+function toMap(getKey) {
+    return array => array.reduce((map, item) => map.set(getKey(item), item), new Map());
+}
+
+const mapById = toMap(item => item.id);
+const mapBySlug = toMap(item => item.slug);
+
 export function mapCourse(course) {
     if (!course) return;
 
-    course.audiosById = course.audios.reduce((map, audio) => map.set(audio.id, audio), new Map());
-    course.videosById = course.videos.reduce((map, video) => map.set(video.id, video), new Map());
-    course.unitsById = course.units.reduce((map, unit) => map.set(unit.id, unit), new Map());
-    course.unitsBySlug = course.units.reduce((map, unit) => map.set(unit.slug, unit), new Map());
-    course.lessonsById = course.lessons.reduce((map, lesson) => map.set(lesson.id, lesson), new Map());
-    course.lessonsBySlug = course.lessons.reduce((map, lesson) => map.set(lesson.slug, lesson), new Map());
-    course.exercisesById = course.exercises.reduce((map, exercise) => map.set(exercise.id, exercise), new Map());
+    course.unitsById = mapById(course.units);
+    course.unitsBySlug = mapBySlug(course.units);
+    course.lessonsById = mapById(course.lessons);
+    course.lessonsBySlug = mapBySlug(course.lessons);
+    course.exercisesById = mapById(course.exercises);
 
     // course.units.forEach(unit => {
     //     unit.lessons = unit._lessons.map(id => {
@@ -396,10 +401,6 @@ export function mapCourse(course) {
 
     course.exercises.forEach(exercise => {
         exercise.lesson = course.lessonsById.get(exercise._lesson);
-
-        if (typeof exercise.audio === 'string') {
-            exercise.audio = course.audiosById.get(exercise.audio);
-        }
     });
 
     return course;

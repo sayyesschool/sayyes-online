@@ -1,0 +1,9 @@
+.images-content {
+    display: flex;
+    justify-content: center;
+
+    > .ui-image {
+        width: auto;
+        max-width: 100%;
+    }
+}

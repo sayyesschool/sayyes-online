@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+    Button,
+    Dropdown,
+    Status,
+    Text
+} from '@fluentui/react-northstar';
 import moment from 'moment';
 import classnames from 'classnames';
-import {
-    Badge,
-    DataTable,
-    Icon,
-    IconButton,
-    Select,
-    Typography
-} from 'mdc-react';
+
+import Icon from 'shared/components/material-icon';
 
 import { getMonthData } from './utils';
 
@@ -60,59 +60,47 @@ export default function MonthView({
     return (
         <div className="calendar calendar--month-view">
             <header className="calendar__header">
-                <IconButton onClick={handlePrevMonthButtonClick}>
-                    <Icon>chevron_left</Icon>
-                </IconButton>
+                <Button
+                    icon={<Icon>chevron_left</Icon>}
+                    iconOnly
+                    onClick={handlePrevMonthButtonClick}
+                />
 
-                <Select
+                <Dropdown
                     className="calendar__select calendar__month-select"
-                    value={month}
-                    onChange={handleMonthChange}
-                    options={monthNames.map((text, index) => ({ key: index, value: index, text }))}
-                    filled
-                    menuProps={{
-                        fullWidth: true,
-                        listProps: {
-                            dense: true
-                        }
-                    }}
+                    items={monthNames.map((text, index) => ({ key: index, value: index, content: text }))}
+                    placeholder="Select your hero"
+                    checkable
                 />
 
-                <Select
+                <Dropdown
                     className="calendar__select calendar__year-select"
-                    value={year}
-                    onChange={handleYearChange}
-                    options={years.map(year => ({ key: year, value: year, text: year }))}
-                    filled
-                    menuProps={{
-                        fullWidth: true,
-                        listProps: {
-                            dense: true
-                        }
-                    }}
+                    items={years.map(year => ({ key: year, value: year, content: year }))}
+                    placeholder="Select your hero"
+                    checkable
                 />
 
-                <IconButton onClick={handleNextMonthButtonClick}>
-                    <Icon>chevron_right</Icon>
-                </IconButton>
+                <Button
+                    icon={<Icon>chevron_right</Icon>}
+                    iconOnly
+                    onClick={handleNextMonthButtonClick}
+                />
             </header>
 
-            <DataTable>
-                <DataTable.Header>
-                    <DataTable.HeaderRow>
-                        {weekdayNames.map(name =>
-                            <DataTable.HeaderCell key={name}>
-                                <Typography type="overline">{name}</Typography>
-                            </DataTable.HeaderCell>
-                        )}
-                    </DataTable.HeaderRow>
-                </DataTable.Header>
+            <article>
+                <header>
+                    {weekdayNames.map(name =>
+                        <div key={name}>
+                            <Text>{name}</Text>
+                        </div>
+                    )}
+                </header>
 
-                <DataTable.Content>
+                <section>
                     {data.map((week, index) =>
-                        <DataTable.Row key={index} className="calendar__week">
+                        <div key={index} className="calendar__week">
                             {week.map((date, index) =>
-                                <DataTable.Cell
+                                <div
                                     className={classnames('calendar__day', date && {
                                         'calendar__day--today': date.isSame(todayRef.current, 'day'),
                                         'calendar__day--selected': selectedDate && date.isSame(selectedDate, 'day'),
@@ -122,12 +110,12 @@ export default function MonthView({
                                     {date &&
                                         <div className="calendar__day-label">{date.date()}</div>
                                     }
-                                </DataTable.Cell>
+                                </div>
                             )}
-                        </DataTable.Row>
+                        </div>
                     )}
-                </DataTable.Content>
-            </DataTable>
+                </section>
+            </article>
         </div>
     );
 }
@@ -145,9 +133,9 @@ function CalendarDay({ date, today, selected, events, onClick }) {
 
     return (
         <div className={classNames} >
-            <Badge value={events?.length} noBackground>
+            <Status value={events?.length} noBackground>
                 { }
-            </Badge>
+            </Status>
         </div>
     );
 }

@@ -1,10 +1,13 @@
 import { useCallback } from 'react';
 import {
-    IconButton,
+    Button,
     List
-} from 'mdc-react';
+} from '@fluentui/react-northstar';
 
+import Icon from 'shared/components/material-icon';
 import { formatDuration } from 'shared/utils/format';
+
+import './index.scss';
 
 export default function AudioList({ audios, selectedAudio, onSelect, onDelete }) {
     return (
@@ -35,11 +38,13 @@ function AudioListItem({ audio, playing, onClick, onDelete, ...props }) {
 
     return (
         <List.Item
-            primaryText={audio.title}
-            secondaryText={formatDuration(audio.duration)}
-            end={
-                <IconButton
-                    icon="delete"
+            header={audio.title}
+            content={formatDuration(audio.duration)}
+            endMedia={
+                <Button
+                    icon={<Icon>delete</Icon>}
+                    iconOnly
+                    text
                     onClickCapture={handleDelete}
                 />
             }

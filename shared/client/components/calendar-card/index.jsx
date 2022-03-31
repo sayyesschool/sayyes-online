@@ -3,7 +3,7 @@ import {
     Card,
     Icon,
     SegmentedButton
-} from 'mdc-react';
+} from '@fluentui/react-northstar';
 
 import Calendar from 'shared/components/calendar';
 

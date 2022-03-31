@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import {
     Avatar,
     List
-} from 'mdc-react';
+} from '@fluentui/react-northstar';
 
 import './index.scss';
 

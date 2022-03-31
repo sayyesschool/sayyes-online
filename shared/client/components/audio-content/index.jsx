@@ -1,11 +1,14 @@
 import classnames from 'classnames';
 import {
-    Card,
-    IconButton,
-    Typography
-} from 'mdc-react';
+    Box,
+    Button,
+    Flex,
+    Segment,
+    Text
+} from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
+import Icon from 'shared/components/material-icon';
 import AudioPlayer from 'shared/components/audio-player';
 
 import './index.scss';
@@ -16,30 +19,26 @@ export default function AudioContent({ audio, className, ...props }) {
     const classNames = classnames('audio-content', className);
 
     return (
-        <section className={classNames} {...props}>
-            <Card outlined>
-                <Card.Section primary>
-                    <AudioPlayer
-                        src={audio.url}
-                        width="100%"
+        <Segment as="section" className={classNames} {...props}>
+            <Flex space="between">
+                <AudioPlayer
+                    src={audio.src}
+                    width="100%"
+                />
+
+                {audio.script &&
+                    <Button
+                        icon={<Icon>{isScriptOpen ? 'subtitles_off' : 'subtitles'}</Icon>}
+                        iconOnly
+                        text
+                        onClick={toggleScriptOpen}
                     />
-
-                    {audio.script &&
-                        <IconButton
-                            icon={isScriptOpen ? 'subtitles_off' : 'subtitles'}
-                            onClick={toggleScriptOpen}
-                        />
-                    }
-                </Card.Section>
-
-                {audio.script && isScriptOpen &&
-                    <Card.Section secondary>
-                        <Typography type="overline" noMargin>Скрипт</Typography>
-
-                        <article className="audio-script" dangerouslySetInnerHTML={{ __html: audio.script }} />
-                    </Card.Section>
                 }
-            </Card>
-        </section>
+            </Flex>
+
+            {audio.script && isScriptOpen &&
+                <Text as="article" className="audio-script" dangerouslySetInnerHTML={{ __html: audio.script }} />
+            }
+        </Segment>
     );
 }

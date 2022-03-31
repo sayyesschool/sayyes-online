@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import {
-    Typography
-} from 'mdc-react';
+    Text
+} from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
 import Input from 'shared/components/inline-input';
@@ -38,7 +38,7 @@ function InputExerciseItem({ item, value, checked, onChange }) {
     return (
         <div className={classNames}>
             {item.text &&
-                <Typography>
+                <Text as="p">
                     {item.text}
 
                     {item.inline &&
@@ -48,7 +48,7 @@ function InputExerciseItem({ item, value, checked, onChange }) {
                             onChange={handleChange}
                         />
                     }
-                </Typography>
+                </Text>
             }
 
             {!item.inline &&

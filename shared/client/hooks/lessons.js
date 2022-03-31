@@ -4,7 +4,7 @@ import { useStore } from 'shared/hooks/store';
 import { actions as lessonActions } from 'shared/store/modules/lessons';
 
 export function useLessons(query) {
-    const [lessons, actions] = useStore(state => state.lessons, lessonActions);
+    const [lessons, actions] = useStore(state => state.lessons?.list, lessonActions);
 
     useEffect(() => {
         if (!lessons) {

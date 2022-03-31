@@ -1,11 +1,9 @@
 import { useCallback, useRef } from 'react';
 import {
-    LayoutGrid,
-    TextField
-} from 'mdc-react';
+    Form, FormInput
+} from '@fluentui/react-northstar';
 
 import useForm from 'shared/hooks/form';
-import Form from 'shared/components/form';
 import AudioField from 'shared/components/audio-field';
 import TextEditor from 'shared/components/text-editor';
 
@@ -29,7 +27,7 @@ export default function AudioForm({ audio = {}, path, onSubmit, ...props }) {
         getData(data => {
             const file = fileInputRef.current.file;
             const script = textEditorRef.current.editor.getData();
-            console.log(script);
+
             if (file) {
                 file.path = path;
             }
@@ -44,43 +42,37 @@ export default function AudioForm({ audio = {}, path, onSubmit, ...props }) {
 
     return (
         <Form className="audio-form" onSubmit={handleSubmit} {...props}>
-            <LayoutGrid>
-                <LayoutGrid.Cell span="4">
-                    <TextField
-                        name="title"
-                        label="Название"
-                        value={data.title}
-                        outlined
-                        onChange={handleChange}
-                    />
+            <FormInput
+                name="title"
+                label="Название"
+                value={data.title}
+                outlined
+                onChange={handleChange}
+            />
 
-                    <TextField
-                        type="number"
-                        name="duration"
-                        label="Продолжительность"
-                        value={data.duration}
-                        suffix="сек."
-                        min="0"
-                        outlined
-                        onChange={handleChange}
-                    />
+            <FormInput
+                type="number"
+                name="duration"
+                label="Продолжительность"
+                value={data.duration}
+                suffix="сек."
+                min="0"
+                outlined
+                onChange={handleChange}
+            />
 
-                    <AudioField
-                        ref={fileInputRef}
-                        name="file"
-                        label="Файл"
-                        filename={data.filename}
-                        url={audio.url}
-                    />
-                </LayoutGrid.Cell>
+            <AudioField
+                ref={fileInputRef}
+                name="file"
+                label="Файл"
+                filename={data.filename}
+                url={audio.url}
+            />
 
-                <LayoutGrid.Cell span="8">
-                    <TextEditor
-                        ref={textEditorRef}
-                        defaultValue={data.script}
-                    />
-                </LayoutGrid.Cell>
-            </LayoutGrid>
+            <TextEditor
+                ref={textEditorRef}
+                defaultValue={data.script}
+            />
         </Form>
     );
 }

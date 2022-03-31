@@ -38,7 +38,7 @@ export function parseHTML(string) {
     const parser = new DOMParser();
     const html = transformPlaceholders(string);
     const doc = parser.parseFromString(html, 'text/html');
-
+    console.log(doc);
     return Array.from(doc.body.children).map(elementToObject);
 }
 
@@ -63,6 +63,12 @@ function transformPlaceholders(string) {
 
 function elementToObject(element) {
     const type = element.nodeName.toLowerCase();
+
+    const style = element.style?.length > 0 ?
+        Object.entries(element.style).reduce((result, [key, value]) => {
+            if (isNaN(key) && value) result[key] = value;
+            return result;
+        }, {}) : undefined;
 
     if (type === '#text') {
         return element.textContent === '\n' ? undefined : element.textContent;
@@ -99,19 +105,25 @@ function elementToObject(element) {
     } else if (element.childNodes.length === 0) {
         return {
             type,
-            props: {},
+            props: {
+                style
+            },
             children: element.textContent || undefined
         };
     } else if (element.childNodes.length === 1) {
         return {
             type,
-            props: {},
+            props: {
+                style
+            },
             children: elementToObject(element.childNodes[0])
         };
     } else {
         return {
             type,
-            props: {},
+            props: {
+                style
+            },
             children: Array.from(element.childNodes).map(child => elementToObject(child)).filter(child => child !== undefined)
         };
     }

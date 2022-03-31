@@ -2,14 +2,53 @@ import moment from 'moment';
 
 const DAYS_IN_WEEK = 7;
 
-export function getWeekData(date) {
-    const result = [];
+export function getEventsByDate(events = []) {
+    return events.reduce((map, event) => {
+        const key = new Date(event.date.getFullYear(), event.date.getMonth(), event.date.getDate()).valueOf();
+
+        if (map.has(key)) {
+            map.get(key)?.push(event);
+        } else {
+            map.set(key, [event]);
+        }
+
+        return map;
+    }, new Map());
+}
+
+export function getEventsByHour(events = []) {
+    return events.reduce((map, event) => {
+        const key = event.date.getHours();
+
+        if (map.has(key)) {
+            map.get(key)?.push(event);
+        } else {
+            map.set(key, [event]);
+        }
+
+        return map;
+    }, new Map());
+}
+
+export function getWeekData(date, events) {
+    const today = new Date();
+    const eventsByDate = getEventsByDate(events);
+    const weekData = [];
 
     for (let i = 0; i < DAYS_IN_WEEK; i++) {
-        result[i] = date.clone().weekday(i);
+        const data = {};
+        const dayDate = date.clone().weekday(i).hours(0).minutes(0).seconds(0).milliseconds(0);
+
+        data.date = dayDate;
+        data.weekday = dayDate.weekday();
+        data.isToday = dayDate.isSame(today, 'date');
+        data.label = `${dayDate.format('dd')}, ${dayDate.date()}`;
+        data.eventsByHour = getEventsByHour(eventsByDate.get(dayDate.valueOf()));
+
+        weekData[i] = data;
     }
 
-    return result;
+    return weekData;
 }
 
 export function getWeekLabel(date) {

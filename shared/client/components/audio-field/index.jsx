@@ -1,10 +1,12 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import {
-    IconButton,
-    TextField
-} from 'mdc-react';
+    Button,
+    Input,
+    Text
+} from '@fluentui/react-northstar';
 
 import AudioPlayer from 'shared/components/audio-player';
+import Icon from 'shared/components/material-icon';
 
 import './index.scss';
 
@@ -60,22 +62,25 @@ function AudioField({
                 {...props}
             />
 
-            <TextField
+            <Input
                 value={file.name}
                 label={label}
-                trailingIcon={
-                    <IconButton
+                icon={
+                    <Button
                         type="button"
-                        icon="upload_file"
+                        icon={<Icon>upload_file</Icon>}
                         onClick={handleClick}
                     />
                 }
-                helperText={file.size && `Размер: ${Math.ceil(file.size / 1000)} КБ`}
-                outlined
+                fluid
                 readOnly
             />
 
-            {file.url &&
+            {file?.size &&
+                <Text size="smallest">Размер: {Math.ceil(file.size / 1000)} КБ</Text>
+            }
+
+            {file?.url &&
                 <AudioPlayer src={file.url} />
             }
         </div>

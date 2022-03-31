@@ -1,17 +1,16 @@
-import { cloneElement, isValidElement } from 'react';
 import {
-    Button,
-    Icon,
-    IconButton,
-    Typography
-} from 'mdc-react';
+    Header,
+    Text,
+    Toolbar
+} from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
 import Breadcrumbs from 'shared/components/breadcrumbs';
+import MaterialIcon from 'shared/components/material-icon';
 
 import './index.scss';
 
-export default function PageHeader({ title, subtitle, overline, graphic, breadcrumbs, actions, className, pullContent, withTabs, children }) {
+export default function PageHeader({ overline, title, description, breadcrumbs, menu, actions, className, pullContent, withTabs, children }) {
     const classNames = classnames('page-header', {
         'page-header--pull-content': pullContent,
         'page-header--with-tabs': withTabs
@@ -23,51 +22,35 @@ export default function PageHeader({ title, subtitle, overline, graphic, breadcr
                 <div className="page-header__row">
                     <div className="page-header__section page-header__section--main">
                         {breadcrumbs?.length > 0 &&
-                            <Breadcrumbs className="page-header__breadcrumbs" items={breadcrumbs} />
+                            <Breadcrumbs
+                                className="page-header__breadcrumbs"
+                                items={breadcrumbs}
+                            />
                         }
 
-                        {overline && (isValidElement(overline) ?
-                            cloneElement(overline, { className: 'page-header__overline' })
-                            :
-                            <Typography element="div" className="page-header__overline" type="overline">{overline}</Typography>
-                        )}
-
-                        {graphic &&
-                            cloneElement(graphic, { className: 'page-header__graphic' })
+                        {overline &&
+                            <Text className="page-header__overline">{overline}</Text>
                         }
 
-                        {title && (isValidElement(title) ?
-                            cloneElement(title, { className: 'page-header__title' })
-                            :
-                            <Typography className="page-header__title" type="headline4" noMargin>{title}</Typography>
-                        )}
+                        {title &&
+                            <Header
+                                as="h1"
+                                content={title}
+                                description={description}
+                            />
+                        }
 
-                        {subtitle && (isValidElement(subtitle) ?
-                            cloneElement(subtitle, { className: 'page-header__subtitle' })
-                            :
-                            <Typography className="page-header__subtitle" type="headline6" noMargin>{subtitle}</Typography>
-                        )}
+                        {menu}
                     </div>
 
                     {actions &&
                         <div className="page-header__section page-header__section--actions">
-                            {actions.filter(action => Boolean(action)).map(action =>
-                                isValidElement(action) ?
-                                    cloneElement(action) :
-                                    (action.label ?
-                                        <Button
-                                            key={action.key}
-                                            icon={action.icon && <Icon>{action.icon}</Icon>}
-                                            {...action}
-                                        />
-                                        :
-                                        <IconButton
-                                            key={action.key}
-                                            icon={<Icon>{action.icon}</Icon>}
-                                            {...action}
-                                        />
-                                    )
-                            )}
+                            <Toolbar
+                                items={actions.filter(action => Boolean(action)).map(action => ({
+                                    ...action,
+                                    icon: action.icon && <MaterialIcon icon={action.icon} />
+                                }))}
+                            />
                         </div>
                     }
                 </div>
