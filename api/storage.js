@@ -1,4 +1,4 @@
-const { extname } = require('path');
+const { basename, extname, dirname } = require('path');
 const { Router } = require('express');
 const upload = require('multer')();
 const { v4: uuidv4 } = require('uuid');
@@ -6,6 +6,14 @@ const { v4: uuidv4 } = require('uuid');
 const router = Router();
 
 const validFolders = ['images'];
+
+function isFilename(path) {
+    return basename(path).includes('.');
+}
+
+function getUniqueFilename(file) {
+    return uuidv4() + extname(file.originalname);
+}
 
 module.exports = ({ services: { Storage } }) => {
     router.param('folder', (req, res, next, folder) => {
@@ -16,29 +24,40 @@ module.exports = ({ services: { Storage } }) => {
         next();
     });
 
-    router.post('/:folder', upload.single('file'), (req, res, next) => {
+    router.post('/*', upload.single('file'), (req, res, next) => {
         const file = req.file;
-        const filename = uuidv4() + extname(file.originalname); //file.originalname;
-        const key = `${req.params.folder}/${filename}`;
+        const path = (isFilename(req.path) ? dirname(req.path) : req.path).slice(1);
+        const filename = isFilename(req.path) ? basename(req.path) : getUniqueFilename(file);
+        const key = `${path}${filename}`;
+
+        console.log('PATH', path);
+        console.log('FILENAME', filename);
+        console.log('KEY', key);
 
         Storage.put(key, file.buffer)
             .then(response => {
                 res.json({
                     ok: true,
                     data: {
-                        url: response.url
+                        url: response.url,
+                        path: response.path
                     }
                 });
             })
             .catch(next);
     });
 
-    router.delete('/:folder/:key', (req, res, next) => {
-        Storage.delete(`${req.params.folder}/${req.params.key}`)
-            .then(() => {
+    router.delete('/*', (req, res, next) => {
+        const key = req.path.slice(1);
+
+        Storage.delete(key)
+            .then(response => {
                 res.json({
                     ok: true,
-                    filename: req.params.key
+                    data: {
+                        url: response.url,
+                        path: response.path
+                    }
                 });
             })
             .catch(next);
