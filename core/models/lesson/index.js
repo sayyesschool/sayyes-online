@@ -26,8 +26,8 @@ Lesson.statics.findConflicting = function(from, duration) {
     const { years, months, date } = moment(from).utc().toObject();
     const startDate = new Date(Date.UTC(years, months, date));
     const endDate = new Date(Date.UTC(years, months, date + 1));
-    const fromMoment = moment(from).utc().add(-9, 'minutes');
-    const toMoment = fromMoment.clone().add(duration + 18, 'minutes');
+    const fromMoment = moment(from).utc();
+    const toMoment = fromMoment.clone().add(duration, 'minutes');
 
     return this.find({
         date: {
@@ -39,7 +39,7 @@ Lesson.statics.findConflicting = function(from, duration) {
         .then(lessons => {
             const lesson = lessons.find(lesson => {
                 return (
-                    moment(lesson.endAt).isSameOrAfter(fromMoment, 'minutes') &&
+                    moment(lesson.endAt).isAfter(fromMoment, 'minutes') &&
                     moment(lesson.startAt).isSameOrBefore(toMoment, 'minutes')
                 );
             });
