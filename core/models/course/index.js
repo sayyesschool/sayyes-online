@@ -1,10 +1,9 @@
 const { Schema } = require('mongoose');
 
-const Unit = require('./unit');
-const Lesson = require('./lesson');
 const Exercise = require('./exercise');
-const Audio = require('./audio');
-const Video = require('./video');
+const Image = require('./image');
+const Lesson = require('./lesson');
+const Unit = require('./unit');
 
 const Course = new Schema({
     slug: { type: String, required: true, unique: true },
@@ -13,9 +12,7 @@ const Course = new Schema({
     description: { type: String },
     level: { type: String },
     duration: { type: String },
-    image: { type: String },
-    audios: [Audio],
-    videos: [Video],
+    image: { type: Image },
     units: [Unit],
     lessons: [Lesson],
     exercises: [Exercise]
@@ -30,7 +27,7 @@ Course.virtual('url').get(function() {
 });
 
 Course.virtual('imageUrl').get(function() {
-    return this.image && `${process.env.STATIC_URL}${this.url}/images/${this.image}`;
+    return this.image?.url;
 });
 
 Course.virtual('progress', {

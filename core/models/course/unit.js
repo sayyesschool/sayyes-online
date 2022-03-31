@@ -1,15 +1,18 @@
 const { Schema } = require('mongoose');
 
+const Image = require('./image');
+
 const Unit = new Schema({
     slug: { type: String },
     title: { type: String },
     description: { type: String },
     content: { type: String },
-    document: { type: String },
-    image: { type: String },
-    audios: [String],
-    videos: [String],
+    image: { type: Image },
     lessons: [Schema.Types.ObjectId]
+});
+
+Unit.virtual('courseId').get(function() {
+    return this.parent()?.id;
 });
 
 Unit.virtual('uri').get(function() {
@@ -20,14 +23,8 @@ Unit.virtual('url').get(function() {
     return `${this.parent().url}/units/${this.slug}`;
 });
 
-Unit.virtual('documentUrl').get(function() {
-    return this.document && `${process.env.STATIC_URL}${this.parent().url}/documents/${this.document}`;
-});
-
 Unit.virtual('imageUrl').get(function() {
-    const baseUrl = `${process.env.STATIC_URL}${this.parent().url}/images/`;
-
-    return baseUrl + (this.image || `${this.id}.png`);
+    return this.image?.url;
 });
 
 module.exports = Unit;

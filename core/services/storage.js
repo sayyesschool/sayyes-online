@@ -21,7 +21,8 @@ class Storage {
             Body: body
         })).then(() => {
             return {
-                url: `${this.endpoint}/${this.bucket}/${key}`
+                url: `${this.endpoint}/${this.bucket}/${key}`,
+                path: key
             };
         }).catch(error => {
             console.error('There was an error uploading your file: ', error.message);
@@ -33,7 +34,12 @@ class Storage {
         return this.storage.send(new DeleteObjectCommand({
             Bucket: this.bucket,
             Key: key
-        })).catch(error => {
+        })).then(() => {
+            return {
+                url: `${this.endpoint}/${this.bucket}/${key}`,
+                path: key
+            };
+        }).catch(error => {
             console.error('There was an error deleting your file: ', error.message);
             return error;
         });

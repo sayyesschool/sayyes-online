@@ -6,11 +6,11 @@ const WeekSchedule = require('./week-schedule');
 
 const Enrollment = new Schema({
     hhid: { type: String },
-    status: { type: String, default: constants.Status.processing },
-    domain: { type: String, default: constants.Domain.general },
-    type: { type: String, default: constants.Type.individual },
+    status: { type: String, enum: Object.keys(constants.Status), default: constants.Status.processing },
+    domain: { type: String, enum: Object.keys(constants.Domain), default: constants.Domain.general },
+    type: { type: String, enum: Object.keys(constants.Type), default: constants.Type.individual },
     format: { type: String, default: constants.Format.online },
-    age: { type: String, default: constants.Age.adults },
+    ageGroup: { type: String, default: constants.Age.adults },
     teacherType: { type: String, default: constants.TeacherType.russian },
     level: { type: String, default: '' },
     purpose: { type: String, default: '' },

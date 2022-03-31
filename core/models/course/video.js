@@ -1,15 +1,15 @@
 const { Schema } = require('mongoose');
 
 const Video = new Schema({
-    filename: String,
-    title: String,
-    duration: String
+    path: { type: String },
+    src: { type: String },
+    title: { type: String },
+    duration: { type: Number },
+    script: { type: String }
 });
 
 Video.virtual('url').get(function() {
-    const parent = this.parent();
-
-    return `${process.env.STATIC_URL}${parent ? parent.url : ''}/videos/${this.filename}`;
+    return this.path ? `${process.env.STORAGE_URL}/${this.path}` : this.src;
 });
 
 module.exports = Video;

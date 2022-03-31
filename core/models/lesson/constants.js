@@ -1,24 +1,25 @@
 const Status = {
-    scheduled: 'scheduled',
-    missed: 'missed',
-    started: 'started',
-    ended: 'ended',
-    canceled: 'canceled'
+    CANCELED: 'canceled',
+    ENDED: 'ended',
+    MISSED: 'missed',
+    SCHEDULED: 'scheduled',
+    STARTED: 'started'
 };
 
 const StatusLabel = {
-    scheduled: 'Запланировано',
-    missed: 'Пропущено',
-    started: 'started',
-    ended: 'Завершилось',
-    canceled: 'Отменено'
+    [Status.SCHEDULED]: 'Запланирован',
+    [Status.MISSED]: 'Пропущен',
+    [Status.STARTED]: 'Начался',
+    [Status.ENDED]: 'Завершился',
+    [Status.CANCELED]: 'Отменен'
 };
 
 const StatusIcon = {
-    scheduled: 'event',
-    missed: 'event',
-    ended: 'event_available',
-    canceled: 'event_busy'
+    [Status.SCHEDULED]: 'event',
+    [Status.MISSED]: 'event',
+    [Status.STARTED]: 'event',
+    [Status.ENDED]: 'event_available',
+    [Status.CANCELED]: 'event_busy'
 };
 
 module.exports = {

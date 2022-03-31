@@ -9,6 +9,7 @@ const Payment = require('./payment');
 const Post = require('./post');
 const Progress = require('./progress');
 const Request = require('./request');
+const Room = require('./room');
 const Material = require('./material');
 const Meeting = require('./meeting');
 const Ticket = require('./ticket');
@@ -33,6 +34,7 @@ module.exports = {
     Post: model('Post', Post),
     Progress: model('Progress', Progress, 'progress'),
     Request: model('Request', Request),
+    Room: model('Room', Room),
     Ticket: model('Ticket', Ticket),
     User,
     Admin,

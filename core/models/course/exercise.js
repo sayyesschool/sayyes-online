@@ -1,5 +1,9 @@
 const { Schema } = require('mongoose');
 
+const Audio = require('./audio');
+const Image = require('./image');
+const Video = require('./video');
+
 const Item = new Schema({}, {
     strict: false
 });
@@ -10,8 +14,9 @@ const Exercise = new Schema({
     description: { type: String },
     text: { type: String },
     image: { type: String },
-    audio: { type: String },
-    video: { type: String },
+    images: [Image],
+    audio: Audio,
+    video: Video,
     notes: { type: String },
     items: [Item],
     unit: { type: Schema.Types.ObjectId },
@@ -31,12 +36,24 @@ const Exercise = new Schema({
     }
 });
 
+Exercise.virtual('courseId').get(function() {
+    return this.parent()?.id;
+});
+
+Exercise.virtual('unitId').get(function() {
+    return this.unit;
+});
+
+Exercise.virtual('lessonId').get(function() {
+    return this.lesson;
+});
+
 Exercise.virtual('uri').get(function() {
     return `${this.parent().uri}/units/${this.unit}/lessons/${this.lesson}/exercises/${this.id}`;
 });
 
 Exercise.virtual('imageUrl').get(function() {
-    return `${process.env.STATIC_URL}${this.ownerDocument()?.uri}/images/${this.image}`;
+    return this.image?.url;
 });
 
 module.exports = Exercise;
