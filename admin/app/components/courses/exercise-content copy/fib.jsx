@@ -1,15 +1,14 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import {
-    FormField,
-    IconButton,
-    Layout,
-    Switch,
-    TextField
-} from 'mdc-react';
+    Box,
+    Button,
+    Flex
+} from '@fluentui/react-northstar';
 
+import Icon from 'shared/components/material-icon';
 import TextEditor from 'shared/components/text-editor';
 
-import ExerciseItemsSection from 'app/components/courses/exercise-items-section';
+import ExerciseItems from 'app/components/courses/exercise-items';
 
 export default function FIBExerciseForm({ exercise, onUpdate }) {
     const handleAddItem = useCallback(() => {
@@ -17,8 +16,7 @@ export default function FIBExerciseForm({ exercise, onUpdate }) {
             ...exercise,
             items: exercise.items.concat({
                 id: Date.now(),
-                text: '',
-                html: false
+                text: ''
             })
         });
     }, [exercise, onUpdate]);
@@ -36,7 +34,7 @@ export default function FIBExerciseForm({ exercise, onUpdate }) {
     }, [exercise, onUpdate]);
 
     return (
-        <ExerciseItemsSection onAddItem={handleAddItem}>
+        <ExerciseItems onAddItem={handleAddItem}>
             {exercise.items.map(item =>
                 <FIBExerciseItemForm
                     key={item.id}
@@ -45,19 +43,16 @@ export default function FIBExerciseForm({ exercise, onUpdate }) {
                     onDelete={handleDeleteItem}
                 />
             )}
-        </ExerciseItemsSection>
+        </ExerciseItems>
     );
 }
 
 function FIBExerciseItemForm({ item, onUpdate, onDelete }) {
-    const [isHtml, setHtml] = useState(item.html);
-
     const handleChange = useCallback((event, value) => {
         onUpdate(item.id, {
-            text: value,
-            html: isHtml
+            text: value
         });
-    }, [item, isHtml]);
+    }, [item]);
 
     const handleDelete = useCallback(() => {
         onDelete(item.id);
@@ -65,34 +60,17 @@ function FIBExerciseItemForm({ item, onUpdate, onDelete }) {
 
     return (
         <div className="exercise-item">
-            <Layout row alignItems="center" justifyContent="between">
-                <FormField label="Текст с форматированием">
-                    <Switch
-                        selected={isHtml}
-                        onChange={() => setHtml(v => !v)}
-                    />
-                </FormField>
+            <TextEditor
+                value={item.text}
+                onChange={handleChange}
+            />
 
-                <IconButton
-                    icon="delete"
-                    onClick={handleDelete}
-                />
-            </Layout>
-
-            {isHtml ?
-                <TextEditor
-                    value={item.text}
-                    onChange={handleChange}
-                />
-                :
-                <TextField
-                    value={item.text}
-                    outlined
-                    textarea
-                    autoResize
-                    onChange={handleChange}
-                />
-            }
+            <Button
+                icon={<Icon>delete</Icon>}
+                iconOnly
+                text
+                onClick={handleDelete}
+            />
         </div>
     );
 }

@@ -1,62 +1,55 @@
 import { Link } from 'react-router-dom';
 import {
-    DataTable
-} from 'mdc-react';
-
-import MenuButton from 'shared/components/menu-button';
+    MenuButton,
+    Table
+} from '@fluentui/react-northstar';
 
 export default function ClientsTable({ clients, onEdit, onDelete }) {
     return (
-        <DataTable className="clients-table">
-            <DataTable.Header>
-                <DataTable.HeaderRow>
-                    {columns.map(col =>
-                        <DataTable.HeaderCell
-                            key={col.key}
-                        >
-                            {col.text}
-                        </DataTable.HeaderCell>
-                    )}
-                </DataTable.HeaderRow>
-            </DataTable.Header>
+        <Table className="clients-table">
+            <Table.Row header>
+                {columns.map(col =>
+                    <Table.Cell
+                        key={col.key}
+                        content={col.text}
+                    />
+                )}
 
-            <DataTable.Content>
-                {clients.map(client =>
-                    <DataTable.Row key={client.id}>
-                        <DataTable.Cell>
+                <Table.Cell />
+            </Table.Row>
+
+            {clients.map(client =>
+                <Table.Row key={client.id}>
+                    <Table.Cell
+                        content={
                             <Link to={`/clients/${client.id}`}>{client.fullname}</Link>
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            {client.email}
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            {client.phone}
-                        </DataTable.Cell>
-
-                        <DataTable.Cell numeric>
+                        }
+                    />
+                    <Table.Cell content={client.email} />
+                    <Table.Cell content={client.phone} />
+                    <Table.Cell
+                        content={
                             <MenuButton
-                                items={[
+                                menu={[
                                     {
                                         key: 'edit',
-                                        text: 'Изменить',
+                                        content: 'Изменить',
                                         icon: 'edit',
                                         onClick: () => onEdit(client)
                                     },
                                     {
                                         key: 'delete',
-                                        text: 'Удалить',
+                                        content: 'Удалить',
                                         icon: 'delete',
                                         onClick: () => onDelete(client)
                                     }
                                 ]}
                             />
-                        </DataTable.Cell>
-                    </DataTable.Row>
-                )}
-            </DataTable.Content>
-        </DataTable>
+                        }
+                    />
+                </Table.Row>
+            )}
+        </Table >
     );
 }
 

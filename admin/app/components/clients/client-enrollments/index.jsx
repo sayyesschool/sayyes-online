@@ -1,13 +1,15 @@
 import { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
-    Card,
-    Icon,
-    IconButton
-} from 'mdc-react';
+    Button,
+    Flex,
+    Header,
+    Segment
+} from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
+import MaterialIcon from 'shared/components/material-icon';
 
 import { useActions } from 'app/hooks/store';
 import EnrollmentForm from 'app/components/enrollments/enrollment-form';
@@ -27,26 +29,25 @@ export default function ClientEnrollments({ client }) {
     const enrollments = client?.enrollments.map(enrollment => ({ ...enrollment, url: `${client.url}${enrollment.url}` }));
 
     return (
-        <section className="client-enrollments">
-            <Card>
-                <Card.Header
-                    graphic={<Icon>school</Icon>}
-                    title="Обучение"
-                    actions={
-                        <IconButton
-                            icon="add"
-                            title="Создать обучение"
-                            onClick={toggleEnrollmentFormOpen}
-                        />
-                    }
+        <Segment as="section" className="client-enrollments">
+            <Flex space="between" vAlign="center">
+                <Header
+                    as="h3"
+                    content="Обучение"
                 />
 
-                {enrollments?.length > 0 &&
-                    <EnrollmentsList
-                        enrollments={enrollments}
-                    />
-                }
-            </Card>
+                <Button
+                    icon={<MaterialIcon icon="add" />}
+                    title="Создать обучение"
+                    text
+                    iconOnly
+                    onClick={toggleEnrollmentFormOpen}
+                />
+            </Flex>
+
+            <EnrollmentsList
+                enrollments={enrollments}
+            />
 
             <FormDialog
                 form="enrollment-form"
@@ -62,6 +63,6 @@ export default function ClientEnrollments({ client }) {
                     onSubmit={createEnrollment}
                 />
             </FormDialog>
-        </section>
+        </Segment>
     );
 }

@@ -1,25 +1,23 @@
 import {
-    Card,
-    Icon
-} from 'mdc-react';
+    Header,
+    Segment
+} from '@fluentui/react-northstar';
 
 import RequestsList from 'app/components/requests/requests-list';
 
 export default function ClientRequests({ requests }) {
     return (
-        <section className="client-requests">
-            <Card>
-                <Card.Header
-                    graphic={<Icon>contact_phone</Icon>}
-                    title="Заявки"
-                />
+        <Segment as="section" className="client-requests">
+            <Header
+                as="h3"
+                content="Заявки"
+            />
 
-                {requests?.length > 0 &&
-                    <RequestsList
-                        requests={requests}
-                    />
-                }
-            </Card>
-        </section>
+            {requests?.length > 0 &&
+                <RequestsList
+                    requests={requests}
+                />
+            }
+        </Segment>
     );
 }

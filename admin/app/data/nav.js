@@ -8,4 +8,5 @@ export default [
     { key: 'clients', url: '/clients', text: 'Клиенты', icon: 'groups', exact: false },
     { key: 'teachers', url: '/teachers', text: 'Преподаватели', icon: 'face', exact: false },
     { key: 'managers', url: '/managers', text: 'Менеджеры', icon: 'support_agent', exact: false },
+    { key: 'settings', url: '/settings', text: 'Настройки', icon: 'settings', exact: false }
 ];

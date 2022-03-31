@@ -1,7 +1,9 @@
 import {
-    Card,
-    IconButton
-} from 'mdc-react';
+    Button
+} from '@fluentui/react-northstar';
+
+import Icon from 'shared/components/material-icon';
+import PageSection from 'shared/components/page-section';
 
 import LessonForm from 'app/components/courses/lesson-form';
 
@@ -14,27 +16,25 @@ export default function LessonDetails({
     onUpdate
 }) {
     return (
-        <section className="lesson-details">
-            <Card>
-                <Card.Header
-                    title="Детали"
-                    actions={
-                        <IconButton
-                            icon="save"
-                            type="submit"
-                            form="lesson-form"
-                        />
-                    }
+        <PageSection
+            title="Детали"
+            className="lesson-details"
+            actions={
+                <Button
+                    type="submit"
+                    form="lesson-form"
+                    icon={<Icon>save</Icon>}
+                    iconOnly
+                    text
                 />
-
-                <Card.Section primary>
-                    <LessonForm
-                        course={course}
-                        lesson={lesson}
-                        onSubmit={onUpdate}
-                    />
-                </Card.Section>
-            </Card>
-        </section>
+            }
+        >
+            <LessonForm
+                id="lesson-form"
+                course={course}
+                lesson={lesson}
+                onSubmit={onUpdate}
+            />
+        </PageSection>
     );
 }

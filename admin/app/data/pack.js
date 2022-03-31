@@ -18,17 +18,17 @@ export const teacherLabel = {
 export const ageOptions = Object.entries(ageLabel).map(([key, value]) => ({
     key,
     value: key,
-    text: value
+    content: value
 }));
 
 export const domainOptions = Object.entries(domainLabel).map(([key, value]) => ({
     key,
     value: key,
-    text: value
+    content: value
 }));
 
 export const teacherOptions = Object.entries(teacherLabel).map(([key, value]) => ({
     key,
     value: key,
-    text: value
+    content: value
 }));

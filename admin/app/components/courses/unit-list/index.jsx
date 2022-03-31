@@ -1,9 +1,11 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    IconButton,
+    Button,
     List
-} from 'mdc-react';
+} from '@fluentui/react-northstar';
+
+import Icon from 'shared/components/material-icon';
 
 import './index.scss';
 
@@ -13,21 +15,23 @@ export default function UnitList({ units, onDelete }) {
         event.stopPropagation();
 
         onDelete(unit);
-    }, []);
+    }, [onDelete]);
 
     return (
-        <List element="nav" className="unit-list">
-            {units.map(unit =>
+        <List element="nav" className="unit-list" navigable>
+            {units.map((unit, index) =>
                 <List.Item
                     key={unit.id}
-                    component={Link}
+                    as={Link}
                     to={unit.uri}
-                    leadingImage={<img src={unit.imageUrl} />}
-                    primaryText={unit.title}
-                    secondaryText={`${unit.lessons.length} уроков`}
-                    end={
-                        <IconButton
-                            icon="delete"
+                    media={index + 1}
+                    header={unit.title}
+                    content={`${unit.lessons.length} уроков`}
+                    endMedia={
+                        <Button
+                            icon={<Icon>delete</Icon>}
+                            iconOnly
+                            text
                             onClick={event => handleClick(event, unit)}
                         />
                     }

@@ -1,11 +1,11 @@
 import { useCallback, useState } from 'react';
-import {
-    Card,
-    IconButton
-} from 'mdc-react';
+import { Button } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
+import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
+import Icon from 'shared/components/material-icon';
+import PageSection from 'shared/components/page-section';
 
 import ExerciseForm from 'app/components/courses/exercise-form';
 import ExercisesList from 'app/components/courses/exercises-list';
@@ -15,71 +15,72 @@ import './index.scss';
 export default function LessonExercises({
     course,
     lesson,
+    selectedExercise,
 
     onCreate,
-    onUpdate,
     onDelete
 }) {
-    const [selectedExerciseId, setSelectedExerciseId] = useState(lesson.exercises[0]);
+    const [exercise, setExercise] = useState(selectedExercise);
     const [isFormOpen, toggleFormOpen] = useBoolean(false);
-    const [isLoading, toggleLoading] = useBoolean(false);
+    const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     const handleCreate = useCallback(data => {
-        toggleLoading(true);
-
         return onCreate(data)
-            .then(response => {
-                setSelectedExerciseId(response.data.id);
-            })
-            .finally(() => {
-                toggleLoading(false);
-                toggleFormOpen(false);
-            });
-    }, [lesson.exercises]);
+            .finally(() => toggleFormOpen(false));
+    }, []);
 
-    const handleSelect = useCallback((exercise) => {
-        setSelectedExerciseId(exercise.id);
+    const handleDelete = useCallback(() => {
+        return onDelete(exercise)
+            .finally(() => toggleConfirmationDialogOpen(false));
+    }, [exercise]);
+
+    const handleDeleteRequest = useCallback(exercise => {
+        setExercise(exercise);
+        toggleConfirmationDialogOpen(true);
     }, []);
 
     const exercises = lesson.exercises.map(id => course.exercisesById.get(id));
 
     return (
-        <section className="lesson-exercises">
-            <Card>
-                <Card.Header
-                    title="Упражнения"
-                    actions={[
-                        <IconButton
-                            key="create"
-                            icon="add"
-                            onClick={toggleFormOpen}
-                        />
-                    ]}
+        <PageSection
+            className="lesson-exercises"
+            title="Упражнения"
+            actions={
+                <Button
+                    icon={<Icon>add</Icon>}
+                    iconOnly
+                    text
+                    onClick={toggleFormOpen}
                 />
-
-                {exercises?.length > 0 &&
-                    <ExercisesList
-                        exercises={exercises}
-                        selectedExerciseId={selectedExerciseId}
-                        onSelect={handleSelect}
-                    />
-                }
-            </Card>
+            }
+        >
+            {exercises?.length > 0 &&
+                <ExercisesList
+                    exercises={exercises}
+                    selectedExercise={selectedExercise}
+                    onSelect={selectedExercise && setExercise}
+                    onDelete={handleDeleteRequest}
+                />
+            }
 
             <FormDialog
                 title="Новое упражнение"
-                form="exercise-form"
                 open={isFormOpen}
-                primaryActionDisabled={isLoading}
-                fullscreen
                 onClose={toggleFormOpen}
             >
                 <ExerciseForm
                     id="exercise-form"
-                    course={course}
                     onSubmit={handleCreate}
                 />
             </FormDialog>
-        </section>
+
+            <ConfirmationDialog
+                title="Удалить упражнение?"
+                message={exercise && `Упражнение "${exercise.title}" будет удалено без возможности восстановления.`}
+                open={isConfirmationDialogOpen}
+                onConfirm={handleDelete}
+                onClose={toggleConfirmationDialogOpen}
+            />
+        </PageSection>
     );
 }

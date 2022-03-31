@@ -1,43 +1,38 @@
 import { useCallback, useRef } from 'react';
 import {
-    IconButton,
-    Card
-} from 'mdc-react';
+    Button
+} from '@fluentui/react-northstar';
 
+import Icon from 'shared/components/material-icon';
+import PageSection from 'shared/components/page-section';
 import TextEditor from 'shared/components/text-editor';
 
-export default function ExerciseCard({ exercise, onUpdate }) {
+export default function ExerciseNotes({ exercise, onUpdate }) {
     const textEditorRef = useRef();
 
-    const handleSave = useCallback(data => {
+    const handleSave = useCallback(() => {
         const notes = textEditorRef.current.editor.getData();
 
-        data.notes = notes;
-
-        onUpdate(exercise.id, data);
-    }, [exercise, onUpdate]);
+        onUpdate({ notes });
+    }, [onUpdate]);
 
     return (
-        <section className="exercise-notes">
-            <Card>
-                <Card.Header
-                    title="Заметки"
-                    actions={[
-                        <IconButton
-                            key="save"
-                            icon="save"
-                            onClick={handleSave}
-                        />
-                    ]}
+        <PageSection
+            className="exercise-notes"
+            title="Заметки"
+            actions={
+                <Button
+                    icon={<Icon>save</Icon>}
+                    iconOnly
+                    text
+                    onClick={handleSave}
                 />
-
-                <Card.Section primary>
-                    <TextEditor
-                        ref={textEditorRef}
-                        value={exercise.notes}
-                    />
-                </Card.Section>
-            </Card>
-        </section>
+            }
+        >
+            <TextEditor
+                ref={textEditorRef}
+                value={exercise.notes}
+            />
+        </PageSection>
     );
 }

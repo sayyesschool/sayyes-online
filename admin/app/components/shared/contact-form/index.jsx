@@ -1,11 +1,9 @@
-import { forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, useRef, useImperativeHandle } from 'react';
 import {
-    Layout,
-    TextField
-} from 'mdc-react';
+    Form, FormInput, FormTextArea
+} from '@fluentui/react-northstar';
 
 import useForm from 'shared/hooks/form';
-import Form from 'shared/components/form';
 
 const defaultContact = {
     relation: '',
@@ -35,87 +33,84 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
 
     return (
         <Form ref={formRef} className="contact-form" onSubmit={() => onSubmit(data)} {...props}>
-            <Layout column>
-                <TextField
-                    type="text"
-                    name="relation"
-                    value={data.relation}
-                    label="Кем приходится"
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                type="text"
+                name="relation"
+                value={data.relation}
+                label="Кем приходится"
+                fluid
+                onChange={handleChange}
+            />
 
-                <TextField
-                    name="firstname"
-                    value={data.firstname}
-                    label="Имя"
-                    filled
-                    required
-                    onChange={handleChange}
-                />
+            <FormInput
+                name="firstname"
+                value={data.firstname}
+                label="Имя"
+                fluid
+                required
+                onChange={handleChange}
+            />
 
-                <TextField
-                    name="lastname"
-                    value={data.lastname}
-                    label="Фамилия"
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                name="lastname"
+                value={data.lastname}
+                label="Фамилия"
+                fluid
+                onChange={handleChange}
+            />
 
-                <TextField
-                    name="patronym"
-                    value={data.patronym}
-                    label="Отчество"
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                name="patronym"
+                value={data.patronym}
+                label="Отчество"
+                fluid
+                onChange={handleChange}
+            />
 
-                <TextField
-                    type="phone"
-                    name="phone"
-                    value={data.phone}
-                    label="Телефон"
-                    required
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                type="phone"
+                name="phone"
+                value={data.phone}
+                label="Телефон"
+                required
+                fluid
+                onChange={handleChange}
+            />
 
-                <TextField
-                    type="phone"
-                    name="altPhone"
-                    value={data.altPhone}
-                    label="Дополнительный телефон"
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                type="phone"
+                name="altPhone"
+                value={data.altPhone}
+                label="Дополнительный телефон"
+                fluid
+                onChange={handleChange}
+            />
 
-                <TextField
-                    type="email"
-                    name="email"
-                    value={data.email}
-                    label="Электронная почта"
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                type="email"
+                name="email"
+                value={data.email}
+                label="Электронная почта"
+                fluid
+                onChange={handleChange}
+            />
 
-                <TextField
-                    type="text"
-                    name="occupation"
-                    value={data.occupation}
-                    label="Род деятельности"
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                type="text"
+                name="occupation"
+                value={data.occupation}
+                label="Род деятельности"
+                fluid
+                onChange={handleChange}
+            />
 
-                <TextField
-                    name="note"
-                    value={data.note}
-                    label="Примечание"
-                    filled
-                    textarea
-                    onChange={handleChange}
-                />
-            </Layout>
+            <FormTextArea
+                name="note"
+                value={data.note}
+                label="Примечание"
+                fluid
+                onChange={handleChange}
+            />
         </Form>
     );
 }

@@ -1,9 +1,7 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import {
-    Layout,
-    Select,
-    TextField
-} from 'mdc-react';
+    Form, FormDropdown, FormInput
+} from '@fluentui/react-northstar';
 
 import {
     defaultEnrollment, domainOptions, typeOptions, formatOptions,
@@ -11,9 +9,8 @@ import {
 } from 'shared/data/enrollment';
 
 import useForm from 'shared/hooks/form';
-import Form from 'shared/components/form';
-import ScheduleSelect from 'shared/components/schedule-select';
-import DateTimeSelect from 'shared/components/datetime-select';
+// import ScheduleSelect from 'shared/components/schedule-select';
+// import DateTimeSelect from 'shared/components/datetime-select';
 import PeopleSelect from 'shared/components/people-select';
 
 import { useStore } from 'app/hooks/store';
@@ -50,153 +47,151 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
 
     return (
         <Form ref={formRef} className="enrollment-form" onSubmit={handleSubmit} {...props}>
-            <Layout column>
-                <Select
-                    name="domain"
-                    value={data.domain}
-                    label="Направление"
-                    options={domainOptions}
-                    filled
-                    required
-                    onChange={handleChange}
-                />
+            <FormDropdown
+                name="domain"
+                value={data.domain}
+                label="Направление"
+                items={domainOptions}
+                fluid
+                required
+                onChange={handleChange}
+            />
 
-                <Select
-                    name="type"
-                    value={data.type}
-                    label="Тип"
-                    options={typeOptions}
-                    filled
-                    required
-                    onChange={handleChange}
-                />
+            <FormDropdown
+                name="type"
+                value={data.type}
+                label="Тип"
+                items={typeOptions}
+                fluid
+                required
+                onChange={handleChange}
+            />
 
-                <Select
-                    name="format"
-                    value={data.format}
-                    label="Формат"
-                    options={formatOptions}
-                    filled
-                    required
-                    onChange={handleChange}
-                />
+            <FormDropdown
+                name="format"
+                value={data.format}
+                label="Формат"
+                items={formatOptions}
+                fluid
+                required
+                onChange={handleChange}
+            />
 
-                <Select
-                    name="age"
-                    value={data.age}
-                    label="Возрастная группа"
-                    options={ageOptions}
-                    filled
-                    onChange={handleChange}
-                />
+            <FormDropdown
+                name="age"
+                value={data.age}
+                label="Возрастная группа"
+                items={ageOptions}
+                fluid
+                onChange={handleChange}
+            />
 
-                <Select
-                    name="teacherType"
-                    value={data.teacherType}
-                    label="Тип преподавателя"
-                    options={teacherTypeOptions}
-                    filled
-                    onChange={handleChange}
-                />
+            <FormDropdown
+                name="teacherType"
+                value={data.teacherType}
+                label="Тип преподавателя"
+                items={teacherTypeOptions}
+                fluid
+                onChange={handleChange}
+            />
 
-                <TextField
-                    type="number"
-                    name="lessonDuration"
-                    value={data.lessonDuration}
-                    label="Продолжительность урока"
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                type="number"
+                name="lessonDuration"
+                value={data.lessonDuration}
+                label="Продолжительность урока"
+                fluid
+                onChange={handleChange}
+            />
 
-                <Select
-                    name="level"
-                    value={data.level}
-                    label="Уровень"
-                    options={levelOptions}
-                    filled
-                    onChange={handleChange}
-                />
+            <FormDropdown
+                name="level"
+                value={data.level}
+                label="Уровень"
+                items={levelOptions}
+                fluid
+                onChange={handleChange}
+            />
 
-                <Select
-                    name="purpose"
-                    value={data.purpose}
-                    label="Цель"
-                    options={purposeOptions}
-                    filled
-                    onChange={handleChange}
-                />
+            <FormDropdown
+                name="purpose"
+                value={data.purpose}
+                label="Цель"
+                items={purposeOptions}
+                fluid
+                onChange={handleChange}
+            />
 
-                <TextField
-                    name="experience"
-                    value={data.experience}
-                    label="Опыт"
-                    filled
-                    textarea
-                    onChange={handleChange}
-                />
+            <FormInput
+                name="experience"
+                value={data.experience}
+                label="Опыт"
+                fluid
+                textarea
+                onChange={handleChange}
+            />
 
-                <TextField
-                    name="preferences"
-                    value={data.preferences}
-                    label="Пожелания"
-                    filled
-                    textarea
-                    onChange={handleChange}
-                />
+            <FormInput
+                name="preferences"
+                value={data.preferences}
+                label="Пожелания"
+                fluid
+                textarea
+                onChange={handleChange}
+            />
 
-                <DateTimeSelect
-                    name="trialLesson"
-                    label="Пробный урок"
-                    items={data.trialLessonSchedule}
-                    onChange={handleChange}
-                />
+            {/* <DateTimeSelect
+                name="trialLesson"
+                label="Пробный урок"
+                items={data.trialLessonSchedule}
+                onChange={handleChange}
+            />
 
-                <ScheduleSelect
-                    name="schedule"
-                    label="Расписание"
-                    schedule={data.schedule}
-                    onChange={handleChange}
-                />
+            <ScheduleSelect
+                name="schedule"
+                label="Расписание"
+                schedule={data.schedule}
+                onChange={handleChange}
+            /> */}
 
-                <TextField
-                    name="note"
-                    value={data.note}
-                    label="Примечание"
-                    filled
-                    textarea
-                    onChange={handleChange}
-                />
+            <FormInput
+                name="note"
+                value={data.note}
+                label="Примечание"
+                fluid
+                textarea
+                onChange={handleChange}
+            />
 
-                {enrollment.id &&
-                    <>
-                        <PeopleSelect
-                            name="managers"
-                            value={data.managers}
-                            label="Менеджеры"
-                            options={managers.map(manager => ({
-                                key: manager.id,
-                                value: manager.id,
-                                text: manager.fullname
-                            }))}
-                            multiple
-                            onChange={handleChange}
-                        />
+            {enrollment.id &&
+                <>
+                    <PeopleSelect
+                        name="managers"
+                        value={data.managers}
+                        label="Менеджеры"
+                        items={managers.map(manager => ({
+                            key: manager.id,
+                            value: manager.id,
+                            text: manager.fullname
+                        }))}
+                        multiple
+                        onChange={handleChange}
+                    />
 
-                        <PeopleSelect
-                            name="teachers"
-                            value={data.teachers}
-                            label="Преподаватели"
-                            options={teachers.map(teacher => ({
-                                key: teacher.id,
-                                value: teacher.id,
-                                text: teacher.fullname
-                            }))}
-                            multiple
-                            onChange={handleChange}
-                        />
-                    </>
-                }
-            </Layout>
-        </Form >
+                    <PeopleSelect
+                        name="teachers"
+                        value={data.teachers}
+                        label="Преподаватели"
+                        items={teachers.map(teacher => ({
+                            key: teacher.id,
+                            value: teacher.id,
+                            text: teacher.fullname
+                        }))}
+                        multiple
+                        onChange={handleChange}
+                    />
+                </>
+            }
+        </Form>
     );
 }

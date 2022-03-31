@@ -1,45 +1,26 @@
 @use 'shared/styles/variables';
-@use '@material/top-app-bar';
-@use '@material/theme';
 
-body {
-    background-color: #f4f4f4;
+.app-loading-indicator {
+    position: fixed;
 }
 
-.page {
+.app-content {
+    max-height: calc(100vh - 57px);
+    margin-left: 64px;
     padding: 1rem;
-    max-height: calc(100vh - 64px);
+    //background: #f5f5f5;
     overflow: auto;
 }
 
 .page-top-bar {
     max-width: 1280px;
     margin: auto;
-    @include top-app-bar.fill-color-accessible(#f4f4f4);
-    @include top-app-bar.icon-ink-color(theme.accessible-ink-color(#f4f4f4, secondary));
-
-    .mdc-top-app-bar__row {
-        margin: auto;
-        height: auto;
-    }
-
-    .mdc-top-app-bar__section--align-start {
-        padding-left: 1rem;
-    }
-
-    .mdc-top-app-bar__section--align-end {
-        padding-right: 1rem;
-    }
 }
 
 .page-content {
     max-width: 1280px;
     margin: auto;
     padding: 1rem;
-
-    .mdc-layout-grid {
-        padding: 0;
-    }
 }
 
 .page-side-sheet {
@@ -49,21 +30,4 @@ body {
 .page-title {
     font-size: 1.5rem;
     line-height: 1.5;
-}
-
-.mdc-card {
-    overflow: hidden;
-
-    // .mdc-card__section:not(.mdc-card__section--primary),
-    // .mdc-card__section:not(.mdc-card__section--secondary) {
-    //     > .mdc-typography {
-    //         padding: 8px 16px 0;
-    //     }
-    // }
-}
-
-.mdc-dialog {
-    .mdc-dialog__surface {
-        min-width: 480px;
-    }
 }

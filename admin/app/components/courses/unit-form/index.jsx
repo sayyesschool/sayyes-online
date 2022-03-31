@@ -1,74 +1,53 @@
-import { useCallback, useRef } from 'react';
-import {
-    TextField
-} from 'mdc-react';
+import { useCallback } from 'react';
 
-import useForm from 'shared/hooks/form';
+import { useForm } from 'shared/hooks/form';
 import Form from 'shared/components/form';
-import ImageField from 'shared/components/image-field';
+import FormInput from 'shared/components/form-input';
+import FormTextArea from 'shared/components/form-textarea';
+import { slugify } from 'shared/utils/format';
 
 const defaultUnit = {
     title: '',
     slug: '',
-    description: '',
-    document: '',
-    image: ''
+    description: ''
 };
 
-export default function UnitForm({ unit = {}, onSubmit, ...props }) {
-    const fileInputRef = useRef();
+export default function UnitForm({ unit = defaultUnit, onSubmit, ...props }) {
+    const { data, setValues, handleChange, handleSubmit } = useForm({
+        values: {
+            'title*': unit.title,
+            'slug*': unit.slug,
+            description: unit.description
+        },
+        onSubmit
+    }, [unit.updatedAt]);
 
-    const [data, handleChange, getData] = useForm(Object.assign(defaultUnit, unit), [unit.id]);
-
-    const handleSubmit = useCallback(() => {
-        const file = fileInputRef.current.input.files[0];
-
-        getData(data => onSubmit(data, file));
-
-        fileInputRef.current.reset();
-    }, [onSubmit]);
+    const handleTitleBlur = useCallback(() => {
+        setValues(({ title }) => ({ slug: slugify(title) }));
+    }, []);
 
     return (
         <Form className="unit-form" onSubmit={handleSubmit} {...props}>
-            <TextField
-                name="title"
+            <FormInput
+                {...data.title}
                 label="Название"
-                value={data.title}
-                outlined
+                fluid
                 onChange={handleChange}
+                onBlur={handleTitleBlur}
             />
 
-            <TextField
-                name="slug"
+            <FormInput
+                {...data.slug}
                 label="Слаг"
-                value={data.slug}
-                outlined
+                fluid
                 onChange={handleChange}
             />
 
-            <TextField
-                name="document"
-                label="Документ"
-                value={data.document}
-                outlined
-                onChange={handleChange}
-            />
-
-            <TextField
-                name="description"
+            <FormTextArea
+                {...data.description}
                 label="Описание"
-                value={data.description}
-                outlined
-                textarea
+                fluid
                 onChange={handleChange}
-            />
-
-            <ImageField
-                ref={fileInputRef}
-                name="file"
-                label="Изображение"
-                url={data.image && unit.imageUrl}
-                caption={data.image}
             />
         </Form>
     );

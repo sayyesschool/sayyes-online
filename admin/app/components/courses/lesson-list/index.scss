@@ -1,0 +1,14 @@
+.lesson-list {
+    .ui-list {
+        &__itemmedia {
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+            margin-right: 1rem;
+            text-align: center;
+            background: lightgray;
+            color: white;
+            border-radius: 100%;
+        }
+    }
+}

@@ -1,25 +1,26 @@
 import { Link } from 'react-router-dom';
 import {
     Avatar,
-    Icon,
     List
-} from 'mdc-react';
+} from '@fluentui/react-northstar';
+
+import MaterialIcon from 'shared/components/material-icon';
 
 export default function RequestsList({ requests }) {
     return (
         <List className="requests-list">
-            {requests.map(request =>
+            {requests?.map(request =>
                 <List.Item
                     key={request.id}
-                    component={Link}
+                    as={Link}
                     to={request.url}
-                    start={<Icon>{request.statusIcon}</Icon>}
-                    primaryText={`${request.contact.name}`}
-                    secondaryText={request.contact.phone}
-                    end={request.manager &&
+                    start={<MaterialIcon icon={request.statusIcon} />}
+                    header={`${request.contact.name}`}
+                    content={request.contact.phone}
+                    endMedia={request.manager &&
                         <Avatar
-                            text={request.manager.initials}
-                            title={request.manager.fullname}
+                            image={request.manager.imageUrl}
+                            name={request.manager.fullname}
                         />
                     }
                 />

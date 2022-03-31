@@ -1,0 +1,13 @@
+#settings-page {
+    .page-header {
+        &__section--main {
+            display: flex;
+            align-items: baseline;
+
+            .ui-menu {
+                margin-left: 1rem;
+                margin-bottom: 0;
+            }
+        }
+    }
+}

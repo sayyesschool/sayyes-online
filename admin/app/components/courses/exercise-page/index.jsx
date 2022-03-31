@@ -1,104 +1,152 @@
-import { useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import {
-    LayoutGrid
-} from 'mdc-react';
+import { useCallback, useState } from 'react';
+import { Box, Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
-import { useCourse } from 'shared/hooks/courses';
+import { use } from 'shared/hooks/courses';
+import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageTopBar from 'shared/components/page-top-bar';
+import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
-import PageSideSheet from 'shared/components/page-side-sheet';
+import Tabs from 'shared/components/tabs';
 
-import ExerciseContent from 'app/components/courses/exercise-content';
+import ExerciseAudio from 'app/components/courses/exercise-audio';
+import ExerciseDetails from 'app/components/courses/exercise-details';
+import ExerciseImages from 'app/components/courses/exercise-images';
+import ExerciseItems from 'app/components/courses/exercise-items';
 import ExerciseNotes from 'app/components/courses/exercise-notes';
-import ExercisesList from 'app/components/courses/exercises-list';
+import ExercisePreview from 'app/components/courses/exercise-preview';
+import ExerciseText from 'app/components/courses/exercise-text';
 
 import './index.scss';
 
 export default function ExercisePage({ match, history }) {
-    const [course, actions] = useCourse(match.params.courseId);
+    const { course, unit, lesson, exercise, actions } = use(match.params);
 
-    const [isSideSheetOpen, toggleSideSheet] = useBoolean(false);
+    const [activeTab, setActiveTab] = useState('content');
+    const [isPreviewing, togglePreviewing] = useBoolean(false);
+    const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
-    const handleUpdateExercise = useCallback(data => {
-        return actions.updateExercise(course.id, exercise.id, data)
-            .then(() => setExerciseFormOpen(false));
+    const handleUpdate = useCallback(data => {
+        return actions.updateExercise(course.id, exercise.id, data);
     }, [course, exercise]);
 
-    const handleDeleteExercise = useCallback(() => {
-        if (confirm('Удалить упражнение?')) {
-            return actions.deleteExercise(course.id, exercise.id)
-                .then(() => history.push(lesson.url));
-        }
+    const handleDelete = useCallback(() => {
+        return actions.deleteExercise(course.id, exercise.id)
+            .then(() => history.push(lesson.url));
     }, [course, lesson, exercise]);
 
-    if (!course) return <LoadingIndicator />;
-
-    const unit = course.unitsById.get(match.params.unitId);
-    const lesson = course.lessonsById.get(match.params.lessonId);
-    const exercise = course.exercisesById.get(match.params.exerciseId);
-    const lessonExercises = lesson.exercises.map(id => course.exercisesById.get(id));
+    if (!exercise) return <LoadingIndicator />;
 
     return (
         <Page id="exercise-page">
-            <PageSideSheet
-                title="Упражнения"
-                appear
-                open={isSideSheetOpen}
-                onClose={toggleSideSheet}
-            >
-                <ExercisesList
-                    exercises={lessonExercises}
-                />
-            </PageSideSheet>
+            <PageHeader
+                breadcrumbs={[
+                    { key: 'courses', text: 'Курсы', url: '/courses' },
+                    { key: 'course', text: course.title, url: course.uri },
+                    { key: 'unit', text: unit.title, url: unit.uri },
+                    { key: 'lesson', text: lesson.title, url: lesson.uri }
+                ]}
+                overline="Упражнение"
+                title={exercise.title}
+                actions={[
+                    {
+                        key: 'preview',
+                        icon: isPreviewing ? 'visibility_off' : 'visibility',
+                        title: 'Просмотр упражнения',
+                        onClick: togglePreviewing
+                    },
+                    {
+                        key: 'delete',
+                        icon: 'delete',
+                        title: 'Удалить упражнение',
+                        onClick: toggleConfirmationDialogOpen
+                    }
+                ]}
+            />
 
-            <div className="mdc-side-sheet-content">
-                <PageTopBar
-                    breadcrumbs={[
-                        <Link to={course.uri}>{course.title}</Link>,
-                        <Link to={unit.uri}>{unit.title}</Link>,
-                        <Link to={lesson.uri}>{lesson.title}</Link>
-                    ]}
-                    overline="Упражнение"
-                    title={exercise.title}
-                    actions={[
-                        {
-                            key: 'delete',
-                            icon: 'delete',
-                            title: 'Удалить упражнение',
-                            onClick: handleDeleteExercise
-                        },
-                        {
-                            key: 'list',
-                            icon: isSideSheetOpen ? 'close' : 'format_list_bulleted',
-                            title: 'Список упражнений',
-                            onClick: toggleSideSheet
-                        }
-                    ]}
-                />
-
+            {isPreviewing ?
                 <PageContent>
-                    <LayoutGrid>
-                        <LayoutGrid.Cell span="7">
-                            <ExerciseContent
-                                course={course}
-                                exercise={exercise}
-                                onUpdate={handleUpdateExercise}
-                            />
-                        </LayoutGrid.Cell>
+                    <ExercisePreview
+                        exercise={exercise}
+                    />
+                </PageContent>
+                :
+                <PageContent>
+                    {/* <Tabs
+                        items={[
+                            {
+                                key: 'content',
+                                value: 'content',
+                                content: 'Содержание',
+                                icon: 'description'
+                            },
+                            {
+                                key: 'notes',
+                                value: 'notes',
+                                content: 'Заметки',
+                                icon: 'notes'
+                            }
+                        ]}
+                        onChange={setActiveTab}
+                    /> */}
 
-                        <LayoutGrid.Cell span="5">
+                    <Grid columns="minmax(0, 2fr) minmax(0, 1fr)">
+                        <Box>
+                            {activeTab === 'content' && <>
+                                <ExerciseImages
+                                    exercise={exercise}
+                                    uploadPath={`courses/${course.id}/images/`}
+                                    onUpdate={handleUpdate}
+                                />
+
+                                <ExerciseAudio
+                                    exercise={exercise}
+                                    uploadPath={`courses/${course.id}/audios/`}
+                                    onUpdate={handleUpdate}
+                                />
+
+                                <ExerciseText
+                                    exercise={exercise}
+                                    onUpdate={handleUpdate}
+                                />
+
+                                <ExerciseItems
+                                    exercise={exercise}
+                                    onUpdate={handleUpdate}
+                                />
+                            </>}
+
+                            {activeTab === 'notes' &&
+                                <ExerciseNotes
+                                    exercise={exercise}
+                                    onUpdate={handleUpdate}
+                                />
+                            }
+                        </Box>
+
+                        <Box>
+                            <ExerciseDetails
+                                exercise={exercise}
+                                onUpdate={handleUpdate}
+                            />
+
                             <ExerciseNotes
                                 exercise={exercise}
-                                onUpdate={handleUpdateExercise}
+                                onUpdate={handleUpdate}
                             />
-                        </LayoutGrid.Cell>
-                    </LayoutGrid>
+                        </Box>
+                    </Grid>
                 </PageContent>
-            </div>
+            }
+
+            <ConfirmationDialog
+                title="Удалить упражнение?"
+                message="Упражнение будет удален без возможности восстановления."
+                open={isConfirmationDialogOpen}
+                onClose={toggleConfirmationDialogOpen}
+                onConfirm={handleDelete}
+            />
         </Page>
     );
 }

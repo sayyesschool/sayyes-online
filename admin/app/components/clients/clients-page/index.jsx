@@ -2,11 +2,12 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
-import LoadingIndicator from 'shared/components/loading-indicator';
 import FormDialog from 'shared/components/form-dialog';
+import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
+import PageHeader from 'shared/components/page-header';
+import PageSection from 'shared/components/page-section';
 
 import { useStore } from 'app/hooks/store';
 import ClientsTable from 'app/components/clients/clients-table';
@@ -49,25 +50,26 @@ export default function ClientsPage({ history }) {
 
     return (
         <Page id="clients-page">
-            <PageTopBar
+            <PageHeader
                 title="Клиенты"
                 actions={[
                     {
                         key: 'add',
-                        label: 'Создать',
                         icon: 'add',
-                        outlined: true,
+                        content: 'Создать',
                         onClick: toggleFormOpen
                     }
                 ]}
             />
 
             <PageContent>
-                <ClientsTable
-                    clients={clients}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                />
+                <PageSection>
+                    <ClientsTable
+                        clients={clients}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                    />
+                </PageSection>
             </PageContent>
 
             <FormDialog

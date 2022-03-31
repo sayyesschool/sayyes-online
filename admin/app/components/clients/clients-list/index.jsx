@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom';
-import {
-    List
-} from 'mdc-react';
+import { List } from '@fluentui/react-northstar';
 
 export default function ClientsList({ clients }) {
     return (
@@ -9,10 +7,10 @@ export default function ClientsList({ clients }) {
             {clients.map(client =>
                 <List.Item
                     key={client.id}
-                    component={Link}
+                    as={Link}
                     to={client.url}
-                    primaryText={client.fullname}
-                    secondaryText={`${client.email} ${client.phone}`}
+                    header={client.fullname}
+                    content={`${client.email} ${client.phone}`}
                 />
             )}
         </List>

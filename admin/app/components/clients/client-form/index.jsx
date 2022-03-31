@@ -1,13 +1,10 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import {
-    Layout,
-    TextField
-} from 'mdc-react';
+    Form, FormInput, FormRadioGroup, FormTextArea
+} from '@fluentui/react-northstar';
 import moment from 'moment';
 
-import useForm from 'shared/hooks/form';
-import Form from 'shared/components/form';
-import RadioGroup from 'shared/components/radio-group';
+import { useFormData } from 'shared/hooks/form';
 import TimeZoneSelect from 'shared/components/timezone-select';
 
 const defaultClient = {
@@ -16,6 +13,7 @@ const defaultClient = {
     lastname: '',
     patronym: '',
     email: '',
+    gender: '',
     phone: '',
     altPhone: '',
     address: '',
@@ -25,12 +23,17 @@ const defaultClient = {
     note: ''
 };
 
+const genderOptions = [
+    { key: 'male', value: 'male', label: 'Мужской' },
+    { key: 'female', value: 'female', label: 'Женский' }
+];
+
 export default forwardRef(ClientForm);
 
 function ClientForm({ client = {}, onSubmit, ...props }, ref) {
     const formRef = useRef();
 
-    const [data, handleChange] = useForm({
+    const { data, handleChange } = useFormData({
         ...defaultClient,
         ...client,
         requests: undefined,
@@ -46,138 +49,134 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
 
     return (
         <Form ref={formRef} className="client-form" onSubmit={() => onSubmit(data)} {...props}>
-            <Layout column>
-                <TextField
-                    type="text"
-                    name="hhid"
-                    value={data.hhid}
-                    label="Hollihop ID"
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                type="text"
+                name="hhid"
+                value={data.hhid}
+                label="Hollihop ID"
+                fluid
+                onChange={handleChange}
+            />
 
-                <TextField
-                    name="firstname"
-                    value={data.firstname}
-                    label="Имя"
-                    filled
-                    required
-                    onChange={handleChange}
-                />
+            <FormInput
+                name="firstname"
+                value={data.firstname}
+                label="Имя"
+                fluid
+                required
+                onChange={handleChange}
+            />
 
-                <TextField
-                    name="lastname"
-                    value={data.lastname}
-                    label="Фамилия"
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                name="lastname"
+                value={data.lastname}
+                label="Фамилия"
+                fluid
+                onChange={handleChange}
+            />
 
-                <TextField
-                    name="patronym"
-                    value={data.patronym}
-                    label="Отчество"
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                name="patronym"
+                value={data.patronym}
+                label="Отчество"
+                fluid
+                onChange={handleChange}
+            />
 
-                <TextField
-                    type="phone"
-                    name="phone"
-                    value={data.phone}
-                    label="Телефон"
-                    required
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                type="phone"
+                name="phone"
+                value={data.phone}
+                label="Телефон"
+                required
+                fluid
+                onChange={handleChange}
+            />
 
-                <TextField
-                    type="phone"
-                    name="altPhone"
-                    value={data.altPhone}
-                    label="Дополнительный телефон"
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                type="phone"
+                name="altPhone"
+                value={data.altPhone}
+                label="Дополнительный телефон"
+                fluid
+                onChange={handleChange}
+            />
 
-                <TextField
-                    type="email"
-                    name="email"
-                    value={data.email}
-                    label="Электронная почта"
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                type="email"
+                name="email"
+                value={data.email}
+                label="Электронная почта"
+                fluid
+                onChange={handleChange}
+            />
 
-                <RadioGroup
-                    name="gender"
-                    value={data.gender}
-                    label="Пол"
-                    options={[
-                        { value: 'male', label: 'Мужской' },
-                        { value: 'female', label: 'Женский' }
-                    ]}
-                    onChange={handleChange}
-                />
+            <FormRadioGroup
+                name="gender"
+                value={data.gender}
+                label="Пол"
+                items={genderOptions}
+                vertical
+                onChange={handleChange}
+            />
 
-                {client?.id &&
-                    <>
-                        <TextField
-                            type="date"
-                            name="dob"
-                            value={data.dob ? moment(data.dob).format('YYYY-MM-DD') : ''}
-                            label="Дата рождения"
-                            filled
-                            onChange={handleChange}
-                        />
+            {client?.id &&
+                <>
+                    <FormInput
+                        type="date"
+                        name="dob"
+                        value={data.dob ? moment(data.dob).format('YYYY-MM-DD') : ''}
+                        label="Дата рождения"
+                        fluid
+                        onChange={handleChange}
+                    />
 
-                        <TimeZoneSelect
-                            name="timezone"
-                            value={data.timezone}
-                            onChange={handleChange}
-                        />
+                    <TimeZoneSelect
+                        name="timezone"
+                        value={data.timezone}
+                        onChange={handleChange}
+                    />
 
-                        <TextField
-                            type="text"
-                            name="address"
-                            value={data.address}
-                            label="Адрес"
-                            filled
-                            textarea
-                            onChange={handleChange}
-                        />
+                    <FormInput
+                        type="text"
+                        name="address"
+                        value={data.address}
+                        label="Адрес"
+                        fluid
+                        textarea
+                        onChange={handleChange}
+                    />
 
-                        <TextField
-                            type="text"
-                            name="occupation"
-                            value={data.occupation}
-                            label="Род деятельности"
-                            filled
-                            textarea
-                            onChange={handleChange}
-                        />
+                    <FormInput
+                        type="text"
+                        name="occupation"
+                        value={data.occupation}
+                        label="Род деятельности"
+                        fluid
+                        textarea
+                        onChange={handleChange}
+                    />
 
-                        <TextField
-                            type="text"
-                            name="interests"
-                            value={data.interests}
-                            label="Интересы"
-                            filled
-                            textarea
-                            onChange={handleChange}
-                        />
-                    </>
-                }
+                    <FormInput
+                        type="text"
+                        name="interests"
+                        value={data.interests}
+                        label="Интересы"
+                        fluid
+                        textarea
+                        onChange={handleChange}
+                    />
+                </>
+            }
 
-                <TextField
-                    name="note"
-                    value={data.note}
-                    label="Примечание"
-                    filled
-                    textarea
-                    onChange={handleChange}
-                />
-            </Layout>
+            <FormTextArea
+                name="note"
+                value={data.note}
+                label="Примечание"
+                resize="vertical"
+                fluid
+                onChange={handleChange}
+            />
         </Form>
     );
 }

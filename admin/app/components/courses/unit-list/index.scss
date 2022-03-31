@@ -1,7 +1,14 @@
-@use 'mdc-react/src/list';
-
 .unit-list {
-    .mdc-list-item {
-        @include list.item-start-size(132px, 64px);
+    .ui-list {
+        &__itemmedia {
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+            margin-right: 1rem;
+            text-align: center;
+            background: lightgray;
+            color: white;
+            border-radius: 100%;
+        }
     }
 }

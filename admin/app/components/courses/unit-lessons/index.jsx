@@ -1,58 +1,74 @@
-import { useCallback } from 'react';
-import {
-    Card,
-    IconButton
-} from 'mdc-react';
+import { useCallback, useState } from 'react';
+import { Button } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
+import ConfirmationDialog from 'shared/components/confirmation-dialog';
+import Icon from 'shared/components/material-icon';
 import FormDialog from 'shared/components/form-dialog';
+import PageSection from 'shared/components/page-section';
 
-import LessonList from 'app/components/courses/lesson-list';
 import LessonForm from 'app/components/courses/lesson-form';
+import LessonList from 'app/components/courses/lesson-list';
 
 export default function UnitLessons({ course, unit, onCreate, onDelete }) {
-    const [isLessonFormOpen, toggleLessonFormOpen] = useBoolean(false);
+    const [lesson, setLesson] = useState();
+    const [isFormDialogOpen, toggleFormDialogOpen] = useBoolean(false);
+    const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
+
+    const handleSubmit = useCallback(data => {
+        return onCreate(data).finally(() => toggleFormDialogOpen(false));
+    }, [onCreate]);
+
+    const handleDelete = useCallback(() => {
+        return onDelete(lesson).finally(() => {
+            toggleConfirmationDialogOpen(false);
+            setLesson(undefined);
+        });
+    }, [lesson, onDelete]);
+
+    const handleDeleteRequest = useCallback(lesson => {
+        setLesson(lesson);
+        toggleConfirmationDialogOpen(true);
+    }, []);
 
     const lessons = unit.lessons.map(id => course.lessonsById.get(id)).filter(id => id !== undefined);
 
-    const handleSubmit = useCallback(data => {
-        onCreate(data)
-            .then(() => toggleLessonFormOpen(false));
-    }, [onCreate]);
-
     return (
-        <section className="unit-lessons">
-            <Card>
-                <Card.Header
-                    title="Уроки"
-                    actions={[
-                        <IconButton
-                            icon="add"
-                            onClick={toggleLessonFormOpen}
-                        />
-                    ]}
+        <PageSection
+            className="unit-lessons"
+            title="Уроки"
+            actions={
+                <Button
+                    icon={<Icon>add</Icon>}
+                    iconOnly
+                    text
+                    onClick={toggleFormDialogOpen}
                 />
-
-                <Card.Section>
-                    <LessonList
-                        lessons={lessons}
-                        onDelete={onDelete}
-                    />
-                </Card.Section>
-            </Card>
-
+            }
+        >
+            <LessonList
+                lessons={lessons}
+                onDelete={handleDeleteRequest}
+            />
 
             <FormDialog
                 title="Новый урок"
-                form="lesson-form"
-                open={isLessonFormOpen}
-                fullscreen
-                onClose={toggleLessonFormOpen}
+                open={isFormDialogOpen}
+                onClose={toggleFormDialogOpen}
             >
                 <LessonForm
+                    id="lesson-form"
                     onSubmit={handleSubmit}
                 />
             </FormDialog>
-        </section>
+
+            <ConfirmationDialog
+                title="Удалить урок?"
+                message={unit && `Урок "${unit.title}" будет удален без возможности восстановления.`}
+                open={isConfirmationDialogOpen}
+                onConfirm={handleDelete}
+                onClose={toggleConfirmationDialogOpen}
+            />
+        </PageSection>
     );
 }

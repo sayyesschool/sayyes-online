@@ -44,6 +44,11 @@ export default {
         single: null
     },
 
+    rooms: {
+        list: null,
+        single: null
+    },
+
     teachers: {
         list: null,
         single: null

@@ -1,20 +1,29 @@
 import { useCallback, useState } from 'react';
-
-import { upload } from 'shared/utils/file';
+import {
+    Button
+} from '@fluentui/react-northstar';
 
 import AudioList from 'shared/components/audio-list';
 import AudioForm from 'shared/components/audio-form';
 import FormDialog from 'shared/components/form-dialog';
-import PageFAB from 'shared/components/page-fab';
+import Icon from 'shared/components/material-icon';
+import PageSection from 'shared/components/page-section';
+import { uploadFile } from 'shared/services/storage';
+
+import './index.scss';
 
 export default function CourseAudios({ course, onCreate, onUpdate, onDelete }) {
     const [audio, setAudio] = useState();
+
+    const handleAdd = useCallback(() => {
+        setAudio({});
+    }, []);
 
     const handleCreate = useCallback((data, file) => {
         setAudio(undefined);
 
         const promise = file ?
-            upload(file, { path: `courses/${course.id}/audios/` })
+            uploadFile(file, { path: `courses/${course.id}/audios/` })
                 .then(response => {
                     data.url = response.url;
                 })
@@ -28,7 +37,7 @@ export default function CourseAudios({ course, onCreate, onUpdate, onDelete }) {
         setAudio(undefined);
 
         const promise = file ?
-            upload(file, { path: `courses/${course.id}/audios/` })
+            uploadFile(file, { path: `courses/${course.id}/audios/` })
                 .then(response => {
                     data.url = response.url;
                 })
@@ -49,7 +58,26 @@ export default function CourseAudios({ course, onCreate, onUpdate, onDelete }) {
     }, []);
 
     return (
-        <section className="course-audios">
+        <PageSection
+            className="course-audios"
+            title="Аудио"
+            actions={[
+                <Button
+                    key="search"
+                    icon={<Icon>search</Icon>}
+                    iconOnly
+                    text
+                    onClick={handleAdd}
+                />,
+                <Button
+                    key="add"
+                    icon={<Icon>add</Icon>}
+                    iconOnly
+                    text
+                    onClick={handleAdd}
+                />
+            ]}
+        >
             <AudioList
                 audios={course.audios}
                 onSelect={setAudio}
@@ -59,7 +87,6 @@ export default function CourseAudios({ course, onCreate, onUpdate, onDelete }) {
             <FormDialog
                 title={audio?.id ? 'Редактирование аудио' : 'Новое аудио'}
                 open={Boolean(audio)}
-                fullscreen
                 onClose={handleClose}
             >
                 <AudioForm
@@ -68,11 +95,6 @@ export default function CourseAudios({ course, onCreate, onUpdate, onDelete }) {
                     onSubmit={audio?.id ? handleUpdate : handleCreate}
                 />
             </FormDialog>
-
-            <PageFAB
-                icon="add"
-                onClick={() => setAudio({})}
-            />
-        </section>
+        </PageSection>
     );
 }

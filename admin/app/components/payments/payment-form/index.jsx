@@ -1,15 +1,16 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import {
-    Layout,
-    Select,
-    TextField
-} from 'mdc-react';
+    Form, FormDropdown, FormInput
+} from '@fluentui/react-northstar';
 import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
-import Form from 'shared/components/form';
 
-import { paymentMethodOptions, operatorOptions } from 'shared/../data/payment';
+import { paymentMethodOptions, operatorOptions } from 'shared/data/payment';
+
+import './index.scss';
+
+export default forwardRef(PaymentForm);
 
 const defaultPayment = {
     amount: 0,
@@ -18,10 +19,6 @@ const defaultPayment = {
     paymentMethod: '',
     operator: ''
 };
-
-import './index.scss';
-
-export default forwardRef(PaymentForm);
 
 function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
     const formRef = useRef();
@@ -45,68 +42,66 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
 
     return (
         <Form ref={formRef} className="payment-form" onSubmit={handleSubmit} {...props}>
-            <Layout column>
-                <TextField
-                    type="text"
-                    name="description"
-                    value={data.description}
-                    label="Описание"
-                    filled
-                    required
+            <FormInput
+                type="text"
+                name="description"
+                value={data.description}
+                label="Описание"
+                fluid
+                required
+                onChange={onChange}
+            />
+
+            <FormInput
+                type="number"
+                name="amount"
+                value={data.amount}
+                label="Сумма"
+                suffix="руб."
+                fluid
+                min={1}
+                required
+                onChange={onChange}
+            />
+
+            <FormInput
+                type="date"
+                name="paidAt"
+                value={moment(data.paidAt).format('YYYY-MM-DD')}
+                label="Дата"
+                fluid
+                onChange={onChange}
+            />
+
+            <FormDropdown
+                name="paymentMethod"
+                value={data.paymentMethod}
+                label="Способ оплаты"
+                fluid
+                items={paymentMethodOptions}
+                onChange={onChange}
+            />
+
+            {(data.paymentMethod !== '' && data.paymentMethod !== 'cash') &&
+                <FormDropdown
+                    name="operator"
+                    value={data.operator}
+                    label="Оператор"
+                    fluid
+                    options={operatorOptions}
                     onChange={onChange}
                 />
+            }
 
-                <TextField
-                    type="number"
-                    name="amount"
-                    value={data.amount}
-                    label="Сумма"
-                    suffix="руб."
-                    filled
-                    min={1}
-                    required
-                    onChange={onChange}
-                />
-
-                <TextField
-                    type="date"
-                    name="paidAt"
-                    value={moment(data.paidAt).format('YYYY-MM-DD')}
-                    label="Дата"
-                    filled
-                    onChange={onChange}
-                />
-
-                <Select
-                    name="paymentMethod"
-                    value={data.paymentMethod}
-                    label="Способ оплаты"
-                    filled
-                    options={paymentMethodOptions}
-                    onChange={onChange}
-                />
-
-                {(data.paymentMethod !== '' && data.paymentMethod !== 'cash') &&
-                    <Select
-                        name="operator"
-                        value={data.operator}
-                        label="Оператор"
-                        filled
-                        options={operatorOptions}
-                        onChange={onChange}
-                    />
-                }
-
-                <TextField
-                    type="text"
-                    name="note"
-                    value={data.note}
-                    label="Заметка"
-                    filled
-                    textarea
-                    onChange={onChange}
-                />
-            </Layout>
+            <FormInput
+                type="text"
+                name="note"
+                value={data.note}
+                label="Заметка"
+                fluid
+                textarea
+                onChange={onChange}
+            />
         </Form>
     );
 }

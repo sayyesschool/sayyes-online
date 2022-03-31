@@ -1,33 +1,32 @@
 import {
-    Card,
-    IconButton
-} from 'mdc-react';
+    Button
+} from '@fluentui/react-northstar';
+
+import Icon from 'shared/components/material-icon';
+import PageSection from 'shared/components/page-section';
 
 import UnitForm from 'app/components/courses/unit-form';
 
 export default function UnitDetails({ unit, onUpdate }) {
     return (
-        <section className="unit-details">
-            <Card>
-                <Card.Header
-                    title="Детали"
-                    actions={[
-                        <IconButton
-                            icon="save"
-                            type="submit"
-                            form="unit-form"
-                        />
-                    ]}
+        <PageSection
+            className="unit-details"
+            title="Детали"
+            actions={
+                <Button
+                    type="submit"
+                    form="unit-form"
+                    icon={<Icon icon="save" />}
+                    iconOnly
+                    text
                 />
-
-                <Card.Section primary>
-                    <UnitForm
-                        id="unit-form"
-                        unit={unit}
-                        onSubmit={onUpdate}
-                    />
-                </Card.Section>
-            </Card>
-        </section>
+            }
+        >
+            <UnitForm
+                id="unit-form"
+                unit={unit}
+                onSubmit={onUpdate}
+            />
+        </PageSection>
     );
 }

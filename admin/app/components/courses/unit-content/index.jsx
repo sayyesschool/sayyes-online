@@ -1,9 +1,10 @@
 import { useCallback, useRef } from 'react';
 import {
-    Card,
-    IconButton
-} from 'mdc-react';
+    Button
+} from '@fluentui/react-northstar';
 
+import Icon from 'shared/components/material-icon';
+import PageSection from 'shared/components/page-section';
 import TextEditor from 'shared/components/text-editor';
 
 import './index.scss';
@@ -18,25 +19,22 @@ export default function UnitContent({ unit = {}, onUpdate }) {
     }, [onUpdate]);
 
     return (
-        <section className="unit-content">
-            <Card>
-                <Card.Header
-                    title="Содержание"
-                    actions={
-                        <IconButton
-                            icon="save"
-                            onClick={handleSave}
-                        />
-                    }
+        <PageSection
+            className="unit-content"
+            title="Содержание"
+            actions={
+                <Button
+                    icon={<Icon icon="save" />}
+                    iconOnly
+                    text
+                    onClick={handleSave}
                 />
-
-                <Card.Section primary>
-                    <TextEditor
-                        ref={editorRef}
-                        defaultValue={unit.content}
-                    />
-                </Card.Section>
-            </Card>
-        </section>
+            }
+        >
+            <TextEditor
+                ref={editorRef}
+                defaultValue={unit.content}
+            />
+        </PageSection>
     );
 }

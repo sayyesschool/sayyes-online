@@ -57,7 +57,9 @@ module.exports = ({
                     res.json({
                         ok: true,
                         message: 'Курс удален',
-                        data: course
+                        data: {
+                            id: course.id
+                        }
                     });
                 })
                 .catch(next);
@@ -294,7 +296,9 @@ module.exports = ({
                 res.json({
                     ok: true,
                     message: 'Юнит удален',
-                    data: unit
+                    data: {
+                        id: unit.id
+                    }
                 });
             }).catch(next);
         }
@@ -327,7 +331,7 @@ module.exports = ({
         },
 
         update: (req, res, next) => {
-            const data = Array.from(Object.entries(data))
+            const data = Array.from(Object.entries(req.body))
                 .reduce((data, [key, value]) => {
                     data[`lessons.$[l].${key}`] = value;
                     return data;

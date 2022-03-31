@@ -1,12 +1,9 @@
 import { useCallback } from 'react';
-import {
-    Layout,
-    Select,
-    TextField
-} from 'mdc-react';
 
-import useForm from 'shared/hooks/form';
+import { useFormData } from 'shared/hooks/form';
 import Form from 'shared/components/form';
+import FormInput from 'shared/components/form-input';
+import FormSelect from 'shared/components/form-select';
 
 import { ageOptions, domainOptions, teacherOptions } from 'app/data/pack';
 
@@ -22,7 +19,7 @@ const defaultPack = {
 };
 
 export default function PackForm({ pack = {}, onSubmit, ...props }) {
-    const [data, handleChange] = useForm({
+    const { data, handleChange } = useFormData({
         ...defaultPack,
         ...pack
     });
@@ -33,64 +30,62 @@ export default function PackForm({ pack = {}, onSubmit, ...props }) {
 
     return (
         <Form className="pack-form" onSubmit={handleSubmit} {...props}>
-            <Layout column>
-                <Select
-                    name="age"
-                    value={data.age}
-                    label="Возраст"
-                    options={ageOptions}
-                    filled
-                    required
-                    onChange={handleChange}
-                />
+            <FormSelect
+                name="age"
+                value={data.age}
+                label="Возраст"
+                options={ageOptions}
+                fluid
+                required
+                onChange={handleChange}
+            />
 
-                <Select
-                    name="domain"
-                    value={data.domain}
-                    label="Направление"
-                    options={domainOptions}
-                    filled
-                    required
-                    onChange={handleChange}
-                />
+            <FormSelect
+                name="domain"
+                value={data.domain}
+                label="Направление"
+                options={domainOptions}
+                fluid
+                required
+                onChange={handleChange}
+            />
 
-                <Select
-                    name="teacher"
-                    value={data.teacher}
-                    label="Тип преподавателя"
-                    options={teacherOptions}
-                    filled
-                    required
-                    onChange={handleChange}
-                />
+            <FormSelect
+                name="teacher"
+                value={data.teacher}
+                label="Тип преподавателя"
+                options={teacherOptions}
+                fluid
+                required
+                onChange={handleChange}
+            />
 
-                <TextField
-                    type="number"
-                    name="numberOfLessons"
-                    value={data.numberOfLessons}
-                    label="Кол-во уроков"
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                type="number"
+                name="numberOfLessons"
+                value={data.numberOfLessons}
+                label="Кол-во уроков"
+                fluid
+                onChange={handleChange}
+            />
 
-                <TextField
-                    type="number"
-                    name="pricePerLesson"
-                    value={data.pricePerLesson}
-                    label="Стоимость урока, руб."
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                type="number"
+                name="pricePerLesson"
+                value={data.pricePerLesson}
+                label="Стоимость урока, руб."
+                fluid
+                onChange={handleChange}
+            />
 
-                <TextField
-                    type="number"
-                    name="lessonDuration"
-                    value={data.lessonDuration}
-                    label="Продолжительность урока, мин."
-                    filled
-                    onChange={handleChange}
-                />
-            </Layout>
+            <FormInput
+                type="number"
+                name="lessonDuration"
+                value={data.lessonDuration}
+                label="Продолжительность урока, мин."
+                fluid
+                onChange={handleChange}
+            />
         </Form>
     );
 }

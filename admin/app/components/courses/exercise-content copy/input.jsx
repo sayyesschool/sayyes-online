@@ -1,13 +1,14 @@
 import { useCallback } from 'react';
 import {
-    ChipSet, Chip,
-    FormField,
-    Icon,
-    IconButton,
-    TextField
-} from 'mdc-react';
+    Button,
+    Flex,
+    Label,
+    Input
+} from '@fluentui/react-northstar';
 
-import ExerciseItemsSection from 'app/components/courses/exercise-items-section';
+import Icon from 'shared/components/material-icon';
+
+import ExerciseItems from 'app/components/courses/exercise-items';
 
 import './index.scss';
 
@@ -36,7 +37,7 @@ export default function InputExerciseForm({ exercise, onUpdate }) {
     }, [exercise, onUpdate]);
 
     return (
-        <ExerciseItemsSection onAddItem={handleAddItem}>
+        <ExerciseItems onAddItem={handleAddItem}>
             {exercise.items.map(item =>
                 <InputExerciseItemForm
                     key={item.id}
@@ -45,7 +46,7 @@ export default function InputExerciseForm({ exercise, onUpdate }) {
                     onDelete={handleDeleteItem}
                 />
             )}
-        </ExerciseItemsSection>
+        </ExerciseItems>
     );
 }
 
@@ -63,7 +64,7 @@ function InputExerciseItemForm({ item, onUpdate, onDelete }) {
     }, [item, onUpdate]);
 
     const handleKeyPress = useCallback(event => {
-        if (event.code == 'Enter') {
+        if (event.key == 'Enter') {
             event.preventDefault();
 
             onUpdate(item.id, {
@@ -82,39 +83,46 @@ function InputExerciseItemForm({ item, onUpdate, onDelete }) {
 
     return (
         <div className="exercise-item">
-            <TextField
+            <Input
                 value={item.text}
-                trailingIcon={
-                    <IconButton
-                        icon="delete"
+                icon={
+                    <Button
                         type="button"
+                        icon={<Icon>delete</Icon>}
+                        iconOnly
+                        text
                         onClick={handleDelete}
                     />
                 }
-                filled
+                fluid
                 onChange={handleUpdateText}
             />
 
-            <FormField label="Варианты ответа:" alignEnd>
-                <>
-                    <ChipSet input>
-                        {item.answers?.map(answer =>
-                            <Chip
-                                text={answer}
-                                trailingIcon={
-                                    <Icon onClick={() => handleDeleteAnswer(answer)}>delete</Icon>
-                                }
-                            />
-                        )}
-                    </ChipSet>
+            <Flex vAlign="center">
+                <label>Варианты ответа:</label>
 
-                    <TextField
-                        element="div"
-                        defaultValue=""
-                        onKeyPress={handleKeyPress}
+                {item.answers?.map(answer =>
+                    <Label
+                        content={answer}
+                        icon={
+                            <Button
+                                icon={<Icon>delete</Icon>}
+                                iconOnly
+                                text
+                                onClick={() => handleDeleteAnswer(answer)}
+                            />
+
+                        }
                     />
-                </>
-            </FormField>
+                )}
+
+                <input
+                    element="div"
+                    defaultValue=""
+                    placeholder="Введите ответ"
+                    onKeyPress={handleKeyPress}
+                />
+            </Flex>
         </div>
     );
 }

@@ -1,13 +1,15 @@
 import { useCallback, useState } from 'react';
 import {
-    Card,
-    Icon,
-    IconButton
-} from 'mdc-react';
+    Button,
+    Flex,
+    Header,
+    Segment
+} from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
+import MaterialIcon from 'shared/components/material-icon';
 
 import { useActions } from 'app/hooks/store';
 import PaymentForm from 'app/components/payments/payment-form';
@@ -54,28 +56,29 @@ export default function ClientPayments({ client }) {
     const payments = client?.payments;
 
     return (
-        <section className="client-payments">
-            <Card>
-                <Card.Header
-                    graphic={<Icon>payment</Icon>}
-                    title="Платежи"
-                    actions={
-                        <IconButton
-                            icon="add"
-                            title="Создать платеж"
-                            onClick={toggleCreateFormOpen}
-                        />
-                    }
+        <Segment as="section" className="client-payments">
+            <Flex space="between" vAlign="center">
+                <Header
+                    as="h3"
+                    content="Платежи"
                 />
 
-                {payments?.length > 0 &&
-                    <PaymentsList
-                        payments={payments}
-                        onUpdate={handleUpdate}
-                        onDelete={handleDelete}
-                    />
-                }
-            </Card>
+                <Button
+                    icon={<MaterialIcon icon="add" />}
+                    title="Создать платеж"
+                    text
+                    iconOnly
+                    onClick={toggleCreateFormOpen}
+                />
+            </Flex>
+
+            {payments?.length > 0 &&
+                <PaymentsList
+                    payments={payments}
+                    onUpdate={handleUpdate}
+                    onDelete={handleDelete}
+                />
+            }
 
             <FormDialog
                 form="create-payment-form"
@@ -110,6 +113,6 @@ export default function ClientPayments({ client }) {
                 onConfirm={deletePayment}
                 onClose={toggleConfirmationDialogOpen}
             />
-        </section>
+        </Segment>
     );
 }

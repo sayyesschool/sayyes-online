@@ -1,23 +1,20 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import AppHeader from 'shared/components/app-header';
-import AppDrawer from 'shared/components/app-drawer';
+import AppBar from 'shared/components/app-bar';
 import AppContent from 'shared/components/app-content';
 import LoadingIndicator from 'shared/components/loading-indicator';
-import NotificationSnackbar from 'shared/components/notification-snackbar';
+import NotificationAlert from 'shared/components/notification-alert';
 
 import navItems from 'app/data/nav';
 import UI from 'app/contexts/ui';
 import { useStore, useActions } from 'app/hooks/store';
-import NavList from 'app/components/shared/nav-list';
-import Search from 'app/components/shared/search';
-
-import routes from './routes';
+// import Search from 'app/components/shared/search';
 
 import './App.scss';
 
-export default function App() {
+export default function App({ routes }) {
     const [requests, requestActions] = useStore('requests.list');
     const [user, userActions] = useStore('user');
     const [notification, notificationActions] = useStore('notification');
@@ -25,8 +22,6 @@ export default function App() {
     const teacherActions = useActions('teachers');
     const courseActions = useActions('courses');
     const materialActions = useActions('materials');
-
-    const [isSidenavOpen, setSidenavOpen] = useState(true);
 
     useEffect(() => {
         userActions.getUser();
@@ -36,14 +31,14 @@ export default function App() {
         managerActions.getManagers();
         teacherActions.getTeachers();
 
-        setInterval(() => requestActions.getNewRequests(), 60000);
+        //setInterval(() => requestActions.getNewRequests(), 60000);
     }, []);
 
-    const handleSnackbarClose = useCallback(() => {
+    const handleAlertClose = useCallback(() => {
         notificationActions.hideNotification();
     }, []);
 
-    if (!user) return <LoadingIndicator />;
+    if (!user) return <LoadingIndicator className="app-loading-indicator" />;
 
     return (
         <UI.Provider value={{
@@ -52,18 +47,12 @@ export default function App() {
         }}>
             <AppHeader
                 user={user}
-                navigationIcon="menu"
-                onNavigationIconClick={() => setSidenavOpen(open => !open)}
-                fixed
-            >
-                <Search />
-            </AppHeader>
+            />
 
-            <AppDrawer
-                open={isSidenavOpen}
-            >
-                <NavList items={navItems} requests={requests} />
-            </AppDrawer>
+            <AppBar
+                user={user}
+                items={navItems}
+            />
 
             <AppContent>
                 <Switch>
@@ -76,11 +65,11 @@ export default function App() {
                 </Switch>
             </AppContent>
 
-            <NotificationSnackbar
-                open={notification.active}
+            <NotificationAlert
                 type={notification.type}
-                text={notification.text}
-                onClose={handleSnackbarClose}
+                open={notification.active}
+                content={notification.text}
+                onClose={handleAlertClose}
             />
         </UI.Provider>
     );

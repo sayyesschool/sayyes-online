@@ -1,59 +1,62 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
+import { useBoolean } from 'shared/hooks/state';
+import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
-import PageTopBar from 'shared/components/page-top-bar';
+import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
+import PageSection from 'shared/components/page-section';
 
 import { useStore } from 'app/hooks/store';
-import FormPanel from 'app/components/shared/form-panel';
-import CourseTable from 'app/components/courses/course-table';
 import CourseForm from 'app/components/courses/course-form';
+import CoursesTable from 'app/components/courses/courses-table';
 
 export default function CoursesPage() {
     const [courses, actions] = useStore('courses.list');
 
-    const [isCourseFormOpen, setCourseFormOpen] = useState(false);
+    const [isFormDialogOpen, toggleFormDialogOpen] = useBoolean(false);
 
     useEffect(() => {
         actions.getCourses();
     }, []);
 
     const handleSubmit = useCallback(data => {
-        actions.createCourse(data)
-            .then(() => setCourseFormOpen(false));
+        return actions.createCourse(data)
+            .then(() => toggleFormDialogOpen(false));
     }, []);
 
     return (
         <Page id="courses" loading={!courses}>
-            <PageTopBar
+            <PageHeader
                 title="Курсы"
                 actions={[
                     {
                         key: 'add',
                         title: 'Создать',
                         icon: 'add',
-                        onClick: () => setCourseFormOpen(true)
+                        onClick: toggleFormDialogOpen
                     }
                 ]}
             />
 
             <PageContent>
-                <CourseTable
-                    courses={courses}
-                />
+                <PageSection>
+                    <CoursesTable
+                        courses={courses}
+                    />
+                </PageSection>
             </PageContent>
 
-            <FormPanel
-                form="course-form"
+            <FormDialog
                 title="Новый курс"
-                open={isCourseFormOpen}
-                modal
-                onClose={() => setCourseFormOpen(!isCourseFormOpen)}
+                open={isFormDialogOpen}
+                onClose={toggleFormDialogOpen}
             >
                 <CourseForm
+                    id="course-form"
                     onSubmit={handleSubmit}
                 />
-            </FormPanel>
+            </FormDialog>
         </Page>
     );
 }

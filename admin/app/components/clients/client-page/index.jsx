@@ -1,15 +1,15 @@
 import { useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    LayoutGrid as Grid
-} from 'mdc-react';
+    Grid
+} from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
-import LoadingIndicator from 'shared/components/loading-indicator';
 import FormDialog from 'shared/components/form-dialog';
+import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageTopBar from 'shared/components/page-top-bar';
+import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
 
 import { useStore } from 'app/hooks/store';
@@ -17,8 +17,8 @@ import ClientForm from 'app/components/clients/client-form';
 import ClientDetails from 'app/components/clients/client-details';
 import ClientContacts from 'app/components/clients/client-contacts';
 import ClientEnrollments from 'app/components/clients/client-enrollments';
-import ClientRequests from 'app/components/clients/client-requests';
 import ClientPayments from 'app/components/clients/client-payments';
+import ClientRequests from 'app/components/clients/client-requests';
 
 import './index.scss';
 
@@ -53,9 +53,9 @@ export default function ClientPage({ match, location, history }) {
 
     return (
         <Page id="client">
-            <PageTopBar
+            <PageHeader
                 breadcrumbs={[
-                    <Link to="/clients">Клиенты</Link>
+                    { text: 'Клиенты', url: '/clients' }
                 ]}
                 title={client?.fullname}
                 actions={[
@@ -83,38 +83,26 @@ export default function ClientPage({ match, location, history }) {
 
             <PageContent>
                 <Grid>
-                    <Grid.Cell span="3" grid>
-                        <Grid.Cell span="12">
-                            <ClientDetails
-                                client={client}
-                            />
-                        </Grid.Cell>
+                    <ClientDetails
+                        client={client}
+                    />
 
-                        <Grid.Cell span="12">
-                            <ClientContacts
-                                client={client}
-                                onUpdate={updateClient}
-                            />
-                        </Grid.Cell>
-                    </Grid.Cell>
+                    <ClientContacts
+                        client={client}
+                        onUpdate={updateClient}
+                    />
 
-                    <Grid.Cell span="3">
-                        <ClientRequests
-                            requests={client?.requests}
-                        />
-                    </Grid.Cell>
+                    <ClientRequests
+                        requests={client?.requests}
+                    />
 
-                    <Grid.Cell span="3">
-                        <ClientEnrollments
-                            client={client}
-                        />
-                    </Grid.Cell>
+                    <ClientEnrollments
+                        client={client}
+                    />
 
-                    <Grid.Cell span="3">
-                        <ClientPayments
-                            client={client}
-                        />
-                    </Grid.Cell>
+                    <ClientPayments
+                        client={client}
+                    />
                 </Grid>
             </PageContent>
 
@@ -138,6 +126,6 @@ export default function ClientPage({ match, location, history }) {
                 onConfirm={deleteClient}
                 onClose={toggleConfirmationDialogOpen}
             />
-        </Page>
+        </Page >
     );
 }

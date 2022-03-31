@@ -1,0 +1,83 @@
+.exercise-items {
+    .page-section__content:not(:empty) {
+        padding: 0 1rem 1rem 1rem;
+    }
+
+    .exercise-item {
+        + .exercise-item {
+            margin-top: 16px;
+        }
+
+        .exercise-item__item + .exercise-item__item {
+            margin-top: 8px;
+        }
+
+        &--boolean {
+    
+        }
+        
+        &--choice {    
+            > label {
+                display: block;
+                margin: 8px 0;
+            }
+
+            > .ui-button {
+                margin-top: 8px;
+            }
+        }
+
+        &--essay {
+
+        }
+        
+        &--fib {
+            position: relative;
+        
+            .text-editor {
+                margin-right: 36px;
+                border: 1px solid rgba(0,0,0,.12);
+                border-radius: 4px;
+            }
+    
+            .ui-button {
+                position: absolute;
+                top: 0;
+                right: 0
+            }
+        }
+        
+        &--input {
+            .ui-flex {
+                margin-top: 8px;
+                margin-left: 8px;
+    
+                label {
+                    flex: none;
+                    margin-right: 8px;
+                }
+    
+                .ui-label {
+                    + .ui-label {
+                        margin-left: 4px;
+                    }
+                }
+    
+                input {
+                    flex: 1;
+                    margin-left: 8px;
+                    border: none;
+                    outline: none;
+                }
+            }
+
+            + .exercise-item {
+                margin-top: 1.5rem;
+            }
+        }
+
+        &--text {
+
+        }
+    }
+}

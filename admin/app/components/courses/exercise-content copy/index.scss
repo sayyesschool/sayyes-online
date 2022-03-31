@@ -1,0 +1,93 @@
+.exercise-content {
+    .exercise-item {
+        .mdc-text-field {
+            margin: 0;
+        }
+
+        &.mdc-list-item {
+            height: auto;
+            min-height: 48px;
+            align-items: flex-start;
+            padding-top: 6px;
+            padding-bottom: 6px;
+
+            .mdc-list-item__content {
+                pointer-events: all;
+            }
+
+            .mdc-text-field {
+                width: 100%;
+            }
+        }
+
+        + .exercise-item {
+            margin-top: 8px;
+        }
+
+        + .new-item-button {
+            margin-top: 1rem;
+        }
+    }
+
+    &--boolean {
+
+    }
+
+    &--choice {    
+
+    }
+
+    &--fib {
+        .exercise-item {
+            position: relative;
+
+            .text-editor {
+                margin-right: 36px;
+            }
+
+            .ui-button {
+                position: absolute;
+                top: 0;
+                right: 0
+            }
+        }
+        
+    }
+
+    &--text {
+        .mdc-card {
+            margin-top: 1rem;
+        }
+    }
+
+    &--input {
+        .exercise-item {
+            .ui-flex {
+                margin-top: 8px;
+                margin-left: 8px;
+
+                label {
+                    flex: none;
+                    margin-right: 8px;
+                }
+
+                .ui-label {
+                    + .ui-label {
+                        margin-left: 4px;
+                    }
+                }
+    
+                input {
+                    flex: 1;
+                    margin-left: 8px;
+                    border: none;
+                    outline: none;
+                }
+            }
+
+            + .exercise-item {
+                margin-top: 1.5rem;
+            }
+        }
+    }
+}

@@ -1,12 +1,28 @@
 import { useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
-    Avatar,
-    IconButton,
+    Button,
     List
-} from 'mdc-react';
+} from '@fluentui/react-northstar';
 
-export default function ExercisesList({ exercises, exercise: activeExercise, onDelete }) {
+import Icon from 'shared/components/material-icon';
+
+import './index.scss';
+
+const types = {
+    boolean: 'Да/Нет',
+    choice: 'Выбор',
+    essay: 'Эссе',
+    fib: 'Заполнить пробелы',
+    input: 'Ввод',
+    text: 'Текст'
+};
+
+export default function ExercisesList({
+    exercises,
+    selectedExercise,
+    onDelete
+}) {
     const handleClick = useCallback((event, exercise) => {
         event.preventDefault();
         event.stopPropagation();
@@ -15,24 +31,24 @@ export default function ExercisesList({ exercises, exercise: activeExercise, onD
     }, []);
 
     return (
-        <List className="exercises-list">
+        <List className="exercises-list" selectable>
             {exercises.map((exercise, index) =>
                 <List.Item
                     key={exercise.id}
-                    component={NavLink}
+                    as={NavLink}
                     to={exercise.uri}
-                    avatar={<Avatar key={exercise.id} text={index + 1} />}
-                    overlineText={exercise.type}
-                    primaryText={exercise.title}
-                    secondaryText={exercise.description}
-                    trailingIcon={onDelete &&
-                        <IconButton
-                            icon="delete"
+                    media={index + 1}
+                    header={exercise.title}
+                    content={types[exercise.type]}
+                    endMedia={onDelete &&
+                        <Button
+                            icon={<Icon>delete</Icon>}
+                            iconOnly
+                            text
                             onClick={event => handleClick(event, exercise)}
                         />
                     }
-                    activated={exercise === activeExercise}
-                    activeClassName="mdc-list-item--activated"
+                    selected={exercise.id === selectedExercise?.id}
                 />
             )}
         </List>

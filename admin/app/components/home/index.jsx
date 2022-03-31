@@ -1,16 +1,16 @@
 import {
-    Card,
-    LayoutGrid
-} from 'mdc-react';
+    Segment,
+    Text
+} from '@fluentui/react-northstar';
 
 import Page from 'shared/components/page';
-import PageTopBar from 'shared/components/page-top-bar';
+import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
 
 import { useStore } from 'app/hooks/store';
 import RequestsList from 'app/components/requests/requests-list';
-import LessonList from 'app/components/lessons/lesson-list';
-import MeetingList from 'app/components/meetings/meeting-list';
+// import LessonList from 'app/components/lessons/lesson-list';
+// import MeetingList from 'app/components/meetings/meeting-list';
 
 import './index.scss';
 
@@ -21,12 +21,18 @@ export default function HomePage() {
 
     return (
         <Page id="home">
-            <PageTopBar
-                title="Главная"
-            />
+            <PageHeader title="Главная" />
 
             <PageContent>
-                <LayoutGrid>
+                <Segment>
+                    <Text as="h2">Заявки</Text>
+
+                    <RequestsList
+                        requests={requests}
+                    />
+                </Segment>
+
+                {/* <LayoutGrid>
                     <LayoutGrid.Cell span="3">
                         <Card outlined>
                             <Card.Header title="Заявки в обработке" />
@@ -66,7 +72,7 @@ export default function HomePage() {
                             }
                         </Card>
                     </LayoutGrid.Cell>
-                </LayoutGrid>
+                </LayoutGrid> */}
             </PageContent>
         </Page>
     );

@@ -1,78 +1,84 @@
 import {
-    DataTable
-} from 'mdc-react';
+    Button,
+    Table
+} from '@fluentui/react-northstar';
 
-import MenuButton from 'shared/components/menu-button';
+import Icon from 'shared/components/material-icon';
 
 import { ageLabel, domainLabel, teacherLabel } from 'app/data/pack';
 
-export default function LessonTable({ packs, onEdit, onDelete }) {
+export default function PacksTable({ packs, onEdit, onDelete }) {
     return (
-        <DataTable id="packs-table">
-            <DataTable.Header>
-                <DataTable.HeaderRow>
-                    {columns.map(col =>
-                        <DataTable.HeaderCell
-                            key={col.key}
-                            numeric={col.numeric}
-                        >
-                            {col.text}
-                        </DataTable.HeaderCell>
-                    )}
-                </DataTable.HeaderRow>
-            </DataTable.Header>
+        <Table id="packs-table">
+            <Table.Row header>
+                {columns.map(col =>
+                    <Table.Cell
+                        key={col.key}
+                        content={col.text}
+                    />
+                )}
+            </Table.Row>
 
-            <DataTable.Content>
-                {packs.map(pack =>
-                    <DataTable.Row key={pack.id}>
-                        <DataTable.Cell>
-                            {ageLabel[pack.age]}
-                        </DataTable.Cell>
+            {packs.map(pack =>
+                <Table.Row key={pack.id}>
+                    <Table.Cell
+                        content={ageLabel[pack.age]}
+                    />
 
-                        <DataTable.Cell>
-                            {domainLabel[pack.domain]}
-                        </DataTable.Cell>
+                    <Table.Cell
+                        content={domainLabel[pack.domain]}
+                    />
 
-                        <DataTable.Cell numeric>
-                            {pack.numberOfLessons}
-                        </DataTable.Cell>
+                    <Table.Cell
+                        content={pack.numberOfLessons}
+                    />
 
-                        <DataTable.Cell numeric>
-                            {pack.pricePerLesson}
-                        </DataTable.Cell>
+                    <Table.Cell
+                        content={pack.pricePerLesson}
+                    />
 
-                        <DataTable.Cell numeric>
-                            {pack.price}
-                        </DataTable.Cell>
+                    <Table.Cell
+                        content={pack.price}
+                    />
 
-                        <DataTable.Cell numeric>
-                            {pack.lessonDuration}
-                        </DataTable.Cell>
+                    <Table.Cell
+                        content={pack.lessonDuration}
+                    />
 
-                        <DataTable.Cell>
-                            {teacherLabel[pack.teacher]}
-                        </DataTable.Cell>
+                    <Table.Cell
+                        content={teacherLabel[pack.teacher]}
+                    />
 
-                        <DataTable.Cell numeric>
-                            <MenuButton
-                                items={[
+                    <Table.Cell
+                        className="ui-table__cell--actions"
+                        content={
+                            <Button.Group
+                                buttons={[
                                     {
                                         key: 'edit',
-                                        text: 'Изменить',
+                                        icon: <Icon>edit</Icon>,
+                                        iconOnly: true,
+                                        flat: true,
+                                        text: true,
+                                        title: 'Изменить',
                                         onClick: () => onEdit(pack)
                                     },
                                     {
                                         key: 'delete',
-                                        text: 'Удалить',
+                                        icon: <Icon>delete</Icon>,
+                                        iconOnly: true,
+                                        flat: true,
+                                        text: true,
+                                        title: 'Удалить',
                                         onClick: () => onDelete(pack)
                                     }
                                 ]}
                             />
-                        </DataTable.Cell>
-                    </DataTable.Row>
-                )}
-            </DataTable.Content>
-        </DataTable>
+                        }
+                    />
+                </Table.Row>
+            )}
+        </Table>
     );
 }
 
@@ -108,5 +114,6 @@ const columns = [
     {
         key: 'teacher',
         text: 'Тип преподавателя'
-    }
+    },
+    {}
 ];

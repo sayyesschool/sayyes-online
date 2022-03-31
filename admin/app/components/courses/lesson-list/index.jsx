@@ -1,10 +1,13 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    Avatar,
-    IconButton,
+    Button,
     List
-} from 'mdc-react';
+} from '@fluentui/react-northstar';
+
+import Icon from 'shared/components/material-icon';
+
+import './index.scss';
 
 export default function LessonList({ lessons, onDelete }) {
     const handleClick = useCallback((event, lesson) => {
@@ -15,18 +18,20 @@ export default function LessonList({ lessons, onDelete }) {
     }, []);
 
     return (
-        <List className="lesson-list">
+        <List className="lesson-list" navigable>
             {lessons.map((lesson, index) =>
                 <List.Item
                     key={lesson.id}
-                    component={Link}
+                    as={Link}
                     to={lesson.uri}
-                    leadingAvatar={<Avatar text={index + 1} />}
-                    primaryText={lesson.title}
-                    secondaryText={`${lesson.exercises?.length} упражнений`}
-                    end={
-                        <IconButton
-                            icon="delete"
+                    media={index + 1}
+                    header={lesson.title}
+                    content={`${lesson.exercises?.length} упражнений`}
+                    endMedia={
+                        <Button
+                            icon={<Icon>delete</Icon>}
+                            iconOnly
+                            text
                             onClick={event => handleClick(event, lesson)}
                         />
                     }
