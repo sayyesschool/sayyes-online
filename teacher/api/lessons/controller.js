@@ -17,7 +17,8 @@ module.exports = ({
 
     getOne: (req, res, next) => {
         Lesson.findById(req.params.lessonId)
-            .populate('client')
+            .populate('client', 'firstname lastname email')
+            .populate('room', 'title login password')
             .then(lesson => {
                 res.json({
                     ok: true,
@@ -30,32 +31,20 @@ module.exports = ({
     create: (req, res, next) => {
         req.body.teacher = req.user.id;
 
-        Lesson.findConflicting(req.body.date, req.body.duration)
+        Lesson.create(req.body)
             .then(lesson => {
-                if (lesson) throw new Error('Не удалось запланировать урок. Время уже занято.');
+                lesson.room = req.room;
 
-                return Room.findAvailable(req.body.date, req.body.duration);
-            })
-            .then(room => {
-                if (!room) throw new Error('Не удалось запланировать урок. Нет свободной аудитории.');
-
-                req.body.room = room.id;
-
-                return Lesson.create(req.body)
-                    .then(lesson => {
-                        lesson.room = room;
-
-                        res.json({
-                            ok: true,
-                            message: 'Урок создан',
-                            data: lesson
-                        });
-                    });
+                res.json({
+                    ok: true,
+                    message: 'Урок создан',
+                    data: lesson
+                });
             })
             .catch(next);
     },
 
-    update: (req, res, next) => {
+    update: async (req, res, next) => {
         Lesson.findByIdAndUpdate(req.params.lessonId, req.body, {
             new: true,
             select: Object.keys(req.body).join(' ')

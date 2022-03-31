@@ -29,7 +29,7 @@ module.exports = core => {
         console.error(error);
         res.status(error.status || 500).send({
             ok: false,
-            error: typeof error === 'object' ? error.message : undefined
+            error: typeof error === 'object' ? error.message : error
         });
     });
 
