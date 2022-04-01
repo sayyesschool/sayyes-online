@@ -44,15 +44,13 @@ Room.statics.findAvailable = function(from, duration) {
 Room.methods.isAvailable = function(from, duration) {
     const fromMoment = moment(from).utc().add(-9, 'minutes');
     const toMoment = fromMoment.clone().add(duration + 18, 'minutes');
-    console.log(fromMoment, toMoment);
+
     const lesson = this.lessons.find(lesson => {
         return (
             moment(lesson.endAt).isSameOrAfter(fromMoment, 'minutes') &&
             moment(lesson.startAt).isSameOrBefore(toMoment, 'minutes')
         );
     });
-
-    console.log(lesson);
 
     return !Boolean(lesson);
 };
