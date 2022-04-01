@@ -40,7 +40,7 @@ Lesson.statics.findConflicting = function(from, duration) {
             const lesson = lessons.find(lesson => {
                 return (
                     moment(lesson.endAt).isAfter(fromMoment, 'minutes') &&
-                    moment(lesson.startAt).isSameOrBefore(toMoment, 'minutes')
+                    moment(lesson.startAt).isBefore(toMoment, 'minutes')
                 );
             });
 
