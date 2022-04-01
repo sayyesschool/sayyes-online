@@ -127,9 +127,17 @@ export function useFormData(initialData, deps = []) {
         });
     }, deps);
 
+    const getData = useCallback(fn => {
+        setData(data => {
+            fn(data);
+            return data;
+        });
+    });
+
     return {
         data,
         setData,
+        getData,
         handleChange
     };
 }
