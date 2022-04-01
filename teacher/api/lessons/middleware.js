@@ -9,7 +9,7 @@ module.exports = ({
 
         if (date < today) return next();
 
-        const conflictingLesson = await Lesson.findConflicting(req.body.date, req.body.duration);
+        const conflictingLesson = await Lesson.findConflicting(req.user.id, req.body.date, req.body.duration);
 
         if (conflictingLesson) return next('Время уже занято.');
 

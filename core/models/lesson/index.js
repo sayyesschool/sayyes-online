@@ -22,7 +22,7 @@ const Lesson = new Schema({
 Lesson.statics.Status = Status;
 Lesson.statics.StatusIcon = StatusIcon;
 
-Lesson.statics.findConflicting = function(from, duration) {
+Lesson.statics.findConflicting = function(teacherId, from, duration) {
     const { years, months, date } = moment(from).utc().toObject();
     const startDate = new Date(Date.UTC(years, months, date));
     const endDate = new Date(Date.UTC(years, months, date + 1));
@@ -30,6 +30,7 @@ Lesson.statics.findConflicting = function(from, duration) {
     const toMoment = fromMoment.clone().add(duration, 'minutes');
 
     return this.find({
+        teacher: teacherId,
         date: {
             $gte: startDate,
             $lt: endDate
