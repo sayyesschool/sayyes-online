@@ -10,10 +10,10 @@ import FormTextArea from 'shared/components/form-textarea';
 import './index.scss';
 
 const statuses = [
-    { key: 'scheduled', value: 'scheduled', content: 'Запланирован' },
-    { key: 'ended', value: 'ended', content: 'Завершился' },
-    { key: 'missed', value: 'missed', content: 'Пропущен' },
-    { key: 'canceled', value: 'canceled', content: 'Отменен' }
+    { key: 'scheduled', value: 'scheduled', header: 'Запланирован' },
+    { key: 'ended', value: 'ended', header: 'Завершился' },
+    { key: 'missed', value: 'missed', header: 'Пропущен' },
+    { key: 'canceled', value: 'canceled', header: 'Отменен' }
 ];
 
 const defaultLesson = {
