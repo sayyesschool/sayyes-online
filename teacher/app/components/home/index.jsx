@@ -46,7 +46,10 @@ export default function HomePage() {
 
     const handleCreateLesson = useCallback(data => {
         actions.createLesson(data)
-            .finally(() => toggleFormDialogOpen(false));
+            .finally(() => {
+                setLesson();
+                toggleFormDialogOpen(false);
+            });
     }, [actions]);
 
     const handleUpdateLesson = useCallback(data => {
