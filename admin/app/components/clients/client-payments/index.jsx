@@ -1,15 +1,11 @@
 import { useCallback, useState } from 'react';
-import {
-    Button,
-    Flex,
-    Header,
-    Segment
-} from '@fluentui/react-northstar';
+import { Button } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
-import MaterialIcon from 'shared/components/material-icon';
+import Icon from 'shared/components/material-icon';
+import PageSection from 'shared/components/page-section';
 
 import { useActions } from 'app/hooks/store';
 import PaymentForm from 'app/components/payments/payment-form';
@@ -28,17 +24,17 @@ export default function ClientPayments({ client }) {
         data.client = client.id;
 
         return actions.createPayment(data)
-            .then(() => toggleCreateFormOpen(false));
+            .finally(() => toggleCreateFormOpen(false));
     }, [client]);
 
     const updatePayment = useCallback(data => {
         return actions.updatePayment(payment.id, data)
-            .then(() => toggleEditFormOpen(false));
+            .finally(() => toggleEditFormOpen(false));
     }, [payment]);
 
     const deletePayment = useCallback(() => {
         return actions.deletePayment(payment.id)
-            .then(() => toggleConfirmationDialogOpen(false));
+            .finally(() => toggleConfirmationDialogOpen(false));
     }, [payment]);
 
     const handleUpdate = useCallback(payment => {
@@ -56,22 +52,19 @@ export default function ClientPayments({ client }) {
     const payments = client?.payments;
 
     return (
-        <Segment as="section" className="client-payments">
-            <Flex space="between" vAlign="center">
-                <Header
-                    as="h3"
-                    content="Платежи"
-                />
-
+        <PageSection
+            className="client-payments"
+            title="Платежи"
+            actions={
                 <Button
-                    icon={<MaterialIcon icon="add" />}
+                    icon={<Icon icon="add" />}
                     title="Создать платеж"
                     text
                     iconOnly
                     onClick={toggleCreateFormOpen}
                 />
-            </Flex>
-
+            }
+        >
             {payments?.length > 0 &&
                 <PaymentsList
                     payments={payments}
@@ -88,7 +81,6 @@ export default function ClientPayments({ client }) {
             >
                 <PaymentForm
                     id="create-payment-form"
-                    payment={{}}
                     onSubmit={createPayment}
                 />
             </FormDialog>
@@ -113,6 +105,6 @@ export default function ClientPayments({ client }) {
                 onConfirm={deletePayment}
                 onClose={toggleConfirmationDialogOpen}
             />
-        </Segment>
+        </PageSection>
     );
 }

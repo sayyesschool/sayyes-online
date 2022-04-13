@@ -1,17 +1,14 @@
 import { useState, useCallback } from 'react';
-import {
-    Button,
-    MenuButton,
-    List
-} from '@fluentui/react-northstar';
+import { Button } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
-import MaterialIcon from 'shared/components/material-icon';
+import Icon from 'shared/components/material-icon';
 import PageSection from 'shared/components/page-section';
 
-import ContactForm from 'app/components/shared/contact-form';
+import ContactForm from 'app/components/clients/contact-form';
+import ContactsList from 'app/components/clients/contacts-list';
 
 import './index.scss';
 
@@ -59,7 +56,7 @@ export default function ClientContacts({ client, onUpdate }) {
             title="Контакты"
             actions={
                 <Button
-                    icon={<MaterialIcon icon="add" />}
+                    icon={<Icon icon="add" />}
                     title="Добавить контакт"
                     text
                     iconOnly
@@ -67,33 +64,11 @@ export default function ClientContacts({ client, onUpdate }) {
                 />
             }
         >
-            {client.contacts?.map(contact =>
-                <List>
-                    <List.Item
-                        header={contact.fullname}
-                        headerMedia={contact.relation}
-                        content={`${contact.phone} ${contact.email}`}
-                        endMedia={
-                            <MenuButton
-                                icon="more_vert"
-                                items={[
-                                    {
-                                        key: 'edit',
-                                        text: 'Редактировать',
-                                        onClick: () => handleEdit(contact)
-                                    },
-                                    {
-                                        key: 'delete',
-                                        text: 'Удалить',
-                                        onClick: () => handleDelete(contact)
-                                    },
-                                ]}
-                                menuProps={{ top: true, right: true }}
-                            />
-                        }
-                    />
-                </List>
-            )}
+            <ContactsList
+                contacts={client.contacts}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+            />
 
             <FormDialog
                 form="contact-form"

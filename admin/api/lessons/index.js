@@ -10,6 +10,9 @@ module.exports = context => {
         .get(controller.get)
         .post(controller.create);
 
+    router.route('/today')
+        .get(controller.getTodays);
+
     router.route('/:lessonId')
         .get(controller.getOne)
         .put(controller.update)

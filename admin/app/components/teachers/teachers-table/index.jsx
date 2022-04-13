@@ -1,10 +1,9 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    DataTable
-} from 'mdc-react';
-
-import MenuButton from 'shared/components/menu-button';
+    MenuButton,
+    Table
+} from '@fluentui/react-northstar';
 
 import DataContext from 'app/contexts/data';
 
@@ -12,58 +11,55 @@ export default function TeachersTable({ teachers, onEdit, onDelete }) {
     const data = useContext(DataContext);
 
     return (
-        <DataTable className="teachers-table">
-            <DataTable.Header>
-                <DataTable.HeaderRow>
-                    {columns.map(col =>
-                        <DataTable.HeaderCell
-                            key={col.key}
-                        >
-                            {col.text}
-                        </DataTable.HeaderCell>
-                    )}
-                </DataTable.HeaderRow>
-            </DataTable.Header>
+        <Table className="teachers-table">
+            <Table.Row header>
+                {columns.map(col =>
+                    <Table.Cell
+                        key={col.key}
+                        content={col.text}
+                    />
+                )}
+            </Table.Row>
 
-            <DataTable.Content>
-                {teachers.map(teacher =>
-                    <DataTable.Row key={teacher.id}>
-                        <DataTable.Cell>
-                            <Link to={`/teachers/${teacher.id}`}>{teacher.fullname}</Link>
-                        </DataTable.Cell>
+            {teachers.map(teacher =>
+                <Table.Row key={teacher.id}>
+                    <Table.Cell
+                        content={<Link to={`/teachers/${teacher.id}`}>{teacher.fullname}</Link>}
+                    />
 
-                        <DataTable.Cell>
-                            {teacher.email}
-                        </DataTable.Cell>
+                    <Table.Cell
+                        content={teacher.email}
+                    />
 
-                        <DataTable.Cell>
-                            {teacher.phone}
-                        </DataTable.Cell>
+                    <Table.Cell
+                        content={teacher.phone}
+                    />
 
-                        <DataTable.Cell>
-                            {teacher.timezone ? data.timezones.get(teacher.timezone) : '[Не указан]'}
-                        </DataTable.Cell>
+                    <Table.Cell
+                        content={teacher.timezone ? data.timezones.get(teacher.timezone) : '[Не указан]'}
+                    />
 
-                        <DataTable.Cell numeric>
+                    <Table.Cell
+                        content={
                             <MenuButton
-                                items={[
+                                menu={[
                                     {
                                         key: 'edit',
-                                        text: 'Изменить',
+                                        content: 'Изменить',
                                         onClick: () => onEdit(teacher)
                                     },
                                     {
                                         key: 'delete',
-                                        text: 'Удалить',
+                                        content: 'Удалить',
                                         onClick: () => onDelete(teacher)
                                     }
                                 ]}
                             />
-                        </DataTable.Cell>
-                    </DataTable.Row>
-                )}
-            </DataTable.Content>
-        </DataTable>
+                        }
+                    />
+                </Table.Row>
+            )}
+        </Table>
     );
 }
 
@@ -84,4 +80,7 @@ const columns = [
         key: 'timezone',
         text: 'Часовой пояс'
     },
+    {
+        key: 'null'
+    }
 ];

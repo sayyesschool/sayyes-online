@@ -1,15 +1,11 @@
 import { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import {
-    Button,
-    Flex,
-    Header,
-    Segment
-} from '@fluentui/react-northstar';
+import { Button } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
-import MaterialIcon from 'shared/components/material-icon';
+import Icon from 'shared/components/material-icon';
+import PageSection from 'shared/components/page-section';
 
 import { useActions } from 'app/hooks/store';
 import EnrollmentForm from 'app/components/enrollments/enrollment-form';
@@ -29,22 +25,19 @@ export default function ClientEnrollments({ client }) {
     const enrollments = client?.enrollments.map(enrollment => ({ ...enrollment, url: `${client.url}${enrollment.url}` }));
 
     return (
-        <Segment as="section" className="client-enrollments">
-            <Flex space="between" vAlign="center">
-                <Header
-                    as="h3"
-                    content="Обучение"
-                />
-
+        <PageSection
+            className="client-enrollments"
+            title="Обучение"
+            actions={
                 <Button
-                    icon={<MaterialIcon icon="add" />}
+                    icon={<Icon icon="add" />}
                     title="Создать обучение"
                     text
                     iconOnly
                     onClick={toggleEnrollmentFormOpen}
                 />
-            </Flex>
-
+            }
+        >
             <EnrollmentsList
                 enrollments={enrollments}
             />
@@ -63,6 +56,6 @@ export default function ClientEnrollments({ client }) {
                     onSubmit={createEnrollment}
                 />
             </FormDialog>
-        </Segment>
+        </PageSection>
     );
 }

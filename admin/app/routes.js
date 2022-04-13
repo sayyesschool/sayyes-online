@@ -9,7 +9,7 @@ import Courses from 'app/components/courses';
 // import Packs from 'app/components/packs';
 // import Payments from 'app/components/payments';
 // import Requests from 'app/components/requests';
-// import Teachers from 'app/components/teachers';
+import Teachers from 'app/components/teachers';
 import Settings from 'app/components/settings';
 
 export default [
@@ -24,6 +24,6 @@ export default [
     // { path: '/packs', exact: false, component: Packs },
     // { path: '/payments', exact: false, component: Payments },
     // { path: '/requests', exact: false, component: Requests },
-    // { path: '/teachers', exact: false, component: Teachers }
+    { path: '/teachers', exact: false, component: Teachers },
     { path: '/settings', exact: false, component: Settings }
 ];

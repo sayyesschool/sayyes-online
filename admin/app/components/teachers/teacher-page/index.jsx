@@ -1,32 +1,30 @@
 import { useCallback, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import {
-    LayoutGrid as Grid
-} from 'mdc-react';
+import { Box, Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
-import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
+import PageHeader from 'shared/components/page-header';
 
 import { useStore } from 'app/hooks/store';
 import TeacherForm from 'app/components/teachers/teacher-form';
 import TeacherDetails from 'app/components/teachers/teacher-details';
 import TeacherEnrollments from 'app/components/teachers/teacher-enrollments';
+import TeacherLessons from 'app/components/teachers/teacher-lessons';
 
 import './index.scss';
 
 export default function TeacherPage({ match, location, history }) {
-    const [teacher, teacherActions] = useStore('teachers.single');
+    const [teacher, actions] = useStore('teachers.single');
 
     const [isTeacherFormOpen, toggleTeacherFormOpen] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     useEffect(() => {
-        teacherActions.getTeacher(match.params.id)
+        actions.getTeacher(match.params.id)
             .then(() => {
                 if (location.state?.edit) {
                     toggleTeacherFormOpen(true);
@@ -34,27 +32,32 @@ export default function TeacherPage({ match, location, history }) {
                     toggleConfirmationDialogOpen(true);
                 }
             });
+
+        return () => actions.unsetTeacher();
     }, []);
 
     const updateTeacher = useCallback(data => {
-        return teacherActions.updateTeacher(teacher.id, data)
+        return actions.updateTeacher(teacher.id, data)
             .then(() => toggleTeacherFormOpen(false));
     }, [teacher]);
 
     const deleteTeacher = useCallback(() => {
-        return teacherActions.deleteTeacher(teacher.id)
+        return actions.deleteTeacher(teacher.id)
             .then(() => history.push('/teachers'));
     }, [teacher]);
 
     if (!teacher) return <LoadingIndicator />;
 
     return (
-        <Page id="teacher">
-            <PageTopBar
-                breadcrumbs={[
-                    <Link to="/teachers">Преподаватели</Link>
-                ]}
+        <Page id="teacher-page">
+            <PageHeader
                 title={teacher?.fullname}
+                breadcrumbs={[
+                    {
+                        text: 'Преподаватели',
+                        url: '/teachers'
+                    }
+                ]}
                 actions={[
                     {
                         key: 'edit',
@@ -72,19 +75,23 @@ export default function TeacherPage({ match, location, history }) {
             />
 
             <PageContent>
-                <Grid>
-                    <Grid.Cell span="3">
+                <Grid columns="minmax(0, 1fr) minmax(0, 3fr)">
+                    <Box>
                         <TeacherDetails
                             teacher={teacher}
                             onEdit={toggleTeacherFormOpen}
                         />
-                    </Grid.Cell>
+                    </Box>
 
-                    <Grid.Cell span="3">
+                    <Box>
                         <TeacherEnrollments
                             teacher={teacher}
                         />
-                    </Grid.Cell>
+
+                        <TeacherLessons
+                            teacher={teacher}
+                        />
+                    </Box>
                 </Grid>
             </PageContent>
 

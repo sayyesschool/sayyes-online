@@ -2,6 +2,7 @@ import { useCallback, useEffect } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
+import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
@@ -25,8 +26,10 @@ export default function CoursesPage() {
             .then(() => toggleFormDialogOpen(false));
     }, []);
 
+    if (!courses) return <LoadingIndicator />;
+
     return (
-        <Page id="courses" loading={!courses}>
+        <Page id="courses">
             <PageHeader
                 title="Курсы"
                 actions={[

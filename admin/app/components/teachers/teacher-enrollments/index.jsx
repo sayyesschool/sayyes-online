@@ -1,37 +1,29 @@
 import { Link } from 'react-router-dom';
-import {
-    Avatar,
-    Card,
-    Icon,
-    List
-} from 'mdc-react';
+import { Avatar, List } from '@fluentui/react-northstar';
+
+import Icon from 'shared/components/material-icon';
+import PageSection from 'shared/components/page-section';
 
 export default function TeacherEnrollments({ teacher }) {
     return (
-        <section className="teacher-enrollments">
-            <Card>
-                <Card.Header
-                    title="Обучения"
-                />
-
-                {teacher.enrollments?.length > 0 &&
-                    <List>
-                        {teacher.enrollments.map(enrollment =>
-                            <List.Item
-                                key={enrollment.id}
-                                component={Link}
-                                to={`${teacher.url}${enrollment.url}`}
-                                graphic={<Icon>{enrollment.statusIcon}</Icon>}
-                                primaryText={enrollment.domainLabel}
-                                secondaryText={enrollment.statusLabel}
-                                meta={enrollment.client &&
-                                    <Avatar text={enrollment.client.initials} title={enrollment.client.fullname} />
-                                }
-                            />
-                        )}
-                    </List>
-                }
-            </Card>
-        </section>
+        <PageSection className="teacher-enrollments" title="Обучение">
+            {teacher.enrollments?.length > 0 &&
+                <List>
+                    {teacher.enrollments.map(enrollment =>
+                        <List.Item
+                            key={enrollment.id}
+                            component={Link}
+                            to={`${teacher.url}${enrollment.url}`}
+                            media={<Icon>{enrollment.statusIcon}</Icon>}
+                            header={enrollment.domainLabel}
+                            content={enrollment.statusLabel}
+                            endMedia={enrollment.client &&
+                                <Avatar text={enrollment.client.initials} title={enrollment.client.fullname} />
+                            }
+                        />
+                    )}
+                </List>
+            }
+        </PageSection>
     );
 }

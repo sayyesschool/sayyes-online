@@ -25,13 +25,13 @@ export default function ClientsPage({ history }) {
     }, []);
 
     const createClient = useCallback(data => {
-        actions.createClient(data)
-            .then(() => toggleFormOpen(false));
+        return actions.createClient(data)
+            .finally(() => toggleFormOpen(false));
     }, []);
 
     const deleteClient = useCallback(() => {
-        actions.deleteClient(client.id)
-            .then(() => {
+        return actions.deleteClient(client.id)
+            .finally(() => {
                 setClient(null);
                 toggleConfirmationDialogOpen(false);
             });

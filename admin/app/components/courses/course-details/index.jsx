@@ -16,7 +16,7 @@ export default function CourseDetails({ course, onUpdate, ...props }) {
             title="Детали"
             actions={
                 <Button
-                    icon={<Icon icon="save" />}
+                    icon={<Icon>save</Icon>}
                     type="submit"
                     form="course-form"
                     iconOnly

@@ -1,8 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import {
-    Grid
-} from '@fluentui/react-northstar';
+import { Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
@@ -41,7 +38,7 @@ export default function ClientPage({ match, location, history }) {
 
     const updateClient = useCallback(data => {
         return clientActions.updateClient(client.id, data)
-            .then(() => toggleClientFormOpen(false));
+            .finally(() => toggleClientFormOpen(false));
     }, [client]);
 
     const deleteClient = useCallback(() => {

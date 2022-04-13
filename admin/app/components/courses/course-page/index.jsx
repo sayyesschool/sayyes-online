@@ -6,8 +6,8 @@ import { useCourse } from 'shared/hooks/courses';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
+import PageHeader from 'shared/components/page-header';
 import Tabs from 'shared/components/tabs';
 
 import CourseAudios from 'app/components/courses/course-audios';

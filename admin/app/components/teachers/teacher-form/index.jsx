@@ -1,125 +1,140 @@
-import { forwardRef, useImperativeHandle, useRef } from 'react';
-import {
-    Layout,
-    TextField
-} from 'mdc-react';
+import { forwardRef, useCallback, useState } from 'react';
 import moment from 'moment';
 
-import useForm from 'shared/hooks/form';
+import { useFormData } from 'shared/hooks/form';
 import Form from 'shared/components/form';
-import RadioGroup from 'shared/components/radio-group';
+import FormInput from 'shared/components/form-input';
+import FormRadioGroup from 'shared/components/form-radio-group';
+import FormTextArea from 'shared/components/form-textarea';
+import Icon from 'shared/components/material-icon';
 import TimeZoneSelect from 'shared/components/timezone-select';
-
-const defaultTeacher = {
-    firstname: '',
-    lastname: '',
-    email: '',
-    phone: '',
-    timezone: '',
-    note: ''
-};
+import { generatePassword } from 'shared/utils/password';
 
 export default forwardRef(TeacherForm);
 
+const genderItems = [
+    { key: 'male', value: 'male', label: 'Мужской' },
+    { key: 'value', value: 'female', label: 'Женский' }
+];
+
+const getDefaultData = ({
+    firstname = '',
+    lastname = '',
+    patronym = '',
+    phone = '',
+    email = '',
+    dob = '',
+    gender = '',
+    timezone = '',
+    note = ''
+}) => ({
+    firstname,
+    lastname,
+    patronym,
+    phone,
+    email,
+    gender,
+    dob: dob ? moment(dob).format('YYYY-MM-DD') : '',
+    timezone,
+    note
+});
+
 function TeacherForm({ teacher = {}, onSubmit, ...props }, ref) {
-    const formRef = useRef();
+    const { data, getData, handleChange } = useFormData(getDefaultData(teacher));
 
-    const [data, handleChange] = useForm({
-        ...defaultTeacher,
-        ...teacher,
-        enrollments: undefined,
-        payments: undefined,
-        lessons: undefined
-    });
+    const [password, setPassword] = useState(!teacher.id && generatePassword());
 
-    useImperativeHandle(ref, () => ({
-        get form() { return formRef.current; },
-        get data() { return data; }
-    }));
+    const handleSubmit = useCallback(() => {
+        getData(data => {
+            if (!teacher.id) {
+                data.password = password;
+            }
+
+            onSubmit(data);
+        });
+    }, [teacher]);
 
     return (
-        <Form ref={formRef} onSubmit={() => onSubmit(data)} {...props}>
-            <Layout column>
-                <TextField
-                    name="firstname"
-                    value={data.firstname}
-                    label="Имя"
-                    filled
-                    required
-                    onChange={handleChange}
-                />
+        <Form onSubmit={handleSubmit} {...props}>
+            <FormInput
+                name="firstname"
+                value={data.firstname}
+                label="Имя"
+                required
+                onChange={handleChange}
+            />
 
-                <TextField
-                    name="lastname"
-                    value={data.lastname}
-                    label="Фамилия"
-                    filled
-                    required
-                    onChange={handleChange}
-                />
+            <FormInput
+                name="lastname"
+                value={data.lastname}
+                label="Фамилия"
+                required
+                onChange={handleChange}
+            />
 
-                <TextField
-                    name="patronym"
-                    value={data.patronym}
-                    label="Отчество"
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                name="patronym"
+                value={data.patronym}
+                label="Отчество"
+                onChange={handleChange}
+            />
 
-                <TextField
-                    type="phone"
-                    name="phone"
-                    value={data.phone}
-                    label="Телефон"
-                    required
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                type="phone"
+                name="phone"
+                value={data.phone}
+                label="Телефон"
+                required
+                onChange={handleChange}
+            />
 
-                <TextField
-                    type="email"
-                    name="email"
-                    value={data.email}
-                    label="Электронная почта"
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                type="email"
+                name="email"
+                value={data.email}
+                label="Электронная почта"
+                onChange={handleChange}
+            />
 
-                <TextField
-                    type="date"
-                    name="dob"
-                    value={data.dob ? moment(data.dob).format('YYYY-MM-DD') : ''}
-                    label="Дата рождения"
-                    filled
-                    onChange={handleChange}
+            {!teacher.id &&
+                <FormInput
+                    type="text"
+                    name="password"
+                    value={password}
+                    label="Пароль"
+                    autoComplete="off"
+                    icon={<Icon onClick={() => setPassword(generatePassword())}>sync_lock</Icon>}
                 />
+            }
 
-                <TimeZoneSelect
-                    name="timezone"
-                    value={data.timezone}
-                    onChange={handleChange}
-                />
+            <FormInput
+                type="date"
+                name="dob"
+                value={data.dob}
+                label="Дата рождения"
+                onChange={handleChange}
+            />
 
-                <RadioGroup
-                    name="gender"
-                    value={data.gender}
-                    label="Пол"
-                    options={[
-                        { value: 'male', label: 'Мужской' },
-                        { value: 'female', label: 'Женский' }
-                    ]}
-                    onChange={handleChange}
-                />
+            <FormRadioGroup
+                name="gender"
+                value={data.gender}
+                label="Пол"
+                items={genderItems}
+                onChange={handleChange}
+            />
 
-                <TextField
-                    name="note"
-                    value={data.note}
-                    label="Примечание"
-                    filled
-                    textarea
-                    onChange={handleChange}
-                />
-            </Layout>
+            <TimeZoneSelect
+                name="timezone"
+                value={data.timezone}
+                onChange={handleChange}
+            />
+
+            <FormTextArea
+                name="note"
+                value={data.note}
+                label="Примечание"
+                onChange={handleChange}
+            />
         </Form>
     );
 }

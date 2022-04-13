@@ -3,9 +3,22 @@ module.exports = ({
 }) => ({
     get: (req, res, next) => {
         Lesson.find(req.query)
+            .populate('client', 'firstname lastname email')
+            .populate('teacher', 'firstname lastname email')
             .sort({ date: 1 })
-            .populate('client')
-            .populate('teacher')
+            .then(lessons => {
+                res.json({
+                    ok: true,
+                    data: lessons
+                });
+            })
+            .catch(next);
+    },
+
+    getTodays: (req, res, next) => {
+        Lesson.findTodays()
+            .populate('client', 'firstname lastname email')
+            .populate('teacher', 'firstname lastname email')
             .then(lessons => {
                 res.json({
                     ok: true,

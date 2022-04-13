@@ -21,6 +21,9 @@ module.exports = ({
                 select: 'status type domain format client schedules',
                 populate: { path: 'client', select: 'firstname lastname' }
             })
+            .populate({
+                path: 'lessons'
+            })
             .then(teacher => {
                 res.json({
                     ok: true,
@@ -56,10 +59,13 @@ module.exports = ({
 
     delete: (req, res, next) => {
         Teacher.findByIdAndDelete(req.params.id)
-            .then(() => {
+            .then(teacher => {
                 res.json({
                     ok: true,
-                    message: 'Преподаватель удален'
+                    message: 'Преподаватель удален',
+                    data: {
+                        id: teacher.id
+                    }
                 });
             })
             .catch(next);

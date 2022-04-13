@@ -5,8 +5,9 @@ import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
-import PageTopBar from 'shared/components/page-top-bar';
 import PageContent from 'shared/components/page-content';
+import PageHeader from 'shared/components/page-header';
+import PageSection from 'shared/components/page-section';
 
 import { useStore } from 'app/hooks/store';
 import TeachersTable from 'app/components/teachers/teachers-table';
@@ -21,12 +22,12 @@ export default function TeachersPage({ history }) {
 
     const createTeacher = useCallback(data => {
         return actions.createTeacher(data)
-            .then(() => toggleFormOpen(false));
+            .finally(() => toggleFormOpen(false));
     }, []);
 
     const deleteTeacher = useCallback(() => {
         return actions.deleteTeacher(teacher.id)
-            .then(() => {
+            .finally(() => {
                 setTeacher(null);
                 toggleConfirmationDialogOpen(false);
             });
@@ -45,25 +46,26 @@ export default function TeachersPage({ history }) {
 
     return (
         <Page id="teachers-page">
-            <PageTopBar
+            <PageHeader
                 title="Преподаватели"
                 actions={[
                     {
                         key: 'add',
-                        label: 'Создать',
+                        title: 'Создать',
                         icon: 'add',
-                        outlined: true,
                         onClick: toggleFormOpen
                     }
                 ]}
             />
 
             <PageContent>
-                <TeachersTable
-                    teachers={teachers}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                />
+                <PageSection>
+                    <TeachersTable
+                        teachers={teachers}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                    />
+                </PageSection>
             </PageContent>
 
             <FormDialog
