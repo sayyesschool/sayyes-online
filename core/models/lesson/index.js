@@ -56,6 +56,24 @@ Lesson.statics.findScheduled = function() {
     }).sort({ date: 1 });
 };
 
+Lesson.statics.findTodays = function() {
+    const date = new Date();
+    const year = date.getUTCFullYear();
+    const month = date.getUTCMonth();
+    const day = date.getUTCDate();
+    const from = new Date(Date.UTC(year, month, day, 0, 0, 0, 0));
+    const to = new Date(Date.UTC(year, month, day + 1, 0, 0, 0, 0));
+
+    console.log(from, to);
+
+    return this.find({
+        date: {
+            $gte: from,
+            $lt: to
+        }
+    }).sort({ date: 1 });
+};
+
 Lesson.virtual('url').get(function() {
     return `/lessons/${this.id}`;
 });

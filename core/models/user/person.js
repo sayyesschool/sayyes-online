@@ -34,7 +34,7 @@ const Person = new Schema({
         maxlength: 12,
         set: value => value.trim().replace(/[\s()\-\+]+/g, '')
     },
-    gender: { type: String, enum: ['male', 'female'] },
+    gender: { type: String, enum: ['', 'male', 'female'], default: '' },
     dob: { type: Date }
 });
 
