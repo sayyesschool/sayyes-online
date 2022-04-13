@@ -25,6 +25,7 @@ export default function FormTextArea({ resize, ...props }) {
     return (
         <FluentFormTextArea
             ref={elementRef}
+            fluid
             resize={resize !== 'auto' ? resize : undefined}
             {...props}
         />

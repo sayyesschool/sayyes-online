@@ -1,7 +1,4 @@
-import {
-    List,
-    Status
-} from '@fluentui/react-northstar';
+import { List, Status } from '@fluentui/react-northstar';
 import moment from 'moment';
 
 import { StatusByType } from 'shared/data/lesson';

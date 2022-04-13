@@ -19,7 +19,6 @@ export default function AppBar({
                     to: item.url,
                     icon: <Icon icon={item.icon} size="medium" />,
                     content: item.text,
-                    isActive: (match, location) => Boolean(match),
                     //active: location.pathname.startsWith(item.url)
                 }))}
                 primary

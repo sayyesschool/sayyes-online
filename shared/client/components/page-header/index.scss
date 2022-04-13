@@ -1,5 +1,5 @@
 @use 'shared/styles/variables';
-@use 'shared/styles/mixins' as *;
+@use 'shared/styles/mixins'as *;
 
 .page-header {
     position: relative;
@@ -45,8 +45,8 @@
     }
 
     &__breadcrumbs {
-        margin-bottom: 8px;
-        
+        //margin-bottom: 8px;
+
         .ui-breadcrumb__item:first-of-type {
             padding-left: 0;
         }
@@ -72,7 +72,7 @@
             padding-bottom: 64px;
         }
 
-        + .page-content {
+        +.page-content {
             @include breakpoint(gt-md) {
                 margin-top: -96px;
             }

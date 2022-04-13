@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 const ErrorMessages = {
     REQUIRED: 'Поле обязательно для заполнения'
@@ -10,11 +10,22 @@ const defaultMeta = {
     valid: true
 };
 
+function isObject(value) {
+    return value !== null && typeof value === 'object';
+}
+
 export default useFormData;
 
-export function useForm({ values, fields = values, onSubmit } = {}, deps = []) {
+export function useForm({ ref, values, fields = values, onSubmit } = {}, deps = []) {
+    const formRef = useRef();
+
     const [data, setData] = useState(() => toData(fields));
     const [meta, setMeta] = useState(defaultMeta);
+
+    useImperativeHandle(ref, () => ({
+        get form() { return formRef.current; },
+        get data() { return data; }
+    }));
 
     useEffect(() => {
         setData(toData(fields));
@@ -110,7 +121,7 @@ export function useFormData(initialData, deps = []) {
                     ...data,
                     [name1]: array
                 };
-            } else if (typeof data[name1] === 'object') {
+            } else if (isObject(data[name1])) {
                 return {
                     ...data,
                     [name1]: {

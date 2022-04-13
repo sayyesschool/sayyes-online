@@ -10,6 +10,15 @@ export const getLessons = createAction('GET_LESSONS', query => {
     };
 });
 
+export const getTodaysLessons = createAction('GET_LESSONS', () => {
+    return {
+        request: {
+            method: 'get',
+            url: '/lessons/today'
+        }
+    };
+});
+
 export const getLesson = createAction('GET_LESSON', lessonId => ({
     request: {
         method: 'get',
@@ -56,6 +65,7 @@ export const deleteLesson = createAction('DELETE_LESSON', lessonId => ({
 
 export const actions = {
     getLessons,
+    getTodaysLessons,
     getLesson,
     unsetLesson,
     createLesson,

@@ -1,6 +1,17 @@
-.details-list.mdc-list {
-    .mdc-list-item {
+.details-list {
+    .ui-list {
+        &__item {
+            padding: 0 1rem;
+        }
 
+        &__itemmedia {
+            display: flex;
+            margin-right: 16px;
+
+            i {
+                color: rgba(0, 0, 0, .54);
+            }
+        }
     }
 
     // .mdc-list-item {

@@ -3,7 +3,7 @@ import { FormDropdown } from '@fluentui/react-northstar';
 
 import Icon from 'shared/components/material-icon';
 
-export default function FormSelect({ name, value, options, label, required, onChange, ...props }) {
+export default function FormSelect({ name, value, options, label, required, search, onChange, ...props }) {
     const optionsRef = useRef(mapOptions(options));
 
     useEffect(() => {
@@ -15,7 +15,7 @@ export default function FormSelect({ name, value, options, label, required, onCh
 
         onChange(event, {
             name,
-            value: typeof value === 'object' ? value.value : value
+            value: typeof value === 'string' ? value : (value?.value || '')
         });
     }, [onChange]);
 
@@ -28,9 +28,12 @@ export default function FormSelect({ name, value, options, label, required, onCh
             name={name}
             value={optionsRef.current.get(value)}
             items={options}
-            itemToString={item => item.content}
+            itemToString={item => item?.header || ''}
             toggleIndicator={<Icon>expand_more</Icon>}
             onChange={handleChange}
+            search={search}
+            defaultSearchQuery={search && optionsRef.current.get(value)?.header}
+            onActiveSelectedIndexChange={console.log}
             {...props}
         />
     );

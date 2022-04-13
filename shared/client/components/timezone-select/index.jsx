@@ -1,8 +1,12 @@
-import {
-    FormDropdown
-} from '@fluentui/react-northstar';
-
+import FormSelect from 'shared/components/form-select';
+import Icon from 'shared/components/material-icon';
 import timezones from 'shared/../data/timezones';
+
+const timezoneOptions = timezones.map(item => ({
+    key: item.value,
+    value: item.value,
+    header: item.text
+}));
 
 export default function TimeZoneSelect({
     name = 'timezone',
@@ -11,15 +15,13 @@ export default function TimeZoneSelect({
     ...props
 }) {
     return (
-        <FormDropdown
+        <FormSelect
             name={name}
             label={label}
-            items={timezones.map(item => ({
-                key: item.value,
-                value: item.value,
-                content: item.text
-            }))}
+            options={timezoneOptions}
+            toggleIndicator={<Icon>expand_more</Icon>}
             fluid
+            search
             {...props}
         />
     );
