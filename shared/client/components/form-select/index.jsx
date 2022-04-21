@@ -28,12 +28,11 @@ export default function FormSelect({ name, value, options, label, required, sear
             name={name}
             value={optionsRef.current.get(value)}
             items={options}
-            itemToString={item => item?.header || ''}
             toggleIndicator={<Icon>expand_more</Icon>}
-            onChange={handleChange}
             search={search}
             defaultSearchQuery={search && optionsRef.current.get(value)?.header}
-            onActiveSelectedIndexChange={console.log}
+            fluid
+            onChange={handleChange}
             {...props}
         />
     );
