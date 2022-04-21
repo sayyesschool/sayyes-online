@@ -1,10 +1,7 @@
-import { useCallback } from 'react';
-
 import { useForm } from 'shared/hooks/form';
 import Form from 'shared/components/form';
 import FormInput from 'shared/components/form-input';
 import FormTextArea from 'shared/components/form-textarea';
-import { slugify } from 'shared/utils/format';
 
 const defaultLesson = {
     title: '',
@@ -22,10 +19,6 @@ export default function LessonForm({ lesson = defaultLesson, onSubmit, ...props 
         onSubmit
     }, [lesson.updatedAt]);
 
-    const handleTitleBlur = useCallback(() => {
-        setValues(({ title }) => ({ slug: slugify(title) }));
-    }, []);
-
     return (
         <Form className="lesson-form" onSubmit={handleSubmit} noValidate {...props}>
             <FormInput
@@ -33,7 +26,6 @@ export default function LessonForm({ lesson = defaultLesson, onSubmit, ...props 
                 label="Название"
                 fluid
                 onChange={handleChange}
-                onBlur={handleTitleBlur}
             />
 
             <FormInput

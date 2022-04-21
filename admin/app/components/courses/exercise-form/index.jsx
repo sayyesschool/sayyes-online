@@ -75,21 +75,18 @@ export default function ExerciseForm({ exercise = defaultExercise, onSubmit, ...
             <FormSelect
                 {...data.type}
                 label="Тип"
-                fluid
                 onChange={handleChange}
             />
 
             <FormSelect
                 {...data.title}
                 label="Название"
-                fluid
                 onChange={handleChange}
             />
 
             <FormTextArea
                 {...data.description}
                 label="Описание"
-                fluid
                 onChange={handleChange}
             />
         </Form>

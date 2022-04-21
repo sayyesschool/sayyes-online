@@ -11,7 +11,7 @@ import {
 import useForm from 'shared/hooks/form';
 // import ScheduleSelect from 'shared/components/schedule-select';
 // import DateTimeSelect from 'shared/components/datetime-select';
-import PeopleSelect from 'shared/components/people-select';
+import UserSelect from 'shared/components/user-select';
 
 import { useStore } from 'app/hooks/store';
 
@@ -165,7 +165,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
 
             {enrollment.id &&
                 <>
-                    <PeopleSelect
+                    <UserSelect
                         name="managers"
                         value={data.managers}
                         label="Менеджеры"

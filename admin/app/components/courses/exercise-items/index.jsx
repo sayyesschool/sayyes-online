@@ -48,7 +48,6 @@ export default function ExerciseItems({ exercise, onUpdate }) {
                     text
                     onClick={handleAdd}
                 />,
-                items?.length > 0 &&
                 <Button
                     icon={<Icon>save</Icon>}
                     iconOnly

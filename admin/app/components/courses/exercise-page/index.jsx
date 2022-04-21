@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Box, Grid } from '@fluentui/react-northstar';
+import { Flex, Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import { use } from 'shared/hooks/courses';
@@ -8,7 +8,6 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
-import Tabs from 'shared/components/tabs';
 
 import ExerciseAudio from 'app/components/courses/exercise-audio';
 import ExerciseDetails from 'app/components/courses/exercise-details';
@@ -73,26 +72,8 @@ export default function ExercisePage({ match, history }) {
                 </PageContent>
                 :
                 <PageContent>
-                    {/* <Tabs
-                        items={[
-                            {
-                                key: 'content',
-                                value: 'content',
-                                content: 'Содержание',
-                                icon: 'description'
-                            },
-                            {
-                                key: 'notes',
-                                value: 'notes',
-                                content: 'Заметки',
-                                icon: 'notes'
-                            }
-                        ]}
-                        onChange={setActiveTab}
-                    /> */}
-
                     <Grid columns="minmax(0, 2fr) minmax(0, 1fr)">
-                        <Box>
+                        <Flex gap="gap.medium" column>
                             {activeTab === 'content' && <>
                                 <ExerciseImages
                                     exercise={exercise}
@@ -123,9 +104,9 @@ export default function ExercisePage({ match, history }) {
                                     onUpdate={handleUpdate}
                                 />
                             }
-                        </Box>
+                        </Flex>
 
-                        <Box>
+                        <Flex gap="gap.medium" column>
                             <ExerciseDetails
                                 exercise={exercise}
                                 onUpdate={handleUpdate}
@@ -135,7 +116,7 @@ export default function ExercisePage({ match, history }) {
                                 exercise={exercise}
                                 onUpdate={handleUpdate}
                             />
-                        </Box>
+                        </Flex>
                     </Grid>
                 </PageContent>
             }

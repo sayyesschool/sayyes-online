@@ -6,6 +6,7 @@ import {
     Flex,
     Input
 } from '@fluentui/react-northstar';
+import { v4 as uuid } from 'uuid';
 
 import Icon from 'shared/components/material-icon';
 
@@ -41,7 +42,7 @@ function ChoiceExerciseItem({ item, onUpdate, onDelete }) {
 
     const handleAddItem = useCallback(() => {
         const newItem = {
-            id: Date.now(),
+            id: uuid(),
             text: '',
             correct: false
         };

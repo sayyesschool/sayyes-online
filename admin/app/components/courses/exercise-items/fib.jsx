@@ -1,14 +1,10 @@
 import { useCallback } from 'react';
 import {
-    Box,
-    Button,
-    Flex
+    Button
 } from '@fluentui/react-northstar';
 
 import Icon from 'shared/components/material-icon';
 import TextEditor from 'shared/components/text-editor';
-
-import ExerciseItems from 'app/components/courses/exercise-items';
 
 export default function FIBExerciseForm({ items, onUpdate }) {
     const handleUpdateItem = useCallback((itemId, data) => {
