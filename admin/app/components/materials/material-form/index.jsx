@@ -1,25 +1,31 @@
 import { useCallback, useRef } from 'react';
-import {
-    FormField,
-    Layout,
-    Select, SelectOption,
-    Switch,
-    TextField
-} from 'mdc-react';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
+import FormCheckbox from 'shared/components/form-checkbox';
+import FormInput from 'shared/components/form-input';
+import FormSelect from 'shared/components/form-select';
 import ImageField from 'shared/components/image-field';
+import { levelOptions } from 'shared/data/levels';
 
-export default function MaterialForm({ material = {}, onSubmit }) {
+const getDefaultData = ({
+    title = '',
+    slug = '',
+    level = '',
+    published = false,
+    image = { src: '' }
+}) => ({
+    title,
+    slug,
+    level,
+    published,
+    image
+});
+
+export default function MaterialForm({ material = {}, onSubmit, ...props }) {
     const imageFieldRef = useRef();
-    const [data, setData] = useForm({
-        title: material.title,
-        slug: material.slug,
-        level: material.level,
-        published: material.published,
-        image: material.image
-    });
+
+    const { data, setData } = useForm(getDefaultData(material), [material.id]);
 
     const handleSubmit = useCallback(() => {
         const file = imageFieldRef.current.input.files[0];
@@ -33,69 +39,46 @@ export default function MaterialForm({ material = {}, onSubmit }) {
     }, []);
 
     return (
-        <Form id="material-form" onSubmit={handleSubmit}>
-            <Layout column>
-                <TextField
-                    name="title"
-                    value={data.title}
-                    label="Тема"
-                    filled
-                    required
-                    onChange={setData}
-                />
+        <Form className="material-form" onSubmit={handleSubmit} {...props}>
+            <FormInput
+                name="title"
+                value={data.title}
+                label="Тема"
+                required
+                onChange={setData}
+            />
 
-                <TextField
-                    name="slug"
-                    value={data.slug}
-                    label="Слаг"
-                    filled
-                    required
-                    onChange={setData}
-                />
+            <FormInput
+                name="slug"
+                value={data.slug}
+                label="Слаг"
+                required
+                onChange={setData}
+            />
 
-                <Select
-                    name="level"
-                    value={data.level}
-                    label="Уровень"
-                    filled
-                    onChange={setData}
-                >
-                    {['Beginner', 'Elementary', 'Intermediate', 'Pre-Intermediate', 'Upper-Intermediate', 'Advanced'].map(level =>
-                        <SelectOption
-                            key={level}
-                            value={level}
-                        >
-                            {level}
-                        </SelectOption>
-                    )}
-                </Select>
+            <FormSelect
+                name="level"
+                value={data.level}
+                label="Уровень"
+                options={levelOptions}
+                onChange={setData}
+            />
 
-                <FormField label="Опубликован">
-                    <Switch
-                        name="published"
-                        checked={data.published}
-                        onChange={setData}
-                    />
-                </FormField>
+            <FormCheckbox
+                label="Опубликован"
+                name="published"
+                checked={data.published}
+                onChange={setData}
 
-                <ImageField
-                    ref={imageFieldRef}
-                    name="file"
-                    label="Изображение"
-                    url={data.image && STATIC_URL + material.imageUrl}
-                    caption={data.image}
-                />
-            </Layout>
+            />
+
+            <ImageField
+                ref={imageFieldRef}
+                name="file"
+                label="Изображение"
+                url={data.image && STATIC_URL + material.imageUrl}
+                caption={data.image}
+            />
         </Form>
     );
 }
-
-MaterialForm.defaultProps = {
-    material: {
-        title: '',
-        slug: '',
-        level: '',
-        published: false,
-        image: ''
-    }
-};

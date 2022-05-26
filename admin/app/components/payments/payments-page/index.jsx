@@ -1,76 +1,85 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
-import Page from 'shared/components/page';
-import PageTopBar from 'shared/components/page-top-bar';
-import PageContent from 'shared/components/page-content';
+import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
-import EmptyState from 'shared/components/empty-state';
+import Icon from 'shared/components/icon';
+import Page from 'shared/components/page';
+import PageHeader from 'shared/components/page-header';
+import PageContent from 'shared/components/page-content';
+import PageSection from 'shared/components/page-section';
 
 import { useStore } from 'app/hooks/store';
-import PaymentsTable from 'app/components/payments/payments-table';
 import PaymentForm from 'app/components/payments/payment-form';
+import PaymentsTable from 'app/components/payments/payments-table';
 
 export default function Payments({ match, history }) {
     const [{ list: payments, single: payment }, actions] = useStore('payments');
 
-    const [isPaymentFormOpen, setPaymentFormOpen] = useState(false);
+    const [isPaymentFormOpen, togglePaymentFormOpen] = useBoolean(false);
 
     useEffect(() => {
         actions.getPayments();
 
         if (match.params.id) {
             actions.getPayment(match.params.id)
-                .then(() => setPaymentFormOpen(true));
+                .then(() => togglePaymentFormOpen(true));
         }
     }, []);
 
     const handleSubmit = useCallback(data => {
-        actions.updatePayment(data)
-            .then(() => setPaymentFormOpen(false));
+        return actions.updatePayment(data)
+            .then(() => togglePaymentFormOpen(false));
     }, []);
 
     const handleEdit = useCallback(payment => {
         actions.setPayment(payment);
-        setPaymentFormOpen(true);
+        togglePaymentFormOpen(true);
     }, []);
 
     const handleDelete = useCallback(payment => {
         if (confirm('Подтвердите удаление платежа')) {
-            actions.deletePayment(payment.id);
+            return actions.deletePayment(payment.id);
         }
     }, []);
 
     const handleOpen = useCallback(() => {
         actions.unsetPayment();
-        setPaymentFormOpen(true);
+        togglePaymentFormOpen(true);
     }, []);
 
     const handleClose = useCallback(() => {
         actions.unsetPayment();
-        setPaymentFormOpen(false);
+        togglePaymentFormOpen(false);
         history.push('/payments');
     }, []);
 
     return (
         <Page id="payments" loading={!payments}>
-            <PageTopBar
+            <PageHeader
                 title="Платежи"
+                actions={[
+                    {
+                        key: 'add',
+                        icon: 'add',
+                        iconOnly: true,
+                        text: true,
+                        title: 'Новый платеж',
+                        onClick: togglePaymentFormOpen
+                    }
+                ]}
             />
 
             <PageContent>
-                {payments?.length > 0 ?
+                <PageSection>
                     <PaymentsTable
                         payments={payments}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
                     />
-                    :
-                    <EmptyState title="Платежей нет" />
-                }
+                </PageSection>
             </PageContent>
 
             <FormDialog
-                form="payment-form"
                 title={payment ? 'Редактирование платежа' : 'Новый платеж'}
                 open={isPaymentFormOpen}
                 onClose={handleClose}

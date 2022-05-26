@@ -1,207 +1,170 @@
-import { useRef, useState } from 'react';
-import {
-    Button,
-    Card,
-    Icon,
-    IconButton,
-    LayoutGrid, LayoutGridCell,
-    List, ListGroup, ListGroupSubheader,
-} from 'mdc-react';
+import { Button, List, MenuButton, Text } from '@fluentui/react-northstar';
 import moment from 'moment';
 
-import MenuButton from 'app/components/shared/menu-button';
+import Icon from 'shared/components/icon';
+import PageSection from 'shared/components/page-section';
 
 import './index.scss';
 
+const statusMenuItems = [
+    { key: 'pending', value: 'pending', content: 'В обработке' },
+    { key: 'resolved', value: 'resolved', content: 'Успешная' },
+    { key: 'rejected', value: 'rejected', content: 'Отказ' },
+    { key: 'postponed', value: 'postponed', content: 'Отложенная' },
+];
+
 export default function RequestDetails({ request }) {
-    const statusListItemRef = useRef();
-    const [isStatusMenuOpen, setStatusMenuOpen] = useState(false);
-
     return (
-        <section className="request-details">
-            <LayoutGrid>
-                <LayoutGridCell span="3">
-                    <Card>
-                        <Card.Header title="Общая информация" />
-
-                        <Card.Section>
-                            <List>
-                                <List.Item
-                                    leadingIcon={request.statusIcon}
-                                    primaryText={request.statusLabel}
-                                    secondaryText="Статус"
-                                    trailingIcon={
-                                        <MenuButton
-                                            icon="edit"
-                                            items={[
-                                                { key: 'pending', 'data-value': 'pending', text: 'В обработке' },
-                                                { key: 'resolved', 'data-value': 'resolved', text: 'Успешная' },
-                                                { key: 'rejected', 'data-value': 'rejected', text: 'Отказ' },
-                                                { key: 'postponed', 'data-value': 'postponed', text: 'Отложенная' },
-                                            ]}
-                                        />
-                                    }
+        <PageSection
+            className="request-details"
+            title="Общая информация"
+        >
+            <List>
+                <List.Item
+                    icon={request.statusIcon}
+                    header={request.statusLabel}
+                    content="Статус"
+                    trailingIcon={
+                        <MenuButton
+                            trigger={
+                                <Button
+                                    icon={<Icon>edit</Icon>}
                                 />
-
-                                <List.Item
-                                    icon="event"
-                                    primaryText={moment(request.createdAt).format('DD.MM.YYYY, HH:mm')}
-                                    secondaryText="Дата создания"
-                                />
-
-                                <List.Item
-                                    leadingIcon="person"
-                                    primaryText={request.client.fullname}
-                                    secondaryText="Клиент"
-                                    trailingIcon={
-                                        <IconButton
-                                            icon="cancel"
-                                            title="Отвязать от клиента"
-                                        />
-                                    }
-                                />
-
-                                <List.Item
-                                    icon="person"
-                                    primaryText={request.manager.fullname}
-                                    secondaryText="Менеджер"
-                                />
-
-                                {request.lesson &&
-                                    <List.Item
-                                        leadingIcon="event"
-                                        primaryText={request.lesson.datetime}
-                                        secondaryText="Дата пробного урока"
-                                        trailingIcon={
-                                            <IconButton
-                                                icon="cancel"
-                                                title="Отменить урок"
-                                            />
-                                        }
-                                    />
-                                }
-
-                                {request.contactAt &&
-                                    <List.Item
-                                        icon="event"
-                                        primaryText={moment(request.createdAt).format('DD.MM.YYYY, HH:mm')}
-                                        secondaryText="Дата связи"
-                                    />
-                                }
-                            </List>
-                        </Card.Section>
-                    </Card>
-                </LayoutGridCell>
-
-                <LayoutGridCell span="3">
-                    <Card>
-                        <Card.Header
-                            graphic={<Icon>school</Icon>}
-                            title="Обучение"
+                            }
+                            menu={statusMenuItems}
                         />
+                    }
+                />
 
-                        <Card.Section>
-                            <List>
-                                <List.Item
-                                    graphic={<Icon>portrait</Icon>}
-                                    primaryText={request.study.ageLabel}
-                                    secondaryText="Возрастная группа"
-                                />
+                <List.Item
+                    icon="event"
+                    header={moment(request.createdAt).format('DD.MM.YYYY, HH:mm')}
+                    content="Дата создания"
+                />
 
-                                <List.Item
-                                    graphic={<Icon>grade</Icon>}
-                                    primaryText={request.study.levelLabel}
-                                    secondaryText="Уровень"
-                                />
-
-                                <List.Item
-                                    graphic={<Icon>flag</Icon>}
-                                    primaryText={request.study.goal}
-                                    secondaryText="Цель"
-                                />
-
-                                <List.Item
-                                    graphic={<Icon>person</Icon>}
-                                    primaryText={request.study.teacher}
-                                    secondaryText="Преподаватель"
-                                />
-
-                                <List.Item
-                                    graphic={<Icon>schedule</Icon>}
-                                    primaryText={request.study.schedule.map(s => s.label).join(', ')}
-                                    secondaryText="Расписание"
-                                />
-                            </List>
-                        </Card.Section>
-
-                        <Card.Actions>
-                            <Card.Action>
-                                <Button>Запланировать урок</Button>
-                            </Card.Action>
-                        </Card.Actions>
-                    </Card>
-                </LayoutGridCell>
-
-                <LayoutGridCell span="3">
-                    <Card>
-                        <Card.Header
-                            graphic={<Icon>analytics</Icon>}
-                            title="Аналитика"
+                <List.Item
+                    icon="person"
+                    header={request.client.fullname}
+                    content="Клиент"
+                    trailingIcon={
+                        <Button
+                            icon="cancel"
+                            title="Отвязать от клиента"
                         />
+                    }
+                />
 
-                        <Card.Section>
-                            <ListGroup>
-                                <List>
-                                    <List.Item
-                                        primaryText={request.channel}
-                                        secondaryText="Канал связи"
-                                    />
+                <List.Item
+                    icon="person"
+                    header={request.manager.fullname}
+                    content="Менеджер"
+                />
 
-                                    <List.Item
-                                        primaryText={request.source}
-                                        secondaryText="Источник"
-                                    />
-                                </List>
+                {request.lesson &&
+                    <List.Item
+                        icon="event"
+                        header={request.lesson.datetime}
+                        content="Дата пробного урока"
+                        trailingIcon={
+                            <Button
+                                icon="cancel"
+                                title="Отменить урок"
+                            />
+                        }
+                    />
+                }
 
-                                <ListGroupSubheader>UTM</ListGroupSubheader>
+                {request.contactAt &&
+                    <List.Item
+                        icon="event"
+                        header={moment(request.createdAt).format('DD.MM.YYYY, HH:mm')}
+                        content="Дата связи"
+                    />
+                }
+            </List>
 
-                                <List>
-                                    {request.utm.source &&
-                                        <List.Item
-                                            primaryText={request.utm.source}
-                                            secondaryText="Source"
-                                        />
-                                    }
+            <Text>Обучение</Text>
 
-                                    {request.utm.medium && <List.Item
-                                        primaryText={request.utm.medium}
-                                        secondaryText="Medium"
-                                    />
-                                    }
+            <List>
+                <List.Item
+                    media={<Icon>portrait</Icon>}
+                    header={request.study.ageLabel}
+                    content="Возрастная группа"
+                />
 
-                                    {request.utm.campaign && <List.Item
-                                        primaryText={request.utm.campaign}
-                                        secondaryText="Campaign"
-                                    />
-                                    }
+                <List.Item
+                    media={<Icon>grade</Icon>}
+                    header={request.study.levelLabel}
+                    content="Уровень"
+                />
 
-                                    {request.utm.term && <List.Item
-                                        primaryText={request.utm.term}
-                                        secondaryText="Term"
-                                    />
-                                    }
+                <List.Item
+                    media={<Icon>flag</Icon>}
+                    header={request.study.goal}
+                    content="Цель"
+                />
 
-                                    {request.utm.content && <List.Item
-                                        primaryText={request.utm.content}
-                                        secondaryText="Content"
-                                    />
-                                    }
-                                </List>
-                            </ListGroup>
-                        </Card.Section>
-                    </Card>
-                </LayoutGridCell>
-            </LayoutGrid>
-        </section>
+                <List.Item
+                    media={<Icon>person</Icon>}
+                    header={request.study.teacher}
+                    content="Преподаватель"
+                />
+
+                <List.Item
+                    media={<Icon>schedule</Icon>}
+                    header={request.study.schedule.map(s => s.label).join(', ')}
+                    content="Расписание"
+                />
+            </List>
+
+            <Text>Аналитика</Text>
+
+            <List>
+                <List.Item
+                    header={request.channel}
+                    content="Канал связи"
+                />
+
+                <List.Item
+                    header={request.source}
+                    content="Источник"
+                />
+            </List>
+
+            <Text>UTM</Text>
+
+            <List>
+                {request.utm.source &&
+                    <List.Item
+                        header={request.utm.source}
+                        content="Source"
+                    />
+                }
+
+                {request.utm.medium && <List.Item
+                    header={request.utm.medium}
+                    content="Medium"
+                />
+                }
+
+                {request.utm.campaign && <List.Item
+                    header={request.utm.campaign}
+                    content="Campaign"
+                />
+                }
+
+                {request.utm.term && <List.Item
+                    header={request.utm.term}
+                    content="Term"
+                />
+                }
+
+                {request.utm.content && <List.Item
+                    header={request.utm.content}
+                    content="Content"
+                />
+                }
+            </List>
+        </PageSection>
     );
 }

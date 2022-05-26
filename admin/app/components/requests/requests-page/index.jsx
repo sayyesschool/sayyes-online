@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import Page from 'shared/components/page';
-import PageTopBar from 'shared/components/page-top-bar';
-import PageContent from 'shared/components/page-content';
+import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
-import EmptyState from 'shared/components/empty-state';
+import LoadingIndicator from 'shared/components/loading-indicator';
+import Page from 'shared/components/page';
+import PageHeader from 'shared/components/page-header';
+import PageContent from 'shared/components/page-content';
+import PageSection from 'shared/components/page-section';
 
 import { useStore, useActions } from 'app/hooks/store';
-import FormPanel from 'app/components/shared/form-panel';
 import RequestsTable from 'app/components/requests/requests-table';
 import RequestForm from 'app/components/requests/request-form';
 import RequestProcessFormDialog from 'app/components/requests/request-process-form-dialog';
@@ -20,14 +21,15 @@ export default function RequestsPage({ history }) {
     const [user] = useStore('user');
     const [managers] = useStore('managers.list');
     const [{ list: requests, single: request }, requestActions] = useStore('requests');
+
     const clientActions = useActions('clients');
     const enrollmentActions = useActions('enrollments');
     const { showNotification } = useActions('notification');
 
-    const [isRequestProcessPanelOpen, setRequestProcessPanelOpen] = useState(false);
-    const [isRequestFormOpen, setRequestFormOpen] = useState(false);
-    const [isSidePanelOpen, setSidePanelOpen] = useState(false);
-    const [isConfirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
+    const [isRequestProcessPanelOpen, toggleRequestProcessPanelOpen] = useBoolean(false);
+    const [isRequestFormOpen, toggleRequestFormOpen] = useBoolean(false);
+    const [isSearchFormOpen, toggleSearchFormOpen] = useBoolean(false);
+    const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
     const [requestWithExistingClient, setRequestWithExistingClient] = useState();
 
     useEffect(() => {
@@ -35,23 +37,23 @@ export default function RequestsPage({ history }) {
     }, []);
 
     const handleUpdateRequest = useCallback(data => {
-        requestActions.updateRequest(data.id, data)
-            .then(() => setRequestFormOpen(false));
+        return requestActions.updateRequest(data.id, data)
+            .then(() => toggleRequestFormOpen(false));
     }, []);
 
     const handleProcessRequest = useCallback(request => {
         if (!request.manager) {
             requestActions.updateRequest(request.id, { status: 'processing', manager: user.id })
-                .then(() => setRequestProcessPanelOpen(true));
+                .then(() => toggleRequestProcessPanelOpen(true));
         } else if (request.manager.id === user.id) {
-            setRequestProcessPanelOpen(true);
+            toggleRequestProcessPanelOpen(true);
         } else {
             showNotification({ text: `Обработкой заявки уже занимается ${request.manager.fullname}` });
         }
     }, [user]);
 
     const handleCheckRequest = useCallback(request => {
-        requestActions.getRequest(request.id)
+        return requestActions.getRequest(request.id)
             .then(({ data: request }) => {
                 if (request.existingClient) {
                     setRequestWithExistingClient(request);
@@ -62,7 +64,7 @@ export default function RequestsPage({ history }) {
     }, []);
 
     const handleProcessRequestSubmit = useCallback(data => {
-        clientActions.createClient(data.client)
+        return clientActions.createClient(data.client)
             .then(({ data: client }) => enrollmentActions.createEnrollment({
                 ...data.enrollment,
                 client: client.id,
@@ -79,7 +81,7 @@ export default function RequestsPage({ history }) {
     }, [request]);
 
     const handleExistingClient = useCallback(() => {
-        requestActions.updateRequest(requestWithExistingClient.id, {
+        return requestActions.updateRequest(requestWithExistingClient.id, {
             status: 'completed',
             manager: user.id,
             client: requestWithExistingClient.existingClient.id
@@ -97,87 +99,75 @@ export default function RequestsPage({ history }) {
 
     const handleEditRequest = useCallback(request => {
         requestActions.setRequest(request);
-        setRequestFormOpen(true);
+        toggleRequestFormOpen(true);
     }, []);
 
     const handleDeleteRequest = useCallback(() => {
-        requestActions.deleteRequest(request.id)
+        return requestActions.deleteRequest(request.id)
             .then(() => {
                 requestActions.unsetRequest();
-                setConfirmationDialogOpen(false);
+                toggleConfirmationDialogOpen(false);
             });
     }, [request]);
 
     const handleDeleteConfirm = useCallback(request => {
         requestActions.setRequest(request);
-        setConfirmationDialogOpen(true);
+        toggleConfirmationDialogOpen(true);
     }, []);
 
     const handleSearch = useCallback(params => {
         console.log(params);
     }, []);
 
-    const toggleSidePanel = useCallback(() => {
-        setSidePanelOpen(value => !value);
-    }, []);
+    if (!requests) return <LoadingIndicator />;
 
     return (
         <Page id="requests-page">
-            <FormPanel
-                form="request-search-form"
-                title="Поиск"
-                open={isSidePanelOpen}
-                submitButtonText="Найти"
-                dismissible
-                onClose={toggleSidePanel}
-            >
-                <RequestSearchForm
-                    onSubmit={handleSearch}
-                />
-            </FormPanel>
-
-            <div>
-                <PageTopBar
-                    title="Заявки"
-                    actions={[
-                        {
-                            key: 'search',
-                            icon: isSidePanelOpen ? 'search_off' : 'search',
-                            onClick: toggleSidePanel
-                        }
-                    ]}
-                />
-
-                <PageContent>
-                    {requests?.length > 0 ?
-                        <RequestsTable
-                            requests={requests}
-                            manager={user}
-                            onEdit={handleEditRequest}
-                            onProcess={handleCheckRequest}
-                            onDelete={handleDeleteConfirm}
-                        />
-                        :
-                        <EmptyState title="Заявок пока нет" />
+            <PageHeader
+                title="Заявки"
+                actions={[
+                    {
+                        key: 'search',
+                        icon: isSearchFormOpen ? 'search_off' : 'search',
+                        onClick: toggleSearchFormOpen
                     }
-                </PageContent>
-            </div>
+                ]}
+            />
+
+            <PageContent>
+                {isSearchFormOpen &&
+                    <PageSection>
+                        <RequestSearchForm
+                            onSubmit={handleSearch}
+                        />
+                    </PageSection>
+                }
+
+                <PageSection>
+                    <RequestsTable
+                        requests={requests}
+                        manager={user}
+                        onEdit={handleEditRequest}
+                        onProcess={handleCheckRequest}
+                        onDelete={handleDeleteConfirm}
+                    />
+                </PageSection>
+            </PageContent>
 
             <RequestProcessFormDialog
                 request={request}
                 open={isRequestProcessPanelOpen}
                 onSubmit={handleProcessRequestSubmit}
-                onClose={() => setRequestProcessPanelOpen(false)}
+                onClose={toggleRequestProcessPanelOpen}
             />
 
             <FormDialog
                 title="Редактирование заявки"
-                form="request-form"
-                modal
                 open={isRequestFormOpen}
-                onClose={() => setRequestFormOpen(false)}
+                onClose={toggleRequestFormOpen}
             >
                 <RequestForm
+                    id="request-edit-form"
                     request={request}
                     managers={managers}
                     onSubmit={handleUpdateRequest}
@@ -189,7 +179,7 @@ export default function RequestsPage({ history }) {
                 message="Вы действительно хотите удалить заявку?"
                 open={isConfirmationDialogOpen}
                 onConfirm={handleDeleteRequest}
-                onClose={() => setConfirmationDialogOpen(false)}
+                onClose={toggleConfirmationDialogOpen}
             />
 
             <ConfirmationDialog
@@ -199,6 +189,6 @@ export default function RequestsPage({ history }) {
                 onConfirm={handleExistingClient}
                 onClose={handleContinueProcessing}
             />
-        </Page>
+        </Page >
     );
 }

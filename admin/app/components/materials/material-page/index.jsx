@@ -1,11 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
-import {
-    LayoutGrid, LayoutGridCell
-} from 'mdc-react';
+import { useCallback, useEffect } from 'react';
 
+import { useBoolean } from 'shared/hooks/state';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageTopBar from 'shared/components/page-top-bar';
+import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
 import FormDialog from 'shared/components/form-dialog';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
@@ -16,23 +14,23 @@ import MaterialDetails from 'app/components/materials/material-details';
 
 import './index.scss';
 
-export default function Material({ match, history }) {
+export default function MaterialPage({ match, history }) {
     const [material, actions] = useStore('materials.single');
 
-    const [isFormOpen, setFormOpen] = useState(false);
-    const [isConfirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
+    const [isEditFormOpen, toggleEditFormOpen] = useBoolean(false);
+    const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     useEffect(() => {
         actions.getMaterial(match.params.id);
     }, []);
 
     const handleUpdate = useCallback(data => {
-        actions.updateMaterial(material.id, data)
-            .then(() => setFormOpen(false));
+        return actions.updateMaterial(material.id, data)
+            .then(() => toggleEditFormOpen(false));
     }, [material]);
 
     const handleDelete = useCallback(() => {
-        actions.deleteMaterial(material.id)
+        return actions.deleteMaterial(material.id)
             .then(() => history.push('/materials'));
     }, [material]);
 
@@ -40,45 +38,40 @@ export default function Material({ match, history }) {
 
     return (
         <Page id="material-page">
-            <PageTopBar
+            <PageHeader
                 title={material.title}
                 actions={[
                     {
                         key: 'delete',
                         icon: 'delete',
                         title: 'Удалить встречу',
-                        onClick: () => setConfirmationDialogOpen(true)
+                        onClick: toggleConfirmationDialogOpen
                     }
                 ]}
             />
 
             <PageContent>
-                <LayoutGrid>
-                    <LayoutGridCell span="4">
-                        <MaterialDetails
-                            material={material}
-                        />
-                    </LayoutGridCell>
-                </LayoutGrid>
+                <MaterialDetails
+                    material={material}
+                />
             </PageContent>
 
-            {/* <FormDialog
-                title="Новая регистрация"
-                open={isRegistrationFormOpen}
-                form="meeting-registration-form"
-                onClose={toggleRegistrationForm}
+            <FormDialog
+                title="Редактирование материала"
+                open={isEditFormOpen}
+                onClose={toggleEditFormOpen}
             >
-                <MeetingRegistrationForm
-                    onSubmit={handleAddRegistration}
+                <MaterialForm
+                    onSubmit={handleUpdate}
                 />
-            </FormDialog> */}
+            </FormDialog>
 
-            {/* <ConfirmationDialog
-                title="Удалить встречу?"
+            <ConfirmationDialog
+                title="Удалить материал?"
                 open={isConfirmationDialogOpen}
-                onConfirm={handleDeleteMeeting}
-                onClose={() => setConfirmationDialogOpen(false)}
-            /> */}
+                onConfirm={handleDelete}
+                onClose={() => toggleConfirmationDialogOpen(false)}
+            />
         </Page>
     );
 }

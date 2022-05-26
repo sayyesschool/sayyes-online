@@ -1,13 +1,12 @@
 .enrollment-status {
     display: flex;
     align-items: center;
-    margin-bottom: 1rem;
 
     .stepper {
         flex: 1;
     }
 
-    .mdc-icon-button {
+    .ui-menubutton {
         margin-left: 1rem;
     }
 }

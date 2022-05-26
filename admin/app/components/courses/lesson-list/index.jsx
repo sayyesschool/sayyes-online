@@ -18,7 +18,7 @@ export default function LessonList({ lessons, onDelete }) {
     }, []);
 
     return (
-        <List className="lesson-list" navigable>
+        <List className="lesson-list numbered-list" navigable>
             {lessons.map((lesson, index) =>
                 <List.Item
                     key={lesson.id}

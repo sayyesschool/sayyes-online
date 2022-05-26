@@ -1,29 +1,27 @@
 import { useCallback } from 'react';
-import {
-    Card,
-    Icon,
-    IconButton,
-    List
-} from 'mdc-react';
+import { Button, MenuButton } from '@fluentui/react-northstar';
 
-import MenuButton from 'shared/components/menu-button';
+import Icon from 'shared/components/icon';
+import PageSection from 'shared/components/page-section';
 
 import { useStore, useActions } from 'app/hooks/store';
+import CoursesList from 'app/components/courses/courses-list';
 
 export default function EnrollmentCourses({ enrollment }) {
     const [courses] = useStore('courses.list');
     const actions = useActions('enrollments');
 
-    const handleAddCourse = useCallback(courseId => {
+    const handleAddCourse = useCallback((event, component) => {
+        const courseId = component.value;
         const courses = enrollment.courses.concat(courseId);
 
-        actions.updateEnrollment(enrollment.id, { courses });
+        return actions.updateEnrollment(enrollment.id, { courses });
     }, [enrollment]);
 
     const handleRemoveCourse = useCallback(courseId => {
         const courses = enrollment.courses.filter(id => id !== courseId);
 
-        actions.updateEnrollment(enrollment.id, { courses });
+        return actions.updateEnrollment(enrollment.id, { courses });
     }, [enrollment]);
 
     const enrollmentCourses = courses
@@ -33,46 +31,35 @@ export default function EnrollmentCourses({ enrollment }) {
         .filter(course => !enrollment.courses.includes(course.id))
         .map(course => ({
             key: course.id,
-            graphic: <img src={course.imageUrl} />,
-            text: course.title,
-            onClick: () => handleAddCourse(course.id)
+            value: course.id,
+            content: course.title
         }));
 
     return (
-        <section className="enrollment-courses">
-            <Card>
-                <Card.Header
-                    graphic={<Icon>class</Icon>}
-                    title="Курсы"
-                    actions={
-                        <MenuButton
-                            icon="add"
-                            items={items}
+        <PageSection
+            className="enrollment-courses"
+            title="Курсы"
+            actions={
+                <MenuButton
+                    trigger={
+                        <Button
+                            icon={<Icon>add</Icon>}
+                            text
+                            iconOnly
                         />
                     }
+                    align="end"
+                    menu={items}
+                    onMenuItemClick={handleAddCourse}
                 />
-
-                {enrollmentCourses.length > 0 &&
-                    <Card.Section>
-                        <List>
-                            {enrollmentCourses.map(course =>
-                                <List.Item
-                                    key={course.id}
-                                    graphic={<img src={course.imageUrl} />}
-                                    text={course.title}
-                                    meta={
-                                        <IconButton
-                                            icon="remove"
-                                            title="Убрать курс"
-                                            onClick={() => handleRemoveCourse(course.id)}
-                                        />
-                                    }
-                                />
-                            )}
-                        </List>
-                    </Card.Section>
-                }
-            </Card>
-        </section>
+            }
+        >
+            {enrollmentCourses.length > 0 &&
+                <CoursesList
+                    courses={enrollmentCourses}
+                    onDelete={handleRemoveCourse}
+                />
+            }
+        </PageSection>
     );
 }

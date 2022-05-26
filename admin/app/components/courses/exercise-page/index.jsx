@@ -1,30 +1,30 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Flex, Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
-import { use } from 'shared/hooks/courses';
+import { useExercise } from 'shared/hooks/courses';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
 
-import ExerciseAudio from 'app/components/courses/exercise-audio';
 import ExerciseDetails from 'app/components/courses/exercise-details';
-import ExerciseImages from 'app/components/courses/exercise-images';
 import ExerciseItems from 'app/components/courses/exercise-items';
 import ExerciseNotes from 'app/components/courses/exercise-notes';
-import ExercisePreview from 'app/components/courses/exercise-preview';
-import ExerciseText from 'app/components/courses/exercise-text';
 
 import './index.scss';
 
 export default function ExercisePage({ match, history }) {
-    const { course, unit, lesson, exercise, actions } = use(match.params);
+    const { course, unit, lesson, exercise, actions } = useExercise(match.params);
 
-    const [activeTab, setActiveTab] = useState('content');
-    const [isPreviewing, togglePreviewing] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
+
+    useEffect(() => {
+        if (exercise && !exercise.items) {
+            actions.getExercise(course.id, exercise.id);
+        }
+    }, [course, exercise]);
 
     const handleUpdate = useCallback(data => {
         return actions.updateExercise(course.id, exercise.id, data);
@@ -35,7 +35,19 @@ export default function ExercisePage({ match, history }) {
             .then(() => history.push(lesson.url));
     }, [course, lesson, exercise]);
 
-    if (!exercise) return <LoadingIndicator />;
+    const handleCreateItem = useCallback(data => {
+        return actions.createExerciseItem(course.id, exercise.id, data);
+    }, [course, exercise]);
+
+    const handleUpdateItem = useCallback((itemId, data) => {
+        return actions.updateExerciseItem(course.id, exercise.id, itemId, data);
+    }, [course, exercise]);
+
+    const handleDeleteItem = useCallback((itemId, data) => {
+        return actions.deleteExerciseItem(course.id, exercise.id, itemId, data);
+    }, [course, exercise]);
+
+    if (!exercise?.items) return <LoadingIndicator />;
 
     return (
         <Page id="exercise-page">
@@ -50,12 +62,6 @@ export default function ExercisePage({ match, history }) {
                 title={exercise.title}
                 actions={[
                     {
-                        key: 'preview',
-                        icon: isPreviewing ? 'visibility_off' : 'visibility',
-                        title: 'Просмотр упражнения',
-                        onClick: togglePreviewing
-                    },
-                    {
                         key: 'delete',
                         icon: 'delete',
                         title: 'Удалить упражнение',
@@ -64,62 +70,31 @@ export default function ExercisePage({ match, history }) {
                 ]}
             />
 
-            {isPreviewing ?
-                <PageContent>
-                    <ExercisePreview
-                        exercise={exercise}
-                    />
-                </PageContent>
-                :
-                <PageContent>
-                    <Grid columns="minmax(0, 2fr) minmax(0, 1fr)">
-                        <Flex gap="gap.medium" column>
-                            {activeTab === 'content' && <>
-                                <ExerciseImages
-                                    exercise={exercise}
-                                    uploadPath={`courses/${course.id}/images/`}
-                                    onUpdate={handleUpdate}
-                                />
+            <PageContent>
+                <Grid columns="minmax(0, 2fr) minmax(0, 1fr)">
+                    <Flex gap="gap.medium" column>
+                        <ExerciseItems
+                            exercise={exercise}
+                            onCreate={handleCreateItem}
+                            onUpdate={handleUpdateItem}
+                            onDelete={handleDeleteItem}
+                            onReorder={handleUpdate}
+                        />
+                    </Flex>
 
-                                <ExerciseAudio
-                                    exercise={exercise}
-                                    uploadPath={`courses/${course.id}/audios/`}
-                                    onUpdate={handleUpdate}
-                                />
+                    <Flex gap="gap.medium" column>
+                        <ExerciseDetails
+                            exercise={exercise}
+                            onUpdate={handleUpdate}
+                        />
 
-                                <ExerciseText
-                                    exercise={exercise}
-                                    onUpdate={handleUpdate}
-                                />
-
-                                <ExerciseItems
-                                    exercise={exercise}
-                                    onUpdate={handleUpdate}
-                                />
-                            </>}
-
-                            {activeTab === 'notes' &&
-                                <ExerciseNotes
-                                    exercise={exercise}
-                                    onUpdate={handleUpdate}
-                                />
-                            }
-                        </Flex>
-
-                        <Flex gap="gap.medium" column>
-                            <ExerciseDetails
-                                exercise={exercise}
-                                onUpdate={handleUpdate}
-                            />
-
-                            <ExerciseNotes
-                                exercise={exercise}
-                                onUpdate={handleUpdate}
-                            />
-                        </Flex>
-                    </Grid>
-                </PageContent>
-            }
+                        <ExerciseNotes
+                            exercise={exercise}
+                            onUpdate={handleUpdate}
+                        />
+                    </Flex>
+                </Grid>
+            </PageContent>
 
             <ConfirmationDialog
                 title="Удалить упражнение?"

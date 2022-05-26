@@ -1,14 +1,12 @@
 import { useCallback, useState } from 'react';
-import {
-    Card,
-    IconButton,
-    Typography
-} from 'mdc-react';
+import { Button, Text } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
-import LessonChipSet from 'shared/components/lesson-chip-set';
+import Icon from 'shared/components/icon';
+import LessonPillGroup from 'shared/components/lessons-pill-group';
+import PageSection from 'shared/components/page-section';
 
 import { useActions } from 'app/hooks/store';
 import LessonForm from 'app/components/lessons/lesson-form';
@@ -70,39 +68,38 @@ export default function EnrollmentLessons({ enrollment }) {
     const lessonsDurationDelta = enrollment.lessonDuration * enrollment.lessons.length - lessonsDuration;
 
     return (
-        <section className="enrollment-lessons">
-            <Card>
-                <Card.Header
-                    title="Занятия"
-                    subtitle={lessonsDurationDelta !== 0 && ((lessonsDurationDelta < 0 ? 'Превышение на' : 'Осталось') + ` ${Math.abs(lessonsDurationDelta)} мин.`)}
-                    actions={[
-                        <IconButton
-                            key="add-lessons"
-                            icon="playlist_add"
-                            title="Создать несколько уроков"
-                            disabled={enrollment.schedule?.length === 0}
-                            onClick={toggleLessonsFormOpen}
-                        />,
+        <PageSection
+            className="enrollment-lessons"
+            title="Занятия"
+            description={lessonsDurationDelta !== 0 && ((lessonsDurationDelta < 0 ? 'Превышение на' : 'Осталось') + ` ${Math.abs(lessonsDurationDelta)} мин.`)}
+            actions={[
+                <Button
+                    key="add-lessons"
+                    icon={<Icon>playlist_add</Icon>}
+                    iconOnly
+                    text
+                    title="Создать несколько уроков"
+                    disabled={enrollment.schedule?.length === 0}
+                    onClick={toggleLessonsFormOpen}
+                />,
 
-                        <IconButton
-                            key="add-lesson"
-                            icon="add"
-                            title="Создать урок"
-                            onClick={toggleNewLessonFormOpen}
-                        />
-                    ]}
+                <Button
+                    key="add-lesson"
+                    icon={<Icon>add</Icon>}
+                    iconOnly
+                    text
+                    title="Создать урок"
+                    onClick={toggleNewLessonFormOpen}
                 />
-
-                {enrollment.lessons.length > 0 &&
-                    <Card.Section secondary>
-                        <LessonChipSet
-                            lessons={enrollment.lessons}
-                            onClick={handleUpdate}
-                            onDelete={handleDelete}
-                        />
-                    </Card.Section>
-                }
-            </Card>
+            ]}
+        >
+            {enrollment.lessons.length > 0 &&
+                <LessonPillGroup
+                    lessons={enrollment.lessons}
+                    onClick={handleUpdate}
+                    onDelete={handleDelete}
+                />
+            }
 
             <FormDialog
                 form="lessons-form"
@@ -110,7 +107,7 @@ export default function EnrollmentLessons({ enrollment }) {
                 open={isLessonsFormOpen}
                 onClose={toggleLessonsFormOpen}
             >
-                <Typography>{enrollment.scheduleLabel}</Typography>
+                <Text>{enrollment.scheduleLabel}</Text>
 
                 <LessonsForm
                     id="lessons-form"
@@ -156,6 +153,6 @@ export default function EnrollmentLessons({ enrollment }) {
                 onConfirm={deleteLesson}
                 onClose={() => toggleConfirmationDialogOpen(false)}
             />
-        </section>
+        </PageSection>
     );
 }

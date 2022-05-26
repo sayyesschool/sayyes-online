@@ -4,9 +4,9 @@ import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 
 import client from 'shared/services/api';
 import api from 'shared/store/middleware/api';
-import file from 'shared/store/middleware/file';
+import storage from 'shared/store/middleware/storage';
 import notification from 'shared/store/middleware/notification';
 
 export default composeWithDevTools(
-    applyMiddleware(promise, file, api(client, '/admin/api'), notification)
+    applyMiddleware(promise, storage, api(client, '/admin/api'), notification)
 );

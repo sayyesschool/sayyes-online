@@ -1,8 +1,4 @@
-import {
-    Avatar,
-    Chip,
-    Typography
-} from 'mdc-react';
+import { Label, Text } from '@fluentui/react-northstar';
 
 import './index.scss';
 
@@ -10,34 +6,32 @@ export default function EnrollmentMeta({ enrollment }) {
     return (
         <section className="enrollment-meta">
             <div className="enrollment-meta__section">
-                <Typography type="subtitle2" noMargin>{enrollment.managers.length > 1 ? 'Менеджеры' : 'Менеджер'}: </Typography>
+                <Text>{enrollment.managers.length > 1 ? 'Менеджеры' : 'Менеджер'}: </Text>
 
                 {enrollment.managers.map(manager =>
-                    <Chip
+                    <Label
                         key={manager.id}
-                        className="person-chip"
-                        icon={<Avatar src={manager?.imageUrl} text={manager?.initials} />}
-                        text={manager?.fullname}
-                        title="Менеджер"
-                        outlined
+                        className="person-label"
+                        image={manager?.imageUrl}
+                        content={manager?.fullname}
                     />
                 )}
             </div>
 
-            <div className="enrollment-meta__section">
-                <Typography type="subtitle2" noMargin>{enrollment.managers.length > 1 ? 'Преподаватели' : 'Преподаватель'}: </Typography>
+            {enrollment.teachers.length > 0 &&
+                <div className="enrollment-meta__section">
+                    <Text>{enrollment.teachers.length > 1 ? 'Преподаватели' : 'Преподаватель'}: </Text>
 
-                {enrollment.teachers.map(teacher =>
-                    <Chip
-                        key={teacher.id}
-                        className="person-chip"
-                        icon={<Avatar src={teacher?.imageUrl} text={teacher?.initials} />}
-                        text={teacher?.fullname}
-                        title="Преподаватель"
-                        outlined
-                    />
-                )}
-            </div>
+                    {enrollment.teachers.map(teacher =>
+                        <Label
+                            key={teacher.id}
+                            className="person-label"
+                            image={teacher?.imageUrl}
+                            content={teacher?.fullname}
+                        />
+                    )}
+                </div>
+            }
         </section>
     );
 }

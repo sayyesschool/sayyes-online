@@ -1,10 +1,12 @@
+const { Types } = require('mongoose');
+
 module.exports = ({
     models: { Course }
 }) => ({
     courses: {
         get: (req, res, next) => {
             Course.find(req.query)
-                .select('id title slug image')
+                .select('slug title image')
                 .then(courses => {
                     res.json({
                         ok: true,
@@ -15,7 +17,7 @@ module.exports = ({
         },
 
         getOne: (req, res, next) => {
-            Course.findById(req.params.course)
+            Course.findById(req.params.course, 'slug title image units lessons exercises._id exercises.title')
                 .then(course => {
                     res.json({
                         ok: true,
@@ -63,168 +65,6 @@ module.exports = ({
                     });
                 })
                 .catch(next);
-        }
-    },
-
-    audios: {
-        create: (req, res, next) => {
-            const audio = new Course().audios.create(req.body);
-
-            const update = {
-                $push: {
-                    audios: audio
-                }
-            };
-
-            const options = {
-                new: true,
-                projection: {
-                    id: true,
-                    slug: true,
-                    audios: { $slice: -1 }
-                }
-            };
-
-            if (req.body.exerciseId) {
-                query['exercises.$[e].audio'] = audio.id;
-                options.arrayFilters = [{ 'e._id': req.body.exerciseId }];
-            }
-
-            Course.findByIdAndUpdate(req.params.course, update, options)
-                .then(({ audios: [audio] }) => {
-                    const data = audio.toObject();
-
-                    data.exerciseId = req.body.exerciseId;
-
-                    res.json({
-                        ok: true,
-                        message: 'Аудио создано',
-                        data
-                    });
-                }).catch(next);
-        },
-
-        update: (req, res, next) => {
-            Course.findByIdAndUpdate(req.params.course, {
-                $set: getFieldData('audios', 'a', req.body)
-            }, {
-                new: true,
-                arrayFilters: [{ 'a._id': req.params.audio }],
-                projection: {
-                    id: true,
-                    slug: true,
-                    audios: { $elemMatch: { _id: req.params.audio } }
-                }
-            }).then(({ audios: [audio] }) => {
-                res.json({
-                    ok: true,
-                    message: 'Аудио изменено',
-                    data: audio
-                });
-            }).catch(next);
-        },
-
-        delete: (req, res, next) => {
-            Course.findByIdAndUpdate(req.params.course, {
-                $pull: {
-                    audios: { _id: req.params.audio }
-                },
-                $unset: {
-                    'exercises.$[e].audio': true
-                }
-            }, {
-                arrayFilters: [{ 'e.audio': req.params.audio }],
-                projection: {
-                    audios: { $elemMatch: { _id: req.params.audio } }
-                }
-            }).then(({ audios: [audio] }) => {
-                res.json({
-                    ok: true,
-                    message: 'Аудио удалено',
-                    data: audio
-                });
-            }).catch(next);
-        }
-    },
-
-    videos: {
-        create: (req, res, next) => {
-            const audio = new Course().audios.create(req.body);
-
-            const update = {
-                $push: {
-                    audios: audio
-                }
-            };
-
-            const options = {
-                new: true,
-                projection: {
-                    id: true,
-                    slug: true,
-                    audios: { $slice: -1 }
-                }
-            };
-
-            if (req.body.exerciseId) {
-                query['exercises.$[e].audio'] = audio.id;
-                options.arrayFilters = [{ 'e._id': req.body.exerciseId }];
-            }
-
-            Course.findByIdAndUpdate(req.params.course, update, options)
-                .then(({ audios: [audio] }) => {
-                    const data = audio.toObject();
-
-                    data.exerciseId = req.body.exerciseId;
-
-                    res.json({
-                        ok: true,
-                        message: 'Аудио создано',
-                        data
-                    });
-                }).catch(next);
-        },
-
-        update: (req, res, next) => {
-            Course.findByIdAndUpdate(req.params.course, {
-                $set: getFieldData('audios', 'a', req.body)
-            }, {
-                new: true,
-                arrayFilters: [{ 'a._id': req.params.audio }],
-                projection: {
-                    id: true,
-                    slug: true,
-                    audios: { $elemMatch: { _id: req.params.audio } }
-                }
-            }).then(({ audios: [audio] }) => {
-                res.json({
-                    ok: true,
-                    message: 'Аудио изменено',
-                    data: audio
-                });
-            }).catch(next);
-        },
-
-        delete: (req, res, next) => {
-            Course.findByIdAndUpdate(req.params.course, {
-                $pull: {
-                    audios: { _id: req.params.audio }
-                },
-                $unset: {
-                    'exercises.$[e].audio': true
-                }
-            }, {
-                arrayFilters: [{ 'e.audio': req.params.audio }],
-                projection: {
-                    audios: { $elemMatch: { _id: req.params.audio } }
-                }
-            }).then(({ audios: [audio] }) => {
-                res.json({
-                    ok: true,
-                    message: 'Аудио удалено',
-                    data: audio
-                });
-            }).catch(next);
         }
     },
 
@@ -282,8 +122,8 @@ module.exports = ({
             Course.findByIdAndUpdate(req.params.course, {
                 $pull: {
                     units: { _id: req.params.unit },
-                    lessons: { unit: req.params.unit },
-                    exercises: { unit: req.params.unit }
+                    lessons: { _unit: req.params.unit },
+                    exercises: { _unit: req.params.unit }
                 }
             }, {
                 new: false,
@@ -311,11 +151,11 @@ module.exports = ({
             Course.findByIdAndUpdate(req.params.course, {
                 $push: {
                     lessons: lesson,
-                    'units.$[u].lessons': lesson.id
+                    'units.$[u]._lessons': lesson.id
                 }
             }, {
                 new: true,
-                arrayFilters: [{ 'u._id': lesson.unit }],
+                arrayFilters: [{ 'u._id': lesson.unitId }],
                 projection: {
                     id: true,
                     slug: true,
@@ -360,14 +200,14 @@ module.exports = ({
             Course.findByIdAndUpdate(req.params.course, {
                 $pull: {
                     lessons: { _id: req.params.lesson },
-                    'units.$[u].lessons': req.params.lesson,
-                    exercises: { lesson: req.params.lesson }
+                    'units.$[u]._lessons': req.params.lesson,
+                    exercises: { _lesson: req.params.lesson }
                 }
             }, {
                 arrayFilters: [{ 'u._lessons': req.params.lesson }],
                 projection: {
                     lessons: { $elemMatch: { _id: req.params.lesson } },
-                    units: { $elemMatch: { lessons: req.params.lesson } }
+                    units: { $elemMatch: { _lessons: req.params.lesson } }
                 }
             }).then(({ lessons: [lesson], units: [unit] }) => {
                 const data = lesson.toObject();
@@ -384,17 +224,33 @@ module.exports = ({
     },
 
     exercises: {
+        getOne: (req, res, next) => {
+            Course.findOne({
+                _id: req.params.course,
+                'exercises._id': req.params.exercise
+            }, {
+                'exercises.$': true
+            }).then(({ exercises: [exercise] }) => {
+                const data = exercise.toJSON();
+
+                res.json({
+                    ok: true,
+                    data
+                });
+            }).catch(next);
+        },
+
         create: (req, res, next) => {
             const exercise = new Course().exercises.create(req.body);
 
             Course.findByIdAndUpdate(req.params.course, {
                 $push: {
                     exercises: exercise,
-                    'lessons.$[l].exercises': exercise.id
+                    'lessons.$[l]._exercises': exercise.id
                 }
             }, {
                 new: true,
-                arrayFilters: [{ 'l._id': exercise.lesson }],
+                arrayFilters: [{ 'l._id': exercise.lessonId }],
                 projection: {
                     id: true,
                     slug: true,
@@ -443,10 +299,10 @@ module.exports = ({
             Course.findByIdAndUpdate(req.params.course, {
                 $pull: {
                     exercises: { _id: req.params.exercise },
-                    'lessons.$[l].exercises': req.params.exercise
+                    'lessons.$[l]._exercises': req.params.exercise
                 }
             }, {
-                arrayFilters: [{ 'l.exercises': req.params.exercise }],
+                arrayFilters: [{ 'l._exercises': req.params.exercise }],
                 projection: {
                     exercises: { $elemMatch: { _id: req.params.exercise } }
                 }
@@ -458,13 +314,100 @@ module.exports = ({
                 });
             }).catch(next);
         }
+    },
+
+    items: {
+        create: (req, res, next) => {
+            const { item, position } = req.body;
+
+            Course.findByIdAndUpdate(req.params.course, {
+                $push: {
+                    'exercises.$[e].items': position !== undefined ? {
+                        $each: [item],
+                        $position: position
+                    } : item
+                }
+            }, {
+                new: true,
+                arrayFilters: [{ 'e._id': req.params.exercise }],
+                projection: {
+                    id: true,
+                    slug: true,
+                    exercises: { $elemMatch: { _id: req.params.exercise } }
+                }
+            }).then(({ exercises: [exercise] }) => {
+                const item = exercise.items.at(position !== undefined ? position : -1).toObject();
+
+                res.json({
+                    ok: true,
+                    message: 'Элемент создан',
+                    data: {
+                        item,
+                        position
+                    }
+                });
+            }).catch(next);
+        },
+
+        update: (req, res, next) => {
+            delete req.body.id;
+            delete req.body.type;
+            delete req.body.courseId;
+            delete req.body.exerciseId;
+
+            const data = Array.from(Object.entries(req.body))
+                .reduce((data, [key, value]) => {
+                    data[`exercises.$[e].items.$[i].${key}`] = value;
+                    return data;
+                }, {});
+
+            Course.findByIdAndUpdate(req.params.course, {
+                $set: data
+            }, {
+                new: true,
+                arrayFilters: [
+                    { 'e._id': req.params.exercise },
+                    { 'i._id': req.params.item }
+                ],
+                projection: {
+                    id: true,
+                    slug: true,
+                    exercises: { $elemMatch: { _id: req.params.exercise } }
+                }
+            }).then(({ exercises: [exercise] }) => {
+                const item = exercise.items.find(item => item.id == req.params.item);
+
+                res.json({
+                    ok: true,
+                    message: 'Элемент изменен',
+                    data: item
+                });
+            }).catch(next);
+        },
+
+        delete: (req, res, next) => {
+            Course.findByIdAndUpdate(req.params.course, {
+                $pull: {
+                    'exercises.$[e].items': {
+                        _id: req.params.item
+                    }
+                }
+            }, {
+                arrayFilters: [
+                    { 'e._id': req.params.exercise }
+                ],
+                projection: {
+                    exercises: { $elemMatch: { _id: req.params.exercise } }
+                }
+            }).then(({ exercises: [exercise] }) => {
+                const item = exercise.items.find(item => item.id == req.params.item);
+
+                res.json({
+                    ok: true,
+                    message: 'Элемент удален',
+                    data: item
+                });
+            }).catch(next);
+        }
     }
 });
-
-function getFieldData(field, placeholder, data) {
-    return Array.from(Object.entries(data))
-        .reduce((data, [key, value]) => {
-            data[`${field}.$[${placeholder}].${key}`] = value;
-            return data;
-        }, {});
-}

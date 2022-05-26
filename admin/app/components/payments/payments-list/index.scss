@@ -1,9 +1,11 @@
 .payments-list {
-    .mdc-list-item {
-        .mdc-list-item__graphic {
-            border-radius: 100%;
-            background-color: forestgreen;
-            color: white;
+    .ui-list {
+        &__item {
+            padding: 0 .5rem 0 1rem;
+        }
+
+        &__itemmedia {
+            margin-right: 1rem;
         }
     }
 }

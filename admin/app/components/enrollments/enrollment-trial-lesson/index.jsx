@@ -1,15 +1,12 @@
 import { useCallback, useState } from 'react';
-import {
-    Card,
-    Icon,
-    IconButton,
-    List
-} from 'mdc-react';
+import { Button, List } from '@fluentui/react-northstar';
 import moment from 'moment';
 
 import { useBoolean } from 'shared/hooks/state';
-import FormDialog from 'shared/components/form-dialog';
 import DateTimeSelect from 'shared/components/datetime-select';
+import FormDialog from 'shared/components/form-dialog';
+import Icon from 'shared/components/icon';
+import PageSection from 'shared/components/page-section';
 
 import './index.scss';
 
@@ -30,33 +27,27 @@ export default function EnrollmentTrialLesson({ enrollment, onUpdate }) {
     const hasItems = enrollment.trialLessonSchedule.length > 0;
 
     return (
-        <section className="enrollment-trial-lesson">
-            <Card>
-                <Card.Header
-                    graphic={<Icon>event</Icon>}
-                    title="Расписание ВУ"
-                    actions={
-                        <IconButton
-                            icon="edit"
-                            onClick={toggleFormOpen}
-                        />
-                    }
+        <PageSection
+            className="enrollment-trial-lesson"
+            title="Расписание ВУ"
+            actions={
+                <Button
+                    icon={<Icon>edit</Icon>}
+                    onClick={toggleFormOpen}
                 />
-
-                {hasItems &&
-                    <Card.Section>
-                        <List>
-                            {enrollment.trialLessonSchedule.map(item =>
-                                <List.Item
-                                    key={item.id}
-                                    text={moment(item.date).format('DD.MM.YYYY')}
-                                    meta={`${item.from} - ${item.to}`}
-                                />
-                            )}
-                        </List>
-                    </Card.Section>
-                }
-            </Card>
+            }
+        >
+            {hasItems &&
+                <List>
+                    {enrollment.trialLessonSchedule.map(item =>
+                        <List.Item
+                            key={item.id}
+                            header={moment(item.date).format('DD.MM.YYYY')}
+                            headerMedia={`${item.from} - ${item.to}`}
+                        />
+                    )}
+                </List>
+            }
 
             <FormDialog
                 title="Расписание вводного урока"
@@ -70,6 +61,6 @@ export default function EnrollmentTrialLesson({ enrollment, onUpdate }) {
                     onChange={handleChange}
                 />
             </FormDialog>
-        </section>
+        </PageSection>
     );
 }

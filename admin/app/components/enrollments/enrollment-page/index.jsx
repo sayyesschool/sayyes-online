@@ -1,22 +1,19 @@
 import { useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import {
-    Badge,
-    IconButton,
-    LayoutGrid
-} from 'mdc-react';
+import { Button, Flex, Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useEnrollment } from 'shared/hooks/enrollments';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
-import LoadingIndicator from 'shared/components/loading-indicator';
 import FormDialog from 'shared/components/form-dialog';
+import Icon from 'shared/components/icon';
+import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageTopBar from 'shared/components/page-top-bar';
+import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
+import PageSidePanel from 'shared/components/page-side-panel';
 
 import EnrollmentForm from 'app/components/enrollments/enrollment-form';
-import EnrollmentCommentsSidePanel from 'app/components/enrollments/enrollment-comments-side-panel';
+import EnrollmentComments from 'app/components/enrollments/enrollment-comments';
 import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';
 import EnrollmentDetails from 'app/components/enrollments/enrollment-details';
 import EnrollmentMeta from 'app/components/enrollments/enrollment-meta';
@@ -25,7 +22,7 @@ import EnrollmentMaterials from 'app/components/enrollments/enrollment-materials
 import EnrollmentPayments from 'app/components/enrollments/enrollment-payments';
 import EnrollmentStatus from 'app/components/enrollments/enrollment-status';
 import EnrollmentSchedule from 'app/components/enrollments/enrollment-schedule';
-import EnrollmentTrialLesson from 'app/components/enrollments/enrollment-trial-lesson';
+// import EnrollmentTrialLesson from 'app/components/enrollments/enrollment-trial-lesson';
 
 import './index.scss';
 
@@ -57,9 +54,9 @@ export default function EnrollmentPage({ match, history }) {
 
     return (
         <Page id="enrollment-page" loading={!enrollment}>
-            <PageTopBar
+            <PageHeader
                 breadcrumbs={[
-                    <Link to={enrollment?.client.url}>{enrollment.client.fullname}</Link>
+                    { text: enrollment.client.fullname, url: enrollment?.client.url }
                 ]}
                 title={enrollment.domainLabel}
                 actions={[
@@ -70,13 +67,15 @@ export default function EnrollmentPage({ match, history }) {
                         icon: 'link',
                         title: 'Открыть в Hollihop'
                     }),
-                    <Badge key="comments" value={enrollment.comments.length} inset>
-                        <IconButton
-                            icon="comment"
-                            title="Открыть комментарии"
-                            onClick={toggleSidePanel}
-                        />
-                    </Badge>,
+                    <Button
+                        key="comments"
+                        icon={<Icon>comment</Icon>}
+                        title="Открыть комментарии"
+                        text
+                        iconOnly
+                        data-comments-count={enrollment.comments.length}
+                        onClick={toggleSidePanel}
+                    />,
                     {
                         key: 'edit',
                         title: 'Изменить',
@@ -92,78 +91,57 @@ export default function EnrollmentPage({ match, history }) {
                 ]}
             />
 
-            <EnrollmentCommentsSidePanel
-                enrollment={enrollment}
-                open={isSidePanelOpen}
-                dismissible
-                onClose={toggleSidePanel}
-            />
-
             <PageContent>
-                <LayoutGrid>
-                    <LayoutGrid.Cell span="12">
-                        <EnrollmentMeta
-                            enrollment={enrollment}
-                        />
-                    </LayoutGrid.Cell>
+                <EnrollmentMeta
+                    enrollment={enrollment}
+                />
 
-                    <LayoutGrid.Cell span="12">
-                        <EnrollmentStatus
-                            enrollment={enrollment}
-                            onUpdate={updateEnrollment}
-                        />
-                    </LayoutGrid.Cell>
+                <EnrollmentStatus
+                    enrollment={enrollment}
+                    onUpdate={updateEnrollment}
+                />
 
-                    <LayoutGrid.Cell desktop="3" tablet="4" mobile="4">
+                <Grid columns="minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr)">
+                    <Flex gap="gap.medium" column>
                         <EnrollmentDetails
                             enrollment={enrollment}
                         />
-                    </LayoutGrid.Cell>
+                    </Flex>
 
-                    <LayoutGrid.Cell desktop="3" tablet="4" mobile="4">
-                        <LayoutGrid.Cell LayoutGrid>
-                            <LayoutGrid.Cell span="12">
-                                <EnrollmentSchedule
-                                    enrollment={enrollment}
-                                    onUpdate={updateEnrollmentSchedule}
-                                />
-                            </LayoutGrid.Cell>
+                    <Flex gap="gap.medium" column>
+                        <EnrollmentLessons
+                            enrollment={enrollment}
+                        />
 
-                            <LayoutGrid.Cell span="12">
-                                <EnrollmentLessons
-                                    enrollment={enrollment}
-                                />
+                        <EnrollmentComments
+                            enrollment={enrollment}
+                        />
+                    </Flex>
 
-                                {/* <EnrollmentTrialLesson
-                                    enrollment={enrollment}
-                                    onUpdate={updateEnrollment}
-                                /> */}
-                            </LayoutGrid.Cell>
-                        </LayoutGrid.Cell>
-                    </LayoutGrid.Cell>
+                    <Flex gap="gap.medium" column>
+                        <EnrollmentSchedule
+                            enrollment={enrollment}
+                            onUpdate={updateEnrollmentSchedule}
+                        />
 
-                    <LayoutGrid.Cell desktop="3" tablet="4" mobile="4">
                         <EnrollmentPayments
                             enrollment={enrollment}
                         />
-                    </LayoutGrid.Cell>
 
-                    <LayoutGrid.Cell desktop="3" tablet="4" mobile="4">
-                        <LayoutGrid.Cell LayoutGrid>
-                            <LayoutGrid.Cell span="12">
-                                <EnrollmentCourses
-                                    enrollment={enrollment}
-                                />
-                            </LayoutGrid.Cell>
+                        <EnrollmentCourses
+                            enrollment={enrollment}
+                        />
 
-                            <LayoutGrid.Cell span="12">
-                                <EnrollmentMaterials
-                                    enrollment={enrollment}
-                                />
-                            </LayoutGrid.Cell>
-                        </LayoutGrid.Cell>
-                    </LayoutGrid.Cell>
-                </LayoutGrid>
+                        <EnrollmentMaterials
+                            enrollment={enrollment}
+                        />
+                    </Flex>
+
+                    {/* <EnrollmentTrialLesson
+                        enrollment={enrollment}
+                        onUpdate={updateEnrollment}
+                    /> */}
+                </Grid>
             </PageContent>
 
             <FormDialog

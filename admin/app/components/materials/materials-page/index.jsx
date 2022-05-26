@@ -1,60 +1,62 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, } from 'react';
 
+import { useBoolean } from 'shared/hooks/state';
+import FormDialog from 'shared/components/form-dialog';
+import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageTopBar from 'shared/components/page-top-bar';
+import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
 
 import { useStore } from 'app/hooks/store';
-import FormPanel from 'app/components/shared/form-panel';
-import MaterialGridList from 'app/components/materials/material-grid-list';
+import MaterialsGridList from 'app/components/materials/materials-grid-list';
 import MaterialForm from 'app/components/materials/material-form';
 
 export default function Materials() {
     const [materials, actions] = useStore('materials.list');
 
-    const [isFormOpen, setFormOpen] = useState(false);
+    const [isFormOpen, toggleFormOpen] = useBoolean(false);
 
     useEffect(() => {
         actions.getMaterials();
     }, []);
 
     const handleSubmit = useCallback(data => {
-        actions.createMaterial(data)
-            .then(() => setFormOpen(false));
+        return actions.createMaterial(data)
+            .then(() => toggleFormOpen(false));
     }, []);
+
+    if (!materials) return <LoadingIndicator />;
 
     return (
         <Page id="materials" loading={!materials}>
-            <PageTopBar
+            <PageHeader
                 title="Материалы"
                 actions={[
                     {
                         key: 'add',
-                        label: 'Создать',
+                        title: 'Создать',
                         icon: 'add',
-                        outlined: true,
-                        onClick: () => setFormOpen(true)
+                        iconOnly: true,
+                        onClick: toggleFormOpen
                     }
                 ]}
             />
 
             <PageContent>
-                <MaterialGridList
+                <MaterialsGridList
                     materials={materials}
                 />
             </PageContent>
 
-            <FormPanel
-                form="material-form"
+            <FormDialog
                 title="Новый материал"
                 open={isFormOpen}
-                modal
-                onClose={() => setFormOpen(false)}
+                onClose={toggleFormOpen}
             >
                 <MaterialForm
                     onSubmit={handleSubmit}
                 />
-            </FormPanel>
+            </FormDialog>
         </Page>
     );
 }

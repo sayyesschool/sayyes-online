@@ -1,4 +1,5 @@
 import {
+    Avatar,
     MenuButton,
     List
 } from '@fluentui/react-northstar';
@@ -10,26 +11,30 @@ export default function ContactsList({ contacts, onEdit, onDelete }) {
         <List>
             {contacts?.map(contact =>
                 <List.Item
-                    header={contact.fullname}
-                    headerMedia={contact.relation}
-                    content={`${contact.phone} ${contact.email}`}
-                    endMedia={
-                        <MenuButton
-                            trigger={<Icon>more_vert</Icon>}
-                            menu={[
-                                {
-                                    key: 'edit',
-                                    content: 'Редактировать',
-                                    onClick: () => onEdit(contact)
-                                },
-                                {
-                                    key: 'delete',
-                                    content: 'Удалить',
-                                    onClick: () => onDelete(contact)
-                                },
-                            ]}
-                        />
+                    media={
+                        <Avatar name={contact.fullname} />
                     }
+                    header={contact.fullname}
+                    headerMedia={contact.phone}
+                    content={contact.relation}
+                    contentMedia={contact.email}
+                // endMedia={
+                //     <MenuButton
+                //         trigger={<Icon>more_vert</Icon>}
+                //         menu={[
+                //             {
+                //                 key: 'edit',
+                //                 content: 'Редактировать',
+                //                 onClick: () => onEdit(contact)
+                //             },
+                //             {
+                //                 key: 'delete',
+                //                 content: 'Удалить',
+                //                 onClick: () => onDelete(contact)
+                //             },
+                //         ]}
+                //     />
+                // }
                 />
             )}
         </List>

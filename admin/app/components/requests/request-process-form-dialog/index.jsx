@@ -1,10 +1,5 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
-import {
-    Dialog,
-    Button,
-    Icon,
-    TabBar, Tab
-} from 'mdc-react';
+import { useCallback, useMemo, useRef } from 'react';
+import { Accordion, Dialog, Flex, Status } from '@fluentui/react-northstar';
 
 import ClientForm from 'app/components/clients/client-form';
 import EnrollmentForm from 'app/components/enrollments/enrollment-form';
@@ -27,19 +22,17 @@ export default function RequestProcessFormDialog({ request, open, onSubmit, onCl
         };
     }, [request]);
 
-    const [activeTab, setActiveTab] = useState('client');
-
     const handleSubmit = useCallback(() => {
-        const client = clientFormRef.current.data;
-        const enrollment = enrollmentFormRef.current.data;
-        const request = requestFormRef.current.data;
+        const client = clientFormRef.current?.data;
+        const enrollment = enrollmentFormRef.current?.data;
+        const request = requestFormRef.current?.data;
 
-        if (!clientFormRef.current.form.reportValidity()) {
+        if (!clientFormRef.current?.form.reportValidity()) {
             console.log('ALERT CLIENT');
             return;
         }
 
-        if (!enrollmentFormRef.current.form.reportValidity()) {
+        if (!enrollmentFormRef.current?.form.reportValidity()) {
             console.log('ALERT ENROLLMENT');
             return;
         }
@@ -50,63 +43,69 @@ export default function RequestProcessFormDialog({ request, open, onSubmit, onCl
     return (
         <Dialog
             className="request-process-dialog"
-            header={
-                <Dialog.Header
-                    title="Обработка заявки"
-                >
-                    <TabBar
-                        value={activeTab}
-                        onChange={setActiveTab}
-                        minWidth
-                    >
-                        <Tab
-                            value="client"
-                            icon={<Icon>person</Icon>}
-                            label="Клиент"
-                        />
-
-                        <Tab
-                            value="enrollment"
-                            icon={<Icon>school</Icon>}
-                            label="Обучение"
-                        />
-
-                        <Tab
-                            value="request"
-                            icon={<Icon>assignment</Icon>}
-                            label="Обращение"
-                        />
-                    </TabBar>
-                </Dialog.Header>
-            }
-            content={
-                <Dialog.Content>
-                    <ClientForm
-                        ref={clientFormRef}
-                        client={client}
-                        style={{ display: activeTab === 'client' ? 'block' : 'none' }}
-                    />
-
-                    <EnrollmentForm
-                        ref={enrollmentFormRef}
-                        style={{ display: activeTab === 'enrollment' ? 'block' : 'none' }}
-                    />
-
-                    <RequestForm
-                        ref={requestFormRef}
-                        request={request}
-                        style={{ display: activeTab === 'request' ? 'block' : 'none' }}
-                    />
-                </Dialog.Content>
-            }
-            actions={
-                <Dialog.Actions>
-                    <Button type="button" outlined onClick={onClose}>Отменить</Button>
-
-                    <Button type="button" unelevated onClick={handleSubmit}>{activeTab === 'request' ? 'Сохранить' : 'Далее'}</Button>
-                </Dialog.Actions>
-            }
+            header="Обработка заявки"
             open={open}
+            content={
+                <Accordion
+                    defaultActiveIndex={[0]}
+                    panels={[
+                        {
+                            key: 'client',
+                            title: (
+                                <Flex vAlign="center" space="between">
+                                    Клиент
+                                    <Status status="unknown" />
+                                </Flex>
+                            ),
+                            content: (
+                                <ClientForm
+                                    ref={clientFormRef}
+                                    client={client}
+                                />
+                            )
+                        },
+                        {
+                            key: 'enrollment',
+                            title: (
+                                <Flex vAlign="center" space="between">
+                                    Обучение
+                                    <Status status="unknown" />
+                                </Flex>
+                            ),
+                            content: (
+                                <EnrollmentForm
+                                    ref={enrollmentFormRef}
+                                />
+                            )
+                        },
+                        {
+                            key: 'request',
+                            title: (
+                                <Flex vAlign="center" space="between">
+                                    Обращение
+                                    <Status status="unknown" />
+                                </Flex>
+                            ),
+                            content: (
+                                <RequestForm
+                                    ref={requestFormRef}
+                                    request={request}
+                                />
+                            )
+                        }
+                    ]}
+                />
+            }
+            cancelButton={{
+                type: 'submit',
+                content: 'Отменить',
+                onClick: onClose
+            }}
+            confirmButton={{
+                type: 'button',
+                content: 'Сохранить',
+                onClick: handleSubmit
+            }}
             onClose={onClose}
         />
     );

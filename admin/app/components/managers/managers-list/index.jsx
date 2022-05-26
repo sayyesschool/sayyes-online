@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom';
-import {
-    List
-} from 'mdc-react';
+import { List } from '@fluentui/react-northstar';
 
 export default function ManagersList({ managers }) {
     return (
@@ -11,8 +9,9 @@ export default function ManagersList({ managers }) {
                     key={manager.id}
                     component={Link}
                     to={manager.url}
-                    primaryText={manager.fullname}
-                    secondaryText={`${manager.email} ${manager.phone}`}
+                    header={manager.fullname}
+                    content={manager.email}
+                    contentMedia={manager.phone}
                 />
             )}
         </List>

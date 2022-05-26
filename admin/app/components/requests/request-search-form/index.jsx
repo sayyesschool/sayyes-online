@@ -1,22 +1,21 @@
 import { useCallback } from 'react';
-import {
-    Layout,
-    Select,
-    TextField
-} from 'mdc-react';
+import { Flex } from '@fluentui/react-northstar';
 import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
-import PeopleSelect from 'shared/components/people-select';
+import FormInput from 'shared/components/form-input';
+import FormSelect from 'shared/components/form-select';
+import PeopleSelect from 'shared/components/user-select';
 
 import { useStore } from 'app/hooks/store';
 
 import './index.scss';
 
-export default function RequestSearchForm({ onSubmit }) {
+export default function RequestSearchForm({ onSubmit, ...props }) {
     const [managers] = useStore('managers.list');
-    const [data, handleChange, getData] = useForm({
+
+    const { data, handleChange, getData } = useForm({
         query: '',
         statuses: [],
         createdAt: '',
@@ -28,56 +27,51 @@ export default function RequestSearchForm({ onSubmit }) {
     }, []);
 
     return (
-        <Form id="request-search-form" onSubmit={handleSubmit}>
-            <Layout column>
-                <TextField
+        <Form className="request-search-form" onSubmit={handleSubmit} {...props}>
+            <Flex gap="gap.small" vAlign="center">
+                <FormInput
                     type="search"
                     name="query"
                     value={data.query}
-                    label="Имя, телефон или email"
-                    filled
+                    placeholder="Имя, телефон или email"
                     onChange={handleChange}
                 />
 
-                <Select
+                <FormSelect
                     name="statuses"
                     value={data.statuses}
-                    label="Статус"
-                    filled
-                    multiple
+                    placeholder="Статус"
                     options={[
-                        { key: 'new', value: 'new', text: 'Новая' },
-                        { key: 'pending', value: 'pending', text: 'В обработке' },
-                        { key: 'resolved', value: 'resolved', text: 'Успешная' },
-                        { key: 'rejected', value: 'rejected', text: 'Отказ' },
-                        { key: 'postponed', value: 'postponed', text: 'Отложенная' }
+                        { key: 'new', value: 'new', header: 'Новая' },
+                        { key: 'pending', value: 'pending', header: 'В обработке' },
+                        { key: 'resolved', value: 'resolved', header: 'Успешная' },
+                        { key: 'rejected', value: 'rejected', header: 'Отказ' },
+                        { key: 'postponed', value: 'postponed', header: 'Отложенная' }
                     ]}
+                    multiple
                     onChange={handleChange}
                 />
 
-                <TextField
+                <FormInput
                     type="date"
                     name="createdAt"
                     value={moment(data.createdAt).format('YYYY-MM-DD')}
-                    label="Дата создания"
-                    filled
+                    placeholder="Дата создания"
                     onChange={handleChange}
                 />
 
                 <PeopleSelect
                     name="manager"
                     value={data.manager}
-                    label="Менеджер"
-                    filled
+                    placeholder="Менеджер"
                     options={(managers || []).map(manager => ({
                         key: manager.id,
                         value: manager.id,
-                        text: manager.fullname
+                        content: manager.fullname
                     }))}
-                    required
                     onChange={handleChange}
                 />
-            </Layout>
+            </Flex>
         </Form>
     );
 }

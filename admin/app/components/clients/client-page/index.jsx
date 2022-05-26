@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { Grid } from '@fluentui/react-northstar';
+import { Flex, Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
@@ -79,27 +79,31 @@ export default function ClientPage({ match, location, history }) {
             />
 
             <PageContent>
-                <Grid>
-                    <ClientDetails
-                        client={client}
-                    />
+                <Grid columns="minmax(0, 1fr) minmax(0, 2fr)">
+                    <Flex gap="gap.medium" column>
+                        <ClientDetails
+                            client={client}
+                        />
 
-                    <ClientContacts
-                        client={client}
-                        onUpdate={updateClient}
-                    />
+                        <ClientContacts
+                            client={client}
+                            onUpdate={updateClient}
+                        />
+                    </Flex>
 
-                    <ClientRequests
-                        requests={client?.requests}
-                    />
+                    <Flex gap="gap.medium" column>
+                        <ClientRequests
+                            requests={client?.requests}
+                        />
 
-                    <ClientEnrollments
-                        client={client}
-                    />
+                        <ClientEnrollments
+                            client={client}
+                        />
 
-                    <ClientPayments
-                        client={client}
-                    />
+                        <ClientPayments
+                            client={client}
+                        />
+                    </Flex>
                 </Grid>
             </PageContent>
 

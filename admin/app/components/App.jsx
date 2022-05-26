@@ -6,11 +6,11 @@ import AppBar from 'shared/components/app-bar';
 import AppContent from 'shared/components/app-content';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import NotificationAlert from 'shared/components/notification-alert';
+// import SearchForm from 'shared/components/search-form';
 
 import navItems from 'app/data/nav';
 import UI from 'app/contexts/ui';
 import { useStore, useActions } from 'app/hooks/store';
-// import Search from 'app/components/shared/search';
 
 import './App.scss';
 

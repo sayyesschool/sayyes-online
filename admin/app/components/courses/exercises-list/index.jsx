@@ -31,7 +31,7 @@ export default function ExercisesList({
     }, []);
 
     return (
-        <List className="exercises-list" selectable>
+        <List className="exercises-list numbered-list" selectable>
             {exercises.map((exercise, index) =>
                 <List.Item
                     key={exercise.id}

@@ -21,7 +21,7 @@ export default forwardRef(ContactForm);
 function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
     const formRef = useRef();
 
-    const [data, handleChange] = useForm({
+    const { data, handleChange } = useForm({
         ...defaultContact,
         ...contact
     }, [contact?.id]);

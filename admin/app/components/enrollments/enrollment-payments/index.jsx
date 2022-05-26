@@ -1,16 +1,15 @@
 import { useCallback, useState } from 'react';
-import {
-    Card,
-    IconButton,
-    List
-} from 'mdc-react';
+import { Button } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
+import Icon from 'shared/components/icon';
+import PageSection from 'shared/components/page-section';
 
 import { useActions } from 'app/hooks/store';
 import PaymentForm from 'app/components/payments/payment-form';
+import PaymentsList from 'app/components/payments/payments-list';
 
 export default function EnrollmentPayments({ enrollment }) {
     const actions = useActions('payments');
@@ -52,41 +51,25 @@ export default function EnrollmentPayments({ enrollment }) {
     }, []);
 
     return (
-        <section className="enrollment-payments">
-            <Card>
-                <Card.Header
-                    title="Платежи"
-                    actions={
-                        <IconButton
-                            icon="add"
-                            onClick={toggleCreateFormOpen}
-                        />
-                    }
+        <PageSection
+            className="enrollment-payments"
+            title="Платежи"
+            actions={
+                <Button
+                    icon={<Icon>add</Icon>}
+                    text
+                    iconOnly
+                    onClick={toggleCreateFormOpen}
                 />
-
-                {enrollment.payments.length > 0 &&
-                    <Card.Section>
-                        <List className="payments-list">
-                            {enrollment.payments.map(payment =>
-                                <List.Item
-                                    key={payment.id}
-                                    leadingIcon={payment.statusIcon}
-                                    primaryText={payment.description}
-                                    secondaryText={`${payment.amount} руб.`}
-                                    trailingIcon={
-                                        <IconButton
-                                            icon="remove"
-                                            title="Удалить платеж"
-                                            onClick={event => handleDelete(event, payment)}
-                                        />
-                                    }
-                                    onClick={() => handleUpdate(payment)}
-                                />
-                            )}
-                        </List>
-                    </Card.Section>
-                }
-            </Card>
+            }
+        >
+            {enrollment.payments?.length > 0 &&
+                <PaymentsList
+                    payments={enrollment.payments}
+                    onClick={handleUpdate}
+                    onDelete={handleDelete}
+                />
+            }
 
             <FormDialog
                 form="create-payment-form"
@@ -121,6 +104,6 @@ export default function EnrollmentPayments({ enrollment }) {
                 onConfirm={deletePayment}
                 onClose={() => toggleConfirmationDialogOpen(false)}
             />
-        </section>
+        </PageSection>
     );
 }

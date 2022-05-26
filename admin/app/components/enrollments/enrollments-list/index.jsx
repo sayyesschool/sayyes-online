@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom';
 import {
     Avatar,
-    List
+    List,
+    Status
 } from '@fluentui/react-northstar';
 
-import MaterialIcon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
+
+import './index.scss';
 
 export default function EnrollmentsList({ enrollments }) {
     return (
@@ -14,15 +17,19 @@ export default function EnrollmentsList({ enrollments }) {
                     key={enrollment.id}
                     as={Link}
                     to={enrollment.url}
-                    media={<MaterialIcon icon={enrollment.statusIcon} />}
+                    //media={<MaterialIcon icon={enrollment.statusIcon} />}
+                    media={
+                        <Status state="info" />
+                    }
                     header={enrollment.domainLabel}
                     content={enrollment.statusLabel}
                     endMedia={enrollment.teacher &&
                         <Avatar
-                            text={enrollment.teacher.initials}
+                            name={enrollment.teacher.fullname}
                             title={enrollment.teacher.fullname}
                         />
                     }
+                    navigable
                 />
             )}
         </List>

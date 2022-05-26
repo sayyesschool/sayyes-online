@@ -1,12 +1,8 @@
 import { useCallback } from 'react';
-import {
-    Card,
-    Icon,
-    IconButton,
-    List
-} from 'mdc-react';
+import { Button, List, MenuButton } from '@fluentui/react-northstar';
 
-import MenuButton from 'shared/components/menu-button';
+import Icon from 'shared/components/icon';
+import PageSection from 'shared/components/page-section';
 
 import { useStore, useActions } from 'app/hooks/store';
 
@@ -14,7 +10,8 @@ export default function EnrollmentMaterials({ enrollment }) {
     const [materials = []] = useStore('materials.list');
     const enrollmentActions = useActions('enrollments');
 
-    const handleAddMaterial = useCallback(materialId => {
+    const handleAddMaterial = useCallback((event, component) => {
+        const materialId = component.value;
         const materials = enrollment.materials.concat(materialId);
 
         return enrollmentActions.updateEnrollment(enrollment.id, { materials });
@@ -33,48 +30,50 @@ export default function EnrollmentMaterials({ enrollment }) {
         .filter(material => !enrollment.materials.includes(material.id))
         .map(material => ({
             key: material.id,
-            graphic: <img src={material.imageUrl} />,
-            primaryText: material.title,
-            secondaryText: material.subtitle,
-            onClick: () => handleAddMaterial(material.id)
+            value: material.id,
+            content: material.title
         }));
 
     return (
-        <section className="enrollment-materials">
-            <Card>
-                <Card.Header
-                    graphic={<Icon>book</Icon>}
-                    title="Пособия"
-                    actions={
-                        <MenuButton
-                            icon="add"
-                            items={items}
+        <PageSection
+            className="enrollment-materials"
+            title="Пособия"
+            actions={
+                <MenuButton
+                    trigger={
+                        <Button
+                            icon={<Icon>add</Icon>}
+                            text
+                            iconOnly
                         />
                     }
+                    align="end"
+                    menu={items}
+                    onMenuItemClick={handleAddMaterial}
                 />
-
-                {enrollmentMaterials.length > 0 &&
-                    <Card.Section>
-                        <List>
-                            {enrollmentMaterials.map(material =>
-                                <List.Item
-                                    key={material.id}
-                                    leadingThumbnail={<img src={material.imageUrl} />}
-                                    primaryText={material.title}
-                                    secondaryText={material.subtitle}
-                                    trailingIcon={
-                                        <IconButton
-                                            icon="remove"
-                                            title="Убрать курс"
-                                            onClick={() => handleRemoveMaterial(material.id)}
-                                        />
-                                    }
+            }
+        >
+            {enrollmentMaterials.length > 0 &&
+                <List>
+                    {enrollmentMaterials.map(material =>
+                        <List.Item
+                            key={material.id}
+                            media={<img src={material.imageUrl} />}
+                            header={material.title}
+                            content={material.subtitle}
+                            endMedia={
+                                <Button
+                                    title="Убрать материал"
+                                    icon={<Icon>remove</Icon>}
+                                    iconOnly
+                                    text
+                                    onClick={() => handleRemoveMaterial(material.id)}
                                 />
-                            )}
-                        </List>
-                    </Card.Section>
-                }
-            </Card>
-        </section>
+                            }
+                        />
+                    )}
+                </List>
+            }
+        </PageSection>
     );
 }

@@ -1,16 +1,12 @@
 import { useCallback } from 'react';
-import {
-    Layout,
-    FormField,
-    Select,
-    Switch,
-    TextField
-} from 'mdc-react';
 import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
-import PeopleSelect from 'shared/components/people-select';
+import FormInput from 'shared/components/form-input';
+import FormCheckbox from 'shared/components/form-checkbox';
+import FormSelect from 'shared/components/form-select';
+import PeopleSelect from 'shared/components/user-select';
 
 import { useStore } from 'app/hooks/store';
 
@@ -35,7 +31,7 @@ const defaultLesson = {
 export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
     const [teachers] = useStore('teachers.list');
 
-    const [data, handleChange] = useForm({
+    const { data, handleChange } = useForm({
         ...defaultLesson,
         ...lesson,
         teacher: lesson.teacher?.id || lesson.teacher || ''
@@ -50,82 +46,80 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
 
     return (
         <Form className="lesson-form" onSubmit={handleSubmit} {...props}>
-            <Layout column>
-                <Select
-                    name="status"
-                    value={data.status}
-                    label="Статус"
-                    options={statuses}
-                    filled
-                    required
-                    onChange={handleChange}
-                />
+            <FormSelect
+                name="status"
+                value={data.status}
+                label="Статус"
+                options={statuses}
+                filled
+                required
+                onChange={handleChange}
+            />
 
-                <TextField
-                    type="datetime-local"
-                    name="date"
-                    value={moment(data.date).format('YYYY-MM-DDTHH:mm')}
-                    label="Дата и время"
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                type="datetime-local"
+                name="date"
+                value={moment(data.date).format('YYYY-MM-DDTHH:mm')}
+                label="Дата и время"
+                filled
+                onChange={handleChange}
+            />
 
-                <TextField
-                    type="number"
-                    name="duration"
-                    step="5"
-                    value={data.duration}
-                    label="Продолжительность"
-                    suffix="мин."
-                    filled
-                    onChange={handleChange}
-                />
+            <FormInput
+                type="number"
+                name="duration"
+                step="5"
+                value={data.duration}
+                label="Продолжительность"
+                suffix="мин."
+                filled
+                onChange={handleChange}
+            />
 
-                <PeopleSelect
-                    name="teacher"
-                    value={data.teacher}
-                    label="Преподаватель"
-                    options={teachers.map(teacher => ({
-                        key: teacher?.id,
-                        value: teacher?.id,
-                        text: teacher?.fullname
-                    }))}
-                    onChange={handleChange}
-                />
+            <PeopleSelect
+                name="teacher"
+                value={data.teacher}
+                label="Преподаватель"
+                options={teachers.map(teacher => ({
+                    key: teacher?.id,
+                    value: teacher?.id,
+                    text: teacher?.fullname
+                }))}
+                onChange={handleChange}
+            />
 
-                <FormField label="Пробное" alignEnd spaceBetween>
-                    <Switch
-                        name="trial"
-                        checked={data.trial}
-                        onChange={handleChange}
-                    />
-                </FormField>
+            <FormCheckbox
+                label="Пробное"
+                name="trial"
+                checked={data.trial}
+                toggle
+                onChange={handleChange}
+            />
 
-                <FormField label="Бесплатное" alignEnd spaceBetween>
-                    <Switch
-                        name="free"
-                        checked={data.free}
-                        onChange={handleChange}
-                    />
-                </FormField>
+            <FormCheckbox
+                label="Бесплатное"
+                name="free"
+                checked={data.free}
+                toggle
+                onChange={handleChange}
+            />
 
-                <FormField label="Подтвержденное" alignEnd spaceBetween>
-                    <Switch
-                        name="confirmed"
-                        checked={data.confirmed}
-                        onChange={handleChange}
-                    />
-                </FormField>
+            <FormCheckbox
+                label="Подтвержденное"
+                name="confirmed"
+                checked={data.confirmed}
+                toggle
+                onChange={handleChange}
+            />
 
-                <TextField
-                    name="note"
-                    value={data.note}
-                    label="Примечание"
-                    filled
-                    textarea
-                    onChange={handleChange}
-                />
-            </Layout>
+            <FormInput
+                name="note"
+                value={data.note}
+                label="Примечание"
+                filled
+                textarea
+                onChange={handleChange}
+            />
         </Form>
     );
 }

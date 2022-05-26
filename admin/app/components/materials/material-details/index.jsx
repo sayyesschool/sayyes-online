@@ -1,30 +1,18 @@
-import {
-    Card,
-    IconButton
-} from 'mdc-react';
+import DetailsList from 'shared/components/details-list';
+import PageSection from 'shared/components/page-section';
 
-import MaterialForm from '../material-form';
+import MaterialForm from 'app/components/materials/material-form';
 
 export default function MaterialDetails({ material, onUpdate }) {
     return (
-        <Card outlined>
-            <Card.Header
-                title="Детали"
-                actions={
-                    <IconButton
-                        icon="save"
-                        type="submit"
-                        form="material-form"
-                    />
-                }
+        <PageSection
+            className="material-details"
+            title="Детали"
+        >
+            <MaterialForm
+                material={material}
+                onSubmit={onUpdate}
             />
-
-            <Card.Section primary>
-                <MaterialForm
-                    material={material}
-                    onSubmit={onUpdate}
-                />
-            </Card.Section>
-        </Card>
+        </PageSection>
     );
 }

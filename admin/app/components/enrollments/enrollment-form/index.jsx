@@ -1,7 +1,8 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import {
-    Form, FormDropdown, FormInput
-} from '@fluentui/react-northstar';
+
+import Form from 'shared/components/form';
+import FormInput from 'shared/components/form-input';
+import FormSelect from 'shared/components/form-select';
 
 import {
     defaultEnrollment, domainOptions, typeOptions, formatOptions,
@@ -25,7 +26,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
     const [teachers] = useStore('teachers.list');
     const [managers] = useStore('managers.list');
 
-    const [data, handleChange] = useForm({
+    const { data, handleChange } = useForm({
         ...defaultEnrollment,
         ...enrollment,
         client: enrollment.client?.id || '',
@@ -47,50 +48,50 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
 
     return (
         <Form ref={formRef} className="enrollment-form" onSubmit={handleSubmit} {...props}>
-            <FormDropdown
+            <FormSelect
                 name="domain"
                 value={data.domain}
                 label="Направление"
-                items={domainOptions}
+                options={domainOptions}
                 fluid
                 required
                 onChange={handleChange}
             />
 
-            <FormDropdown
+            <FormSelect
                 name="type"
                 value={data.type}
                 label="Тип"
-                items={typeOptions}
+                options={typeOptions}
                 fluid
                 required
                 onChange={handleChange}
             />
 
-            <FormDropdown
+            <FormSelect
                 name="format"
                 value={data.format}
                 label="Формат"
-                items={formatOptions}
+                options={formatOptions}
                 fluid
                 required
                 onChange={handleChange}
             />
 
-            <FormDropdown
+            <FormSelect
                 name="age"
                 value={data.age}
                 label="Возрастная группа"
-                items={ageOptions}
+                options={ageOptions}
                 fluid
                 onChange={handleChange}
             />
 
-            <FormDropdown
+            <FormSelect
                 name="teacherType"
                 value={data.teacherType}
                 label="Тип преподавателя"
-                items={teacherTypeOptions}
+                options={teacherTypeOptions}
                 fluid
                 onChange={handleChange}
             />
@@ -104,20 +105,20 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormDropdown
+            <FormSelect
                 name="level"
                 value={data.level}
                 label="Уровень"
-                items={levelOptions}
+                options={levelOptions}
                 fluid
                 onChange={handleChange}
             />
 
-            <FormDropdown
+            <FormSelect
                 name="purpose"
                 value={data.purpose}
                 label="Цель"
-                items={purposeOptions}
+                options={purposeOptions}
                 fluid
                 onChange={handleChange}
             />

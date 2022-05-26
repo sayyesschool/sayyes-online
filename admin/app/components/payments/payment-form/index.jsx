@@ -1,10 +1,11 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import {
-    Form, FormDropdown, FormInput
-} from '@fluentui/react-northstar';
 import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
+import Form from 'shared/components/form';
+import FormInput from 'shared/components/form-input';
+import FormSelect from 'shared/components/form-select';
+import FormTextArea from 'shared/components/form-textarea';
 
 import { paymentMethodOptions, operatorOptions } from 'shared/data/payment';
 
@@ -28,7 +29,7 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
         get data() { return data; }
     }));
 
-    const [data, onChange] = useForm({
+    const { data, onChange } = useForm({
         ...defaultPayment,
         ...payment
     }, [payment]);
@@ -58,7 +59,6 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
                 value={data.amount}
                 label="Сумма"
                 suffix="руб."
-                fluid
                 min={1}
                 required
                 onChange={onChange}
@@ -69,37 +69,32 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
                 name="paidAt"
                 value={moment(data.paidAt).format('YYYY-MM-DD')}
                 label="Дата"
-                fluid
                 onChange={onChange}
             />
 
-            <FormDropdown
+            <FormSelect
                 name="paymentMethod"
                 value={data.paymentMethod}
                 label="Способ оплаты"
-                fluid
-                items={paymentMethodOptions}
+                options={paymentMethodOptions}
                 onChange={onChange}
             />
 
             {(data.paymentMethod !== '' && data.paymentMethod !== 'cash') &&
-                <FormDropdown
+                <FormSelect
                     name="operator"
                     value={data.operator}
                     label="Оператор"
-                    fluid
                     options={operatorOptions}
                     onChange={onChange}
                 />
             }
 
-            <FormInput
+            <FormTextArea
                 type="text"
                 name="note"
                 value={data.note}
                 label="Заметка"
-                fluid
-                textarea
                 onChange={onChange}
             />
         </Form>

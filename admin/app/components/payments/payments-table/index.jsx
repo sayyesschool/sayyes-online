@@ -1,94 +1,92 @@
 import { Link } from 'react-router-dom';
-import {
-    Chip,
-    Icon,
-    DataTable
-} from 'mdc-react';
+import { Button, Pill, Table } from '@fluentui/react-northstar';
 
-import MenuButton from 'shared/components/menu-button';
+import Icon from 'shared/components/icon';
+import StatusLabel from 'shared/components/status-label';
 
-export default function PaymentList({ payments, onEdit, onDelete }) {
+export default function PaymentsTable({ payments, onEdit, onDelete }) {
     return (
-        <DataTable id="client-list">
-            <DataTable.Header>
-                <DataTable.HeaderRow>
-                    {columns.map(col =>
-                        <DataTable.HeaderCell key={col.key}>
-                            {col.text}
-                        </DataTable.HeaderCell>
-                    )}
-                </DataTable.HeaderRow>
-            </DataTable.Header>
+        <Table className="payments-table">
+            <Table.Row header>
+                {columns.map(col =>
+                    <Table.Cell
+                        key={col.key}
+                        content={col.text}
+                    />
+                )}
 
-            <DataTable.Content>
-                {payments.map(payment =>
-                    <DataTable.Row key={payment.id}>
-                        <DataTable.Cell>
-                            {payment.description}
-                        </DataTable.Cell>
+                <Table.Cell />
+            </Table.Row>
 
-                        <DataTable.Cell>
-                            {payment.amount} руб.
-                        </DataTable.Cell>
+            {payments.map(payment =>
+                <Table.Row key={payment.id}>
+                    <Table.Cell content={payment.amount} />
 
-                        <DataTable.Cell>
-                            {payment.date}
-                        </DataTable.Cell>
+                    <Table.Cell content={payment.description} />
 
-                        <DataTable.Cell>
-                            {payment.client &&
-                                <Chip
-                                    component={Link}
-                                    to={`/clients/${payment.client.id}`}
-                                    text={payment.client.fullname}
-                                    outlined
-                                />
-                            }
-                        </DataTable.Cell>
+                    <Table.Cell content={payment.date} />
 
-                        <DataTable.Cell>
-                            <Chip
-                                leadingIcon={<Icon>{payment.statusIcon}</Icon>}
-                                text={payment.statusLabel}
-                                outlined
+                    <Table.Cell
+                        content={payment.client &&
+                            <Pill
+                                as={Link}
+                                to={`/clients/${payment.client.id}`}
+                                image={payment.client.imageUrl}
+                                content={payment.client.fullname}
+                                appearance="inverted"
                             />
-                        </DataTable.Cell>
+                        }
+                    />
 
-                        <DataTable.Cell>
-                            {payment.paymentMethod}
-                        </DataTable.Cell>
+                    <Table.Cell
+                        content={
+                            <StatusLabel
+                                status={payment.statusLabel}
+                                content={payment.statusLabel}
+                            />
+                        }
+                    />
 
-                        <DataTable.Cell numeric>
-                            <MenuButton
-                                items={[
+                    <Table.Cell content={payment.paymentMethod} />
+
+                    <Table.Cell
+                        content={
+                            <Button.Group
+                                buttons={[
                                     {
                                         key: 'edit',
-                                        text: 'Изменить',
+                                        title: 'Изменить',
+                                        icon: <Icon>edit</Icon>,
+                                        iconOnly: true,
+                                        text: true,
                                         onClick: () => onEdit(payment)
                                     },
                                     {
                                         key: 'delete',
-                                        text: 'Удалить',
+                                        title: 'Удалить',
+                                        icon: <Icon>delete</Icon>,
+                                        iconOnly: true,
+                                        text: true,
                                         onClick: () => onDelete(payment)
                                     }
                                 ]}
                             />
-                        </DataTable.Cell>
-                    </DataTable.Row>
-                )}
-            </DataTable.Content>
-        </DataTable>
+                        }
+                    />
+                </Table.Row>
+            )}
+        </Table>
     );
 }
 
 const columns = [
     {
-        key: 'description',
-        text: 'Описание'
+        key: 'amount',
+        text: 'Сумма, руб.'
     },
     {
-        key: 'amount',
-        text: 'Сумма'
+        key: 'description',
+        text: 'Описание'
     },
     {
         key: 'date',

@@ -11,7 +11,10 @@ export default function ClientDetails({ client }) {
     const data = useContext(DataContext);
 
     return (
-        <PageSection title="Основные данные" className="client-details">
+        <PageSection
+            className="client-details"
+            title="Основные данные"
+        >
             <DetailsList
                 items={[
                     {

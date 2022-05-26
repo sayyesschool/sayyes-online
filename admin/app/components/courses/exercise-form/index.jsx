@@ -4,37 +4,9 @@ import FormSelect from 'shared/components/form-select';
 import FormTextArea from 'shared/components/form-textarea';
 
 const defaultExercise = {
-    type: '',
     title: '',
     description: ''
 };
-
-const typeOptions = [
-    {
-        value: 'boolean',
-        header: 'Да/Нет'
-    },
-    {
-        value: 'choice',
-        header: 'Выбор'
-    },
-    {
-        value: 'essay',
-        header: 'Эссе'
-    },
-    {
-        value: 'fib',
-        header: 'Заполнить пробелы'
-    },
-    {
-        value: 'input',
-        header: 'Ввод'
-    },
-    {
-        value: 'text',
-        header: 'Текст'
-    }
-];
 
 const titleOptions = [
     'Writing',
@@ -51,12 +23,6 @@ export default function ExerciseForm({ exercise = defaultExercise, onSubmit, ...
     const { data, handleChange, handleSubmit } = useForm({
         fields: [
             {
-                name: 'type',
-                value: exercise.type || '',
-                required: true,
-                options: typeOptions
-            },
-            {
                 name: 'title',
                 value: exercise.title || '',
                 required: true,
@@ -72,12 +38,6 @@ export default function ExerciseForm({ exercise = defaultExercise, onSubmit, ...
 
     return (
         <Form className="exercise-form" onSubmit={handleSubmit} noValidate {...props}>
-            <FormSelect
-                {...data.type}
-                label="Тип"
-                onChange={handleChange}
-            />
-
             <FormSelect
                 {...data.title}
                 label="Название"

@@ -1,41 +1,34 @@
 import { Link } from 'react-router-dom';
-import {
-    Avatar,
-    Card,
-    List,
-    Typography
-} from 'mdc-react';
+import { Avatar, List } from '@fluentui/react-northstar';
 
-export default function ManagerEnrollments({ manager, onCreate }) {
+import PageSection from 'shared/components/page-section';
+
+export default function ManagerEnrollments({ manager }) {
     return (
-        <section className="manager-enrollments">
-            <Card>
-                <Card.Header
-                    title="Обучение"
-                />
-
-                {manager.enrollments && manager.enrollments.length > 0 ?
-                    <List>
-                        {manager.enrollments.map(enrollment =>
-                            <List.Item
-                                key={enrollment.id}
-                                component={Link}
-                                to={`${manager.url}${enrollment.url}`}
-                                leadingIcon={enrollment.statusIcon}
-                                primaryText={enrollment.title}
-                                secondaryText={enrollment.statusLabel}
-                                end={enrollment.teacher &&
-                                    <Avatar text={enrollment.teacher.initials} title={enrollment.teacher.fullname} />
-                                }
-                            />
-                        )}
-                    </List>
-                    :
-                    <Card.Section primary>
-                        <Typography noMargin>Обучений пока нет</Typography>
-                    </Card.Section>
-                }
-            </Card>
-        </section>
+        <PageSection
+            className="manager-enrollments"
+            title="Обучение"
+        >
+            {manager.enrollments?.length > 0 &&
+                <List>
+                    {manager.enrollments.map(enrollment =>
+                        <List.Item
+                            key={enrollment.id}
+                            component={Link}
+                            to={`${manager.url}${enrollment.url}`}
+                            media={enrollment.statusIcon}
+                            header={enrollment.title}
+                            content={enrollment.statusLabel}
+                            endMedia={enrollment.teacher &&
+                                <Avatar
+                                    name={enrollment.teacher.initials}
+                                    title={enrollment.teacher.fullname}
+                                />
+                            }
+                        />
+                    )}
+                </List>
+            }
+        </PageSection>
     );
 }

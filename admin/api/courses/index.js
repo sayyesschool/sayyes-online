@@ -4,7 +4,7 @@ const Controller = require('./controller');
 
 module.exports = context => {
     const router = Router();
-    const { courses, audios, videos, units, lessons, exercises } = Controller(context);
+    const { courses, units, lessons, exercises, items } = Controller(context);
 
     router.route('/')
         .get(courses.get)
@@ -14,16 +14,6 @@ module.exports = context => {
         .get(courses.getOne)
         .put(courses.update)
         .delete(courses.delete);
-
-    router.route('/:course/audios/:audio?')
-        .post(audios.create)
-        .put(audios.update)
-        .delete(audios.delete);
-
-    router.route('/:course/videos/:video?')
-        .post(videos.create)
-        .put(videos.update)
-        .delete(videos.delete);
 
     router.route('/:course/units/:unit?')
         .post(units.create)
@@ -36,9 +26,15 @@ module.exports = context => {
         .delete(lessons.delete);
 
     router.route('/:course/exercises/:exercise?')
+        .get(exercises.getOne)
         .post(exercises.create)
         .put(exercises.update)
         .delete(exercises.delete);
+
+    router.route('/:course/exercises/:exercise/items/:item?')
+        .post(items.create)
+        .put(items.update)
+        .delete(items.delete);
 
     return router;
 };

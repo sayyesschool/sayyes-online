@@ -1,95 +1,95 @@
 import { Link } from 'react-router-dom';
-import {
-    Chip,
-    Icon,
-    DataTable
-} from 'mdc-react';
+import { Button, Pill, Table } from '@fluentui/react-northstar';
 
-import MenuButton from 'shared/components/menu-button';
+import Icon from 'shared/components/icon';
+import StatusLabel from 'shared/components/status-label';
 
-export default function LessonTable({ lessons, onView, onEdit, onDelete }) {
+export default function LessonsTable({ lessons, onView, onEdit, onDelete }) {
     return (
-        <DataTable id="lesson-table">
-            <DataTable.Header>
-                <DataTable.HeaderRow>
-                    {columns.map(col =>
-                        <DataTable.HeaderCell
-                            key={col.key}
-                        >
-                            {col.text}
-                        </DataTable.HeaderCell>
-                    )}
-                </DataTable.HeaderRow>
-            </DataTable.Header>
+        <Table id="lesson-table">
+            <Table.Row header>
+                {columns.map(col =>
+                    <Table.Cell
+                        key={col.key}
+                        content={col.text}
+                    />
+                )}
+            </Table.Row>
 
-            <DataTable.Content>
-                {lessons.map(lesson =>
-                    <DataTable.Row key={lesson.id}>
-                        <DataTable.Cell>
-                            <Chip
-                                component={Link}
+            {lessons.map(lesson =>
+                <Table.Row key={lesson.id}>
+                    <Table.Cell
+                        content={
+                            <Pill
+                                as={Link}
                                 to={`/clients/${lesson.client.id}`}
-                                text={lesson.client.fullname}
-                                outlined
+                                content={lesson.client.fullname}
+                                appearance="outline"
                             />
-                        </DataTable.Cell>
+                        }
+                    />
 
-                        <DataTable.Cell>
-                            {lesson.teacher &&
-                                <Chip
-                                    component={Link}
-                                    to={`/teachers/${lesson.teacher.id}`}
-                                    text={lesson.teacher.fullname}
-                                    outlined
-                                />
-                            }
-                        </DataTable.Cell>
-
-                        <DataTable.Cell>
-                            <Chip
-                                leadingIcon={<Icon>{lesson.statusIcon}</Icon>}
-                                text={lesson.statusLabel}
-                                outlined
+                    <Table.Cell
+                        content={lesson.teacher &&
+                            <Pill
+                                as={Link}
+                                to={`/teachers/${lesson.teacher.id}`}
+                                content={lesson.teacher.fullname}
+                                appearance="outline"
                             />
-                        </DataTable.Cell>
+                        }
+                    />
 
-                        <DataTable.Cell>
-                            {lesson.dateLabel} в {lesson.timeLabel}
-                        </DataTable.Cell>
+                    <Table.Cell
+                        content={
+                            <StatusLabel
+                                status={lesson.status}
+                                content={lesson.statusLabel}
+                            />
+                        }
+                    />
 
-                        <DataTable.Cell>
-                            {lesson.trial ? 'Да' : 'Нет'}
-                        </DataTable.Cell>
+                    <Table.Cell content={`${lesson.dateLabel} в ${lesson.timeLabel}`} />
 
-                        <DataTable.Cell>
-                            {lesson.free ? 'Да' : 'Нет'}
-                        </DataTable.Cell>
+                    <Table.Cell content={lesson.trial ? 'Да' : 'Нет'} />
 
-                        <DataTable.Cell numeric>
-                            <MenuButton
-                                items={[
+                    <Table.Cell content={lesson.free ? 'Да' : 'Нет'} />
+
+                    <Table.Cell
+                        content={
+                            <Button.Group
+                                buttons={[
                                     {
                                         key: 'view',
-                                        text: 'Посмотреть',
+                                        title: 'Посмотреть',
+                                        icon: <Icon>preview</Icon>,
+                                        iconOnly: true,
+                                        text: true,
                                         onClick: () => onView(lesson)
                                     },
                                     {
                                         key: 'edit',
-                                        text: 'Изменить',
+                                        title: 'Изменить',
+                                        icon: <Icon>edit</Icon>,
+                                        iconOnly: true,
+                                        text: true,
                                         onClick: () => onEdit(lesson)
                                     },
                                     {
                                         key: 'delete',
-                                        text: 'Удалить',
+                                        title: 'Удалить',
+                                        icon: <Icon>delete</Icon>,
+                                        iconOnly: true,
+                                        text: true,
                                         onClick: () => onDelete(lesson)
                                     }
                                 ]}
                             />
-                        </DataTable.Cell>
-                    </DataTable.Row>
-                )}
-            </DataTable.Content>
-        </DataTable>
+                        }
+                    />
+                </Table.Row>
+            )}
+        </Table>
     );
 }
 
@@ -117,5 +117,8 @@ const columns = [
     {
         key: 'free',
         text: 'Бесплатное'
+    },
+    {
+        key: 'actions'
     }
 ];

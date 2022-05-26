@@ -7,8 +7,6 @@ export default function UnitImage({ unit, onUpdate }) {
         onUpdate({ image });
     }, [onUpdate]);
 
-    console.log(unit);
-
     return (
         <ImageSection
             className="unit-image"

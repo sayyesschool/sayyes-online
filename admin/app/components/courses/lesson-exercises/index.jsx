@@ -13,7 +13,6 @@ import ExercisesList from 'app/components/courses/exercises-list';
 import './index.scss';
 
 export default function LessonExercises({
-    course,
     lesson,
     selectedExercise,
 
@@ -39,8 +38,6 @@ export default function LessonExercises({
         toggleConfirmationDialogOpen(true);
     }, []);
 
-    const exercises = lesson.exercises.map(id => course.exercisesById.get(id));
-
     return (
         <PageSection
             className="lesson-exercises"
@@ -54,9 +51,9 @@ export default function LessonExercises({
                 />
             }
         >
-            {exercises?.length > 0 &&
+            {lesson.exercises?.length > 0 &&
                 <ExercisesList
-                    exercises={exercises}
+                    exercises={lesson.exercises}
                     selectedExercise={selectedExercise}
                     onSelect={selectedExercise && setExercise}
                     onDelete={handleDeleteRequest}

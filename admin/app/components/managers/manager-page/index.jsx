@@ -1,15 +1,12 @@
 import { useCallback, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import {
-    LayoutGrid as Grid
-} from 'mdc-react';
+import { Flex, Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
-import PageTopBar from 'shared/components/page-top-bar';
+import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
 
 import { useStore } from 'app/hooks/store';
@@ -51,9 +48,9 @@ export default function ManagerPage({ match, location, history }) {
 
     return (
         <Page id="manager">
-            <PageTopBar
+            <PageHeader
                 breadcrumbs={[
-                    <Link to="/managers">Менеджеры</Link>
+                    { text: 'Менеджеры', url: '/managers' }
                 ]}
                 title={manager?.fullname}
                 actions={[
@@ -73,27 +70,23 @@ export default function ManagerPage({ match, location, history }) {
             />
 
             <PageContent>
-                <Grid>
-                    <Grid.Cell span="3">
+                <Grid columns="minmax(0, 1fr) minmax(0, 2fr)">
+                    <Flex gap="gap.medium" column>
                         <ManagerDetails
                             manager={manager}
                             onEdit={toggleManagerFormOpen}
                         />
-                    </Grid.Cell>
+                    </Flex>
 
-                    <Grid.Cell span="3" grid>
-                        <Grid.Cell span="12">
-                            <ManagerRequests
-                                requests={manager.requests}
-                            />
-                        </Grid.Cell>
-                    </Grid.Cell>
+                    <Flex gap="gap.medium" column>
+                        <ManagerRequests
+                            requests={manager.requests}
+                        />
 
-                    <Grid.Cell span="3">
                         <ManagerEnrollments
                             manager={manager}
                         />
-                    </Grid.Cell>
+                    </Flex>
                 </Grid>
             </PageContent>
 

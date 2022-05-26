@@ -1,88 +1,79 @@
-import {
-    Card,
-    Icon,
-} from 'mdc-react';
-
+import Icon from 'shared/components/material-icon';
 import DetailsList from 'shared/components/details-list';
+import PageSection from 'shared/components/page-section';
 
 import './index.scss';
 
 export default function EnrollmentDetails({ enrollment }) {
     return (
-        <section className="enrollment-details">
-            <Card>
-                <Card.Header
-                    graphic={<Icon>account_box</Icon>}
-                    title="Основные данные"
-                />
-
-                <Card.Section>
-                    <DetailsList
-                        items={[
-                            {
-                                key: 'type',
-                                graphic: <Icon>people</Icon>,
-                                primaryText: enrollment.typeLabel,
-                                secondaryText: 'Тип'
-                            },
-                            {
-                                key: 'format',
-                                graphic: <Icon>home_work</Icon>,
-                                primaryText: enrollment.formatLabel,
-                                secondaryText: 'Формат'
-                            },
-                            {
-                                key: 'age',
-                                graphic: <Icon>portrait</Icon>,
-                                primaryText: enrollment.ageLabel,
-                                secondaryText: 'Возрастная группа'
-                            },
-                            {
-                                key: 'teacherType',
-                                graphic: <Icon>person</Icon>,
-                                primaryText: enrollment.teacherTypeLabel,
-                                secondaryText: 'Тип преподавателя'
-                            },
-                            {
-                                key: 'lessonDuration',
-                                graphic: <Icon>timelapse</Icon>,
-                                primaryText: enrollment.lessonDuration + ' мин.',
-                                secondaryText: 'Продолжительность урока'
-                            },
-                            {
-                                key: 'level',
-                                graphic: <Icon>signal_cellular_alt</Icon>,
-                                primaryText: enrollment.levelLabel,
-                                secondaryText: 'Уровень'
-                            },
-                            {
-                                key: 'purpose',
-                                graphic: <Icon>flag</Icon>,
-                                primaryText: enrollment.purposeLabel,
-                                secondaryText: 'Цель'
-                            },
-                            {
-                                key: 'experience',
-                                graphic: <Icon>star</Icon>,
-                                primaryText: enrollment.experience,
-                                secondaryText: 'Опыт',
-                            },
-                            {
-                                key: 'preferences',
-                                graphic: <Icon>checklist</Icon>,
-                                primaryText: enrollment.preferences,
-                                secondaryText: 'Предпочтения'
-                            },
-                            enrollment.note && {
-                                key: 'note',
-                                graphic: <Icon>notes</Icon>,
-                                primaryText: enrollment.note,
-                                secondaryText: 'Примечание'
-                            }
-                        ]}
-                    />
-                </Card.Section>
-            </Card>
-        </section>
+        <PageSection
+            className="enrollment-details"
+            title="Основные данные"
+        >
+            <DetailsList
+                items={[
+                    {
+                        key: 'type',
+                        media: <Icon>people</Icon>,
+                        header: enrollment.typeLabel,
+                        content: 'Тип'
+                    },
+                    {
+                        key: 'format',
+                        media: <Icon>home_work</Icon>,
+                        header: enrollment.formatLabel,
+                        content: 'Формат'
+                    },
+                    {
+                        key: 'age',
+                        media: <Icon>portrait</Icon>,
+                        header: enrollment.ageLabel,
+                        content: 'Возрастная группа'
+                    },
+                    {
+                        key: 'teacherType',
+                        media: <Icon>person</Icon>,
+                        header: enrollment.teacherTypeLabel,
+                        content: 'Тип преподавателя'
+                    },
+                    {
+                        key: 'lessonDuration',
+                        media: <Icon>timelapse</Icon>,
+                        header: enrollment.lessonDuration + ' мин.',
+                        content: 'Продолжительность урока'
+                    },
+                    {
+                        key: 'level',
+                        media: <Icon>signal_cellular_alt</Icon>,
+                        header: enrollment.levelLabel,
+                        content: 'Уровень'
+                    },
+                    {
+                        key: 'purpose',
+                        media: <Icon>flag</Icon>,
+                        header: enrollment.purposeLabel,
+                        content: 'Цель'
+                    },
+                    {
+                        key: 'experience',
+                        media: <Icon>star</Icon>,
+                        header: enrollment.experience,
+                        content: 'Опыт',
+                    },
+                    {
+                        key: 'preferences',
+                        media: <Icon>checklist</Icon>,
+                        header: enrollment.preferences,
+                        content: 'Предпочтения'
+                    },
+                    enrollment.note && {
+                        key: 'note',
+                        media: <Icon>notes</Icon>,
+                        header: enrollment.note,
+                        content: 'Примечание'
+                    }
+                ]}
+            />
+        </PageSection>
     );
 }

@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { Box, Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
-import { use } from 'shared/hooks/courses';
+import { useLesson } from 'shared/hooks/courses';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
@@ -18,7 +18,7 @@ import LessonExercises from 'app/components/courses/lesson-exercises';
 import './index.scss';
 
 export default function LessonPage({ match, history }) {
-    const { course, unit, lesson, actions } = use(match.params);
+    const { course, unit, lesson, actions } = useLesson(match.params);
 
     const [activeTab, setActiveTab] = useState('exercises');
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
@@ -53,7 +53,7 @@ export default function LessonPage({ match, history }) {
                     { key: 'course', text: course.title, url: course.uri },
                     { key: 'unit', text: unit.title, url: unit.uri }
                 ]}
-                overline="Упражнение"
+                overline="Урок"
                 title={lesson.title}
                 actions={[
                     {

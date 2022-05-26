@@ -2,9 +2,10 @@
     .page-content {
         margin: auto !important;
         padding-top: 0;
-        
-        > .mdc-layout-grid {
-            padding: 0;
-        }
+    }
+
+    .enrollment-meta,
+    .enrollment-status {
+        margin-bottom: 1rem;
     }
 }

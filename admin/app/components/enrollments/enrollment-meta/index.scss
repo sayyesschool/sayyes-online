@@ -6,7 +6,7 @@
         display: flex;
         align-items: center;
 
-        .mdc-typography {
+        .ui-text {
             margin-right: 8px;
         }
     }
@@ -15,27 +15,7 @@
         margin-left: 1rem;
     }
 
-    .mdc-chip-set {
-        + .mdc-chip-set {
-            position: relative;
-
-            &::before {
-                content: '';
-                position: absolute;
-                width: 1px;
-                height: 60%;
-                left: 0;
-                top: 20%;
-                background-color: rgba(0,0,0,.12);
-            }
-        }
-
-        &:first-child {
-            padding-left: 0;
-        }
-    }
-
-    .mdc-chip + .mdc-chip {
+    .person-label + .person-label {
         margin-left: 8px;
     }
 }

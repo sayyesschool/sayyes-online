@@ -1,14 +1,12 @@
 import { useCallback } from 'react';
-import {
-    Card,
-    Icon,
-    IconButton
-} from 'mdc-react';
+import { Button } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
-import WeekSchedule from 'shared/components/week-schedule';
+import Icon from 'shared/components/icon';
 import EnrollmentScheduleForm from 'shared/components/enrollment-schedule-form';
+import WeekSchedule from 'shared/components/week-schedule';
+import PageSection from 'shared/components/page-section';
 
 import './index.scss';
 
@@ -21,25 +19,21 @@ export default function EnrollmentSchedule({ enrollment, onUpdate }) {
     }, []);
 
     return (
-        <section className="enrollment-schedule">
-            <Card>
-                <Card.Header
-                    graphic={<Icon>calendar_view_month</Icon>}
-                    title="Расписание"
-                    actions={
-                        <IconButton
-                            icon="edit"
-                            onClick={toggleFormOpen}
-                        />
-                    }
+        <PageSection
+            className="enrollment-schedule"
+            title="Расписание"
+            actions={
+                <Button
+                    icon={<Icon>edit</Icon>}
+                    text
+                    iconOnly
+                    onClick={toggleFormOpen}
                 />
-
-                {enrollment.schedule?.length > 0 &&
-                    <Card.Section>
-                        <WeekSchedule schedule={enrollment.schedule} />
-                    </Card.Section>
-                }
-            </Card>
+            }
+        >
+            {enrollment.schedule?.length > 0 &&
+                <WeekSchedule schedule={enrollment.schedule} />
+            }
 
             <FormDialog
                 title="Расписание занятий"
@@ -53,6 +47,6 @@ export default function EnrollmentSchedule({ enrollment, onUpdate }) {
                     onSubmit={handleSubmit}
                 />
             </FormDialog>
-        </section>
+        </PageSection>
     );
 }

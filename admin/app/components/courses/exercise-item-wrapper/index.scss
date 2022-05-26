@@ -1,0 +1,24 @@
+.exercise-item-wrapper {
+    display: flex;
+
+    .exercise-item {
+        width: calc(100% - 32px)
+    }
+
+    .exercise-item-wrapper__menu-button {
+        opacity: 0;
+        transition: opacity .2s;
+    }
+
+    &:hover .exercise-item-wrapper__menu-button {
+        opacity: 1;
+    }
+
+    + .exercise-item-wrapper {
+        margin-top: 1rem;
+    }
+
+    + .ui-menubutton {
+        margin-top: 1rem;
+    }
+}

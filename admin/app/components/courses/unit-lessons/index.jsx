@@ -31,8 +31,6 @@ export default function UnitLessons({ course, unit, onCreate, onDelete }) {
         toggleConfirmationDialogOpen(true);
     }, []);
 
-    const lessons = unit.lessons.map(id => course.lessonsById.get(id)).filter(id => id !== undefined);
-
     return (
         <PageSection
             className="unit-lessons"
@@ -47,7 +45,7 @@ export default function UnitLessons({ course, unit, onCreate, onDelete }) {
             }
         >
             <LessonList
-                lessons={lessons}
+                lessons={unit.lessons}
                 onDelete={handleDeleteRequest}
             />
 

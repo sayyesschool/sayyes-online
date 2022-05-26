@@ -1,9 +1,10 @@
 import {
     Button,
-    List
+    List,
+    Status
 } from '@fluentui/react-northstar';
 
-import MaterialIcon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 
 import './index.scss';
 
@@ -13,18 +14,22 @@ export default function PaymentsList({ payments, onClick, onDelete }) {
             {payments.map(payment =>
                 <List.Item
                     key={payment.id}
-                    media={payment.statusIcon}
-                    header={payment.description}
-                    content={`${payment.amount} руб.`}
+                    //media={<Icon>{payment.statusIcon}</Icon>}
+                    media={
+                        <Status state="success" />
+                    }
+                    header={`${payment.amount} руб.`}
+                    content={payment.description}
                     endMedia={
                         <Button
-                            icon={<MaterialIcon icon="remove" />}
+                            icon={<Icon>delete</Icon>}
                             title="Удалить платеж"
                             iconOnly
                             text
                             onClick={event => onDelete(event, payment)}
                         />
                     }
+                    navigable
                     onClick={() => onClick(payment)}
                 />
             )}

@@ -1,19 +1,16 @@
 import { useCallback } from 'react';
-import {
-    Layout,
-    TextField
-} from 'mdc-react';
 import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
-
-import PaymentMethodSelect from 'app/components/payments/payment-method-select';
+import FormInput from 'shared/components/form-input';
+import FormSelect from 'shared/components/form-select';
+import { paymentMethodOptions, operatorOptions } from 'shared/data/payment';
 
 import './index.scss';
 
 export default function PaymentForm({ payment = {}, onSubmit }) {
-    const [data, setData] = useForm({
+    const { data, setData } = useForm({
         amount: 0,
         description: '',
         date: moment(payment.date).format('YYYY-MM-DD'),
@@ -31,52 +28,46 @@ export default function PaymentForm({ payment = {}, onSubmit }) {
 
     return (
         <Form id="payment-form" onSubmit={handleSubmit}>
-            <Layout column>
-                <TextField
-                    type="number"
-                    name="amount"
-                    value={data.amount}
-                    label="Сумма"
-                    filled
-                    min={1}
-                    required
-                    onChange={setData}
-                />
+            <FormInput
+                type="number"
+                name="amount"
+                value={data.amount}
+                label="Сумма"
+                min={1}
+                onChange={setData}
+            />
 
-                <TextField
-                    type="date"
-                    name="date"
-                    value={data.date}
-                    label="Дата"
-                    filled
-                    onChange={setData}
-                />
+            <FormInput
+                type="date"
+                name="date"
+                value={data.date}
+                label="Дата"
+                onChange={setData}
+            />
 
-                <TextField
-                    type="text"
-                    name="description"
-                    value={data.description}
-                    label="Описание"
-                    filled
-                    required
-                    onChange={setData}
-                />
+            <FormInput
+                type="text"
+                name="description"
+                value={data.description}
+                label="Описание"
+                onChange={setData}
+            />
 
-                <PaymentMethodSelect
-                    value={data.paymentMethod}
-                    onChange={setData}
-                />
+            <FormSelect
+                name="paymentMethod"
+                value={data.paymentMethod}
+                label="Способ оплаты"
+                options={paymentMethodOptions}
+                onChange={onChange}
+            />
 
-                <TextField
-                    type="text"
-                    name="note"
-                    value={data.note}
-                    label="Заметка"
-                    filled
-                    textarea
-                    onChange={setData}
-                />
-            </Layout>
+            <FormSelect
+                name="operator"
+                value={data.operator}
+                label="Оператор"
+                options={operatorOptions}
+                onChange={onChange}
+            />
         </Form>
     );
 }

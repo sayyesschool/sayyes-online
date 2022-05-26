@@ -4,9 +4,11 @@ import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import FormDialog from 'shared/components/form-dialog';
+import Icon from 'shared/components/icon';
 import Page from 'shared/components/page';
-import PageTopBar from 'shared/components/page-top-bar';
+import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
+import PageSection from 'shared/components/page-section';
 
 import { useStore } from 'app/hooks/store';
 import ManagersTable from 'app/components/managers/managers-table';
@@ -49,25 +51,26 @@ export default function ManagersPage({ history }) {
 
     return (
         <Page id="managers-page">
-            <PageTopBar
+            <PageHeader
                 title="Менеджеры"
                 actions={[
                     {
                         key: 'add',
-                        label: 'Создать',
-                        icon: 'add',
-                        outlined: true,
+                        icon: <Icon>add</Icon>,
+                        content: 'Создать',
                         onClick: toggleManagerFormOpen
                     }
                 ]}
             />
 
             <PageContent>
-                <ManagersTable
-                    managers={managers}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                />
+                <PageSection>
+                    <ManagersTable
+                        managers={managers}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                    />
+                </PageSection>
             </PageContent>
 
             <FormDialog

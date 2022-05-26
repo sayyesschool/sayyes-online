@@ -1,10 +1,8 @@
-import {
-    Icon
-} from 'mdc-react';
+import { Button, MenuButton } from '@fluentui/react-northstar';
 
-import { statusOptions } from 'shared/../data/enrollment';
+import Icon from 'shared/components/icon';
 import Stepper from 'shared/components/stepper';
-import MenuButton from 'shared/components/menu-button';
+import { statusOptions } from 'shared/data/enrollment';
 
 import './index.scss';
 
@@ -56,14 +54,19 @@ export default function EnrollmentStatus({ enrollment, onUpdate }) {
             </Stepper>
 
             <MenuButton
-                icon="more_vert"
-                items={statusOptions.map(status => ({
+                trigger={
+                    <Button
+                        icon={<Icon>more_vert</Icon>}
+                        text
+                        iconOnly
+                    />
+                }
+                align="end"
+                menu={statusOptions.map(status => ({
                     ...status,
                     activated: status.value === enrollment.status,
                     onClick: () => onUpdate({ status: status.value })
                 }))}
-                menuProps={{ top: true, right: true }}
-                listProps={{ dense: true }}
             />
         </section>
     );

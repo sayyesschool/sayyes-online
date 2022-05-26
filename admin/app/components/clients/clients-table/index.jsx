@@ -1,8 +1,20 @@
 import { Link } from 'react-router-dom';
-import {
-    MenuButton,
-    Table
-} from '@fluentui/react-northstar';
+import { MenuButton, Table } from '@fluentui/react-northstar';
+
+const columns = [
+    {
+        key: 'fullname',
+        text: 'Имя и фамилия'
+    },
+    {
+        key: 'email',
+        text: 'Email'
+    },
+    {
+        key: 'phone',
+        text: 'Телефон'
+    }
+];
 
 export default function ClientsTable({ clients, onEdit, onDelete }) {
     return (
@@ -52,18 +64,3 @@ export default function ClientsTable({ clients, onEdit, onDelete }) {
         </Table >
     );
 }
-
-const columns = [
-    {
-        key: 'fullname',
-        text: 'Имя и фамилия'
-    },
-    {
-        key: 'email',
-        text: 'Email'
-    },
-    {
-        key: 'phone',
-        text: 'Телефон'
-    }
-];

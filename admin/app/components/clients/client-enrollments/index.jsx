@@ -4,7 +4,7 @@ import { Button } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 import PageSection from 'shared/components/page-section';
 
 import { useActions } from 'app/hooks/store';

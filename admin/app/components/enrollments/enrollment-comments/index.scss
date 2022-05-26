@@ -1,0 +1,12 @@
+.enrollment-comments {
+    .ui-chat {
+        background-color: transparent;
+        border: none;
+
+        &__message {
+            width: 100%;
+            max-width: unset;
+            margin: auto;
+        }
+    }
+}

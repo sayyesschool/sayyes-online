@@ -1,70 +1,61 @@
 import { Link } from 'react-router-dom';
-import {
-    DataTable
-} from 'mdc-react';
-
-import MenuButton from 'shared/components/menu-button';
+import { MenuButton, Table } from '@fluentui/react-northstar';
 
 export default function ManagersTable({ managers, onEdit, onDelete }) {
     return (
-        <DataTable className="managers-table">
-            <DataTable.Header>
-                <DataTable.HeaderRow>
-                    {columns.map(col =>
-                        <DataTable.HeaderCell
-                            key={col.key}
-                        >
-                            {col.text}
-                        </DataTable.HeaderCell>
-                    )}
-                </DataTable.HeaderRow>
-            </DataTable.Header>
+        <Table className="managers-table">
+            <Table.Row header>
+                {columns.map(col =>
+                    <Table.Cell
+                        key={col.key}
+                        content={col.text}
+                    />
+                )}
 
-            <DataTable.Content>
-                {managers.map(manager =>
-                    <DataTable.Row key={manager.id}>
-                        <DataTable.Cell>
+                <Table.Cell />
+            </Table.Row>
+
+            {managers.map(manager =>
+                <Table.Row key={manager.id}>
+                    <Table.Cell
+                        content={
                             <Link to={`/managers/${manager.id}`}>{manager.fullname}</Link>
-                        </DataTable.Cell>
+                        }
+                    />
 
-                        <DataTable.Cell>
-                            {manager.email}
-                        </DataTable.Cell>
+                    <Table.Cell content={manager.email} />
 
-                        <DataTable.Cell>
-                            {manager.phone}
-                        </DataTable.Cell>
+                    <Table.Cell content={manager.phone} />
 
-                        <DataTable.Cell>
-                            {manager.birthdate &&
-                                `${manager.birthdate} (${manager.age})`
-                            }
-                        </DataTable.Cell>
+                    <Table.Cell
+                        content={manager.birthdate &&
+                            `${manager.birthdate} (${manager.age})`
+                        }
+                    />
 
-                        <DataTable.Cell>
-                            {manager.timezone}
-                        </DataTable.Cell>
+                    <Table.Cell content={manager.timezone} />
 
-                        <DataTable.Cell numeric>
+                    <Table.Cell
+                        content={
                             <MenuButton
-                                items={[
+                                menu={[
                                     {
                                         key: 'edit',
-                                        text: 'Изменить',
+                                        content: 'Изменить',
                                         onClick: () => onEdit(manager)
                                     },
                                     {
                                         key: 'delete',
-                                        text: 'Удалить',
+                                        content: 'Удалить',
                                         onClick: () => onDelete(manager)
                                     }
                                 ]}
                             />
-                        </DataTable.Cell>
-                    </DataTable.Row>
-                )}
-            </DataTable.Content>
-        </DataTable>
+                        }
+                    />
+                </Table.Row>
+            )}
+        </Table>
     );
 }
 
@@ -88,5 +79,5 @@ const columns = [
     {
         key: 'timezone',
         text: 'Часовой пояс'
-    },
+    }
 ];

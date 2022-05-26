@@ -1,11 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { useBoolean } from 'shared/hooks/state';
+import FormDialog from 'app/components/shared/form-dialog';
+import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageTopBar from 'shared/components/page-top-bar';
+import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
+import PageSection from 'shared/components/page-section';
 
 import { useStore } from 'app/hooks/store';
-import FormPanel from 'app/components/shared/form-panel';
 import LessonsTable from 'app/components/lessons/lessons-table';
 import LessonForm from 'app/components/lessons/lesson-form';
 
@@ -13,20 +16,22 @@ export default function Lessons() {
     const [lessons, actions] = useStore('lessons.list');
     const [view, setView] = useState('week');
 
-    const [isLessonFormOpen, setLessonFormOpen] = useState(false);
+    const [isFormOpen, toggleFormOpen] = useBoolean(false);
 
     useEffect(() => {
         actions.getLessons();
     }, []);
 
     const handleSubmit = useCallback(data => {
-        actions.createLesson(data)
-            .then(() => setLessonFormOpen(false));
+        return actions.createLesson(data)
+            .then(() => toggleFormOpen(false));
     }, []);
 
+    if (!lessons) return <LoadingIndicator />;
+
     return (
-        <Page id="lessons-page" loading={!lessons}>
-            <PageTopBar
+        <Page id="lessons-page">
+            <PageHeader
                 title="Уроки"
                 controls={[
                     {
@@ -45,22 +50,23 @@ export default function Lessons() {
             />
 
             <PageContent>
-                <LessonsTable
-                    lessons={lessons}
-                />
+                <PageSection>
+                    <LessonsTable
+                        lessons={lessons}
+                    />
+                </PageSection>
             </PageContent>
 
-            <FormPanel
-                form="lesson-form"
+            <FormDialog
                 title="Новый урок"
-                isOpen={isLessonFormOpen}
-                modal
-                onClose={() => setLessonFormOpen(!isLessonFormOpen)}
+                open={isFormOpen}
+                onClose={toggleFormOpen}
             >
                 <LessonForm
+                    id="lesson-form"
                     onSubmit={handleSubmit}
                 />
-            </FormPanel>
+            </FormDialog>
         </Page>
     );
 }

@@ -1,112 +1,113 @@
 import { Link } from 'react-router-dom';
-import {
-    Chip,
-    Icon,
-    DataTable,
-    Layout,
-    Typography
-} from 'mdc-react';
+import { Button, Flex, Pill, Table, Text } from '@fluentui/react-northstar';
 import moment from 'moment';
 
-import MenuButton from 'shared/components/menu-button';
+import Icon from 'shared/components/icon';
+import StatusLabel from 'shared/components/status-label';
 
 import './index.scss';
 
 export default function RequestsTable({ requests, manager, onProcess, onEdit, onDelete }) {
     return (
-        <DataTable className="requests-table">
-            <DataTable.Header>
-                <DataTable.HeaderRow>
-                    {columns.map(col =>
-                        <DataTable.HeaderCell key={col.key}>
-                            {col.text}
-                        </DataTable.HeaderCell>
-                    )}
-                </DataTable.HeaderRow>
-            </DataTable.Header>
+        <Table className="requests-table">
+            <Table.Row header>
+                {columns.map(col =>
+                    <Table.Cell
+                        key={col.key}
+                        content={col.text}
+                    />
+                )}
+            </Table.Row>
 
-            <DataTable.Content>
-                {requests.map(request =>
-                    <DataTable.Row key={request.id}>
-                        <DataTable.Cell>
-                            {request.description}
-                        </DataTable.Cell>
+            {requests.map(request =>
+                <Table.Row key={request.id}>
+                    <Table.Cell content={request.description} />
 
-                        <DataTable.Cell>
-                            <Chip
-                                leadingIcon={<Icon>{request.statusIcon}</Icon>}
-                                text={request.statusLabel}
-                                outlined
+                    <Table.Cell
+                        content={
+                            <StatusLabel
+                                status={request.status}
+                                content={request.statusLabel}
                             />
-                        </DataTable.Cell>
+                        }
+                    />
 
-                        <DataTable.Cell>
-                            {moment(request.createdAt).format('dd, D MMM, H:mm')}
-                        </DataTable.Cell>
+                    <Table.Cell
+                        content={moment(request.createdAt).format('dd, D MMM, H:mm')}
+                    />
 
-                        <DataTable.Cell>
-                            <Layout column>
-                                <Typography element="span" type="body1" noMargin>{request.contact.name}</Typography>
-                                <Typography element="span" type="body2" noMargin>{request.contact.phone}</Typography>
-                            </Layout>
-                        </DataTable.Cell>
+                    <Table.Cell
+                        content={
+                            <Flex column>
+                                <Text as="span">{request.contact.name}</Text>
+                                <Text as="span">{request.contact.phone}</Text>
+                            </Flex>
+                        }
+                    />
 
-                        <DataTable.Cell>
-                            {request.client ?
-                                <Chip
-                                    component={Link}
-                                    to={`/clients/${request.client.id}`}
-                                    text={request.client.fullname}
-                                    outlined
-                                />
-                                :
-                                '[Отсутствует]'
-                            }
-                        </DataTable.Cell>
+                    <Table.Cell
+                        content={request.client ?
+                            <Pill
+                                as={Link}
+                                to={`/clients/${request.client.id}`}
+                                content={request.client.fullname}
+                                appearance="inverted"
+                            />
+                            :
+                            '[Отсутствует]'
+                        }
+                    />
 
-                        <DataTable.Cell>
-                            {request.manager ?
-                                <Chip
-                                    component={Link}
-                                    to={`/managers/${request.manager.id}`}
-                                    text={request.manager.fullname}
-                                    outlined
-                                />
-                                :
-                                '[Отсутствует]'
-                            }
-                        </DataTable.Cell>
+                    <Table.Cell
+                        content={request.manager ?
+                            <Pill
+                                as={Link}
+                                to={`/managers/${request.manager.id}`}
+                                content={request.manager.fullname}
+                                appearance="inverted"
+                            />
+                            :
+                            '[Отсутствует]'
+                        }
+                    />
 
-                        <DataTable.Cell numeric>
-                            <MenuButton
-                                menuProps={{
-                                    modal: true
-                                }}
-                                items={[
+                    <Table.Cell
+                        content={
+                            <Button.Group
+                                buttons={[
                                     {
                                         key: 'process',
-                                        text: 'Обработать',
+                                        title: 'Обработать',
+                                        icon: <Icon>assignment</Icon>,
+                                        iconOnly: true,
+                                        text: true,
                                         disabled: (request.manager && request.manager?.id !== manager?.id),
                                         onClick: () => onProcess(request)
                                     },
                                     {
                                         key: 'edit',
-                                        text: 'Изменить',
+                                        title: 'Изменить',
+                                        icon: <Icon>edit</Icon>,
+                                        iconOnly: true,
+                                        text: true,
                                         disabled: (request.manager && request.manager?.id !== manager?.id),
                                         onClick: () => onEdit(request)
                                     },
                                     {
                                         key: 'delete',
-                                        text: 'Удалить',
+                                        title: 'Удалить',
+                                        icon: <Icon>delete</Icon>,
+                                        iconOnly: true,
+                                        text: true,
                                         onClick: () => onDelete(request)
                                     }
                                 ]}
                             />
-                        </DataTable.Cell>
-                    </DataTable.Row>
-                )}
-            </DataTable.Content>
-        </DataTable>
+                        }
+                    />
+                </Table.Row>
+            )}
+        </Table>
     );
 }
 

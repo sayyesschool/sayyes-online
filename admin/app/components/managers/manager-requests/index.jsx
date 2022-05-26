@@ -1,28 +1,18 @@
-import {
-    Card,
-    Typography
-} from 'mdc-react';
+import PageSection from 'shared/components/page-section';
 
 import RequestsList from 'app/components/requests/requests-list';
 
 export default function ManagerRequests({ requests }) {
     return (
-        <section className="manager-requests">
-            <Card>
-                <Card.Header
-                    title="Заявки"
+        <PageSection
+            className="manager-requests"
+            title="Заявки"
+        >
+            {requests?.length > 0 &&
+                <RequestsList
+                    requests={requests}
                 />
-
-                {requests && requests.length > 0 ?
-                    <RequestsList
-                        requests={requests}
-                    />
-                    :
-                    <Card.Section primary>
-                        <Typography noMargin>Заявок нет</Typography>
-                    </Card.Section>
-                }
-            </Card>
-        </section>
+            }
+        </PageSection>
     );
 }
