@@ -2,13 +2,13 @@ import classnames from 'classnames';
 
 import './index.scss';
 
-export default function TextContent({ text, className, ...props }) {
+export default function TextContent({ text, className, children = text, ...props }) {
     const classNames = classnames('text-content', className);
 
     return (
-        <section
+        <div
             className={classNames}
-            dangerouslySetInnerHTML={{ __html: text }}
+            dangerouslySetInnerHTML={{ __html: children }}
             {...props}
         />
     );

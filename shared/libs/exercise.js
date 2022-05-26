@@ -38,7 +38,7 @@ export function parseHTML(string) {
     const parser = new DOMParser();
     const html = transformPlaceholders(string);
     const doc = parser.parseFromString(html, 'text/html');
-    console.log(doc);
+
     return Array.from(doc.body.children).map(elementToObject);
 }
 

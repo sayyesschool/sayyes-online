@@ -1,12 +1,18 @@
-@use '@material/list/evolution-mixins' as list;
-
-.mdc-list {
-    .mdc-list-item {
-        @include list.two-line-item-start-alignment(center, 0);
-        @include list.two-line-item-end-alignment(center, 0);
-
-        &__end {
-            pointer-events: all;
+.ui-list {
+    &.numbered-list {
+        .ui-list__item {
+            padding-left: 1.125rem;
+        }
+        
+        .ui-list__itemmedia {
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+            margin-right: 1rem;
+            text-align: center;
+            background: lightgray;
+            color: white;
+            border-radius: 100%;
         }
     }
 }

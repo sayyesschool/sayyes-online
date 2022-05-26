@@ -1,8 +1,7 @@
 import { Children, isValidElement, cloneElement } from 'react';
-import {
-    Icon
-} from 'mdc-react';
 import classnames from 'classnames';
+
+import Icon from 'shared/components/icon';
 
 import './index.scss';
 

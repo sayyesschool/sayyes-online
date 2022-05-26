@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
 import {
     Button,
-    Icon,
-    IconButton,
-    TextField,
-    Typography
-} from 'mdc-react';
+    Input,
+    Text
+} from '@fluentui/react-northstar';
+
+import Icon from 'shared/components/icon';
 
 import './index.scss';
 
@@ -27,12 +27,12 @@ export default function DateTimeSelect({ name, label, items, onChange }) {
     return (
         <div className="datetime-select">
             {label &&
-                <Typography type="subtitle2">{label}</Typography>
+                <Text>{label}</Text>
             }
 
             {items?.map((item, index) =>
                 <div key={index} className="datetime-select-item">
-                    <TextField
+                    <Input
                         type="date"
                         name="date"
                         value={item.date}
@@ -41,7 +41,7 @@ export default function DateTimeSelect({ name, label, items, onChange }) {
                         onChange={event => handleChange(item, event.target)}
                     />
 
-                    <TextField
+                    <Input
                         type="time"
                         name="from"
                         value={item.from}
@@ -51,7 +51,7 @@ export default function DateTimeSelect({ name, label, items, onChange }) {
                         onChange={event => handleChange(item, event.target)}
                     />
 
-                    <TextField
+                    <Input
                         type="time"
                         name="to"
                         value={item.to}
@@ -61,9 +61,11 @@ export default function DateTimeSelect({ name, label, items, onChange }) {
                         onChange={event => handleChange(item, event.target)}
                     />
 
-                    <IconButton
+                    <Button
                         type="button"
                         icon={<Icon>delete</Icon>}
+                        text
+                        iconOnly
                         onClick={() => handleDelete(item)}
                     />
                 </div>
@@ -73,8 +75,7 @@ export default function DateTimeSelect({ name, label, items, onChange }) {
                 className="datetime-select-button--add"
                 type="button"
                 icon={<Icon>add</Icon>}
-                label="Добавить"
-                outlined
+                content="Добавить"
                 onClick={handleAdd}
             />
         </div>

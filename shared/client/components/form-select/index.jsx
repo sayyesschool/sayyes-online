@@ -29,6 +29,7 @@ export default function FormSelect({ name, value, options, label, required, sear
             value={optionsRef.current.get(value)}
             items={options}
             toggleIndicator={<Icon>expand_more</Icon>}
+            clearIndicator={<Icon>clear</Icon>}
             search={search}
             defaultSearchQuery={search && optionsRef.current.get(value)?.header}
             fluid

@@ -1,12 +1,8 @@
-import {
-    Header,
-    Text,
-    Toolbar
-} from '@fluentui/react-northstar';
+import { Header, Text, Toolbar } from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
 import Breadcrumbs from 'shared/components/breadcrumbs';
-import MaterialIcon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 
 import './index.scss';
 
@@ -48,7 +44,7 @@ export default function PageHeader({ overline, title, description, breadcrumbs, 
                             <Toolbar
                                 items={actions.filter(action => Boolean(action)).map(action => ({
                                     ...action,
-                                    icon: action.icon && <MaterialIcon icon={action.icon} />
+                                    icon: action.icon && <Icon name={action.icon} />
                                 }))}
                             />
                         </div>

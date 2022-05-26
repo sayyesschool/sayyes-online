@@ -1,13 +1,10 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
 import {
     Button,
-    Card,
     FormFieldCustom, FormLabel,
-    Image,
-    Input
+    Image
 } from '@fluentui/react-northstar';
 
-import storage from 'shared/services/storage';
 import Icon from 'shared/components/material-icon';
 
 import './index.scss';
@@ -23,9 +20,9 @@ function ImageField({
     name,
     label,
     accept = 'image/jpeg,image/png,image/jpeg',
-    value = defaultValue,
-    src = value.src,
-    alt: _alt = value.alt,
+    image = defaultValue,
+    src = image.src,
+    alt: _alt = image.alt,
     error,
     errorMessage,
     onChange,
@@ -34,6 +31,7 @@ function ImageField({
     const fileInputRef = useRef();
     const altInputRef = useRef();
 
+    const [file, setFile] = useState();
     const [alt, setAlt] = useState(_alt);
 
     useImperativeHandle(ref, () => ({
@@ -42,7 +40,7 @@ function ImageField({
         reset: () => fileInputRef.current.reset()
     }));
 
-    const handleAdd = useCallback(() => {
+    const handleChoose = useCallback(() => {
         fileInputRef.current.click();
     }, []);
 
@@ -50,32 +48,13 @@ function ImageField({
         const file = event.target.files[0];
 
         if (file) {
-            storage.upload(file, {
-                path: 'courses/foo/images/'
-            }).then(response => {
-                onChange(null, {
-                    name,
-                    value: {
-                        src: response.data.url,
-                        alt: altInputRef.current.value
-                    }
-                });
-            }).catch(console.error);
+            onChange({ name }, file);
         }
     }, [name]);
 
-    const handleDelete = useCallback(() => {
-        const path = new URL(src).pathname.split('/').slice(2).join('/');
+    const handleReset = useCallback(() => {
 
-        storage.delete(path)
-            .then(() => {
-                onChange(null, {
-                    name,
-                    value: undefined
-                });
-            })
-            .catch(console.error);
-    }, [name, src]);
+    }, []);
 
     return (
         <FormFieldCustom className="image-field" {...props}>
@@ -90,54 +69,31 @@ function ImageField({
             {label &&
                 <FormLabel>
                     {label}
-
-                    <Button
-                        type="button"
-                        icon={<Icon>add</Icon>}
-                        iconOnly
-                        text
-                        onClick={handleAdd}
-                    />
                 </FormLabel>
             }
 
             {src &&
-                <Card compact ghost>
-                    <Card.TopControls>
-                        <Button
-                            type="button"
-                            icon={<Icon>edit</Icon>}
-                            iconOnly
-                            text
-                            onClick={handleAdd}
-                        />
+                <Image
+                    src={src}
+                    alt={alt}
+                />
+            }
 
-                        <Button
-                            type="button"
-                            icon={<Icon>delete</Icon>}
-                            iconOnly
-                            text
-                            onClick={handleDelete}
-                        />
-                    </Card.TopControls>
-
-                    <Card.Preview fitted>
-                        <Image
-                            src={src}
-                            alt={alt}
-                            fluid
-                        />
-                    </Card.Preview>
-
-                    <Card.Footer>
-                        <Input
-                            ref={altInputRef}
-                            label="Описание"
-                            labelPosition="inside"
-                            fluid
-                        />
-                    </Card.Footer>
-                </Card>
+            {!file ?
+                <Button
+                    type="button"
+                    content="Выбрать файл"
+                    text
+                    onClick={handleChoose}
+                />
+                :
+                <Button
+                    type="button"
+                    icon={<Icon>clear</Icon>}
+                    iconOnly
+                    text
+                    onClick={handleReset}
+                />
             }
         </FormFieldCustom>
     );

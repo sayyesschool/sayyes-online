@@ -1,0 +1,41 @@
+.lessons-pill-group {
+    padding: 0;
+    margin-left: -4px;
+    margin-right: -4px;
+
+    .lesson-pill {
+        height: auto;
+        padding: 4px 6px;
+        transition: width .2s;
+
+        &--missed {
+            //background-color: color-palette.$yellow-700;
+        }
+        
+        &--ended {
+            color: white;
+            //background-color: color-palette.$green-700;
+        }
+
+        &--canceled {
+            color: white;
+            //background-color: color-palette.$red-700;
+        }
+
+        .lesson-date,
+        .lesson-weekday {
+            font-size: .75rem;
+            line-height: 1;
+        }
+
+        .lesson-date,
+        .lesson-time {
+            font-weight: 700;
+        }
+
+        .lesson-time,
+        .lesson-duration {
+            font-size: .6rem;
+        }
+    }
+}

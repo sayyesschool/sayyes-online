@@ -9,12 +9,14 @@ import Icon from 'shared/components/material-icon';
 
 import './index.scss';
 
-export default function PageSection({ title, description, icon, actions, className, children, ...props }) {
-    const classNames = classnames('page-section', className);
+export default function PageSection({ title, description, icon, actions, compact, className, children, ...props }) {
+    const classNames = classnames('page-section', {
+        'page-section--compact': compact
+    }, className);
 
     return (
         <Segment as="section" className={classNames} {...props}>
-            {title &&
+            {(title || description) &&
                 <Flex as="header" className="page-section__header" space="between" vAlign="center">
                     {icon &&
                         <Icon className="page-header__icon">{icon}</Icon>

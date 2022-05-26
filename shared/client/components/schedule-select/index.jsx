@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 import {
     Button,
-    Icon,
-    IconButton,
-    Select,
-    TextField,
-    Typography
-} from 'mdc-react';
+    Dropdown,
+    Input,
+    Text
+} from '@fluentui/react-northstar';
+
+import Icon from 'shared/components/icon';
 
 import './index.scss';
 
@@ -36,12 +36,12 @@ export default function ScheduleSelect({ name, label, schedule, onChange }) {
     return (
         <div className="schedule-select">
             {label &&
-                <Typography type="subtitle2">{label}</Typography>
+                <Text>{label}</Text>
             }
 
             {schedule?.map((item, index) =>
                 <div key={index} className="schedule-select-item">
-                    <Select
+                    <Dropdown
                         label="День недели"
                         name="day"
                         value={String(item.day)}
@@ -54,7 +54,7 @@ export default function ScheduleSelect({ name, label, schedule, onChange }) {
                         onChange={event => handleDayChange(item, event.target)}
                     />
 
-                    <TextField
+                    <Input
                         type="time"
                         name="from"
                         value={item.from}
@@ -64,7 +64,7 @@ export default function ScheduleSelect({ name, label, schedule, onChange }) {
                         onChange={event => handleTimeChange(item, event.target)}
                     />
 
-                    <TextField
+                    <Input
                         type="time"
                         name="to"
                         value={item.to}
@@ -74,9 +74,11 @@ export default function ScheduleSelect({ name, label, schedule, onChange }) {
                         onChange={event => handleTimeChange(item, event.target)}
                     />
 
-                    <IconButton
+                    <Button
                         type="button"
-                        icon="delete"
+                        icon={<Icon>delete</Icon>}
+                        text
+                        iconOnly
                         onClick={() => handleDelete(item)}
                     />
                 </div>
@@ -87,7 +89,6 @@ export default function ScheduleSelect({ name, label, schedule, onChange }) {
                 type="button"
                 icon={<Icon>add</Icon>}
                 label="Добавить"
-                outlined
                 onClick={handleAdd}
             />
         </div>

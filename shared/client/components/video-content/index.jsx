@@ -7,19 +7,19 @@ import VideoPlayer from 'shared/components/video-player';
 
 import './index.scss';
 
-export default function VideoContent({ audio, className, ...props }) {
+export default function VideoContent({ video = {}, className, ...props }) {
     const classNames = classnames('video-content', className);
 
     return (
-        <Segment as="section" className={classNames} {...props}>
+        <div className={classNames} {...props}>
             <VideoPlayer
                 id="video-player"
-                src={exercise.video.url}
+                src={video.src}
                 controls
                 options={{
                     stretching: 'fill'
                 }}
             />
-        </Segment>
+        </div>
     );
 }

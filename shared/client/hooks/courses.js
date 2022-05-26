@@ -33,6 +33,42 @@ export function useCourse(id) {
     ];
 }
 
+export function useUnit({ courseId, unitId }) {
+    const [course, actions] = useCourse(courseId);
+    const unit = course?.unitsById?.get(unitId);
+
+    return useMemo(() => !course ? EMPTY : ({
+        course,
+        unit,
+        actions
+    }), [course, unitId]);
+}
+
+export function useLesson({ courseId, lessonId }) {
+    const [course, actions] = useCourse(courseId);
+    const lesson = course?.lessonsById?.get(lessonId);
+
+    return useMemo(() => !course ? EMPTY : ({
+        course,
+        lesson,
+        unit: course.unitsById?.get(lesson.unitId),
+        actions
+    }), [course, lessonId]);
+}
+
+export function useExercise({ courseId, exerciseId }) {
+    const [course, actions] = useCourse(courseId);
+    const exercise = course?.exercisesById?.get(exerciseId);
+
+    return useMemo(() => !course ? EMPTY : ({
+        course,
+        exercise,
+        unit: course.unitsById?.get(exercise.unitId),
+        lesson: course.lessonsById?.get(exercise.lessonId),
+        actions
+    }), [course, exerciseId]);
+}
+
 export function use({ courseId, unitId, lessonId, exerciseId }) {
     const [course, actions] = useCourse(courseId);
 

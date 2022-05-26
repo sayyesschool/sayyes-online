@@ -138,13 +138,13 @@ export default function ImageSection({ className, image, uploadPath, onUpdate, o
                     />
                 </form>
                 :
-                <figcaption>
+                <figure>
                     <Image
                         src={image?.url}
                         alt={image?.alt}
                         fluid
                     />
-                </figcaption>
+                </figure>
             }
 
             <Dialog

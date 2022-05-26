@@ -1,16 +1,26 @@
-import { uploadFile, deleteFile } from 'shared/services/storage';
+import Storage from 'shared/services/storage';
 
-const fileMiddleware = store => next => action => {
+const storageMiddleware = store => next => action => {
     if (!action.request?.body?.file) return next(action);
 
     const { method, body } = action.request;
 
     if (method === 'post' || method === 'put') {
-        return uploadFile(body.file, {
-            name: body.image,
-            path: body.path
+        const file = body.file;
+        const [type] = file.type.split('/');
+
+        return Storage.upload(file, {
+            name: file.name,
+            path: file.path
         }).then(response => {
-            body.image = response.name;
+            if (typeof body[type] === 'object') {
+                body[type].path = response.data.path;
+            } else {
+                body[type] = {
+                    path: response.data.path
+                };
+            }
+
             delete body.file;
 
             return next(action);
@@ -25,8 +35,8 @@ const fileMiddleware = store => next => action => {
                 }
             });
         });
-    } else if (method === 'delete' && body.imageUrl) {
-        return deleteFile(body.imageUrl)
+    } else if (method === 'delete') {
+        return Storage.delete(body.file.url)
             .then(() => next(action))
             .catch(error => {
                 next({ type: 'HIDE_NOTIFICATION' });
@@ -44,4 +54,4 @@ const fileMiddleware = store => next => action => {
     }
 };
 
-export default fileMiddleware;
+export default storageMiddleware;

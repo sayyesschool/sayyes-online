@@ -1,18 +1,13 @@
-@use '@material/theme';
-
 .empty-state {
     text-align: center;
 
     &__icon {
         font-size: 2rem;
-        @include theme.property(color, text-icon-on-light);
     }
 
     &__title {
-        @include theme.property(color, text-hint-on-light);
     }
 
-    &__subtitle {
-        @include theme.property(color, text-hint-on-light);
+    &__description {
     }
 }

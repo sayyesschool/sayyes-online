@@ -5,22 +5,6 @@ import {
 } from 'mdc-react';
 import classnames from 'classnames';
 
-<MenuButton
-    trigger={<Button icon={<ExpandIcon />} content="Click" aria-label="Click button" />}
-    menu={[
-        '1',
-        '2',
-        '3',
-        {
-            content: 'submenu',
-            menu: {
-                items: ['4', '5'],
-            },
-        },
-    ]}
-    on="click"
-/>;
-
 export default function MenuButton({
     button,
     icon,

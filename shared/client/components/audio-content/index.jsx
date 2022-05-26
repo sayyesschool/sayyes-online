@@ -1,9 +1,7 @@
 import classnames from 'classnames';
 import {
-    Box,
     Button,
     Flex,
-    Segment,
     Text
 } from '@fluentui/react-northstar';
 
@@ -19,14 +17,14 @@ export default function AudioContent({ audio, className, ...props }) {
     const classNames = classnames('audio-content', className);
 
     return (
-        <Segment as="section" className={classNames} {...props}>
+        <div className={classNames} {...props}>
             <Flex space="between">
                 <AudioPlayer
-                    src={audio.src}
+                    src={audio?.url}
                     width="100%"
                 />
 
-                {audio.script &&
+                {audio?.script &&
                     <Button
                         icon={<Icon>{isScriptOpen ? 'subtitles_off' : 'subtitles'}</Icon>}
                         iconOnly
@@ -36,9 +34,12 @@ export default function AudioContent({ audio, className, ...props }) {
                 }
             </Flex>
 
-            {audio.script && isScriptOpen &&
-                <Text as="article" className="audio-script" dangerouslySetInnerHTML={{ __html: audio.script }} />
+            {audio?.script && isScriptOpen &&
+                <>
+                    <Text size="small">Скрипт:</Text>
+                    <Text as="article" className="audio-script" dangerouslySetInnerHTML={{ __html: audio.script }} />
+                </>
             }
-        </Segment>
+        </div>
     );
 }

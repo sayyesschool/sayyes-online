@@ -96,6 +96,13 @@ export const deleteLesson = createAction('DELETE_COURSE_LESSON', (courseId, less
 
 // Exercises
 
+export const getExercise = createAction('GET_COURSE_EXERCISE', (courseId, exerciseId) => ({
+    request: {
+        method: 'get',
+        url: `/courses/${courseId}/exercises/${exerciseId}`
+    }
+}));
+
 export const createExercise = createAction('CREATE_COURSE_EXERCISE', (courseId, data) => ({
     request: {
         method: 'post',
@@ -127,6 +134,34 @@ export const updateExerciseProgress = createAction('UPDATE_COURSE_EXERCISE_PROGR
     }
 }));
 
+// Items
+
+export const createExerciseItem = createAction('CREATE_COURSE_EXERCISE_ITEM', (courseId, exerciseId, data) => ({
+    request: {
+        method: 'post',
+        url: `/courses/${courseId}/exercises/${exerciseId}/items`,
+        body: data
+    }
+}));
+
+export const updateExerciseItem = createAction('UPDATE_COURSE_EXERCISE_ITEM', (courseId, exerciseId, itemId, data) => ({
+    request: {
+        method: 'put',
+        url: `/courses/${courseId}/exercises/${exerciseId}/items/${itemId}`,
+        body: data
+    }
+}));
+
+export const deleteExerciseItem = createAction('DELETE_COURSE_EXERCISE_ITEM', (courseId, exerciseId, itemId, body) => ({
+    request: {
+        method: 'delete',
+        url: `/courses/${courseId}/exercises/${exerciseId}/items/${itemId}`,
+        body
+    }
+}));
+
+// Comments
+
 export const createExerciseComment = createAction('CREATE_EXERCISE_COMMENT', (courseId, exerciseId, data) => ({
     request: {
         method: 'post',
@@ -151,56 +186,6 @@ export const deleteExerciseComment = createAction('DELETE_EXERCISE_COMMENT', (co
     }
 }));
 
-// Audios
-
-export const createAudio = createAction('CREATE_COURSE_AUDIO', (courseId, data) => ({
-    request: {
-        method: 'post',
-        url: `/courses/${courseId}/audios`,
-        body: data
-    }
-}));
-
-export const updateAudio = createAction('UPDATE_COURSE_AUDIO', (courseId, audioId, data) => ({
-    request: {
-        method: 'put',
-        url: `/courses/${courseId}/audios/${audioId}`,
-        body: data
-    }
-}));
-
-export const deleteAudio = createAction('DELETE_COURSE_AUDIO', (courseId, audioId) => ({
-    request: {
-        method: 'delete',
-        url: `/courses/${courseId}/audios/${audioId}`
-    }
-}));
-
-// Videos
-
-export const createVideo = createAction('CREATE_COURSE_VIDEO', (courseId, data) => ({
-    request: {
-        method: 'post',
-        url: `/courses/${courseId}/videos`,
-        body: data
-    }
-}));
-
-export const updateVideo = createAction('UPDATE_COURSE_VIDEO', (courseId, videoId, data) => ({
-    request: {
-        method: 'put',
-        url: `/courses/${courseId}/videos/${videoId}`,
-        body: data
-    }
-}));
-
-export const deleteVideo = createAction('DELETE_COURSE_VIDEO', (courseId, videoId) => ({
-    request: {
-        method: 'delete',
-        url: `/courses/${courseId}/videos/${videoId}`
-    }
-}));
-
 export const actions = {
     getCourses,
     getCourse,
@@ -217,18 +202,15 @@ export const actions = {
     updateLesson,
     deleteLesson,
 
+    getExercise,
     createExercise,
     updateExercise,
     deleteExercise,
     updateExerciseProgress,
 
-    createAudio,
-    updateAudio,
-    deleteAudio,
-
-    createVideo,
-    updateVideo,
-    deleteVideo,
+    createExerciseItem,
+    updateExerciseItem,
+    deleteExerciseItem
 };
 
 export const coursesReducer = createReducer(null, {
@@ -287,6 +269,10 @@ export const courseReducer = createReducer(null, {
         exercises: state.exercises.filter(exercise => exercise.lesson !== action.data.id)
     }),
 
+    [getExercise]: (state, action) => ({
+        ...state,
+        exercises: state.exercises.map(exercise => exercise.id !== action.data.id ? exercise : action.data)
+    }),
     [createExercise]: (state, action) => ({
         ...state,
         exercises: state.exercises.concat(action.data),
@@ -318,49 +304,40 @@ export const courseReducer = createReducer(null, {
         })
     }),
 
-    [createAudio]: (state, action) => ({
+    [createExerciseItem]: (state, action) => ({
         ...state,
-        audios: state.audios.concat(action.data)
-    }),
-    [updateAudio]: (state, action) => ({
-        ...state,
-        audios: state.audios.map(audio => audio.id !== action.data.id ? audio : {
-            ...audio,
-            ...action.data
-        })
-    }),
-    [deleteAudio]: (state, action) => ({
-        ...state,
-        audios: state.audios.filter(audio => audio.id !== action.data.id),
-        exercises: state.exercises.map(exercise => exercise.audio !== action.data.id ? exercise : {
+        exercises: state.exercises.map(exercise => exercise.id !== action.data.item.exerciseId ? exercise : {
             ...exercise,
-            audio: null
-        })
+            items: action.data.position === undefined ?
+                exercise.items.concat(action.data.item) :
+                [
+                    ...exercise.items.slice(0, action.data.position),
+                    action.data.item,
+                    ...exercise.items.slice(action.data.position)
+                ]
+        }),
     }),
-
-    [createVideo]: (state, action) => ({
+    [updateExerciseItem]: (state, action) => ({
         ...state,
-        videos: state.videos.concat(action.data)
-    }),
-    [updateVideo]: (state, action) => ({
-        ...state,
-        videos: state.videos.map(video => video.id !== action.data.id ? video : {
-            ...video,
-            ...action.data
-        })
-    }),
-    [deleteVideo]: (state, action) => ({
-        ...state,
-        videos: state.videos.filter(video => video.id !== action.data.id),
-        exercises: state.exercises.map(exercise => exercise.video !== action.data.id ? exercise : {
+        exercises: state.exercises.map(exercise => exercise.id !== action.data.exerciseId ? exercise : {
             ...exercise,
-            video: null
+            items: exercise.items.map(item => item.id !== action.data.id ? item : {
+                ...item,
+                ...action.data
+            })
         })
     }),
+    [deleteExerciseItem]: (state, action) => ({
+        ...state,
+        exercises: state.exercises.map(exercise => exercise.id !== action.data.exerciseId ? exercise : {
+            ...exercise,
+            items: exercise.items.filter(item => item.id !== action.data.id)
+        })
+    })
 });
 
 function toMap(getKey) {
-    return array => array.reduce((map, item) => map.set(getKey(item), item), new Map());
+    return array => array?.reduce((map, item) => map.set(getKey(item), item), new Map());
 }
 
 const mapById = toMap(item => item.id);
@@ -375,31 +352,31 @@ export function mapCourse(course) {
     course.lessonsBySlug = mapBySlug(course.lessons);
     course.exercisesById = mapById(course.exercises);
 
-    // course.units.forEach(unit => {
-    //     unit.lessons = unit._lessons.map(id => {
-    //         const lesson = course.lessonsById.get(id);
+    course.units.forEach(unit => {
+        unit.lessons = unit._lessons.map(id => {
+            const lesson = course.lessonsById.get(id);
 
-    //         if (lesson) {
-    //             lesson.unit = unit;
-    //         }
+            if (lesson) {
+                lesson.unit = unit;
+            }
 
-    //         return lesson;
-    //     });
-    // });
+            return lesson;
+        });
+    });
 
-    // course.lessons.forEach(lesson => {
-    //     lesson.exercises = lesson._exercises.map(id => {
-    //         const exercise = course.exercisesById.get(id);
+    course.lessons.forEach(lesson => {
+        lesson.exercises = lesson._exercises.map(id => {
+            const exercise = course.exercisesById.get(id);
 
-    //         if (exercise) {
-    //             exercise.lesson = lesson;
-    //         }
+            if (exercise) {
+                exercise.lesson = lesson;
+            }
 
-    //         return exercise;
-    //     });
-    // });
+            return exercise;
+        });
+    });
 
-    course.exercises.forEach(exercise => {
+    course.exercises?.forEach(exercise => {
         exercise.lesson = course.lessonsById.get(exercise._lesson);
     });
 

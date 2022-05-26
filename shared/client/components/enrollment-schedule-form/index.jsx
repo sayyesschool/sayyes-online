@@ -1,11 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import {
     Checkbox,
-    FormField,
-    Layout,
-    TextField,
-    Typography
-} from 'mdc-react';
+    Input,
+    Text
+} from '@fluentui/react-northstar';
 import moment from 'moment';
 
 import { useBoolean } from 'shared/hooks/state';
@@ -13,8 +11,8 @@ import { rescheduleLessons } from 'shared/libs/enrollment';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
+import LessonPillGroup from 'shared/components/lessons-pill-group';
 import ScheduleSelect from 'shared/components/schedule-select';
-import LessonChipSet from 'shared/components/lesson-chip-set';
 
 import './index.scss';
 
@@ -43,49 +41,46 @@ export default function EnrollmentScheduleForm({ enrollment, onSubmit, ...props 
 
     return (
         <Form className="enrollment-schedule-form" onSubmit={handleSubmit} {...props}>
-            <Layout column>
-                <ScheduleSelect
-                    name="schedule"
-                    schedule={data.schedule}
-                    onChange={handleChange}
+            <ScheduleSelect
+                name="schedule"
+                schedule={data.schedule}
+                onChange={handleChange}
+            />
+
+            {enrollment.lessons?.length > 0 &&
+                <Checkbox
+                    label="Обновить уроки"
+                    checked={shouldUpdateLessons}
+                    onChange={toggleShouldUpdateLessons}
                 />
+            }
 
-                {enrollment.lessons?.length > 0 &&
-                    <FormField label="Обновить уроки">
-                        <Checkbox
-                            checked={shouldUpdateLessons}
-                            onChange={toggleShouldUpdateLessons}
-                        />
-                    </FormField>
-                }
+            {shouldUpdateLessons &&
+                <>
+                    <Input
+                        type="date"
+                        name="startDate"
+                        value={moment(data.startDate).format('YYYY-MM-DD')}
+                        min={moment().format('YYYY-MM-DD')}
+                        label="С даты"
+                        filled
+                        required
+                        onChange={handleChange}
+                    />
 
-                {shouldUpdateLessons &&
-                    <>
-                        <TextField
-                            type="date"
-                            name="startDate"
-                            value={moment(data.startDate).format('YYYY-MM-DD')}
-                            min={moment().format('YYYY-MM-DD')}
-                            label="С даты"
-                            filled
-                            required
-                            onChange={handleChange}
-                        />
+                    <Text>Старое расписание:</Text>
 
-                        <Typography type="subtitle2">Старое расписание</Typography>
+                    <LessonPillGroup
+                        lessons={enrollment.lessons.filter(lesson => new Date(lesson.date) > new Date(data.startDate))}
+                    />
 
-                        <LessonChipSet
-                            lessons={enrollment.lessons.filter(lesson => new Date(lesson.date) > new Date(data.startDate))}
-                        />
+                    <Text>Новое расписание:</Text>
 
-                        <Typography type="subtitle2">Новое расписание</Typography>
-
-                        <LessonChipSet
-                            lessons={lessons}
-                        />
-                    </>
-                }
-            </Layout>
+                    <LessonPillGroup
+                        lessons={lessons}
+                    />
+                </>
+            }
         </Form>
     );
 }

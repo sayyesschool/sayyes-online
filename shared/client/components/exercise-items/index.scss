@@ -29,23 +29,7 @@
     }
 
     &--boolean {
-        .mdc-list {
-            padding: 0;
-        }
-
-        .mdc-list-item {
-            padding: 0;
-            cursor: default;
-            overflow: visible;
-
-            &__ripple {
-                display: none;
-            }
-
-            &__end {
-                margin-right: 0;
-            }
-        }
+        
     }
 
     &--fib {

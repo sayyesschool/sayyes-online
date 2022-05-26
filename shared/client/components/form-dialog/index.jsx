@@ -16,7 +16,7 @@ export default function FormDialog({
     onClose,
     ...props
 }) {
-    const onSubmitRef = useRef(children.props.onSubmit);
+    const onSubmitRef = useRef(children.props?.onSubmit);
 
     const [isSubmitting, toggleSubmitting] = useBoolean(false);
 
@@ -27,8 +27,8 @@ export default function FormDialog({
     }, [open]);
 
     useEffect(() => {
-        onSubmitRef.current = children.props.onSubmit;
-    }, [children.props.onSubmit]);
+        onSubmitRef.current = children.props?.onSubmit;
+    }, [children.props?.onSubmit]);
 
     const handleSubmit = useCallback(event => {
         toggleSubmitting(true);

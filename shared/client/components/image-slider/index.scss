@@ -2,6 +2,10 @@
     position: relative;
     padding: 0 3rem;
 
+    .image-slider__wrapper {
+        position: relative;
+    }
+
     .image-slider__images {
         margin: auto;
     }
@@ -25,5 +29,10 @@
         &--next {
             right: 0%;
         }
+    }
+
+    .image-slider__nav {
+        margin: auto;
+        text-align: center;
     }
 }

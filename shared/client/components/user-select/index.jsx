@@ -22,6 +22,7 @@ export default function PeopleSelect({ resolveUrl, ...props }) {
             //placeholder="Start typing a name"
             multiple
             search
+            fluid
             noResultsMessage="We couldn't find any matches."
             {...props}
         />

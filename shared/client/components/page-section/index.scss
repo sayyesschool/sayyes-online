@@ -1,7 +1,7 @@
 .page-section {
     &.ui-segment {
         padding: 0;
-        border: 1px solid rgba(0,0,0, .12);
+        border: 1px solid rgba(0, 0, 0, .12);
         border-radius: 4px;
         box-shadow: none;
     }
@@ -20,12 +20,21 @@
     }
 
     &__content {
-        .ui-form {
+        > .ui-form {
             padding: 8px 16px 16px;
         }
 
         > .text-editor {
-            border-top: 1px solid rgba(0,0,0,.12);
+            border-top: 1px solid rgba(0, 0, 0, .12);
         }
+    }
+
+    &--compact.ui-segment {
+        border: none;
+    }
+
+    &--compact > &__header,
+    &--compact > &__content {
+        padding: 0;
     }
 }

@@ -1,13 +1,11 @@
 import classnames from 'classnames';
+import { Text } from '@fluentui/react-northstar';
 
-import {
-    Icon,
-    Typography
-} from 'mdc-react';
+import Icon from 'shared/components/icon';
 
 import './index.scss';
 
-export default function EmptyState({ icon, title, subtitle, className, ...props }) {
+export default function EmptyState({ icon, title, description, className, ...props }) {
     const classNames = classnames('empty-state', className);
 
     return (
@@ -16,10 +14,10 @@ export default function EmptyState({ icon, title, subtitle, className, ...props 
                 <Icon className="empty-state__icon">{icon}</Icon>
             }
 
-            <Typography className="empty-state__title" type="headline6">{title}</Typography>
+            <Text className="empty-state__title">{title}</Text>
 
-            {subtitle &&
-                <Typography className="empty-state__subtitle" type="subtitle1">{subtitle}</Typography>
+            {description &&
+                <Text className="empty-state__description">{description}</Text>
             }
         </div>
     );
