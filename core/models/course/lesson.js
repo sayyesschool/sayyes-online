@@ -8,24 +8,28 @@ const Lesson = new Schema({
     description: { type: String },
     content: { type: String },
     image: { type: Image },
-    unit: { type: Schema.Types.ObjectId },
-    exercises: [Schema.Types.ObjectId]
-});
+    _unit: { type: Schema.Types.ObjectId, alias: 'unitId' },
+    _exercises: [Schema.Types.ObjectId]
+}, {
+    toJSON: {
+        transform: (lesson, object) => {
+            delete object._unit;
 
-Lesson.virtual('courseId').get(function() {
-    return this.parent()?.id;
-});
-
-Lesson.virtual('unitId').get(function() {
-    return this.unit;
+            return object;
+        }
+    }
 });
 
 Lesson.virtual('uri').get(function() {
-    return `${this.parent().uri}/units/${this.unit}/lessons/${this.id}`;
+    return `${this.parent().uri}/lessons/${this.id}`;
 });
 
 Lesson.virtual('url').get(function() {
     return `${this.parent().url}/lessons/${this.slug}`;
+});
+
+Lesson.virtual('courseId').get(function() {
+    return this.parent()?.id;
 });
 
 Lesson.virtual('imageUrl').get(function() {

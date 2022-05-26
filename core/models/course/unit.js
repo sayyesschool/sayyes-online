@@ -8,11 +8,7 @@ const Unit = new Schema({
     description: { type: String },
     content: { type: String },
     image: { type: Image },
-    lessons: [Schema.Types.ObjectId]
-});
-
-Unit.virtual('courseId').get(function() {
-    return this.parent()?.id;
+    _lessons: [Schema.Types.ObjectId]
 });
 
 Unit.virtual('uri').get(function() {
@@ -21,6 +17,10 @@ Unit.virtual('uri').get(function() {
 
 Unit.virtual('url').get(function() {
     return `${this.parent().url}/units/${this.slug}`;
+});
+
+Unit.virtual('courseId').get(function() {
+    return this.parent()?.id;
 });
 
 Unit.virtual('imageUrl').get(function() {

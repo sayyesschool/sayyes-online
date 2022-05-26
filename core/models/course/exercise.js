@@ -1,26 +1,17 @@
 const { Schema } = require('mongoose');
 
-const Audio = require('./audio');
+const Item = require('./item');
 const Image = require('./image');
-const Video = require('./video');
-
-const Item = new Schema({}, {
-    strict: false
-});
 
 const Exercise = new Schema({
-    type: { type: String },
     title: { type: String },
     description: { type: String },
-    text: { type: String },
-    image: { type: String },
-    images: [Image],
-    audio: Audio,
-    video: Video,
+    content: { type: String },
+    image: { type: Image },
     notes: { type: String },
     items: [Item],
-    unit: { type: Schema.Types.ObjectId },
-    lesson: { type: Schema.Types.ObjectId }
+    _unit: { type: Schema.Types.ObjectId, alias: 'unitId' },
+    _lesson: { type: Schema.Types.ObjectId, alias: 'lessonId' }
 }, {
     toJSON: {
         transform: (exercise, object) => {
@@ -31,25 +22,20 @@ const Exercise = new Schema({
                 object.state = progress.state;
             }
 
+            delete object._unit;
+            delete object._lesson;
+
             return object;
         }
     }
 });
 
+Exercise.virtual('uri').get(function() {
+    return `${this.parent().uri}/exercises/${this.id}`;
+});
+
 Exercise.virtual('courseId').get(function() {
     return this.parent()?.id;
-});
-
-Exercise.virtual('unitId').get(function() {
-    return this.unit;
-});
-
-Exercise.virtual('lessonId').get(function() {
-    return this.lesson;
-});
-
-Exercise.virtual('uri').get(function() {
-    return `${this.parent().uri}/units/${this.unit}/lessons/${this.lesson}/exercises/${this.id}`;
 });
 
 Exercise.virtual('imageUrl').get(function() {

@@ -52,7 +52,7 @@ describe('Enrollment', () => {
 
         it('should create correct number of lessons', () => {
             const lessons = enrollment.createLessons(5);
-            console.log(lessons);
+
             expect(lessons.length).toBe(5);
         });
     });
