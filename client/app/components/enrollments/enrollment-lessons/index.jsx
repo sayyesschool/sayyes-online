@@ -2,7 +2,7 @@ import {
     Card
 } from 'mdc-react';
 
-import LessonChipSet from 'shared/components/lesson-chip-set';
+import LessonPillGroup from 'shared/components/lessons-pill-group';
 
 export default function EnrollmentLessons({ enrollment }) {
     const lessonsDuration = enrollment.lessons.reduce((total, lesson) => total + lesson.duration, 0);
@@ -18,7 +18,7 @@ export default function EnrollmentLessons({ enrollment }) {
 
                 {enrollment.lessons.length > 0 &&
                     <Card.Section secondary>
-                        <LessonChipSet
+                        <LessonPillGroup
                             lessons={enrollment.lessons}
                         />
                     </Card.Section>

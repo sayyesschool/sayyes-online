@@ -2,13 +2,12 @@ import { useCallback, useState } from 'react';
 import {
     Card,
     IconButton,
-    Typography
 } from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
-import LessonChipSet from 'shared/components/lesson-chip-set';
+import LessonPillGroup from 'shared/components/lessons-pill-group';
 
 import { useActions } from 'app/hooks/store';
 import LessonForm from 'app/components/lessons/lesson-form';
@@ -74,7 +73,7 @@ export default function EnrollmentLessons({ enrollment }) {
 
                 {enrollment.lessons.length > 0 &&
                     <Card.Section secondary>
-                        <LessonChipSet
+                        <LessonPillGroup
                             lessons={enrollment.lessons}
                             onClick={handleUpdate}
                             onDelete={handleDelete}
