@@ -26,13 +26,12 @@ module.exports = ({ services: { Storage } }) => {
 
     router.post('/*', upload.single('file'), (req, res, next) => {
         const file = req.file;
+
         const path = (isFilename(req.path) ? dirname(req.path) : req.path).slice(1);
         const filename = isFilename(req.path) ? basename(req.path) : getUniqueFilename(file);
-        const key = `${path}${filename}`;
-
-        console.log('PATH', path);
-        console.log('FILENAME', filename);
-        console.log('KEY', key);
+        const key = path.endsWith('/') ?
+            `${path}${filename}` :
+            `${path}/${filename}`;
 
         Storage.put(key, file.buffer)
             .then(response => {
