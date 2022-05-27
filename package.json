@@ -1,6 +1,6 @@
 {
   "name": "sayyes-online",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "private": true,
   "main": "server.js",
   "scripts": {
@@ -24,6 +24,8 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.39.0",
+    "@ckeditor/ckeditor5-build-balloon": "^34.0.0",
+    "@ckeditor/ckeditor5-editor-balloon": "^34.0.0",
     "@ckeditor/ckeditor5-react": "^3.0.3",
     "@fluentui/react-icons-northstar": "^0.61.0",
     "@fluentui/react-northstar": "^0.61.0",
@@ -107,7 +109,7 @@
     "sass-loader": "^12.2.0",
     "terser-webpack-plugin": "^5.2.4",
     "util": "^0.12.4",
-    "webpack": "^5.59.1",
-    "webpack-cli": "^4.9.1"
+    "webpack": "^5.72.1",
+    "webpack-cli": "^4.9.2"
   }
 }
