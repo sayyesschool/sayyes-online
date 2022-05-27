@@ -9,15 +9,14 @@ import { exerciseTypeMenuItems } from 'shared/data/exercise';
 
 import './index.scss';
 
-
 export default function ExerciseItemWrapper({ index, item, editing, isFirst, isLast, onEdit, onUpdate, onAdd, onMove, onDelete }) {
     const handleEdit = useCallback(() => {
         onEdit(item.id);
-    }, [item]);
+    }, [item, onEdit]);
 
     const handleCancel = useCallback(() => {
         onEdit();
-    }, []);
+    }, [onEdit]);
 
     const handleUpdate = useCallback(data => {
         return onUpdate(item.id, data);
@@ -42,23 +41,23 @@ export default function ExerciseItemWrapper({ index, item, editing, isFirst, isL
             id: item.id,
             file
         });
-    }, [item]);
+    }, [item, onDelete]);
 
     const handleAddAbove = useCallback((event, component) => {
         onAdd(component.value, index);
-    }, [index]);
+    }, [index, onAdd]);
 
     const handleAddBelow = useCallback((event, component) => {
         onAdd(component.value, index + 1);
-    }, [index]);
+    }, [index, onAdd]);
 
     const handleMoveUp = useCallback(() => {
         onMove(index, -1);
-    }, [index]);
+    }, [index, onMove]);
 
     const handleMoveDown = useCallback(() => {
         onMove(index, 1);
-    }, [index]);
+    }, [index, onMove]);
 
     return (
         <div id={item.id} className="exercise-item-wrapper">

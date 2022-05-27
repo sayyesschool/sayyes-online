@@ -1,3 +1,4 @@
+@use 'shared/styles/mixins';
 @use 'shared/styles/variables';
 
 body {
@@ -12,8 +13,12 @@ body {
     max-height: calc(100vh - 57px);
     margin-left: 64px;
     padding: 1rem;
-    //background: #f5f5f5;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    @include mixins.breakpoint(lt-lg) {
+        padding: 0;
+    }
 }
 
 .page-top-bar {
@@ -25,10 +30,6 @@ body {
     max-width: 1280px;
     margin: auto;
     padding: 1rem;
-}
-
-.page-side-sheet {
-    
 }
 
 .page-title {

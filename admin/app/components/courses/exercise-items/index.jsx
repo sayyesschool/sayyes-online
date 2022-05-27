@@ -47,15 +47,6 @@ export default function ExerciseItems({ exercise, onCreate, onUpdate, onDelete, 
             });
     }, [deletingItem]);
 
-    const handleEdit = useCallback(itemId => {
-        setEditingItemId(itemId);
-    }, []);
-
-    const handleDeleteRequest = useCallback(item => {
-        setDeletingItem(item);
-        toggleConfirmationDialogOpen(true);
-    }, []);
-
     const handleMove = useCallback((index, dir) => {
         const items = exercise.items.slice();
         const item = items[index];
@@ -65,7 +56,16 @@ export default function ExerciseItems({ exercise, onCreate, onUpdate, onDelete, 
         items[index] = otherItem;
 
         onReorder({ items });
-    }, [exercise.items]);
+    }, [exercise]);
+
+    const handleEdit = useCallback(itemId => {
+        setEditingItemId(itemId);
+    }, []);
+
+    const handleDeleteRequest = useCallback(item => {
+        setDeletingItem(item);
+        toggleConfirmationDialogOpen(true);
+    }, []);
 
     return (
         <PageSection

@@ -1,11 +1,8 @@
 import { useCallback, useMemo } from 'react';
-import {
-    Checkbox,
-    List,
-    RadioGroupItem
-} from '@fluentui/react-northstar';
+import { Checkbox, List, RadioGroupItem } from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
+import Icon from 'shared/components/icon';
 import TextContent from 'shared/components/text-content';
 
 function getDefaultState(item) {
@@ -29,7 +26,7 @@ export default function ExerciseChoiceItem({
         } else {
             setState(item.id);
         }
-    }, []);
+    }, [isMultiple]);
 
     const isItemChosen = useCallback(item => {
         if (isMultiple) {
@@ -37,7 +34,7 @@ export default function ExerciseChoiceItem({
         } else {
             return item.id === state;
         }
-    }, [state]);
+    }, [state, isMultiple]);
 
     return (
         <>
@@ -52,19 +49,20 @@ export default function ExerciseChoiceItem({
                             'exercise-choice-item--correct': item.correct,
                             'exercise-choice-item--incorrect': !item.correct && isItemChosen(item)
                         })}
-                        media={isMultiple &&
+                        media={isMultiple ?
                             <Checkbox
                                 checked={state.includes(item.id)}
                                 disabled={checked}
                             />
-                        }
-                        content={item.text}
-                        endMedia={!isMultiple &&
+                            :
                             <RadioGroupItem
                                 checked={item.id === state}
+                                indicator={<Icon>radio_button_unchecked</Icon>}
+                                checkedIndicator={<Icon>radio_button_checked</Icon>}
                                 disabled={checked}
                             />
                         }
+                        content={item.text}
                         selected={checked && (item.correct || isItemChosen(item))}
                         selectable
                         onClick={() => handleChange(item)}
