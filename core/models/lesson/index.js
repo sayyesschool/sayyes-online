@@ -64,8 +64,6 @@ Lesson.statics.findTodays = function() {
     const from = new Date(Date.UTC(year, month, day, 0, 0, 0, 0));
     const to = new Date(Date.UTC(year, month, day + 1, 0, 0, 0, 0));
 
-    console.log(from, to);
-
     return this.find({
         date: {
             $gte: from,
@@ -92,6 +90,10 @@ Lesson.virtual('startAt').get(function() {
 
 Lesson.virtual('endAt').get(function() {
     return moment(this.date).add(this.duration, 'minutes').toDate();
+});
+
+Lesson.virtual('dateTimeLabel').get(function() {
+    return moment(this.date).format('DD.mm.YYYY в HH:mm');
 });
 
 module.exports = Lesson;
