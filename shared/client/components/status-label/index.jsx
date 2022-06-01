@@ -5,7 +5,9 @@ const StatusState = {
     new: 'warning',
     processing: 'info',
     completed: 'success',
-    canceled: 'error'
+    canceled: 'error',
+    scheduled: 'info',
+    ended: 'success'
 };
 
 export default function StatusLabel({ status, className, ...props }) {
