@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import FormDialog from 'app/components/shared/form-dialog';
+import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';
@@ -14,7 +14,6 @@ import LessonForm from 'app/components/lessons/lesson-form';
 
 export default function Lessons() {
     const [lessons, actions] = useStore('lessons.list');
-    const [view, setView] = useState('week');
 
     const [isFormOpen, toggleFormOpen] = useBoolean(false);
 
@@ -33,18 +32,12 @@ export default function Lessons() {
         <Page id="lessons-page">
             <PageHeader
                 title="Уроки"
-                controls={[
+                actions={[
                     {
                         key: 'add',
                         title: 'Создать',
                         icon: 'add',
-                        onClick: () => setLessonFormOpen(true)
-                    },
-                    {
-                        key: 'view',
-                        title: 'Представление',
-                        icon: view === 'week' ? 'today' : 'view_week',
-                        onClick: () => setView(view => view === 'week' ? 'month' : 'week')
+                        onClick: toggleFormOpen
                     }
                 ]}
             />

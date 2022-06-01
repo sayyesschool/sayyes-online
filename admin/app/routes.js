@@ -2,7 +2,7 @@ import Home from 'app/components/home';
 import Clients from 'app/components/clients';
 import Courses from 'app/components/courses';
 import Enrollments from 'app/components/enrollments';
-// import Lessons from 'app/components/lessons';
+import Lessons from 'app/components/lessons';
 import Managers from 'app/components/managers';
 import Materials from 'app/components/materials';
 // import Meetings from 'app/components/meetings';
@@ -16,7 +16,7 @@ export default [
     { path: '/clients', exact: false, component: Clients },
     { path: '/courses', exact: false, component: Courses },
     { path: '/enrollments', exact: false, component: Enrollments },
-    // { path: '/lessons', exact: false, component: Lessons },
+    { path: '/lessons', exact: false, component: Lessons },
     { path: '/managers', exact: false, component: Managers },
     { path: '/materials', exact: false, component: Materials },
     // // { path: '/meetings', exact: false, component: Meetings },

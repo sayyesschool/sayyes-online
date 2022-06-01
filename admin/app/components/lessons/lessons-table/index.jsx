@@ -19,7 +19,7 @@ export default function LessonsTable({ lessons, onView, onEdit, onDelete }) {
             {lessons.map(lesson =>
                 <Table.Row key={lesson.id}>
                     <Table.Cell
-                        content={
+                        content={lesson.client &&
                             <Pill
                                 as={Link}
                                 to={`/clients/${lesson.client.id}`}
@@ -49,7 +49,7 @@ export default function LessonsTable({ lessons, onView, onEdit, onDelete }) {
                         }
                     />
 
-                    <Table.Cell content={`${lesson.dateLabel} в ${lesson.timeLabel}`} />
+                    <Table.Cell content={lesson.dateTimeLabel} />
 
                     <Table.Cell content={lesson.trial ? 'Да' : 'Нет'} />
 
