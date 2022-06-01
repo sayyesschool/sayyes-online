@@ -1,4 +1,6 @@
-import { Select, Typography } from 'mdc-react';
+import { Text } from '@fluentui/react-northstar';
+
+import FormSelect from 'shared/components/form-select';
 
 import useAppState from 'app/hooks/useAppState';
 import { useAudioOutputDevices } from 'app/hooks/deviceHooks';
@@ -11,21 +13,19 @@ export default function AudioOutputList() {
 
     return (
         <div className="audio-output-list">
-            <Typography type="subtitle2">Динамики</Typography>
-
             {audioOutputDevices.length > 1 ?
-                <Select
+                <FormSelect
+                    label="Динамики"
                     value={activeSinkId}
-                    filled
-                    onChange={e => setActiveSinkId(e.target.value)}
                     options={audioOutputDevices.map(device => ({
                         key: device.deviceId,
                         value: device.deviceId,
-                        text: device.label
+                        header: device.label
                     }))}
+                    onChange={e => setActiveSinkId(e.target.value)}
                 />
                 :
-                <Typography>{activeOutputLabel || 'System Default Audio Output'}</Typography>
+                <Text>{activeOutputLabel || 'System Default Audio Output'}</Text>
             }
         </div>
     );

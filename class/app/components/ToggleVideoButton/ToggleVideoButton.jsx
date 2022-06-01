@@ -1,8 +1,7 @@
 import { useCallback, useRef } from 'react';
-import {
-    IconButton,
-    Tooltip
-} from 'mdc-react';
+import { Button, Tooltip } from '@fluentui/react-northstar';
+
+import Icon from 'shared/components/icon';
 
 import { useHasVideoInputDevices } from 'app/hooks/deviceHooks';
 import useLocalVideoToggle from 'app/hooks/useLocalVideoToggle';
@@ -21,16 +20,18 @@ export default function ToggleVideoButton({ disabled }) {
 
     return (
         <Tooltip
-            label={!hasVideoDevices ? 'Нет видео' : isVideoEnabled ? 'Выключить камеру' : 'Включить камеру'}
-            style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
-        >
-            <span>
-                <IconButton
-                    icon={isVideoEnabled ? 'videocam' : 'videocam_off'}
-                    disabled={!hasVideoDevices || disabled}
+            content={!hasVideoDevices ? 'Нет видео' : isVideoEnabled ? 'Выключить камеру' : 'Включить камеру'}
+            trigger={
+                <Button
+                    icon={<Icon>{isVideoEnabled ? 'videocam' : 'videocam_off'}</Icon>}
+                    iconOnly
+                    text
+                    primary={isVideoEnabled}
+                    disabledFocusable={!hasVideoDevices || disabled}
                     onClick={toggleVideo}
                 />
-            </span>
-        </Tooltip>
+            }
+            style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
+        />
     );
 }

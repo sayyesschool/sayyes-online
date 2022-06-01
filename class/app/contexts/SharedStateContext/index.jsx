@@ -12,9 +12,7 @@ export function SharedStateProvider({
     const syncDoc = useSyncDoc(token, docId);
 
     return (
-        <SharedStateContext.Provider
-            value={syncDoc}
-        >
+        <SharedStateContext.Provider value={syncDoc}>
             {children}
         </SharedStateContext.Provider>
     );

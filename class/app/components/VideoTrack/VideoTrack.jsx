@@ -25,6 +25,8 @@ export default function VideoTrack({ track, isLocal, priority }) {
         return () => {
             track.detach(element);
 
+            element.srcObject = null;
+
             if (track.setPriority && priority) {
                 // Passing `null` to setPriority will set the track's priority to that which it was published with.
                 track.setPriority(null);

@@ -1,8 +1,6 @@
-import {
-    Avatar,
-    Icon,
-    Typography
-} from 'mdc-react';
+import { Avatar, Label, Text } from '@fluentui/react-northstar';
+
+import Icon from 'shared/components/icon';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import VideoTrack from 'app/components/VideoTrack';
@@ -20,19 +18,17 @@ export default function LocalVideoPreview({ identity }) {
                     <VideoTrack track={videoTrack} isLocal />
                     :
                     <div className="local-video-preview__avatar-container">
-                        <Avatar icon={<Icon>person</Icon>} large />
+                        <Avatar name={identity} />
                     </div>
                 }
             </div>
 
             <div className="local-video-preview__identity-container">
-                <span className="local-video-preview__identity">
-                    <LocalAudioLevelIndicator />
-
-                    <Typography element="span" type="body1">
-                        {identity}
-                    </Typography>
-                </span>
+                <Label className="local-video-preview__identity"
+                    icon={<LocalAudioLevelIndicator />}
+                    content={identity}
+                    color="white"
+                />
             </div>
         </div>
     );

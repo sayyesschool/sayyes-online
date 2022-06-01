@@ -1,6 +1,6 @@
-import { isMobile, removeUndefineds } from 'app/utils';
 import { getResolution } from 'app/data/settings';
 import useAppState from 'app/hooks/useAppState';
+import { isMobile, removeUndefineds } from 'app/utils';
 
 export default function useConnectionOptions() {
     const { roomType, settings } = useAppState();

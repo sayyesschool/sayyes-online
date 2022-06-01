@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 
@@ -12,6 +12,7 @@ export default function useLocalVideoToggle() {
     } = useRoomContext();
 
     const previousDeviceIdRef = useRef();
+
     const [isPublishing, setIsPublishing] = useState(false);
 
     const videoTrack = localTracks.find(track => track.name.includes('camera'));

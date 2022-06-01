@@ -1,8 +1,5 @@
 import { useState } from 'react';
-import {
-    Button,
-    Dialog
-} from 'mdc-react';
+import { Dialog, Text } from '@fluentui/react-northstar';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import { useHasAudioInputDevices, useHasVideoInputDevices } from 'app/hooks/deviceHooks';
@@ -19,17 +16,15 @@ export default function MediaErrorDialog({ error }) {
     const { title, message } = getContent(hasAudio, hasVideo, error);
 
     return (
-        <Dialog open={isDialogOpen}>
-            <Dialog.Title>{title}</Dialog.Title>
-
-            <Dialog.Content>{message}</Dialog.Content>
-
-            <Dialog.Actions>
-                <Button onClick={() => setIsDialogDismissed(true)}>
-                    OK
-                </Button>
-            </Dialog.Actions>
-        </Dialog>
+        <Dialog
+            open={isDialogOpen}
+            header={title}
+            content={<Text>{message}</Text>}
+            confirmButton={{
+                content: 'OK',
+                onClick: () => setIsDialogDismissed(true)
+            }}
+        />
     );
 }
 

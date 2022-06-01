@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useRef } from 'react';
-import {
-    IconButton
-} from 'mdc-react';
+import { Button } from '@fluentui/react-northstar';
 
 import { useUser } from 'shared/hooks/user';
 
 import Whiteboard from 'app/lib/Whiteboard';
 import useDataTrack from 'app/hooks/useDataTrack';
+import Icon from 'shared/components/icon';
 
 import './index.scss';
 
@@ -90,14 +89,14 @@ export default function WhiteboardPage({ children, ...props }) {
             <canvas ref={canvasRef} className="whiteboard__canvas" />
 
             <div className="whiteboard__controls">
-                <IconButton
-                    icon="layers_clear"
+                <Button
+                    icon={<Icon>layers_clear</Icon>}
                     title="Очистить"
                     onClick={cleanWhiteboard}
                 />
 
-                <IconButton
-                    icon="save"
+                <Button
+                    icon={<Icon>save</Icon>}
                     title="Сохранить на диск"
                     onClick={downloadWhiteboard}
                 />

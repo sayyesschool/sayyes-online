@@ -1,10 +1,5 @@
 import Video from 'twilio-video';
-import {
-    Card,
-    Icon,
-    List,
-    Typography
-} from 'mdc-react';
+import { Header, List, Segment, Text } from '@fluentui/react-northstar';
 
 const browsers = [
     { title: 'Chrome', url: 'https://www.google.ru/chrome' },
@@ -17,26 +12,23 @@ export default function UnsupportedBrowserWarning({ children }) {
     if (!Video.isSupported) {
         return (
             <div className="unsupported-browser-warning">
-                <Card>
-                    <Card.Header
-                        graphic={<Icon>warning</Icon>}
-                        title="Ваш браузер или устройство не поддерживается"
+                <Segment>
+                    <Header
+                        content="Ваш браузер или устройство не поддерживается"
                     />
 
-                    <Card.Section primary>
-                        <Typography>Установите один из поддерживаемых браузеров:</Typography>
+                    <Text>Установите один из поддерживаемых браузеров:</Text>
 
-                        <List>
-                            {browsers.map(browser =>
-                                <List.Item
-                                    element="a"
-                                    href={browser.url}
-                                    text={browser.title}
-                                />
-                            )}
-                        </List>
-                    </Card.Section>
-                </Card>
+                    <List>
+                        {browsers.map(browser =>
+                            <List.Item
+                                as="a"
+                                href={browser.url}
+                                header={browser.title}
+                            />
+                        )}
+                    </List>
+                </Segment>
             </div>
         );
     }

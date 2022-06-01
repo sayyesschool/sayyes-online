@@ -1,14 +1,11 @@
 import { useCallback, useRef, useState } from 'react';
 import { Route, Link, useParams } from 'react-router-dom';
-import {
-    Card,
-    Dialog,
-    Icon
-} from 'mdc-react';
+import { Dialog, MenuButton, Segment } from '@fluentui/react-northstar';
 
 import { useUpdated } from 'shared/hooks/lifecycle';
 import { useScrollClassName } from 'shared/hooks/screen';
 import { useCourse } from 'shared/hooks/courses';
+import Icon from 'shared/components/icon';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
@@ -18,7 +15,6 @@ import UnitContent from 'shared/components/unit-content';
 import LessonContent from 'shared/components/lesson-content';
 import AudioPlayer from 'shared/components/audio-player';
 import VideoPlayer from 'shared/components/video-player';
-import MenuButton from 'shared/components/menu-button';
 
 import Canvas from 'app/components/Canvas';
 
@@ -134,12 +130,12 @@ export default function CoursePage({ user, sharedState, updateSharedState, onMed
 
                 <Route exact path="/courses/:courseId/units/:unitId/lessons/:lessonId">
                     {lesson?.image ?
-                        <Card>
+                        <Segment>
                             <Canvas
                                 type={user.role === 'teacher' ? 'local' : 'remote'}
                                 imageSrc={lesson.imageUrl}
                             />
-                        </Card>
+                        </Segment>
                         :
                         <LessonContent
                             course={course}
@@ -165,9 +161,7 @@ export default function CoursePage({ user, sharedState, updateSharedState, onMed
 
             <Dialog
                 open={!!video}
-                onClose={() => setVideo(null)}
-            >
-                {video &&
+                content={video &&
                     <VideoPlayer
                         id="video-player"
                         title={video.title}
@@ -178,7 +172,8 @@ export default function CoursePage({ user, sharedState, updateSharedState, onMed
                         autoPlay
                     />
                 }
-            </Dialog>
+                onClose={() => setVideo(null)}
+            />
         </div>
     );
 }

@@ -1,14 +1,8 @@
-@use '@material/dialog';
-
-.device-selection-dialog {
-    @include dialog.min-width(640px);
+.ui-dialog.device-selection-dialog {
+    width: auto;
 
     .video-input-list,
     .audio-input-list {
         margin-bottom: 1rem;
-    }
-
-    .mdc-select {
-        width: 100%;
     }
 }

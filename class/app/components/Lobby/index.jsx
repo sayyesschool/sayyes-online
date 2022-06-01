@@ -29,7 +29,7 @@ export default function Lobby({ user }) {
             }
 
             <DeviceSelectionScreen
-                name={user.firstname}
+                name={user.fullname}
             />
 
             <MediaErrorDialog

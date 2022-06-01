@@ -1,23 +1,24 @@
 import { render } from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { Provider as StoreProvider } from 'react-redux';
+import { Provider as ThemeProvider } from '@fluentui/react-northstar';
 
 import './index.scss';
 
 import store from './store';
+import theme from './theme';
 import { AppStateProvider } from './contexts/AppStateContext';
-import { SharedStateProvider } from './contexts/SharedStateContext';
 import Root from './components';
 
 render(
-    <Provider store={store}>
-        <SharedStateProvider token={TWILIO_SYNC_TOKEN} docIc={ENROLLMENT_ID}>
-            <AppStateProvider>
-                <Router basename={`/class/${ENROLLMENT_ID}`}>
+    <StoreProvider store={store}>
+        <ThemeProvider theme={theme}>
+            <Router basename={`/class/${ENROLLMENT_ID}`}>
+                <AppStateProvider>
                     <Root />
-                </Router>
-            </AppStateProvider>
-        </SharedStateProvider>
-    </Provider>,
+                </AppStateProvider>
+            </Router>
+        </ThemeProvider>
+    </StoreProvider>,
     document.getElementById('root')
 );

@@ -1,7 +1,8 @@
 import { createContext } from 'react';
 
-import useRoom from 'app/hooks/useRoom';
+import useConnectionOptions from 'app/hooks/useConnectionOptions';
 import useLocalTracks from 'app/hooks/useLocalTracks';
+import useRoom from 'app/hooks/useRoom';
 import useScreenShareToggle from 'app/hooks/useScreenShareToggle';
 import useHandleRoomDisconnectionErrors from 'app/hooks/useHandleRoomDisconnectionErrors';
 import useHandleTrackPublicationFailed from 'app/hooks/useHandleTrackPublicationFailed';
@@ -10,7 +11,6 @@ import useHandleOnDisconnect from 'app/hooks/useHandleOnDisconnect';
 export const RoomContext = createContext(null);
 
 export function RoomProvider({
-    options,
     onError = Function.prototype,
     onDisconnect = Function.prototype,
     children
@@ -19,6 +19,8 @@ export function RoomProvider({
         console.log(`ERROR: ${error.message}`, error);
         onError(error);
     }
+
+    const connectionOptions = useConnectionOptions();
 
     const {
         localTracks,
@@ -29,7 +31,7 @@ export function RoomProvider({
         removeLocalVideoTrack
     } = useLocalTracks();
 
-    const { room, isConnecting, connect } = useRoom(localTracks, onErrorCallback, options);
+    const { room, isConnecting, connect } = useRoom(localTracks, onErrorCallback, connectionOptions);
     const [isSharingScreen, toggleScreenShare] = useScreenShareToggle(room, onError);
 
     useHandleRoomDisconnectionErrors(room, onError);
@@ -42,12 +44,12 @@ export function RoomProvider({
                 room,
                 localTracks,
                 isConnecting,
+                connect,
                 onError: onErrorCallback,
                 onDisconnect,
                 getLocalVideoTrack,
                 getLocalAudioTrack,
                 getAudioAndVideoTracks,
-                connect,
                 isAcquiringLocalTracks,
                 removeLocalVideoTrack,
                 isSharingScreen,

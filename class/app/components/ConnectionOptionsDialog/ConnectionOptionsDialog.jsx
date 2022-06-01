@@ -1,10 +1,5 @@
 import { useCallback } from 'react';
-import {
-    Dialog,
-    LayoutGrid,
-    TextField,
-    Typography
-} from 'mdc-react';
+import { Dialog, Input, Text } from '@fluentui/react-northstar';
 
 import { inputLabels, RenderDimensions } from 'app/data/settings';
 import useAppState from 'app/hooks/useAppState';
@@ -39,139 +34,133 @@ export default function ConnectionOptionsDialog({ open, onClose }) {
     const isDisabled = roomState !== 'disconnected';
 
     return (
-        <Dialog open={open} onClose={onClose}>
-            <Dialog.Title>Connection Settings</Dialog.Title>
+        <Dialog
+            open={open} onClose={onClose}
+            header="Connection Settings"
+            content={<>
+                <Text hidden={!isDisabled}>These settings cannot be changed when connected to a room.</Text>
 
-            <Dialog.Content className={classes.container}>
-                <Typography hidden={!isDisabled} type="body2">These settings cannot be changed when connected to a room.</Typography>
+                <FormControl>
+                    <Text id={inputLabels.dominantSpeakerPriority}>Dominant Speaker Priority:</Text>
 
-                <LayoutGrid container spacing={2}>
-                    <LayoutGrid.Cell item sm={6} xs={12}>
-                        <FormControl>
-                            <Typography id={inputLabels.dominantSpeakerPriority}>Dominant Speaker Priority:</Typography>
+                    <Select
+                        name={inputLabels.dominantSpeakerPriority}
+                        value={withDefault(settings.dominantSpeakerPriority)}
+                        label={inputLabels.dominantSpeakerPriority}
+                        disabled={isDisabled}
+                        onChange={handleChange}
+                    >
+                        <Select.Option value="low">Low</Select.Option>
+                        <Select.Option value="standard">Standard</Select.Option>
+                        <Select.Option value="high">High</Select.Option>
+                        <Select.Option value="default">Server Default</Select.Option>
+                    </Select>
+                </FormControl>
 
-                            <Select
-                                name={inputLabels.dominantSpeakerPriority}
-                                value={withDefault(settings.dominantSpeakerPriority)}
-                                label={inputLabels.dominantSpeakerPriority}
-                                disabled={isDisabled}
-                                onChange={handleChange}
-                            >
-                                <Select.Option value="low">Low</Select.Option>
-                                <Select.Option value="standard">Standard</Select.Option>
-                                <Select.Option value="high">High</Select.Option>
-                                <Select.Option value="default">Server Default</Select.Option>
-                            </Select>
-                        </FormControl>
+                <FormControl>
+                    <Text id={inputLabels.trackSwitchOffMode}>Track Switch Off Mode:</Text>
 
-                        <FormControl>
-                            <Typography id={inputLabels.trackSwitchOffMode}>Track Switch Off Mode:</Typography>
+                    <Select
+                        name={inputLabels.trackSwitchOffMode}
+                        value={withDefault(settings.trackSwitchOffMode)}
+                        label={inputLabels.trackSwitchOffMode}
+                        disabled={isDisabled}
+                        onChange={handleChange}
+                    >
+                        <Select.Option value="predicted">Predicted</Select.Option>
+                        <Select.Option value="detected">Detected</Select.Option>
+                        <Select.Option value="disabled">Disabled</Select.Option>
+                        <Select.Option value="default">Server Default</Select.Option>
+                    </Select>
+                </FormControl>
 
-                            <Select
-                                name={inputLabels.trackSwitchOffMode}
-                                value={withDefault(settings.trackSwitchOffMode)}
-                                label={inputLabels.trackSwitchOffMode}
-                                disabled={isDisabled}
-                                onChange={handleChange}
-                            >
-                                <Select.Option value="predicted">Predicted</Select.Option>
-                                <Select.Option value="detected">Detected</Select.Option>
-                                <Select.Option value="disabled">Disabled</Select.Option>
-                                <Select.Option value="default">Server Default</Select.Option>
-                            </Select>
-                        </FormControl>
+                <FormControl>
+                    <Text id={inputLabels.bandwidthProfileMode}>Mode:</Text>
 
-                        <FormControl>
-                            <Typography id={inputLabels.bandwidthProfileMode}>Mode:</Typography>
+                    <Select
+                        name={inputLabels.bandwidthProfileMode}
+                        label={inputLabels.bandwidthProfileMode}
+                        value={withDefault(settings.bandwidthProfileMode)}
+                        disabled={isDisabled}
+                        onChange={handleChange}
+                    >
+                        <Select.Option value="grid">Grid</Select.Option>
+                        <Select.Option value="collaboration">Collaboration</Select.Option>
+                        <Select.Option value="presentation">Presentation</Select.Option>
+                        <Select.Option value="default">Server Default</Select.Option>
+                    </Select>
+                </FormControl>
 
-                            <Select
-                                name={inputLabels.bandwidthProfileMode}
-                                label={inputLabels.bandwidthProfileMode}
-                                value={withDefault(settings.bandwidthProfileMode)}
-                                disabled={isDisabled}
-                                onChange={handleChange}
-                            >
-                                <Select.Option value="grid">Grid</Select.Option>
-                                <Select.Option value="collaboration">Collaboration</Select.Option>
-                                <Select.Option value="presentation">Presentation</Select.Option>
-                                <Select.Option value="default">Server Default</Select.Option>
-                            </Select>
-                        </FormControl>
+                <FormControl>
+                    <Input
+                        id={inputLabels.maxTracks}
+                        name={inputLabels.maxTracks}
+                        value={withDefault(settings.maxTracks)}
+                        label="Max Tracks"
+                        placeholder="Leave blank for no limit"
+                        disabled={isDisabled}
+                        onChange={handleNumberChange}
+                    />
+                </FormControl>
 
-                        <FormControl>
-                            <TextField
-                                id={inputLabels.maxTracks}
-                                name={inputLabels.maxTracks}
-                                value={withDefault(settings.maxTracks)}
-                                label="Max Tracks"
-                                placeholder="Leave blank for no limit"
-                                disabled={isDisabled}
-                                onChange={handleNumberChange}
-                            />
-                        </FormControl>
+                <FormControl>
+                    <Input
+                        id={inputLabels.maxAudioBitrate}
+                        name={inputLabels.maxAudioBitrate}
+                        value={withDefault(settings.maxAudioBitrate)}
+                        label="Max Audio Bitrate"
+                        placeholder="Leave blank for no limit"
+                        disabled={isDisabled}
+                        onChange={handleNumberChange}
+                    />
+                </FormControl>
 
-                        <FormControl>
-                            <TextField
-                                id={inputLabels.maxAudioBitrate}
-                                name={inputLabels.maxAudioBitrate}
-                                value={withDefault(settings.maxAudioBitrate)}
-                                label="Max Audio Bitrate"
-                                placeholder="Leave blank for no limit"
-                                disabled={isDisabled}
-                                onChange={handleNumberChange}
-                            />
-                        </FormControl>
-                    </LayoutGrid.Cell>
+                <FormControl>
+                    <Text id={inputLabels.renderDimensionLow} className={classes.label}>Render Dimension (Low Priority):</Text>
 
-                    <LayoutGrid.Cell item sm={6} xs={12}>
-                        <FormControl>
-                            <Typography id={inputLabels.renderDimensionLow} className={classes.label}>Render Dimension (Low Priority):</Typography>
+                    <Select
+                        name={inputLabels.renderDimensionLow}
+                        value={withDefault(settings.renderDimensionLow)}
+                        label={inputLabels.renderDimensionLow}
+                        disabled={isDisabled}
+                        onChange={handleChange}
+                    >
+                        {RenderDimensionItems}
+                    </Select>
+                </FormControl>
 
-                            <Select
-                                name={inputLabels.renderDimensionLow}
-                                value={withDefault(settings.renderDimensionLow)}
-                                label={inputLabels.renderDimensionLow}
-                                disabled={isDisabled}
-                                onChange={handleChange}
-                            >
-                                {RenderDimensionItems}
-                            </Select>
-                        </FormControl>
+                <FormControl>
+                    <Text id={inputLabels.renderDimensionStandard} className={classes.label}>Render Dimension (Standard Priority):</Text>
 
-                        <FormControl>
-                            <Typography id={inputLabels.renderDimensionStandard} className={classes.label}>Render Dimension (Standard Priority):</Typography>
+                    <Select
+                        name={inputLabels.renderDimensionStandard}
+                        value={withDefault(settings.renderDimensionStandard)}
+                        label={inputLabels.renderDimensionStandard}
+                        disabled={isDisabled}
+                        onChange={handleChange}
+                    >
+                        {RenderDimensionItems}
+                    </Select>
+                </FormControl>
 
-                            <Select
-                                name={inputLabels.renderDimensionStandard}
-                                value={withDefault(settings.renderDimensionStandard)}
-                                label={inputLabels.renderDimensionStandard}
-                                disabled={isDisabled}
-                                onChange={handleChange}
-                            >
-                                {RenderDimensionItems}
-                            </Select>
-                        </FormControl>
+                <FormControl>
+                    <Text id={inputLabels.renderDimensionHigh} className={classes.label}>Render Dimension (High Priority):</Text>
 
-                        <FormControl>
-                            <Typography id={inputLabels.renderDimensionHigh} className={classes.label}>Render Dimension (High Priority):</Typography>
-
-                            <Select
-                                name={inputLabels.renderDimensionHigh}
-                                value={withDefault(settings.renderDimensionHigh)}
-                                label={inputLabels.renderDimensionHigh}
-                                disabled={isDisabled}
-                                onChange={handleChange}
-                            >
-                                {RenderDimensionItems}
-                            </Select>
-                        </FormControl>
-                    </LayoutGrid.Cell>
-                </LayoutGrid>
-            </Dialog.Content>
-
-            <DialogActions>
-                <Button onClick={onClose}>Применить</Button>
-            </DialogActions>
-        </Dialog>
+                    <Select
+                        name={inputLabels.renderDimensionHigh}
+                        value={withDefault(settings.renderDimensionHigh)}
+                        label={inputLabels.renderDimensionHigh}
+                        disabled={isDisabled}
+                        onChange={handleChange}
+                    >
+                        {RenderDimensionItems}
+                    </Select>
+                </FormControl>
+            </>}
+            confirmButton={{
+                content: 'Применить',
+                onClick: onClose
+            }}
+        />
     );
 }

@@ -1,9 +1,10 @@
-@use 'styles/variables';
-@use 'styles/normalize';
 @use 'styles/base';
-@use 'styles/material';
-@use 'mdc-react';
-@use 'plyr/src/sass/plyr.scss' with (
-    $plyr-color-main: variables.$primary-color
-);
 @use 'styles/components';
+
+:root {
+    color-scheme: light dark; /* both supported */
+}
+
+body {
+    background-color: #2d2c2d;
+}

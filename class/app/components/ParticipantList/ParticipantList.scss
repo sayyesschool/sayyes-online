@@ -4,9 +4,10 @@
     padding: 1rem;
     background: rgb(79, 83, 85);
     overflow-y: auto;
+    z-index: 1;
 
     @include breakpoint(lt-md) {
-        display: flex;
+    display: flex;
         padding: 8px;
         overflow-y: initial;
         overflow-x: auto;

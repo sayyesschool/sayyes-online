@@ -1,9 +1,5 @@
+import { Avatar, Label, Text } from '@fluentui/react-northstar';
 import classnames from 'classnames';
-import {
-    Avatar,
-    Icon,
-    Typography
-} from 'mdc-react';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import useIsTrackSwitchedOff from 'app/hooks/useIsTrackSwitchedOff';
@@ -41,26 +37,27 @@ export default function MainParticipantInfo({ participant, children }) {
             data-cy-participant={participant.identity}
         >
             <div className="main-participant-info__container">
-                <div className="main-participant-info__identity">
-                    <AudioLevelIndicator audioTrack={audioTrack} />
-
-                    <Typography variant="body1" noMargin>
+                <Label
+                    className="main-participant-info__identity"
+                    icon={<AudioLevelIndicator audioTrack={audioTrack} />}
+                    content={<>
                         {participant.name}
                         {isLocal && ' (Вы)'}
                         {screenSharePublication && ' - Экран'}
-                    </Typography>
-                </div>
+                    </>}
+                    color="white"
+                />
             </div>
 
             {(!isVideoEnabled || isVideoSwitchedOff) && (
                 <div className="main-participant-info__avatar-container">
-                    <Avatar icon={<Icon>person</Icon>} large />
+                    <Avatar name={participant.name} />
                 </div>
             )}
 
             {isParticipantReconnecting && (
                 <div className="main-participant-info__reconnecting-container">
-                    <Typography variant="body1" noMargin>Reconnecting...</Typography>
+                    <Text>Reconnecting...</Text>
                 </div>
             )}
 

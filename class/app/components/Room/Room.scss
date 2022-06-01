@@ -6,12 +6,23 @@
     height: 100vh;
     overflow-x: hidden;
     overflow-y: auto;
-    background-color: #222;
 
     &--showing-content {
         .participant-info--hide-participant {
             display: flex;
         }
+    }
+
+    .room-content {
+        margin: 0;
+    }
+
+    .room-side-panel {
+        height: calc(100% - 48px);
+    }
+
+    .room-side-panel--open + .room-content {
+        width: calc(100% - 360px);
     }
 
     .participant-list {

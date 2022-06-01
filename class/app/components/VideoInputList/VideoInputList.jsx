@@ -1,7 +1,8 @@
-import { Select, Typography } from 'mdc-react';
+import { Text } from '@fluentui/react-northstar';
+
+import FormSelect from 'shared/components/form-select';
 
 import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_VIDEO_INPUT_KEY } from 'app/constants';
-
 import useRoomContext from 'app/hooks/useRoomContext';
 import useMediaStreamTrack from 'app/hooks/useMediaStreamTrack';
 import { useVideoInputDevices } from 'app/hooks/deviceHooks';
@@ -27,25 +28,23 @@ export default function VideoInputList() {
         <div className="video-input-list">
             {localVideoTrack && (
                 <div className="video-preview">
-                    <VideoTrack isLocal track={localVideoTrack} />
+                    <VideoTrack track={localVideoTrack} isLocal />
                 </div>
             )}
 
-            <Typography type="subtitle2">Камера</Typography>
-
             {videoInputDevices.length > 1 ?
-                <Select
-                    filled
+                <FormSelect
+                    label="Камера"
                     value={localVideoInputDeviceId || ''}
-                    onChange={e => replaceTrack(e.target.value)}
                     options={videoInputDevices.map(device => ({
                         key: device.deviceId,
                         value: device.deviceId,
-                        text: device.label
+                        header: device.label
                     }))}
+                    onChange={e => replaceTrack(e.target.value)}
                 />
                 :
-                <Typography>{localVideoTrack?.mediaStreamTrack.label || 'No Local Video'}</Typography>
+                <Text>{localVideoTrack?.mediaStreamTrack.label || 'No Local Video'}</Text>
             }
         </div>
     );

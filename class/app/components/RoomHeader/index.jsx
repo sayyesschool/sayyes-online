@@ -1,11 +1,8 @@
 import { NavLink } from 'react-router-dom';
-import {
-    Button,
-    Icon,
-    IconButton,
-    TabBar, Tab,
-    TopAppBar
-} from 'mdc-react';
+import { Button, Flex, Text } from '@fluentui/react-northstar';
+
+import Icon from 'shared/components/icon';
+import Tabs from 'shared/components/tabs';
 
 import { formatTime } from 'app/utils';
 
@@ -21,8 +18,11 @@ import './index.scss';
 export default function RoomHeader({
     user,
     location,
+    isChatOpen,
     isSharingScreen,
     isFullscreen,
+    numberOfUnreadMessages,
+    onChatToggle,
     onFullscreen,
     onSync,
     onDisconnect,
@@ -36,87 +36,87 @@ export default function RoomHeader({
     const path = location.pathname.split('/')[1] || '/';
 
     return (
-        <TopAppBar className="room-header" {...props}>
-            <TopAppBar.Row>
-                <TopAppBar.Section className="room-header__text" align="start">
-                    <TopAppBar.Title>{formatTime(connectedTime)}</TopAppBar.Title>
-                </TopAppBar.Section>
+        <header className="room-header" {...props}>
+            <Flex className="room-header__text">
+                <Text>{formatTime(connectedTime)}</Text>
+            </Flex>
 
-                <TopAppBar.Section className="room-header__tabs" align="center">
-                    <TabBar
-                        value={path}
-                        align="center"
-                        minWidth
-                    >
-                        <Tab
-                            component={NavLink}
-                            to="/"
-                            value="/"
-                            icon={<Icon>video_camera_front</Icon>}
-                            label="Видео"
-                        />
+            {/* <Flex className="room-header__tabs">
+                <Tabs
+                    items={[
+                        {
+                            as: NavLink,
+                            to: '/',
+                            value: '/',
+                            icon: <Icon>video_camera_front</Icon>,
+                            content: 'Видео'
+                        },
+                        {
+                            as: NavLink,
+                            to: '/courses',
+                            value: 'courses',
+                            icon: <Icon>book</Icon>,
+                            content: 'Курс'
+                        },
+                        {
+                            as: NavLink,
+                            to: '/whiteboard',
+                            value: 'whiteboard',
+                            icon: <Icon>draw</Icon>,
+                            content: 'Доска'
+                        }
+                    ]}
+                />
+            </Flex> */}
 
-                        <Tab
-                            component={NavLink}
-                            to="/courses"
-                            value="courses"
-                            icon={<Icon>book</Icon>}
-                            label="Курс"
-                        />
+            <Flex className="room-header__actions">
+                {user.role === 'teacher' &&
+                    <Button
+                        className="sync-button"
+                        icon={<Icon>sync</Icon>}
+                        iconOnly
+                        text
+                        title="Синхронизировать"
+                        onClick={onSync}
+                    />
+                }
 
-                        <Tab
-                            component={NavLink}
-                            to="/whiteboard"
-                            value="whiteboard"
-                            icon={<Icon>draw</Icon>}
-                            label="Доска"
-                        />
-                    </TabBar>
-                </TopAppBar.Section>
+                <Button
+                    className="chat-button"
+                    title="Чат"
+                    icon={<Icon>forum</Icon>}
+                    iconOnly
+                    text
+                    primary={isChatOpen}
+                    data-count={numberOfUnreadMessages || undefined}
+                    onClick={onChatToggle}
+                />
 
-                <TopAppBar.Section className="room-header__actions" align="end">
-                    {user.role === 'teacher' &&
-                        <TopAppBar.ActionItem>
-                            <IconButton
-                                key="sync"
-                                icon="sync"
-                                onClick={onSync}
-                            />
-                        </TopAppBar.ActionItem>
-                    }
+                <ToggleAudioButton disabled={isReconnecting} />
 
-                    <TopAppBar.ActionItem>
-                        <ToggleAudioButton disabled={isReconnecting} />
-                    </TopAppBar.ActionItem>
+                <ToggleVideoButton disabled={isReconnecting} />
 
-                    <TopAppBar.ActionItem>
-                        <ToggleVideoButton disabled={isReconnecting} />
-                    </TopAppBar.ActionItem>
+                {!isSharingScreen &&
+                    <ToggleScreenShareButton disabled={isReconnecting} />
+                }
 
-                    {!isSharingScreen &&
-                        <TopAppBar.ActionItem>
-                            <ToggleScreenShareButton disabled={isReconnecting} />
-                        </TopAppBar.ActionItem>
-                    }
+                <Button
+                    className="toggle-fullscreen-button"
+                    icon={<Icon>{isFullscreen ? 'fullscreen_exit' : 'fullscreen'}</Icon>}
+                    iconOnly
+                    text
+                    title={isFullscreen ? 'Полный экран' : 'Отключить полный экран'}
+                    onClick={onFullscreen}
+                />
 
-                    <TopAppBar.ActionItem>
-                        <IconButton
-                            icon={isFullscreen ? 'fullscreen_exit' : 'fullscreen'}
-                            title={isFullscreen ? 'Полный экран' : 'Отключить полный экран'}
-                            onClick={onFullscreen}
-                        />
-                    </TopAppBar.ActionItem>
-
-                    <TopAppBar.ActionItem>
-                        <Button
-                            className="end-call-button"
-                            label="Завершить"
-                            unelevated
-                            onClick={onDisconnect}
-                        />
-                    </TopAppBar.ActionItem>
-                </TopAppBar.Section>
-            </TopAppBar.Row>
-        </TopAppBar>
+                <Button
+                    className="end-call-button"
+                    content="Завершить"
+                    primary
+                    flat
+                    onClick={onDisconnect}
+                />
+            </Flex>
+        </header>
     );
 }

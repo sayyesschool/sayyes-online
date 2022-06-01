@@ -61,5 +61,5 @@ export default function useRoom(localTracks, onError, options) {
             });
     }, [localTracks, onError]);
 
-    return { room, isConnecting, connect };
+    return { room, connect, isConnecting };
 }

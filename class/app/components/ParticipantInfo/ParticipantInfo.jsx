@@ -1,9 +1,7 @@
-import {
-    Avatar,
-    Icon,
-    Typography
-} from 'mdc-react';
+import { Avatar, Label, Text } from '@fluentui/react-northstar';
 import classnames from 'classnames';
+
+import Icon from 'shared/components/icon';
 
 import useIsTrackSwitchedOff from 'app/hooks/useIsTrackSwitchedOff';
 import usePublications from 'app/hooks/usePublications';
@@ -54,15 +52,15 @@ export default function ParticipantInfo({
                         </span>
                     }
 
-                    <span className="participant-info__identity">
-                        <AudioLevelIndicator audioTrack={audioTrack} />
-
-                        <Typography element="span" type="body1">
+                    <Label
+                        className="participant-info__identity"
+                        icon={<AudioLevelIndicator audioTrack={audioTrack} />}
+                        content={<>
                             {participant.name}
-
                             {isLocalParticipant && ' (Вы)'}
-                        </Typography>
-                    </span>
+                        </>}
+                        color="white"
+                    />
                 </div>
 
                 {isSelected &&
@@ -75,13 +73,13 @@ export default function ParticipantInfo({
             <div className="participant-info__inner-container">
                 {(!isVideoEnabled || isVideoSwitchedOff) && (
                     <div className="participant-info__avatar-container">
-                        <Avatar icon={<Icon>person</Icon>} />
+                        <Avatar name={participant.name} />
                     </div>
                 )}
 
                 {isParticipantReconnecting && (
                     <div className="participant-info__reconnecting-container">
-                        <Typography variant="body1">Reconnecting...</Typography>
+                        <Text variant="body1">Reconnecting...</Text>
                     </div>
                 )}
 

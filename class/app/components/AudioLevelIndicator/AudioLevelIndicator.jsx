@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { interval } from 'd3-timer';
 
 import useIsTrackEnabled from 'app/hooks/useIsTrackEnabled';
@@ -21,8 +21,6 @@ export function initializeAnalyser(stream) {
     audioSource.connect(analyser);
     return analyser;
 }
-
-export default React.memo(AudioLevelIndicator);
 
 function AudioLevelIndicator({ audioTrack, color = 'white' }) {
     const isTrackEnabled = useIsTrackEnabled(audioTrack);
@@ -150,3 +148,5 @@ function AudioLevelIndicator({ audioTrack, color = 'white' }) {
             </svg>
         );
 }
+
+export default memo(AudioLevelIndicator);

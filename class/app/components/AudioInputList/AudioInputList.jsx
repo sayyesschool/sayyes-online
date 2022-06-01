@@ -1,9 +1,7 @@
 import { useCallback } from 'react';
-import {
-    Layout,
-    Select,
-    Typography
-} from 'mdc-react';
+import { Flex, Text } from '@fluentui/react-northstar';
+
+import FormSelect from 'shared/components/form-select';
 
 import { SELECTED_AUDIO_INPUT_KEY } from 'app/constants';
 import { useAudioInputDevices } from 'app/hooks/deviceHooks';
@@ -26,29 +24,26 @@ export default function AudioInputList() {
 
     return (
         <div className="audio-input-list">
-            <Typography type="subtitle2">Микрофон</Typography>
+            {audioInputDevices.length > 1 ?
+                <FormSelect
+                    label={
+                        <Flex vAlign="center">
+                            Микрофон
 
-            <Layout column alignItems="center" justify="space-between">
-                {audioInputDevices.length > 1 ?
-                    <Select
-                        filled
-                        value={localAudioInputDeviceId || ''}
-                        leadingIcon={
-                            <span>
-                                <AudioLevelIndicator audioTrack={localAudioTrack} color="black" />
-                            </span>
-                        }
-                        onChange={e => replaceTrack(e.target.value)}
-                        options={audioInputDevices.map(device => ({
-                            key: device.deviceId,
-                            value: device.deviceId,
-                            text: device.label
-                        }))}
-                    />
-                    :
-                    <Typography>{localAudioTrack?.mediaStreamTrack.label || 'No Local Audio'}</Typography>
-                }
-            </Layout>
+                            <AudioLevelIndicator audioTrack={localAudioTrack} />
+                        </Flex>
+                    }
+                    value={localAudioInputDeviceId || ''}
+                    options={audioInputDevices.map(device => ({
+                        key: device.deviceId,
+                        value: device.deviceId,
+                        header: device.label
+                    }))}
+                    onChange={e => replaceTrack(e.target.value)}
+                />
+                :
+                <Text>{localAudioTrack?.mediaStreamTrack.label || 'No Local Audio'}</Text>
+            }
         </div>
     );
 }

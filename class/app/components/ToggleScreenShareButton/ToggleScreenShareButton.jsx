@@ -1,7 +1,6 @@
-import {
-    IconButton,
-    Tooltip
-} from 'mdc-react';
+import { Button, Tooltip } from '@fluentui/react-northstar';
+
+import Icon from 'shared/components/icon';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import useScreenShareParticipant from 'app/hooks/useScreenShareParticipant';
@@ -33,16 +32,17 @@ export default function ToggleScreenShareButton({ disabled }) {
 
     return (
         <Tooltip
-            label={tooltipMessage}
-            style={{ cursor: isDisabled ? 'not-allowed' : 'pointer' }}
-        >
-            <span>
-                <IconButton
-                    icon={isSharingScreen ? 'stop_screen_share' : 'screen_share'}
-                    disabled={isDisabled}
+            content={tooltipMessage}
+            trigger={
+                <Button
+                    icon={<Icon>{isSharingScreen ? 'stop_screen_share' : 'screen_share'}</Icon>}
+                    iconOnly
+                    text
+                    disabledFocusable={isDisabled}
                     onClick={toggleScreenShare}
                 />
-            </span>
-        </Tooltip>
+            }
+            style={{ cursor: isDisabled ? 'not-allowed' : 'pointer' }}
+        />
     );
 }

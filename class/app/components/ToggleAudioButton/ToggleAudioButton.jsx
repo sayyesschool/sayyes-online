@@ -1,7 +1,6 @@
-import {
-    IconButton,
-    Tooltip
-} from 'mdc-react';
+import { Button, Tooltip } from '@fluentui/react-northstar';
+
+import Icon from 'shared/components/icon';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import useLocalAudioToggle from 'app/hooks/useLocalAudioToggle';
@@ -14,16 +13,18 @@ export default function ToggleAudioButton({ disabled }) {
 
     return (
         <Tooltip
-            label={!hasAudioTrack ? 'Нет звука' : isAudioEnabled ? 'Выключить микрофон' : 'Включить микрофон'}
-            style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
-        >
-            <span>
-                <IconButton
-                    icon={isAudioEnabled ? 'mic' : 'mic_off'}
-                    disabled={!hasAudioTrack || disabled}
+            content={!hasAudioTrack ? 'Нет звука' : isAudioEnabled ? 'Выключить микрофон' : 'Включить микрофон'}
+            trigger={
+                <Button
+                    icon={<Icon>{isAudioEnabled ? 'mic' : 'mic_off'}</Icon>}
+                    iconOnly
+                    text
+                    primary={isAudioEnabled}
+                    disabledFocusable={!hasAudioTrack || disabled}
                     onClick={toggleAudioEnabled}
                 />
-            </span>
-        </Tooltip>
+            }
+            style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
+        />
     );
 }

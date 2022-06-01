@@ -1,35 +1,35 @@
-import {
-    Button,
-    Dialog
-} from 'mdc-react';
+import { Dialog } from '@fluentui/react-northstar';
 
-import enhanceMessage from './enhanceMessage';
+import Icon from 'shared/components/icon';
 
-function ErrorDialog({ error, onClose }) {
-    const { message, code } = error || {};
-    const enhancedMessage = enhanceMessage(message, code);
-
+export default function ErrorDialog({ error = {}, onClose }) {
     return (
-        <Dialog open={error !== null} onClose={() => dismissError()}>
-            <Dialog.Title>ERROR</Dialog.Title>
+        <Dialog
+            open={error !== null}
+            header="Ошибка"
+            headerAction={{
+                icon: <Icon name="close" />,
+                title: 'Закрыть',
+                onClick: onClose
+            }}
+            content={error && <>
+                {getMessage(error)}
 
-            <Dialog.Content>
-                {enhancedMessage}
-
-                {Boolean(code) && (
+                {Boolean(error.code) && (
                     <pre>
-                        <code>Error Code: {code}</code>
+                        <code>Error Code: {error.code}</code>
                     </pre>
                 )}
-            </Dialog.Content>
-
-            <Dialog.Actions>
-                <Button onClick={onClose} autoFocus>
-                    OK
-                </Button>
-            </Dialog.Actions>
-        </Dialog>
+            </>}
+        />
     );
 }
 
-export default ErrorDialog;
+function getMessage({ code, message = '' }) {
+    switch (code) {
+        case 20101: // Invalid token error
+            return message + '. Please make sure you are using the correct credentials.';
+        default:
+            return message;
+    }
+}

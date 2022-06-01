@@ -1,56 +1,32 @@
-@use '@material/button';
-@use '@material/icon-button';
-@use '@material/tab';
-@use '@material/tab-indicator';
-@use '@material/theme';
-
 .room-header {
-    background-color: #222;
+    height: 48px;
+    display: flex;
+    padding: 0 1rem;
+    justify-content: space-between;
+    align-items: center;
     box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
 
-    .mdc-top-app-bar__row {
-        height: 48px;
-    }
-
-    .mdc-top-app-bar__section {
+    &__text,
+    &__tabs,
+    &__actions {
         flex: 1;
+    }
 
-        &--align-center {
-            justify-content: center;
+    &__tabs {
+        justify-content: center;
+
+        .ui-menu {
+            border: none;
         }
-
-        &--align-end {
-            flex-shrink: 0;
-        }
     }
 
-    .mdc-top-app-bar__title {
-        @include theme.property(color, text-secondary-on-dark);
-        padding-left: 0;
-    }
-
-    .mdc-top-app-bar__action-item {
-        margin: 4px;
-    }
-
-    .mdc-icon-button {
-        @include icon-button.ink-color(text-secondary-on-dark);
+    &__actions {
+        flex-shrink: 0;
+        justify-content: flex-end;
     }
 
     .end-call-button {
-        @include button.filled-accessible(firebrick);
-    }
-
-    .mdc-tab {
-        @include tab.icon-color(text-secondary-on-dark);
-        @include tab.text-label-color(text-secondary-on-dark);
-        @include tab.states-color(text-secondary-on-dark);
-        @include tab.active-icon-color(text-primary-on-dark);
-        @include tab.active-text-label-color(text-primary-on-dark);
-        @include tab.active-states-color(text-primary-on-dark);
-    
-        .mdc-tab-indicator {
-            @include tab-indicator.underline-color(on-primary);
-        }
+        margin-left: .5rem;
+        background-color: firebrick;
     }
 }

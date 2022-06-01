@@ -1,24 +1,28 @@
-import useAppState from 'app/hooks/useAppState';
-import useConnectionOptions from 'app/hooks/useConnectionOptions';
+import { useCallback } from 'react';
+
 import { RoomProvider } from 'app/contexts/RoomContext';
+import useAppState from 'app/hooks/useAppState';
 import App from 'app/components/App';
 import ErrorDialog from 'app/components/ErrorDialog';
 import UnsupportedBrowserWarning from 'app/components/UnsupportedBrowserWarning';
 
 export default function Root() {
     const { error, setError } = useAppState();
-    const connectionOptions = useConnectionOptions();
+
+    const handleClose = useCallback(() => {
+        setError(null);
+    }, []);
 
     return (
         <UnsupportedBrowserWarning>
-            <RoomProvider options={connectionOptions} onError={setError}>
+            <RoomProvider onError={setError}>
                 <App />
-
-                <ErrorDialog
-                    error={error}
-                    onClose={() => setError(null)}
-                />
             </RoomProvider>
+
+            <ErrorDialog
+                error={error}
+                onClose={handleClose}
+            />
         </UnsupportedBrowserWarning>
     );
 }

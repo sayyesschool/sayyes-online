@@ -9,9 +9,9 @@ export const AppStateContext = createContext(null);
 
 export function AppStateProvider({ children }) {
     const [activeSinkId, setActiveSinkId] = useActiveSinkId();
-    const [error, setError] = useState(null);
-    const [isFetching, setIsFetching] = useState(false);
     const [settings, dispatchSetting] = useReducer(settingsReducer, initialSettings);
+    const [isFetching, setIsFetching] = useState(false);
+    const [error, setError] = useState(null);
 
     return (
         <AppStateContext.Provider

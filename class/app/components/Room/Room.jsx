@@ -1,11 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, Route } from 'react-router-dom';
-import {
-    Icon,
-    FAB
-} from 'mdc-react';
 import classnames from 'classnames';
 
+import { useBoolean } from 'shared/hooks/state';
 import { useFullScreen } from 'shared/hooks/screen';
 
 import useRoomContext from 'app/hooks/useRoomContext';
@@ -13,15 +10,15 @@ import useSharedState from 'app/hooks/useSharedState';
 import useLocalAudio from 'app/hooks/useLocalAudio';
 import useParticipants from 'app/hooks/useParticipants';
 
-import RoomHeader from 'app/components/RoomHeader';
-import RoomContent from 'app/components/RoomContent';
-import RoomSideSheet from 'app/components/RoomSideSheet';
-import ScreenShareSnackbar from 'app/components/ScreenShareSnackbar';
-import Chat from 'shared/components/chat';
+import Chat from 'app/components/Chat';
+import Course from 'app/components/Course';
+import Courses from 'app/components/Courses';
 import MainParticipant from 'app/components/MainParticipant';
 import ParticipantList from 'app/components/ParticipantList';
-import Courses from 'app/components/Courses';
-import Course from 'app/components/Course';
+import RoomHeader from 'app/components/RoomHeader';
+import RoomContent from 'app/components/RoomContent';
+import RoomSidePanel from 'app/components/RoomSidePanel';
+import ScreenShareAlert from 'app/components/ScreenShareAlert';
 import Whiteboard from 'app/components/Whiteboard';
 
 export default function Room({ user, enrollment }) {
@@ -33,7 +30,7 @@ export default function Room({ user, enrollment }) {
     const [localAudio, setLocalAudioEnabled] = useLocalAudio();
     const [isFullscreen, toggleFullscreen] = useFullScreen(rootRef);
     const [shouldBeUnmuted, setShouldBeUnmuted] = useState();
-    const [isChatOpen, setChatOpen] = useState(false);
+    const [isChatOpen, toggleChatOpen] = useBoolean(false);
     const [numberOfUnreadMessages, setNumberOfUnreadMessages] = useState();
 
     useEffect(() => {
@@ -96,23 +93,27 @@ export default function Room({ user, enrollment }) {
             <RoomHeader
                 user={user}
                 location={location}
+                isChatOpen={isChatOpen}
                 isSharingScreen={isSharingScreen}
                 isFullscreen={isFullscreen}
+                numberOfUnreadMessages={numberOfUnreadMessages}
+                onChatToggle={toggleChatOpen}
                 onFullscreen={toggleFullscreen}
                 onSync={handleSync}
                 onDisconnect={handleDisconnect}
             />
 
-            <RoomSideSheet
+            <RoomSidePanel
+                title="Чат"
                 open={isChatOpen}
-                onClose={() => setChatOpen(false)}
+                onClose={() => toggleChatOpen(false)}
             >
                 <Chat
                     name={enrollment.id}
                     user={user}
                     onConnected={handleChatConnected}
                 />
-            </RoomSideSheet>
+            </RoomSidePanel>
 
             <RoomContent>
                 <Route exact path="/">
@@ -144,21 +145,13 @@ export default function Room({ user, enrollment }) {
                 </Route>
 
                 <ParticipantList />
-
-                <ScreenShareSnackbar
-                    open={isSharingScreen}
-                    onDisableSharing={toggleScreenShare}
-                />
             </RoomContent>
 
-            <FAB
-                className="chat-button"
-                icon={<Icon>forum</Icon>}
-                label="Чат"
-                exited={isChatOpen}
-                data-count={numberOfUnreadMessages || undefined}
-                onClick={() => setChatOpen(true)}
-            />
+            {isSharingScreen &&
+                <ScreenShareAlert
+                    onDisableSharing={toggleScreenShare}
+                />
+            }
         </div>
     );
 }

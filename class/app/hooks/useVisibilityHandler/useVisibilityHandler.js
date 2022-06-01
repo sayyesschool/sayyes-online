@@ -1,8 +1,8 @@
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
-import { isMobile } from 'app/utils';
 import useRoomContext from 'app/hooks/useRoomContext';
 import useLocalVideoToggle from 'app/hooks/useLocalVideoToggle';
+import { isMobile } from 'app/utils';
 
 /* 
   This component adds a visibilitychange handler to the document when
@@ -40,5 +40,5 @@ export default function useVisibilityHandler() {
                 document.removeEventListener('visibilitychange', handleVisibilityChange);
             };
         }
-    }, [isVideoEnabled, room, toggleVideoEnabled]);
+    }, [room, isVideoEnabled, toggleVideoEnabled]);
 }

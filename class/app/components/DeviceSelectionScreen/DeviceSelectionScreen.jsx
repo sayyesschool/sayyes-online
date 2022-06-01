@@ -1,11 +1,8 @@
-import { useCallback, useState } from 'react';
-import {
-    Button,
-    Card,
-    IconButton,
-    LayoutGrid,
-    Typography
-} from 'mdc-react';
+import { useCallback } from 'react';
+import { Button, Flex, Header } from '@fluentui/react-northstar';
+
+import { useBoolean } from 'shared/hooks/state';
+import Icon from 'shared/components/icon';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import LocalVideoPreview from 'app/components/LocalVideoPreview';
@@ -16,7 +13,7 @@ import ToggleVideoButton from 'app/components/ToggleVideoButton';
 export default function DeviceSelectionScreen({ name }) {
     const { connect, isAcquiringLocalTracks, isConnecting } = useRoomContext();
 
-    const [deviceSettingsOpen, setDeviceSettingsOpen] = useState(false);
+    const [deviceSettingsOpen, toggleDeviceSettingsOpen] = useBoolean(false);
 
     const handleConnect = useCallback(() => {
         connect(window.TWILIO_VIDEO_TOKEN);
@@ -26,51 +23,39 @@ export default function DeviceSelectionScreen({ name }) {
 
     return (
         <div className="device-selection-screen">
-            <Card outlined>
-                <LayoutGrid>
-                    <LayoutGrid.Cell span="4">
-                        <Card.Section secondary>
-                            <img src="https://static.sayes.ru/images/cat/cat-laptop.png" alt="" />
-                        </Card.Section>
-                    </LayoutGrid.Cell>
+            <Header content="Вход в класс" />
 
-                    <LayoutGrid.Cell span="8">
-                        <Card.Section primary>
-                            <Typography type="headline4">Вход в класс</Typography>
+            <LocalVideoPreview identity={name} />
 
-                            <LocalVideoPreview identity={name} />
-                        </Card.Section>
+            <Flex space="between">
+                <Flex>
+                    <ToggleAudioButton disabled={disableButtons} />
 
-                        <Card.Actions>
-                            <Card.ActionIcons>
-                                <ToggleAudioButton disabled={disableButtons} />
+                    <ToggleVideoButton disabled={disableButtons} />
 
-                                <ToggleVideoButton disabled={disableButtons} />
+                    <Button
+                        icon={<Icon>settings</Icon>}
+                        iconOnly
+                        text
+                        title="Настройки"
+                        disabled={disableButtons}
+                        onClick={toggleDeviceSettingsOpen}
+                    />
+                </Flex>
 
-                                <IconButton
-                                    icon="settings"
-                                    disabled={disableButtons}
-                                    onClick={() => setDeviceSettingsOpen(true)}
-                                />
-                            </Card.ActionIcons>
-
-                            <Card.ActionButtons>
-                                <Button
-                                    className="connect-button"
-                                    label="Присоединиться"
-                                    unelevated
-                                    disabled={disableButtons}
-                                    onClick={handleConnect}
-                                />
-                            </Card.ActionButtons>
-                        </Card.Actions>
-                    </LayoutGrid.Cell>
-                </LayoutGrid>
-            </Card>
+                <Button
+                    className="connect-button"
+                    content="Присоединиться"
+                    primary
+                    disabled={disableButtons}
+                    loading={isConnecting}
+                    onClick={handleConnect}
+                />
+            </Flex>
 
             <DeviceSelectionDialog
                 open={deviceSettingsOpen}
-                onClose={() => setDeviceSettingsOpen(false)}
+                onClose={() => toggleDeviceSettingsOpen(false)}
             />
         </div>
     );
