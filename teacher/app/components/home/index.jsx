@@ -45,7 +45,7 @@ export default function HomePage() {
     }, []);
 
     const handleCreateLesson = useCallback(data => {
-        actions.createLesson(data)
+        return actions.createLesson(data)
             .finally(() => {
                 setLesson();
                 toggleFormDialogOpen(false);
@@ -55,7 +55,7 @@ export default function HomePage() {
     const handleUpdateLesson = useCallback(data => {
         if (!lesson) return;
 
-        actions.updateLesson(lesson.id, data)
+        return actions.updateLesson(lesson.id, data)
             .finally(() => {
                 setLesson();
                 toggleFormDialogOpen(false);
@@ -65,7 +65,7 @@ export default function HomePage() {
     const handleDeleteLesson = useCallback(() => {
         if (!lesson) return;
 
-        actions.deleteLesson(lesson.id)
+        return actions.deleteLesson(lesson.id)
             .finally(() => {
                 setLesson();
                 toggleConfirmationDialogOpen(false);
