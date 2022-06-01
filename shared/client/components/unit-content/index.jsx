@@ -1,7 +1,4 @@
-import {
-    Card,
-    LayoutGrid
-} from 'mdc-react';
+import { Grid, Image, Segment, Text } from '@fluentui/react-northstar';
 
 import LessonsList from 'shared/components/lessons-list';
 
@@ -12,46 +9,34 @@ export default function UnitContent({ course, unit }) {
 
     return (
         <section className="unit-content">
-            <LayoutGrid>
-                <LayoutGrid.Cell span="8">
-                    {unit.document ?
-                        <Card>
-                            <iframe
-                                src={unit.documentUrl}
-                            />
-                        </Card>
-                        :
-                        <Card>
-                            {unit.imageUrl &&
-                                <Card.Media
-                                    imageUrl={unit.imageUrl}
-                                    wide
-                                />
-                            }
-
-                            <Card.Header
-                                title={unit.title}
-                            />
-
-                            <Card.Section
-                                dangerouslySetInnerHTML={{ __html: unit.content }}
-                                primary
-                            />
-                        </Card>
-                    }
-                </LayoutGrid.Cell>
-
-                <LayoutGrid.Cell span="4">
-                    <Card>
-                        <Card.Header title="Уроки" />
-
-                        <LessonsList
-                            unit={unit}
-                            lessons={lessons}
+            <Grid>
+                {unit.document ?
+                    <Segment>
+                        <iframe
+                            src={unit.documentUrl}
                         />
-                    </Card>
-                </LayoutGrid.Cell>
-            </LayoutGrid>
+                    </Segment>
+                    :
+                    <Segment>
+                        {unit.imageUrl &&
+                            <Image src={unit.imageUrl} alt="" />
+                        }
+
+                        <Text>{unit.title}</Text>
+
+                        <Text dangerouslySetInnerHTML={{ __html: unit.content }} />
+                    </Segment>
+                }
+
+                <Segment>
+                    <Text>Уроки</Text>
+
+                    <LessonsList
+                        unit={unit}
+                        lessons={lessons}
+                    />
+                </Segment>
+            </Grid>
         </section>
     );
 }

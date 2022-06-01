@@ -18,10 +18,6 @@
 
     .bottom-sheet__actions {
         margin: 8px;
-
-        .mdc-icon-button {
-            @include icon-button.ink-color(text-secondary-on-light);
-        }
     }
 
     &.bottom-sheet--open {

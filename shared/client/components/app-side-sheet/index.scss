@@ -1,10 +1,5 @@
-@use 'shared/styles/variables';
-@use 'mdc-react/src/side-sheet';
-
 .app-side-sheet {
-    @include side-sheet.width(360px);
-
-    &.mdc-side-sheet--dismissible {
+    &.app-side-sheet--dismissible {
         position: fixed;
         height: 100%;
     }

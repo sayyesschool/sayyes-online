@@ -1,8 +1,5 @@
 import { Link } from 'react-router-dom';
-import {
-    Avatar,
-    List
-} from 'mdc-react';
+import { Avatar, List } from '@fluentui/react-northstar';
 
 import './index.scss';
 
@@ -12,11 +9,11 @@ export default function LessonsList({ unit, lessons, onSelect }) {
             {lessons.map((lesson, index) =>
                 <List.Item
                     key={lesson.id}
-                    component={!onSelect ? Link : undefined}
+                    as={!onSelect ? Link : undefined}
                     to={!onSelect ? unit.url + `/lessons/${lesson.slug}` : undefined}
-                    leadingAvatar={<Avatar text={index + 1} />}
-                    primaryText={lesson.title}
-                    secondaryText={`${lesson.exercises.length} упражнений`}
+                    media={<Avatar text={index + 1} />}
+                    header={lesson.title}
+                    content={`${lesson.exercises.length} упражнений`}
                     onClick={onSelect && (() => onSelect(unit, lesson))}
                 />
             )}

@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { SyncClient } from 'twilio-sync';
 
 export function useSync(token) {

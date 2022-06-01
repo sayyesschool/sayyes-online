@@ -1,5 +1,7 @@
 @use 'shared/styles/variables';
 
+@use 'shared/styles/normalize';
+
 * {
     box-sizing: border-box;
 }

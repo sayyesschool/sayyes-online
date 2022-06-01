@@ -1,7 +1,7 @@
 import classnames from 'classnames';
-import {
-    IconButton
-} from 'mdc-react';
+import { Button } from '@fluentui/react-northstar';
+
+import Icon from 'shared/components/icon';
 
 import './index.scss';
 
@@ -16,8 +16,8 @@ export default function BottomSheet({ open = false, children, onClose }) {
 
             <div className="bottom-sheet__actions">
                 {onClose &&
-                    <IconButton
-                        icon="close"
+                    <Button
+                        icon={<Icon>close</Icon>}
                         onClick={onClose}
                     />
                 }

@@ -1,0 +1,6 @@
+@use 'styles/variables';
+
+@use 'plyr/src/sass/plyr.scss' with (
+    $plyr-color-main: variables.$primary-color,
+    $plyr-audio-controls-background: transparent
+);

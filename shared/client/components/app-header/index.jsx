@@ -1,8 +1,5 @@
 import { Link } from 'react-router-dom';
-import {
-    Flex,
-    Header
-} from '@fluentui/react-northstar';
+import { Flex, Header } from '@fluentui/react-northstar';
 
 // import NotificationMenu from 'shared/components/notification-menu';
 import UserMenu from 'shared/components/user-menu';

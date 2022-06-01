@@ -1,20 +1,15 @@
 import { useCallback, useRef } from 'react';
-import {
-    Avatar,
-    Button,
-    Card,
-    IconButton
-} from 'mdc-react';
+import { Button, Flex, Header, Segment, Text } from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
 import { useBoolean } from 'shared/hooks/state';
-import ExerciseContent from 'shared/components/exercise-content';
-import CommentCard from 'shared/components/comment-card';
+import ExerciseItem from 'shared/components/exercise-item';
+// import CommentCard from 'shared/components/comment-card';
 
 import './index.scss';
 
 export default function ExerciseCard({ number, user, exercise, onProgressChange }) {
-    const exerciseContent = useRef();
+    const exerciseItem = useRef();
 
     const [isCollapsed, toggleCollapsed] = useBoolean(true);
     const [isCommenting, toggleCommenting] = useBoolean(false);
@@ -23,7 +18,7 @@ export default function ExerciseCard({ number, user, exercise, onProgressChange 
     const handleSave = useCallback(() => {
         setSaving(true);
 
-        return onProgressChange(exercise, { state: exerciseContent.current.state }).then(() => setSaving(false));
+        return onProgressChange(exercise, { state: exerciseItem.current.state }).then(() => setSaving(false));
     }, []);
 
     const handleStatus = useCallback(() => {
@@ -46,51 +41,41 @@ export default function ExerciseCard({ number, user, exercise, onProgressChange 
     const classNames = classnames('exercise-card', `exercise-card--${exercise.type}`);
 
     return (
-        <Card className={classNames}>
-            <Card.PrimaryAction onClick={toggleCollapsed}>
-                <Card.Header
-                    graphic={
-                        <Avatar text={number} size="medium" />
-                    }
-                    title={exercise.title}
-                    subtitle={exercise.description}
-                    actions={[
-                        <IconButton
-                            key="toggle"
-                            icon={isCollapsed ? 'expand_more' : 'expand_less'}
-                        />
-                    ]}
+        <Segment className={classNames}>
+            <Flex onClick={toggleCollapsed}>
+                <Header
+                    content={exercise.title}
+                    description={exercise.description}
                 />
-            </Card.PrimaryAction>
+
+                <Button
+                    key="toggle"
+                    icon={isCollapsed ? 'expand_more' : 'expand_less'}
+                />
+            </Flex>
 
             {!isCollapsed &&
-                <>
-                    <Card.Section primary>
-                        <ExerciseContent
-                            ref={exerciseContent}
-                            exercise={exercise}
-                        />
-                    </Card.Section>
+                <Flex>
+                    <ExerciseItem
+                        ref={exerciseItem}
+                        exercise={exercise}
+                    />
 
                     {exercise.type !== 'text' &&
-                        <Card.Actions>
-                            <Card.Action button>
-                                <Button
-                                    label="Сохранить"
-                                    icon="save"
-                                    outlined
-                                    disabled={isSaving}
-                                    onClick={handleSave}
-                                />
-                            </Card.Action>
-                        </Card.Actions>
+                        <Button
+                            label="Сохранить"
+                            icon="save"
+                            outlined
+                            disabled={isSaving}
+                            onClick={handleSave}
+                        />
                     }
 
                     {exercise.comments?.length > 0 &&
-                        <Card.Section secondary>
-                            <Typography type="subtitle2">Комментарии</Typography>
+                        <Flex column>
+                            <Text>Комментарии</Text>
 
-                            {exercise.comments.map(comment =>
+                            {/* {exercise.comments.map(comment =>
                                 <CommentCard
                                     key={comment.id}
                                     user={user}
@@ -98,42 +83,36 @@ export default function ExerciseCard({ number, user, exercise, onProgressChange 
                                     onSave={handleUpdateComment}
                                     onDelete={handleDeleteComment}
                                 />
-                            )}
-                        </Card.Section>
+                            )} */}
+                        </Flex>
                     }
 
-                    {isCommenting &&
-                        <Card.Section secondary>
-                            <CommentCard
-                                user={user}
-                                editing
-                                onToggle={toggleCommenting}
-                                onSave={handleCreateComment}
-                            />
-                        </Card.Section>
-                    }
+                    {/* {isCommenting &&
+                        <CommentCard
+                            user={user}
+                            editing
+                            onToggle={toggleCommenting}
+                            onSave={handleCreateComment}
+                        />
+                    } */}
 
-                    <Card.Actions>
-                        {/* <Card.Action button>
-                            <Button
-                                label="Проверить"
-                                icon="done_all"
-                                outlined
-                                onClick={handleStatus}
-                            />
-                        </Card.Action> */}
+                    <Flex>
+                        {/* <Button
+                            label="Проверить"
+                            icon="done_all"
+                            outlined
+                            onClick={handleStatus}
+                        /> */}
 
-                        <Card.Action button>
-                            <Button
-                                label="Оставить комментарий"
-                                icon="comment"
-                                outlined
-                                onClick={toggleCommenting}
-                            />
-                        </Card.Action>
-                    </Card.Actions>
-                </>
+                        <Button
+                            label="Оставить комментарий"
+                            icon="comment"
+                            outlined
+                            onClick={toggleCommenting}
+                        />
+                    </Flex>
+                </Flex>
             }
-        </Card>
+        </Segment>
     );
 }

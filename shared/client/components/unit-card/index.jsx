@@ -1,8 +1,5 @@
 import { Link } from 'react-router-dom';
-import {
-    Avatar,
-    Card
-} from 'mdc-react';
+import { Card, Header, Image } from '@fluentui/react-northstar';
 
 import './index.scss';
 
@@ -10,7 +7,7 @@ export default function UnitCard({ number, unit, onSelectUnit }) {
     return (
         <Card
             className="unit-card"
-            component={!onSelectUnit ? Link : undefined}
+            as={!onSelectUnit ? Link : undefined}
             to={!onSelectUnit ? unit.url : undefined}
             onClick={onSelectUnit && (() => onSelectUnit(unit))}
         >
@@ -18,12 +15,16 @@ export default function UnitCard({ number, unit, onSelectUnit }) {
                 imageUrl={unit.imageUrl}
                 wide
             />
+            <Card.Preview>
+                <Image src={unit.imageUrl} alt="" />
+            </Card.Preview>
 
-            <Card.Header
-                graphic={<Avatar text={number} size="medium" />}
-                title={unit.title}
-                subtitle={unit.lessons && `${unit.lessons?.length} уроков`}
-            />
+            <Card.Header>
+                <Header
+                    content={unit.title}
+                    description={unit.lessons && `${unit.lessons?.length} уроков`}
+                />
+            </Card.Header>
         </Card>
     );
 }

@@ -1,18 +1,18 @@
 import { NavLink } from 'react-router-dom';
-import { Avatar, List } from 'mdc-react';
+import { Avatar, List } from '@fluentui/react-northstar';
 
-export default function CourseContents({ course }) {
+export default function UnitsList({ units }) {
     return (
-        <div className="course-contents">
+        <div className="units-list">
             <List>
-                {course.units.map((unit, index) =>
+                {units.map((unit, index) =>
                     <List.Item
                         key={unit.id}
-                        component={NavLink}
+                        as={NavLink}
                         to={unit.uri}
                         activeClassName="mdc-list-item--activated"
                         graphic={<Avatar text={index + 1} />}
-                        text={unit.title}
+                        header={unit.title}
                     />
                 )}
             </List>

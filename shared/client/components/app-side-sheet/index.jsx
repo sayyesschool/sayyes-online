@@ -1,4 +1,4 @@
-import { SideSheet } from 'mdc-react';
+import { Box } from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
 import './index.scss';
@@ -7,14 +7,11 @@ export default function AppSideSheet({ className, children, ...props }) {
     const classNames = classnames('app-side-sheet', className);
 
     return (
-        <SideSheet
+        <Box
             className={classNames}
-            dismissible
             {...props}
         >
-            <SideSheet.Content>
-                {children}
-            </SideSheet.Content>
-        </SideSheet>
+            {children}
+        </Box>
     );
 }

@@ -1,32 +1,29 @@
 import { Link } from 'react-router-dom';
-import {
-    Card,
-    LayoutGrid
-} from 'mdc-react';
+import { Card, Grid, Image, Text } from '@fluentui/react-northstar';
 
 export default function CoursesGrid({ courses }) {
     return (
-        <LayoutGrid className="courses-grid">
+        <Grid className="courses-grid">
             {courses.map(course =>
-                <LayoutGrid.Cell key={course.id} span="4">
-                    <Card>
-                        <Card.PrimaryAction
-                            component={Link}
-                            to={course.uri}
-                        >
-                            <Card.Media
-                                imageUrl={course.imageUrl}
-                                wide
-                            />
+                <Card
+                    key={course.id}
+                    as={Link}
+                    to={course.uri}
+                >
+                    <Card.Preview>
+                        <Image
+                            src={course.imageUrl}
+                            alt=""
+                        />
+                    </Card.Preview>
 
-                            <Card.Header
-                                title={course.title}
-                                subtitle={course.subtitle}
-                            />
-                        </Card.PrimaryAction>
-                    </Card>
-                </LayoutGrid.Cell>
+
+                    <Card.Header>
+                        <Text>{course.title}</Text>
+                        <Text>{course.subtitle}</Text>
+                    </Card.Header>
+                </Card>
             )}
-        </LayoutGrid>
+        </Grid>
     );
 }
