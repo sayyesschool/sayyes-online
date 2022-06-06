@@ -26,6 +26,11 @@ export const exerciseTypeMenuItems = [
     // },
     {
         key: 'divider',
+        content: 'Разделитель',
+        value: 'divider'
+    },
+    {
+        key: '_divider',
         kind: 'divider',
     },
     {

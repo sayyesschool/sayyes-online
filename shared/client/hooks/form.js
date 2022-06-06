@@ -227,7 +227,7 @@ function isObjectField(data, name) {
     const [key] = name.split('.');
     const value = data[key]?.value;
 
-    return typeof value === 'object';
+    return typeof value === 'object' && value !== null;
 }
 
 function updateArrayField(data, name, value) {

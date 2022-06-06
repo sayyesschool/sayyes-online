@@ -1,11 +1,15 @@
 .exercise-item {
+    + .exercise-item {
+        margin-bottom: 1rem;
+    }
+
     .exercise-item__item + .exercise-item__item {
         margin-top: .5rem;
     }
 
     .audio-content,
     .video-content {
-        margin-bottom: 1rem;
+        
     }
 
     .text-content {
@@ -24,24 +28,10 @@
         }
     }
 
-    &--image {
-        img {
-            border-radius: 4px;
-        }
-        
-        figure {
-            margin: auto;
-
-            figcaption {
-                margin-top: 4px;
-            }
-        }
-    }
-
-    &--images {
-        .ui-carousel__item {
-            width: 100%;
-        }
+    &--audio {
+        border: 1px solid rgba(0, 0, 0, .12);
+        border-radius: 4px;
+        padding: 4px;
     }
 
     &--boolean,
@@ -61,6 +51,10 @@
         .ui-checkbox {
             display: flex;
         }
+    }
+
+    &--divider {
+        padding: 1rem 0;
     }
 
     &--essay {
@@ -83,6 +77,26 @@
             position: absolute;
             top: 0;
             right: 0
+        }
+    }
+
+    &--image {
+        img {
+            border-radius: 4px;
+        }
+        
+        figure {
+            margin: auto;
+
+            figcaption {
+                margin-top: 4px;
+            }
+        }
+    }
+
+    &--images {
+        .ui-carousel__item {
+            width: 100%;
         }
     }
 

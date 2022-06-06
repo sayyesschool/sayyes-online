@@ -247,9 +247,9 @@ export const courseReducer = createReducer(null, {
     [createLesson]: (state, action) => ({
         ...state,
         lessons: state.lessons.concat(action.data),
-        units: state.units.map(unit => unit.id !== action.data.unit ? unit : {
+        units: state.units.map(unit => unit.id !== action.data.unitId ? unit : {
             ...unit,
-            lessons: unit.lessons.concat(action.data.id)
+            _lessons: unit._lessons.concat(action.data.id)
         })
     }),
     [updateLesson]: (state, action) => ({
@@ -262,11 +262,11 @@ export const courseReducer = createReducer(null, {
     [deleteLesson]: (state, action) => ({
         ...state,
         lessons: state.lessons.filter(lesson => lesson.id !== action.data.id),
-        units: state.units.map(unit => unit.id !== action.data.unit ? unit : {
+        units: state.units.map(unit => unit.id !== action.data.unitId ? unit : {
             ...unit,
-            lessons: unit.lessons.filter(id => id !== action.data.id)
+            _lessons: unit._lessons.filter(id => id !== action.data.id)
         }),
-        exercises: state.exercises.filter(exercise => exercise.lesson !== action.data.id)
+        exercises: state.exercises.filter(exercise => exercise.lessonId !== action.data.id)
     }),
 
     [getExercise]: (state, action) => ({
@@ -276,9 +276,9 @@ export const courseReducer = createReducer(null, {
     [createExercise]: (state, action) => ({
         ...state,
         exercises: state.exercises.concat(action.data),
-        lessons: state.lessons.map(lesson => lesson.id !== action.data.lesson ? lesson : {
+        lessons: state.lessons.map(lesson => lesson.id !== action.data.lessonId ? lesson : {
             ...lesson,
-            exercises: lesson.exercises.concat(action.data.id)
+            _exercises: lesson._exercises.concat(action.data.id)
         })
     }),
     [updateExercise]: (state, action) => ({
@@ -293,7 +293,7 @@ export const courseReducer = createReducer(null, {
         exercises: state.exercises.filter(exercise => exercise.id !== action.data.id),
         lessons: state.lessons.map(lesson => lesson.id !== action.data.lesson ? lesson : {
             ...lesson,
-            exercises: lesson.exercises.filter(id => id !== action.data.id)
+            _exercises: lesson._exercises.filter(id => id !== action.data.id)
         })
     }),
     [updateExerciseProgress]: (state, action) => ({
