@@ -1,6 +1,6 @@
 import { useForm } from 'shared/hooks/form';
 import Form from 'shared/components/form';
-import FormSelect from 'shared/components/form-select';
+import FormDropdown from 'shared/components/form-dropdown';
 import FormTextArea from 'shared/components/form-textarea';
 
 const defaultExercise = {
@@ -9,38 +9,36 @@ const defaultExercise = {
 };
 
 const titleOptions = [
-    'Writing',
-    'Listening',
-    'Reading',
-    'Practice',
-    'Figure it out',
+    'Before you begin',
+    'Getting started',
     'Grammar',
     'Speaking naturally',
-    'Conversation Strategy'
+    'Building vocabulary',
+    'Listening & Speaking',
+    'Conversation strategy',
+    'Strategy plus',
+    'Reading 1',
+    'Reading 2',
+    'Listening',
+    'Writing & Speaking'
 ];
 
 export default function ExerciseForm({ exercise = defaultExercise, onSubmit, ...props }) {
     const { data, handleChange, handleSubmit } = useForm({
-        fields: [
-            {
-                name: 'title',
-                value: exercise.title || '',
-                required: true,
-                options: titleOptions
-            },
-            {
-                name: 'description',
-                value: exercise.description || ''
-            }
-        ],
+        values: {
+            'title*': exercise.title || '',
+            description: exercise.description || ''
+        },
         onSubmit
     }, [exercise.updatedAt]);
 
     return (
         <Form className="exercise-form" onSubmit={handleSubmit} noValidate {...props}>
-            <FormSelect
+            <FormDropdown
                 {...data.title}
                 label="Название"
+                items={titleOptions}
+                search
                 onChange={handleChange}
             />
 

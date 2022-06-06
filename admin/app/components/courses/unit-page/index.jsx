@@ -33,16 +33,14 @@ export default function UnitPage({ match, history }) {
     }, [course, unit]);
 
     const handleCreateLesson = useCallback(data => {
-        data.unit = unit.id;
+        data.unitId = unit.id;
 
         return actions.createLesson(course.id, data);
     }, [course, unit]);
 
     const handleDeleteLesson = useCallback(lesson => {
-        if (confirm('Удалить урок?')) {
-            return actions.deleteLesson(course.id, lesson.id);
-        }
-    }, [course, unit]);
+        return actions.deleteLesson(course.id, lesson.id);
+    }, [course]);
 
     if (!unit) return <LoadingIndicator />;
 

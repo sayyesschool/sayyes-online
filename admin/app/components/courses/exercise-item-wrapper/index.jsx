@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { Button, MenuButton } from '@fluentui/react-northstar';
+import classnames from 'classnames';
 
 import Icon from 'shared/components/material-icon';
 
@@ -60,7 +61,9 @@ export default function ExerciseItemWrapper({ index, item, editing, isFirst, isL
     }, [index, onMove]);
 
     return (
-        <div id={item.id} className="exercise-item-wrapper">
+        <div id={item.id} className={classnames('exercise-item-wrapper', {
+            'exercise-item-wrapper--editing': editing
+        })}>
             {editing ?
                 <ExerciseItemForm
                     id="exercise-item-form"
@@ -71,6 +74,7 @@ export default function ExerciseItemWrapper({ index, item, editing, isFirst, isL
                 :
                 <>
                     <ExerciseItem
+                        id={undefined}
                         item={item}
                     />
 
@@ -78,6 +82,7 @@ export default function ExerciseItemWrapper({ index, item, editing, isFirst, isL
                         className="exercise-item-wrapper__menu-button"
                         trigger={
                             <Button
+                                size="small"
                                 icon={<Icon>more_vert</Icon>}
                                 iconOnly
                                 text

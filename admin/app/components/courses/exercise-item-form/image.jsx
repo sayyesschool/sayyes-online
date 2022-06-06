@@ -13,7 +13,7 @@ import { useFileInput } from 'shared/hooks/file';
 function ExerciseImageItem({ item }, ref) {
     const inputRef = useRef();
 
-    const { file, pick } = useFileInput({ accept: 'image/jpeg,image/png,image/jpeg' });
+    const { file, pick } = useFileInput({ accept: 'image/jpeg,image/png,image/jpeg,image/webp' });
 
     useImperativeHandle(ref, () => ({
         get data() {

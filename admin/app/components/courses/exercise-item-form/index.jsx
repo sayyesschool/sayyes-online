@@ -6,6 +6,7 @@ import Icon from 'shared/components/material-icon';
 import AudioItem from './audio';
 import BooleanItem from './boolean';
 import ChoiceItem from './choice';
+import DividerItem from './divider';
 import EssayItem from './essay';
 import FIBItem from './fib';
 import ImageItem from './image';
@@ -19,6 +20,7 @@ const Components = {
     audio: AudioItem,
     boolean: BooleanItem,
     choice: ChoiceItem,
+    divider: DividerItem,
     essay: EssayItem,
     fib: FIBItem,
     image: ImageItem,
@@ -31,6 +33,7 @@ const labelsByType = {
     audio: 'Аудио',
     boolean: 'Да/Нет',
     choice: 'Выбор',
+    divider: 'Разделитель',
     essay: 'Эссе',
     fib: 'Заполнить пробелы',
     image: 'Изображение',
@@ -63,7 +66,7 @@ export default function ExerciseItemForm({ item = defaultItem, onCancel, onSubmi
     }, []);
 
     return (
-        <form className={`exercise-item-form exercise-item-form--${item.type}`} onSubmit={handleSubmit} {...props}>
+        <form id={item.id} className={`exercise-item-form exercise-item-form--${item.type}`} onSubmit={handleSubmit} {...props}>
             <Flex space="between" vAlign="center" styles={{ paddingLeft: '.5rem' }}>
                 <Text>{labelsByType[item.type]}</Text>
 

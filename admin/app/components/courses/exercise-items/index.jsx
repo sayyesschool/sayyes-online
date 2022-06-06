@@ -89,15 +89,17 @@ export default function ExerciseItems({ exercise, onCreate, onUpdate, onDelete, 
             )}
 
             <MenuButton
+                className="new-item-button"
                 trigger={
                     <Button
                         icon={<Icon>add</Icon>}
-                        content="Добавить элемент"
+                        title="Добавить элемент"
+                        iconOnly
                         flat
-                        tinted
                     />
                 }
                 menu={exerciseTypeMenuItems}
+                align="center"
                 onMenuItemClick={handleCreate}
             />
 

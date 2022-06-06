@@ -33,8 +33,8 @@ export default function LessonPage({ match, history }) {
     }, [course, unit, lesson]);
 
     const handleCreateExercise = useCallback(data => {
-        data.unit = unit.id;
-        data.lesson = lesson.id;
+        data.unitId = unit.id;
+        data.lessonId = lesson.id;
 
         return actions.createExercise(course.id, data);
     }, [course, unit, lesson]);

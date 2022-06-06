@@ -1,8 +1,15 @@
 .exercise-item-wrapper {
     display: flex;
+    position: relative;
+    margin: 1rem 0;
+
+    &--editing {
+        margin-right: 0;
+    }
 
     .exercise-item {
-        width: calc(100% - 32px)
+        width: 100%;
+        transition: background-color .2s;
     }
 
     .exercise-item-wrapper__menu-button {
@@ -10,15 +17,14 @@
         transition: opacity .2s;
     }
 
-    &:hover .exercise-item-wrapper__menu-button {
-        opacity: 1;
-    }
+    &:hover {
+        .exercise-item {
+            background-color: rgb(245, 245, 245);
+            border-radius: 4px;
+        }
 
-    + .exercise-item-wrapper {
-        margin-top: 1rem;
-    }
-
-    + .ui-menubutton {
-        margin-top: 1rem;
+        .exercise-item-wrapper__menu-button {
+            opacity: 1;
+        }
     }
 }

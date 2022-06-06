@@ -10,7 +10,7 @@ const defaultLesson = {
 };
 
 export default function LessonForm({ lesson = defaultLesson, onSubmit, ...props }) {
-    const { data, setValues, handleChange, handleSubmit } = useForm({
+    const { data, handleChange, handleSubmit } = useForm({
         values: {
             'title*': lesson.title,
             'slug*': lesson.slug,
@@ -24,21 +24,18 @@ export default function LessonForm({ lesson = defaultLesson, onSubmit, ...props 
             <FormInput
                 {...data.title}
                 label="Название"
-                fluid
                 onChange={handleChange}
             />
 
             <FormInput
                 {...data.slug}
                 label="Слаг"
-                fluid
                 onChange={handleChange}
             />
 
             <FormTextArea
                 {...data.description}
                 label="Описание"
-                fluid
                 onChange={handleChange}
             />
         </Form>
