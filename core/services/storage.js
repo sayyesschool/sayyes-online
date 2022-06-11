@@ -10,7 +10,7 @@ class Storage {
             credentials: {
                 accessKeyId: process.env.YANDEX_CLOUD_ACCESS_KEY_ID,
                 secretAccessKey: process.env.YANDEX_CLOUD_SECRET_ACCESS_KEY,
-            },
+            }
         });
     }
 
@@ -25,8 +25,8 @@ class Storage {
                 path: key
             };
         }).catch(error => {
-            console.error('There was an error uploading your file: ', error.message);
-            return error;
+            error.message = `There was an error uploading your file: ${error.message}`;
+            throw error;
         });
     }
 
@@ -40,8 +40,8 @@ class Storage {
                 path: key
             };
         }).catch(error => {
-            console.error('There was an error deleting your file: ', error.message);
-            return error;
+            error.message = `There was an error deleting your file: ${error.message}`;
+            throw error;
         });
     }
 }
