@@ -1,7 +1,7 @@
 const express = require('express');
 
-const auth = require('./auth');
 const api = require('./api');
+const auth = require('./auth');
 
 module.exports = context => {
     const app = express();

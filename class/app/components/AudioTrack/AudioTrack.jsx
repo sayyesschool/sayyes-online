@@ -4,6 +4,7 @@ import useAppState from 'app/hooks/useAppState';
 
 export default function AudioTrack({ track }) {
     const { activeSinkId } = useAppState();
+
     const audioRef = useRef();
 
     useEffect(() => {

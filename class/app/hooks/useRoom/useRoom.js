@@ -4,7 +4,7 @@ import Video from 'twilio-video';
 
 import { isMobile } from 'app/utils';
 
-export default function useRoom(localTracks, onError, options) {
+export default function useRoom(localTracks, options, onError) {
     const optionsRef = useRef(options);
     const [room, setRoom] = useState(new EventEmitter());
     const [isConnecting, setIsConnecting] = useState(false);
@@ -61,5 +61,9 @@ export default function useRoom(localTracks, onError, options) {
             });
     }, [localTracks, onError]);
 
-    return { room, connect, isConnecting };
+    const disconnect = useCallback(() => {
+        room.disconnect();
+    }, [room]);
+
+    return { room, connect, disconnect, isConnecting };
 }

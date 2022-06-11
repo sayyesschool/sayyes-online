@@ -85,10 +85,10 @@ export default function RoomHeader({
                     className="chat-button"
                     title="Чат"
                     icon={<Icon>forum</Icon>}
-                    iconOnly
-                    text
                     primary={isChatOpen}
                     data-count={numberOfUnreadMessages || undefined}
+                    iconOnly
+                    text
                     onClick={onChatToggle}
                 />
 

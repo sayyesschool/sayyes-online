@@ -1,12 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { Button, Chat as FluentChat } from '@fluentui/react-northstar';
-import classnames from 'classnames';
 import moment from 'moment';
 
 import { useChat } from 'shared/hooks/twilio';
 import Icon from 'shared/components/icon';
 import LoadingIndicator from 'shared/components/loading-indicator';
-import TextArea from 'shared/components/text-area';
+import TextArea from 'shared/components/textarea';
 
 import './index.scss';
 
@@ -14,13 +13,9 @@ export default function Chat({ name, user, onConnected }) {
     const chat = useChat(window.TWILIO_CHAT_TOKEN, user.id);
 
     const mainRef = useRef();
-    const inputRef = useRef();
     const audioRef = useRef();
-
-    const [message, setMessage] = useState();
-    const [isMenuOpen, setMenuOpen] = useState(false);
-    const [anchor, setAnchor] = useState();
-    const [needsToScroll, setNeedsToScroll] = useState();
+    const sendButtonRef = useRef();
+    const textAreaRef = useRef();
 
     useEffect(() => {
         chat.connect({
@@ -33,19 +28,11 @@ export default function Chat({ name, user, onConnected }) {
     }, [name]);
 
     useEffect(() => {
-        if (needsToScroll) {
-            const timeoutId = setTimeout(() => {
-                const mainElement = mainRef.current;
-
-                mainElement.scrollTop = mainElement.scrollHeight - mainElement.clientHeight;
-
-                clearTimeout(timeoutId);
-            }, 0);
-        }
-    }, [needsToScroll]);
+        mainRef.current?.scrollTo(0, mainRef.current?.scrollHeight);
+    }, [chat?.messages]);
 
     const handleConnected = useCallback(channel => {
-        audioRef.current = new Audio('https://static.sayyesonline.ru/assets/audios/chat-new-message.mp3');
+        audioRef.current = new Audio('http://static.sayyesonline.ru/assets/audios/chat-new-message.mp3');
         onConnected(channel);
     }, [onConnected]);
 
@@ -53,45 +40,31 @@ export default function Chat({ name, user, onConnected }) {
         if (message.isRemote) {
             audioRef.current?.play();
         }
-
-        const needsToScroll = (Math.trunc(mainRef.current.scrollTop) + mainRef.current.clientHeight) === mainRef.current.scrollHeight;
-
-        setNeedsToScroll(needsToScroll);
     }, []);
 
     const handleSubmit = useCallback(event => {
         event.preventDefault();
 
-        if (!inputRef.current.value) return;
+        if (!textAreaRef.current.value) return;
 
-        chat.sendMessage(inputRef.current.value);
+        chat.sendMessage(textAreaRef.current.value);
 
-        inputRef.current.value = '';
+        textAreaRef.current.value = '';
+        textAreaRef.current.style.height = '32px';
+        textAreaRef.current.focus();
     }, [chat]);
 
-    const handleDelete = useCallback(event => {
-        setMessage(null);
+    const handleDelete = useCallback(message => {
         chat.deleteMessage(message);
-    }, [chat, message]);
+    }, [chat]);
 
-    const handleKeyPress = useCallback(() => {
+    const handleKeyPress = useCallback(event => {
         //onTyping();
-    }, []);
 
-    const handleContextMenu = useCallback((event, message) => {
-        event.stopPropagation();
-        event.preventDefault();
-
-        if (user.id !== message.author) return;
-
-        setMessage(message);
-        setAnchor(event.currentTarget);
-        setMenuOpen(true);
-    }, [user]);
-
-    const handleMenuClose = useCallback(event => {
-        setMenuOpen(false);
-    }, []);
+        if (event.key === 'Enter' && !event.shiftKey) {
+            return handleSubmit(event);
+        }
+    }, [handleSubmit]);
 
     if (!chat.messages) return <LoadingIndicator />;
 
@@ -99,9 +72,10 @@ export default function Chat({ name, user, onConnected }) {
         <article className="chat">
             <section ref={mainRef} className="chat__main">
                 <FluentChat
-                    items={chat.messages.map(message => ({
+                    items={chat.messages.map((message, index, messages) => ({
                         key: message.id,
-                        contentPosition: message.author === user.id ? 'start' : 'end',
+                        contentPosition: message.author === user.id ? 'end' : 'start',
+                        attached: getAttachedValue(message, messages[index - 1], messages[index + 1]),
                         message: (
                             <FluentChat.Message
                                 id={message.id}
@@ -109,7 +83,23 @@ export default function Chat({ name, user, onConnected }) {
                                 author={message.author.fullname}
                                 content={message.body}
                                 timestamp={moment(message.datetime).format('HH:mm')}
-                                onContextMenu={event => handleContextMenu(event, message)}
+                                mine={message.author === user.id}
+                                actionMenu={message.author === user.id && {
+                                    iconOnly: true,
+                                    items: [
+                                        {
+                                            key: 'edit',
+                                            icon: <Icon name="edit" />,
+                                            title: 'Редактировать'
+                                        },
+                                        {
+                                            key: 'delete',
+                                            icon: <Icon name="delete" />,
+                                            title: 'Удалить',
+                                            onClick: () => handleDelete(message)
+                                        }
+                                    ]
+                                }}
                             />
                         )
                     }))}
@@ -119,14 +109,15 @@ export default function Chat({ name, user, onConnected }) {
             <footer className="chat__footer">
                 <form className="message-form" onSubmit={handleSubmit}>
                     <TextArea
-                        ref={inputRef}
+                        ref={textAreaRef}
                         placeholder="Сообщение"
-                        inverted
+                        defaultValue=""
                         autoResize
                         onKeyPress={handleKeyPress}
                     />
 
                     <Button
+                        ref={sendButtonRef}
                         type="submit"
                         title="Отправить"
                         icon={<Icon>send</Icon>}
@@ -137,4 +128,20 @@ export default function Chat({ name, user, onConnected }) {
             </footer>
         </article>
     );
+}
+
+function getAttachedValue(message, prevMessage, nextMessage) {
+    const author = message.author;
+
+    if (prevMessage?.author !== author && nextMessage?.author === author) {
+        return 'top';
+    }
+
+    if (prevMessage?.author === author && nextMessage?.author === author) {
+        return true;
+    }
+
+    if (nextMessage?.author !== author && prevMessage?.author === message.author) {
+        return 'bottom';
+    }
 }

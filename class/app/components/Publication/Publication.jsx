@@ -2,7 +2,7 @@ import useTrack from 'app/hooks/useTrack';
 import AudioTrack from 'app/components/AudioTrack';
 import VideoTrack from 'app/components/VideoTrack';
 
-export default function Publication({ publication, isLocalParticipant, videoOnly, videoPriority }) {
+export default function Publication({ publication, local, videoOnly, videoPriority }) {
     const track = useTrack(publication);
 
     if (!track) return null;
@@ -13,7 +13,7 @@ export default function Publication({ publication, isLocalParticipant, videoOnly
                 <VideoTrack
                     track={track}
                     priority={videoPriority}
-                    isLocal={track.name.includes('camera') && isLocalParticipant}
+                    local={track.name.includes('camera') && local}
                 />
             );
         case 'audio':

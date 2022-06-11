@@ -7,14 +7,13 @@ $participantBorderWidth: 2px;
 $totalMobileSidebarHeight: $sidebarMobileHeight + ($sidebarMobilePadding * 2) + $participantBorderWidth;
 
 .room-content {
-    height: calc(100% - 48px);
     display: grid;
     grid-template-columns: 1fr 355px;
     grid-template-rows: 100%;
 
-    @include breakpoint('sm') {
+    @include breakpoint(sm) {
         grid-template-columns: 100%;
-        grid-template-rows: calc(100% - 90px - 10px) 100px;
+        grid-template-rows: 1fr auto;
     }
 
     .main-participant-info {

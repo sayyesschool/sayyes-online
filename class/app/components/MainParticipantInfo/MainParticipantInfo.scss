@@ -5,6 +5,7 @@
     position: relative;
     display: flex;
     align-items: center;
+    z-index: 1;
 
     &__container {
         position: absolute;

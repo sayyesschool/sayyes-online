@@ -4,7 +4,7 @@ import useMediaStreamTrack from 'app/hooks/useMediaStreamTrack';
 import useVideoTrackDimensions from 'app/hooks/useVideoTrackDimensions';
 import usePictureInPicture from 'app/hooks/usePictureInPicture';
 
-export default function VideoTrack({ track, isLocal, priority }) {
+export default function VideoTrack({ track, local: isLocal, priority }) {
     const elementRef = useRef(null);
 
     const mediaStreamTrack = useMediaStreamTrack(track);

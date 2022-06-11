@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import useRoomContext from 'app/hooks/useRoomContext';
-
-export default function useDominantSpeaker() {
-    const { room } = useRoomContext();
+export default function useDominantSpeaker(room) {
     const [dominantSpeaker, setDominantSpeaker] = useState(room.dominantSpeaker);
 
     useEffect(() => {
+        if (room?.state !== 'connected') return;
+
         // Sometimes, the 'dominantSpeakerChanged' event can emit 'null', which means that
         // there is no dominant speaker. If we change the main participant when 'null' is
         // emitted, the effect can be jarring to the user. Here we ignore any 'null' values

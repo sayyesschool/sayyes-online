@@ -1,12 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import useRoomContext from 'app/hooks/useRoomContext';
-import useDominantSpeaker from 'app/hooks/useDominantSpeaker';
-
-export default function useParticipants() {
-    const { room } = useRoomContext();
-    const dominantSpeaker = useDominantSpeaker();
-    const [participants, setParticipants] = useState(Array.from(room.participants.values()));
+export default function useParticipants(room, dominantSpeaker) {
+    const [participants, setParticipants] = useState([]);
 
     // When the dominant speaker changes, they are moved to the front of the participants array.
     // This means that the most recent dominant speakers will always be near the top of the
@@ -21,6 +16,8 @@ export default function useParticipants() {
     }, [dominantSpeaker]);
 
     useEffect(() => {
+        if (room?.state !== 'connected') return;
+
         function participantConnected(participant) {
             setParticipants(prevParticipants => [...prevParticipants, participant]);
         }
@@ -28,6 +25,8 @@ export default function useParticipants() {
         function participantDisconnected(participant) {
             setParticipants(prevParticipants => prevParticipants.filter(p => p !== participant));
         }
+
+        setParticipants(Array.from(room.participants.values()));
 
         room.on('participantConnected', participantConnected);
         room.on('participantDisconnected', participantDisconnected);

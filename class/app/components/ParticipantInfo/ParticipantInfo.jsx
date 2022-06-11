@@ -3,41 +3,43 @@ import classnames from 'classnames';
 
 import Icon from 'shared/components/icon';
 
-import useIsTrackSwitchedOff from 'app/hooks/useIsTrackSwitchedOff';
 import usePublications from 'app/hooks/usePublications';
 import useTrack from 'app/hooks/useTrack';
+import useIsTrackSwitchedOff from 'app/hooks/useIsTrackSwitchedOff';
 import useParticipantIsReconnecting from 'app/hooks/useParticipantIsReconnecting';
 import AudioLevelIndicator from 'app/components/AudioLevelIndicator';
 import NetworkQualityLevel from 'app/components/NetworkQualityLevel';
 
 export default function ParticipantInfo({
     participant,
-    onClick,
-    isSelected,
+    local,
+    hidden,
+    selected,
     children,
-    isLocalParticipant,
-    hideParticipant
+    onClick
 }) {
     const publications = usePublications(participant);
+    const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
     const audioPublication = publications.find(p => p.kind === 'audio');
     const videoPublication = publications.find(p => p.trackName.includes('camera'));
-
-    const isVideoEnabled = Boolean(videoPublication);
-    const isScreenShareEnabled = publications.find(p => p.trackName.includes('screen'));
-
-    const videoTrack = useTrack(videoPublication);
-    const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack);
+    const screenSharePublication = publications.find(p => p.trackName.includes('screen'));
 
     const audioTrack = useTrack(audioPublication);
-    const isParticipantReconnecting = useParticipantIsReconnecting(participant);
+    const videoTrack = useTrack(videoPublication);
+
+    const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack);
+    const isVideoEnabled = Boolean(videoPublication);
+    const isScreenShareEnabled = Boolean(screenSharePublication);
+
+    const classNames = classnames('participant-info', {
+        'participant-info--hidden': hidden,
+        'participant-info--cursor-pointer': Boolean(onClick)
+    });
 
     return (
         <div
-            className={classnames('participant-info', {
-                'participant-info--hide-participant': hideParticipant,
-                'participant-info--cursor-pointer': Boolean(onClick),
-            })}
+            className={classNames}
             onClick={onClick}
         >
             <div className="participant-info__info-container">
@@ -57,13 +59,13 @@ export default function ParticipantInfo({
                         icon={<AudioLevelIndicator audioTrack={audioTrack} />}
                         content={<>
                             {participant.name}
-                            {isLocalParticipant && ' (Вы)'}
+                            {local && ' (Вы)'}
                         </>}
                         color="white"
                     />
                 </div>
 
-                {isSelected &&
+                {selected &&
                     <div className="participant-info__pin-icon-container">
                         <Icon>push_pin</Icon>
                     </div>
@@ -79,7 +81,7 @@ export default function ParticipantInfo({
 
                 {isParticipantReconnecting && (
                     <div className="participant-info__reconnecting-container">
-                        <Text variant="body1">Reconnecting...</Text>
+                        <Text>Reconnecting...</Text>
                     </div>
                 )}
 

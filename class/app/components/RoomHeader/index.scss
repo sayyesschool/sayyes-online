@@ -25,6 +25,35 @@
         justify-content: flex-end;
     }
 
+    .chat-button {
+        &[data-count]::after {
+            content: attr(data-count);
+    
+            position: absolute;
+
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+            
+            font-size: 10px;
+            box-sizing: border-box;
+            min-width: 16px;
+            height: 16px;
+            line-height: 1;
+            border-radius: 10px;
+    
+            transform: scale(1) translate(50%, -50%);
+            transform-origin: 100% 0%;
+    
+            background: #e71985;
+            color: white;
+            z-index: 1;
+        }
+    }
+
     .end-call-button {
         margin-left: .5rem;
         background-color: firebrick;

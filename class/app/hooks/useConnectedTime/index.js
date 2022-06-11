@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function useConnectedTime() {
     const timerRef = useRef();
@@ -13,7 +13,6 @@ export default function useConnectedTime() {
         }, 1000);
 
         return () => {
-            setTime(undefined);
             clearInterval(timerRef.current);
             timerRef.current = null;
         };

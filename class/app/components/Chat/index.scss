@@ -18,86 +18,12 @@
     }
 
     .ui-chat {
-        height: 100%;
-    }
+        height: auto;
+        min-height: 100%;
+        padding: 0.625rem;
 
-    .message-list {
-        flex: 1;
-        display: flex;
-        list-style: none;
-        flex-direction: column;
-        justify-content: flex-end;
-        margin: 0;
-        padding: 1rem;
-
-        .message {
-            display: flex;
-            position: relative;
-            align-items: flex-start;
-        
-            &__text {
-                position: relative;
-                display: inline-block;
-                //max-width: 210px;
-                background-color: white;
-                color: #414141;
-                padding: 8px 10px;
-                border-radius: 6px;
-                white-space: pre-line;
-                box-shadow: 0 1px 2px 0 rgba(0,0,0,.26);
-            }
-
-            &__time {
-                font-size: 10px;
-                color: rgba(255, 255, 255, 0.54);
-                margin-top: 4px;
-            }
-
-            // &::after {
-            //     content: "";
-            //     position: absolute;
-            //     border-top: 10px solid white;
-            //     top: -4px;
-            //     box-shadow: 0 -1px 2px -1px rgba(0,0,0,.26);
-            //     transform: rotate(135deg);
-            // }
-
-            &--local {
-                align-self: flex-end;
-
-                .message__time {
-                    margin-right: 8px;
-                }
-
-                .message__text {
-                    background-color: rgb(215, 187, 220);
-                }
-
-                // &::after {
-                //     border-right: 10px solid transparent;
-                // }
-            }
-
-            &--remote {
-                align-self: flex-start;
-
-                .message__time {
-                    margin-left: 8px;
-                }
-
-                .message__text {
-                    background-color: white;
-                    order: -1;
-                }
-            }
-
-            &--system {
-                align-self: center;
-            }
-
-            + .message {
-                margin-top: 8px;
-            }
+        &__item__message {
+            margin: 0;
         }
     }
 
@@ -105,10 +31,15 @@
         display: flex;
         align-items: flex-end;
         
-        .ui-textarea {
+        textarea {
             flex: 1;
+            padding: 8px;
             border: none;
-            border-radius: 0;
+            background: transparent;
+            outline: none;
+            resize: none;
+            box-sizing: border-box;
+            overflow: hidden;
         }
     }
 }

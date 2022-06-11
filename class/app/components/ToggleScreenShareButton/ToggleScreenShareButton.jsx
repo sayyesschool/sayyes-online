@@ -11,8 +11,8 @@ export const SHARE_IN_PROGRESS_TEXT = 'Нельзя показать экран 
 export const SHARE_NOT_SUPPORTED_TEXT = 'Показ экрана не поддерживается в этом браузере';
 
 export default function ToggleScreenShareButton({ disabled }) {
-    const { isSharingScreen, toggleScreenShare } = useRoomContext();
-    const screenShareParticipant = useScreenShareParticipant();
+    const { screenShareParticipant, isSharingScreen, toggleScreenShare } = useRoomContext();
+    //const screenShareParticipant = useScreenShareParticipant();
 
     const isScreenShareSupported = navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia;
     const disableScreenShareButton = Boolean(screenShareParticipant);

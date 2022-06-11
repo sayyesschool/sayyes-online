@@ -1,24 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import useRoomContext from 'app/hooks/useRoomContext';
-
-export default function useSelectedParticipant() {
-    const { room } = useRoomContext();
+export default function useSelectedParticipant(room) {
     const [selectedParticipant, _setSelectedParticipant] = useState(null);
 
-    const setSelectedParticipant = participant =>
-        _setSelectedParticipant(prevParticipant => (prevParticipant === participant ? null : participant));
+    const setSelectedParticipant = useCallback(participant => {
+        _setSelectedParticipant(prevParticipant => prevParticipant === participant ? null : participant);
+    }, []);
 
     useEffect(() => {
-        const onDisconnect = () => _setSelectedParticipant(null);
-        const handleParticipantDisconnected = participant =>
-            _setSelectedParticipant(prevParticipant => (prevParticipant === participant ? null : prevParticipant));
+        if (room?.state !== 'connected') return;
 
-        room.on('disconnected', onDisconnect);
+        function handleDisconnect() {
+            _setSelectedParticipant(null);
+        }
+
+        function handleParticipantDisconnected(participant) {
+            _setSelectedParticipant(prevParticipant => prevParticipant === participant ? null : prevParticipant);
+        }
+
+        room.on('disconnected', handleDisconnect);
         room.on('participantDisconnected', handleParticipantDisconnected);
 
         return () => {
-            room.off('disconnected', onDisconnect);
+            room.off('disconnected', handleDisconnect);
             room.off('participantDisconnected', handleParticipantDisconnected);
         };
     }, [room]);

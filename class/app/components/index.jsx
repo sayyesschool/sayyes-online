@@ -9,13 +9,18 @@ import UnsupportedBrowserWarning from 'app/components/UnsupportedBrowserWarning'
 export default function Root() {
     const { error, setError } = useAppState();
 
+    const handleError = useCallback(error => {
+        console.log(`ERROR: ${error.message}`, error);
+        setError(error);
+    }, []);
+
     const handleClose = useCallback(() => {
         setError(null);
     }, []);
 
     return (
         <UnsupportedBrowserWarning>
-            <RoomProvider onError={setError}>
+            <RoomProvider onError={handleError}>
                 <App />
             </RoomProvider>
 

@@ -28,7 +28,7 @@ export default function VideoInputList() {
         <div className="video-input-list">
             {localVideoTrack && (
                 <div className="video-preview">
-                    <VideoTrack track={localVideoTrack} isLocal />
+                    <VideoTrack track={localVideoTrack} local />
                 </div>
             )}
 

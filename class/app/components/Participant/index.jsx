@@ -4,25 +4,25 @@ import ParticipantTracks from 'app/components/ParticipantTracks';
 export default function Participant({
     participant,
     videoOnly,
-    enableScreenShare,
-    onClick,
-    isSelected,
-    isLocalParticipant,
-    hideParticipant,
+    local,
+    hidden,
+    selected,
+    screenShareEnabled,
+    onClick
 }) {
     return (
         <ParticipantInfo
             participant={participant}
+            local={local}
+            hidden={hidden}
+            selected={selected}
             onClick={onClick}
-            isSelected={isSelected}
-            isLocalParticipant={isLocalParticipant}
-            hideParticipant={hideParticipant}
         >
             <ParticipantTracks
                 participant={participant}
+                local={local}
                 videoOnly={videoOnly}
-                enableScreenShare={enableScreenShare}
-                isLocalParticipant={isLocalParticipant}
+                screenShareEnabled={screenShareEnabled}
             />
         </ParticipantInfo>
     );

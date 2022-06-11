@@ -1,6 +1,4 @@
-import { Avatar, Label, Text } from '@fluentui/react-northstar';
-
-import Icon from 'shared/components/icon';
+import { Avatar, Label } from '@fluentui/react-northstar';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import VideoTrack from 'app/components/VideoTrack';
@@ -15,7 +13,7 @@ export default function LocalVideoPreview({ identity }) {
         <div className="local-video-preview">
             <div className="local-video-preview__inner-container">
                 {videoTrack ?
-                    <VideoTrack track={videoTrack} isLocal />
+                    <VideoTrack track={videoTrack} local />
                     :
                     <div className="local-video-preview__avatar-container">
                         <Avatar name={identity} />

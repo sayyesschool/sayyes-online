@@ -4,22 +4,20 @@ import classnames from 'classnames';
 import useRoomContext from 'app/hooks/useRoomContext';
 import useIsTrackSwitchedOff from 'app/hooks/useIsTrackSwitchedOff';
 import usePublications from 'app/hooks/usePublications';
-import useScreenShareParticipant from 'app/hooks/useScreenShareParticipant';
 import useTrack from 'app/hooks/useTrack';
 import useParticipantIsReconnecting from 'app/hooks/useParticipantIsReconnecting';
 
 import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
 
 export default function MainParticipantInfo({ participant, children }) {
-    const { room: { localParticipant } } = useRoomContext();
-    const screenShareParticipant = useScreenShareParticipant();
+    const { localParticipant, screenShareParticipant } = useRoomContext();
     const publications = usePublications(participant);
     const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack);
     const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
+    const audioPublication = publications.find(p => p.kind === 'audio');
     const videoPublication = publications.find(p => p.trackName.includes('camera'));
     const screenSharePublication = publications.find(p => p.trackName.includes('screen'));
-    const audioPublication = publications.find(p => p.kind === 'audio');
 
     const videoTrack = useTrack(screenSharePublication || videoPublication);
     const audioTrack = useTrack(audioPublication);
@@ -27,12 +25,13 @@ export default function MainParticipantInfo({ participant, children }) {
     const isLocal = localParticipant === participant;
     const isVideoEnabled = Boolean(videoTrack);
     const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
+    const classNames = classnames('main-participant-info', {
+        'main-participant-info--fullwidth': !isRemoteParticipantScreenSharing,
+    });
 
     return (
         <div
-            className={classnames('main-participant-info', {
-                'main-participant-info--fullwidth': !isRemoteParticipantScreenSharing,
-            })}
+            className={classNames}
             data-cy-main-participant
             data-cy-participant={participant.identity}
         >

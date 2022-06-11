@@ -5,10 +5,9 @@ import classnames from 'classnames';
 import { useBoolean } from 'shared/hooks/state';
 import { useFullScreen } from 'shared/hooks/screen';
 
+import useLocalAudio from 'app/hooks/useLocalAudio';
 import useRoomContext from 'app/hooks/useRoomContext';
 import useSharedState from 'app/hooks/useSharedState';
-import useLocalAudio from 'app/hooks/useLocalAudio';
-import useParticipants from 'app/hooks/useParticipants';
 
 import Chat from 'app/components/Chat';
 import Course from 'app/components/Course';
@@ -22,16 +21,16 @@ import ScreenShareAlert from 'app/components/ScreenShareAlert';
 import Whiteboard from 'app/components/Whiteboard';
 
 export default function Room({ user, enrollment }) {
-    const rootRef = useRef();
     const location = useLocation();
-    const sharedState = useSharedState();
-    const participants = useParticipants();
-    const { room, isSharingScreen, toggleScreenShare } = useRoomContext();
     const [localAudio, setLocalAudioEnabled] = useLocalAudio();
+    const sharedState = useSharedState();
+    const { room, participants, isSharingScreen, toggleScreenShare } = useRoomContext();
+
+    const rootRef = useRef();
     const [isFullscreen, toggleFullscreen] = useFullScreen(rootRef);
-    const [shouldBeUnmuted, setShouldBeUnmuted] = useState();
     const [isChatOpen, toggleChatOpen] = useBoolean(false);
     const [numberOfUnreadMessages, setNumberOfUnreadMessages] = useState();
+    const [shouldBeUnmuted, setShouldBeUnmuted] = useState();
 
     useEffect(() => {
         const namesById = {
@@ -128,8 +127,9 @@ export default function Room({ user, enrollment }) {
 
                 <Route
                     path={[
-                        '/courses/:courseId/units/:unitId/lessons/:lessonId',
                         '/courses/:courseId/units/:unitId',
+                        '/courses/:courseId/lessons/lessons/:lessonId',
+                        '/courses/:courseId/exercises/lessons/:exerciseId',
                         '/courses/:courseId'
                     ]}
                 >
