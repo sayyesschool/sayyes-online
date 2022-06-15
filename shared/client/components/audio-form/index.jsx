@@ -18,7 +18,7 @@ export default function AudioForm({ audio = {}, path, onSubmit, ...props }) {
     const textEditorRef = useRef();
     const fileInputRef = useRef();
 
-    const [data, handleChange, getData] = useForm({
+    const { data, handleChange, getData } = useForm({
         ...defaultAudio,
         ...audio
     }, [audio.id]);

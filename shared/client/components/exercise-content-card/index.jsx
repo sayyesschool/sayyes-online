@@ -1,12 +1,9 @@
 import { useCallback, useRef } from 'react';
-import {
-    Button,
-    Card,
-    IconButton
-} from 'mdc-react';
+import { Segment } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
-import ExerciseContent from 'shared/components/exercise-content';
+import Button from 'shared/components/button';
+import ExerciseItem from 'shared/components/exercise-item';
 
 import './index.scss';
 
@@ -37,46 +34,37 @@ export default function ExerciseContentCard({ exercise, onProgressChange }) {
     );
 
     return (
-        <Card className="exercise-content-card">
-            <Card.Header
-                overline={exercise.title}
-                title={exercise.description}
-            />
-
-            <Card.Section primary>
-                <ExerciseContent
-                    ref={exerciseContent}
+        <Segment
+            className="exercise-content-card"
+            title={exercise.title}
+            description={exercise.description}
+        >
+            {exercise.items.map(item =>
+                <ExerciseItem
+                    key={item.id}
                     exercise={exercise}
                     checked={isChecked}
                 />
-            </Card.Section>
+            )}
 
             {isSavable &&
-                <Card.Actions>
-                    <Card.Action button>
-                        <Button
-                            label="Сохранить"
-                            icon="save"
-                            outlined
-                            disabled={isSaving}
-                            onClick={handleSave}
-                        />
-                    </Card.Action>
-                </Card.Actions>
+                <Button
+                    label="Сохранить"
+                    icon="save"
+                    outlined
+                    disabled={isSaving}
+                    onClick={handleSave}
+                />
             }
 
             {isCheckable &&
-                <Card.Actions>
-                    <Card.Action button>
-                        <Button
-                            label="Проверить"
-                            icon="done_all"
-                            outlined
-                            onClick={handleCheck}
-                        />
-                    </Card.Action>
-                </Card.Actions>
+                <Button
+                    label="Проверить"
+                    icon="done_all"
+                    outlined
+                    onClick={handleCheck}
+                />
             }
-        </Card>
+        </Segment>
     );
 }

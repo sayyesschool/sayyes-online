@@ -1,25 +1,16 @@
-import {
-    Card
-} from 'mdc-react';
-
 import WeekSchedule from 'shared/components/week-schedule';
+import PageSection from 'shared/components/page-section';
 
 import './index.scss';
 
 export default function ScheduleCard({ schedule }) {
     return (
-        <Card className="schedule-card">
-            <Card.Header
-                title="Расписание"
-            />
-
+        <PageSection className="schedule-card" title="Расписание">
             {schedule?.length > 0 &&
-                <Card.Section>
-                    <WeekSchedule
-                        schedule={schedule}
-                    />
-                </Card.Section>
+                <WeekSchedule
+                    schedule={schedule}
+                />
             }
-        </Card>
+        </PageSection>
     );
 }

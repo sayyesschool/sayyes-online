@@ -2,13 +2,17 @@ import { useCallback, useState } from 'react';
 import {
     Avatar,
     Button,
-    Card
-} from 'mdc-react';
+    Flex,
+    Header,
+    Segment,
+    Text
+} from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
 import { usePosts } from 'shared/hooks/posts';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
+import Icon from 'shared/components/icon';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import EmptyState from 'shared/components/empty-state';
 import PostCard from 'shared/components/post-card';
@@ -61,34 +65,34 @@ export default function PostsFeed({ query, beforeCreate = noop }) {
 
     return (
         <div className="posts-feed">
-            {isPostFormOpen ?
-                <Card className="new-post-card">
-                    <Card.Header
-                        graphic={<Avatar src={user.imageUrl} text={user?.initials} size="medium" />}
-                        title="Новая запись"
+            <Flex space="between">
+                <Header as="h2">Записи</Header>
+
+                {!isPostFormOpen &&
+                    <Button
+                        className="new-post-button"
+                        icon={<Icon>create</Icon>}
+                        content="Новая запись"
+                        primary
+                        onClick={togglePostFormOpen}
+                    />
+                }
+            </Flex>
+
+            {isPostFormOpen &&
+                <Segment className="new-post-card">
+                    <Header as="h3">Новая запись</Header>
+
+                    <PostForm
+                        user={user}
+                        onSubmit={createPost}
                     />
 
-                    <Card.Section primary>
-                        <PostForm
-                            user={user}
-                            onSubmit={createPost}
-                        />
-                    </Card.Section>
-
-                    <Card.Actions>
-                        <Button onClick={togglePostFormOpen}>Отменить</Button>
-                        <Button type="submit" form="post-form" outlined>Сохранить</Button>
-                    </Card.Actions>
-                </Card>
-                :
-                <Card>
-                    <Card.PrimaryAction onClick={togglePostFormOpen}>
-                        <Card.Header
-                            graphic={<Avatar src={user.imageUrl} text={user?.initials} size="medium" />}
-                            subtitle="What's going on?"
-                        />
-                    </Card.PrimaryAction>
-                </Card>
+                    <Flex space="between">
+                        <Button flat onClick={togglePostFormOpen}>Отменить</Button>
+                        <Button type="submit" form="post-form" primary flat>Сохранить</Button>
+                    </Flex>
+                </Segment>
             }
 
             {posts.length > 0 ?

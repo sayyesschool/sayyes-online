@@ -1,9 +1,6 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import {
-    IconButton,
-    List
-} from 'mdc-react';
+import { Button, List } from '@fluentui/react-northstar';
 
 export default function CoursesList({ courses, onRemove }) {
     const handleRemove = useCallback((event, courseId) => {
@@ -17,14 +14,14 @@ export default function CoursesList({ courses, onRemove }) {
             {courses.map(course =>
                 <List.Item
                     key={course.id}
-                    component={Link}
+                    as={Link}
                     to={course.url}
-                    thumbnail={course.imageUrl &&
+                    media={course.imageUrl &&
                         <img src={course.imageUrl} alt="" />
                     }
-                    text={course.title}
-                    meta={onRemove &&
-                        <IconButton
+                    header={course.title}
+                    endMedia={onRemove &&
+                        <Button
                             icon="remove"
                             title="Убрать курс"
                             onClick={event => handleRemove(event, course.id)}

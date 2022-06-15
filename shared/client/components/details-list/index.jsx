@@ -10,7 +10,7 @@ export default function DetailsList({ items = [], children }) {
             {items.filter(item => item).map(item =>
                 <List.Item
                     key={item.key}
-                    media={<Icon>{item.icon}</Icon>}
+                    media={item.icon && <Icon>{item.icon}</Icon>}
                     {...item}
                 />
             )}

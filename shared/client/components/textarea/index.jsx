@@ -1,9 +1,8 @@
 import { forwardRef, useImperativeHandle, useLayoutEffect, useRef } from 'react';
-import { TextArea as FluentTextArea } from '@fluentui/react-northstar';
 
 import './index.scss';
 
-function TextArea({ minHeight = 32, autoResize, ...props }, ref) {
+function TextArea({ autoResize, minHeight = 32, ...props }, ref) {
     const elementRef = useRef();
 
     useImperativeHandle(ref, () => elementRef.current, []);
@@ -23,10 +22,10 @@ function TextArea({ minHeight = 32, autoResize, ...props }, ref) {
         element.addEventListener('input', setHeight);
 
         return () => element.removeEventListener('input', setHeight);
-    }, [autoResize]);
+    }, [autoResize, minHeight]);
 
     return (
-        <FluentTextArea
+        <textarea
             ref={elementRef}
             {...props}
         />

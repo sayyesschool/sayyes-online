@@ -40,7 +40,7 @@ export default function ExerciseChoiceItem({
         <>
             <TextContent>{item.text}</TextContent>
 
-            <List element="div">
+            <List as="div">
                 {item.items?.map(item =>
                     <List.Item
                         key={item.id}

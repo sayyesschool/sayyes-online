@@ -109,10 +109,10 @@ export default function Conversation({ name, localParticipant, remoteParticipant
                 <Avatar text={remoteParticipant.initials} />
 
                 <div className="conversation__header__text">
-                    <Typography type="subtitle2" noMargin noWrap>{remoteParticipant.fullname}</Typography>
+                    <Typography type="subtitle2" noWrap>{remoteParticipant.fullname}</Typography>
 
                     {room.time &&
-                        <Typography type="caption" noMargin noWrap>{formatTime(room.time)}</Typography>
+                        <Typography type="caption" noWrap>{formatTime(room.time)}</Typography>
                     }
                 </div>
 
@@ -151,7 +151,6 @@ export default function Conversation({ name, localParticipant, remoteParticipant
                         <Button
                             label="Войти"
                             icon={<Icon>call</Icon>}
-                            unelevated
                             disabled={room.isConnecting}
                             onClick={handleConnect}
                         />

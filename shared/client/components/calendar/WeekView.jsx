@@ -68,7 +68,7 @@ export default function WeekView({ eventsByDate }) {
                             'calendar__day--today': date.isSame(todayRef.current) && 'today'
                         })}
                     >
-                        <Text className="calendar__day-name" element="div" type="overline">{date.format('dd')}, {date.date()}</Text>
+                        <Text className="calendar__day-name" as="div" type="overline">{date.format('dd')}, {date.date()}</Text>
 
                         <div className="calendar__day-events">
                             {eventsByDate.has(date.toDate().toLocaleDateString()) &&

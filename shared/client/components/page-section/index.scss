@@ -1,9 +1,20 @@
 .page-section {
     &.ui-segment {
         padding: 0;
-        border: 1px solid rgba(0, 0, 0, .12);
         border-radius: 4px;
+    }
+
+    &--flat.ui-segment {
         box-shadow: none;
+    }
+
+    &--ghost.ui-segment {
+        border: none;
+        box-shadow: none;
+    }
+
+    &--outlined.ui-segment {
+        border: 1px solid rgba(0, 0, 0, .12);
     }
 
     &__header {
@@ -20,6 +31,8 @@
     }
 
     &__content {
+        padding: 8px 16px 16px;
+        
         > .ui-form {
             padding: 8px 16px 16px;
         }
@@ -29,11 +42,6 @@
         }
     }
 
-    &--compact.ui-segment {
-        border: none;
-    }
-
-    &--compact > &__header,
     &--compact > &__content {
         padding: 0;
     }

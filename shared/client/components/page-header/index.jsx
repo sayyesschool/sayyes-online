@@ -6,7 +6,7 @@ import Icon from 'shared/components/icon';
 
 import './index.scss';
 
-export default function PageHeader({ overline, title, description, breadcrumbs, menu, actions, className, pullContent, withTabs, children }) {
+export default function PageHeader({ overline, title, description, breadcrumbs, menu, actions, toolbar, className, pullContent, withTabs, children }) {
     const classNames = classnames('page-header', {
         'page-header--pull-content': pullContent,
         'page-header--with-tabs': withTabs
@@ -41,10 +41,16 @@ export default function PageHeader({ overline, title, description, breadcrumbs, 
 
                     {actions &&
                         <div className="page-header__section page-header__section--actions">
+                            {actions}
+                        </div>
+                    }
+
+                    {toolbar &&
+                        <div className="page-header__section page-header__section--toolbar">
                             <Toolbar
-                                items={actions.filter(action => Boolean(action)).map(action => ({
-                                    ...action,
-                                    icon: action.icon && <Icon name={action.icon} />
+                                items={toolbar.filter(item => Boolean(item)).map(item => ({
+                                    ...item,
+                                    icon: item.icon && <Icon name={item.icon} />
                                 }))}
                             />
                         </div>

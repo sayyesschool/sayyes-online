@@ -1,14 +1,10 @@
 import { useCallback } from 'react';
-import {
-    Button,
-    Card
-} from 'mdc-react';
 
 import { useUser } from 'shared/hooks/user';
 import { useBoolean } from 'shared/hooks/state';
-import CommentCard from 'shared/components/comment-card';
-
-// import './index.scss';
+import Button from 'shared/components/button';
+import Comment from 'shared/components/comment';
+import PageSection from 'shared/components/page-section';
 
 export default function ExerciseComments({ exercise, onCreate, onUpdate, onDelete }) {
     const [user] = useUser();
@@ -29,44 +25,32 @@ export default function ExerciseComments({ exercise, onCreate, onUpdate, onDelet
     }, [exercise]);
 
     return (
-        <Card>
-            <Card.Header title="Комментарии" />
-
-            {exercise.comments?.length > 0 &&
-                <Card.Section primary>
-                    {exercise.comments.map(comment =>
-                        <CommentCard
-                            key={comment.id}
-                            user={user}
-                            comment={comment}
-                            onSave={handleUpdateComment}
-                            onDelete={handleDeleteComment}
-                        />
-                    )}
-                </Card.Section>
-            }
+        <PageSection title="Комментарии">
+            {exercise.comments?.map(comment =>
+                <Comment
+                    key={comment.id}
+                    user={user}
+                    comment={comment}
+                    onSave={handleUpdateComment}
+                    onDelete={handleDeleteComment}
+                />
+            )}
 
             {isCommenting ?
-                <Card.Section secondary>
-                    <CommentCard
-                        user={user}
-                        editing
-                        onToggle={toggleCommenting}
-                        onSave={handleCreateComment}
-                    />
-                </Card.Section>
+                <Comment
+                    user={user}
+                    editing
+                    onToggle={toggleCommenting}
+                    onSave={handleCreateComment}
+                />
                 :
-                <Card.Actions>
-                    <Card.Action button>
-                        <Button
-                            label="Оставить комментарий"
-                            icon="comment"
-                            outlined
-                            onClick={toggleCommenting}
-                        />
-                    </Card.Action>
-                </Card.Actions>
+                <Button
+                    label="Оставить комментарий"
+                    icon="comment"
+                    outlined
+                    onClick={toggleCommenting}
+                />
             }
-        </Card>
+        </PageSection>
     );
 }

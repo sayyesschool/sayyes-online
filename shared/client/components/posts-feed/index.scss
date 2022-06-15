@@ -1,9 +1,25 @@
 .posts-feed {
-    .new-post-card {
-        overflow: visible;
+    .new-post-button {
+        margin-bottom: 1rem;
+    }
 
-        .mdc-card__actions {
-            justify-content: space-between;
+    .post-card,
+    .new-post-card {
+        &.ui-segment {
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .post-form {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+    }
+
+    .post-card {
+        + .post-card {
+            margin-top: 1rem;
         }
     }
 

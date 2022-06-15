@@ -79,7 +79,7 @@ export default function NotificationMenu() {
                     />
                     :
                     <Card.Section primary>
-                        <Typography type="body2" noMargin>Новых уведомлений пока нет</Typography>
+                        <Typography type="body2">Новых уведомлений пока нет</Typography>
                     </Card.Section>
                 }
             </Card>

@@ -18,7 +18,7 @@ export default function VideoForm({ video = {}, path, onSubmit, ...props }) {
     const textEditorRef = useRef();
     const fileInputRef = useRef();
 
-    const [data, handleChange, getData] = useForm({
+    const { data, handleChange, getData } = useForm({
         ...defaultVideo,
         ...video
     }, [video.id]);

@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { Alert } from '@fluentui/react-northstar';
+import classnames from 'classnames';
 
 import './index.scss';
 
-export default function NotificationSnackbar({ type, open, text, onClose, ...props }) {
+export default function NotificationSnackbar({ type, open, text, className, onClose, ...props }) {
     const timeoutRef = useRef();
 
     useEffect(() => {
@@ -23,9 +24,11 @@ export default function NotificationSnackbar({ type, open, text, onClose, ...pro
         };
     }, [open]);
 
+    const classNames = classnames('notification-alert', className);
+
     return (
         <Alert
-            className="notification-alert"
+            className={classNames}
             content={text}
             visible={open}
             info={type === 'info'}

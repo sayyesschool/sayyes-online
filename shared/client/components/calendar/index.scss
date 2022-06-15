@@ -29,6 +29,14 @@
             vertical-align: middle;
             box-sizing: border-box;
             position: relative;
+
+            &:first-child {
+                border-left: none;
+            }
+
+            &:last-child {
+                border-right: none;
+            }
         }
     }
 

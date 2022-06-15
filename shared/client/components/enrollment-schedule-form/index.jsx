@@ -20,7 +20,7 @@ export default function EnrollmentScheduleForm({ enrollment, onSubmit, ...props 
     const [lessons, setLessons] = useState([]);
     const [shouldUpdateLessons, toggleShouldUpdateLessons] = useBoolean(false);
 
-    const [data, handleChange] = useForm({
+    const { data, handleChange } = useForm({
         schedule: enrollment.schedule,
         startDate: enrollment.lessons.length > 0 ? new Date() : undefined
     });

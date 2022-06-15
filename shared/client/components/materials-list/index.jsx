@@ -1,9 +1,6 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import {
-    IconButton,
-    List
-} from 'mdc-react';
+import { Button, list } from '@fluentui/react-northstar';
 
 export default function MaterialsList({ materials, onRemove }) {
     const handleRemove = useCallback((event, materialId) => {
@@ -17,12 +14,12 @@ export default function MaterialsList({ materials, onRemove }) {
             {materials.map(material =>
                 <List.Item
                     key={material.id}
-                    component={Link}
+                    as={Link}
                     to={material.uri}
-                    leadingThumbnail={<img src={material.imageUrl} />}
-                    primaryText={material.title}
-                    secondaryText={material.subtitle}
-                    meta={onRemove &&
+                    media={<img src={material.imageUrl} />}
+                    header={material.title}
+                    content={material.subtitle}
+                    endMedia={onRemove &&
                         <IconButton
                             icon="remove"
                             title="Убрать курс"

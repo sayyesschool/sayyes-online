@@ -9,9 +9,12 @@ import Icon from 'shared/components/material-icon';
 
 import './index.scss';
 
-export default function PageSection({ title, description, icon, actions, compact, className, children, ...props }) {
+export default function PageSection({ title, description, icon, actions, compact, flat, ghost, outlined, className, children, ...props }) {
     const classNames = classnames('page-section', {
-        'page-section--compact': compact
+        'page-section--compact': compact,
+        'page-section--flat': flat,
+        'page-section--ghost': ghost,
+        'page-section--outlined': outlined
     }, className);
 
     return (

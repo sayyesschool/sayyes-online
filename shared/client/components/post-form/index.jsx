@@ -1,17 +1,16 @@
 import { useCallback, useRef } from 'react';
-import {
-    TextField
-} from 'mdc-react';
 
 import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
+import FormInput from 'shared/components/form-input';
 import TextEditor from 'shared/components/text-editor';
 
 import './index.scss';
 
 export default function PostForm({ id = 'post-form', post = {}, onSubmit }) {
     const editorRef = useRef();
-    const [data, handleChange] = useForm({
+
+    const { data, handleChange } = useForm({
         title: post.title || '',
         content: post.content || ''
     });
@@ -26,11 +25,11 @@ export default function PostForm({ id = 'post-form', post = {}, onSubmit }) {
 
     return (
         <Form id={id} className="post-form" onSubmit={handleSubmit}>
-            <TextField
+            <FormInput
                 name="title"
                 value={data.title}
-                label="Название"
-                outlined
+                placeholder="Название"
+                inverted
                 onChange={handleChange}
             />
 

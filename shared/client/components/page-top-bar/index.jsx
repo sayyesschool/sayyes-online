@@ -31,11 +31,11 @@ export default function PageTopBar({ title, overline, breadcrumbs, backTo, actio
                         }
 
                         {overline &&
-                            <Typography type="overline" noMargin>{overline}</Typography>
+                            <Typography type="overline">{overline}</Typography>
                         }
 
                         {title &&
-                            <TopAppBar.Title element="h1" className="page-title">{title}</TopAppBar.Title>
+                            <TopAppBar.Title as="h1" className="page-title">{title}</TopAppBar.Title>
                         }
                     </div>
                 </TopAppBar.Section>

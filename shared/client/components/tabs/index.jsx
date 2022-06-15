@@ -15,7 +15,7 @@ export default function Tabs({ items, onChange, ...props }) {
             }))}
             underlined
             primary
-            onItemClick={handleItemClick}
+            onItemClick={onChange && handleItemClick}
             {...props}
         />
     );
