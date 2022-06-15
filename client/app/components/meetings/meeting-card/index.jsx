@@ -69,9 +69,8 @@ export default function MeetingCard({ meeting, onRegister }) {
                 {meeting.status === 'started' && meeting.isRegistered &&
                     <Card.Action button>
                         <Button
-                            element="a"
+                            as="a"
                             href={meeting.joinUrl}
-                            unelevated
                             label="Подключиться"
                         />
                     </Card.Action>

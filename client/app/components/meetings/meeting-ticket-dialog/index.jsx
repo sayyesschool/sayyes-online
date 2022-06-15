@@ -34,7 +34,7 @@ export default function TicketDialog({ onClose, ...props }) {
 
             <DialogContent>
                 <form id="ticket-form" method="post" action="/api/tickets" onSubmit={handleSubmit}>
-                    <Typography noMargin>Для записи на встречу необходимо приобрести билет. Билет позволит посетить 1 разговорный клуб в любое время.</Typography>
+                    <Typography>Для записи на встречу необходимо приобрести билет. Билет позволит посетить 1 разговорный клуб в любое время.</Typography>
 
                     <FormField label="Я согласен/на с условиями предоставления услуг и политикой конфиденциальности.">
                         <Checkbox
@@ -50,8 +50,8 @@ export default function TicketDialog({ onClose, ...props }) {
             <DialogActions>
                 <Button type="button" onClick={onClose}>Закрыть</Button>
 
-                <Typography variant="headline5" noMargin>350 руб.</Typography>
-                <Button unelevated type="submit" form="ticket-form">Приобрести</Button>
+                <Typography variant="headline5">350 руб.</Typography>
+                <Button type="submit" form="ticket-form">Приобрести</Button>
             </DialogActions>
         </Dialog>
     );

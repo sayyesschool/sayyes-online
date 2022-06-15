@@ -1,37 +1,23 @@
-import {
-    Card,
-    Icon,
-    List,
-    Typography
-} from 'mdc-react';
+import { List, Text } from '@fluentui/react-northstar';
+
+import PageSection from 'shared/components/page-section';
 
 export default function MeetingsCard({ meetings }) {
     return (
-        <Card outlined>
-            <Card.Header title="Встречи" />
-
+        <PageSection title="Встречи">
             {meetings.length > 0 ?
-                <Card.Section>
-                    <List>
-                        {meetings.map(meeting =>
-                            <ListItem key={meeting.id}>
-                                <ListItemGraphic>
-                                    <Icon>people</Icon>
-                                </ListItemGraphic>
-
-                                <ListItemText
-                                    primary={meeting.title}
-                                    secondary={meeting.datetime}
-                                />
-                            </ListItem>
-                        )}
-                    </List>
-                </Card.Section>
+                <List>
+                    {meetings.map(meeting =>
+                        <List.Item
+                            key={meeting.id}
+                            header={meeting.title}
+                            content={meeting.datetime}
+                        />
+                    )}
+                </List>
                 :
-                <Card.Section primary>
-                    <Typography>Вы еще не участвовали ни в одной встрече.</Typography>
-                </Card.Section>
+                <Text>Вы еще не участвовали ни в одной встрече.</Text>
             }
-        </Card>
+        </PageSection>
     );
 }

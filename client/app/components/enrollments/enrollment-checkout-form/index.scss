@@ -1,55 +1,48 @@
-@use '@material/button';
-@use '@material/textfield';
-
 .enrollment-checkout-form {
     display: flex;
     flex-direction: column;
     height: 100%;
 
-    .mdc-typography {
+    .ui-text {
         color: white;
     }
 
-    .mdc-button--outlined {
-        @include button.ink-color(white);
-        @include button.outline-color(white);
-        @include button.shape-radius(24px);
+    .balance-text {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        strong {
+            font-size: 42px;
+            font-weight: bold;
+            line-height: 42px;
+        }
     }
 
     .promocode {
         margin: 1rem 0;
 
-        .mdc-text-field {
-            margin-bottom: 1rem;
-            @include textfield.outline-shape-radius(24px);
-            @include textfield.density(-4);
-            @include textfield.ink-color(white);
-            @include textfield.label-color(white);
-            @include textfield.placeholder-color(rgba(255, 255, 255, .75));
-            @include textfield.caret-color(rgba(255, 255, 255, .75));
-            @include textfield.outline-color(white);
-            @include textfield.focused-outline-color(white);
-            @include textfield.hover-outline-color(white);
-
-            @include textfield.disabled-ink-color(rgba(255, 255, 255, .75));
-            @include textfield.disabled-outline-color(rgba(255, 255, 255, .75));
-    
+        .ui-input {
             &__input {
-                text-align: center;
+                border-bottom-color: transparent;
+                border-radius: 4px;
                 text-transform: uppercase;
-            }
-        }
-
-        .mdc-button {
-            &:disabled {
-                color: rgba(255,255,255,.38);
+                width: 100%;
             }
         }
     }
 
-    .price {
+    .price-text {
+        display: block;
         margin-top: auto;
         margin: auto 0 1rem;
+        font-size: 1rem;
+
+        strong {
+            font-size: 36px;
+            font-weight: bold;
+            line-height: 36px;
+        }
     }
 
     .submit {

@@ -1,16 +1,17 @@
 @use 'shared/styles/variables';
-@use '@material/theme';
-
-$fill-color: variables.$primary-color;
-$ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
 
 .enrollment-details-card {
-    .mdc-layout-grid {
-        &__inner {
-            grid-gap: 0;
-        }
+    &.ui-segment {
+        padding: 0;
+        border: none;
+        border-radius: 8px;
+        overflow: hidden;
     }
 
+    &__section {
+        padding: 1rem;
+    }
+    
     &__main-section {
         text-align: center;
         background-color: #e6e6fa;
@@ -22,64 +23,56 @@ $ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
 
     &__teacher-section {
         background-color: #f7f7f7;
-        
-        .mdc-card__section {
-            text-align: center;
-        }
+        text-align: center;
 
-        .teacher-image {
-            width: 92px;
-            height: 92px;
-            border: 4px solid variables.$primary-color;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
+        .teacher-info {
+            margin: auto;
         }
     }
 
     &__schedule-section {
         .next-lesson-card {
-            .mdc-card__header__text {
-                display: flex;
-                flex-direction: column-reverse;
-            }
+
+        }
+
+        .week-schedule {
+            margin: auto 0;
+            border: 1px solid #dadada;
+            border-radius: 4px;
         }
     }
 
     &__payment-section {
         display: flex;
         flex-direction: column;
-        color: $ink-color;
-        background-color: $fill-color;
+        background-color: variables.$primary-color;
         background-image: url('https://static.sayes.ru/images/kids/fourth.png');
+        color: variables.$text-light-color;
 
-        .mdc-card__header__graphic,
-        .mdc-card__header__title {
-            color: $ink-color !important;
+        .ui-header,
+        .ui-text {
+            color: variables.$text-light-color;
         }
 
         .balance-item {
             display: flex;
             align-items: center;
+            gap: 8px;
 
-            strong {
+            .ui-text {
+                line-height: 1.2;
+            }
+
+            strong.ui-text {
                 font-size: 42px;
                 font-weight: bold;
                 line-height: 42px;
                 margin-right: 8px;
             }
-
-            p {
-                line-height: 1.2;
-            }
         }
 
-        .mdc-card__actions {
+        .ui-button {
             margin-top: auto;
-            padding: 1rem;
-        }
-
-        .mdc-button {
-            width: 100%;
         }
     }
 }

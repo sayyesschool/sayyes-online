@@ -1,25 +1,14 @@
-import {
-    Card
-} from 'mdc-react';
-
 import CoursesList from 'shared/components/courses-list';
+import PageSection from 'shared/components/page-section';
 
 export default function EnrollmentCourses({ enrollment }) {
     return (
-        <section className="enrollment-courses">
-            <Card>
-                <Card.Header
-                    title="Курсы"
+        <PageSection className="enrollment-courses" title="Курсы">
+            {enrollment.courses.length > 0 &&
+                <CoursesList
+                    courses={enrollment.courses}
                 />
-
-                {enrollment.courses.length > 0 &&
-                    <Card.Section>
-                        <CoursesList
-                            courses={enrollment.courses}
-                        />
-                    </Card.Section>
-                }
-            </Card>
-        </section>
+            }
+        </PageSection>
     );
 }

@@ -1,18 +1,16 @@
-import {
-    Banner,
-    Button,
-    Icon
-} from 'mdc-react';
+import { Alert, Button } from '@fluentui/react-northstar';
 
-export default function PaymentBanner({ onActionClick }) {
+import Icon from 'shared/components/icon';
+
+export default function PaymentAlert({ onActionClick }) {
     return (
-        <Banner
-            className="payment-banner"
+        <Alert
+            className="payment-alert"
             icon={<Icon>warning</Icon>}
-            text="Пора платить!"
-            centered
-            fixed
-            primaryAction={<Button onClick={onActionClick}>Оплатить</Button>}
+            content="Пора платить!"
+            actions={[
+                <Button onClick={onActionClick}>Оплатить</Button>
+            ]}
         />
     );
 }

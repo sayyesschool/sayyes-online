@@ -18,7 +18,7 @@ export default function MeetingLevelDialog({ onClose, ...props }) {
             <DialogTitle>Уровни встреч</DialogTitle>
 
             <DialogContent>
-                <Typography noMargin>Для всех студентов, обучающихся по курсу "Touchstone" или "Viewpoint" приводим соответствие:</Typography>
+                <Typography>Для всех студентов, обучающихся по курсу "Touchstone" или "Viewpoint" приводим соответствие:</Typography>
 
                 <List>
                     <ListItem className="meeting-level meeting-level--beginner">
@@ -88,7 +88,7 @@ export default function MeetingLevelDialog({ onClose, ...props }) {
                     </ListItem>
                 </List>
 
-                <Typography noMargin>Если вы не знаете, какой у вас уровень по представленной шкале, уточните у вашего преподавателя.</Typography>
+                <Typography>Если вы не знаете, какой у вас уровень по представленной шкале, уточните у вашего преподавателя.</Typography>
             </DialogContent>
 
             <DialogActions>

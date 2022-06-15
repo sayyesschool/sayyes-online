@@ -1,13 +1,17 @@
 import { useState } from 'react';
 import {
-    Card,
+    Box,
+    Button,
     Checkbox,
-    Icon,
-    IconButton,
-    FormField,
-    LayoutGrid,
-    Typography
-} from 'mdc-react';
+    Flex,
+    Header,
+    Image,
+    Segment,
+    Text
+} from '@fluentui/react-northstar';
+
+import { useBoolean } from 'shared/hooks/state';
+import Icon from 'shared/components/icon';
 
 import EnrollmentPackCard from 'app/components/enrollments/enrollment-pack-card';
 import EnrollmentCheckoutForm from 'app/components/enrollments/enrollment-checkout-form';
@@ -16,57 +20,81 @@ import './index.scss';
 
 export default function EnrollmentPayCard({ enrollment, onCheckout, onCancel, ...props }) {
     const [selectedPack, setSelectedPack] = useState(enrollment?.packs[0]);
-    const [isConfirmed, setConfirmed] = useState(true);
+    const [isConfirmed, toggleConfirmed] = useBoolean(true);
 
     return (
-        <Card className="enrollment-pay-card" {...props}>
-            <Card.Section className="enrollment-pay-card__section enrollment-pay-card__details-section">
-                <img src={STATIC_URL + enrollment.imageSrc} />
+        <Segment className="enrollment-pay-card" {...props}>
+            <Flex>
+                <Flex.Item size="size.quarter">
+                    <Box className="enrollment-pay-card__section enrollment-pay-card__details-section">
+                        <Header
+                            as="h3"
+                            content="Направление обучения"
+                        />
 
-                <Typography className="domain-name" type="headline6">{enrollment.domainLabel}</Typography>
-            </Card.Section>
+                        <Image src={enrollment.imageUrl} alt="" />
 
-            <Card.Section className="enrollment-pay-card__section enrollment-pay-card__steps-section">
-                <Card.Header
-                    graphic={<Icon>shopping_basket</Icon>}
-                    title="Выбор пакета"
-                />
+                        <Text
+                            as="p"
+                            content={enrollment.domainLabel}
+                            size="large"
+                            weight="bold"
+                        />
+                    </Box>
+                </Flex.Item>
 
-                <LayoutGrid.Cell className="pack-card-grid" grid>
-                    {enrollment.packs.map((pack, index) =>
-                        <LayoutGrid.Cell key={index} span="3">
-                            <EnrollmentPackCard
-                                pack={pack}
-                                selected={pack === selectedPack}
-                                onSelect={setSelectedPack}
+                <Flex.Item size="size.half">
+                    <Box className="enrollment-pay-card__section enrollment-pay-card__steps-section">
+                        <Header
+                            as="h3"
+                            content="Выбор пакета"
+                        />
+
+                        <Flex className="pack-card-grid" space="between">
+                            {enrollment.packs.map((pack, index) =>
+                                <EnrollmentPackCard
+                                    key={index}
+                                    pack={pack}
+                                    selected={pack === selectedPack}
+                                    onSelect={setSelectedPack}
+                                />
+                            )}
+                        </Flex>
+
+                        <Checkbox
+                            label={<Text>Я ознакомлен и согласен с условиями <a href="/offer">Публичной оферты</a>.</Text>}
+                            checked={isConfirmed}
+                            onChange={toggleConfirmed}
+                        />
+                    </Box>
+                </Flex.Item>
+
+                <Flex.Item size="size.quarter">
+                    <Box className="enrollment-pay-card__section enrollment-pay-card__checkout-section">
+                        <Flex space="between">
+                            <Header
+                                as="h3"
+                                content="К оплате"
                             />
-                        </LayoutGrid.Cell>
-                    )}
-                </LayoutGrid.Cell>
 
-                <FormField>
-                    <Checkbox
-                        checked={isConfirmed}
-                        onChange={(event, value) => setConfirmed(value)}
-                    />
+                            <Button
+                                icon={<Icon>close</Icon>}
+                                size="small"
+                                iconOnly
+                                inverted
+                                onClick={onCancel}
+                            />
+                        </Flex>
 
-                    <Typography type="body2" noMargin>Я ознакомлен и согласен с условиями <a href="/offer">Публичной оферты</a>.</Typography>
-                </FormField>
-            </Card.Section>
 
-            <Card.Section span="2" className="enrollment-pay-card__section enrollment-pay-card__checkout-section">
-                <Card.Header
-                    graphic={<Icon>point_of_sale</Icon>}
-                    title="К оплате"
-                    actions={<IconButton icon="close" onClick={onCancel} />}
-                />
-
-                <EnrollmentCheckoutForm
-                    enrollment={enrollment}
-                    pack={selectedPack}
-                    onSubmit={onCheckout}
-                />
-            </Card.Section>
-        </Card>
+                        <EnrollmentCheckoutForm
+                            enrollment={enrollment}
+                            pack={selectedPack}
+                            onSubmit={onCheckout}
+                        />
+                    </Box>
+                </Flex.Item>
+            </Flex>
+        </Segment>
     );
 }

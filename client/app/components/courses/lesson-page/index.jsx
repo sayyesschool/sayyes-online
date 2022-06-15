@@ -1,16 +1,14 @@
 import { useCallback, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-    Card,
-    IconButton,
-    LayoutGrid
-} from 'mdc-react';
+import { Grid, Flex } from '@fluentui/react-northstar';
 
 import { useCourse } from 'shared/hooks/courses';
+import IconButton from 'shared/components/icon-button';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
+import PageSection from 'shared/components/page-section';
 import ExerciseContentCard from 'shared/components/exercise-content-card';
 import ExerciseComments from 'shared/components/exercise-comments';
 import ExercisesList from 'shared/components/exercises-list';
@@ -78,8 +76,8 @@ export default function LessonPage({ match }) {
             />
 
             <PageContent>
-                <LayoutGrid>
-                    <LayoutGrid.Cell span="8">
+                <Grid>
+                    <Flex column>
                         <ExerciseContentCard
                             exercise={exercise}
                             onProgressChange={handleExerciseProgressChange}
@@ -91,20 +89,16 @@ export default function LessonPage({ match }) {
                             onUpdate={handleUpdateComment}
                             onDelete={handleDeleteComment}
                         />
-                    </LayoutGrid.Cell>
+                    </Flex>
 
-                    <LayoutGrid.Cell span="4">
-                        <Card className="lesson-exercises">
-                            <Card.Header title="Упражнения" />
-
-                            <ExercisesList
-                                exercises={exercises}
-                                selectedExerciseIndex={exerciseIndex}
-                                onSelect={handleSelectExercise}
-                            />
-                        </Card>
-                    </LayoutGrid.Cell>
-                </LayoutGrid>
+                    <PageSection className="lesson-exercises" title="Упражнения">
+                        <ExercisesList
+                            exercises={exercises}
+                            selectedExerciseIndex={exerciseIndex}
+                            onSelect={handleSelectExercise}
+                        />
+                    </PageSection>
+                </Grid>
             </PageContent>
         </Page>
     );

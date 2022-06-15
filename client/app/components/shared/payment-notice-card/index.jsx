@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import {
     Button,
     Card
-} from 'mdc-react';
+} from '@fluentui/react-northstar';
 
 export default function PaymentNoticeCard({ onPay }) {
     return (
@@ -18,7 +18,6 @@ export default function PaymentNoticeCard({ onPay }) {
                         component={Link}
                         to="/pay"
                         label="Купить уроки"
-                        unelevated
                         onClick={onPay}
                     />
                 </Card.Action>

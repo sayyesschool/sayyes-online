@@ -1,24 +1,51 @@
-body {
-    background-color: #f1f3f4;
+@use 'shared/styles/variables';
+
+$fill-color: variables.$primary-color;
+$ink-color: white;
+
+body,
+.ui-provider {
+    background-color: #f1f3f4 !important;
+}
+
+.app {
+    .app-header {
+        background-color: $fill-color;
+        color: $ink-color;
+    }
+
+    .app-content {
+        margin: 0;
+    }
 }
 
 .page {
     .page-header {
+        background-color: $fill-color;
+        background-image: url('https://static.sayes.ru/images/kids/fourth.png');
+        color: $ink-color;
+
         &__inner {
             max-width: 1280px;
             margin: auto;
             padding: 2rem 1rem;
         }
+
+        // &::before {
+        //     content: '';
+        //     background-image: url(https://static.sayes.ru/images/kids/fourth.png);
+        //     background-color: $fill-color;
+        //     width: 110%;
+        //     height: 100%;
+        //     position: absolute;
+        //     border-radius: 0 0 50% 50%;
+        //     left: -5%;
+        // }
     }
 
     .page-content {
         max-width: 1280px;
         margin: auto;
         padding: 2rem 1rem;
-    }
-
-    .mdc-layout-grid {
-        padding: 0;
-        margin: 0;
     }
 }

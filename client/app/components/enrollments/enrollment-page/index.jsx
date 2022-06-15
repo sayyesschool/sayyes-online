@@ -1,22 +1,19 @@
-import {
-    FAB,
-    Icon,
-    LayoutGrid
-} from 'mdc-react';
+import { Button, Flex, Grid, MenuButton } from '@fluentui/react-northstar';
 
 import { useEnrollment } from 'shared/hooks/enrollments';
+import Icon from 'shared/components/icon';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
-import MenuButton from 'shared/components/menu-button';
 
 import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';
-import EnrollmentDetails from 'app/components/enrollments/enrollment-details';
 import EnrollmentLessons from 'app/components/enrollments/enrollment-lessons';
+import EnrollmentManagers from 'app/components/enrollments/enrollment-managers';
 import EnrollmentMaterials from 'app/components/enrollments/enrollment-materials';
 import EnrollmentPosts from 'app/components/enrollments/enrollment-posts';
 import EnrollmentSchedule from 'app/components/enrollments/enrollment-schedule';
+import EnrollmentTeachers from 'app/components/enrollments/enrollment-teachers';
 
 import './index.scss';
 
@@ -30,24 +27,31 @@ export default function EnrollmentPage({ match }) {
             <PageHeader
                 title={enrollment.domainLabel}
                 actions={[
-                    <FAB
+                    <Button
                         key="class"
-                        element="a"
+                        as="a"
                         href={enrollment.classUrl}
                         icon={<Icon>video_call</Icon>}
-                        label="Перейти в класс"
+                        content="Перейти в класс"
+                        primary
                     />,
-                    (enrollment.teacher.zoomUrl &&
+                    (enrollment.teachers[0]?.zoomUrl &&
                         <MenuButton
                             key="menu"
-                            icon="more_vert"
-                            items={[
+                            trigger={
+                                <Button
+                                    icon={<Icon>more_vert</Icon>}
+                                    iconOnly
+                                    text
+                                />
+                            }
+                            menu={[
                                 {
                                     key: 'zoom',
                                     element: 'a',
                                     href: enrollment.teacher.zoomUrl,
                                     target: '_blank',
-                                    text: 'Подключиться в Zoom'
+                                    content: 'Подключиться в Zoom'
                                 }
                             ]}
                         />
@@ -58,50 +62,43 @@ export default function EnrollmentPage({ match }) {
             </PageHeader>
 
             <PageContent>
-                <LayoutGrid>
-                    <LayoutGrid.Cell span="8">
+                <Grid columns="minmax(0, 2fr) minmax(0, 1fr)">
+                    <Flex>
                         <EnrollmentPosts
                             enrollment={enrollment}
                         />
-                    </LayoutGrid.Cell>
+                    </Flex>
 
-                    <LayoutGrid.Cell span="4" grid>
-                        <LayoutGrid.Cell span="12">
-                            <EnrollmentDetails
-                                enrollment={enrollment}
-                            />
-                        </LayoutGrid.Cell>
+                    <Flex column>
+                        <EnrollmentLessons
+                            enrollment={enrollment}
+                        />
 
-                        <LayoutGrid.Cell span="12">
-                            <EnrollmentSchedule
-                                enrollment={enrollment}
-                            />
-                        </LayoutGrid.Cell>
+                        <EnrollmentSchedule
+                            enrollment={enrollment}
+                        />
 
-                        <LayoutGrid.Cell span="12">
-                            <EnrollmentLessons
-                                enrollment={enrollment}
-                            />
-                        </LayoutGrid.Cell>
+                        <EnrollmentTeachers
+                            enrollment={enrollment}
+                        />
+
+                        <EnrollmentManagers
+                            enrollment={enrollment}
+                        />
 
                         {enrollment.courses?.length > 0 &&
-                            <LayoutGrid.Cell span="12">
-
-                                <EnrollmentCourses
-                                    enrollment={enrollment}
-                                />
-                            </LayoutGrid.Cell>
+                            <EnrollmentCourses
+                                enrollment={enrollment}
+                            />
                         }
 
                         {enrollment.materials?.length > 0 &&
-                            <LayoutGrid.Cell span="12">
-                                <EnrollmentMaterials
-                                    enrollment={enrollment}
-                                />
-                            </LayoutGrid.Cell>
+                            <EnrollmentMaterials
+                                enrollment={enrollment}
+                            />
                         }
-                    </LayoutGrid.Cell>
-                </LayoutGrid>
+                    </Flex>
+                </Grid>
             </PageContent>
         </Page>
     );

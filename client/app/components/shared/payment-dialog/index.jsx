@@ -1,4 +1,4 @@
-import { Dialog } from 'mdc-react';
+import { Dialog } from '@fluentui/react-northstar';
 
 import './index.scss';
 

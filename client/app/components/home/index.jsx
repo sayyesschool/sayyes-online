@@ -1,7 +1,5 @@
 import { useCallback, useState } from 'react';
-import {
-    LayoutGrid
-} from 'mdc-react';
+import { Grid } from '@fluentui/react-northstar';
 
 import api from 'shared/services/api';
 import { useUser } from 'shared/hooks/user';
@@ -9,7 +7,6 @@ import { useEnrollments } from 'shared/hooks/enrollments';
 import { useLessons } from 'shared/hooks/lessons';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
 import CalendarCard from 'shared/components/calendar-card';
 
@@ -35,47 +32,40 @@ export default function HomePage() {
             });
     }, []);
 
-    if (!user || !enrollments || !lessons) return <LoadingIndicator />;
+    if (!user || !enrollments) return <LoadingIndicator />;
 
     const activeEnrollment = enrollments[0];
-    const events = lessons.map(lesson => ({
-        id: lesson.id,
-        title: 'Урок',
-        icon: 'school',
-        date: new Date(lesson.date),
-        url: lesson.url
-    }));
+    // const events = lessons.map(lesson => ({
+    //     id: lesson.id,
+    //     title: 'Урок',
+    //     icon: 'school',
+    //     date: new Date(lesson.date),
+    //     url: lesson.url
+    // }));
 
     return (
         <Page id="home-page">
-            <PageHeader />
-
             <PageContent>
-                <LayoutGrid>
+                <Grid columns={1}>
                     {activeEnrollment?.status !== 'active' &&
-                        <LayoutGrid.Cell span="12">
-                            <EnrollmentStatusCard
-                                enrollment={activeEnrollment}
-                            />
-                        </LayoutGrid.Cell>
+                        <EnrollmentStatusCard
+                            enrollment={activeEnrollment}
+                        />
                     }
 
                     {activeEnrollment?.status !== 'processing' &&
-                        <LayoutGrid.Cell span="12">
-                            {isPaying ?
-                                <EnrollmentPayCard
-                                    enrollment={activeEnrollment}
-                                    onCheckout={handleCheckout}
-                                    onCancel={() => setPaying(false)}
-                                />
-                                :
-                                <EnrollmentDetailsCard
-                                    enrollment={activeEnrollment}
-                                    onPay={() => setPaying(true)}
-                                />
-                            }
-
-                        </LayoutGrid.Cell>
+                        <>{isPaying ?
+                            <EnrollmentPayCard
+                                enrollment={activeEnrollment}
+                                onCheckout={handleCheckout}
+                                onCancel={() => setPaying(false)}
+                            />
+                            :
+                            <EnrollmentDetailsCard
+                                enrollment={activeEnrollment}
+                                onPay={() => setPaying(true)}
+                            />
+                        }</>
                     }
 
                     {/* {events.length > 0 &&
@@ -103,7 +93,7 @@ export default function HomePage() {
                             }
                         </section>
                     </LayoutGrid.Cell> */}
-                </LayoutGrid>
+                </Grid>
             </PageContent>
         </Page>
     );

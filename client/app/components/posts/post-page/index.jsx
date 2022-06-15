@@ -4,20 +4,19 @@ import {
     Avatar,
     Button,
     Card,
-    Icon,
-    LayoutGrid,
-    Typography
-} from 'mdc-react';
+    Text
+} from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useEnrollment } from 'shared/hooks/enrollments';
 import { usePost } from 'shared/hooks/posts';
+import Icon from 'shared/components/icon';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
 import PostContent from 'shared/components/post-content';
-import CommentCard from 'shared/components/comment-card';
+import Comment from 'shared/components/comment';
 import CommentForm from 'shared/components/comment-form';
 
 import './index.scss';
@@ -59,62 +58,50 @@ export default function PostPage({ match }) {
             />
 
             <PageContent>
-                <LayoutGrid>
-                    <LayoutGrid.Cell span="12">
-                        <Card outlined>
-                            <Card.Header
-                                graphic={<Avatar src={post.user.imageUrl} large />}
-                                title={post.user.fullname}
-                                subtitle={post.timeSinceCreated}
-                            />
+                <Segment>
+                    <Card.Header
+                        graphic={<Avatar src={post.user.imageUrl} large />}
+                        title={post.user.fullname}
+                        subtitle={post.timeSinceCreated}
+                    />
 
-                            <PostContent
-                                post={post}
-                            />
-                        </Card>
-                    </LayoutGrid.Cell>
+                    <PostContent
+                        post={post}
+                    />
+                </Segment>
 
-                    {post.comments?.length > 0 &&
-                        <LayoutGrid.Cell span="12">
-                            <Typography type="headline6">Комментарии</Typography>
+                {post.comments?.length > 0 && <>
+                    <Text>Комментарии</Text>
 
-                            {post.comments.map(comment =>
-                                <CommentCard
-                                    comment={comment}
-                                    onUpdate={handleUpdateComment}
-                                    onDelete={handleDeleteComment}
-                                />
-                            )}
-                        </LayoutGrid.Cell>
-                    }
+                    {post.comments.map(comment =>
+                        <Comment
+                            comment={comment}
+                            onUpdate={handleUpdateComment}
+                            onDelete={handleDeleteComment}
+                        />
+                    )}
+                </>}
 
-                    <LayoutGrid.Cell span="12">
-                        {isCommenting ?
-                            <Card outlined>
-                                <Card.Header
-                                    title="Новый комментарий"
-                                />
+                {isCommenting ?
+                    <Segment outlined>
+                        <Text
+                            content="Новый комментарий"
+                        />
 
-                                <CommentForm
-                                    id="new-comment-form"
-                                    onSubmit={handleCreateComment}
-                                />
+                        <CommentForm
+                            id="new-comment-form"
+                            onSubmit={handleCreateComment}
+                        />
 
-                                <Card.Actions>
-                                    <Card.Action>
-                                        <Button onClick={toggleCommenting}>Закрыть</Button>
-                                    </Card.Action>
+                        <Flex>
+                            <Button onClick={toggleCommenting}>Закрыть</Button>
 
-                                    <Card.Action>
-                                        <Button type="submit" form="new-comment-form" icon={<Icon>send</Icon>} outlined>Отправить</Button>
-                                    </Card.Action>
-                                </Card.Actions>
-                            </Card>
-                            :
-                            <Button onClick={toggleCommenting} outlined>Оставить комментарий</Button>
-                        }
-                    </LayoutGrid.Cell>
-                </LayoutGrid>
+                            <Button type="submit" form="new-comment-form" icon={<Icon>send</Icon>} outlined>Отправить</Button>
+                        </Flex>
+                    </Segment>
+                    :
+                    <Button onClick={toggleCommenting} outlined>Оставить комментарий</Button>
+                }
             </PageContent>
         </Page>
     );

@@ -7,7 +7,7 @@ import './index.scss';
 export default function EnrollmentPosts({ enrollment }) {
     const beforeCreate = useCallback(data => {
         data.enrollment = enrollment.id;
-        data.teacher = enrollment.teacher;
+        data.teacher = enrollment.teachers[0];
         data.client = enrollment.client;
 
         return data;

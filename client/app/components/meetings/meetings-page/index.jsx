@@ -72,7 +72,7 @@ export default function MeetingsPage() {
             <PageContent>
                 <LayoutGrid>
                     <LayoutGridCell span="12">
-                        <Typography element="h2" type="headline6" noMargin>Мои встречи</Typography>
+                        <Typography as="h2" type="headline6">Мои встречи</Typography>
 
                         {registeredMeetings.length === 0 &&
                             <Typography>Вы пока не записаны ни на одну встречу</Typography>
@@ -92,10 +92,10 @@ export default function MeetingsPage() {
 
                 <LayoutGrid>
                     <LayoutGridCell span="12">
-                        <Typography element="h2" type="headline6" noMargin>Предстоящие встречи</Typography>
+                        <Typography as="h2" type="headline6">Предстоящие встречи</Typography>
 
                         {futureMeetings.length === 0 &&
-                            <Typography noMargin>Встреч пока не запланировано</Typography>
+                            <Typography>Встреч пока не запланировано</Typography>
                         }
                     </LayoutGridCell>
 

@@ -1,13 +1,16 @@
-import ScheduleCard from 'shared/components/schedule-card';
+import PageSection from 'shared/components/page-section';
+import WeekSchedule from 'shared/components/week-schedule';
 
 import './index.scss';
 
 export default function EnrollmentSchedule({ enrollment }) {
     return (
-        <section className="enrollment-schedule">
-            <ScheduleCard
-                schedule={enrollment.schedule}
-            />
-        </section>
+        <PageSection className="enrollment-schedule" title="Расписание" compact>
+            {enrollment.schedule?.length > 0 &&
+                <WeekSchedule
+                    schedule={enrollment.schedule}
+                />
+            }
+        </PageSection>
     );
 }

@@ -1,24 +1,20 @@
 import { useCallback, useEffect, useRef } from 'react';
-import {
-    Button,
-    TextField,
-    Typography
-} from 'mdc-react';
+import { Button, Flex, Input, Text } from '@fluentui/react-northstar';
 
-import { pluralize } from 'shared/utils/format';
 import { useBoolean } from 'shared/hooks/state';
-import Form from 'shared/components/form';
+import { pluralize } from 'shared/utils/format';
 
 import './index.scss';
 
 export default function EnrollmentCheckoutForm({ enrollment, pack = {}, onSubmit }) {
-    const textFieldRef = useRef();
+    const inputRef = useRef();
+
     const [isEnteringPromoCode, toggleEnteringPromoCode] = useBoolean(false);
     const [isPromoCodeCorrect, togglePromoCodeCorrect] = useBoolean(false);
 
     useEffect(() => {
         if (isEnteringPromoCode) {
-            textFieldRef.current.focus();
+            inputRef.current?.focus();
         }
     }, [isEnteringPromoCode]);
 
@@ -26,55 +22,60 @@ export default function EnrollmentCheckoutForm({ enrollment, pack = {}, onSubmit
         onSubmit({
             enrollmentId: enrollment.id,
             numberOfLessons: pack.numberOfLessons,
-            promoCode: textFieldRef.current?.control.value,
+            promoCode: inputRef.current?.control.value,
             isPromoCodeCorrect
         });
     }, [enrollment, pack, isPromoCodeCorrect]);
 
     const handlePromoCode = useCallback(() => {
-        const promoCode = textFieldRef.current.control.value;
+        const value = inputRef.current.value;
 
-        if (promoCode?.toUpperCase() === 'YES') {
+        if (value?.toUpperCase() === 'YES') {
             togglePromoCodeCorrect(true);
         }
     }, []);
 
     return (
         <div className="enrollment-checkout-form">
-            <div className="balance">
-                <Typography element="strong" noMargin>{pack.numberOfLessons}</Typography>
-                <Typography noMargin>{pluralize('урок', pack.numberOfLessons)}<br />по 50 минут</Typography>
-            </div>
+            <Text className="balance-text">
+                <strong>{pack.numberOfLessons}</strong>
+                <span>{pluralize('урок', pack.numberOfLessons)}<br />по 50 минут</span>
+            </Text>
 
             {isPromoCodeCorrect ?
-                <Typography noMargin>+2 урока по промокоду</Typography>
+                <Text>+ 2 урока по промокоду</Text>
                 :
                 <div className="promocode">
                     {isEnteringPromoCode ?
-                        <Form onSubmit={handlePromoCode}>
-                            <TextField
-                                ref={textFieldRef}
+                        <Flex gap="gap.smaller">
+                            <Input
+                                ref={inputRef}
                                 placeholder="Промокод"
-                                outlined
+                                inverted
                                 disabled={isPromoCodeCorrect}
                             />
 
-                            <Button type="submit" outlined>Применить</Button>
-                        </Form>
+                            <Button inverted onClick={handlePromoCode}>Применить</Button>
+                        </Flex>
                         :
-                        <Button type="button" outlined onClick={toggleEnteringPromoCode}>Промокод</Button>
+                        <Button inverted onClick={toggleEnteringPromoCode}>Промокод</Button>
                     }
                 </div>
             }
 
-            <div className="price">
-                <Typography element="span" type="headline4" noMargin>{pack.price}</Typography>
-                <Typography element="span" type="headline6" noMargin> ₽</Typography>
-            </div>
+            <Text className="price-text">
+                <strong>{pack.price}</strong> ₽
+            </Text>
 
-            <div className="submit">
-                <Button unelevated onClick={handleSubmit}>Оплатить</Button>
-            </div>
+            <Button
+                className="submit-button"
+                primary
+                variables={{
+                    primaryColor: '#ffffff',
+                    primaryBackgroundColor: '#e71985',
+                    primaryBackgroundColorHover: '#cf1677'
+                }}
+                onClick={handleSubmit}>Оплатить</Button>
         </div>
     );
 }

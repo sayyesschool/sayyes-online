@@ -1,12 +1,14 @@
 @use 'shared/styles/variables';
-@use '@material/theme';
 
 .enrollment-pack-card {
     height: 100%;
+    position: relative;
     overflow: visible;
     text-align: center;
     cursor: pointer;
     padding: 16px;
+    border: 1px solid #dadada;
+    border-radius: 8px;
 
     &::after {
         content: "check";
@@ -27,7 +29,6 @@
     }
 
     &--selected {
-        position: relative;
         border: 2px solid variables.$primary-color;
         overflow: visible;
         padding: 15px;
@@ -46,7 +47,6 @@
     &__base-price-per-lesson {
         display: block;
         text-decoration: line-through;
-        @include theme.property(color, text-secondary-on-light);
     }
 
     &__number-of-lessons {
@@ -64,6 +64,5 @@
     &__base-total-price {
         display: block;
         text-decoration: line-through;
-        @include theme.property(color, text-secondary-on-light);
     }
 }

@@ -1,16 +1,6 @@
-@use 'mdc-react/src/side-sheet';
-
 .course-page {
     &#ge2 {
         --course-bg-color: #2c4181;
         --course-bg-color-dark: #172656;
-    }
-
-    .mdc-side-sheet {
-        top: 0;
-        right: 0;
-        z-index: 4;
-        position: absolute;
-        @include side-sheet.width(360px);
     }
 }

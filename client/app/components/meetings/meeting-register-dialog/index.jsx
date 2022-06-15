@@ -57,14 +57,14 @@ export default function RegisterDialog({ meeting, onSubmit, onClose, ...props })
                 </Layout>
 
                 {isStudent ?
-                    <Typography noMargin>Вы можете принять участие бесплатно! После подтверждения вам на почту придет ссылка для входа.</Typography>
+                    <Typography>Вы можете принять участие бесплатно! После подтверждения вам на почту придет ссылка для входа.</Typography>
                     :
                     <form id="ticket-form" method="post" action="/api/tickets" onSubmit={handleSubmit}>
                         {meeting &&
                             <input type="hidden" name="meeting" defaultValue={meeting.id} />
                         }
 
-                        <Typography noMargin>Для записи на встречу необходимо приобрести билет. Билет позволит посетить 1 встречу в любое время.</Typography>
+                        <Typography>Для записи на встречу необходимо приобрести билет. Билет позволит посетить 1 встречу в любое время.</Typography>
 
                         <FormField label="Я согласен/на с условиями предоставления услуг и политикой конфиденциальности.">
                             <Checkbox
@@ -82,14 +82,14 @@ export default function RegisterDialog({ meeting, onSubmit, onClose, ...props })
                 <DialogActions>
                     <Button type="button" onClick={onClose}>Закрыть</Button>
 
-                    <Button type="button" unelevated onClick={() => onSubmit(meeting, isStudent)}>Зарегистрироваться</Button>
+                    <Button type="button" onClick={() => onSubmit(meeting, isStudent)}>Зарегистрироваться</Button>
                 </DialogActions>
                 :
                 <DialogActions>
                     <Button type="button" onClick={onClose}>Закрыть</Button>
 
-                    <Typography variant="headline5" noMargin>350 руб.</Typography>
-                    <Button unelevated type="submit" form="ticket-form">Приобрести</Button>
+                    <Typography variant="headline5">350 руб.</Typography>
+                    <Button type="submit" form="ticket-form">Приобрести</Button>
                 </DialogActions>
             }
         </Dialog>

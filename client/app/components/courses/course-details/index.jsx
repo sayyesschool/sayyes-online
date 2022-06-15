@@ -1,12 +1,10 @@
-import {
-    Typography
-} from 'mdc-react';
+import { Text } from '@fluentui/react-northstar';
 
 export default function CourseDetails({ course }) {
     return (
         <section className="course-details">
-            <Typography type="subtitle2"><b>Юниты</b>: {course.units.length}</Typography>
-            <Typography type="subtitle2"><b>Упражнения</b>: {course.lessons.length}</Typography>
+            <Text><b>Юниты</b>: {course.units.length}</Text>
+            <Text><b>Упражнения</b>: {course.lessons.length}</Text>
         </section>
     );
 }

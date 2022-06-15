@@ -1,14 +1,17 @@
+import { Link } from 'react-router-dom';
 import {
     Avatar,
+    Box,
     Button,
-    Card,
-    Icon,
-    LayoutGrid,
-    Typography
-} from 'mdc-react';
+    Flex,
+    Header,
+    Image,
+    Segment,
+    Text
+} from '@fluentui/react-northstar';
 
-import { pluralize } from 'shared/utils/format';
 import WeekSchedule from 'shared/components/week-schedule';
+import { pluralize } from 'shared/utils/format';
 
 import './index.scss';
 
@@ -16,71 +19,91 @@ export default function EnrollmentDetailsCard({ enrollment, onPay, ...props }) {
     const nextLesson = enrollment.lessons?.find(lesson => lesson.status === 'scheduled');
 
     return (
-        <Card className="enrollment-details-card" {...props}>
-            <LayoutGrid>
-                <LayoutGrid.Cell span="3" className="enrollment-details-card__section enrollment-details-card__main-section">
-                    <Card.Header
-                        graphic={<Icon>school</Icon>}
-                        title="Направление обучения"
-                    />
+        <Segment className="enrollment-details-card" {...props}>
+            <Flex>
+                <Flex.Item size="size.quarter">
+                    <Box className="enrollment-details-card__section enrollment-details-card__main-section">
+                        <Header
+                            as="h3"
+                            content="Направление обучения"
+                        />
 
-                    <Card.Section primary>
-                        <img src={STATIC_URL + enrollment.imageSrc} />
+                        <Image src={enrollment.imageUrl} alt="" />
 
-                        <Typography className="domain-name" type="headline6">{enrollment.domainLabel}</Typography>
-                    </Card.Section>
-                </LayoutGrid.Cell>
+                        <Text
+                            as="p"
+                            content={enrollment.domainLabel}
+                            size="large"
+                            weight="bold"
+                        />
 
-                <LayoutGrid.Cell span="3" className="enrollment-details-card__section enrollment-details-card__teacher-section">
-                    <Card.Header
-                        graphic={<Icon>badge</Icon>}
-                        title="Преподаватель"
-                    />
+                        <Button as={Link} to={enrollment.url} fluid flat tinted>Подробнее</Button>
+                    </Box>
+                </Flex.Item>
 
-                    <Card.Section primary>
-                        <Avatar className="teacher-image" src={enrollment.teacher.imageUrl} />
+                <Flex.Item size="size.quarter">
+                    <Flex className="enrollment-details-card__section enrollment-details-card__teacher-section" column>
+                        <Header
+                            as="h3"
+                            content="Преподаватель"
+                        />
 
-                        <Typography className="teacher-name" type="headline6">{enrollment.teacher.fullname}</Typography>
-                    </Card.Section>
-                </LayoutGrid.Cell>
+                        <Flex className="teacher-info" gap="gap.small" hAlign="center" column>
+                            <Avatar
+                                className="teacher-avatar"
+                                image={enrollment.teacher.imageUrl}
+                                size="largest"
+                            />
 
-                <LayoutGrid.Cell span="3" className="enrollment-details-card__section enrollment-details-card__schedule-section">
-                    <Card.Header
-                        graphic={<Icon>today</Icon>}
-                        title="Расписание"
-                    />
+                            <Text size="large" weight="bold" >{enrollment.teacher.fullname}</Text>
+                        </Flex>
+                    </Flex>
+                </Flex.Item>
 
-                    <Card.Section primary>
-                        <Card className="week-schedule-card" outlined>
-                            {enrollment.schedule ?
-                                <WeekSchedule schedule={enrollment.schedule} />
-                                :
-                                <Card.Header
-                                    title="Не назначено"
-                                />
-                            }
-                        </Card>
-                    </Card.Section>
-                </LayoutGrid.Cell>
+                <Flex.Item size="size.quarter">
+                    <Flex className="enrollment-details-card__section enrollment-details-card__schedule-section" column>
+                        <Header
+                            as="h3"
+                            content="Расписание"
+                        />
 
-                <LayoutGrid.Cell span="3" className="enrollment-details-card__section enrollment-details-card__payment-section">
-                    <Card.Header
-                        graphic={<Icon>payment</Icon>}
-                        title="Баланс"
-                    />
+                        {enrollment.schedule ?
+                            <WeekSchedule schedule={enrollment.schedule} />
+                            :
+                            <Text
+                                content="Не назначено"
+                            />
+                        }
 
-                    <Card.Section primary>
-                        <div className="balance-item">
-                            <Typography element="strong" noMargin>0</Typography>
-                            <Typography noMargin>{pluralize('урок', enrollment.numberOfScheduledLessons)}<br />по 50 минут</Typography>
-                        </div>
-                    </Card.Section>
+                        <Button as="a" href={enrollment.classUrl} flat tinted>Перейти в класс</Button>
+                    </Flex>
+                </Flex.Item>
 
-                    <Card.Actions>
-                        <Button onClick={onPay} unelevated>Пополнить</Button>
-                    </Card.Actions>
-                </LayoutGrid.Cell>
-            </LayoutGrid>
-        </Card>
+                <Flex.Item size="size.quarter">
+                    <Box className="enrollment-details-card__section enrollment-details-card__payment-section">
+                        <Header
+                            as="h3"
+                            content="Баланс"
+                        />
+
+                        <Box className="balance-item">
+                            <Text as="strong">0</Text>
+                            <Text>{pluralize('урок', enrollment.numberOfScheduledLessons)}<br />по 50 минут</Text>
+                        </Box>
+
+                        <Button
+                            content="Пополнить"
+                            primary
+                            variables={{
+                                primaryColor: '#ffffff',
+                                primaryBackgroundColor: '#e71985',
+                                primaryBackgroundColorHover: '#cf1677'
+                            }}
+                            onClick={onPay}
+                        />
+                    </Box>
+                </Flex.Item>
+            </Flex>
+        </Segment>
     );
 }

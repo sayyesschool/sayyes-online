@@ -1,23 +1,26 @@
 import { useCallback, useState } from 'react';
-import {
-    Avatar,
-    Icon,
-    TabBar, Tab
-} from 'mdc-react';
+import { Avatar } from '@fluentui/react-northstar';
 
 import { useStore } from 'shared/hooks/store';
 import { actions as userActions } from 'shared/store/modules/user';
 import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
+import Tabs from 'shared/components/tabs';
 
-import ProfileCard from 'app/components/account/profile-card';
-import PaymentsCard from 'app/components/account/payments-card';
-import TicketsCard from 'app/components/account/tickets-card';
-import MeetingsCard from 'app/components/account/meetings-card';
+// import ProfileCard from 'app/components/account/profile-card';
+// import PaymentsCard from 'app/components/account/payments-card';
+// import TicketsCard from 'app/components/account/tickets-card';
+// import MeetingsCard from 'app/components/account/meetings-card';
 import ProfileForm from 'app/components/account/profile-form';
 
 import './index.scss';
+
+const tabItems = [
+    { key: 'profile', value: 'profile', icon: 'person', content: 'Профиль' },
+    { key: 'payments', value: 'payments', icon: 'payment', content: 'Платежи' },
+    { key: 'lessons', value: 'lessons', icon: 'school', content: 'Уроки' },
+];
 
 export default function AccountPage() {
     const [user, actions] = useStore(state => state.user, userActions);
@@ -37,20 +40,16 @@ export default function AccountPage() {
         <Page id="account-page">
             <PageHeader
                 overline="Мой аккаунт"
-                graphic={<Avatar text={user.initials} large />}
+                graphic={<Avatar name={user.initials} />}
                 title={user.fullname}
                 withTabs
             >
-                <TabBar value={activeTab} onChange={setActiveTab} minWidth align="center">
-                    <Tab value="profile" icon={<Icon>person</Icon>} label="Профиль" />
-                    <Tab value="payments" icon={<Icon>payment</Icon>} label="Платежи" />
-                    <Tab value="lessons" icon={<Icon>school</Icon>} label="Уроки" />
-                    <Tab value="tickets" icon={<Icon>local_activity</Icon>} label="Билеты" />
-                    <Tab value="meetings" icon={<Icon>event</Icon>} label="Встречи" />
-                </TabBar>
+                <Tabs
+                    items={tabItems}
+                />
             </PageHeader>
 
-            <PageContent>
+            {/* <PageContent>
                 {activeTab === 'profile' &&
                     <ProfileCard
                         user={user}
@@ -74,7 +73,7 @@ export default function AccountPage() {
                         meetings={meetings}
                     />
                 }
-            </PageContent>
+            </PageContent> */}
         </Page>
     );
 }

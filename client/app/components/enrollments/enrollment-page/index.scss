@@ -3,9 +3,19 @@
         &__inner {
             max-width: 1024px;
         }
+
+        .ui-header {
+            color: white;
+        }
     }
 
     .page-content {
         max-width: 1024px;
+
+        > .ui-grid {
+            > .ui-flex {
+                gap: 1rem;
+            }
+        }
     }
 }

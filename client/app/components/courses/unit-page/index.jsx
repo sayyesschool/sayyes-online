@@ -1,10 +1,8 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-    IconButton
-} from 'mdc-react';
 
 import { useCourse } from 'shared/hooks/courses';
+import IconButton from 'shared/components/icon-button';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';

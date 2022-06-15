@@ -1,43 +1,29 @@
 @use 'shared/styles/variables';
-@use '@material/checkbox';
-@use '@material/theme';
-
-$fill-color: variables.$primary-color;
-$ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
 
 .enrollment-pay-card {
-    display: flex;
-    flex-direction: row;
-
-    .mdc-checkbox {
-        @include checkbox.container-colors(gray, transparent, gray, transparent);
-        @include checkbox.ink-color(gray);
-        @include checkbox.focus-indicator-color(gray);
-        @include checkbox.density(-1);
+    &.ui-segment {
+        padding: 0;
+        border: none;
+        border-radius: 8px;
+        overflow: hidden;
     }
 
     &__section {
-        flex: 1;
         padding: 1rem;
-
-        > .mdc-card__header {
-            padding: 0;
-            margin-bottom: 1rem;
-        }
     }
 
     &__details-section {
         background-color: #e6e6fa;
         text-align: center;
         flex-basis: 256px;
+
+        img {
+            max-width: 128px;
+        }
     }
 
     &__steps-section {
         flex: 1 0 60%;
-
-        .mdc-card__header {
-            margin-bottom: 2rem;
-        }
 
         .pack-card-grid {
             margin-bottom: 1rem;
@@ -48,14 +34,13 @@ $ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
         flex-basis: 256px;
         display: flex;
         flex-direction: column;
-        background-color: $fill-color;
-        color: $ink-color;
+        background-color: variables.$primary-color;
         background-image: url('https://static.sayes.ru/images/kids/fourth.png');
+        color: variables.$text-light-color;
 
-        .mdc-card__header__graphic,
-        .mdc-card__header__title,
-        .mdc-icon-button {
-            color: $ink-color !important;
+        .ui-header,
+        .ui-text {
+            color: variables.$text-light-color;
         }
 
         .balance {
@@ -72,10 +57,6 @@ $ink-color: theme.accessible-ink-color(variables.$primary-color, primary);
             p {
                 line-height: 1.2;
             }
-        }
-
-        .mdc-button {
-            width: 100%;
         }
     }
 }

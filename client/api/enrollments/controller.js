@@ -43,11 +43,11 @@ module.exports = ({
 
     getOne: (req, res, next) => {
         Enrollment.findById(req.params.id)
-            .populate('teacher', 'firstname lastname imageUrl zoomUrl')
-            .populate('manager', 'firstname lastname imageUrl email phone')
+            .populate('teachers', 'firstname lastname imageUrl zoomUrl')
+            .populate('managers', 'firstname lastname imageUrl email phone')
+            .populate('lessons', 'title status date duration')
             .populate('courses', 'title subtitle slug image units.id lessons.id exercises.id')
             .populate('materials', 'slug title subtitle')
-            .populate('lessons', 'id title status date duration')
             .then(enrollment => {
                 if (!enrollment) {
                     const error = new Error('Обучение не найдено');

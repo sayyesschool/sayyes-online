@@ -1,39 +1,23 @@
-import {
-    Card,
-    Icon,
-    List,
-    Typography
-} from 'mdc-react';
+import { List, Text } from '@fluentui/react-northstar';
+
+import PageSection from 'shared/components/page-section';
 
 export default function PaymentsCard({ payments }) {
     return (
-        <Card outlined>
-            <Card.Header
-                title="Платежи"
-            />
-
+        <PageSection title="Платежи">
             {payments.length > 0 ?
-                <Card.Section>
-                    <List>
-                        {payments.map(payment =>
-                            <ListItem key={payment.id}>
-                                <ListItemGraphic>
-                                    <Icon>confirmation_number</Icon>
-                                </ListItemGraphic>
-
-                                <ListItemText
-                                    primary={payment.title}
-                                    secondary={payment.meeting ? payment.meeting.title : 'Не использован'}
-                                />
-                            </ListItem>
-                        )}
-                    </List>
-                </Card.Section>
+                <List>
+                    {payments.map(payment =>
+                        <ListItem
+                            key={payment.id}
+                            header={payment.title}
+                            content={payment.meeting ? payment.meeting.title : 'Не использован'}
+                        />
+                    )}
+                </List>
                 :
-                <Card.Section primary>
-                    <Typography noMargin>Вы еще не совершили ни один платеж.</Typography>
-                </Card.Section>
+                <Text>Вы еще не совершили ни один платеж.</Text>
             }
-        </Card>
+        </PageSection>
     );
 }

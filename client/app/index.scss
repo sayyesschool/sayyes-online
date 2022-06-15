@@ -1,10 +1,2 @@
-@use 'styles/variables';
-@use 'styles/normalize';
 @use 'styles/base';
-@use 'styles/material';
-@use 'mdc-react';
-@use 'plyr/src/sass/plyr.scss' with (
-    $plyr-color-main: variables.$primary-color
-);
 @use 'styles/components';
-@use './theme';
