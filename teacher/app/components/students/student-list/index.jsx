@@ -9,7 +9,7 @@ export default function StudentList({ students }) {
         <List>
             {students.map(student =>
                 <List.Item
-                    component={Link}
+                    as={Link}
                     to={student.url}
                     leadingAvatar={<Avatar text={student.initials} />}
                     primaryText={student.fullname}

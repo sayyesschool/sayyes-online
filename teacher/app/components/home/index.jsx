@@ -1,21 +1,18 @@
 import { useCallback, useState } from 'react';
-import {
-    Button,
-    Flex
-} from '@fluentui/react-northstar';
+import { Button, Flex, Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
+import { useEnrollments } from 'shared/hooks/enrollments';
 import { useLessons } from 'shared/hooks/lessons';
+import Calendar from 'shared/components/calendar';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import Dialog from 'shared/components/dialog';
+import FormDialog from 'shared/components/form-dialog';
 import Icon from 'shared/components/material-icon';
 import LoadingIndicator from 'shared/components/loading-indicator';
-import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
-import Calendar from 'shared/components/calendar';
 
+import EnrollmentsList from 'app/components/enrollments/enrollments-list';
 import LessonDetails from 'app/components/lessons/lesson-details';
 import LessonForm from 'app/components/lessons/lesson-form';
 
@@ -23,6 +20,7 @@ import './index.scss';
 
 export default function HomePage() {
     const [lessons, actions] = useLessons();
+    const [enrollments] = useEnrollments();
 
     const [lesson, setLesson] = useState();
     const [isDialogOpen, toggleDialogOpen] = useBoolean(false);
@@ -102,9 +100,9 @@ export default function HomePage() {
 
     return (
         <Page id="home-page">
-            <PageHeader
+            <Page.Header
                 title="Главная"
-                actions={[
+                toolbar={[
                     {
                         key: 'add-lesson',
                         kind: 'custom',
@@ -120,13 +118,23 @@ export default function HomePage() {
                 ]}
             />
 
-            <PageContent>
-                <Calendar
-                    view="week-time"
-                    events={events}
-                    onEventClick={handleEventClick}
-                />
-            </PageContent>
+            <Page.Content>
+                <Grid columns="1fr 3fr">
+                    <Page.Section title="Активные студенты" compact>
+                        <EnrollmentsList
+                            enrollments={enrollments}
+                        />
+                    </Page.Section>
+
+                    <Page.Section compact>
+                        <Calendar
+                            view="week-time"
+                            events={events}
+                            onEventClick={handleEventClick}
+                        />
+                    </Page.Section>
+                </Grid>
+            </Page.Content>
 
             <FormDialog
                 title={lesson ? 'Редактирование урока' : 'Новый урок'}

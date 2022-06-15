@@ -12,7 +12,8 @@ import './index.scss';
 
 export default function PostForm({ post = {}, onSubmit }) {
     const editorRef = useRef();
-    const [data, handleChange] = useForm({
+
+    const { data, handleChange } = useForm({
         title: post.title || '',
         content: post.content || ''
     });

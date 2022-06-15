@@ -1,11 +1,8 @@
 import { useCallback } from 'react';
-import {
-    Button
-} from '@fluentui/react-northstar';
+import { Button } from '@fluentui/react-northstar';
 
-import { useStore } from 'shared/hooks/store';
-import { actions as userActions } from 'shared/store/modules/user';
-import Icon from 'shared/components/material-icon';
+import { useUser } from 'shared/hooks/user';
+import Icon from 'shared/components/icon';
 import Page from 'shared/components/page';
 import PageContent from 'shared/components/page-content';
 import PageHeader from 'shared/components/page-header';
@@ -16,7 +13,7 @@ import ProfileForm from 'app/components/account/profile-form';
 import './index.scss';
 
 export default function AccountPage() {
-    const [user, actions] = useStore(state => state.user, userActions);
+    const [user, actions] = useUser();
 
     const handleProfileFormSubmit = useCallback(data => {
         actions.updateProfile(data);

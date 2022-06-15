@@ -25,7 +25,7 @@ export default forwardRef(EnrollmentForm);
 function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
     const formRef = useRef();
 
-    const [data, handleChange] = useForm({
+    const { data, handleChange } = useForm({
         ...defaultEnrollment,
         ...enrollment,
         client: enrollment.client?.id || '',

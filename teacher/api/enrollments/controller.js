@@ -45,5 +45,5 @@ module.exports = ({ Enrollment }) => ({
                 data: enrollment
             });
         }).catch(next);
-    },
+    }
 });

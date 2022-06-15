@@ -33,7 +33,7 @@ export default function EnrollmentPage({ match }) {
                 actions={[
                     <FAB
                         key="class"
-                        element="a"
+                        as="a"
                         href={enrollment.classUrl}
                         icon={<Icon>video_call</Icon>}
                         label="Перейти в класс"
