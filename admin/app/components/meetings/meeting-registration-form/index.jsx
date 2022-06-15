@@ -7,7 +7,7 @@ import useForm from 'shared/hooks/form';
 import Form from 'shared/components/form';
 
 export default function MeetingRegistrationForm({ onSubmit }) {
-    const [data, setData] = useForm({
+    const { data, setData } = useForm({
         firstname: '',
         lastname: '',
         email: ''
@@ -20,7 +20,6 @@ export default function MeetingRegistrationForm({ onSubmit }) {
                     name="firstname"
                     value={data.firstname}
                     label="Имя"
-                    outlined
                     required
                     onChange={setData}
                 />
@@ -29,7 +28,6 @@ export default function MeetingRegistrationForm({ onSubmit }) {
                     name="lastname"
                     value={data.lastname}
                     label="Фамилия"
-                    outlined
                     required
                     onChange={setData}
                 />
@@ -39,7 +37,6 @@ export default function MeetingRegistrationForm({ onSubmit }) {
                     name="email"
                     value={data.email}
                     label="Электронная почта"
-                    outlined
                     required
                     onChange={setData}
                 />

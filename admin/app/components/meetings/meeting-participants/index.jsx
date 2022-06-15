@@ -8,7 +8,7 @@ export default function MeetingParticipants({ participants, onAdd }) {
     const subtitle = (!participants || participants.length === 0) ? 'Участников пока нет' : participants.length;
 
     return (
-        <Card outlined>
+        <Card>
             <Card.Header
                 title="Участники"
                 subtitle={subtitle}

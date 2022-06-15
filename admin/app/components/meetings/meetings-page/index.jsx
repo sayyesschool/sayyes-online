@@ -32,7 +32,6 @@ export default function MeetingsPage() {
                         key: 'add',
                         label: 'Создать',
                         icon: 'add',
-                        unelevated: true,
                         onClick: () => setMeetingFormOpen(true)
                     }
                 ]}

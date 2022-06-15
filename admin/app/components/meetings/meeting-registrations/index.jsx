@@ -46,7 +46,7 @@ export default function MeetingRegistrations({
     const subtitle = registrations?.length === 0 ? 'Регистраций пока нет' : undefined;
 
     return (
-        <Card outlined>
+        <Card>
             <Card.Header
                 title="Регистрации"
                 subtitle={subtitle}

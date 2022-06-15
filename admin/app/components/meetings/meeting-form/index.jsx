@@ -20,7 +20,7 @@ import './index.scss';
 
 export default function MeetingForm({ meeting = {}, onSubmit }) {
     const fileInputRef = useRef();
-    const [data, setData] = useForm({
+    const { data, setData } = useForm({
         title: meeting.title,
         date: moment(meeting.date).format('YYYY-MM-DDTHH:mm'),
         host: meeting.host && meeting.host.id,

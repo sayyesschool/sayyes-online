@@ -76,7 +76,7 @@ export default function EnrollmentComments({ enrollment }) {
                         onSubmit={createComment}
                     />
 
-                    <Button type="submit" form="comment-form" unelevated>Отправить</Button>
+                    <Button type="submit" form="comment-form">Отправить</Button>
                 </div>
             }
         </PageSection>

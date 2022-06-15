@@ -18,7 +18,7 @@ export default function UnitList({ units, onDelete }) {
     }, [onDelete]);
 
     return (
-        <List element="nav" className="unit-list numbered-list" navigable>
+        <List as="nav" className="unit-list numbered-list" navigable>
             {units.map((unit, index) =>
                 <List.Item
                     key={unit.id}

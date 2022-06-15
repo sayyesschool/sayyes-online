@@ -7,7 +7,7 @@ import MeetingForm from '../meeting-form';
 
 export default function MeetingDetails({ meeting, onUpdate }) {
     return (
-        <Card outlined>
+        <Card>
             <Card.Header
                 title="Детали"
                 actions={
