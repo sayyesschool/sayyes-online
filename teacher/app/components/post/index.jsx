@@ -44,7 +44,7 @@ export default function PostPage({ match }) {
         <Page id="post-page">
             <PageHeader
                 title="Запись"
-                actions={[
+                toolbar={[
                     { key: 'save', icon: 'save', type: 'submit', form: 'assignment-form', title: 'Сохранить' },
                     { key: 'delete', icon: 'delete', title: 'Удалить', onClick: handleDeletePost },
                 ]}
