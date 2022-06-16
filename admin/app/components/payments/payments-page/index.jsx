@@ -2,11 +2,7 @@ import { useCallback, useEffect } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
-import Icon from 'shared/components/icon';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
-import PageSection from 'shared/components/page-section';
 
 import { useStore } from 'app/hooks/store';
 import PaymentForm from 'app/components/payments/payment-form';
@@ -55,9 +51,9 @@ export default function Payments({ match, history }) {
 
     return (
         <Page id="payments" loading={!payments}>
-            <PageHeader
+            <Page.Header
                 title="Платежи"
-                actions={[
+                toolbar={[
                     {
                         key: 'add',
                         icon: 'add',
@@ -69,15 +65,15 @@ export default function Payments({ match, history }) {
                 ]}
             />
 
-            <PageContent>
-                <PageSection>
+            <Page.Content>
+                <Page.Section compact>
                     <PaymentsTable
                         payments={payments}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
                     />
-                </PageSection>
-            </PageContent>
+                </Page.Section>
+            </Page.Content>
 
             <FormDialog
                 title={payment ? 'Редактирование платежа' : 'Новый платеж'}

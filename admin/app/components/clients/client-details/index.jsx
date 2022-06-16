@@ -14,6 +14,7 @@ export default function ClientDetails({ client }) {
         <PageSection
             className="client-details"
             title="Основные данные"
+            compact
         >
             <DetailsList
                 items={[

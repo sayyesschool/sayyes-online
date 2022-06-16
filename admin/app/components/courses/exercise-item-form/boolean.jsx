@@ -7,7 +7,7 @@ import {
 } from '@fluentui/react-northstar';
 import { v4 as uuid } from 'uuid';
 
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 import TextEditor from 'shared/components/text-editor';
 
 function ExerciseBooleanItem({ item }, ref) {

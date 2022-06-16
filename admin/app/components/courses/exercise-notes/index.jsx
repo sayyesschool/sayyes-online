@@ -1,9 +1,7 @@
 import { useCallback, useRef } from 'react';
-import {
-    Button
-} from '@fluentui/react-northstar';
+import { Button } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 import PageSection from 'shared/components/page-section';
 import TextEditor from 'shared/components/text-editor';
 
@@ -28,6 +26,7 @@ export default function ExerciseNotes({ exercise, onUpdate }) {
                     onClick={handleSave}
                 />
             }
+            compact
         >
             <TextEditor
                 ref={textEditorRef}

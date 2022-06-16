@@ -2,13 +2,9 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
-import LoadingIndicator from 'shared/components/loading-indicator';
 import FormDialog from 'shared/components/form-dialog';
-import Icon from 'shared/components/icon';
+import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
-import PageSection from 'shared/components/page-section';
 
 import { useStore } from 'app/hooks/store';
 import ManagersTable from 'app/components/managers/managers-table';
@@ -51,27 +47,27 @@ export default function ManagersPage({ history }) {
 
     return (
         <Page id="managers-page">
-            <PageHeader
+            <Page.Header
                 title="Менеджеры"
-                actions={[
+                toolbar={[
                     {
                         key: 'add',
-                        icon: <Icon>add</Icon>,
+                        icon: 'add',
                         content: 'Создать',
                         onClick: toggleManagerFormOpen
                     }
                 ]}
             />
 
-            <PageContent>
-                <PageSection>
+            <Page.Content>
+                <Page.Section compact>
                     <ManagersTable
                         managers={managers}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
                     />
-                </PageSection>
-            </PageContent>
+                </Page.Section>
+            </Page.Content>
 
             <FormDialog
                 form="manager-form"

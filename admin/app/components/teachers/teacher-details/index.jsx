@@ -10,7 +10,7 @@ export default function TeacherDetails({ teacher }) {
     const { timezones } = useContext(DataContext);
 
     return (
-        <PageSection className="teacher-details">
+        <PageSection className="teacher-details" compact>
             {teacher.imageUrl &&
                 <Image
                     src={teacher.imageUrl}

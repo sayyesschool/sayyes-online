@@ -4,7 +4,7 @@ import LessonsList from 'app/components/lessons/lessons-list';
 
 export default function TeacherLessons({ teacher }) {
     return (
-        <PageSection className="teacher-lessons" title="Уроки">
+        <PageSection className="teacher-lessons" title="Уроки" compact>
             {teacher.lessons?.length > 0 &&
                 <LessonsList
                     lessons={teacher.lessons}

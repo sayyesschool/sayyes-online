@@ -5,6 +5,11 @@ body {
     overflow: hidden;
 }
 
+body,
+.ui-provider {
+    background-color: rgb(245, 245, 245) !important;
+}
+
 .app-loading-indicator {
     position: fixed;
 }

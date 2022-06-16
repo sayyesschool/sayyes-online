@@ -3,7 +3,7 @@ import { Button } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
 
@@ -43,6 +43,7 @@ export default function UnitLessons({ course, unit, onCreate, onDelete }) {
                     onClick={toggleFormDialogOpen}
                 />
             }
+            compact
         >
             <LessonList
                 lessons={unit.lessons}

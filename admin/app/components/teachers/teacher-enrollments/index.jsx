@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import { Avatar, List } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 import PageSection from 'shared/components/page-section';
 
 export default function TeacherEnrollments({ teacher }) {
     return (
-        <PageSection className="teacher-enrollments" title="Обучение">
+        <PageSection className="teacher-enrollments" title="Обучение" compact>
             {teacher.enrollments?.length > 0 &&
                 <List>
                     {teacher.enrollments.map(enrollment =>

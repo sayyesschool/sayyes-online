@@ -7,7 +7,7 @@ import {
     Text
 } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 
 function ExerciseInputItem({ item }, ref) {
     const [text, setText] = useState(item.text || '');

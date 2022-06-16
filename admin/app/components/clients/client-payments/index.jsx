@@ -4,7 +4,7 @@ import { Button } from '@fluentui/react-northstar';
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 import PageSection from 'shared/components/page-section';
 
 import { useActions } from 'app/hooks/store';
@@ -57,13 +57,14 @@ export default function ClientPayments({ client }) {
             title="Платежи"
             actions={
                 <Button
-                    icon={<Icon icon="add" />}
+                    icon={<Icon name="add" />}
                     title="Создать платеж"
                     text
                     iconOnly
                     onClick={toggleCreateFormOpen}
                 />
             }
+            compact
         >
             {payments?.length > 0 &&
                 <PaymentsList

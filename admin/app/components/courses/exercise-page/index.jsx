@@ -6,8 +6,6 @@ import { useExercise } from 'shared/hooks/courses';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
 
 import ExerciseDetails from 'app/components/courses/exercise-details';
 import ExerciseItems from 'app/components/courses/exercise-items';
@@ -51,16 +49,15 @@ export default function ExercisePage({ match, history }) {
 
     return (
         <Page id="exercise-page">
-            <PageHeader
+            <Page.Header
+                title={exercise.title}
                 breadcrumbs={[
                     { key: 'courses', text: 'Курсы', url: '/courses' },
-                    { key: 'course', text: course.title, url: course.uri },
-                    { key: 'unit', text: unit.title, url: unit.uri },
-                    { key: 'lesson', text: lesson.title, url: lesson.uri }
+                    { key: 'course', text: course.title, url: course.uri, title: 'Курс' },
+                    { key: 'unit', text: unit.title, url: unit.uri, title: 'Юнит' },
+                    { key: 'lesson', text: lesson.title, url: lesson.uri, title: 'Урок' }
                 ]}
-                overline="Упражнение"
-                title={exercise.title}
-                actions={[
+                toolbar={[
                     {
                         key: 'delete',
                         icon: 'delete',
@@ -70,7 +67,7 @@ export default function ExercisePage({ match, history }) {
                 ]}
             />
 
-            <PageContent>
+            <Page.Content>
                 <Grid columns="minmax(0, 2fr) minmax(0, 1fr)">
                     <Flex gap="gap.medium" column>
                         <ExerciseItems
@@ -94,7 +91,7 @@ export default function ExercisePage({ match, history }) {
                         />
                     </Flex>
                 </Grid>
-            </PageContent>
+            </Page.Content>
 
             <ConfirmationDialog
                 title="Удалить упражнение?"

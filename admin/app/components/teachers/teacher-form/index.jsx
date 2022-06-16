@@ -6,7 +6,7 @@ import Form from 'shared/components/form';
 import FormInput from 'shared/components/form-input';
 import FormRadioGroup from 'shared/components/form-radio-group';
 import FormTextArea from 'shared/components/form-textarea';
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 import TimeZoneSelect from 'shared/components/timezone-select';
 import { generatePassword } from 'shared/utils/password';
 

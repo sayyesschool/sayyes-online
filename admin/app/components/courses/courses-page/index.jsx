@@ -32,7 +32,7 @@ export default function CoursesPage() {
         <Page id="courses">
             <PageHeader
                 title="Курсы"
-                actions={[
+                toolbar={[
                     {
                         key: 'add',
                         title: 'Создать',
@@ -43,7 +43,7 @@ export default function CoursesPage() {
             />
 
             <PageContent>
-                <PageSection>
+                <PageSection compact>
                     <CoursesTable
                         courses={courses}
                     />

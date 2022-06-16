@@ -9,7 +9,7 @@ import storage from 'shared/services/storage';
 import { useBoolean } from 'shared/hooks/state';
 import VideoPlayer from 'shared/components/video-player';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 import TextEditor from 'shared/components/text-editor';
 
 export default function ExerciseVideoItem({ item, uploadPath, onUpdate }) {

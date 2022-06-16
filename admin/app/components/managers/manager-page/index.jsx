@@ -3,19 +3,15 @@ import { Flex, Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
-import LoadingIndicator from 'shared/components/loading-indicator';
 import FormDialog from 'shared/components/form-dialog';
+import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
 
 import { useStore } from 'app/hooks/store';
 import ManagerForm from 'app/components/managers/manager-form';
 import ManagerDetails from 'app/components/managers/manager-details';
 import ManagerEnrollments from 'app/components/managers/manager-enrollments';
 import ManagerRequests from 'app/components/managers/manager-requests';
-
-import './index.scss';
 
 export default function ManagerPage({ match, location, history }) {
     const [manager, managerActions] = useStore('managers.single');
@@ -48,12 +44,12 @@ export default function ManagerPage({ match, location, history }) {
 
     return (
         <Page id="manager">
-            <PageHeader
+            <Page.Header
                 breadcrumbs={[
                     { text: 'Менеджеры', url: '/managers' }
                 ]}
                 title={manager?.fullname}
-                actions={[
+                toolbar={[
                     {
                         key: 'edit',
                         title: 'Редактировать',
@@ -69,7 +65,7 @@ export default function ManagerPage({ match, location, history }) {
                 ]}
             />
 
-            <PageContent>
+            <Page.Content>
                 <Grid columns="minmax(0, 1fr) minmax(0, 2fr)">
                     <Flex gap="gap.medium" column>
                         <ManagerDetails
@@ -88,7 +84,7 @@ export default function ManagerPage({ match, location, history }) {
                         />
                     </Flex>
                 </Grid>
-            </PageContent>
+            </Page.Content>
 
             <FormDialog
                 form="manager-form"

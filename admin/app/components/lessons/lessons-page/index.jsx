@@ -4,9 +4,6 @@ import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
-import PageSection from 'shared/components/page-section';
 
 import { useStore } from 'app/hooks/store';
 import LessonsTable from 'app/components/lessons/lessons-table';
@@ -30,9 +27,9 @@ export default function Lessons() {
 
     return (
         <Page id="lessons-page">
-            <PageHeader
+            <Page.Header
                 title="Уроки"
-                actions={[
+                toolbar={[
                     {
                         key: 'add',
                         title: 'Создать',
@@ -42,13 +39,13 @@ export default function Lessons() {
                 ]}
             />
 
-            <PageContent>
-                <PageSection>
+            <Page.Content>
+                <Page.Section compact>
                     <LessonsTable
                         lessons={lessons}
                     />
-                </PageSection>
-            </PageContent>
+                </Page.Section>
+            </Page.Content>
 
             <FormDialog
                 title="Новый урок"

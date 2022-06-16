@@ -1,13 +1,11 @@
+import { Grid } from '@fluentui/react-northstar';
+
 import { useTodaysLessons } from 'shared/hooks/lessons';
 import Page from 'shared/components/page';
-import PageContent from 'shared/components/page-content';
-import PageHeader from 'shared/components/page-header';
-import PageSection from 'shared/components/page-section';
 
 import { useStore } from 'app/hooks/store';
 import RequestsList from 'app/components/requests/requests-list';
 import LessonsList from 'app/components/lessons/lessons-list';
-// import MeetingList from 'app/components/meetings/meeting-list';
 
 import './index.scss';
 
@@ -17,21 +15,27 @@ export default function HomePage() {
 
     return (
         <Page id="home">
-            <PageHeader title="Главная" />
+            <Page.Header title="Главная" />
 
-            <PageContent>
-                <PageSection title="Заявки">
-                    <RequestsList
-                        requests={requests}
-                    />
-                </PageSection>
+            <Page.Content>
+                <Grid columns="4">
+                    <Page.Section title="Новые заявки" compact>
+                        <RequestsList
+                            requests={requests}
+                        />
+                    </Page.Section>
 
-                <PageSection title="Уроки сегодня">
-                    <LessonsList
-                        lessons={lessons}
-                    />
-                </PageSection>
-            </PageContent>
+                    <Page.Section title="Уроки сегодня" compact>
+                        <LessonsList
+                            lessons={lessons}
+                        />
+                    </Page.Section>
+
+                    <Page.Section title="Мои задачи" compact>
+
+                    </Page.Section>
+                </Grid>
+            </Page.Content>
         </Page>
     );
 }

@@ -40,7 +40,7 @@ export default function MaterialPage({ match, history }) {
         <Page id="material-page">
             <PageHeader
                 title={material.title}
-                actions={[
+                toolbar={[
                     {
                         key: 'delete',
                         icon: 'delete',

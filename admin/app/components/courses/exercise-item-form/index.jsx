@@ -1,7 +1,7 @@
 import { createElement, useCallback, useRef, useState } from 'react';
 import { Button, Flex, Text } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 
 import AudioItem from './audio';
 import BooleanItem from './boolean';

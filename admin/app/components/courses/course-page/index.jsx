@@ -1,27 +1,21 @@
-import { useCallback, useState } from 'react';
-import { Box, Grid } from '@fluentui/react-northstar';
+import { useCallback } from 'react';
+import { Box, Flex, Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useCourse } from 'shared/hooks/courses';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageContent from 'shared/components/page-content';
-import PageHeader from 'shared/components/page-header';
-import Tabs from 'shared/components/tabs';
 
-import CourseAudios from 'app/components/courses/course-audios';
 import CourseDetails from 'app/components/courses/course-details';
 import CourseImage from 'app/components/courses/course-image';
 import CourseUnits from 'app/components/courses/course-units';
-import CourseVideos from 'app/components/courses/course-videos';
 
 import './index.scss';
 
 export default function CoursePage({ match, history }) {
     const [course, actions] = useCourse(match.params.courseId);
 
-    const [activeTab, setActiveTab] = useState('units');
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     const handleUpdateCourse = useCallback(data => {
@@ -45,13 +39,12 @@ export default function CoursePage({ match, history }) {
 
     return (
         <Page id="course-page">
-            <PageHeader
+            <Page.Header
+                title={course.title}
                 breadcrumbs={[
                     { key: 'courses', text: 'Курсы', url: '/courses' }
                 ]}
-                overline="Курс"
-                title={course.title}
-                actions={[
+                toolbar={[
                     {
                         key: 'delete',
                         icon: 'delete',
@@ -60,58 +53,17 @@ export default function CoursePage({ match, history }) {
                 ]}
             />
 
-            <PageContent>
-                {/* <Tabs
-                    items={[
-                        {
-                            key: 'units',
-                            value: 'units',
-                            content: 'Юниты',
-                            icon: 'segment'
-                        },
-                        {
-                            key: 'audio',
-                            value: 'audio',
-                            content: 'Аудио',
-                            icon: 'audiotrack'
-                        },
-                        {
-                            key: 'video',
-                            value: 'video',
-                            content: 'Видео',
-                            icon: 'movie'
-                        }
-                    ]}
-                    onChange={setActiveTab}
-                /> */}
-
+            <Page.Content>
                 <Grid columns="minmax(0, 2fr) minmax(0, 1fr)">
                     <Box>
-                        {activeTab === 'units' &&
-                            <CourseUnits
-                                course={course}
-                                onCreate={handleCreateUnit}
-                                onDelete={handleDeleteUnit}
-                            />
-                        }
-
-                        {activeTab === 'audio' &&
-                            <CourseAudios
-                                course={course}
-                                onCreate={actions.createAudio}
-                                onUpdate={actions.updateAudio}
-                                onDelete={actions.deleteAudio}
-                            />
-                        }
-
-                        {activeTab === 'video' &&
-                            <CourseVideos
-                                course={course}
-                            />
-                        }
+                        <CourseUnits
+                            course={course}
+                            onCreate={handleCreateUnit}
+                            onDelete={handleDeleteUnit}
+                        />
                     </Box>
 
-                    <Box>
+                    <Flex gap="gap.medium" column>
                         <CourseDetails
                             course={course}
                             onUpdate={handleUpdateCourse}
@@ -122,9 +74,9 @@ export default function CoursePage({ match, history }) {
                             course={course}
                             onUpdate={handleUpdateCourse}
                         />
-                    </Box>
+                    </Flex>
                 </Grid>
-            </PageContent>
+            </Page.Content>
 
             <ConfirmationDialog
                 title="Удалить курс?"

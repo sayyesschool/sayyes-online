@@ -31,7 +31,7 @@ export default function Materials() {
         <Page id="materials" loading={!materials}>
             <PageHeader
                 title="Материалы"
-                actions={[
+                toolbar={[
                     {
                         key: 'add',
                         title: 'Создать',

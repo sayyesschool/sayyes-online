@@ -13,6 +13,7 @@ export default function ManagerDetails({ manager }) {
         <PageSection
             className="manager-details"
             title="Общая информация"
+            compact
         >
             {manager.imageUrl &&
                 <Image

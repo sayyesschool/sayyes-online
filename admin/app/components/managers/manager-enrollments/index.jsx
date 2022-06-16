@@ -8,6 +8,7 @@ export default function ManagerEnrollments({ manager }) {
         <PageSection
             className="manager-enrollments"
             title="Обучение"
+            compact
         >
             {manager.enrollments?.length > 0 &&
                 <List>

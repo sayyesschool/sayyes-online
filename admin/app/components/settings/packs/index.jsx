@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
+import FormDialog from 'shared/components/form-dialog';
 import IconButton from 'shared/components/icon-button';
 import LoadingIndicator from 'shared/components/loading-indicator';
-import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
 
 import { useStore } from 'app/hooks/store';
@@ -71,6 +71,7 @@ export default function Packs() {
                     onClick={handleCreate}
                 />
             }
+            compact
         >
             <PacksTable
                 packs={packs}

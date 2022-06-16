@@ -3,7 +3,7 @@ import {
     Button
 } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 import PageSection from 'shared/components/page-section';
 import TextEditor from 'shared/components/text-editor';
 
@@ -24,12 +24,13 @@ export default function UnitContent({ unit = {}, onUpdate }) {
             title="Содержание"
             actions={
                 <Button
-                    icon={<Icon icon="save" />}
+                    icon={<Icon name="save" />}
                     iconOnly
                     text
                     onClick={handleSave}
                 />
             }
+            compact
         >
             <TextEditor
                 ref={editorRef}

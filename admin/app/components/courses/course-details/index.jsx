@@ -2,7 +2,7 @@ import {
     Button
 } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 import PageSection from 'shared/components/page-section';
 
 import CourseForm from 'app/components/courses/course-form';

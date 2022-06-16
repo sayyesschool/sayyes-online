@@ -1,13 +1,11 @@
 import { useCallback, useState } from 'react';
-import { Box, Grid } from '@fluentui/react-northstar';
+import { Box, Flex, Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useLesson } from 'shared/hooks/courses';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
 import Tabs from 'shared/components/tabs';
 
 import LessonContent from 'app/components/courses/lesson-content';
@@ -47,15 +45,14 @@ export default function LessonPage({ match, history }) {
 
     return (
         <Page id="lesson-page">
-            <PageHeader
+            <Page.Header
+                title={lesson.title}
                 breadcrumbs={[
                     { key: 'courses', text: 'Курсы', url: '/courses' },
-                    { key: 'course', text: course.title, url: course.uri },
-                    { key: 'unit', text: unit.title, url: unit.uri }
+                    { key: 'course', text: course.title, url: course.uri, title: 'Курс' },
+                    { key: 'unit', text: unit.title, url: unit.uri, title: 'Юнит' }
                 ]}
-                overline="Урок"
-                title={lesson.title}
-                actions={[
+                toolbar={[
                     {
                         key: 'delete',
                         icon: 'delete',
@@ -65,7 +62,7 @@ export default function LessonPage({ match, history }) {
                 ]}
             />
 
-            <PageContent>
+            <Page.Content>
                 <Tabs
                     items={[
                         {
@@ -103,7 +100,7 @@ export default function LessonPage({ match, history }) {
                         }
                     </Box>
 
-                    <Box>
+                    <Flex gap="gap.medium" column>
                         <LessonDetails
                             lesson={lesson}
                             onUpdate={handleUpdateLesson}
@@ -113,9 +110,9 @@ export default function LessonPage({ match, history }) {
                             lesson={lesson}
                             onUpdate={handleUpdateLesson}
                         />
-                    </Box>
+                    </Flex>
                 </Grid>
-            </PageContent>
+            </Page.Content>
 
             <ConfirmationDialog
                 title="Удалить урок?"

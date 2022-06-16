@@ -7,6 +7,7 @@ export default function ManagerRequests({ requests }) {
         <PageSection
             className="manager-requests"
             title="Заявки"
+            compact
         >
             {requests?.length > 0 &&
                 <RequestsList

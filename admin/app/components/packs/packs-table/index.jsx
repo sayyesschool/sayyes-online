@@ -1,11 +1,18 @@
-import {
-    Button,
-    Table
-} from '@fluentui/react-northstar';
+import { Button, Table } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 
 import { ageLabel, domainLabel, teacherLabel } from 'app/data/pack';
+
+const columns = [
+    { key: 'age', content: 'Возраст' },
+    { key: 'domain', content: 'Направление' },
+    { key: 'numberOfLessons', content: 'Кол-во уроков', numeric: true },
+    { key: 'pricePerLesson', content: 'Стоимость урока, руб.', numeric: true },
+    { key: 'totalPrice', content: 'Стоимость пакета, руб.', numeric: true },
+    { key: 'lessonDuration', content: 'Прод-ть урока, мин.', numeric: true },
+    { key: 'teacher', content: 'Тип преподавателя' }
+];
 
 export default function PacksTable({ packs, onEdit, onDelete }) {
     return (
@@ -14,9 +21,11 @@ export default function PacksTable({ packs, onEdit, onDelete }) {
                 {columns.map(col =>
                     <Table.Cell
                         key={col.key}
-                        content={col.text}
+                        content={col.content}
                     />
                 )}
+
+                <Table.Cell />
             </Table.Row>
 
             {packs.map(pack =>
@@ -81,39 +90,3 @@ export default function PacksTable({ packs, onEdit, onDelete }) {
         </Table>
     );
 }
-
-const columns = [
-    {
-        key: 'age',
-        text: 'Возраст'
-    },
-    {
-        key: 'domain',
-        text: 'Направление'
-    },
-    {
-        key: 'numberOfLessons',
-        text: 'Кол-во уроков',
-        numeric: true
-    },
-    {
-        key: 'pricePerLesson',
-        text: 'Стоимость урока, руб.',
-        numeric: true
-    },
-    {
-        key: 'totalPrice',
-        text: 'Стоимость пакета, руб.',
-        numeric: true
-    },
-    {
-        key: 'lessonDuration',
-        text: 'Прод-ть урока, мин.',
-        numeric: true
-    },
-    {
-        key: 'teacher',
-        text: 'Тип преподавателя'
-    },
-    {}
-];

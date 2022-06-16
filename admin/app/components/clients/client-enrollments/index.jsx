@@ -30,13 +30,14 @@ export default function ClientEnrollments({ client }) {
             title="Обучение"
             actions={
                 <Button
-                    icon={<Icon icon="add" />}
+                    icon={<Icon name="add" />}
                     title="Создать обучение"
                     text
                     iconOnly
                     onClick={toggleEnrollmentFormOpen}
                 />
             }
+            compact
         >
             <EnrollmentsList
                 enrollments={enrollments}

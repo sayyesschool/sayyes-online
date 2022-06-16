@@ -50,12 +50,12 @@ export default function ClientPage({ match, location, history }) {
 
     return (
         <Page id="client">
-            <PageHeader
+            <Page.Header
                 breadcrumbs={[
                     { text: 'Клиенты', url: '/clients' }
                 ]}
                 title={client?.fullname}
-                actions={[
+                toolbar={[
                     (client.hhid && {
                         element: 'a',
                         href: `https://sayes.t8s.ru/Profile/${client.hhid}`,
@@ -78,7 +78,7 @@ export default function ClientPage({ match, location, history }) {
                 ]}
             />
 
-            <PageContent>
+            <Page.Content>
                 <Grid columns="minmax(0, 1fr) minmax(0, 2fr)">
                     <Flex gap="gap.medium" column>
                         <ClientDetails
@@ -105,7 +105,7 @@ export default function ClientPage({ match, location, history }) {
                         />
                     </Flex>
                 </Grid>
-            </PageContent>
+            </Page.Content>
 
             <FormDialog
                 form="client-form"

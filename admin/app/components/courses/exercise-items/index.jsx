@@ -3,7 +3,7 @@ import { Button, MenuButton } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 import PageSection from 'shared/components/page-section';
 
 import ExerciseItemWrapper from 'app/components/courses/exercise-item-wrapper';

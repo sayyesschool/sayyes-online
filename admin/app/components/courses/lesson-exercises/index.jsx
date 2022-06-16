@@ -4,7 +4,7 @@ import { Button } from '@fluentui/react-northstar';
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 import PageSection from 'shared/components/page-section';
 
 import ExerciseForm from 'app/components/courses/exercise-form';
@@ -50,6 +50,7 @@ export default function LessonExercises({
                     onClick={toggleFormOpen}
                 />
             }
+            compact
         >
             {lesson.exercises?.length > 0 &&
                 <ExercisesList

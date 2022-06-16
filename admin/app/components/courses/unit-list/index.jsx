@@ -1,11 +1,8 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import {
-    Button,
-    List
-} from '@fluentui/react-northstar';
+import { Button, List } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 
 import './index.scss';
 
@@ -18,7 +15,7 @@ export default function UnitList({ units, onDelete }) {
     }, [onDelete]);
 
     return (
-        <List as="nav" className="unit-list numbered-list" navigable>
+        <List className="unit-list numbered-list" navigable>
             {units.map((unit, index) =>
                 <List.Item
                     key={unit.id}

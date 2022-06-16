@@ -41,7 +41,7 @@ export default function PaymentsTable({ payments, onEdit, onDelete }) {
                     <Table.Cell
                         content={
                             <StatusLabel
-                                status={payment.statusLabel}
+                                status={payment.status}
                                 content={payment.statusLabel}
                             />
                         }

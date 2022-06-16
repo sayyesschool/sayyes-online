@@ -4,7 +4,7 @@ import { Button } from '@fluentui/react-northstar';
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 import PageSection from 'shared/components/page-section';
 
 import ContactForm from 'app/components/clients/contact-form';
@@ -56,13 +56,14 @@ export default function ClientContacts({ client, onUpdate }) {
             title="Контакты"
             actions={
                 <Button
-                    icon={<Icon icon="add" />}
+                    icon={<Icon name="add" />}
                     title="Добавить контакт"
                     text
                     iconOnly
                     onClick={toggleCreateForm}
                 />
             }
+            compact
         >
             <ContactsList
                 contacts={client.contacts}

@@ -5,9 +5,6 @@ import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
-import PageContent from 'shared/components/page-content';
-import PageHeader from 'shared/components/page-header';
-import PageSection from 'shared/components/page-section';
 
 import { useStore } from 'app/hooks/store';
 import TeachersTable from 'app/components/teachers/teachers-table';
@@ -46,9 +43,9 @@ export default function TeachersPage({ history }) {
 
     return (
         <Page id="teachers-page">
-            <PageHeader
+            <Page.Header
                 title="Преподаватели"
-                actions={[
+                toolbar={[
                     {
                         key: 'add',
                         title: 'Создать',
@@ -58,15 +55,15 @@ export default function TeachersPage({ history }) {
                 ]}
             />
 
-            <PageContent>
-                <PageSection>
+            <Page.Content>
+                <Page.Section compact>
                     <TeachersTable
                         teachers={teachers}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
                     />
-                </PageSection>
-            </PageContent>
+                </Page.Section>
+            </Page.Content>
 
             <FormDialog
                 form="teacher-form"

@@ -5,9 +5,6 @@ import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
-import PageSection from 'shared/components/page-section';
 
 import { useStore, useActions } from 'app/hooks/store';
 import RequestsTable from 'app/components/requests/requests-table';
@@ -123,9 +120,9 @@ export default function RequestsPage({ history }) {
 
     return (
         <Page id="requests-page">
-            <PageHeader
+            <Page.Header
                 title="Заявки"
-                actions={[
+                toolbar={[
                     {
                         key: 'search',
                         icon: isSearchFormOpen ? 'search_off' : 'search',
@@ -134,16 +131,14 @@ export default function RequestsPage({ history }) {
                 ]}
             />
 
-            <PageContent>
-                {isSearchFormOpen &&
-                    <PageSection>
+            <Page.Content>
+                <Page.Section compact>
+                    {isSearchFormOpen &&
                         <RequestSearchForm
                             onSubmit={handleSearch}
                         />
-                    </PageSection>
-                }
+                    }
 
-                <PageSection>
                     <RequestsTable
                         requests={requests}
                         manager={user}
@@ -151,8 +146,8 @@ export default function RequestsPage({ history }) {
                         onProcess={handleCheckRequest}
                         onDelete={handleDeleteConfirm}
                     />
-                </PageSection>
-            </PageContent>
+                </Page.Section>
+            </Page.Content>
 
             <RequestProcessFormDialog
                 request={request}

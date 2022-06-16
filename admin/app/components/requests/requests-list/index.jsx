@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { Avatar, List } from '@fluentui/react-northstar';
+import { Avatar, List, Status } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/icon';
+import { StatusByType } from 'shared/data/lesson';
 
 export default function RequestsList({ requests }) {
     return (
@@ -11,7 +11,12 @@ export default function RequestsList({ requests }) {
                     key={request.id}
                     as={Link}
                     to={request.url}
-                    media={<Icon name={request.statusIcon} />}
+                    media={
+                        <Status
+                            size="large"
+                            state={StatusByType[request.status]}
+                        />
+                    }
                     header={`${request.contact.name}`}
                     content={request.contact.phone}
                     endMedia={request.manager &&

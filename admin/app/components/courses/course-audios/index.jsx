@@ -6,7 +6,7 @@ import {
 import AudioList from 'shared/components/audio-list';
 import AudioForm from 'shared/components/audio-form';
 import FormDialog from 'shared/components/form-dialog';
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 import PageSection from 'shared/components/page-section';
 import { uploadFile } from 'shared/services/storage';
 

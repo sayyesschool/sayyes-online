@@ -4,7 +4,7 @@ import {
 } from '@fluentui/react-northstar';
 
 import FormDialog from 'shared/components/form-dialog';
-import MaterialIcon from 'shared/components/material-icon';
+import MaterialIcon from 'shared/components/icon';
 import PageSection from 'shared/components/page-section';
 import VideoForm from 'shared/components/video-form';
 import VideoList from 'shared/components/video-list';

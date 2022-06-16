@@ -3,11 +3,9 @@ import { Switch, Route, NavLink, useRouteMatch } from 'react-router-dom';
 import { Menu } from '@fluentui/react-northstar';
 
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
 
-import Packs from 'app/components/packs';
-import Rooms from 'app/components/rooms';
+import Packs from './packs';
+import Rooms from './rooms';
 
 import './index.scss';
 
@@ -29,7 +27,7 @@ export default function SettingsPage() {
 
     return (
         <Page id="settings-page">
-            <PageHeader title="Настройки"
+            <Page.Header title="Настройки"
                 menu={
                     <Menu
                         items={menuItems.map(item => ({
@@ -45,12 +43,12 @@ export default function SettingsPage() {
                 }
             />
 
-            <PageContent>
+            <Page.Content>
                 <Switch>
                     <Route exact path="/settings/packs" component={Packs} />
                     <Route exact path="/settings/rooms" component={Rooms} />
                 </Switch>
-            </PageContent>
+            </Page.Content>
         </Page >
     );
 }

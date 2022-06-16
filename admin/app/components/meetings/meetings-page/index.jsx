@@ -27,7 +27,7 @@ export default function MeetingsPage() {
         <Page id="meetings-page" loading={!meetings}>
             <PageTopBar
                 title="Встречи"
-                actions={[
+                toolbar={[
                     {
                         key: 'add',
                         label: 'Создать',

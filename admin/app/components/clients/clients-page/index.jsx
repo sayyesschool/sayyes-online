@@ -5,9 +5,6 @@ import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageContent from 'shared/components/page-content';
-import PageHeader from 'shared/components/page-header';
-import PageSection from 'shared/components/page-section';
 
 import { useStore } from 'app/hooks/store';
 import ClientsTable from 'app/components/clients/clients-table';
@@ -50,9 +47,9 @@ export default function ClientsPage({ history }) {
 
     return (
         <Page id="clients-page">
-            <PageHeader
+            <Page.Header
                 title="Клиенты"
-                actions={[
+                toolbar={[
                     {
                         key: 'add',
                         icon: 'add',
@@ -62,15 +59,15 @@ export default function ClientsPage({ history }) {
                 ]}
             />
 
-            <PageContent>
-                <PageSection>
+            <Page.Content>
+                <Page.Section compact>
                     <ClientsTable
                         clients={clients}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
                     />
-                </PageSection>
-            </PageContent>
+                </Page.Section>
+            </Page.Content>
 
             <FormDialog
                 form="client-form"

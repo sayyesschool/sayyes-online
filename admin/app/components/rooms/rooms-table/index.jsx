@@ -1,10 +1,13 @@
-import {
-    Checkbox,
-    Button,
-    Table
-} from '@fluentui/react-northstar';
+import { Button, Checkbox, Table } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
+
+const columns = [
+    { key: 'title', content: 'Название' },
+    { key: 'login', content: 'Логин' },
+    { key: 'password', content: 'Пароль' },
+    { key: 'active', content: 'Работает' }
+];
 
 export default function RoomsTable({ rooms, onEdit, onToggleActive, onDelete }) {
     return (
@@ -13,9 +16,11 @@ export default function RoomsTable({ rooms, onEdit, onToggleActive, onDelete }) 
                 {columns.map(col =>
                     <Table.Cell
                         key={col.key}
-                        content={col.text}
+                        content={col.content}
                     />
                 )}
+
+                <Table.Cell />
             </Table.Row>
 
             {rooms.map(room =>
@@ -68,23 +73,3 @@ export default function RoomsTable({ rooms, onEdit, onToggleActive, onDelete }) 
         </Table>
     );
 }
-
-const columns = [
-    {
-        key: 'title',
-        text: 'Название'
-    },
-    {
-        key: 'login',
-        text: 'Логин'
-    },
-    {
-        key: 'password',
-        text: 'Пароль'
-    },
-    {
-        key: 'active',
-        text: 'Работает'
-    },
-    {}
-];

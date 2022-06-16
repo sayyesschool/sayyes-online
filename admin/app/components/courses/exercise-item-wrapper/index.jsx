@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { Button, MenuButton } from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 
 import ExerciseItem from 'shared/components/exercise-item';
 import ExerciseItemForm from 'app/components/courses/exercise-item-form';

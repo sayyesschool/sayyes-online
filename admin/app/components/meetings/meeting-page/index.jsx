@@ -65,7 +65,7 @@ export default function Meeting({ match, history }) {
         <Page id="meeting-page" loading={!meeting}>
             <PageTopBar
                 title={meeting.title}
-                actions={[
+                toolbar={[
                     {
                         key: 'register',
                         icon: 'person_add',

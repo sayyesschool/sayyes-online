@@ -1,13 +1,11 @@
 import { useCallback, useState } from 'react';
-import { Box, Grid } from '@fluentui/react-northstar';
+import { Box, Flex, Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import { use } from 'shared/hooks/courses';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
 import Tabs from 'shared/components/tabs';
 
 import UnitContent from 'app/components/courses/unit-content';
@@ -46,14 +44,13 @@ export default function UnitPage({ match, history }) {
 
     return (
         <Page id="unit-page">
-            <PageHeader
-                overline="Юнит"
+            <Page.Header
                 title={unit.title}
                 breadcrumbs={[
                     { key: 'courses', text: 'Курсы', url: '/courses' },
-                    { key: 'course', text: course.title, url: course.uri }
+                    { key: 'course', text: course.title, url: course.uri, title: 'Курс' }
                 ]}
-                actions={[
+                toolbar={[
                     {
                         key: 'delete',
                         icon: 'delete',
@@ -63,7 +60,7 @@ export default function UnitPage({ match, history }) {
                 ]}
             />
 
-            <PageContent>
+            <Page.Content>
                 <Tabs
                     items={[
                         {
@@ -101,7 +98,7 @@ export default function UnitPage({ match, history }) {
                         }
                     </Box>
 
-                    <Box>
+                    <Flex gap="gap.medium" column>
                         <UnitDetails
                             unit={unit}
                             onUpdate={handleUpdateUnit}
@@ -111,9 +108,9 @@ export default function UnitPage({ match, history }) {
                             unit={unit}
                             onUpdate={handleUpdateUnit}
                         />
-                    </Box>
+                    </Flex>
                 </Grid>
-            </PageContent>
+            </Page.Content>
 
             <ConfirmationDialog
                 title="Удалить юнит?"

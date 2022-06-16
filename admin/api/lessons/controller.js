@@ -53,6 +53,7 @@ module.exports = ({
         Lesson.findTodays()
             .populate('client', 'firstname lastname email')
             .populate('teacher', 'firstname lastname email')
+            .populate('room', 'title')
             .then(lessons => {
                 res.json({
                     ok: true,

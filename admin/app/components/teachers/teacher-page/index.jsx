@@ -1,13 +1,11 @@
 import { useCallback, useEffect } from 'react';
-import { Box, Grid } from '@fluentui/react-northstar';
+import { Flex, Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
-import PageContent from 'shared/components/page-content';
-import PageHeader from 'shared/components/page-header';
 
 import { useStore } from 'app/hooks/store';
 import TeacherForm from 'app/components/teachers/teacher-form';
@@ -50,7 +48,7 @@ export default function TeacherPage({ match, location, history }) {
 
     return (
         <Page id="teacher-page">
-            <PageHeader
+            <Page.Header
                 title={teacher?.fullname}
                 breadcrumbs={[
                     {
@@ -58,7 +56,7 @@ export default function TeacherPage({ match, location, history }) {
                         url: '/teachers'
                     }
                 ]}
-                actions={[
+                toolbar={[
                     {
                         key: 'edit',
                         title: 'Редактировать',
@@ -74,16 +72,14 @@ export default function TeacherPage({ match, location, history }) {
                 ]}
             />
 
-            <PageContent>
+            <Page.Content>
                 <Grid columns="minmax(0, 1fr) minmax(0, 3fr)">
-                    <Box>
-                        <TeacherDetails
-                            teacher={teacher}
-                            onEdit={toggleTeacherFormOpen}
-                        />
-                    </Box>
+                    <TeacherDetails
+                        teacher={teacher}
+                        onEdit={toggleTeacherFormOpen}
+                    />
 
-                    <Box>
+                    <Flex gap="gap.medium" column>
                         <TeacherEnrollments
                             teacher={teacher}
                         />
@@ -91,9 +87,9 @@ export default function TeacherPage({ match, location, history }) {
                         <TeacherLessons
                             teacher={teacher}
                         />
-                    </Box>
+                    </Flex>
                 </Grid>
-            </PageContent>
+            </Page.Content>
 
             <FormDialog
                 form="teacher-form"
