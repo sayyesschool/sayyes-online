@@ -5,7 +5,7 @@ const CssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
-const { STATIC_URL, YANDEX_METRIKA_ID, GOOGLE_ANALYTICS_ID } = require('./config');
+const { STATIC_URL, STORAGE_URL, YANDEX_METRIKA_ID, GOOGLE_ANALYTICS_ID } = require('./config');
 
 module.exports = [
     env => config({ name: 'admin', env }),
@@ -112,6 +112,7 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
                 'APP_ENV': JSON.stringify(env),
                 'APP_URL': JSON.stringify(APP_URL),
                 'STATIC_URL': JSON.stringify(STATIC_URL),
+                'STORAGE_URL': JSON.stringify(STORAGE_URL),
                 'YANDEX_METRIKA_ID': JSON.stringify(YANDEX_METRIKA_ID),
                 'GOOGLE_ANALYTICS_ID': JSON.stringify(GOOGLE_ANALYTICS_ID)
             }),
