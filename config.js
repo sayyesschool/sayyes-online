@@ -22,10 +22,14 @@ module.exports = {
     MAILJET_API_KEY: process.env.MAILJET_API_KEY,
     MAILJET_API_SECRET: process.env.MAILJET_API_SECRET,
 
+    MIRO_CLIENT_ID: process.env.MIRO_CLIENT_ID,
+    MIRO_CLIENT_SECRET: process.env.MIRO_CLIENT_SECRET,
+
     MONGODB_URI: process.env.DB_CONNECTION_STRING,
 
     SESSION_SECRET: 'BHve6rr4mAAP2w4G93qK',
     STATIC_URL: process.env.STATIC_URL,
+    STORAGE_URL: process.env.STORAGE_URL,
 
     TWILIO_ACCOUNT_ID: process.env.TWILIO_ACCOUNT_ID,
     TWILIO_API_KEY: process.env.TWILIO_API_KEY,
