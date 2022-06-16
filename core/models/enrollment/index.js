@@ -81,11 +81,11 @@ Enrollment.virtual('hasLessons').get(function() {
     return this.lessons?.length > 0;
 });
 
-Enrollment.virtual('imageSrc').get(function() {
+Enrollment.virtual('imageUrl').get(function() {
     if (this.domain === 'general') {
-        return `/enrollments/${this.domain}-${this.age}.png`;
+        return `${process.env.STORAGE_URL}/assets/images/enrollments/${this.domain}-${this.ageGroup}.png`;
     } else {
-        return `/enrollments/${this.domain}.png`;
+        return `${process.env.STORAGE_URL}/assets/images/enrollments/${this.domain}.png`;
     }
 });
 
