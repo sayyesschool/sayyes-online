@@ -11,7 +11,7 @@ import classnames from 'classnames';
 import storage from 'shared/services/storage';
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 import ImageDialog from 'shared/components/image-dialog';
 import PageSection from 'shared/components/page-section';
 

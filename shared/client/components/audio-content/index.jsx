@@ -6,7 +6,7 @@ import {
 } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 import AudioPlayer from 'shared/components/audio-player';
 
 import './index.scss';

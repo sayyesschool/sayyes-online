@@ -1,4 +1,8 @@
 .ui-list {
+    .ui-list__itemmedia {
+        margin-right: 1rem;
+    }
+
     &.numbered-list {
         .ui-list__item {
             padding-left: 1.125rem;

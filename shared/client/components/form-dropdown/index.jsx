@@ -1,6 +1,6 @@
 import { FormDropdown as FluentFormDropdown } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 
 export default function FormDropdown({ value, label, search, required, ...props }) {
     return (

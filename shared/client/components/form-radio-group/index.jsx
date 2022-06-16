@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { FormRadioGroup as FluentFormRadioGroup } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 
 export default function FormRadioGroup({ name, value, label, items, required, onChange, ...props }) {
     const handleChange = useCallback((event, item) => {

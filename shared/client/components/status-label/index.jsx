@@ -5,6 +5,7 @@ const StatusState = {
     new: 'warning',
     processing: 'info',
     completed: 'success',
+    succeeded: 'success',
     canceled: 'error',
     scheduled: 'info',
     ended: 'success'

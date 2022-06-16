@@ -2,6 +2,7 @@
     &.ui-segment {
         padding: 0;
         border-radius: 4px;
+        border: none;
     }
 
     &--flat.ui-segment {
@@ -33,9 +34,9 @@
     &__content {
         padding: 8px 16px 16px;
         
-        > .ui-form {
-            padding: 8px 16px 16px;
-        }
+        // > .ui-form {
+        //     padding: 8px 16px 16px;
+        // }
 
         > .text-editor {
             border-top: 1px solid rgba(0, 0, 0, .12);

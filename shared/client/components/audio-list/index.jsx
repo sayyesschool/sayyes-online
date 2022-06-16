@@ -4,7 +4,7 @@ import {
     List
 } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 import { formatDuration } from 'shared/utils/format';
 
 import './index.scss';

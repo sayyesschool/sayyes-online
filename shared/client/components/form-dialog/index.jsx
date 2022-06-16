@@ -2,7 +2,7 @@ import { cloneElement, useCallback, useEffect, useRef } from 'react';
 import { Dialog } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 
 import './index.scss';
 

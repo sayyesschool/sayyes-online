@@ -1,5 +1,5 @@
 import FormSelect from 'shared/components/form-select';
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 import timezones from 'shared/../data/timezones';
 
 const timezoneOptions = timezones.map(item => ({

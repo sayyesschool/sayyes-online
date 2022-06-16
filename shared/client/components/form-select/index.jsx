@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { FormDropdown } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/material-icon';
+import Icon from 'shared/components/icon';
 
 export default function FormSelect({ name, value, options, label, required, search, onChange, ...props }) {
     const optionsRef = useRef(mapOptions(options));
