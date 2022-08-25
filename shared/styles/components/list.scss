@@ -1,7 +1,6 @@
 .ui-list {
     .ui-list__itemmedia {
         margin-right: 1rem;
-        display: inline-flex;
     }
 
     &.numbered-list {
@@ -13,7 +12,6 @@
             width: 36px;
             height: 36px;
             line-height: 36px;
-            margin-right: 1rem;
             text-align: center;
             background: lightgray;
             color: white;
