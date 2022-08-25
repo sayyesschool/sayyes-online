@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, List } from '@fluentui/react-northstar';
+import { Button, Image, List } from '@fluentui/react-northstar';
 
 export default function CoursesList({ courses, onRemove }) {
     const handleRemove = useCallback((event, courseId) => {
@@ -15,9 +15,9 @@ export default function CoursesList({ courses, onRemove }) {
                 <List.Item
                     key={course.id}
                     as={Link}
-                    to={course.url}
+                    to={course.uri}
                     media={course.imageUrl &&
-                        <img src={course.imageUrl} alt="" />
+                        <Image src={course.imageUrl} alt="" />
                     }
                     header={course.title}
                     endMedia={onRemove &&

@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
-import { Button, Text } from '@fluentui/react-northstar';
+import { Alert, Button, MenuButton, Text } from '@fluentui/react-northstar';
 
+import http from 'shared/services/http';
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
@@ -11,6 +12,7 @@ import PageSection from 'shared/components/page-section';
 import { useActions } from 'app/hooks/store';
 import LessonForm from 'app/components/lessons/lesson-form';
 import LessonsForm from 'app/components/lessons/lessons-form';
+import LessonsPillGroup from 'shared/components/lessons-pill-group';
 
 import './index.scss';
 
@@ -18,11 +20,14 @@ export default function EnrollmentLessons({ enrollment }) {
     const lessonActions = useActions('lessons');
 
     const [lesson, setLesson] = useState();
+    const [lessonsToRefund, setLessonsToRefund] = useState();
 
+    const [isMenuOpen, toggleMenuOpen] = useBoolean();
     const [isNewLessonFormOpen, toggleNewLessonFormOpen] = useBoolean(false);
     const [isEditLessonFormOpen, toggleEditLessonFormOpen] = useBoolean(false);
     const [isLessonsFormOpen, toggleLessonsFormOpen] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
+    const [isRefundDialogOpen, toggleRefundDialog] = useBoolean(false);
 
     const createLessons = useCallback(lessons => {
         lessons.forEach(lesson => {
@@ -52,51 +57,90 @@ export default function EnrollmentLessons({ enrollment }) {
             .then(() => toggleConfirmationDialogOpen(false));
     }, [lesson]);
 
-    const handleUpdate = useCallback(lesson => {
+    const handleEdit = useCallback(lesson => {
         setLesson(lesson);
         toggleEditLessonFormOpen(true);
     }, []);
 
-    const handleDelete = useCallback((event, lesson) => {
-        event.stopPropagation();
-
+    const handleDelete = useCallback(lesson => {
         setLesson(lesson);
         toggleConfirmationDialogOpen(true);
     }, []);
 
-    const lessonsDuration = enrollment.lessons.reduce((total, lesson) => total + lesson.duration, 0);
-    const lessonsDurationDelta = enrollment.lessonDuration * enrollment.lessons.length - lessonsDuration;
+    const handleRefund = useCallback(() => {
+        return http.post(`/admin/api/enrollments/${enrollment.id}/refund`, {
+            lessonIds: lessonsToRefund.map(l => l.id)
+        }).finally(() => {
+            toggleRefundDialog(false);
+        });
+    }, [enrollment, lessonsToRefund]);
+
+    const handleRefundSingleLesson = useCallback(lesson => {
+        return http.post(`/admin/api/enrollments/${enrollment.id}/refund`, {
+            lessonIds: [lesson.id]
+        }).finally(() => {
+            toggleRefundDialog(false);
+        });
+    }, [enrollment]);
+
+    const handleRefundRequest = useCallback(() => {
+        return http.get(`/admin/api/enrollments/${enrollment.id}/refund`)
+            .then(({ data }) => {
+                setLessonsToRefund(data);
+            })
+            .finally(() => {
+                toggleRefundDialog(true);
+            });
+    }, [enrollment]);
+
+    const availableLessons = enrollment.lessons.filter(lesson => lesson.status === 'scheduled');
 
     return (
         <PageSection
             className="enrollment-lessons"
             title="Занятия"
-            description={lessonsDurationDelta !== 0 && ((lessonsDurationDelta < 0 ? 'Превышение на' : 'Осталось') + ` ${Math.abs(lessonsDurationDelta)} мин.`)}
-            actions={[
-                <Button
-                    key="add-lessons"
-                    icon={<Icon>playlist_add</Icon>}
-                    iconOnly
-                    text
-                    title="Создать несколько уроков"
-                    disabled={enrollment.schedule?.length === 0}
-                    onClick={toggleLessonsFormOpen}
-                />,
+            actions={
+                <>
+                    <MenuButton
+                        open={isMenuOpen}
+                        onOpenChange={toggleMenuOpen}
+                        trigger={<Button icon={<Icon>add</Icon>} text iconOnly title="Создать" />}
+                        menu={[
+                            {
+                                key: 'single',
+                                content: 'Создать один урок',
+                                disabled: enrollment.schedule?.length === 0,
+                                onClick: toggleNewLessonFormOpen
+                            },
+                            {
+                                key: 'multiple',
+                                content: 'Создать несколько уроков',
+                                disabled: enrollment.schedule?.length === 0,
+                                onClick: toggleLessonsFormOpen
+                            }
+                        ]}
+                    />
 
-                <Button
-                    key="add-lesson"
-                    icon={<Icon>add</Icon>}
-                    iconOnly
-                    text
-                    title="Создать урок"
-                    onClick={toggleNewLessonFormOpen}
-                />
-            ]}
+                    {enrollment.schedule?.length > 1 &&
+                        <Button
+                            title="Вернуть денежные средства"
+                            icon={<Icon>add</Icon>}
+                            text
+                            iconOnly
+                            onClick={handleRefundRequest}
+                        />
+                    }
+                </>
+            }
         >
+            {enrollment.status === 'active' && enrollment.lessons.filter(l => l.status === 'scheduled').length === 0 &&
+                <Alert header="Закончились уроки" danger />
+            }
+
             {enrollment.lessons.length > 0 &&
                 <LessonPillGroup
                     lessons={enrollment.lessons}
-                    onClick={handleUpdate}
+                    onEdit={handleEdit}
                     onDelete={handleDelete}
                 />
             }
@@ -147,11 +191,24 @@ export default function EnrollmentLessons({ enrollment }) {
             </FormDialog>
 
             <ConfirmationDialog
+                open={isRefundDialogOpen}
+                title="Подтвердите возврат"
+                onConfirm={handleRefund}
+                onClose={toggleRefundDialog}
+            >
+                <Text as="p">Сумма возврата за уроки составляет <strong>{enrollment.lessonPrice * lessonsToRefund?.length} руб.</strong></Text>
+
+                <LessonsPillGroup
+                    lessons={lessonsToRefund}
+                />
+            </ConfirmationDialog>
+
+            <ConfirmationDialog
                 title="Подтвердите действие"
                 message="Вы действительно хотите удалить урок?"
                 open={isConfirmationDialogOpen}
                 onConfirm={deleteLesson}
-                onClose={() => toggleConfirmationDialogOpen(false)}
+                onClose={toggleConfirmationDialogOpen}
             />
         </PageSection>
     );

@@ -30,6 +30,7 @@ export default function EnrollmentSchedule({ enrollment, onUpdate }) {
                     onClick={toggleFormOpen}
                 />
             }
+            compact
         >
             {enrollment.schedule?.length > 0 &&
                 <WeekSchedule schedule={enrollment.schedule} />

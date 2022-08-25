@@ -1,19 +1,7 @@
-.unit-card {
-    // background: linear-gradient(to bottom,
-    //     var(--course-bg-color) 0%,
-    //     var(--course-bg-color-dark) 100%
-    // );
+.ui-card.unit-card {
+    width: 100%;
 
-    .mdc-card__header__graphic.mdc-avatar {
-        background: #2c4181;
-        color: white;
-        border: 2px solid white;
-    }
-
-    .mdc-card__header__text {
-        .mdc-card__header__title,
-        .mdc-card__header__subtitle {
-            color: white;
-        }
+    p {
+        margin-bottom: 0;
     }
 }

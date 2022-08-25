@@ -10,16 +10,19 @@ const defaultExercise = {
 
 const titleOptions = [
     'Before you begin',
+    'Building language',
+    'Building vocabulary',
+    'Conversation strategy',
     'Getting started',
     'Grammar',
-    'Speaking naturally',
-    'Building vocabulary',
+    'Listening',
     'Listening & Speaking',
-    'Conversation strategy',
-    'Strategy plus',
+    'Listening & Strategies',
     'Reading 1',
     'Reading 2',
-    'Listening',
+    'Speaking naturally',
+    'Strategy plus',
+    'Talk about it',
     'Writing & Speaking'
 ];
 

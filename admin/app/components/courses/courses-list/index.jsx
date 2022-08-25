@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Image, List } from '@fluentui/react-northstar';
+import { Button, Image, List } from '@fluentui/react-northstar';
 
 import Icon from 'shared/components/icon';
 

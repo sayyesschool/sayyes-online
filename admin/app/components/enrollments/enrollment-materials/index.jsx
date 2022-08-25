@@ -52,6 +52,7 @@ export default function EnrollmentMaterials({ enrollment }) {
                     onMenuItemClick={handleAddMaterial}
                 />
             }
+            compact
         >
             {enrollmentMaterials.length > 0 &&
                 <List>

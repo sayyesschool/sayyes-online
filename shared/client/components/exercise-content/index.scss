@@ -1,0 +1,13 @@
+.exercise {
+    .exercise-title {
+        margin-top: .5rem;
+    }
+
+    .exercise-content {
+    
+    }
+
+    .exercise-content + .exercise-footer {
+        margin-top: 1rem;
+    }
+}

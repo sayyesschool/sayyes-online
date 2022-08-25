@@ -19,7 +19,7 @@ import EnrollmentDetails from 'app/components/enrollments/enrollment-details';
 import EnrollmentMeta from 'app/components/enrollments/enrollment-meta';
 import EnrollmentLessons from 'app/components/enrollments/enrollment-lessons';
 import EnrollmentMaterials from 'app/components/enrollments/enrollment-materials';
-import EnrollmentPayments from 'app/components/enrollments/enrollment-payments';
+// import EnrollmentPayments from 'app/components/enrollments/enrollment-payments';
 import EnrollmentStatus from 'app/components/enrollments/enrollment-status';
 import EnrollmentSchedule from 'app/components/enrollments/enrollment-schedule';
 // import EnrollmentTrialLesson from 'app/components/enrollments/enrollment-trial-lesson';
@@ -124,9 +124,9 @@ export default function EnrollmentPage({ match, history }) {
                             onUpdate={updateEnrollmentSchedule}
                         />
 
-                        <EnrollmentPayments
+                        {/* <EnrollmentPayments
                             enrollment={enrollment}
-                        />
+                        /> */}
 
                         <EnrollmentCourses
                             enrollment={enrollment}

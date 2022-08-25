@@ -6,36 +6,40 @@ import Form from 'shared/components/form';
 import FormInput from 'shared/components/form-input';
 import FormCheckbox from 'shared/components/form-checkbox';
 import FormSelect from 'shared/components/form-select';
-import PeopleSelect from 'shared/components/user-select';
 
 import { useStore } from 'app/hooks/store';
 
 import './index.scss';
 
 const statuses = [
-    { key: 'scheduled', value: 'scheduled', text: 'Запланировано' },
-    { key: 'started', value: 'started', text: 'Началось' },
-    { key: 'ended', value: 'ended', text: 'Завершилось' },
-    { key: 'canceled', value: 'canceled', text: 'Отменено' },
+    { key: 'scheduled', value: 'scheduled', header: 'Запланировано' },
+    { key: 'started', value: 'started', header: 'Началось' },
+    { key: 'ended', value: 'ended', header: 'Завершилось' },
+    { key: 'canceled', value: 'canceled', header: 'Отменено' },
 ];
 
-const defaultLesson = {
-    status: 'scheduled',
-    duration: 50,
-    date: new Date(),
-    trial: false,
-    free: false,
-    note: ''
-};
+const getFormData = ({
+    status = 'scheduled',
+    duration = 50,
+    date = new Date(),
+    trial = false,
+    free = false,
+    note = '',
+    teacher = {}
+}) => ({
+    status,
+    duration,
+    date,
+    trial,
+    free,
+    note,
+    teacher: teacher?.id || teacher || ''
+});
 
 export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
     const [teachers] = useStore('teachers.list');
 
-    const { data, handleChange } = useForm({
-        ...defaultLesson,
-        ...lesson,
-        teacher: lesson.teacher?.id || lesson.teacher || ''
-    });
+    const { data, handleChange } = useForm(getFormData(lesson));
 
     const handleSubmit = useCallback(() => {
         data.date = moment(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
@@ -51,7 +55,6 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                 value={data.status}
                 label="Статус"
                 options={statuses}
-                filled
                 required
                 onChange={handleChange}
             />
@@ -61,7 +64,6 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                 name="date"
                 value={moment(data.date).format('YYYY-MM-DDTHH:mm')}
                 label="Дата и время"
-                filled
                 onChange={handleChange}
             />
 
@@ -70,21 +72,21 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                 name="duration"
                 step="5"
                 value={data.duration}
-                label="Продолжительность"
-                suffix="мин."
-                filled
+                label="Продолжительность, мин."
                 onChange={handleChange}
             />
 
-            <PeopleSelect
+            <FormSelect
                 name="teacher"
                 value={data.teacher}
                 label="Преподаватель"
-                options={teachers.map(teacher => ({
-                    key: teacher?.id,
-                    value: teacher?.id,
-                    text: teacher?.fullname
+                options={teachers?.map(teacher => ({
+                    key: teacher.id,
+                    value: teacher.id,
+                    header: teacher.fullname,
+                    image: teacher.imageUrl
                 }))}
+                search
                 onChange={handleChange}
             />
 
@@ -116,8 +118,6 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                 name="note"
                 value={data.note}
                 label="Примечание"
-                filled
-                textarea
                 onChange={handleChange}
             />
         </Form>

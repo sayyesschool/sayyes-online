@@ -4,6 +4,8 @@ import {
     List
 } from '@fluentui/react-northstar';
 
+import Icon from 'shared/components/icon';
+
 import './index.scss';
 
 export default function ExercisesList({ exercises }) {
@@ -12,14 +14,18 @@ export default function ExercisesList({ exercises }) {
             {exercises.map((exercise, index) =>
                 <List.Item
                     key={exercise.id}
-                    component={NavLink}
+                    as={NavLink}
                     to={exercise.uri}
-                    activeClassName="mdc-list-item--activated"
                     avatar={
                         <Avatar key={exercise.id} text={index + 1} size="medium" />
                     }
-                    overlineText={exercise.title}
-                    primaryText={exercise.description}
+                    media={
+                        <Icon>{exercise.completed ? 'check_circle_outline' : 'radio_button_unchecked'}</Icon>
+                    }
+                    header={exercise.title}
+                    content={exercise.description}
+                    navigable
+                    selectable
                 />
             )}
         </List>

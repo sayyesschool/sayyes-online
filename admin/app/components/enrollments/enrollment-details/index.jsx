@@ -9,6 +9,7 @@ export default function EnrollmentDetails({ enrollment }) {
         <PageSection
             className="enrollment-details"
             title="Основные данные"
+            compact
         >
             <DetailsList
                 items={[

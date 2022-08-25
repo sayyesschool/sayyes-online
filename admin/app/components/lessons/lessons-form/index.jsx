@@ -2,10 +2,10 @@ import { useCallback, useEffect, useState } from 'react';
 import moment from 'moment';
 
 import { scheduleLessons } from 'shared/libs/enrollment';
-import useForm from 'shared/hooks/form';
+import { useFormData } from 'shared/hooks/form';
 import Form from 'shared/components/form';
 import FormInput from 'shared/components/form-input';
-import PeopleSelect from 'shared/components/user-select';
+import UserSelect from 'shared/components/user-select';
 import LessonsPillGroup from 'shared/components/lessons-pill-group';
 
 import { useStore } from 'app/hooks/store';
@@ -17,7 +17,7 @@ export default function LessonsForm({ enrollment, onSubmit, ...props }) {
 
     const [lessons, setLessons] = useState([]);
 
-    const { data, handleChange } = useForm({
+    const { data, handleChange } = useFormData({
         quantity: 0,
         startDate: new Date(),
         duration: enrollment.lessonDuration,
@@ -71,7 +71,7 @@ export default function LessonsForm({ enrollment, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <PeopleSelect
+            <UserSelect
                 name="teacher"
                 value={data.teacher}
                 label="Преподаватель"

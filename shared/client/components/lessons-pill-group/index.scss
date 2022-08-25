@@ -1,25 +1,53 @@
+@use 'sass:color';
+
 .lessons-pill-group {
+    display: flex;
+    flex-wrap: wrap;
     padding: 0;
     margin-left: -4px;
     margin-right: -4px;
 
     .lesson-pill {
+        width: calc(20% - .5rem);
         height: auto;
+        max-height: none;
         padding: 4px 6px;
-        transition: width .2s;
+        transition: background-color .2s;
+
+        .ui-pillcontent {
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+
+            span {
+                line-height: 1;
+            }
+        }
 
         &--missed {
-            //background-color: color-palette.$yellow-700;
+            background-color: orange;
+
+            &:hover {
+                background-color: color.scale(orange, $lightness: -10%);
+            }
         }
         
         &--ended {
             color: white;
-            //background-color: color-palette.$green-700;
+            background-color: forestgreen;
+
+            &:hover {
+                background-color: color.scale(forestgreen, $lightness: -10%);
+            }
         }
 
         &--canceled {
             color: white;
-            //background-color: color-palette.$red-700;
+            background-color: tomato;
+
+            &:hover {
+                background-color: color.scale(tomato, $lightness: -10%);
+            }
         }
 
         .lesson-date,

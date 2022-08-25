@@ -29,7 +29,8 @@ module.exports = ({
         Lesson.find(query)
             .populate('client', 'firstname lastname email')
             .populate('teacher', 'firstname lastname email')
-            .sort({ date: 1 })
+            .sort({ date: -1 })
+            .limit(100)
             .then(lessons => {
                 if (req.query.days) {
                     const days = req.query.days.split(',').map(v => Number(v));

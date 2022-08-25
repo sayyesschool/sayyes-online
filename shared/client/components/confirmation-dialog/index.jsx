@@ -4,13 +4,15 @@ import { Dialog } from '@fluentui/react-northstar';
 import { useBoolean } from 'shared/hooks/state';
 
 export default function ConfirmationDialog({
+    open,
     title = 'Подтвердите действие',
     message,
-    open,
+    content = message,
     cancelButtonContent = 'Отмена',
     confirmButtonContent = 'Подтвердить',
     onConfirm,
     onClose,
+    children = content,
     ...props
 }) {
     const [isConfirmButtonDisabled, toggleConfirmButtonDisabled] = useBoolean(false);
@@ -30,7 +32,7 @@ export default function ConfirmationDialog({
         <Dialog
             open={open}
             header={title}
-            content={message}
+            content={children}
             cancelButton={{
                 type: 'button',
                 content: cancelButtonContent,

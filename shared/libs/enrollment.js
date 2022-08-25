@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export function scheduleLessons({ schedule, quantity = 0, startDate = new Date(), duration }) {
+export function scheduleLessons({ schedule, quantity = 0, duration, startDate = new Date() }) {
     const lessons = [];
     const date = moment(startDate);
 
@@ -47,4 +47,4 @@ export function rescheduleLessons({ schedule, lessons, startDate = new Date() })
             date: lessonDate.toDate()
         };
     });
-};
+}

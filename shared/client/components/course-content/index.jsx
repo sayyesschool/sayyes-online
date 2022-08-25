@@ -10,6 +10,7 @@ export default function CourseContent({ course, onSelectUnit, onSelectLesson }) 
             <Grid columns={3}>
                 {course.units.map((unit, index) =>
                     <UnitCard
+                        key={unit.id}
                         number={index + 1}
                         unit={unit}
                         onSelectUnit={onSelectUnit}

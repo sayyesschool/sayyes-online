@@ -19,7 +19,7 @@ export default function LessonsList({ lessons }) {
                     }
                     header="Урок"
                     content={new Date(lesson.date).toLocaleString()}
-                    headerMedia={lesson.teacher.fullname}
+                    headerMedia={lesson.teacher?.fullname}
                     contentMedia={lesson.room?.title}
                 />
             )}

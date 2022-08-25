@@ -16,7 +16,7 @@ function ExerciseAudioItem({ item }, ref) {
 
     useImperativeHandle(ref, () => ({
         get data() {
-            const script = textEditorRef.current?.editor.getData() || item.audio?.script;
+            const script = textEditorRef.current?.editor.getData();
 
             if (file) {
                 file.path = item.audio?.path || `courses/${item.courseId}/audios/`;

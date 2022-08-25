@@ -53,6 +53,7 @@ export default function EnrollmentCourses({ enrollment }) {
                     onMenuItemClick={handleAddCourse}
                 />
             }
+            compact
         >
             {enrollmentCourses.length > 0 &&
                 <CoursesList
