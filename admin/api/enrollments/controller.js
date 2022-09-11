@@ -1,5 +1,5 @@
 module.exports = ({
-    models: { Enrollment, Lesson }
+    models: { Enrollment, Lesson, Transaction }
 }) => ({
     get: (req, res, next) => {
         Enrollment.find(req.query)
@@ -157,5 +157,43 @@ module.exports = ({
                     });
             })
             .catch(next);
+    },
+
+    getRefundLessons: (req, res, next) => {
+        Lesson.find({ status: 'scheduled', enrollment: req.params.id })
+            .then(lessons => {
+                res.json({
+                    ok: true,
+                    data: lessons
+                });
+            });
+    },
+
+    refundLessons: (req, res, next) => {
+        Promise.all([
+            Enrollment.findById(req.params.id),
+            Lesson.deleteMany({ _id: { $in: req.body.lessonIds } })
+        ]).then(([enrollment, result]) => {
+            console.log(result);
+            const amountToReturn = enrollment.lessonPrice * result.deletedCount;
+
+            return Transaction.create({
+                type: 'debit',
+                amount: amountToReturn,
+                currency: 'RUB',
+                description: 'Возврат денежных средств за уроки',
+                user: enrollment.client,
+                enrollment: enrollment.id
+            });
+        }).then(transaction => {
+            res.json({
+                ok: true,
+                message: `На баланс клиента было переведено ${transaction.amount} руб.`,
+                data: {
+                    transaction,
+                    lessonIds: req.body.lessonIds
+                }
+            });
+        }).catch(next);
     }
 });

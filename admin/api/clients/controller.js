@@ -27,8 +27,8 @@ module.exports = ({
                 populate: { path: 'manager', select: 'firstname lastname' }
             })
             .populate({
-                path: 'payments',
-                select: 'description status amount'
+                path: 'transactions',
+                populate: { path: 'enrollment', select: 'domain' }
             })
             .then(client => {
                 res.json({

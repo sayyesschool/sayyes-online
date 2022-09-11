@@ -14,8 +14,8 @@ import ClientForm from 'app/components/clients/client-form';
 import ClientDetails from 'app/components/clients/client-details';
 import ClientContacts from 'app/components/clients/client-contacts';
 import ClientEnrollments from 'app/components/clients/client-enrollments';
-import ClientPayments from 'app/components/clients/client-payments';
 import ClientRequests from 'app/components/clients/client-requests';
+import ClientTransactions from 'app/components/clients/client-transactions';
 
 import './index.scss';
 
@@ -55,6 +55,7 @@ export default function ClientPage({ match, location, history }) {
                     { text: 'Клиенты', url: '/clients' }
                 ]}
                 title={client?.fullname}
+                description={`Баланс: ${client?.balance} руб.`}
                 toolbar={[
                     (client.hhid && {
                         element: 'a',
@@ -100,7 +101,7 @@ export default function ClientPage({ match, location, history }) {
                             client={client}
                         />
 
-                        <ClientPayments
+                        <ClientTransactions
                             client={client}
                         />
                     </Flex>
