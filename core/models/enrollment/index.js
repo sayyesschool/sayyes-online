@@ -1,4 +1,5 @@
 const { Schema } = require('mongoose');
+const moment = require('moment');
 
 const constants = require('./constants');
 const DateSchedule = require('./date-schedule');
@@ -17,6 +18,7 @@ const Enrollment = new Schema({
     experience: { type: String, default: '' },
     preferences: { type: String, default: '' },
     lessonDuration: { type: Number, default: 50 },
+    lessonPrice: { type: Number, default: 0 },
     trialLessonSchedule: [DateSchedule],
     schedule: [WeekSchedule],
     note: { type: String },
@@ -103,9 +105,6 @@ Enrollment.virtual('currentPayment', {
     localField: '_id',
     foreignField: 'enrollment',
     justOne: true,
-    // match: {
-    //     status: 'pending'
-    // },
     options: {
         sort: {
             createdAt: -1
@@ -153,5 +152,60 @@ Enrollment.virtual('manager', {
     foreignField: '_id',
     justOne: true
 });
+
+Enrollment.methods.scheduleLessons = function(numberOfLessons, startDate = new Date()) {
+    const lessons = [];
+    const date = moment(startDate);
+    const schedule = this.schedule;
+
+    for (let i = 0; i < numberOfLessons; i++) {
+        const currentSchedule = schedule[i % schedule.length];
+        const [hours, minutes] = currentSchedule.from?.split(':');
+
+        if (currentSchedule.day <= date.weekday()) {
+            date.weekday(7);
+        }
+
+        const lessonDate = date
+            .weekday(currentSchedule.day)
+            .hours(hours)
+            .minutes(minutes)
+            .seconds(0)
+            .toDate();
+
+        lessons.push({
+            date: lessonDate,
+            duration: this.lessonDuration,
+            enrollment: this._id,
+            client: this.client,
+            teacher: this.teacher
+        });
+    }
+
+    return lessons;
+};
+
+Enrollment.methods.rescheduleLessons = function(lessons, startDate = new Date()) {
+    return lessons
+        .filter(lesson => new Date(lesson.date) > startDate)
+        .map((lesson, i) => {
+            const currentSchedule = schedule[i % schedule.length];
+            const [hours, minutes] = currentSchedule.from?.split(':');
+            const lessonDate = moment(lesson.date)
+                .weekday(currentSchedule.day)
+                .hours(hours)
+                .minutes(minutes)
+                .seconds(0);
+
+            if (lessonDate.isBefore(startDate, 'day')) {
+                lessonDate.weekday(7);
+            }
+
+            return {
+                ...lesson,
+                date: lessonDate.toDate()
+            };
+        });
+};
 
 module.exports = Enrollment;

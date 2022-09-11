@@ -31,7 +31,7 @@ export default function FormSelect({ name, value, options, label, required, sear
             toggleIndicator={<Icon>expand_more</Icon>}
             clearIndicator={<Icon>clear</Icon>}
             search={search}
-            defaultSearchQuery={search && optionsRef.current.get(value)?.header}
+            //defaultSearchQuery={search && optionsRef.current.get(value)?.header}
             fluid
             onChange={handleChange}
             {...props}

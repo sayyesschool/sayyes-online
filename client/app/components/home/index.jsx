@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Grid } from '@fluentui/react-northstar';
 
-import api from 'shared/services/api';
+import http from 'shared/services/http';
 import { useUser } from 'shared/hooks/user';
 import { useEnrollments } from 'shared/hooks/enrollments';
 import { useLessons } from 'shared/hooks/lessons';
@@ -18,23 +18,24 @@ import './index.scss';
 
 export default function HomePage() {
     const [user] = useUser();
-    const [enrollments] = useEnrollments();
+    const [enrollments, enrollmentActions] = useEnrollments();
     const [lessons] = useLessons();
 
     const [isPaying, setPaying] = useState(false);
 
+    const activeEnrollment = enrollments?.at(0);
+
     const handleCheckout = useCallback(data => {
-        api.post('/api/payments', data)
-            .then(({ data }) => {
+        enrollmentActions.payEnrollment(activeEnrollment.id, data)
+            .then(data => {
                 if (data.confirmationUrl) {
                     window.location.replace(data.confirmationUrl);
                 }
             });
-    }, []);
+    }, [activeEnrollment]);
 
     if (!user || !enrollments) return <LoadingIndicator />;
 
-    const activeEnrollment = enrollments[0];
     // const events = lessons.map(lesson => ({
     //     id: lesson.id,
     //     title: 'Урок',

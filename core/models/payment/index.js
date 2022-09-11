@@ -9,6 +9,7 @@ const Payment = new Schema({
     amount: { type: Number, default: 0, min: 0, required: true },
     currency: { type: String, default: 'RUB' },
     status: { type: String, required: true, enum: Object.keys(Status) },
+    operator: { type: String, enum: Object.keys(Operator) },
     description: { type: String, trim: true },
     confirmationUrl: { type: String },
     method: PaymentMethod,
@@ -16,10 +17,8 @@ const Payment = new Schema({
     expiresAt: { type: Date },
     paidAt: { type: Date },
     test: { type: Boolean },
-    operator: { type: String, enum: Object.keys(Operator) },
-    client: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    manager: { type: Schema.Types.ObjectId, ref: 'User' },
-    enrollment: { type: Schema.Types.ObjectId, ref: 'Enrollment' },
+    //user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    metadata: { type: Object }
 }, {
     timestamps: true,
     toObject: { getters: true, virtuals: true },

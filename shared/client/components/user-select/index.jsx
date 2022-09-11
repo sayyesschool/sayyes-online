@@ -3,7 +3,7 @@ import { FormDropdown } from '@fluentui/react-northstar';
 
 import api from 'shared/services/api';
 
-export default function PeopleSelect({ resolveUrl, ...props }) {
+export default function UserSelect({ resolveUrl, ...props }) {
     const [results, setResults] = useState();
 
     const onResolveStudentSuggestions = (query, selectedItems) => {
@@ -18,12 +18,12 @@ export default function PeopleSelect({ resolveUrl, ...props }) {
 
     return (
         <FormDropdown
-            className="people-select"
+            className="user-select"
             //placeholder="Start typing a name"
+            noResultsMessage="We couldn't find any matches."
             multiple
             search
             fluid
-            noResultsMessage="We couldn't find any matches."
             {...props}
         />
     );

@@ -53,6 +53,16 @@ User.virtual('url').get(function() {
     return `/${this.role}s/${this.id}`;
 });
 
+User.virtual('balance').get(function() {
+    return this.transactions?.reduce((result, transaction) => result + transaction.value, 0);
+});
+
+User.virtual('transactions', {
+    ref: 'Transaction',
+    localField: '_id',
+    foreignField: 'user'
+});
+
 /* Statics */
 
 User.statics.hashPassword = function(password) {

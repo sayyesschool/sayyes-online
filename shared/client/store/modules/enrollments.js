@@ -41,6 +41,14 @@ export const deleteEnrollment = createAction('DELETE_ENROLLMENT', id => ({
     }
 }));
 
+export const payEnrollment = createAction('PAY_ENROLLMENT', (id, data) => ({
+    request: {
+        method: 'post',
+        url: `/enrollments/${id}/pay`,
+        body: data
+    }
+}));
+
 export const updateSchedule = createAction('UPDATE_ENROLLMENT_SCHEDULE', (id, data) => ({
     request: {
         method: 'put',
@@ -55,6 +63,7 @@ export const actions = {
     createEnrollment,
     updateEnrollment,
     deleteEnrollment,
+    payEnrollment,
     updateSchedule
 };
 

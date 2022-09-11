@@ -4,6 +4,7 @@ const moment = require('moment');
 const { Status, StatusLabel, StatusIcon } = require('./constants');
 
 const Lesson = new Schema({
+    type: { type: String, enum: ['online', 'offline'] },
     status: { type: String, enum: Object.values(Status), default: Status.SCHEDULED },
     date: { type: Date, set: value => moment(value).utc().format('YYYY-MM-DDTHH:mm:ss[Z]') },
     duration: { type: Number, default: 60 },

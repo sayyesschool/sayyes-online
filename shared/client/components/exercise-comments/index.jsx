@@ -4,7 +4,6 @@ import { useUser } from 'shared/hooks/user';
 import { useBoolean } from 'shared/hooks/state';
 import Button from 'shared/components/button';
 import Comment from 'shared/components/comment';
-import PageSection from 'shared/components/page-section';
 
 export default function ExerciseComments({ exercise, onCreate, onUpdate, onDelete }) {
     const [user] = useUser();
@@ -25,7 +24,7 @@ export default function ExerciseComments({ exercise, onCreate, onUpdate, onDelet
     }, [exercise]);
 
     return (
-        <PageSection title="Комментарии">
+        <>
             {exercise.comments?.map(comment =>
                 <Comment
                     key={comment.id}
@@ -45,12 +44,12 @@ export default function ExerciseComments({ exercise, onCreate, onUpdate, onDelet
                 />
                 :
                 <Button
-                    label="Оставить комментарий"
+                    content="Оставить комментарий"
                     icon="comment"
-                    outlined
+                    text
                     onClick={toggleCommenting}
                 />
             }
-        </PageSection>
+        </>
     );
 }

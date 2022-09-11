@@ -33,7 +33,7 @@ Lesson.virtual('courseId').get(function() {
 });
 
 Lesson.virtual('imageUrl').get(function() {
-    return this.image?.url;
+    return this.image?.url || `${process.env.STORAGE_URL}/courses/${this.courseId}/images/${this.id}.jpg`;
 });
 
 module.exports = Lesson;

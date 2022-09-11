@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
     Box,
     Button,
@@ -21,6 +21,11 @@ import './index.scss';
 export default function EnrollmentPayCard({ enrollment, onCheckout, onCancel, ...props }) {
     const [selectedPack, setSelectedPack] = useState(enrollment?.packs[0]);
     const [isConfirmed, toggleConfirmed] = useBoolean(true);
+
+    const handleSubmit = useCallback(data => {
+        data.packId = selectedPack.id;
+        onCheckout(data);
+    }, [selectedPack, onCheckout]);
 
     return (
         <Segment className="enrollment-pay-card" {...props}>
@@ -86,11 +91,10 @@ export default function EnrollmentPayCard({ enrollment, onCheckout, onCancel, ..
                             />
                         </Flex>
 
-
                         <EnrollmentCheckoutForm
                             enrollment={enrollment}
                             pack={selectedPack}
-                            onSubmit={onCheckout}
+                            onSubmit={handleSubmit}
                         />
                     </Box>
                 </Flex.Item>

@@ -1,5 +1,6 @@
 module.exports = ({
-    models: { Enrollment, Pack }
+    models: { Enrollment, Pack, Payment },
+    services: { Checkout }
 }) => ({
     getMany: (req, res, next) => {
         Promise.all([
@@ -25,10 +26,6 @@ module.exports = ({
 
                         return pack;
                     });
-
-                    enrollment.packs = packs.slice(4);
-
-                    console.log(enrollmentPacks);
 
                     return enrollment;
                 });
@@ -61,5 +58,47 @@ module.exports = ({
                 });
             })
             .catch(next);
+    },
+
+    pay: (req, res, next) => {
+        console.log(req.body);
+        Promise.all([
+            Enrollment.findOne({ _id: req.params.id, client: req.user.id }),
+            Pack.findById(req.body.packId)
+        ]).then(([enrollment, pack]) => {
+            if (!enrollment) return next({ code: 401, message: 'Обучение не найдено' });
+            if (!pack) return next({ code: 401, message: 'Пакет не найден' });
+
+            return Checkout.createPayment({
+                amount: pack.price,
+                description: `Оплата ${pack.numberOfLessons} занятий по 50 минут`,
+                paymentMethod: req.body.usePaymentMethod ? user.paymentMethod : undefined,
+                savePaymentMethod: req.body.savePaymentMethod,
+                email: req.user.email,
+                returnUrl: '/',
+                metadata: {
+                    userId: enrollment.client,
+                    enrollmentId: enrollment.id,
+                    packId: pack.id
+                }
+            }).then(payment => {
+                return Payment.create({
+                    uuid: payment.id,
+                    amount: payment.amount.value,
+                    status: payment.status,
+                    operator: 'yookassa',
+                    description: payment.description,
+                    confirmationUrl: payment.confirmationUrl,
+                    test: payment.test,
+                    user: req.user.id,
+                    metadata: payment.metadata
+                });
+            });
+        }).then(payment => {
+            res.json({
+                ok: true,
+                data: payment
+            });
+        }).catch(next);
     }
 });

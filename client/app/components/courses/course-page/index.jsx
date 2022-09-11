@@ -17,7 +17,6 @@ export default function CoursePage({ match }) {
             <PageHeader
                 overline="Курс"
                 title={course.title}
-                pullContent
             />
 
             <PageContent>

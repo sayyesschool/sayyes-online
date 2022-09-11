@@ -1,11 +1,3 @@
-.lesson-page {
-    .lesson-exercises {
-        position: sticky;
-        top: 86px;
-
-        .exercises-list {
-            max-height: calc(100vh - 293px);
-            overflow-y: auto;
-        }
-    }
+.page.lesson-page {
+    
 }

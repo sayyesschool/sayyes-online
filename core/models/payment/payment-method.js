@@ -7,7 +7,12 @@ const PaymentMethod = new Schema({
     saved: { type: Boolean },
     card: {
         type: { type: String },
-        number: { type: String }
+        first6: { type: String },
+        last4: { type: String },
+        expiryMonth: { type: String },
+        expiryYear: { type: String },
+        issuerName: { type: String },
+        issuerCountry: { type: String }
     }
 }, {
     _id: false,
@@ -15,7 +20,7 @@ const PaymentMethod = new Schema({
 });
 
 PaymentMethod.virtual('card.title').get(function() {
-    return `${this.card.type} *${this.card.number}`;
+    return `${this.card.type} *${this.card.last4}`;
 });
 
 module.exports = PaymentMethod;

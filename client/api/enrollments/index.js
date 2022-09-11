@@ -7,9 +7,8 @@ module.exports = context => {
     const controller = Controller(context);
 
     router.get('/', controller.getMany);
-
-    router.route('/:id')
-        .get(controller.getOne);
+    router.get('/:id', controller.getOne);
+    router.post('/:id/pay', controller.pay);
 
     return router;
 };

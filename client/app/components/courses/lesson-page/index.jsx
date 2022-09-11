@@ -1,15 +1,11 @@
 import { useCallback, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Grid, Flex } from '@fluentui/react-northstar';
 
 import { useCourse } from 'shared/hooks/courses';
 import IconButton from 'shared/components/icon-button';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
-import PageSection from 'shared/components/page-section';
-import ExerciseContentCard from 'shared/components/exercise-content-card';
+import ExerciseContent from 'shared/components/exercise-content';
 import ExerciseComments from 'shared/components/exercise-comments';
 import ExercisesList from 'shared/components/exercises-list';
 
@@ -36,70 +32,59 @@ export default function LessonPage({ match }) {
 
     const handleDeleteComment = useCallback(() => { }, []);
 
-    if (!course) return <LoadingIndicator />;
+    const lesson = course?.lessonsById.get(match.params.lesson);
+    const unit = course?.unitsById.get(lesson.unitId);
+    const exercise = lesson?.exercises.at(exerciseIndex);
 
-    const unit = course.unitsBySlug.get(match.params.unit);
-    const lesson = course.lessonsBySlug.get(match.params.lesson);
-    const exercises = lesson.exercises.map(id => course.exercisesById.get(id));
-    const exercise = exercises[exerciseIndex];
-
-    if (!exercise) return <LoadingIndicator />;
+    if (!lesson) return <LoadingIndicator />;
 
     return (
         <Page ref={rootRef} className="lesson-page">
-            <PageHeader
-                overline="Урок"
+            <Page.Header
                 title={lesson.title}
                 breadcrumbs={[
-                    <Link to={course.url}>{course.title}</Link>,
-                    <Link to={unit.url}>{unit.title}</Link>
+                    { url: course.url, text: course.title },
+                    { url: unit.url, text: unit.title }
                 ]}
-                actions={[
+                actions={
                     <IconButton
                         icon="format_list_bulleted"
                         onClick={() => openSideSheet('contents')}
-                    />,
-                    (lesson.audios?.length > 0 &&
-                        <IconButton
-                            icon="audiotrack"
-                            onClick={() => openSideSheet('audio')}
-                        />
-                    ),
-                    (lesson.videos?.length > 0 &&
-                        <IconButton
-                            icon="movie"
-                            onClick={() => openSideSheet('video')}
-                        />
-                    )
-                ]}
-                pullContent
+                        iconOnly
+                        text
+                    />
+                }
             />
 
-            <PageContent>
-                <Grid>
-                    <Flex column>
-                        <ExerciseContentCard
-                            exercise={exercise}
-                            onProgressChange={handleExerciseProgressChange}
-                        />
+            <Page.Content>
+                <Grid columns="minmax(0, 2fr) minmax(0, 1fr)">
+                    <Flex column gap="gap.medium">
+                        <Page.Section>
+                            <ExerciseContent
+                                exercise={exercise}
+                                onProgressChange={handleExerciseProgressChange}
+                            />
+                        </Page.Section>
 
-                        <ExerciseComments
-                            exercise={exercise}
-                            onCreate={handleCreateComment}
-                            onUpdate={handleUpdateComment}
-                            onDelete={handleDeleteComment}
-                        />
+                        <Page.Section title="Комментарии">
+                            <ExerciseComments
+                                exercise={exercise}
+                                onCreate={handleCreateComment}
+                                onUpdate={handleUpdateComment}
+                                onDelete={handleDeleteComment}
+                            />
+                        </Page.Section>
                     </Flex>
 
-                    <PageSection className="lesson-exercises" title="Упражнения">
+                    <Page.Section className="lesson-exercises" title="Упражнения" compact>
                         <ExercisesList
-                            exercises={exercises}
+                            exercises={lesson.exercises}
                             selectedExerciseIndex={exerciseIndex}
                             onSelect={handleSelectExercise}
                         />
-                    </PageSection>
+                    </Page.Section>
                 </Grid>
-            </PageContent>
+            </Page.Content>
         </Page>
     );
 }

@@ -36,7 +36,7 @@ export default function App() {
                 <Switch>
                     <Route exact path="/" component={Home} />
                     {/* <Route path="/account" component={Account} /> */}
-                    {/* <Route path="/courses" component={Courses} /> */}
+                    <Route path="/courses" component={Courses} />
                     <Route path="/enrollments" component={Enrollments} />
                     {/* <Route path="/materials" component={Materials} /> */}
                     {/* <Route path="/meetings" component={Meetings} /> */}

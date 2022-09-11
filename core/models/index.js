@@ -4,15 +4,16 @@ const Comment = require('./comment');
 const Course = require('./course');
 const Enrollment = require('./enrollment');
 const Lesson = require('./lesson');
+const Material = require('./material');
+const Meeting = require('./meeting');
 const Pack = require('./pack');
 const Payment = require('./payment');
 const Post = require('./post');
 const Progress = require('./progress');
 const Request = require('./request');
 const Room = require('./room');
-const Material = require('./material');
-const Meeting = require('./meeting');
-const Ticket = require('./ticket');
+const Task = require('./task');
+const Transaction = require('./transaction');
 const UserSchema = require('./user');
 
 const User = model('User', UserSchema);
@@ -35,7 +36,8 @@ module.exports = {
     Progress: model('Progress', Progress, 'progress'),
     Request: model('Request', Request),
     Room: model('Room', Room),
-    Ticket: model('Ticket', Ticket),
+    Task: model('Task', Task),
+    Transaction: model('Transaction', Transaction),
     User,
     Admin,
     Client,

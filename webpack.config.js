@@ -76,7 +76,8 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
                         {
                             loader: 'css-loader',
                             options: {
-                                url: false
+                                url: false,
+                                // modules: true
                             }
                         },
                         {

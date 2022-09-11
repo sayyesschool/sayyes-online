@@ -32,8 +32,8 @@ Client.virtual('lessons', {
     foreignField: 'client'
 });
 
-Client.virtual('payments', {
-    ref: 'Payment',
+Client.virtual('enrollments', {
+    ref: 'Enrollment',
     localField: '_id',
     foreignField: 'client'
 });

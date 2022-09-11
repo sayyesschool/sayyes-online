@@ -104,32 +104,33 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
                         />
                     </>
                 }
+
+
+                {!isEditing && post.comments.length > 0 &&
+                    <Flex column>
+                        <Text>Комментарии</Text>
+
+                        {post.comments.map(comment =>
+                            <Comment
+                                key={comment.id}
+                                user={user}
+                                comment={comment}
+                                onSave={handleUpdateComment}
+                                onDelete={handleDeleteComment}
+                            />
+                        )}
+                    </Flex>
+                }
+
+                {isCommenting &&
+                    <Comment
+                        user={user}
+                        editing
+                        onToggle={toggleCommenting}
+                        onSave={handleCreateComment}
+                    />
+                }
             </Box>
-
-            {!isEditing && post.comments.length > 0 &&
-                <Flex column>
-                    <Text>Комментарии</Text>
-
-                    {post.comments.map(comment =>
-                        <Comment
-                            key={comment.id}
-                            user={user}
-                            comment={comment}
-                            onSave={handleUpdateComment}
-                            onDelete={handleDeleteComment}
-                        />
-                    )}
-                </Flex>
-            }
-
-            {isCommenting &&
-                <Comment
-                    user={user}
-                    editing
-                    onToggle={toggleCommenting}
-                    onSave={handleCreateComment}
-                />
-            }
 
             <Box className="post-card__footer">
                 {isEditing ?
