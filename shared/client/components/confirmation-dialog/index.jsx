@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
-import { Dialog } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
+import Dialog from 'shared/ui-components/dialog';
 
 export default function ConfirmationDialog({
     open,

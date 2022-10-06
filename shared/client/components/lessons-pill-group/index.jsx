@@ -4,12 +4,13 @@ import classnames from 'classnames';
 import moment from 'moment';
 
 import { useBoolean } from 'shared/hooks/state';
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 
 import './index.scss';
 
 export default function LessonsPillGroup({
     lessons,
+    readonly,
     onEdit,
     onDelete,
     onRefund
@@ -20,6 +21,7 @@ export default function LessonsPillGroup({
                 <LessonPill
                     key={lesson.id}
                     lesson={lesson}
+                    readonly={readonly}
                     onEdit={onEdit}
                     onDelete={onDelete}
                     onRefund={onRefund}
@@ -29,7 +31,7 @@ export default function LessonsPillGroup({
     );
 }
 
-function LessonPill({ lesson, onEdit = Function.prototype, onDelete = Function.prototype, onRefund = Function.prototype }) {
+function LessonPill({ lesson, readonly, onEdit = Function.prototype, onDelete = Function.prototype, onRefund = Function.prototype }) {
     const [isMenuOpen, toggleMenuOpen] = useBoolean(false);
 
     const handleEdit = useCallback(() => {
@@ -48,8 +50,8 @@ function LessonPill({ lesson, onEdit = Function.prototype, onDelete = Function.p
         <Pill
             key={lesson.id || lesson.date.valueOf()}
             className={classnames('lesson-pill', `lesson-pill--${lesson.status}`)}
-            icon={lesson.trial ? <Icon>tour</Icon> : undefined}
-            action={
+            //icon={lesson.trial ? <Icon>tour</Icon> : undefined}
+            action={!readonly &&
                 <MenuButton
                     open={isMenuOpen}
                     trigger={<Icon name="more_vert" />}
@@ -74,9 +76,9 @@ function LessonPill({ lesson, onEdit = Function.prototype, onDelete = Function.p
                     ]}
                 />
             }
-            onDismiss={toggleMenuOpen}
+            onDismiss={!readonly && toggleMenuOpen}
             rectangular
-            actionable
+            actionable={!readonly}
         >
             <span>
                 <span className="lesson-date">{lesson.date.format('D.M')}</span>

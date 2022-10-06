@@ -54,7 +54,7 @@ const defaultI18n = {
     advertisement: 'Реклама',
 };
 
-function VideoPlayer({ src, provider, options, ...props }, ref) {
+function VideoPlayer({ src, provider, options = {}, ...props }, ref) {
     const videoRef = useRef();
     const playerRef = useRef();
 
@@ -81,9 +81,3 @@ function VideoPlayer({ src, provider, options, ...props }, ref) {
         </div>
     );
 }
-
-VideoPlayer.defaultProps = {
-    options: {
-        controls: []
-    }
-};

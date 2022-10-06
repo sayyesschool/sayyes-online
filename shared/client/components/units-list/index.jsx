@@ -1,5 +1,7 @@
 import { NavLink } from 'react-router-dom';
-import { Avatar, List } from '@fluentui/react-northstar';
+
+import Avatar from 'shared/ui-components/avatar';
+import List from 'shared/ui-components/list';
 
 export default function UnitsList({ units }) {
     return (

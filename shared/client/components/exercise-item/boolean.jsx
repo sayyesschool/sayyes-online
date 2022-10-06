@@ -1,10 +1,8 @@
 import { useCallback } from 'react';
-import {
-    Checkbox,
-    List
-} from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
+import Checkbox from 'shared/ui-components/checkbox';
+import List from 'shared/ui-components/list';
 import TextContent from 'shared/components/text-content';
 
 export default function ExerciseBooleanItem({ item, checked, selected, state = {}, setState }) {

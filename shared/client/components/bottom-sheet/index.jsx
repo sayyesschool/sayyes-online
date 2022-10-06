@@ -1,7 +1,7 @@
 import classnames from 'classnames';
-import { Button } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/icon';
+import Button from 'shared/ui-components/button';
+import Icon from 'shared/ui-components/icon';
 
 import './index.scss';
 

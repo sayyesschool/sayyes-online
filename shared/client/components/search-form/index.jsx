@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Input, List, Popup, } from '@fluentui/react-northstar';
 
 import Form from 'shared/components/form';
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 import { throttle } from 'shared/utils/fn';
 
 import './index.scss';

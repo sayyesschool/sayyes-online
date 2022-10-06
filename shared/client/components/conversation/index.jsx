@@ -1,15 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-    Avatar,
-    Button,
-    Icon,
-    IconButton,
-    Typography
-} from 'mdc-react';
 import classnames from 'classnames';
 
 import { useRoom, useChat } from 'shared/hooks/twilio';
-import Chat from 'shared/components/chat';
+import Avatar from 'shared/ui-components/avatar';
+import Button from 'shared/ui-components/button';
+import { Chat } from 'shared/ui-components/chat';
+import Icon from 'shared/ui-components/icon';
+import Text from 'shared/ui-components/text';
 
 import './index.scss';
 
@@ -109,39 +106,39 @@ export default function Conversation({ name, localParticipant, remoteParticipant
                 <Avatar text={remoteParticipant.initials} />
 
                 <div className="conversation__header__text">
-                    <Typography type="subtitle2" noWrap>{remoteParticipant.fullname}</Typography>
+                    <Text type="subtitle2" noWrap>{remoteParticipant.fullname}</Text>
 
                     {room.time &&
-                        <Typography type="caption" noWrap>{formatTime(room.time)}</Typography>
+                        <Text type="caption" noWrap>{formatTime(room.time)}</Text>
                     }
                 </div>
 
                 <div className="conversation__header__actions">
                     {room.isConnected ?
                         <>
-                            <IconButton
+                            <Button
                                 icon={room.isAudioOn ? 'mic' : 'mic_off'}
                                 onClick={handleToggleAudio}
                             />
 
-                            <IconButton
+                            <Button
                                 icon={room.isVideoOn ? 'videocam' : 'videocam_off'}
                                 onClick={handleToggleVideo}
                             />
 
-                            <IconButton
+                            <Button
                                 icon={room.isSharingScreen ? 'stop_screen_share' : 'screen_share'}
                                 title={room.isSharingScreen ? 'Отключить показ экрана' : 'Показать экран'}
                                 onClick={handleShareScreen}
                             />
 
-                            <IconButton
+                            <Button
                                 icon={isFullscreen ? 'fullscreen_exit' : 'fullscreen'}
                                 title={isFullscreen ? 'Полный экран' : 'Отключить полный экран'}
                                 onClick={handleFullscreen}
                             />
 
-                            <IconButton
+                            <Button
                                 icon="call_end"
                                 title="Завершить звонок"
                                 onClick={handleEndCall}

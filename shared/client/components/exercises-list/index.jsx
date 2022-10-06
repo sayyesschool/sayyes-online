@@ -1,10 +1,8 @@
 import { NavLink } from 'react-router-dom';
-import {
-    Avatar,
-    List
-} from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/icon';
+import Avatar from 'shared/ui-components/avatar';
+import Icon from 'shared/ui-components/icon';
+import List from 'shared/ui-components/list';
 
 import './index.scss';
 

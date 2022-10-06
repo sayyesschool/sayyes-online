@@ -1,12 +1,10 @@
 import classnames from 'classnames';
-import {
-    Button,
-    Flex,
-    Text
-} from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
-import Icon from 'shared/components/icon';
+import Button from 'shared/ui-components/button';
+import Flex from 'shared/ui-components/flex';
+import Icon from 'shared/ui-components/icon';
+import Text from 'shared/ui-components/text';
 import AudioPlayer from 'shared/components/audio-player';
 
 import './index.scss';

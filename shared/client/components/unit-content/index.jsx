@@ -1,6 +1,4 @@
-import { Grid, Flex, Text } from '@fluentui/react-northstar';
-
-import PageSection from 'shared/components/page-section';
+import Flex from 'shared/ui-components/flex';
 import LessonCard from 'shared/components/lesson-card';
 
 import './index.scss';

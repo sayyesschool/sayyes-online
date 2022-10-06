@@ -1,7 +1,3 @@
-import { NavLink } from 'react-router-dom';
-import { Menu } from '@fluentui/react-northstar';
-
-import Icon from 'shared/components/icon';
 import NavBar from 'shared/components/nav-bar';
 
 import './index.scss';

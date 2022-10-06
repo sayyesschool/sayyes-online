@@ -3,20 +3,8 @@
         display: none;
     }
 
-    .mdc-text-field {
+    .ui-input {
         width: 100%;
-
-        .mdc-text-field__icon--trailing {
-            margin-right: 8px;
-        }
-
-        .mdc-notched-outline__leading {
-            border-bottom-left-radius: 0;
-        }
-
-        .mdc-notched-outline__trailing {
-            border-bottom-right-radius: 0;
-        }
     }
 
     .audio-player {

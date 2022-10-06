@@ -1,6 +1,3 @@
-import {
-    Segment
-} from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
 import VideoPlayer from 'shared/components/video-player';

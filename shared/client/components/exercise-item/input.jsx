@@ -1,11 +1,7 @@
 import { useCallback } from 'react';
 
-import TextArea from 'shared/components/text-area';
+import Textarea from 'shared/ui-components/textarea';
 import TextContent from 'shared/components/text-content';
-
-function isItemCorrect(item, value) {
-    return item.items?.includes(value?.trim().toLocaleLowerCase());
-}
 
 export default function ExerciseInputItem({ item, state = {}, setState, checked }) {
     const handleChange = useCallback(event => {
@@ -24,7 +20,7 @@ export default function ExerciseInputItem({ item, state = {}, setState, checked 
         <>
             <TextContent>{item.text}</TextContent>
 
-            <TextArea
+            <Textarea
                 id={item.id}
                 value={value}
                 error={checked && !isCorrect}
@@ -34,4 +30,8 @@ export default function ExerciseInputItem({ item, state = {}, setState, checked 
             />
         </>
     );
+}
+
+function isItemCorrect(item, value) {
+    return item.items?.includes(value?.trim().toLocaleLowerCase());
 }

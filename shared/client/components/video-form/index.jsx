@@ -1,10 +1,7 @@
 import { useCallback, useRef } from 'react';
-import {
-    Form, FormInput
-} from '@fluentui/react-northstar';
 
 import useForm from 'shared/hooks/form';
-import FormField from 'shared/components/form-field';
+import { Form, FormField, FormInput } from 'shared/components/form';
 import TextEditor from 'shared/components/text-editor';
 
 const defaultVideo = {

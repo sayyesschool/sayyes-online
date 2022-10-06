@@ -4,6 +4,7 @@
 
     .image-slider__wrapper {
         position: relative;
+        margin-bottom: 1rem;
     }
 
     .image-slider__images {
@@ -12,6 +13,9 @@
 
     .image-slider__image {
         display: none;
+        margin: auto;
+        width: auto;
+        max-width: 100%;
 
         &--active {
             display: block;

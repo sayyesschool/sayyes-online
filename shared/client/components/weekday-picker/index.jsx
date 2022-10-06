@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
-import {
-    Checkbox,
-    FormField
-} from 'mdc-react';
+
+import Checkbox from 'shared/components/checkbox';
+import FormField from 'shared/components/form/field';
 
 import './index.scss';
 

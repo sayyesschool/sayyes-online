@@ -1,9 +1,7 @@
 import { useCallback, useRef } from 'react';
-import {
-    Form, FormInput
-} from '@fluentui/react-northstar';
 
 import useForm from 'shared/hooks/form';
+import { Form, FormInput } from 'shared/ui-components/form';
 import AudioField from 'shared/components/audio-field';
 import TextEditor from 'shared/components/text-editor';
 

@@ -1,16 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import {
-    Checkbox,
-    Input,
-    Text
-} from '@fluentui/react-northstar';
 import moment from 'moment';
 
 import { useBoolean } from 'shared/hooks/state';
-import { rescheduleLessons } from 'shared/libs/enrollment';
-
 import useForm from 'shared/hooks/form';
-import Form from 'shared/components/form';
+import { rescheduleLessons } from 'shared/libs/enrollment';
+import { Form, FormCheckbox, FormInput } from 'shared/ui-components/form';
+import Text from 'shared/ui-components/text';
 import LessonPillGroup from 'shared/components/lessons-pill-group';
 import ScheduleSelect from 'shared/components/schedule-select';
 
@@ -48,7 +43,7 @@ export default function EnrollmentScheduleForm({ enrollment, onSubmit, ...props 
             />
 
             {enrollment.lessons?.length > 0 &&
-                <Checkbox
+                <FormCheckbox
                     label="Обновить уроки"
                     checked={shouldUpdateLessons}
                     onChange={toggleShouldUpdateLessons}
@@ -57,7 +52,7 @@ export default function EnrollmentScheduleForm({ enrollment, onSubmit, ...props 
 
             {shouldUpdateLessons &&
                 <>
-                    <Input
+                    <FormInput
                         type="date"
                         name="startDate"
                         value={moment(data.startDate).format('YYYY-MM-DD')}

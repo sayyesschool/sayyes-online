@@ -1,6 +1,4 @@
-import {
-    Card
-} from 'mdc-react';
+import Card from 'shared/ui-components/card';
 
 export default function CourseCard({ course, ...props }) {
     return (

@@ -1,8 +1,12 @@
 import { useCallback, useRef } from 'react';
-import { Button, Flex, Header, Segment, Text } from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
 import { useBoolean } from 'shared/hooks/state';
+import Button from 'shared/ui-components/button';
+import Flex from 'shared/ui-components/flex';
+import Header from 'shared/ui-components/header';
+import Surface from 'shared/ui-components/surface';
+import Text from 'shared/ui-components/text';
 import ExerciseItem from 'shared/components/exercise-item';
 // import CommentCard from 'shared/components/comment-card';
 
@@ -41,7 +45,7 @@ export default function ExerciseCard({ number, user, exercise, onProgressChange 
     const classNames = classnames('exercise-card', `exercise-card--${exercise.type}`);
 
     return (
-        <Segment className={classNames}>
+        <Surface className={classNames}>
             <Flex onClick={toggleCollapsed}>
                 <Header
                     content={exercise.title}
@@ -113,6 +117,6 @@ export default function ExerciseCard({ number, user, exercise, onProgressChange 
                     </Flex>
                 </Flex>
             }
-        </Segment>
+        </Surface>
     );
 }

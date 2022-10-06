@@ -1,5 +1,9 @@
 import { Link } from 'react-router-dom';
-import { Card, Grid, Image, Text } from '@fluentui/react-northstar';
+
+import Card from 'shared/ui-components/card';
+import Grid from 'shared/ui-components/grid';
+import Image from 'shared/ui-components/image';
+import Text from 'shared/ui-components/text';
 
 export default function CoursesGrid({ courses }) {
     return (

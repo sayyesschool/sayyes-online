@@ -1,4 +1,4 @@
-import { Divider } from '@fluentui/react-northstar';
+import Divider from 'shared/ui-components/divider';
 
 export default function ExerciseDividerItem({ item }) {
     return (

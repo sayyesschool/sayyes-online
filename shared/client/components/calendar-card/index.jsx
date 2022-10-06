@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import { Button, Flex, Segment } from '@fluentui/react-northstar';
 
+import Button from 'shared/ui-components/button';
+import Flex from 'shared/ui-components/flex';
+import Icon from 'shared/ui-components/icon';
+import Surface from 'shared/ui-components/surface';
 import Calendar from 'shared/components/calendar';
-import Icon from 'shared/components/icon';
 
 export default function CalendarCard({ title, events, defaultView = 'week' }) {
     const [view, setView] = useState(defaultView);
 
     return (
-        <Segment className="calendar-card">
+        <Surface className="calendar-card">
             <Flex>
                 {title}
 
@@ -34,6 +36,6 @@ export default function CalendarCard({ title, events, defaultView = 'week' }) {
                 view={view}
                 events={events}
             />
-        </Segment>
+        </Surface>
     );
 }

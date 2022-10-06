@@ -1,7 +1,7 @@
 import { Children, isValidElement, cloneElement } from 'react';
 import classnames from 'classnames';
 
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 
 import './index.scss';
 

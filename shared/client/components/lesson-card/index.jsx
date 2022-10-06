@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom';
-import { Card, Image, Text } from '@fluentui/react-northstar';
+
+import Card from 'shared/ui-components/card';
+import Image from 'shared/ui-components/image';
+import Text from 'shared/ui-components/text';
 
 import './index.scss';
 

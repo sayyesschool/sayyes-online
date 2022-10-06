@@ -1,7 +1,7 @@
 import classnames from 'classnames';
-import { Text } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
+import Text from 'shared/ui-components/text';
 
 import './index.scss';
 

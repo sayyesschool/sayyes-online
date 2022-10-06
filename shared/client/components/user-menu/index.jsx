@@ -1,7 +1,5 @@
-import {
-    Avatar,
-    MenuButton
-} from '@fluentui/react-northstar';
+import Avatar from 'shared/ui-components/avatar';
+import MenuButton from 'shared/ui-components/menu-button';
 
 import './index.scss';
 

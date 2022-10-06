@@ -1,11 +1,11 @@
 import { useCallback, useState } from 'react';
 import classnames from 'classnames';
 
-import IconButton from 'shared/components/icon-button';
+import IconButton from 'shared/ui-components/icon-button';
 
 import './index.scss';
 
-export default function ImageSlider({ images }) {
+export default function ImageSlider({ images = [] }) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const handlePrev = useCallback(() => {
@@ -21,19 +21,13 @@ export default function ImageSlider({ images }) {
             <div className="image-slider__wrapper">
                 <div className="image-slider__images">
                     {images?.map((image, index) =>
-                        <figure key={image.id}>
-                            <img
-                                key={index}
-                                className={classnames('image-slider__image', {
-                                    'image-slider__image--active': index === currentIndex
-                                })}
-                                src={image.src}
-                            />
-
-                            {image.caption &&
-                                <figcaption>{image.caption}</figcaption>
-                            }
-                        </figure>
+                        <img
+                            key={image.id}
+                            className={classnames('image-slider__image', {
+                                'image-slider__image--active': index === currentIndex
+                            })}
+                            src={image.url}
+                        />
                     )}
                 </div>
 

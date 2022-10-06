@@ -3,7 +3,6 @@ import {
     Avatar,
     Box,
     Button,
-    Card,
     Flex,
     Header,
     MenuButton,
@@ -13,7 +12,7 @@ import {
 
 import { useBoolean } from 'shared/hooks/state';
 import Comment from 'shared/components/comment';
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 import PostContent from 'shared/components/post-content';
 import PostForm from 'shared/components/post-form';
 
@@ -72,13 +71,13 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
                     menu={[
                         {
                             key: 'edit',
-                            icon: 'edit',
+                            icon: <Icon>edit</Icon>,
                             content: 'Редактировать',
                             onClick: toggleEditing
                         },
                         {
                             key: 'delete',
-                            icon: 'delete',
+                            icon: <Icon>delete</Icon>,
                             content: 'Удалить',
                             onClick: handleDelete
                         }
@@ -136,7 +135,7 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
                 {isEditing ?
                     <Flex space="between">
                         <Button text onClick={toggleEditing}>Отменить</Button>
-                        <Button type="submit" form="update-post-form" primary text>Сохранить</Button>
+                        <Button type="submit" form="update-post-form" primary flat>Сохранить</Button>
                     </Flex>
                     :
                     (!isCommenting &&

@@ -8,7 +8,7 @@ import {
 import moment from 'moment';
 import classnames from 'classnames';
 
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 
 import { getMonthData } from './utils';
 

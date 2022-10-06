@@ -1,8 +1,8 @@
 import { useCallback, useRef } from 'react';
-import { Text } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
-import Button from 'shared/components/button';
+import Button from 'shared/ui-components/button';
+import Text from 'shared/ui-components/text';
 import ExerciseItem from 'shared/components/exercise-item';
 
 import './index.scss';

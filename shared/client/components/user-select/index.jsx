@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { FormDropdown } from '@fluentui/react-northstar';
 
 import api from 'shared/services/api';
+import FormDropdown from 'shared/ui-components/form/dropdown';
 
 export default function UserSelect({ resolveUrl, ...props }) {
     const [results, setResults] = useState();

@@ -1,6 +1,6 @@
+import timezones from 'shared/data/timezones';
 import FormSelect from 'shared/components/form-select';
-import Icon from 'shared/components/icon';
-import timezones from 'shared/../data/timezones';
+import Icon from 'shared/ui-components/icon';
 
 const timezoneOptions = timezones.map(item => ({
     key: item.value,

@@ -5,7 +5,7 @@ import {
 } from '@fluentui/react-northstar';
 import moment from 'moment';
 
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 import { formatTime } from 'shared/utils/format';
 
 import WeekTimeEvent from './WeekTimeEvent';

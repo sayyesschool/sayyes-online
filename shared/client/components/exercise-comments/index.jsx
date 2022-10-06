@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import { useUser } from 'shared/hooks/user';
 import { useBoolean } from 'shared/hooks/state';
-import Button from 'shared/components/button';
+import Button from 'shared/ui-components/button';
 import Comment from 'shared/components/comment';
 
 export default function ExerciseComments({ exercise, onCreate, onUpdate, onDelete }) {

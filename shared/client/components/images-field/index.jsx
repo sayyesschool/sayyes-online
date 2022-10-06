@@ -8,7 +8,7 @@ import {
 } from '@fluentui/react-northstar';
 
 import storage from 'shared/services/storage';
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 
 import './index.scss';
 

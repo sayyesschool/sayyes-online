@@ -1,7 +1,5 @@
-import {
-    Button,
-    List
-} from '@fluentui/react-northstar';
+import Button from 'shared/ui-components/button';
+import List from 'shared/ui-components/list';
 
 export default function VideoList({ videos, selectedVideo, onClick, onDelete }) {
     return (

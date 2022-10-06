@@ -1,6 +1,5 @@
-import { List } from '@fluentui/react-northstar';
-
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
+import List from 'shared/ui-components/list';
 
 import './index.scss';
 

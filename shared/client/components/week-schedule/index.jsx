@@ -10,6 +10,7 @@ export default function WeekSchedule({ schedule }) {
             {days.map((day, index) =>
                 <div key={index} className="day-schedule">
                     <div className="day-name">{day}</div>
+
                     <div className="day-content">
                         {map.has(index) &&
                             <div className="day-event">

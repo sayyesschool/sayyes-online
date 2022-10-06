@@ -12,7 +12,7 @@ import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
 import { usePosts } from 'shared/hooks/posts';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import EmptyState from 'shared/components/empty-state';
 import PostCard from 'shared/components/post-card';

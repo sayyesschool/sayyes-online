@@ -1,8 +1,10 @@
 import { useCallback, useMemo } from 'react';
-import { Checkbox, List, RadioGroupItem } from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
-import Icon from 'shared/components/icon';
+import Checkbox from 'shared/ui-components/checkbox';
+import Icon from 'shared/ui-components/icon';
+import List from 'shared/ui-components/list';
+import { RadioGroupItem } from 'shared/ui-components/radio-group';
 import TextContent from 'shared/components/text-content';
 
 function getDefaultState(item) {

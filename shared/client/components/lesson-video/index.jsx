@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Dialog } from 'mdc-react';
 
+import Dialog from 'shared/ui-components/dialog';
 import VideoPlayer from 'shared/components/video-player';
 import VideoList from 'shared/components/video-list';
 

@@ -1,8 +1,9 @@
 import { useCallback } from 'react';
-import { Button, ChatMessage } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
-import Icon from 'shared/components/icon';
+import { ChatMessage } from 'shared/components/chat';
+import Button from 'shared/ui-components/button';
+import Icon from 'shared/ui-components/icon';
 import CommentForm from 'shared/components/comment-form';
 
 import './index.scss';

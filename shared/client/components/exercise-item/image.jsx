@@ -1,4 +1,5 @@
-import { Image, Text } from '@fluentui/react-northstar';
+import Image from 'shared/ui-components/image';
+import Text from 'shared/ui-components/text';
 
 export default function ExerciseImageItem({ item = {} }) {
     return (

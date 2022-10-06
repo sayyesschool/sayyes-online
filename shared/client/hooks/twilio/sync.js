@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { SyncClient } from 'twilio-sync';
 
 export function useSync(token) {
@@ -48,7 +48,7 @@ export function useSyncDoc(token, docId) {
     useEffect(() => {
         syncRef.current?.document(docId).then(doc => {
             doc.on('updated', data => {
-                if (data.isLocal) return;
+                //if (data.isLocal) return;
 
                 setData(data.data);
             });

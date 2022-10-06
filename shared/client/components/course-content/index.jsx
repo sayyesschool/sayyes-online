@@ -1,5 +1,4 @@
-import { Grid } from '@fluentui/react-northstar';
-
+import Grid from 'shared/ui-components/grid';
 import UnitCard from 'shared/components/unit-card';
 
 import './index.scss';

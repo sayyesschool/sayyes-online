@@ -1,15 +1,16 @@
 import { Header, Text, Toolbar } from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
-import Breadcrumbs from 'shared/components/breadcrumbs';
-import Icon from 'shared/components/icon';
+import Breadcrumbs from 'shared/ui-components/breadcrumbs';
+import Icon from 'shared/ui-components/icon';
+import Tabs from 'shared/ui-components/tabs';
 
 import './index.scss';
 
-export default function PageHeader({ overline, title, description, breadcrumbs, menu, actions, toolbar, className, pullContent, withTabs, children }) {
+export default function PageHeader({ overline, title, description, breadcrumbs, menu, tabs, actions, toolbar, className, pullContent, children }) {
     const classNames = classnames('page-header', {
         'page-header--pull-content': pullContent,
-        'page-header--with-tabs': withTabs
+        'page-header--with-tabs': Boolean(tabs)
     }, className);
 
     return (
@@ -37,6 +38,12 @@ export default function PageHeader({ overline, title, description, breadcrumbs, 
                         }
 
                         {menu}
+
+                        {tabs &&
+                            <Tabs
+                                items={tabs}
+                            />
+                        }
                     </div>
 
                     {actions &&

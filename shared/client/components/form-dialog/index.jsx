@@ -1,8 +1,7 @@
 import { cloneElement, useCallback, useEffect, useRef } from 'react';
-import { Dialog } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
-import Icon from 'shared/components/icon';
+import { Dialog, Icon } from 'shared/ui-components';
 
 import './index.scss';
 
@@ -46,11 +45,9 @@ export default function FormDialog({
                 title: 'Закрыть',
                 onClick: onClose
             }}
-            content={{
-                content: cloneElement(children, {
-                    onSubmit: handleSubmit
-                })
-            }}
+            content={cloneElement(children, {
+                onSubmit: handleSubmit
+            })}
             confirmButton={{
                 type: 'submit',
                 form,
