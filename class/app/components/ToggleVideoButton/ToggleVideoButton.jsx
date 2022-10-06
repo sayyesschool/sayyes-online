@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react';
 import { Button, Tooltip } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 
 import { useHasVideoInputDevices } from 'app/hooks/deviceHooks';
 import useLocalVideoToggle from 'app/hooks/useLocalVideoToggle';

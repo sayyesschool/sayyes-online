@@ -1,5 +1,3 @@
-@use '@material/icon-button';
-
 .chat {
     display: flex;
     flex-direction: column;
@@ -36,6 +34,7 @@
             padding: 8px;
             border: none;
             background: transparent;
+            color: rgb(255, 255, 255);
             outline: none;
             resize: none;
             box-sizing: border-box;

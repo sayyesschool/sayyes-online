@@ -1,6 +1,6 @@
 import { Dialog } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 
 import AudioInputList from 'app/components/AudioInputList';
 import AudioOutputList from 'app/components/AudioOutputList';

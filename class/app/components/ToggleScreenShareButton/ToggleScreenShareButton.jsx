@@ -1,6 +1,6 @@
 import { Button, Tooltip } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import useScreenShareParticipant from 'app/hooks/useScreenShareParticipant';

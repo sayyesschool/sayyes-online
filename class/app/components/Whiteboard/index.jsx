@@ -5,7 +5,7 @@ import { useUser } from 'shared/hooks/user';
 
 import Whiteboard from 'app/lib/Whiteboard';
 import useDataTrack from 'app/hooks/useDataTrack';
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 
 import './index.scss';
 

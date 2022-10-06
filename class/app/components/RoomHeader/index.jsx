@@ -1,8 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import { Button, Flex, Text } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/icon';
-import Tabs from 'shared/components/tabs';
+import Icon from 'shared/ui-components/icon';
+import Tabs from 'shared/ui-components/tabs';
 
 import { formatTime } from 'app/utils';
 

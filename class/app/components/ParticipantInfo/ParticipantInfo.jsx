@@ -1,7 +1,7 @@
 import { Avatar, Label, Text } from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 
 import usePublications from 'app/hooks/usePublications';
 import useTrack from 'app/hooks/useTrack';

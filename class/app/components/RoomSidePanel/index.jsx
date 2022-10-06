@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Header, Text } from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 
 import './index.scss';
 

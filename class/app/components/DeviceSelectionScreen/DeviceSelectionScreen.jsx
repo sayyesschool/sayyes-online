@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { Button, Flex, Header } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import LocalVideoPreview from 'app/components/LocalVideoPreview';
