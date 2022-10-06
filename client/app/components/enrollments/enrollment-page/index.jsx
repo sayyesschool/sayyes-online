@@ -1,7 +1,7 @@
 import { Button, Flex, Grid, MenuButton } from '@fluentui/react-northstar';
 
 import { useEnrollment } from 'shared/hooks/enrollments';
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import PageHeader from 'shared/components/page-header';

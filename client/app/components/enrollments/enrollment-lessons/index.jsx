@@ -1,5 +1,7 @@
-import LessonPillGroup from 'shared/components/lessons-pill-group';
+import LessonsPillGroup from 'shared/components/lessons-pill-group';
 import PageSection from 'shared/components/page-section';
+
+import './index.scss';
 
 export default function EnrollmentLessons({ enrollment }) {
     const lessonsDuration = enrollment.lessons.reduce((total, lesson) => total + lesson.duration, 0);
@@ -12,8 +14,9 @@ export default function EnrollmentLessons({ enrollment }) {
             description={lessonsDurationDelta !== 0 && ((lessonsDurationDelta < 0 ? 'Превышение на' : 'Осталось') + ` ${Math.abs(lessonsDurationDelta)} мин.`)}
         >
             {enrollment.lessons.length > 0 &&
-                <LessonPillGroup
+                <LessonsPillGroup
                     lessons={enrollment.lessons}
+                    readonly
                 />
             }
         </PageSection>

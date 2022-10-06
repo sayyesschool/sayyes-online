@@ -1,12 +1,9 @@
 import { useCallback, useState } from 'react';
-import { Avatar } from '@fluentui/react-northstar';
 
 import { useStore } from 'shared/hooks/store';
 import { actions as userActions } from 'shared/store/modules/user';
+import Avatar from 'shared/ui-components/avatar';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
-import Tabs from 'shared/components/tabs';
 
 // import ProfileCard from 'app/components/account/profile-card';
 // import PaymentsCard from 'app/components/account/payments-card';
@@ -38,16 +35,12 @@ export default function AccountPage() {
 
     return (
         <Page id="account-page">
-            <PageHeader
+            <Page.Header
                 overline="Мой аккаунт"
                 graphic={<Avatar name={user.initials} />}
                 title={user.fullname}
-                withTabs
-            >
-                <Tabs
-                    items={tabItems}
-                />
-            </PageHeader>
+                tabs={tabItems}
+            />
 
             {/* <PageContent>
                 {activeTab === 'profile' &&

@@ -11,7 +11,7 @@ import {
 } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 
 import EnrollmentPackCard from 'app/components/enrollments/enrollment-pack-card';
 import EnrollmentCheckoutForm from 'app/components/enrollments/enrollment-checkout-form';

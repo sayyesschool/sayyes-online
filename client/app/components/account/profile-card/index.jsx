@@ -2,7 +2,7 @@ import moment from 'moment';
 
 import { useBoolean } from 'shared/hooks/state';
 import DetailsList from 'shared/components/details-list';
-import IconButton from 'shared/components/icon-button';
+import IconButton from 'shared/ui-components/icon-button';
 import PageSection from 'shared/components/page-section';
 
 import ProfileForm from 'app/components/account/profile-form';

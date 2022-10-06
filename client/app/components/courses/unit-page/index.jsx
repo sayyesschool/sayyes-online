@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 
 import { useCourse } from 'shared/hooks/courses';
-import IconButton from 'shared/components/icon-button';
+import IconButton from 'shared/ui-components/icon-button';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import UnitContent from 'shared/components/unit-content';
