@@ -1,9 +1,8 @@
 import { useCallback, useState, useEffect } from 'react';
-import { Button, MenuButton } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
+import { Button, MenuButton } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
-import Icon from 'shared/components/icon';
 import PageSection from 'shared/components/page-section';
 
 import ExerciseItemWrapper from 'app/components/courses/exercise-item-wrapper';
@@ -92,9 +91,8 @@ export default function ExerciseItems({ exercise, onCreate, onUpdate, onDelete, 
                 className="new-item-button"
                 trigger={
                     <Button
-                        icon={<Icon>add</Icon>}
+                        icon="add"
                         title="Добавить элемент"
-                        iconOnly
                         flat
                     />
                 }

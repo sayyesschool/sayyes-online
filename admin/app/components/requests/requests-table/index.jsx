@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Button, Flex, Pill, Table, Text } from '@fluentui/react-northstar';
 import moment from 'moment';
 
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 import StatusLabel from 'shared/components/status-label';
 
 import './index.scss';

@@ -1,12 +1,11 @@
 import { useCallback, useState } from 'react';
-import { Box, Flex, Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import { use } from 'shared/hooks/courses';
+import { Flex, Grid, Tabs } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import Tabs from 'shared/components/tabs';
 
 import UnitContent from 'app/components/courses/unit-content';
 import UnitDetails from 'app/components/courses/unit-details';
@@ -80,23 +79,22 @@ export default function UnitPage({ match, history }) {
                 />
 
                 <Grid columns="minmax(0, 2fr) minmax(0, 1fr)">
-                    <Box>
-                        {activeTab === 'lessons' &&
-                            <UnitLessons
-                                course={course}
-                                unit={unit}
-                                onCreate={handleCreateLesson}
-                                onDelete={handleDeleteLesson}
-                            />
-                        }
+                    {activeTab === 'lessons' &&
+                        <UnitLessons
+                            course={course}
+                            unit={unit}
+                            onCreate={handleCreateLesson}
+                            onDelete={handleDeleteLesson}
+                            onReorder={handleUpdateUnit}
+                        />
+                    }
 
-                        {activeTab === 'content' &&
-                            <UnitContent
-                                unit={unit}
-                                onUpdate={handleUpdateUnit}
-                            />
-                        }
-                    </Box>
+                    {activeTab === 'content' &&
+                        <UnitContent
+                            unit={unit}
+                            onUpdate={handleUpdateUnit}
+                        />
+                    }
 
                     <Flex gap="gap.medium" column>
                         <UnitDetails

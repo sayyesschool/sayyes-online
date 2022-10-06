@@ -1,13 +1,7 @@
 import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
-import {
-    Button,
-    Checkbox,
-    Input,
-    List
-} from '@fluentui/react-northstar';
 import { v4 as uuid } from 'uuid';
 
-import Icon from 'shared/components/icon';
+import { Button, Checkbox, Input, List } from 'shared/ui-components';
 import TextEditor from 'shared/components/text-editor';
 
 function ExerciseBooleanItem({ item }, ref) {
@@ -72,8 +66,7 @@ function ExerciseBooleanItem({ item }, ref) {
                         endMedia={
                             <Button
                                 type="button"
-                                icon={<Icon>delete</Icon>}
-                                iconOnly
+                                icon="delete"
                                 text
                                 onClick={() => handleDeleteItem(item.id)}
                             />
@@ -85,7 +78,7 @@ function ExerciseBooleanItem({ item }, ref) {
             <Button
                 type="button"
                 content="Добавить утверждение"
-                icon={<Icon>add</Icon>}
+                icon="add"
                 text
                 fluid
                 onClick={handleAddItem}

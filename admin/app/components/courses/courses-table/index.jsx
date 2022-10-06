@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
-import {
-    MenuButton,
-    Table
-} from '@fluentui/react-northstar';
+
+import { MenuButton, Table } from 'shared/ui-components';
 
 export default function CoursesTable({ courses, onEdit, onDelete }) {
     return (

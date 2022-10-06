@@ -4,7 +4,7 @@ import { Button } from '@fluentui/react-northstar';
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 import PageSection from 'shared/components/page-section';
 
 import ContactForm from 'app/components/clients/contact-form';

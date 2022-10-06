@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Button, Image, List } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/icon';
+import { Button, Image, List } from 'shared/ui-components';
 
 export default function CoursesList({ courses, onItemClick, onDelete }) {
     return (
@@ -18,8 +17,7 @@ export default function CoursesList({ courses, onItemClick, onDelete }) {
                     endMedia={onDelete &&
                         <Button
                             title="Убрать курс"
-                            icon={<Icon>remove</Icon>}
-                            iconOnly
+                            icon="remove"
                             text
                             onClick={() => onDelete(course.id)}
                         />

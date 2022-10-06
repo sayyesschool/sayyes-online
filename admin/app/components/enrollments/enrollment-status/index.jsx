@@ -1,6 +1,6 @@
 import { Button, MenuButton } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 import Stepper from 'shared/components/stepper';
 import { statusOptions } from 'shared/data/enrollment';
 

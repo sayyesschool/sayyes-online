@@ -1,10 +1,9 @@
 import { useCallback, useState } from 'react';
-import { Button } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
+import { Button } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
-import Icon from 'shared/components/icon';
 import PageSection from 'shared/components/page-section';
 
 import ExerciseForm from 'app/components/courses/exercise-form';
@@ -17,7 +16,8 @@ export default function LessonExercises({
     selectedExercise,
 
     onCreate,
-    onDelete
+    onDelete,
+    onReorder
 }) {
     const [exercise, setExercise] = useState(selectedExercise);
     const [isFormOpen, toggleFormOpen] = useBoolean(false);
@@ -33,6 +33,17 @@ export default function LessonExercises({
             .finally(() => toggleConfirmationDialogOpen(false));
     }, [exercise]);
 
+    const handleReorder = useCallback((index, dir) => {
+        const exercises = lesson._exercises.slice();
+        const exercise = exercises[index];
+        const otherExercise = exercises[index + dir];
+
+        exercises[index + dir] = exercise;
+        exercises[index] = otherExercise;
+
+        onReorder({ _exercises: exercises });
+    }, [lesson]);
+
     const handleDeleteRequest = useCallback(exercise => {
         setExercise(exercise);
         toggleConfirmationDialogOpen(true);
@@ -44,8 +55,7 @@ export default function LessonExercises({
             title="Упражнения"
             actions={
                 <Button
-                    icon={<Icon>add</Icon>}
-                    iconOnly
+                    icon="add"
                     text
                     onClick={toggleFormOpen}
                 />
@@ -57,6 +67,7 @@ export default function LessonExercises({
                     exercises={lesson.exercises}
                     selectedExercise={selectedExercise}
                     onSelect={selectedExercise && setExercise}
+                    onReorder={handleReorder}
                     onDelete={handleDeleteRequest}
                 />
             }

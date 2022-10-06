@@ -1,9 +1,7 @@
 import { useCallback } from 'react';
-import { Button, MenuButton } from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
-import Icon from 'shared/components/icon';
-
+import { Button, Icon, MenuButton } from 'shared/ui-components';
 import ExerciseItem from 'shared/components/exercise-item';
 import ExerciseItemForm from 'app/components/courses/exercise-item-form';
 import { exerciseTypeMenuItems } from 'shared/data/exercise';
@@ -83,8 +81,7 @@ export default function ExerciseItemWrapper({ index, item, editing, isFirst, isL
                         trigger={
                             <Button
                                 size="small"
-                                icon={<Icon>more_vert</Icon>}
-                                iconOnly
+                                icon="more_vert"
                                 text
                             />
                         }

@@ -1,14 +1,13 @@
 import { useCallback, useState } from 'react';
-import { Button } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
+import Button from 'shared/ui-components/button';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
-import Icon from 'shared/components/icon';
 import PageSection from 'shared/components/page-section';
 
 import UnitForm from 'app/components/courses/unit-form';
-import UnitList from 'app/components/courses/unit-list';
+import UnitsList from 'app/components/courses/units-list';
 
 export default function CourseUnits({ course, onCreate, onDelete }) {
     const [unit, setUnit] = useState();
@@ -37,15 +36,14 @@ export default function CourseUnits({ course, onCreate, onDelete }) {
             title="Юниты"
             actions={
                 <Button
-                    icon={<Icon>add</Icon>}
-                    iconOnly
+                    icon="add"
                     text
                     onClick={toggleFormDialogOpen}
                 />
             }
             compact
         >
-            <UnitList
+            <UnitsList
                 units={course.units}
                 onDelete={handleDeleteRequest}
             />

@@ -1,21 +1,20 @@
 import { useCallback, useState } from 'react';
-import { Button } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
+import { Button } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
-import Icon from 'shared/components/icon';
 import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
 
 import LessonForm from 'app/components/courses/lesson-form';
-import LessonList from 'app/components/courses/lesson-list';
+import LessonsList from 'app/components/courses/lessons-list';
 
-export default function UnitLessons({ course, unit, onCreate, onDelete }) {
+export default function UnitLessons({ unit, onCreate, onDelete, onReorder }) {
     const [lesson, setLesson] = useState();
     const [isFormDialogOpen, toggleFormDialogOpen] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
-    const handleSubmit = useCallback(data => {
+    const handleCreate = useCallback(data => {
         return onCreate(data).finally(() => toggleFormDialogOpen(false));
     }, [onCreate]);
 
@@ -25,6 +24,17 @@ export default function UnitLessons({ course, unit, onCreate, onDelete }) {
             setLesson(undefined);
         });
     }, [lesson, onDelete]);
+
+    const handleReorderLessons = useCallback((index, dir) => {
+        const lessons = unit._lessons.slice();
+        const lesson = lessons[index];
+        const otherLesson = lessons[index + dir];
+
+        lessons[index + dir] = lesson;
+        lessons[index] = otherLesson;
+
+        onReorder({ _lessons: lessons });
+    }, [unit]);
 
     const handleDeleteRequest = useCallback(lesson => {
         setLesson(lesson);
@@ -37,16 +47,16 @@ export default function UnitLessons({ course, unit, onCreate, onDelete }) {
             title="Уроки"
             actions={
                 <Button
-                    icon={<Icon>add</Icon>}
-                    iconOnly
+                    icon="add"
                     text
                     onClick={toggleFormDialogOpen}
                 />
             }
             compact
         >
-            <LessonList
+            <LessonsList
                 lessons={unit.lessons}
+                onReorder={handleReorderLessons}
                 onDelete={handleDeleteRequest}
             />
 
@@ -57,7 +67,7 @@ export default function UnitLessons({ course, unit, onCreate, onDelete }) {
             >
                 <LessonForm
                     id="lesson-form"
-                    onSubmit={handleSubmit}
+                    onSubmit={handleCreate}
                 />
             </FormDialog>
 

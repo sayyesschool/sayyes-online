@@ -1,6 +1,4 @@
-import { Button } from '@fluentui/react-northstar';
-
-import Icon from 'shared/components/icon';
+import Button from 'shared/ui-components/button';
 import PageSection from 'shared/components/page-section';
 
 import UnitForm from 'app/components/courses/unit-form';
@@ -14,8 +12,7 @@ export default function UnitDetails({ unit, onUpdate }) {
                 <Button
                     type="submit"
                     form="unit-form"
-                    icon={<Icon name="save" />}
-                    iconOnly
+                    icon="save"
                     text
                 />
             }

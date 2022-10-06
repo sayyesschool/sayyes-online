@@ -1,14 +1,7 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
-import {
-    Box,
-    Button,
-    Flex,
-    Input,
-    Image,
-    Text
-} from '@fluentui/react-northstar';
 
 import { useFileInput } from 'shared/hooks/file';
+import { Button, Flex, Input, Image, Text } from 'shared/ui-components';
 
 function ExerciseImageItem({ item }, ref) {
     const inputRef = useRef();
@@ -39,7 +32,7 @@ function ExerciseImageItem({ item }, ref) {
                 <>
                     <Text size="small">Выбранный файл:</Text>
 
-                    <Box
+                    <div
                         className="exercise-item-form__image-wrapper"
                         onClick={pick}
                     >
@@ -47,7 +40,7 @@ function ExerciseImageItem({ item }, ref) {
                             src={file.url}
                             alt=""
                         />
-                    </Box>
+                    </div>
 
                     <Text as="p">
                         Название: <Text temporary>{file.name}</Text>
@@ -58,7 +51,7 @@ function ExerciseImageItem({ item }, ref) {
             }
 
             {!file && item.image &&
-                <Box
+                <div
                     className="exercise-item-form__image-wrapper"
                     onClick={pick}
                 >
@@ -67,7 +60,7 @@ function ExerciseImageItem({ item }, ref) {
                         alt=""
                         fluid
                     />
-                </Box>
+                </div>
             }
 
             {!file && !item.image ?

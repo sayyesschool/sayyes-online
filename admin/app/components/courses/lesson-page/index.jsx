@@ -1,12 +1,11 @@
 import { useCallback, useState } from 'react';
-import { Box, Flex, Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useLesson } from 'shared/hooks/courses';
+import { Flex, Grid, Tabs } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import Tabs from 'shared/components/tabs';
 
 import LessonContent from 'app/components/courses/lesson-content';
 import LessonDetails from 'app/components/courses/lesson-details';
@@ -82,23 +81,22 @@ export default function LessonPage({ match, history }) {
                 />
 
                 <Grid columns="minmax(0, 2fr) minmax(0, 1fr)">
-                    <Box>
-                        {activeTab === 'exercises' &&
-                            <LessonExercises
-                                course={course}
-                                lesson={lesson}
-                                onCreate={handleCreateExercise}
-                                onDelete={handleDeleteExercise}
-                            />
-                        }
+                    {activeTab === 'exercises' &&
+                        <LessonExercises
+                            course={course}
+                            lesson={lesson}
+                            onCreate={handleCreateExercise}
+                            onDelete={handleDeleteExercise}
+                            onReorder={handleUpdateLesson}
+                        />
+                    }
 
-                        {activeTab === 'content' &&
-                            <LessonContent
-                                lesson={lesson}
-                                onUpdate={handleUpdateLesson}
-                            />
-                        }
-                    </Box>
+                    {activeTab === 'content' &&
+                        <LessonContent
+                            lesson={lesson}
+                            onUpdate={handleUpdateLesson}
+                        />
+                    }
 
                     <Flex gap="gap.medium" column>
                         <LessonDetails

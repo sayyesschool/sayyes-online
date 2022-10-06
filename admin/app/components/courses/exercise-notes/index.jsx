@@ -1,7 +1,6 @@
 import { useCallback, useRef } from 'react';
-import { Button } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/icon';
+import Button from 'shared/ui-components/button';
 import PageSection from 'shared/components/page-section';
 import TextEditor from 'shared/components/text-editor';
 
@@ -20,8 +19,7 @@ export default function ExerciseNotes({ exercise, onUpdate }) {
             title="Заметки"
             actions={
                 <Button
-                    icon={<Icon>save</Icon>}
-                    iconOnly
+                    icon="save"
                     text
                     onClick={handleSave}
                 />

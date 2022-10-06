@@ -1,9 +1,6 @@
 import { useCallback, useRef } from 'react';
-import {
-    Button
-} from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/icon';
+import Button from 'shared/ui-components/button';
 import PageSection from 'shared/components/page-section';
 import TextEditor from 'shared/components/text-editor';
 
@@ -24,8 +21,7 @@ export default function UnitContent({ unit = {}, onUpdate }) {
             title="Содержание"
             actions={
                 <Button
-                    icon={<Icon name="save" />}
-                    iconOnly
+                    icon="save"
                     text
                     onClick={handleSave}
                 />

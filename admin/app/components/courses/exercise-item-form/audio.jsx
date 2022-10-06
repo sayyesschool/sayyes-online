@@ -1,11 +1,7 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
-import {
-    Button,
-    Flex,
-    Text
-} from '@fluentui/react-northstar';
 
 import { useFileInput } from 'shared/hooks/file';
+import { Button, Flex, Text } from 'shared/ui-components';
 import AudioPlayer from 'shared/components/audio-player';
 import TextEditor from 'shared/components/text-editor';
 

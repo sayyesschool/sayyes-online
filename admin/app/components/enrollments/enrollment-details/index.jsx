@@ -1,4 +1,4 @@
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 import DetailsList from 'shared/components/details-list';
 import PageSection from 'shared/components/page-section';
 

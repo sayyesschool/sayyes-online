@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
+import Button from 'shared/ui-components/button';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
-import IconButton from 'shared/components/icon-button';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import PageSection from 'shared/components/page-section';
 
@@ -64,10 +64,10 @@ export default function Packs() {
         <PageSection
             title="Пакеты"
             actions={
-                <IconButton
+                <Button
                     title="Создать"
                     icon="add"
-                    flat
+                    text
                     onClick={handleCreate}
                 />
             }

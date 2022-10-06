@@ -5,7 +5,7 @@ import http from 'shared/services/http';
 import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 import LessonPillGroup from 'shared/components/lessons-pill-group';
 import PageSection from 'shared/components/page-section';
 

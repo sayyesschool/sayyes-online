@@ -1,36 +1,20 @@
 import { useCallback } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Button, List } from 'shared/ui-components';
 
 import './index.scss';
 
-const types = {
-    boolean: 'Да/Нет',
-    choice: 'Выбор',
-    essay: 'Эссе',
-    fib: 'Заполнить пробелы',
-    input: 'Ввод',
-    text: 'Текст'
-};
-
-export default function ExercisesList({
-    exercises,
-    selectedExercise,
-    onSelect,
-    onReorder,
-    onDelete
-}) {
+export default function LessonsList({ lessons, onReorder, onDelete }) {
     return (
-        <List className="exercises-list numbered-list" selectable>
-            {exercises.map((exercise, index) =>
+        <List className="lesson-list numbered-list" navigable>
+            {lessons.map((lesson, index) =>
                 <ListItem
-                    key={exercise.id}
+                    key={lesson.id}
                     index={index}
-                    exercise={exercise}
-                    selected={exercise.id === selectedExercise?.id}
+                    lesson={lesson}
                     first={index === 0}
-                    last={index === exercises.length - 1}
+                    last={index === lessons.length - 1}
                     onMove={onReorder}
                     onDelete={onDelete}
                 />
@@ -39,7 +23,7 @@ export default function ExercisesList({
     );
 }
 
-function ListItem({ index, exercise, selected, first, last, onMove, onDelete }) {
+function ListItem({ index, lesson, first, last, onMove, onDelete }) {
     const handleMoveUp = useCallback(event => {
         event.preventDefault();
         event.stopPropagation();
@@ -58,17 +42,17 @@ function ListItem({ index, exercise, selected, first, last, onMove, onDelete }) 
         event.preventDefault();
         event.stopPropagation();
 
-        onDelete(exercise);
-    }, [exercise, onDelete]);
+        onDelete(lesson);
+    }, [lesson, onDelete]);
 
     return (
         <List.Item
-            key={exercise.id}
-            as={NavLink}
-            to={exercise.uri}
+            key={lesson.id}
+            as={Link}
+            to={lesson.uri}
             media={index + 1}
-            header={exercise.title}
-            content={types[exercise.type]}
+            header={lesson.title}
+            content={`${lesson.exercises?.length} упражнений`}
             endMedia={<>
                 {!first &&
                     <Button
@@ -90,11 +74,10 @@ function ListItem({ index, exercise, selected, first, last, onMove, onDelete }) 
                     <Button
                         icon="delete"
                         text
-                        onClick={event => handleDelete(event, exercise)}
+                        onClick={handleDelete}
                     />
                 }
             </>}
-            selected={selected}
         />
     );
 }

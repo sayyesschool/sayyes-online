@@ -5,7 +5,7 @@ import moment from 'moment';
 import { useBoolean } from 'shared/hooks/state';
 import DateTimeSelect from 'shared/components/datetime-select';
 import FormDialog from 'shared/components/form-dialog';
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 import PageSection from 'shared/components/page-section';
 
 import './index.scss';

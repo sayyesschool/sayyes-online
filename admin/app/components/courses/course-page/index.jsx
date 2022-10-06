@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
-import { Box, Flex, Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useCourse } from 'shared/hooks/courses';
+import { Flex, Grid } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
@@ -55,13 +55,11 @@ export default function CoursePage({ match, history }) {
 
             <Page.Content>
                 <Grid columns="minmax(0, 2fr) minmax(0, 1fr)">
-                    <Box>
-                        <CourseUnits
-                            course={course}
-                            onCreate={handleCreateUnit}
-                            onDelete={handleDeleteUnit}
-                        />
-                    </Box>
+                    <CourseUnits
+                        course={course}
+                        onCreate={handleCreateUnit}
+                        onDelete={handleDeleteUnit}
+                    />
 
                     <Flex gap="gap.medium" column>
                         <CourseDetails

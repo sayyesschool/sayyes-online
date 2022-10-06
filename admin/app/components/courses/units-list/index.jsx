@@ -1,12 +1,11 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, List } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/icon';
+import { Button, List } from 'shared/ui-components';
 
 import './index.scss';
 
-export default function UnitList({ units, onDelete }) {
+export default function UnitsList({ units, onDelete }) {
     const handleClick = useCallback((event, unit) => {
         event.preventDefault();
         event.stopPropagation();
@@ -15,7 +14,7 @@ export default function UnitList({ units, onDelete }) {
     }, [onDelete]);
 
     return (
-        <List className="unit-list numbered-list" navigable>
+        <List className="units-list numbered-list" navigable>
             {units.map((unit, index) =>
                 <List.Item
                     key={unit.id}
@@ -26,8 +25,7 @@ export default function UnitList({ units, onDelete }) {
                     content={`${unit.lessons.length} уроков`}
                     endMedia={
                         <Button
-                            icon={<Icon>delete</Icon>}
-                            iconOnly
+                            icon="delete"
                             text
                             onClick={event => handleClick(event, unit)}
                         />

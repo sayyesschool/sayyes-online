@@ -1,6 +1,6 @@
 import { Button, Table } from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 
 import { ageLabel, domainLabel, teacherLabel } from 'app/data/pack';
 

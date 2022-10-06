@@ -4,9 +4,6 @@ import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
-import PageSection from 'shared/components/page-section';
 
 import { useStore } from 'app/hooks/store';
 import CourseForm from 'app/components/courses/course-form';
@@ -30,7 +27,7 @@ export default function CoursesPage() {
 
     return (
         <Page id="courses">
-            <PageHeader
+            <Page.Header
                 title="Курсы"
                 toolbar={[
                     {
@@ -42,13 +39,13 @@ export default function CoursesPage() {
                 ]}
             />
 
-            <PageContent>
-                <PageSection compact>
+            <Page.Content>
+                <Page.Section compact>
                     <CoursesTable
                         courses={courses}
                     />
-                </PageSection>
-            </PageContent>
+                </Page.Section>
+            </Page.Content>
 
             <FormDialog
                 title="Новый курс"

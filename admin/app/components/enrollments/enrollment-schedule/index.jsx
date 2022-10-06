@@ -3,7 +3,7 @@ import { Button } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
-import Icon from 'shared/components/icon';
+import Icon from 'shared/ui-components/icon';
 import EnrollmentScheduleForm from 'shared/components/enrollment-schedule-form';
 import WeekSchedule from 'shared/components/week-schedule';
 import PageSection from 'shared/components/page-section';

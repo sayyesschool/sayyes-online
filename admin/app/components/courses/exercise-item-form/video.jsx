@@ -1,16 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-    Button,
-    Dialog,
-    Text
-} from '@fluentui/react-northstar';
 
 import storage from 'shared/services/storage';
 import { useBoolean } from 'shared/hooks/state';
-import VideoPlayer from 'shared/components/video-player';
+import { Button, Dialog, Text } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
-import Icon from 'shared/components/icon';
 import TextEditor from 'shared/components/text-editor';
+import VideoPlayer from 'shared/components/video-player';
 
 export default function ExerciseVideoItem({ item, uploadPath, onUpdate }) {
     const fileInputRef = useRef();
@@ -111,7 +106,7 @@ export default function ExerciseVideoItem({ item, uploadPath, onUpdate }) {
 
                     <Button
                         type="button"
-                        icon={<Icon>edit</Icon>}
+                        icon="edit"
                         iconOnly
                         text
                         onClick={handleEdit}
@@ -119,7 +114,7 @@ export default function ExerciseVideoItem({ item, uploadPath, onUpdate }) {
 
                     <Button
                         type="button"
-                        icon={<Icon>delete</Icon>}
+                        icon="delete"
                         iconOnly
                         text
                         onClick={toggleConfirmationDialogOpen}

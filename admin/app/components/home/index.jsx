@@ -1,6 +1,5 @@
-import { Grid } from '@fluentui/react-northstar';
-
 import { useTodaysLessons } from 'shared/hooks/lessons';
+import Grid from 'shared/ui-components/grid';
 import Page from 'shared/components/page';
 
 import { useStore } from 'app/hooks/store';

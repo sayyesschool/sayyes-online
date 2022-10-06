@@ -1,6 +1,6 @@
 import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
-import { Text } from '@fluentui/react-northstar';
 
+import Text from 'shared/ui-components/text';
 import TextEditor from 'shared/components/text-editor';
 
 function ExerciseFIBItem({ item }, ref) {

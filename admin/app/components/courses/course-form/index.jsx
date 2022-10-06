@@ -1,9 +1,7 @@
 import { useCallback } from 'react';
 
 import { useForm } from 'shared/hooks/form';
-import Form from 'shared/components/form';
-import FormInput from 'shared/components/form-input';
-import FormTextArea from 'shared/components/form-textarea';
+import Form from 'shared/ui-components/form';
 import { slugify } from 'shared/utils/format';
 
 const defaultCourse = {
@@ -28,7 +26,7 @@ export default function CourseForm({ course = defaultCourse, onSubmit, ...props 
 
     return (
         <Form className="course-form" onSubmit={handleSubmit} {...props}>
-            <FormInput
+            <Form.Input
                 name="title"
                 label="Название"
                 value={data.title.value}
@@ -38,7 +36,7 @@ export default function CourseForm({ course = defaultCourse, onSubmit, ...props 
                 onBlur={handleTitleBlur}
             />
 
-            <FormInput
+            <Form.Input
                 name="slug"
                 label="Слаг"
                 value={data.slug.value}
@@ -47,7 +45,7 @@ export default function CourseForm({ course = defaultCourse, onSubmit, ...props 
                 onChange={handleChange}
             />
 
-            <FormTextArea
+            <Form.Textarea
                 name="description"
                 label="Описание"
                 value={data.description.value}

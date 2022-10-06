@@ -1,7 +1,7 @@
 import { Switch, Route, NavLink, useRouteMatch } from 'react-router-dom';
 
-import { Menu } from '@fluentui/react-northstar';
 
+import { Menu } from 'shared/ui-components';
 import Page from 'shared/components/page';
 
 import Packs from './packs';

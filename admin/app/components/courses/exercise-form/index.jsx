@@ -1,7 +1,5 @@
 import { useForm } from 'shared/hooks/form';
-import Form from 'shared/components/form';
-import FormDropdown from 'shared/components/form-dropdown';
-import FormTextArea from 'shared/components/form-textarea';
+import Form from 'shared/ui-components/form';
 
 const defaultExercise = {
     title: '',
@@ -37,7 +35,7 @@ export default function ExerciseForm({ exercise = defaultExercise, onSubmit, ...
 
     return (
         <Form className="exercise-form" onSubmit={handleSubmit} noValidate {...props}>
-            <FormDropdown
+            <Form.Dropdown
                 {...data.title}
                 label="Название"
                 items={titleOptions}
@@ -45,7 +43,7 @@ export default function ExerciseForm({ exercise = defaultExercise, onSubmit, ...
                 onChange={handleChange}
             />
 
-            <FormTextArea
+            <Form.Textarea
                 {...data.description}
                 label="Описание"
                 onChange={handleChange}

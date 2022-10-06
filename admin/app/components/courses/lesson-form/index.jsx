@@ -1,7 +1,5 @@
 import { useForm } from 'shared/hooks/form';
 import Form from 'shared/components/form';
-import FormInput from 'shared/components/form-input';
-import FormTextArea from 'shared/components/form-textarea';
 
 const defaultLesson = {
     title: '',
@@ -21,19 +19,19 @@ export default function LessonForm({ lesson = defaultLesson, onSubmit, ...props 
 
     return (
         <Form className="lesson-form" onSubmit={handleSubmit} noValidate {...props}>
-            <FormInput
+            <Form.Input
                 {...data.title}
                 label="Название"
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 {...data.slug}
                 label="Слаг"
                 onChange={handleChange}
             />
 
-            <FormTextArea
+            <Form.Textarea
                 {...data.description}
                 label="Описание"
                 onChange={handleChange}

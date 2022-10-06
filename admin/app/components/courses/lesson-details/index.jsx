@@ -1,8 +1,4 @@
-import {
-    Button
-} from '@fluentui/react-northstar';
-
-import Icon from 'shared/components/icon';
+import Button from 'shared/ui-components/button';
 import PageSection from 'shared/components/page-section';
 
 import LessonForm from 'app/components/courses/lesson-form';
@@ -23,8 +19,7 @@ export default function LessonDetails({
                 <Button
                     type="submit"
                     form="lesson-form"
-                    icon={<Icon>save</Icon>}
-                    iconOnly
+                    icon="save"
                     text
                 />
             }

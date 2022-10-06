@@ -1,13 +1,6 @@
 import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
-import {
-    Button,
-    Flex,
-    Label,
-    Input,
-    Text
-} from '@fluentui/react-northstar';
 
-import Icon from 'shared/components/icon';
+import { Button, Flex, Label, Input, Text } from 'shared/ui-components';
 
 function ExerciseInputItem({ item }, ref) {
     const [text, setText] = useState(item.text || '');
@@ -59,7 +52,7 @@ function ExerciseInputItem({ item }, ref) {
                             icon={
                                 <Button
                                     type="button"
-                                    icon={<Icon>delete</Icon>}
+                                    icon="delete"
                                     iconOnly
                                     text
                                     onClick={() => handleDeleteItem(item)}

@@ -1,7 +1,6 @@
 import { NavLink } from 'react-router-dom';
-import {
-    Menu
-} from '@fluentui/react-northstar';
+
+import { Menu } from 'shared/ui-components';
 
 export default function ExercisesMenu({ exercises }) {
     return (

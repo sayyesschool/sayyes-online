@@ -2,8 +2,6 @@ import { useCallback } from 'react';
 
 import { useForm } from 'shared/hooks/form';
 import Form from 'shared/components/form';
-import FormInput from 'shared/components/form-input';
-import FormTextArea from 'shared/components/form-textarea';
 import { slugify } from 'shared/utils/format';
 
 const defaultUnit = {
@@ -28,7 +26,7 @@ export default function UnitForm({ unit = defaultUnit, onSubmit, ...props }) {
 
     return (
         <Form className="unit-form" onSubmit={handleSubmit} {...props}>
-            <FormInput
+            <Form.Input
                 {...data.title}
                 label="Название"
                 fluid
@@ -36,14 +34,14 @@ export default function UnitForm({ unit = defaultUnit, onSubmit, ...props }) {
                 onBlur={handleTitleBlur}
             />
 
-            <FormInput
+            <Form.Input
                 {...data.slug}
                 label="Слаг"
                 fluid
                 onChange={handleChange}
             />
 
-            <FormTextArea
+            <Form.Textarea
                 {...data.description}
                 label="Описание"
                 fluid
