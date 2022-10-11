@@ -1,6 +1,13 @@
-@use '@material/dialog';
-
 body {
+    background-color: #f1f3f4;
+}
+
+.ui-provider {
+    background: unset !important;
+}
+
+.app-content {
+    margin: unset;
     background-color: #f1f3f4;
 }
 
@@ -21,16 +28,6 @@ body {
 
 .assignment-dialog,
 .post-dialog {
-    @include dialog.min-width(640px);
-
-    .mdc-dialog__surface {
-        height: calc(100% - 32px);
-    }
-
-    .mdc-dialog__content {
-        overflow: hidden;
-    }
-
     .ck-editor {
         margin-top: 1rem;
     }

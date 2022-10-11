@@ -1,12 +1,8 @@
 import { useCallback } from 'react';
-import { Button } from '@fluentui/react-northstar';
 
 import { useUser } from 'shared/hooks/user';
-import Icon from 'shared/components/icon';
+import Button from 'shared/ui-components/button';
 import Page from 'shared/components/page';
-import PageContent from 'shared/components/page-content';
-import PageHeader from 'shared/components/page-header';
-import PageSection from 'shared/components/page-section';
 
 import ProfileForm from 'app/components/account/profile-form';
 
@@ -21,17 +17,16 @@ export default function AccountPage() {
 
     return (
         <Page id="account-page">
-            <PageHeader
+            <Page.Header
                 title="Мой аккаунт"
             />
 
-            <PageContent>
-                <PageSection
+            <Page.Content>
+                <Page.Section
                     title="Профиль"
                     actions={
                         <Button
-                            icon={<Icon>save</Icon>}
-                            iconOnly
+                            icon="save"
                             text
                             title="Сохранить"
                         />
@@ -41,8 +36,8 @@ export default function AccountPage() {
                         user={user}
                         onSubmit={handleProfileFormSubmit}
                     />
-                </PageSection>
-            </PageContent>
+                </Page.Section>
+            </Page.Content>
         </Page>
     );
 }

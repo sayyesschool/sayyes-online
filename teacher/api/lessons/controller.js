@@ -1,5 +1,5 @@
 module.exports = ({
-    models: { Lesson, Room }
+    models: { Lesson }
 }) => ({
     get: (req, res, next) => {
         Lesson.find({ teacher: req.user.id, ...req.query })

@@ -1,14 +1,12 @@
 import { useCallback, useState } from 'react';
-import { Button, Flex, Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useEnrollments } from 'shared/hooks/enrollments';
 import { useLessons } from 'shared/hooks/lessons';
+import { Button, Dialog, Flex, Grid, Icon } from 'shared/ui-components';
 import Calendar from 'shared/components/calendar';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
-import Dialog from 'shared/components/dialog';
 import FormDialog from 'shared/components/form-dialog';
-import Icon from 'shared/components/icon';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 
