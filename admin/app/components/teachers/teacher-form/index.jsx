@@ -2,11 +2,7 @@ import { forwardRef, useCallback, useState } from 'react';
 import moment from 'moment';
 
 import { useFormData } from 'shared/hooks/form';
-import Form from 'shared/components/form';
-import FormInput from 'shared/components/form-input';
-import FormRadioGroup from 'shared/components/form-radio-group';
-import FormTextArea from 'shared/components/form-textarea';
-import Icon from 'shared/ui-components/icon';
+import { Form, Icon } from 'shared/ui-components';
 import TimeZoneSelect from 'shared/components/timezone-select';
 import { generatePassword } from 'shared/utils/password';
 
@@ -56,7 +52,7 @@ function TeacherForm({ teacher = {}, onSubmit, ...props }, ref) {
 
     return (
         <Form onSubmit={handleSubmit} {...props}>
-            <FormInput
+            <Form.Input
                 name="firstname"
                 value={data.firstname}
                 label="Имя"
@@ -64,7 +60,7 @@ function TeacherForm({ teacher = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 name="lastname"
                 value={data.lastname}
                 label="Фамилия"
@@ -72,14 +68,14 @@ function TeacherForm({ teacher = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 name="patronym"
                 value={data.patronym}
                 label="Отчество"
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="phone"
                 name="phone"
                 value={data.phone}
@@ -88,7 +84,7 @@ function TeacherForm({ teacher = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="email"
                 name="email"
                 value={data.email}
@@ -97,7 +93,7 @@ function TeacherForm({ teacher = {}, onSubmit, ...props }, ref) {
             />
 
             {!teacher.id &&
-                <FormInput
+                <Form.Input
                     type="text"
                     name="password"
                     value={password}
@@ -107,7 +103,7 @@ function TeacherForm({ teacher = {}, onSubmit, ...props }, ref) {
                 />
             }
 
-            <FormInput
+            <Form.Input
                 type="date"
                 name="dob"
                 value={data.dob}
@@ -115,7 +111,7 @@ function TeacherForm({ teacher = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormRadioGroup
+            <Form.RadioGroup
                 name="gender"
                 value={data.gender}
                 label="Пол"
@@ -129,7 +125,7 @@ function TeacherForm({ teacher = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormTextArea
+            <Form.Textarea
                 name="note"
                 value={data.note}
                 label="Примечание"

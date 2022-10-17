@@ -1,11 +1,6 @@
 import { Link } from 'react-router-dom';
-import {
-    Avatar,
-    List,
-    Status
-} from '@fluentui/react-northstar';
 
-import Icon from 'shared/ui-components/icon';
+import { Avatar, Icon, List, Status } from 'shared/ui-components';
 
 import './index.scss';
 

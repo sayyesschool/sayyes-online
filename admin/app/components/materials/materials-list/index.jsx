@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Image, List } from '@fluentui/react-northstar';
+
+import { Image, List } from 'shared/ui-components';
 
 export default function MaterialsList({ materials }) {
     return (

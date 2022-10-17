@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Avatar, List, Status } from '@fluentui/react-northstar';
 
+import { Avatar, List, Status } from 'shared/ui-components';
 import { StatusByType } from 'shared/data/lesson';
 
 export default function RequestsList({ requests }) {

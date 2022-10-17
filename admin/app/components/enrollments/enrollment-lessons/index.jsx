@@ -1,11 +1,10 @@
 import { useCallback, useState } from 'react';
-import { Alert, Button, MenuButton, Text } from '@fluentui/react-northstar';
 
 import http from 'shared/services/http';
 import { useBoolean } from 'shared/hooks/state';
+import { Alert, Button, Icon, MenuButton, Text } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
-import Icon from 'shared/ui-components/icon';
 import LessonPillGroup from 'shared/components/lessons-pill-group';
 import PageSection from 'shared/components/page-section';
 

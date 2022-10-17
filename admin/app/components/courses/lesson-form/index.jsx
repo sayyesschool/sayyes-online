@@ -1,5 +1,5 @@
 import { useForm } from 'shared/hooks/form';
-import Form from 'shared/components/form';
+import Form from 'shared/ui-components/form';
 
 const defaultLesson = {
     title: '',

@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Avatar, List } from '@fluentui/react-northstar';
 
-import Icon from 'shared/ui-components/icon';
+import { Avatar, Icon, List } from 'shared/ui-components';
 import PageSection from 'shared/components/page-section';
 
 export default function TeacherEnrollments({ teacher }) {

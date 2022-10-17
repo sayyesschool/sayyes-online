@@ -1,10 +1,7 @@
 import { useCallback, useRef } from 'react';
 
 import useForm from 'shared/hooks/form';
-import Form from 'shared/components/form';
-import FormCheckbox from 'shared/components/form-checkbox';
-import FormInput from 'shared/components/form-input';
-import FormSelect from 'shared/components/form-select';
+import Form from 'shared/ui-components/form';
 import ImageField from 'shared/components/image-field';
 import { levelOptions } from 'shared/data/levels';
 
@@ -40,36 +37,35 @@ export default function MaterialForm({ material = {}, onSubmit, ...props }) {
 
     return (
         <Form className="material-form" onSubmit={handleSubmit} {...props}>
-            <FormInput
+            <Form.Input
+                label="Тема"
                 name="title"
                 value={data.title}
-                label="Тема"
                 required
                 onChange={setData}
             />
 
-            <FormInput
+            <Form.Input
+                label="Слаг"
                 name="slug"
                 value={data.slug}
-                label="Слаг"
                 required
                 onChange={setData}
             />
 
-            <FormSelect
+            <Form.Select
+                label="Уровень"
                 name="level"
                 value={data.level}
-                label="Уровень"
                 options={levelOptions}
                 onChange={setData}
             />
 
-            <FormCheckbox
+            <Form.Checkbox
                 label="Опубликован"
                 name="published"
                 checked={data.published}
                 onChange={setData}
-
             />
 
             <ImageField

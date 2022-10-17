@@ -1,9 +1,7 @@
 import { forwardRef, useRef, useImperativeHandle } from 'react';
-import {
-    Form, FormInput, FormTextArea
-} from '@fluentui/react-northstar';
 
 import useForm from 'shared/hooks/form';
+import Form from 'shared/ui-components/form';
 
 const defaultContact = {
     relation: '',
@@ -33,7 +31,7 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
 
     return (
         <Form ref={formRef} className="contact-form" onSubmit={() => onSubmit(data)} {...props}>
-            <FormInput
+            <Form.Input
                 type="text"
                 name="relation"
                 value={data.relation}
@@ -42,7 +40,7 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 name="firstname"
                 value={data.firstname}
                 label="Имя"
@@ -51,7 +49,7 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 name="lastname"
                 value={data.lastname}
                 label="Фамилия"
@@ -59,7 +57,7 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 name="patronym"
                 value={data.patronym}
                 label="Отчество"
@@ -67,7 +65,7 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="phone"
                 name="phone"
                 value={data.phone}
@@ -77,7 +75,7 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="phone"
                 name="altPhone"
                 value={data.altPhone}
@@ -86,7 +84,7 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="email"
                 name="email"
                 value={data.email}
@@ -95,7 +93,7 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="text"
                 name="occupation"
                 value={data.occupation}
@@ -104,7 +102,7 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormTextArea
+            <Form.Textarea
                 name="note"
                 value={data.note}
                 label="Примечание"

@@ -1,7 +1,6 @@
-import { Button, List, MenuButton, Text } from '@fluentui/react-northstar';
 import moment from 'moment';
 
-import Icon from 'shared/ui-components/icon';
+import { Button, Icon, List, MenuButton, Text } from 'shared/ui-components';
 import PageSection from 'shared/components/page-section';
 
 import './index.scss';

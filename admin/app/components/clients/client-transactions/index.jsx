@@ -1,12 +1,10 @@
 import { useCallback, useState } from 'react';
-import { Button } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
+import { Button, Icon, Tabs } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
-import Icon from 'shared/ui-components/icon';
 import PageSection from 'shared/components/page-section';
-import Tabs from 'shared/ui-components/tabs';
 
 import { useActions } from 'app/hooks/store';
 import PaymentForm from 'app/components/payments/payment-form';

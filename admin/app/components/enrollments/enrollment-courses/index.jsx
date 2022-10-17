@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
-import { Button, MenuButton } from '@fluentui/react-northstar';
 
-import Icon from 'shared/ui-components/icon';
+import { Button, Icon, MenuButton } from 'shared/ui-components';
 import PageSection from 'shared/components/page-section';
 
 import { useStore, useActions } from 'app/hooks/store';

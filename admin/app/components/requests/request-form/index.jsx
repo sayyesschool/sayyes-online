@@ -1,11 +1,7 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
-import { Flex, Text } from '@fluentui/react-northstar';
 
 import useForm from 'shared/hooks/form';
-import Form from 'shared/components/form';
-import FormInput from 'shared/components/form-input';
-import FormSelect from 'shared/components/form-select';
-import FormTextArea from 'shared/components/form-textarea';
+import { Flex, Form, Text } from 'shared/ui-components';
 import PeopleSelect from 'shared/components/user-select';
 
 import { useStore } from 'app/hooks/store';
@@ -48,7 +44,7 @@ function RequestForm({ request = {}, onSubmit, ...props }, ref) {
 
     return (
         <Form ref={formRef} className="request-form" onSubmit={handleSubmit} {...props}>
-            <FormSelect
+            <Form.Select
                 name="status"
                 value={data.status}
                 label="Статус"
@@ -63,21 +59,21 @@ function RequestForm({ request = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 name="description"
                 value={data.description}
                 label="Описание"
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 name="contact.name"
                 value={data.contact.name}
                 label="Имя"
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 name="contact.phone"
                 value={data.contact.phone}
                 label="Телефон"
@@ -111,7 +107,7 @@ function RequestForm({ request = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormSelect
+            <Form.Select
                 name="channel"
                 value={data.channel}
                 label="Канал связи"
@@ -125,7 +121,7 @@ function RequestForm({ request = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormSelect
+            <Form.Select
                 name="source"
                 value={data.source}
                 label="Источник"
@@ -140,7 +136,7 @@ function RequestForm({ request = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormTextArea
+            <Form.Textarea
                 name="note"
                 value={data.note}
                 label="Примечание"
@@ -150,35 +146,35 @@ function RequestForm({ request = {}, onSubmit, ...props }, ref) {
             <Flex as="fieldset" column>
                 <Text as="legend">UTM</Text>
 
-                <FormInput
+                <Form.Input
                     name="utm.source"
                     value={data.utm.source}
                     label="Source"
                     onChange={handleChange}
                 />
 
-                <FormInput
+                <Form.Input
                     name="utm.medium"
                     value={data.utm.medium}
                     label="Medium"
                     onChange={handleChange}
                 />
 
-                <FormInput
+                <Form.Input
                     name="utm.campaign"
                     value={data.utm.campaign}
                     label="Campaign"
                     onChange={handleChange}
                 />
 
-                <FormInput
+                <Form.Input
                     name="utm.term"
                     value={data.utm.term}
                     label="Term"
                     onChange={handleChange}
                 />
 
-                <FormInput
+                <Form.Input
                     name="utm.content"
                     value={data.utm.content}
                     label="Content"

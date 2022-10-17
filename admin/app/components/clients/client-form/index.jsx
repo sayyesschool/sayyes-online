@@ -2,10 +2,7 @@ import { forwardRef, useImperativeHandle, useRef } from 'react';
 import moment from 'moment';
 
 import { useFormData } from 'shared/hooks/form';
-import Form from 'shared/components/form';
-import FormInput from 'shared/components/form-input';
-import FormRadioGroup from 'shared/components/form-radio-group';
-import FormTextArea from 'shared/components/form-textarea';
+import Form from 'shared/ui-components/form';
 import TimeZoneSelect from 'shared/components/timezone-select';
 
 const genderOptions = [
@@ -59,7 +56,7 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
 
     return (
         <Form ref={formRef} className="client-form" onSubmit={() => onSubmit(data)} {...props}>
-            <FormInput
+            <Form.Input
                 type="text"
                 name="hhid"
                 value={data.hhid}
@@ -67,7 +64,7 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 name="firstname"
                 value={data.firstname}
                 label="Имя"
@@ -75,21 +72,21 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 name="lastname"
                 value={data.lastname}
                 label="Фамилия"
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 name="patronym"
                 value={data.patronym}
                 label="Отчество"
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="phone"
                 name="phone"
                 value={data.phone}
@@ -98,7 +95,7 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="phone"
                 name="altPhone"
                 value={data.altPhone}
@@ -106,7 +103,7 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="email"
                 name="email"
                 value={data.email}
@@ -114,7 +111,7 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormRadioGroup
+            <Form.RadioGroup
                 name="gender"
                 value={data.gender}
                 label="Пол"
@@ -124,7 +121,7 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
 
             {client?.id &&
                 <>
-                    <FormInput
+                    <Form.Input
                         type="date"
                         name="dob"
                         value={data.dob}
@@ -138,7 +135,7 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
                         onChange={handleChange}
                     />
 
-                    <FormInput
+                    <Form.Input
                         type="text"
                         name="address"
                         value={data.address}
@@ -146,7 +143,7 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
                         onChange={handleChange}
                     />
 
-                    <FormInput
+                    <Form.Input
                         type="text"
                         name="occupation"
                         value={data.occupation}
@@ -154,7 +151,7 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
                         onChange={handleChange}
                     />
 
-                    <FormInput
+                    <Form.Input
                         type="text"
                         name="interests"
                         value={data.interests}
@@ -164,7 +161,7 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
                 </>
             }
 
-            <FormTextArea
+            <Form.Textarea
                 name="note"
                 value={data.note}
                 label="Примечание"

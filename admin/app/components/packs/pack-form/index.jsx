@@ -1,9 +1,7 @@
 import { useCallback } from 'react';
 
 import { useFormData } from 'shared/hooks/form';
-import Form from 'shared/components/form';
-import FormInput from 'shared/components/form-input';
-import FormSelect from 'shared/components/form-select';
+import Form from 'shared/ui-components/form';
 
 import { ageOptions, domainOptions, teacherOptions } from 'app/data/pack';
 
@@ -30,7 +28,7 @@ export default function PackForm({ pack = {}, onSubmit, ...props }) {
 
     return (
         <Form className="pack-form" onSubmit={handleSubmit} {...props}>
-            <FormSelect
+            <Form.Select
                 name="age"
                 value={data.age}
                 label="Возраст"
@@ -40,7 +38,7 @@ export default function PackForm({ pack = {}, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <FormSelect
+            <Form.Select
                 name="domain"
                 value={data.domain}
                 label="Направление"
@@ -50,7 +48,7 @@ export default function PackForm({ pack = {}, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <FormSelect
+            <Form.Select
                 name="teacher"
                 value={data.teacher}
                 label="Тип преподавателя"
@@ -60,7 +58,7 @@ export default function PackForm({ pack = {}, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="number"
                 name="numberOfLessons"
                 value={data.numberOfLessons}
@@ -69,7 +67,7 @@ export default function PackForm({ pack = {}, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="number"
                 name="pricePerLesson"
                 value={data.pricePerLesson}
@@ -78,7 +76,7 @@ export default function PackForm({ pack = {}, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="number"
                 name="lessonDuration"
                 value={data.lessonDuration}

@@ -1,9 +1,7 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import {
-    MenuButton,
-    Table
-} from '@fluentui/react-northstar';
+
+import { MenuButton, Table } from 'shared/ui-components';
 
 import DataContext from 'app/contexts/data';
 

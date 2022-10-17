@@ -1,4 +1,4 @@
-import { Label, Text } from '@fluentui/react-northstar';
+import { Label, Text } from 'shared/ui-components';
 
 import './index.scss';
 

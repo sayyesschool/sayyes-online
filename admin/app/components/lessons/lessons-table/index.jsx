@@ -1,12 +1,11 @@
 import { Link } from 'react-router-dom';
-import { Button, Pill, Table } from '@fluentui/react-northstar';
 
-import Icon from 'shared/ui-components/icon';
+import { Button, Icon, Pill, Table } from 'shared/ui-components';
 import StatusLabel from 'shared/components/status-label';
 
 export default function LessonsTable({ lessons, onView, onEdit, onDelete }) {
     return (
-        <Table id="lesson-table">
+        <Table className="lessons-table">
             <Table.Row header>
                 {columns.map(col =>
                     <Table.Cell

@@ -1,16 +1,12 @@
 import { useCallback } from 'react';
-import { Button, Flex, Grid } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useEnrollment } from 'shared/hooks/enrollments';
+import { Button, Flex, Icon, Grid } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
-import Icon from 'shared/ui-components/icon';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
-import PageSidePanel from 'shared/components/page-side-panel';
 
 import EnrollmentForm from 'app/components/enrollments/enrollment-form';
 import EnrollmentComments from 'app/components/enrollments/enrollment-comments';
@@ -54,7 +50,7 @@ export default function EnrollmentPage({ match, history }) {
 
     return (
         <Page id="enrollment-page" loading={!enrollment}>
-            <PageHeader
+            <Page.Header
                 breadcrumbs={[
                     { text: enrollment.client.fullname, url: enrollment?.client.url }
                 ]}
@@ -91,7 +87,7 @@ export default function EnrollmentPage({ match, history }) {
                 ]}
             />
 
-            <PageContent>
+            <Page.Content>
                 <EnrollmentMeta
                     enrollment={enrollment}
                 />
@@ -142,7 +138,7 @@ export default function EnrollmentPage({ match, history }) {
                         onUpdate={updateEnrollment}
                     /> */}
                 </Grid>
-            </PageContent>
+            </Page.Content>
 
             <FormDialog
                 form="enrollment-form"

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Card, Grid, Image, Text } from '@fluentui/react-northstar';
+
+import { Card, Grid, Image, Text } from 'shared/ui-components';
 
 export default function MaterialGridList({ materials }) {
     return (

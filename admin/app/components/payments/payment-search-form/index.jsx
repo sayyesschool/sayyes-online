@@ -2,9 +2,7 @@ import { useCallback } from 'react';
 import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
-import Form from 'shared/components/form';
-import FormInput from 'shared/components/form-input';
-import FormSelect from 'shared/components/form-select';
+import Form from 'shared/ui-components/form';
 import { paymentMethodOptions, operatorOptions } from 'shared/data/payment';
 
 import './index.scss';
@@ -28,7 +26,7 @@ export default function PaymentForm({ payment = {}, onSubmit }) {
 
     return (
         <Form id="payment-form" onSubmit={handleSubmit}>
-            <FormInput
+            <Form.Input
                 type="number"
                 name="amount"
                 value={data.amount}
@@ -37,7 +35,7 @@ export default function PaymentForm({ payment = {}, onSubmit }) {
                 onChange={setData}
             />
 
-            <FormInput
+            <Form.Input
                 type="date"
                 name="date"
                 value={data.date}
@@ -45,7 +43,7 @@ export default function PaymentForm({ payment = {}, onSubmit }) {
                 onChange={setData}
             />
 
-            <FormInput
+            <Form.Input
                 type="text"
                 name="description"
                 value={data.description}
@@ -53,7 +51,7 @@ export default function PaymentForm({ payment = {}, onSubmit }) {
                 onChange={setData}
             />
 
-            <FormSelect
+            <Form.Select
                 name="paymentMethod"
                 value={data.paymentMethod}
                 label="Способ оплаты"
@@ -61,7 +59,7 @@ export default function PaymentForm({ payment = {}, onSubmit }) {
                 onChange={onChange}
             />
 
-            <FormSelect
+            <Form.Select
                 name="operator"
                 value={data.operator}
                 label="Оператор"

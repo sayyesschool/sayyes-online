@@ -6,6 +6,7 @@ import AudioItem from './audio';
 import BooleanItem from './boolean';
 import ChoiceItem from './choice';
 import DividerItem from './divider';
+import DirectionsItem from './directions';
 import EssayItem from './essay';
 import FIBItem from './fib';
 import ImageItem from './image';
@@ -20,6 +21,7 @@ const Components = {
     boolean: BooleanItem,
     choice: ChoiceItem,
     divider: DividerItem,
+    directions: DirectionsItem,
     essay: EssayItem,
     fib: FIBItem,
     image: ImageItem,
@@ -33,6 +35,7 @@ const labelsByType = {
     boolean: 'Да/Нет',
     choice: 'Выбор',
     divider: 'Разделитель',
+    directions: 'Инструкции',
     essay: 'Эссе',
     fib: 'Заполнить пробелы',
     image: 'Изображение',

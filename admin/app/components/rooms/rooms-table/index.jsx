@@ -1,6 +1,4 @@
-import { Button, Checkbox, Table } from '@fluentui/react-northstar';
-
-import Icon from 'shared/ui-components/icon';
+import { Button, Checkbox, Icon, Table } from 'shared/ui-components';
 
 const columns = [
     { key: 'title', content: 'Название' },

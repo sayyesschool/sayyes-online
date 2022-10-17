@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useRef } from 'react';
-import { Accordion, Dialog, Flex, Status } from '@fluentui/react-northstar';
+
+import { Accordion, Dialog, Flex, Status } from 'shared/ui-components';
 
 import ClientForm from 'app/components/clients/client-form';
 import EnrollmentForm from 'app/components/enrollments/enrollment-form';

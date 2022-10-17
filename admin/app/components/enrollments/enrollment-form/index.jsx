@@ -1,8 +1,6 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 
-import Form from 'shared/components/form';
-import FormInput from 'shared/components/form-input';
-import FormSelect from 'shared/components/form-select';
+import Form from 'shared/ui-components/form';
 
 import {
     defaultEnrollment, domainOptions, typeOptions, formatOptions,
@@ -48,7 +46,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
 
     return (
         <Form ref={formRef} className="enrollment-form" onSubmit={handleSubmit} {...props}>
-            <FormSelect
+            <Form.Select
                 name="domain"
                 value={data.domain}
                 label="Направление"
@@ -58,7 +56,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormSelect
+            <Form.Select
                 name="type"
                 value={data.type}
                 label="Тип"
@@ -68,7 +66,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormSelect
+            <Form.Select
                 name="format"
                 value={data.format}
                 label="Формат"
@@ -78,7 +76,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormSelect
+            <Form.Select
                 name="age"
                 value={data.age}
                 label="Возрастная группа"
@@ -87,7 +85,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormSelect
+            <Form.Select
                 name="teacherType"
                 value={data.teacherType}
                 label="Тип преподавателя"
@@ -96,7 +94,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="number"
                 name="lessonDuration"
                 value={data.lessonDuration}
@@ -105,7 +103,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormSelect
+            <Form.Select
                 name="level"
                 value={data.level}
                 label="Уровень"
@@ -114,7 +112,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormSelect
+            <Form.Select
                 name="purpose"
                 value={data.purpose}
                 label="Цель"
@@ -123,7 +121,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 name="experience"
                 value={data.experience}
                 label="Опыт"
@@ -132,7 +130,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 name="preferences"
                 value={data.preferences}
                 label="Пожелания"
@@ -155,7 +153,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             /> */}
 
-            <FormInput
+            <Form.Input
                 name="note"
                 value={data.note}
                 label="Примечание"

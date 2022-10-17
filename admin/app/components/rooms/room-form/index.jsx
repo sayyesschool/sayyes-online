@@ -1,9 +1,7 @@
 import { useCallback } from 'react';
 
 import { useFormData } from 'shared/hooks/form';
-import Form from 'shared/components/form';
-import FormInput from 'shared/components/form-input';
-import FormCheckbox from 'shared/components/form-checkbox';
+import Form from 'shared/ui-components/form';
 
 import './index.scss';
 
@@ -26,34 +24,31 @@ export default function RoomForm({ room = {}, onSubmit, ...props }) {
 
     return (
         <Form className="room-form" onSubmit={handleSubmit} {...props}>
-            <FormInput
+            <Form.Input
+                label="Название"
                 name="title"
                 value={data.title}
-                label="Название"
-                fluid
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
+                label="Логин"
                 name="login"
                 value={data.login}
-                label="Логин"
-                fluid
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
+                label="Пароль"
                 name="password"
                 value={data.password}
-                label="Пароль"
-                fluid
                 onChange={handleChange}
             />
 
-            <FormCheckbox
+            <Form.Checkbox
+                label="Работает"
                 name="active"
                 checked={data.active}
-                label="Работает"
                 toggle
                 onChange={handleChange}
             />

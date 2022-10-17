@@ -1,7 +1,7 @@
 import { useContext } from 'react';
-import { Image } from '@fluentui/react-northstar';
 import moment from 'moment';
 
+import { Image } from 'shared/ui-components';
 import DataContext from 'shared/contexts/data';
 import DetailsList from 'shared/components/details-list';
 import PageSection from 'shared/components/page-section';

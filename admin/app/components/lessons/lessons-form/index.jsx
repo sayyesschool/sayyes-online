@@ -3,8 +3,7 @@ import moment from 'moment';
 
 import { scheduleLessons } from 'shared/libs/enrollment';
 import { useFormData } from 'shared/hooks/form';
-import Form from 'shared/components/form';
-import FormInput from 'shared/components/form-input';
+import Form from 'shared/ui-components/form';
 import UserSelect from 'shared/components/user-select';
 import LessonsPillGroup from 'shared/components/lessons-pill-group';
 
@@ -42,32 +41,29 @@ export default function LessonsForm({ enrollment, onSubmit, ...props }) {
 
     return (
         <Form className="lessons-form" onSubmit={handleSubmit} {...props}>
-            <FormInput
+            <Form.Input
+                label="Начальная дата"
                 type="date"
                 name="startDate"
                 value={moment(data.startDate).format('YYYY-MM-DD')}
-                label="Начальная дата"
-                filled
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
+                label="Количество"
                 type="number"
                 name="quantity"
                 value={data.quantity}
-                label="Количество"
-                filled
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
+                label="Продолжительность"
                 type="number"
                 name="duration"
                 value={data.duration}
-                label="Продолжительность"
                 suffix="мин."
                 step={5}
-                filled
                 onChange={handleChange}
             />
 

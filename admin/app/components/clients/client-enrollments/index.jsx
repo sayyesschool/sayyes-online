@@ -1,10 +1,9 @@
 import { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
+import { Button, Icon } from 'shared/ui-components';
 import FormDialog from 'shared/components/form-dialog';
-import Icon from 'shared/ui-components/icon';
 import PageSection from 'shared/components/page-section';
 
 import { useActions } from 'app/hooks/store';

@@ -1,10 +1,4 @@
-import {
-    Avatar,
-    MenuButton,
-    List
-} from '@fluentui/react-northstar';
-
-import Icon from 'shared/ui-components/icon';
+import { Avatar, Icon, List } from 'shared/ui-components';
 
 export default function ContactsList({ contacts, onEdit, onDelete }) {
     return (

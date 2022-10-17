@@ -2,9 +2,7 @@ import { forwardRef, useImperativeHandle, useRef } from 'react';
 import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
-import Form from 'shared/components/form';
-import FormInput from 'shared/components/form-input';
-import FormRadioGroup from 'shared/components/form-radio-group';
+import Form from 'shared/ui-components/form';
 import TimeZoneSelect from 'shared/components/timezone-select';
 
 const defaultManager = {
@@ -36,57 +34,51 @@ function ManagerForm({ manager = {}, onSubmit, ...props }, ref) {
 
     return (
         <Form ref={formRef} className="manager-form" onSubmit={() => onSubmit(data)} {...props}>
-            <FormInput
+            <Form.Input
+                label="Имя"
                 name="firstname"
                 value={data.firstname}
-                label="Имя"
-                filled
                 required
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
+                label="Фамилия"
                 name="lastname"
                 value={data.lastname}
-                label="Фамилия"
-                filled
                 required
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
+                label="Отчество"
                 name="patronym"
                 value={data.patronym}
-                label="Отчество"
-                filled
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
+                label="Телефон"
                 type="phone"
                 name="phone"
                 value={data.phone}
-                label="Телефон"
                 required
-                filled
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
+                label="Электронная почта"
                 type="email"
                 name="email"
                 value={data.email}
-                label="Электронная почта"
-                filled
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
+                label="Дата рождения"
                 type="date"
                 name="dob"
                 value={data.dob ? moment(data.dob).format('YYYY-MM-DD') : ''}
-                label="Дата рождения"
-                filled
                 onChange={handleChange}
             />
 
@@ -96,10 +88,10 @@ function ManagerForm({ manager = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormRadioGroup
+            <Form.RadioGroup
+                label="Пол"
                 name="gender"
                 value={data.gender}
-                label="Пол"
                 items={[
                     { value: 'male', label: 'Мужской' },
                     { value: 'female', label: 'Женский' }
@@ -107,12 +99,10 @@ function ManagerForm({ manager = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Textarea
+                label="Примечание"
                 name="note"
                 value={data.note}
-                label="Примечание"
-                filled
-                textarea
                 onChange={handleChange}
             />
         </Form>

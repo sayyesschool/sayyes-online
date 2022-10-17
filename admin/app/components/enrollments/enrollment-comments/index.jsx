@@ -1,7 +1,8 @@
 import { useCallback } from 'react';
-import { Avatar, Chat } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
+import { Avatar } from 'shared/ui-components';
+import Chat from 'shared/components/chat';
 import Comment from 'shared/components/comment';
 import CommentForm from 'shared/components/comment-form';
 import PageSection from 'shared/components/page-section';

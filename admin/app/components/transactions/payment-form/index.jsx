@@ -2,10 +2,7 @@ import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
-import Form from 'shared/components/form';
-import FormInput from 'shared/components/form-input';
-import FormSelect from 'shared/components/form-select';
-import FormTextArea from 'shared/components/form-textarea';
+import Form from 'shared/ui-components/form';
 
 import { paymentMethodOptions, operatorOptions } from 'shared/data/payment';
 
@@ -43,7 +40,7 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
 
     return (
         <Form ref={formRef} className="payment-form" onSubmit={handleSubmit} {...props}>
-            <FormInput
+            <Form.Input
                 type="text"
                 name="description"
                 value={data.description}
@@ -53,7 +50,7 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
                 onChange={onChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="number"
                 name="amount"
                 value={data.amount}
@@ -64,7 +61,7 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
                 onChange={onChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="date"
                 name="paidAt"
                 value={moment(data.paidAt).format('YYYY-MM-DD')}
@@ -72,7 +69,7 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
                 onChange={onChange}
             />
 
-            <FormSelect
+            <Form.Select
                 name="paymentMethod"
                 value={data.paymentMethod}
                 label="Способ оплаты"
@@ -81,7 +78,7 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
             />
 
             {(data.paymentMethod !== '' && data.paymentMethod !== 'cash') &&
-                <FormSelect
+                <Form.Select
                     name="operator"
                     value={data.operator}
                     label="Оператор"
@@ -90,7 +87,7 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
                 />
             }
 
-            <FormTextArea
+            <Form.Textarea
                 type="text"
                 name="note"
                 value={data.note}

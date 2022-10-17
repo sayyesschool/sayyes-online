@@ -2,10 +2,7 @@ import { useCallback } from 'react';
 import moment from 'moment';
 
 import useForm from 'shared/hooks/form';
-import Form from 'shared/components/form';
-import FormInput from 'shared/components/form-input';
-import FormCheckbox from 'shared/components/form-checkbox';
-import FormSelect from 'shared/components/form-select';
+import Form from 'shared/ui-components/form';
 
 import { useStore } from 'app/hooks/store';
 
@@ -50,36 +47,36 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
 
     return (
         <Form className="lesson-form" onSubmit={handleSubmit} {...props}>
-            <FormSelect
+            <Form.Select
+                label="Статус"
                 name="status"
                 value={data.status}
-                label="Статус"
                 options={statuses}
                 required
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
+                label="Дата и время"
                 type="datetime-local"
                 name="date"
                 value={moment(data.date).format('YYYY-MM-DDTHH:mm')}
-                label="Дата и время"
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
+                label="Продолжительность, мин."
                 type="number"
                 name="duration"
                 step="5"
                 value={data.duration}
-                label="Продолжительность, мин."
                 onChange={handleChange}
             />
 
-            <FormSelect
+            <Form.Select
+                label="Преподаватель"
                 name="teacher"
                 value={data.teacher}
-                label="Преподаватель"
                 options={teachers?.map(teacher => ({
                     key: teacher.id,
                     value: teacher.id,
@@ -90,7 +87,7 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <FormCheckbox
+            <Form.Checkbox
                 label="Пробное"
                 name="trial"
                 checked={data.trial}
@@ -98,7 +95,7 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <FormCheckbox
+            <Form.Checkbox
                 label="Бесплатное"
                 name="free"
                 checked={data.free}
@@ -106,7 +103,7 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <FormCheckbox
+            <Form.Checkbox
                 label="Подтвержденное"
                 name="confirmed"
                 checked={data.confirmed}
@@ -114,10 +111,10 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
+                label="Примечание"
                 name="note"
                 value={data.note}
-                label="Примечание"
                 onChange={handleChange}
             />
         </Form>

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Checkbox, Table } from '@fluentui/react-northstar';
+
+import { Checkbox, Table } from 'shared/ui-components';
 
 const columns = [
     {

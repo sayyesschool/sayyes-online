@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { List } from '@fluentui/react-northstar';
+
+import { List } from 'shared/ui-components';
 
 export default function ClientsList({ clients }) {
     return (

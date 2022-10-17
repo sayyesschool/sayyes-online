@@ -65,7 +65,6 @@ export default function CoursePage({ match, history }) {
                         <CourseDetails
                             course={course}
                             onUpdate={handleUpdateCourse}
-
                         />
 
                         <CourseImage

@@ -1,24 +1,30 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-    FormField,
-    Layout,
-    Select, SelectOption,
-    Switch,
-    TextField,
-    Typography
-} from 'mdc-react';
 import moment from 'moment';
 
 import api from 'shared/services/api';
 
 import useForm from 'shared/hooks/form';
-import Form from 'shared/components/form';
+import Form from 'shared/ui-components/form';
 import FileInput from 'shared/components/file-input';
 import TextEditor from 'shared/components/text-editor';
 
 import './index.scss';
 
-export default function MeetingForm({ meeting = {}, onSubmit }) {
+const defaultMeeting = {
+    title: '',
+    date: new Date(),
+    host: {},
+    level: '',
+    duration: 60,
+    free: false,
+    published: false,
+    image: '',
+    description: ''
+};
+
+const levels = ['Beginner', 'Elementary', 'Intermediate', 'Pre-Intermediate', 'Upper-Intermediate', 'Advanced'];
+
+export default function MeetingForm({ meeting = defaultMeeting, onSubmit }) {
     const fileInputRef = useRef();
     const { data, setData } = useForm({
         title: meeting.title,
@@ -54,117 +60,87 @@ export default function MeetingForm({ meeting = {}, onSubmit }) {
 
     return (
         <Form id="meeting-form" onSubmit={handleSubmit}>
-            <Layout column>
-                <TextField
-                    name="title"
-                    value={data.title}
-                    label="Тема"
-                    filled
-                    required
-                    onChange={setData}
-                />
+            <Form.Input
+                label="Тема"
+                name="title"
+                value={data.title}
+                required
+                onChange={setData}
+            />
 
-                <TextField
-                    type="datetime-local"
-                    name="date"
-                    value={data.date}
-                    label="Когда"
-                    filled
-                    required
-                    onChange={setData}
-                />
+            <Form.Input
+                label="Когда"
+                type="datetime-local"
+                name="date"
+                value={data.date}
+                required
+                onChange={setData}
+            />
 
-                <Select
-                    name="host"
-                    value={data.host}
-                    label="Ведущий"
-                    filled
-                    onChange={setData}
-                >
-                    {hosts.map(host =>
-                        <SelectOption
-                            key={host.id}
-                            value={host.id}
-                        >
-                            {host.fullname}
-                        </SelectOption>
-                    )}
-                </Select>
+            <Form.Select
+                label="Ведущий"
+                name="host"
+                value={data.host}
+                options={hosts.map(host => ({
+                    key: host.id,
+                    value: host.id,
+                    content: host.fullname
+                }))}
+                onChange={setData}
+            />
 
-                <Select
-                    name="level"
-                    value={data.level}
-                    label="Уровень"
-                    filled
-                    onChange={setData}
-                >
-                    {['Beginner', 'Elementary', 'Intermediate', 'Pre-Intermediate', 'Upper-Intermediate', 'Advanced'].map(level =>
-                        <SelectOption
-                            key={level}
-                            value={level}
-                        >
-                            {level}
-                        </SelectOption>
-                    )}
-                </Select>
+            <Form.Select
+                label="Уровень"
+                name="level"
+                value={data.level}
+                options={levels.map(level => ({
+                    key: level,
+                    value: level,
+                    content: level
+                }))}
+                onChange={setData}
+            />
 
-                <FormField label="Бесплатно">
-                    <Switch
-                        name="free"
-                        checked={data.free}
-                        onChange={setData}
-                    />
-                </FormField>
+            <Form.Switch
+                label="Бесплатно"
+                name="free"
+                checked={data.free}
+                onChange={setData}
+            />
 
-                <FormField label="Опубликована">
-                    <Switch
-                        name="published"
-                        checked={data.published}
-                        onChange={setData}
-                    />
-                </FormField>
+            <Form.Switch
+                label="Опубликована"
+                name="published"
+                checked={data.published}
+                onChange={setData}
+            />
 
-                <TextField
-                    type="number"
-                    name="duration"
-                    value={data.duration}
-                    label="Продолжительность, мин"
-                    filled
-                    required
-                    onChange={setData}
-                />
+            <Form.Input
+                type="number"
+                name="duration"
+                value={data.duration}
+                label="Продолжительность, мин"
+                filled
+                required
+                onChange={setData}
+            />
 
-                <FileInput
-                    ref={fileInputRef}
-                    name="file"
-                    label="Изображение"
-                    url={data.image && STATIC_URL + meeting.imageUrl}
-                    caption={data.image}
-                />
+            <FileInput
+                ref={fileInputRef}
+                name="file"
+                label="Изображение"
+                url={data.image && STATIC_URL + meeting.imageUrl}
+                caption={data.image}
+            />
 
-                <Typography type="subtitle2">Описание</Typography>
-
+            <Form.Field label="Описание">
                 <TextEditor
                     name="description"
                     value={data.description}
                     label="Описание"
                     onChange={setData}
                 />
-            </Layout>
+            </Form.Field>
         </Form>
     );
 }
-
-MeetingForm.defaultProps = {
-    meeting: {
-        title: '',
-        date: new Date(),
-        host: {},
-        level: '',
-        duration: 60,
-        free: false,
-        published: false,
-        image: '',
-        description: ''
-    }
-};

@@ -1,11 +1,10 @@
 import { useCallback, useState } from 'react';
-import { Button, List } from '@fluentui/react-northstar';
 import moment from 'moment';
 
 import { useBoolean } from 'shared/hooks/state';
+import { Button, Icon, List } from 'shared/ui-components';
 import DateTimeSelect from 'shared/components/datetime-select';
 import FormDialog from 'shared/components/form-dialog';
-import Icon from 'shared/ui-components/icon';
 import PageSection from 'shared/components/page-section';
 
 import './index.scss';
