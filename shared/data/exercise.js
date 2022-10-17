@@ -1,5 +1,10 @@
 export const exerciseTypeMenuItems = [
     {
+        key: 'directions',
+        content: 'Инструкции',
+        value: 'directions'
+    },
+    {
         key: 'text',
         content: 'Текст',
         value: 'text'
