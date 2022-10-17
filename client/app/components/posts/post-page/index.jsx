@@ -1,20 +1,12 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import {
-    Avatar,
-    Button,
-    Card,
-    Text
-} from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useEnrollment } from 'shared/hooks/enrollments';
 import { usePost } from 'shared/hooks/posts';
-import Icon from 'shared/ui-components/icon';
+import { Avatar, Button, Card, Icon, Text } from 'shared/ui-components';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
 import PostContent from 'shared/components/post-content';
 import Comment from 'shared/components/comment';
 import CommentForm from 'shared/components/comment-form';
@@ -48,7 +40,7 @@ export default function PostPage({ match }) {
 
     return (
         <Page id="post-page">
-            <PageHeader
+            <Page.Header
                 breadcrumbs={[
                     <Link to={enrollment.url}>{enrollment.title}</Link>
                 ]}
@@ -57,7 +49,7 @@ export default function PostPage({ match }) {
                 pullContent
             />
 
-            <PageContent>
+            <Page.Content>
                 <Segment>
                     <Card.Header
                         graphic={<Avatar src={post.user.imageUrl} large />}
@@ -102,7 +94,7 @@ export default function PostPage({ match }) {
                     :
                     <Button onClick={toggleCommenting} outlined>Оставить комментарий</Button>
                 }
-            </PageContent>
+            </Page.Content>
         </Page>
     );
 }

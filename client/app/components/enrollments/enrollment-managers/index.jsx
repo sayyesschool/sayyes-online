@@ -1,6 +1,4 @@
-import { Avatar, Button, List, MenuButton } from '@fluentui/react-northstar';
-
-import Icon from 'shared/ui-components/icon';
+import { Avatar, Button, Icon, List, MenuButton } from 'shared/ui-components';
 import PageSection from 'shared/components/page-section';
 
 import './index.scss';

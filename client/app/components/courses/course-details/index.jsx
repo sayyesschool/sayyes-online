@@ -1,4 +1,4 @@
-import { Text } from '@fluentui/react-northstar';
+import { Text } from 'shared/ui-components';
 
 export default function CourseDetails({ course }) {
     return (

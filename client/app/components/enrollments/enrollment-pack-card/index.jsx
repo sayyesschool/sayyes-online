@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
-import { Box, Text } from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
+import { Box, Text } from 'shared/ui-components';
 import { pluralize } from 'shared/utils/format';
 
 import './index.scss';

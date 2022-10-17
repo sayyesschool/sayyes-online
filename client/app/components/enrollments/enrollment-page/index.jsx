@@ -1,11 +1,7 @@
-import { Button, Flex, Grid, MenuButton } from '@fluentui/react-northstar';
-
 import { useEnrollment } from 'shared/hooks/enrollments';
-import Icon from 'shared/ui-components/icon';
+import { Button, Flex, Grid, Icon, MenuButton } from 'shared/ui-components';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
 
 import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';
 import EnrollmentLessons from 'app/components/enrollments/enrollment-lessons';
@@ -24,7 +20,7 @@ export default function EnrollmentPage({ match }) {
 
     return (
         <Page id="enrollment-page">
-            <PageHeader
+            <Page.Header
                 title={enrollment.domainLabel}
                 actions={[
                     <Button
@@ -59,9 +55,9 @@ export default function EnrollmentPage({ match }) {
                 ]}
             >
 
-            </PageHeader>
+            </Page.Header>
 
-            <PageContent>
+            <Page.Content>
                 <Grid columns="minmax(0, 2fr) minmax(0, 1fr)">
                     <Flex>
                         <EnrollmentPosts
@@ -99,7 +95,7 @@ export default function EnrollmentPage({ match }) {
                         }
                     </Flex>
                 </Grid>
-            </PageContent>
+            </Page.Content>
         </Page>
     );
 }

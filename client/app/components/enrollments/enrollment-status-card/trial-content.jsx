@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Flex, Text } from '@fluentui/react-northstar';
+import { Avatar, Button, Card, Flex, Text } from 'shared/ui-components';
 
 export default function TrialContent({ enrollment }) {
     return (

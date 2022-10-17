@@ -2,9 +2,7 @@ import { useCallback } from 'react';
 
 import { timezones } from 'shared/data';
 import useForm from 'shared/hooks/form';
-import Form from 'shared/components/form';
-import FormInput from 'shared/components/form-input';
-import FormSelect from 'shared/components/form-select';
+import Form from 'shared/ui-components/form';
 
 const timezoneOptions = timezones.map(item => ({
     key: item.value,
@@ -27,7 +25,7 @@ export default function ProfileForm({ profile, onSubmit, ...props }) {
 
     return (
         <Form id="profile-form" onSubmit={handleSubmit} {...props}>
-            <FormInput
+            <Form.Input
                 name="firstname"
                 value={data.firstname}
                 label="Имя"
@@ -35,7 +33,7 @@ export default function ProfileForm({ profile, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 name="lastname"
                 value={data.lastname}
                 label="Фамилия"
@@ -43,14 +41,14 @@ export default function ProfileForm({ profile, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 name="patronym"
                 value={data.patronym}
                 label="Отчество"
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="phone"
                 name="phone"
                 value={data.phone}
@@ -59,7 +57,7 @@ export default function ProfileForm({ profile, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="email"
                 name="email"
                 value={data.email}
@@ -67,7 +65,7 @@ export default function ProfileForm({ profile, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="date"
                 name="dob"
                 value={data.dob ? moment(data.dob).format('YYYY-MM-DD') : ''}
@@ -75,7 +73,7 @@ export default function ProfileForm({ profile, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <FormSelect
+            <Form.Select
                 name="timezone"
                 value={data.timezone}
                 label="Часовой пояс"

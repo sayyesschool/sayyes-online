@@ -1,6 +1,6 @@
 import { createElement } from 'react';
-import { Box, Segment } from '@fluentui/react-northstar';
 
+import { Box, Segment } from 'shared/ui-components';
 import Stepper from 'shared/components/stepper';
 
 import PaymentContent from './payment-content';

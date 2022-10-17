@@ -1,15 +1,6 @@
 import { Link } from 'react-router-dom';
-import {
-    Avatar,
-    Box,
-    Button,
-    Flex,
-    Header,
-    Image,
-    Segment,
-    Text
-} from '@fluentui/react-northstar';
 
+import { Avatar, Box, Button, Flex, Header, Image, Segment, Text } from 'shared/ui-components';
 import WeekSchedule from 'shared/components/week-schedule';
 import { pluralize } from 'shared/utils/format';
 

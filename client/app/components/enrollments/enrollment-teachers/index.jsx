@@ -1,5 +1,4 @@
-import { Avatar, List } from '@fluentui/react-northstar';
-
+import { Avatar, List } from 'shared/ui-components';
 import PageSection from 'shared/components/page-section';
 
 import './index.scss';

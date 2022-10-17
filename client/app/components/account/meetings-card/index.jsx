@@ -1,5 +1,4 @@
-import { List, Text } from '@fluentui/react-northstar';
-
+import { List, Text } from 'shared/ui-components';
 import PageSection from 'shared/components/page-section';
 
 export default function MeetingsCard({ meetings }) {

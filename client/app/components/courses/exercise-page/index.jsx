@@ -1,8 +1,7 @@
 import { useCallback, useRef } from 'react';
-import { Grid } from '@fluentui/react-northstar';
 
 import { useCourse } from 'shared/hooks/courses';
-import IconButton from 'shared/ui-components/icon-button';
+import { Grid, IconButton } from 'shared/ui-components';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import ExerciseContent from 'shared/components/exercise-content';

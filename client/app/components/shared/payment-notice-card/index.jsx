@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
-import {
-    Button,
-    Card
-} from '@fluentui/react-northstar';
+
+import { Button, Card } from 'shared/ui-components';
 
 export default function PaymentNoticeCard({ onPay }) {
     return (

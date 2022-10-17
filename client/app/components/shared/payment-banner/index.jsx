@@ -1,6 +1,4 @@
-import { Alert, Button } from '@fluentui/react-northstar';
-
-import Icon from 'shared/ui-components/icon';
+import { Alert, Button, Icon } from 'shared/ui-components';
 
 export default function PaymentAlert({ onActionClick }) {
     return (

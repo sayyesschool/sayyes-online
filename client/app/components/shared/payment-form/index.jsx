@@ -1,15 +1,7 @@
 import { useState } from 'react';
-import {
-    Button,
-    Flex,
-    Input,
-    List,
-    Radio,
-    Text
-} from '@fluentui/react-northstar';
 
 import useForm from 'shared/hooks/form';
-import Form from 'shared/components/Form';
+import { Button, Flex, Form, Input, List, Radio, Text } from 'shared/ui-components/Form';
 
 import { types, packages } from './data';
 

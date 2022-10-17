@@ -1,13 +1,12 @@
 import { useCallback, useState } from 'react';
-import { Grid } from '@fluentui/react-northstar';
 
 import http from 'shared/services/http';
 import { useUser } from 'shared/hooks/user';
 import { useEnrollments } from 'shared/hooks/enrollments';
 import { useLessons } from 'shared/hooks/lessons';
+import { Grid } from 'shared/ui-components';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageContent from 'shared/components/page-content';
 import CalendarCard from 'shared/components/calendar-card';
 
 import EnrollmentDetailsCard from 'app/components/enrollments/enrollment-details-card';
@@ -46,7 +45,7 @@ export default function HomePage() {
 
     return (
         <Page id="home-page">
-            <PageContent>
+            <Page.Content>
                 <Grid columns={1}>
                     {activeEnrollment?.status !== 'active' &&
                         <EnrollmentStatusCard
@@ -95,7 +94,7 @@ export default function HomePage() {
                         </section>
                     </LayoutGrid.Cell> */}
                 </Grid>
-            </PageContent>
+            </Page.Content>
         </Page>
     );
 }

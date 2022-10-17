@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { Button, Flex, Input, Text } from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
+import { Button, Flex, Input, Text } from 'shared/ui-components';
 import { pluralize } from 'shared/utils/format';
 
 import './index.scss';
