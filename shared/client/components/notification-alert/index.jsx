@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
-import { Alert } from '@fluentui/react-northstar';
 import classnames from 'classnames';
+
+import { Alert } from 'shared/ui-components';
 
 import './index.scss';
 

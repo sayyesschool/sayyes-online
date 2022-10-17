@@ -1,10 +1,9 @@
 import { useCallback } from 'react';
-import { MenuButton, Pill, PillGroup } from '@fluentui/react-northstar';
 import classnames from 'classnames';
 import moment from 'moment';
 
 import { useBoolean } from 'shared/hooks/state';
-import Icon from 'shared/ui-components/icon';
+import { Icon, MenuButton, Pill, PillGroup } from 'shared/ui-components';
 
 import './index.scss';
 

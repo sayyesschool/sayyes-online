@@ -1,3 +1,1 @@
-import { Avatar } from '@fluentui/react-northstar';
-
-export default Avatar;
+export { Avatar as default } from '@fluentui/react-northstar';

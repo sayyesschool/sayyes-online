@@ -1,18 +1,8 @@
 import { useCallback } from 'react';
-import {
-    Avatar,
-    Box,
-    Button,
-    Flex,
-    Header,
-    MenuButton,
-    Segment,
-    Text
-} from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
+import { Avatar, Box, Button, Flex, Header, Icon, MenuButton, Segment, Text } from 'shared/ui-components';
 import Comment from 'shared/components/comment';
-import Icon from 'shared/ui-components/icon';
 import PostContent from 'shared/components/post-content';
 import PostForm from 'shared/components/post-form';
 

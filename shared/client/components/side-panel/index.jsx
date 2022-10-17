@@ -1,5 +1,6 @@
-import { Box } from '@fluentui/react-northstar';
 import classnames from 'classnames';
+
+import { Box } from 'shared/ui-components';
 
 import './index.scss';
 

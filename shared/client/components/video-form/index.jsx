@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react';
 
 import useForm from 'shared/hooks/form';
-import { Form, FormField, FormInput } from 'shared/components/form';
+import Form from 'shared/ui-components/form';
 import TextEditor from 'shared/components/text-editor';
 
 const defaultVideo = {
@@ -39,7 +39,7 @@ export default function VideoForm({ video = {}, path, onSubmit, ...props }) {
 
     return (
         <Form className="video-form" onSubmit={handleSubmit} {...props}>
-            <FormInput
+            <Form.Input
                 name="title"
                 label="Название"
                 value={data.title}
@@ -47,7 +47,7 @@ export default function VideoForm({ video = {}, path, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="number"
                 name="duration"
                 label="Продолжительность"
@@ -58,12 +58,12 @@ export default function VideoForm({ video = {}, path, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <FormField label="Скрипт">
+            <Form.Field label="Скрипт">
                 <TextEditor
                     ref={textEditorRef}
                     defaultValue={data.script}
                 />
-            </FormField>
+            </Form.Field>
         </Form>
     );
 }

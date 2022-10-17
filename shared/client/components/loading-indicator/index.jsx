@@ -1,5 +1,6 @@
-import { Loader } from '@fluentui/react-northstar';
 import classnames from 'classnames';
+
+import { Loader } from 'shared/ui-components';
 
 import './index.scss';
 

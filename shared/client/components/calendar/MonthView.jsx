@@ -1,16 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-    Button,
-    Dropdown,
-    Status,
-    Text
-} from '@fluentui/react-northstar';
 import moment from 'moment';
 import classnames from 'classnames';
 
-import Icon from 'shared/ui-components/icon';
-
-import { getMonthData } from './utils';
+import { getMonthData } from 'shared/libs/calendar';
+import { Button, Dropdown, Icon, Status, Text } from 'shared/ui-components';
 
 export default function MonthView({
     selectedDate,

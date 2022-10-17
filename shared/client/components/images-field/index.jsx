@@ -1,14 +1,7 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import {
-    Button,
-    Card,
-    Flex,
-    FormFieldCustom, FormLabel,
-    Image
-} from '@fluentui/react-northstar';
 
 import storage from 'shared/services/storage';
-import Icon from 'shared/ui-components/icon';
+import { Button, Card, Flex, FormField, FormLabel, Icon, Image } from 'shared/ui-components';
 
 import './index.scss';
 
@@ -65,7 +58,7 @@ function ImagesField({
     }, [images]);
 
     return (
-        <FormFieldCustom className="images-field">
+        <FormField className="images-field">
             <input
                 ref={inputRef}
                 type="file"
@@ -107,6 +100,6 @@ function ImagesField({
                     </Card>
                 )}
             </Flex>
-        </FormFieldCustom>
+        </FormField>
     );
 }

@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from 'react';
 
 import { FormTextArea as FluentFormTextArea } from '@fluentui/react-northstar';
 
-export default function FormTextArea({ resize, ...props }) {
+export default function FormTextarea({ resize, ...props }) {
     const elementRef = useRef();
 
     useLayoutEffect(() => {

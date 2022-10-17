@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import AudioItem from './audio';
 import BooleanItem from './boolean';
 import ChoiceItem from './choice';
+import DirectionsItem from './directions';
 import DividerItem from './divider';
 import EssayItem from './essay';
 import FIBItem from './fib';
@@ -19,6 +20,7 @@ const Components = {
     audio: AudioItem,
     boolean: BooleanItem,
     choice: ChoiceItem,
+    directions: DirectionsItem,
     divider: DividerItem,
     essay: EssayItem,
     fib: FIBItem,
@@ -51,12 +53,3 @@ export default forwardRef(function ExerciseItem({ item, checked, ...props }, ref
         </div>
     );
 });
-
-export {
-    BooleanItem,
-    ChoiceItem,
-    EssayItem,
-    FIBItem,
-    InputItem,
-    TextItem
-};

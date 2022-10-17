@@ -1,4 +1,4 @@
-import { Header } from '@fluentui/react-northstar';
+import { Header } from 'shared/ui-components';
 
 import './index.scss';
 

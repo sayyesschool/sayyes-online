@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react';
 
-import Form from 'shared/components/form';
+import Form from 'shared/ui-components/form';
 import TextEditor from 'shared/components/text-editor';
 
 import './index.scss';

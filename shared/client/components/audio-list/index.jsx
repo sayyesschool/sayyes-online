@@ -1,10 +1,6 @@
 import { useCallback } from 'react';
-import {
-    Button,
-    List
-} from '@fluentui/react-northstar';
 
-import Icon from 'shared/ui-components/icon';
+import { Button, Icon, List } from 'shared/ui-components';
 import { formatDuration } from 'shared/utils/format';
 
 import './index.scss';

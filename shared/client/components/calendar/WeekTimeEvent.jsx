@@ -1,11 +1,7 @@
 import { useCallback } from 'react';
-import {
-    Flex,
-    Label,
-    Text
-} from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
+import { Flex, Label, Text } from 'shared/ui-components';
 import { ColorByType } from 'shared/data/lesson';
 import { formatTime } from 'shared/utils/format';
 

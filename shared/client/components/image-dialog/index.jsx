@@ -1,9 +1,6 @@
-import {
-    Dialog,
-    Image,
-    Text
-} from '@fluentui/react-northstar';
 import classnames from 'classnames';
+
+import { Dialog, Image, Text } from 'shared/ui-components';
 
 import './index.scss';
 

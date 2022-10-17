@@ -1,5 +1,6 @@
-import { Label, Status } from '@fluentui/react-northstar';
 import classnames from 'classnames';
+
+import { Label, Status } from 'shared/ui-components';
 
 const StatusState = {
     new: 'warning',

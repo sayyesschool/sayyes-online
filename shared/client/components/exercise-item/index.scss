@@ -1,3 +1,7 @@
+.exercise-items {
+    counter-reset: number;
+}
+
 .exercise-item {
     + .exercise-item {
         margin-bottom: 1rem;
@@ -81,6 +85,17 @@
 
         .ui-checkbox {
             display: flex;
+        }
+    }
+
+    &--directions {
+        &::before {
+            content: counter(number) ".";
+            counter-increment: number;
+            float: left;
+            margin-right: .5rem;
+            margin-top: 1px;
+            font-weight: bold;
         }
     }
 

@@ -1,0 +1,1 @@
+export { Loader as default } from '@fluentui/react-northstar';

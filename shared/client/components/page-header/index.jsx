@@ -1,9 +1,6 @@
-import { Header, Text, Toolbar } from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
-import Breadcrumbs from 'shared/ui-components/breadcrumbs';
-import Icon from 'shared/ui-components/icon';
-import Tabs from 'shared/ui-components/tabs';
+import { Breadcrumbs, Header, Icon, Tabs, Text, Toolbar } from 'shared/ui-components';
 
 import './index.scss';
 

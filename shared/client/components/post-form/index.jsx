@@ -1,8 +1,7 @@
 import { useCallback, useRef } from 'react';
 
 import useForm from 'shared/hooks/form';
-import Form from 'shared/components/form';
-import FormInput from 'shared/components/form-input';
+import Form from 'shared/ui-components/form';
 import TextEditor from 'shared/components/text-editor';
 
 import './index.scss';
@@ -25,7 +24,7 @@ export default function PostForm({ id = 'post-form', post = {}, onSubmit }) {
 
     return (
         <Form id={id} className="post-form" onSubmit={handleSubmit}>
-            <FormInput
+            <Form.Input
                 name="title"
                 value={data.title}
                 placeholder="Название"

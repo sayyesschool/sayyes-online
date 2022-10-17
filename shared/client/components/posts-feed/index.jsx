@@ -1,18 +1,10 @@
 import { useCallback, useState } from 'react';
-import {
-    Avatar,
-    Button,
-    Flex,
-    Header,
-    Segment,
-    Text
-} from '@fluentui/react-northstar';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
 import { usePosts } from 'shared/hooks/posts';
+import { Button, Flex, Header, Icon, Segment } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
-import Icon from 'shared/ui-components/icon';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import EmptyState from 'shared/components/empty-state';
 import PostCard from 'shared/components/post-card';

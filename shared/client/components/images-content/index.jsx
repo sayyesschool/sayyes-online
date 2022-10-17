@@ -1,8 +1,6 @@
 import classnames from 'classnames';
-import {
-    Carousel,
-    Image
-} from '@fluentui/react-northstar';
+
+import { Carousel, Image } from 'shared/ui-components';
 
 import './index.scss';
 

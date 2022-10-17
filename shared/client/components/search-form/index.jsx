@@ -1,9 +1,7 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Input, List, Popup, } from '@fluentui/react-northstar';
 
-import Form from 'shared/components/form';
-import Icon from 'shared/ui-components/icon';
+import { Form, Icon, List, Popover } from 'shared/ui-components/form';
 import { throttle } from 'shared/utils/fn';
 
 import './index.scss';
@@ -45,18 +43,17 @@ export default function Search() {
 
     return (
         <Form className="search-form">
-            <Input
+            <Form.Input
                 ref={anchorRef}
                 value={query}
                 icon={<Icon>search</Icon>}
                 placeholder="Поиск пользователя"
                 clearable
-                fluid
                 onInput={handleInput}
                 onChange={handleChange}
             />
 
-            <Popup
+            <Popover
                 open={isMenuOpen}
                 content={
                     <List>

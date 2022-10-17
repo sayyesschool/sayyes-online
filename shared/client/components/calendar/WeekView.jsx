@@ -1,16 +1,10 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import {
-    Button,
-    Label,
-    Text
-} from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
-import Icon from 'shared/ui-components/icon';
-
-import { getWeekData, getWeekLabel } from './utils';
+import { getWeekData, getWeekLabel } from 'shared/libs/calendar';
+import { Button, Icon, Label, Text } from 'shared/ui-components';
 
 WeekView.defaultProps = {
     weekdayNames: Array.of(...moment.weekdaysMin().slice(1), moment.weekdaysMin()[0]),
@@ -20,6 +14,7 @@ WeekView.defaultProps = {
 export default function WeekView({ eventsByDate }) {
     const todayRef = useRef(new Date());
     const dateRef = useRef(moment());
+
     const [week, setWeek] = useState(dateRef.current.month());
 
     const handlePrevWeekButtonClick = useCallback(() => {

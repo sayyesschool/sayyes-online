@@ -1,17 +1,13 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
-import {
-    Button,
-    Text
-} from '@fluentui/react-northstar';
 import moment from 'moment';
 
-import Icon from 'shared/ui-components/icon';
+import { getWeekData, getWeekLabel } from 'shared/libs/calendar';
+import { Button, Icon, Text } from 'shared/ui-components';
 import { formatTime } from 'shared/utils/format';
 
 import WeekTimeEvent from './WeekTimeEvent';
-import { getWeekData, getWeekLabel } from './utils';
 
-const defaultHours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+const defaultHours = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 const defaultWeekDayNames = Array.of(...moment.weekdaysMin().slice(1), moment.weekdaysMin()[0]);
 
 export default function WeekTimeView({

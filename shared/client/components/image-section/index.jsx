@@ -1,18 +1,10 @@
 import { useCallback, useRef, useState } from 'react';
-import {
-    Button,
-    Dialog,
-    Image,
-    Input,
-    Loader,
-    Text
-} from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
 import storage from 'shared/services/storage';
 import { useBoolean } from 'shared/hooks/state';
+import { Button, Dialog, Icon, Image, Input, Loader, Text } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
-import Icon from 'shared/ui-components/icon';
 import PageSection from 'shared/components/page-section';
 
 import './index.scss';

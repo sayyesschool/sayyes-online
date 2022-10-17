@@ -1,11 +1,6 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
-import {
-    Button,
-    FormFieldCustom, FormLabel,
-    Image
-} from '@fluentui/react-northstar';
 
-import Icon from 'shared/ui-components/icon';
+import { Button, FormField, Icon, Image } from 'shared/ui-components';
 
 import './index.scss';
 
@@ -57,7 +52,7 @@ function ImageField({
     }, []);
 
     return (
-        <FormFieldCustom className="image-field" {...props}>
+        <FormField className="image-field" label={label} {...props}>
             <input
                 ref={fileInputRef}
                 type="file"
@@ -65,12 +60,6 @@ function ImageField({
                 accept={accept}
                 onChange={handleChange}
             />
-
-            {label &&
-                <FormLabel>
-                    {label}
-                </FormLabel>
-            }
 
             {src &&
                 <Image
@@ -95,6 +84,6 @@ function ImageField({
                     onClick={handleReset}
                 />
             }
-        </FormFieldCustom>
+        </FormField>
     );
 }
