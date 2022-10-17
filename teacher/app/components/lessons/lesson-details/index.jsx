@@ -1,6 +1,6 @@
-import { Alert, List, Status } from '@fluentui/react-northstar';
 import moment from 'moment';
 
+import { Alert, List, Status } from 'shared/ui-components';
 import { StatusByType } from 'shared/data/lesson';
 
 import './index.scss';

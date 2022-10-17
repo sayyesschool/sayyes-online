@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Avatar, List } from '@fluentui/react-northstar';
+
+import { Avatar, List } from 'shared/ui-components';
 
 export default function EnrollmentsList({ enrollments }) {
     return (

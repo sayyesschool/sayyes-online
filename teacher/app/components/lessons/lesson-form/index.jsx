@@ -2,10 +2,7 @@ import { useCallback } from 'react';
 import moment from 'moment';
 
 import { useFormData } from 'shared/hooks/form';
-import Form from 'shared/components/form';
-import FormInput from 'shared/components/form-input';
-import FormSelect from 'shared/components/form-select';
-import FormTextArea from 'shared/components/form-textarea';
+import Form from 'shared/ui-components/form';
 
 import './index.scss';
 
@@ -44,7 +41,7 @@ export default function LessonForm({ lesson = defaultLesson, onSubmit, ...props 
 
     return (
         <Form className="lesson-form" onSubmit={handleSubmit} {...props}>
-            <FormSelect
+            <Form.Select
                 name="status"
                 value={data.status}
                 options={statuses}
@@ -54,7 +51,7 @@ export default function LessonForm({ lesson = defaultLesson, onSubmit, ...props 
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="datetime-local"
                 name="date"
                 value={moment(data.date).format('YYYY-MM-DDTHH:mm')}
@@ -66,7 +63,7 @@ export default function LessonForm({ lesson = defaultLesson, onSubmit, ...props 
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="number"
                 name="duration"
                 step="5"
@@ -76,7 +73,7 @@ export default function LessonForm({ lesson = defaultLesson, onSubmit, ...props 
                 onChange={handleChange}
             />
 
-            <FormTextArea
+            <Form.Textarea
                 name="note"
                 value={data.note}
                 label="Примечание"

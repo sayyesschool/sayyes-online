@@ -1,7 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import Form from 'shared/components/form';
-import FormInput from 'shared/components/form-input';
+import Form from 'shared/ui-components/form';
 
 export default function ProfileForm({ user, onSubmit, ...props }) {
     const [firstname, setFirstname] = useState(user.firstname);
@@ -20,30 +19,27 @@ export default function ProfileForm({ user, onSubmit, ...props }) {
 
     return (
         <Form id="profile-form" onSubmit={handleSubmit} {...props}>
-            <FormInput
+            <Form.Input
+                label="Имя"
                 name="firstname"
                 value={firstname}
-                label="Имя"
-                fluid
                 required
                 onChange={setFirstname}
             />
 
-            <FormInput
+            <Form.Input
+                label="Фамилия"
                 name="lastname"
                 value={lastname}
-                label="Фамилия"
-                fluid
                 required
                 onChange={setLastname}
             />
 
-            <FormInput
+            <Form.Input
+                label="Электронная почта"
                 type="email"
                 name="email"
                 value={email}
-                label="Электронная почта"
-                fluid
                 required
                 onChange={setEmail}
             />
