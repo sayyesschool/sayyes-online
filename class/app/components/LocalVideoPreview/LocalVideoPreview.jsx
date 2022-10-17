@@ -1,4 +1,4 @@
-import { Avatar, Label } from '@fluentui/react-northstar';
+import { Avatar, Label } from 'shared/ui-components';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import VideoTrack from 'app/components/VideoTrack';

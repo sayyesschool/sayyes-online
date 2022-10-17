@@ -1,4 +1,4 @@
-import { Alert } from '@fluentui/react-northstar';
+import { Alert } from 'shared/ui-components';
 
 import Icon from 'shared/ui-components/icon';
 

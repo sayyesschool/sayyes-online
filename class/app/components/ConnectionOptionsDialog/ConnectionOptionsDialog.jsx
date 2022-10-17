@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
-import { Dialog, Input, Text } from '@fluentui/react-northstar';
+
+import { Dialog, Input, Text } from 'shared/ui-components';
 
 import { inputLabels, RenderDimensions } from 'app/data/settings';
 import useAppState from 'app/hooks/useAppState';

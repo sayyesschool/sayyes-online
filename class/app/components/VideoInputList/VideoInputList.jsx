@@ -1,6 +1,4 @@
-import { Text } from '@fluentui/react-northstar';
-
-import FormSelect from 'shared/components/form-select';
+import { Select, Text } from 'shared/ui-components';
 
 import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_VIDEO_INPUT_KEY } from 'app/constants';
 import useRoomContext from 'app/hooks/useRoomContext';
@@ -33,7 +31,7 @@ export default function VideoInputList() {
             )}
 
             {videoInputDevices.length > 1 ?
-                <FormSelect
+                <Select
                     label="Камера"
                     value={localVideoInputDeviceId || ''}
                     options={videoInputDevices.map(device => ({

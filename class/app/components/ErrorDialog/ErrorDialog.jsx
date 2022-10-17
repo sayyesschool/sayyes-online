@@ -1,6 +1,4 @@
-import { Dialog } from '@fluentui/react-northstar';
-
-import Icon from 'shared/ui-components/icon';
+import { Dialog, Icon } from 'shared/ui-components';
 
 export default function ErrorDialog({ error = {}, onClose }) {
     return (

@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
-import { Flex, Text } from '@fluentui/react-northstar';
 
-import FormSelect from 'shared/components/form-select';
+import { Flex, Select, Text } from 'shared/ui-components';
 
 import { SELECTED_AUDIO_INPUT_KEY } from 'app/constants';
 import { useAudioInputDevices } from 'app/hooks/deviceHooks';
@@ -25,7 +24,7 @@ export default function AudioInputList() {
     return (
         <div className="audio-input-list">
             {audioInputDevices.length > 1 ?
-                <FormSelect
+                <Select
                     label={
                         <Flex vAlign="center">
                             Микрофон

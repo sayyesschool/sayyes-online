@@ -1,6 +1,4 @@
-import { Text } from '@fluentui/react-northstar';
-
-import FormSelect from 'shared/components/form-select';
+import { Select, Text } from 'shared/ui-components';
 
 import useAppState from 'app/hooks/useAppState';
 import { useAudioOutputDevices } from 'app/hooks/deviceHooks';
@@ -14,7 +12,7 @@ export default function AudioOutputList() {
     return (
         <div className="audio-output-list">
             {audioOutputDevices.length > 1 ?
-                <FormSelect
+                <Select
                     label="Динамики"
                     value={activeSinkId}
                     options={audioOutputDevices.map(device => ({

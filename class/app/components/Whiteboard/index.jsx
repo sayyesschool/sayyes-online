@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { Button } from '@fluentui/react-northstar';
 
 import { useUser } from 'shared/hooks/user';
+import { Button, Icon } from 'shared/ui-components';
 
 import Whiteboard from 'app/lib/Whiteboard';
 import useDataTrack from 'app/hooks/useDataTrack';
-import Icon from 'shared/ui-components/icon';
 
 import './index.scss';
 

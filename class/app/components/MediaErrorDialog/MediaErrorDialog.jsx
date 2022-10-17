@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Dialog, Text } from '@fluentui/react-northstar';
+
+import { Dialog, Text } from 'shared/ui-components';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import { useHasAudioInputDevices, useHasVideoInputDevices } from 'app/hooks/deviceHooks';

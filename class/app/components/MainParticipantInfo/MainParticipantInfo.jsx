@@ -1,6 +1,8 @@
 import { Avatar, Label, Text } from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
+import { Avatar, Label, Text } from 'shared/ui-components';
+
 import useRoomContext from 'app/hooks/useRoomContext';
 import useIsTrackSwitchedOff from 'app/hooks/useIsTrackSwitchedOff';
 import usePublications from 'app/hooks/usePublications';

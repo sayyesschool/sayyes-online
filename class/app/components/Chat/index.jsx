@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { Button, Chat as FluentChat } from '@fluentui/react-northstar';
 import moment from 'moment';
 
 import { useChat } from 'shared/hooks/twilio';
-import Icon from 'shared/ui-components/icon';
+import { Button, Icon } from 'shared/ui-components';
+import { Chat as FluentChat } from 'shared/components/chat';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import TextArea from 'shared/components/textarea';
 

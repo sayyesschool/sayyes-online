@@ -1,5 +1,6 @@
 import Video from 'twilio-video';
-import { Header, List, Segment, Text } from '@fluentui/react-northstar';
+
+import { Header, List, Segment, Text } from 'shared/ui-components';
 
 const browsers = [
     { title: 'Chrome', url: 'https://www.google.ru/chrome' },

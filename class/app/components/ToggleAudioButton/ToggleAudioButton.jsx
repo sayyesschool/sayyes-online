@@ -1,6 +1,4 @@
-import { Button, Tooltip } from '@fluentui/react-northstar';
-
-import Icon from 'shared/ui-components/icon';
+import { Button, Icon, Tooltip } from 'shared/ui-components';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import useLocalAudioToggle from 'app/hooks/useLocalAudioToggle';
