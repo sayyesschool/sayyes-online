@@ -5,7 +5,7 @@ const Image = require('./image');
 const Video = require('./video');
 
 const Item = new Schema({
-    type: { type: String, enum: ['boolean', 'choice', 'divider', 'essay', 'fib', 'input', 'text', 'images', 'audio', 'video'] },
+    type: { type: String, enum: ['boolean', 'choice', 'directions', 'divider', 'essay', 'fib', 'input', 'text', 'images', 'audio', 'video'] },
     title: { type: String },
     description: { type: String },
     text: { type: String },

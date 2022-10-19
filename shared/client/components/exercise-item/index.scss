@@ -172,6 +172,10 @@
         }
     }
 
+    figure {
+        margin: 0;
+    }
+
     table {
         margin: auto;
         border-collapse: collapse;
@@ -179,7 +183,6 @@
         td, th {
             min-width: 2em;
             padding: .4em;
-            // border: 1px solid #bfbfbf;
         }
     }
 }

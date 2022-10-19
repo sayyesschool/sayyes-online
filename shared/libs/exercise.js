@@ -102,6 +102,14 @@ function elementToObject(element) {
                 required: values?.length > 0
             }
         };
+    } else if (type === 'img') {
+        return {
+            type: 'img',
+            props: {
+                src: element.src,
+                alt: element.alt
+            }
+        };
     } else if (element.childNodes.length === 0) {
         return {
             type,
