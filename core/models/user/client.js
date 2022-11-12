@@ -3,6 +3,7 @@ const { Schema } = require('mongoose');
 const Contact = require('./contact');
 
 const Client = new Schema({
+    balance: { type: Number },
     altPhone: {
         type: String,
         trim: true,
@@ -17,7 +18,7 @@ const Client = new Schema({
 });
 
 Client.virtual('status').get(function() {
-    return this.enrollments?.some(enrollment => enrollment.isActive);
+    return this.enrollments?.some(enrollment => enrollment.isActive)?.status;
 });
 
 Client.virtual('requests', {
