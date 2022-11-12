@@ -1,13 +1,15 @@
 import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 
-import { Button, Flex, Label, Input, Text } from 'shared/ui-components';
+import { useBoolean } from 'shared/hooks/state';
+import { Button, Flex, Label, Input, Switch, Text } from 'shared/ui-components';
 
 function ExerciseInputItem({ item }, ref) {
     const [text, setText] = useState(item.text || '');
     const [items, setItems] = useState(item.items || []);
+    const [isInline, toggleInline] = useBoolean(false);
 
     useImperativeHandle(ref, () => ({
-        get data() { return { text, items }; }
+        get data() { return { text, items, inline: isInline }; }
     }));
 
     const handleTextChange = useCallback(event => {
@@ -39,6 +41,12 @@ function ExerciseInputItem({ item }, ref) {
                 placeholder="Вопрос"
                 fluid
                 onChange={handleTextChange}
+            />
+
+            <Switch
+                label="В линию"
+                checked={isInline}
+                onChange={toggleInline}
             />
 
             <Flex vAlign="center" gap="gap.smaller">

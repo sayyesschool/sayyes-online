@@ -53,68 +53,68 @@ function TeacherForm({ teacher = {}, onSubmit, ...props }, ref) {
     return (
         <Form onSubmit={handleSubmit} {...props}>
             <Form.Input
+                label="Имя"
                 name="firstname"
                 value={data.firstname}
-                label="Имя"
                 required
                 onChange={handleChange}
             />
 
             <Form.Input
+                label="Фамилия"
                 name="lastname"
                 value={data.lastname}
-                label="Фамилия"
                 required
                 onChange={handleChange}
             />
 
             <Form.Input
+                label="Отчество"
                 name="patronym"
                 value={data.patronym}
-                label="Отчество"
                 onChange={handleChange}
             />
 
             <Form.Input
+                label="Телефон"
                 type="phone"
                 name="phone"
                 value={data.phone}
-                label="Телефон"
                 required
                 onChange={handleChange}
             />
 
             <Form.Input
+                label="Электронная почта"
                 type="email"
                 name="email"
                 value={data.email}
-                label="Электронная почта"
                 onChange={handleChange}
             />
 
             {!teacher.id &&
                 <Form.Input
+                    label="Пароль"
                     type="text"
                     name="password"
                     value={password}
-                    label="Пароль"
                     autoComplete="off"
                     icon={<Icon onClick={() => setPassword(generatePassword())}>sync_lock</Icon>}
                 />
             }
 
             <Form.Input
+                label="Дата рождения"
                 type="date"
                 name="dob"
                 value={data.dob}
-                label="Дата рождения"
                 onChange={handleChange}
             />
 
             <Form.RadioGroup
+                label="Пол"
                 name="gender"
                 value={data.gender}
-                label="Пол"
                 items={genderItems}
                 onChange={handleChange}
             />
@@ -126,9 +126,9 @@ function TeacherForm({ teacher = {}, onSubmit, ...props }, ref) {
             />
 
             <Form.Textarea
+                label="Примечание"
                 name="note"
                 value={data.note}
-                label="Примечание"
                 onChange={handleChange}
             />
         </Form>

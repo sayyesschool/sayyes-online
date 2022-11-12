@@ -11,7 +11,13 @@ import './index.scss';
 
 import { exerciseTypeMenuItems } from 'shared/data/exercise';
 
-export default function ExerciseItems({ exercise, onCreate, onUpdate, onDelete, onReorder }) {
+export default function ExerciseItems({
+    exercise,
+    onCreate,
+    onUpdate,
+    onDelete,
+    onReorder
+}) {
     const [editingItemId, setEditingItemId] = useState();
     const [deletingItem, setDeletingItem] = useState();
 

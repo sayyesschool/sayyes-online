@@ -8,7 +8,18 @@ import { exerciseTypeMenuItems } from 'shared/data/exercise';
 
 import './index.scss';
 
-export default function ExerciseItemWrapper({ index, item, editing, isFirst, isLast, onEdit, onUpdate, onAdd, onMove, onDelete }) {
+export default function ExerciseItemWrapper({
+    index,
+    item,
+    editing,
+    isFirst,
+    isLast,
+    onEdit,
+    onUpdate,
+    onAdd,
+    onMove,
+    onDelete
+}) {
     const handleEdit = useCallback(() => {
         onEdit(item.id);
     }, [item, onEdit]);
