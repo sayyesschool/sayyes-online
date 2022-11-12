@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
 import { usePosts } from 'shared/hooks/posts';
-import { Button, Flex, Header, Icon, Segment } from 'shared/ui-components';
+import { Button, Flex, Header, Icon, Surface } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import EmptyState from 'shared/components/empty-state';
@@ -72,7 +72,7 @@ export default function PostsFeed({ query, beforeCreate = noop }) {
             </Flex>
 
             {isPostFormOpen &&
-                <Segment className="new-post-card">
+                <Surface className="new-post-card">
                     <Header as="h3">Новая запись</Header>
 
                     <PostForm
@@ -84,7 +84,7 @@ export default function PostsFeed({ query, beforeCreate = noop }) {
                         <Button flat onClick={togglePostFormOpen}>Отменить</Button>
                         <Button type="submit" form="post-form" primary flat>Сохранить</Button>
                     </Flex>
-                </Segment>
+                </Surface>
             }
 
             {posts.length > 0 ?

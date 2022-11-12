@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Avatar, Box, Button, Flex, Header, Icon, MenuButton, Segment, Text } from 'shared/ui-components';
+import { Avatar, Box, Button, Flex, Header, Icon, MenuButton, Surface, Text } from 'shared/ui-components';
 import Comment from 'shared/components/comment';
 import PostContent from 'shared/components/post-content';
 import PostForm from 'shared/components/post-form';
@@ -35,7 +35,7 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
     }, [post]);
 
     return (
-        <Segment as="article" className="post-card">
+        <Surface as="article" className="post-card">
             <Flex className="post-card__header" space="between">
                 <Flex gap="gap.medium" vAlign="center">
                     <Avatar
@@ -139,6 +139,6 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
                     )
                 }
             </Box>
-        </Segment>
+        </Surface>
     );
 }

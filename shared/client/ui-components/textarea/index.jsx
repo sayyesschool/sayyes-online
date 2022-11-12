@@ -15,7 +15,7 @@ function Textarea({ minHeight = 32, native, autoResize, ...props }, ref) {
 
         function setHeight() {
             element.style.height = `${minHeight}px`;
-            element.style.height = `${(element.scrollHeight || minHeight)}px`;
+            element.style.height = `${(element.scrollHeight + 2 || minHeight)}px`;
         }
 
         setHeight();

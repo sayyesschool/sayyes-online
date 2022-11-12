@@ -1,9 +1,8 @@
 import { forwardRef, useCallback, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
-import { TextArea } from '@fluentui/react-northstar';
 
 import './index.scss';
 
-export default forwardRef(function InlineTextarea({ onChange = Function.prototype, ...props }, ref) {
+function InlineTextarea({ onChange = Function.prototype, ...props }, ref) {
     const elementRef = useRef();
 
     const [value, setValue] = useState(props.value || '');
@@ -34,7 +33,7 @@ export default forwardRef(function InlineTextarea({ onChange = Function.prototyp
     }, [onChange]);
 
     return (
-        <TextArea
+        <textarea
             ref={elementRef}
             className="inline-textarea"
             value={value}
@@ -42,4 +41,6 @@ export default forwardRef(function InlineTextarea({ onChange = Function.prototyp
             {...props}
         />
     );
-});
+}
+
+export default forwardRef(InlineTextarea);

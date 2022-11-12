@@ -6,6 +6,7 @@ import FormDropdown from './dropdown';
 import FormField from './field';
 import FormInput from './input';
 import FormLabel from './label';
+import FormRadioGroup from './radio-group';
 import FormSelect from './select';
 import FormTextarea from './textarea';
 
@@ -34,6 +35,7 @@ Form.Dropdown = FormDropdown;
 Form.Field = FormField;
 Form.Input = FormInput;
 Form.Label = FormLabel;
+Form.RadioGroup = FormRadioGroup;
 Form.Select = FormSelect;
 Form.Textarea = FormTextarea;
 
@@ -45,6 +47,7 @@ export {
     FormField,
     FormLabel,
     FormInput,
+    FormRadioGroup,
     FormSelect,
     FormTextarea
 };

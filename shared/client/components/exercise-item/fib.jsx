@@ -2,9 +2,9 @@ import { useMemo } from 'react';
 
 import { parseHTML } from 'shared/libs/exercise';
 import { render } from 'shared/libs/jsx';
-import Input from 'shared/ui-components/inline-input';
-import Select from 'shared/ui-components/inline-select';
-import Textarea from 'shared/ui-components/inline-textarea';
+import Input from 'shared/components/inline-input';
+import Select from 'shared/components/inline-select';
+import Textarea from 'shared/components/inline-textarea';
 
 const Components = {
     input: Input,

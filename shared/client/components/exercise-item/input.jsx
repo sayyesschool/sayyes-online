@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 
-import Textarea from 'shared/ui-components/textarea';
+import Input from 'shared/components/inline-input';
+import Textarea from 'shared/components/inline-textarea';
 import TextContent from 'shared/components/text-content';
 
 export default function ExerciseInputItem({ item, state = {}, setState, checked }) {
@@ -20,14 +21,29 @@ export default function ExerciseInputItem({ item, state = {}, setState, checked 
         <>
             <TextContent>{item.text}</TextContent>
 
-            <Textarea
+            {/* <Textarea
                 id={item.id}
                 value={value}
                 error={checked && !isCorrect}
                 fluid
                 autoResize
                 onChange={handleChange}
-            />
+            /> */}
+
+            {item.inline ?
+                <Input
+                    id={item.id}
+                    value={value}
+                    error={checked && !isCorrect}
+                    onChange={handleChange}
+                />
+                :
+                <Textarea
+                    id={item.id}
+                    value={value}
+                    onChange={handleChange}
+                />
+            }
         </>
     );
 }

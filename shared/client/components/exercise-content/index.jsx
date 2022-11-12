@@ -1,8 +1,7 @@
 import { useCallback, useRef } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import Button from 'shared/ui-components/button';
-import Text from 'shared/ui-components/text';
+import { Button } from 'shared/ui-components';
 import ExerciseItem from 'shared/components/exercise-item';
 
 import './index.scss';
@@ -16,18 +15,31 @@ export default function ExerciseContent({ exercise, onProgressChange }) {
     const handleSave = useCallback(() => {
         setSaving(true);
 
-        return onProgressChange(exercise, { state: exerciseContentRef.current.state }).then(() => setSaving(false));
+        return onProgressChange(exercise, {
+            state: exerciseContentRef.current.state
+        }).then(() => setSaving(false));
     }, [exercise]);
 
     const handleCheck = useCallback(() => {
-        return setChecked(true);
+        setChecked(true);
     }, []);
+
+    const hasSaveableItems = exercise.items.some(item =>
+        item.type === 'input' ||
+        item.type === 'essay' ||
+        item.type === 'fib'
+    );
+
+    const hasCheckableItems = exercise.items.some(item =>
+        item.type === 'input' ||
+        item.type === 'fib'
+    );
 
     return (
         <article className="exercise">
-            <header className="exercise-header">
+            {/* <header className="exercise-header">
                 <Text as="h1" className="exercise-title">{exercise.title}</Text>
-            </header>
+            </header> */}
 
             <section className="exercise-content">
                 {exercise.items.map(item =>
@@ -39,24 +51,27 @@ export default function ExerciseContent({ exercise, onProgressChange }) {
                 )}
             </section>
 
-            {/* {isSavable &&
-                <Button
-                    label="Сохранить"
-                    icon="save"
-                    outlined
-                    disabled={isSaving}
-                    onClick={handleSave}
-                />
-            } */}
-
             <footer className="exercise-footer">
-                <Button
-                    content="Проверить"
-                    icon="done_all"
-                    primary
-                    flat
-                    onClick={handleCheck}
-                />
+                {hasCheckableItems &&
+                    <Button
+                        content="Проверить"
+                        icon="done_all"
+                        primary
+                        flat
+                        onClick={handleCheck}
+                    />
+                }
+
+                {hasSaveableItems &&
+                    <Button
+                        content="Сохранить"
+                        icon="save"
+                        primary
+                        flat
+                        disabled={isSaving}
+                        onClick={handleSave}
+                    />
+                }
             </footer>
         </article>
     );
