@@ -1,11 +1,11 @@
 import { useCallback, useRef } from 'react';
 
 import { useCourse } from 'shared/hooks/courses';
-import { Grid, IconButton } from 'shared/ui-components';
+import { Grid } from 'shared/ui-components';
 import LoadingIndicator from 'shared/components/loading-indicator';
-import Page from 'shared/components/page';
 import ExerciseContent from 'shared/components/exercise-content';
 import ExercisesList from 'shared/components/exercises-list';
+import Page from 'shared/components/page';
 
 import './index.scss';
 
@@ -28,20 +28,12 @@ export default function ExercisePage({ match }) {
     return (
         <Page ref={rootRef} className="exercise-page">
             <Page.Header
-                title={lesson.title}
+                title={exercise.title}
                 breadcrumbs={[
                     { url: course.uri, text: course.title },
                     { url: unit.uri, text: unit.title },
                     { url: lesson.uri, text: lesson.title },
                 ]}
-                actions={
-                    <IconButton
-                        icon="format_list_bulleted"
-                        onClick={() => openSideSheet('contents')}
-                        iconOnly
-                        text
-                    />
-                }
             />
 
             <Page.Content>

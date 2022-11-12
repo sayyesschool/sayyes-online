@@ -1,6 +1,5 @@
 module.exports = ({
-    models: { Payment, Enrollment },
-    services: { Checkout }
+    models: { Payment }
 }) => ({
     getMany: (req, res, next) => {
         return Payment.find({ user: req.user })

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { Avatar, Box, Button, Flex, Header, Image, Segment, Text } from 'shared/ui-components';
+import { Avatar, Box, Button, Flex, Header, Image, Surface, Text } from 'shared/ui-components';
 import WeekSchedule from 'shared/components/week-schedule';
 import { pluralize } from 'shared/utils/format';
 
@@ -10,7 +10,7 @@ export default function EnrollmentDetailsCard({ enrollment, onPay, ...props }) {
     const nextLesson = enrollment.lessons?.find(lesson => lesson.status === 'scheduled');
 
     return (
-        <Segment className="enrollment-details-card" {...props}>
+        <Surface className="enrollment-details-card" {...props}>
             <Flex>
                 <Flex.Item size="size.quarter">
                     <Box className="enrollment-details-card__section enrollment-details-card__main-section">
@@ -95,6 +95,6 @@ export default function EnrollmentDetailsCard({ enrollment, onPay, ...props }) {
                     </Box>
                 </Flex.Item>
             </Flex>
-        </Segment>
+        </Surface>
     );
 }

@@ -1,6 +1,6 @@
 import { createElement } from 'react';
 
-import { Box, Segment } from 'shared/ui-components';
+import { Box, Surface } from 'shared/ui-components';
 import Stepper from 'shared/components/stepper';
 
 import PaymentContent from './payment-content';
@@ -25,7 +25,7 @@ export default function EnrollmentStatusCard({ enrollment }) {
     const { status } = enrollment;
 
     return (
-        <Segment className="enrollment-status-card">
+        <Surface className="enrollment-status-card">
             <Box className="enrollment-status-card__section--graphic">
                 <img src={`${STORAGE_URL}/assets/images/cat/${imageByStatus[status]}.png`} alt="" />
             </Box>
@@ -61,6 +61,6 @@ export default function EnrollmentStatusCard({ enrollment }) {
                     enrollment
                 })}
             </Box>
-        </Segment>
+        </Surface>
     );
 }

@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Box, Button, Checkbox, Flex, Header, Icon, Image, Segment, Text } from 'shared/ui-components';
+import { Box, Button, Checkbox, Flex, Header, Icon, Image, Surface, Text } from 'shared/ui-components';
 
 import EnrollmentPackCard from 'app/components/enrollments/enrollment-pack-card';
 import EnrollmentCheckoutForm from 'app/components/enrollments/enrollment-checkout-form';
@@ -18,7 +18,7 @@ export default function EnrollmentPayCard({ enrollment, onCheckout, onCancel, ..
     }, [selectedPack, onCheckout]);
 
     return (
-        <Segment className="enrollment-pay-card" {...props}>
+        <Surface className="enrollment-pay-card" {...props}>
             <Flex>
                 <Flex.Item size="size.quarter">
                     <Box className="enrollment-pay-card__section enrollment-pay-card__details-section">
@@ -89,6 +89,6 @@ export default function EnrollmentPayCard({ enrollment, onCheckout, onCancel, ..
                     </Box>
                 </Flex.Item>
             </Flex>
-        </Segment>
+        </Surface>
     );
 }

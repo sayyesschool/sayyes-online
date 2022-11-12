@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 
 import { useCourse } from 'shared/hooks/courses';
 import { Grid, Flex, IconButton } from 'shared/ui-components';
@@ -37,13 +38,15 @@ export default function LessonPage({ match }) {
 
     if (!lesson) return <LoadingIndicator />;
 
+    return <Redirect to={exercise.uri} />;
+
     return (
         <Page ref={rootRef} className="lesson-page">
             <Page.Header
                 title={lesson.title}
                 breadcrumbs={[
-                    { url: course.url, text: course.title },
-                    { url: unit.url, text: unit.title }
+                    { url: course.uri, text: course.title },
+                    { url: unit.uri, text: unit.title }
                 ]}
                 actions={
                     <IconButton

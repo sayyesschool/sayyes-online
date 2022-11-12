@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useBoolean } from 'shared/hooks/state';
 import { useEnrollment } from 'shared/hooks/enrollments';
 import { usePost } from 'shared/hooks/posts';
-import { Avatar, Button, Card, Icon, Text } from 'shared/ui-components';
+import { Avatar, Button, Card, Icon, Surface, Text } from 'shared/ui-components';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import PostContent from 'shared/components/post-content';
@@ -50,7 +50,7 @@ export default function PostPage({ match }) {
             />
 
             <Page.Content>
-                <Segment>
+                <Surface>
                     <Card.Header
                         graphic={<Avatar src={post.user.imageUrl} large />}
                         title={post.user.fullname}
@@ -60,7 +60,7 @@ export default function PostPage({ match }) {
                     <PostContent
                         post={post}
                     />
-                </Segment>
+                </Surface>
 
                 {post.comments?.length > 0 && <>
                     <Text>Комментарии</Text>
@@ -75,7 +75,7 @@ export default function PostPage({ match }) {
                 </>}
 
                 {isCommenting ?
-                    <Segment outlined>
+                    <Surface outlined>
                         <Text
                             content="Новый комментарий"
                         />
@@ -90,7 +90,7 @@ export default function PostPage({ match }) {
 
                             <Button type="submit" form="new-comment-form" icon={<Icon>send</Icon>} outlined>Отправить</Button>
                         </Flex>
-                    </Segment>
+                    </Surface>
                     :
                     <Button onClick={toggleCommenting} outlined>Оставить комментарий</Button>
                 }

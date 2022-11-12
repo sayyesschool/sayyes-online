@@ -7,7 +7,7 @@ module.exports = context => {
     const controller = Controller(context);
 
     router.get('/', controller.getMany);
-    router.post('/', controller.create);
+    //router.post('/', controller.create);
 
     return router;
 };
