@@ -1,5 +1,4 @@
 import { NavLink } from 'react-router-dom';
-import { Button, Flex, Text } from '@fluentui/react-northstar';
 
 import { Button, Flex, Icon, Tabs, Text } from 'shared/ui-components';
 
@@ -22,7 +21,7 @@ export default function RoomHeader({
     isFullscreen,
     numberOfUnreadMessages,
     onChatToggle,
-    onFullscreen,
+    onFullscreenToggle,
     onSync,
     onDisconnect,
     children,
@@ -40,24 +39,26 @@ export default function RoomHeader({
                 <Text>{formatTime(connectedTime)}</Text>
             </Flex>
 
-            {/* <Flex className="room-header__tabs">
+            <Flex className="room-header__tabs">
                 <Tabs
                     items={[
                         {
+                            key: 'video',
                             as: NavLink,
                             to: '/',
                             value: '/',
                             icon: <Icon>video_camera_front</Icon>,
                             content: 'Видео'
                         },
+                        // {
+                        //     as: NavLink,
+                        //     to: '/courses',
+                        //     value: 'courses',
+                        //     icon: <Icon>book</Icon>,
+                        //     content: 'Курс'
+                        // },
                         {
-                            as: NavLink,
-                            to: '/courses',
-                            value: 'courses',
-                            icon: <Icon>book</Icon>,
-                            content: 'Курс'
-                        },
-                        {
+                            key: 'whiteboard',
                             as: NavLink,
                             to: '/whiteboard',
                             value: 'whiteboard',
@@ -66,7 +67,7 @@ export default function RoomHeader({
                         }
                     ]}
                 />
-            </Flex> */}
+            </Flex>
 
             <Flex className="room-header__actions">
                 {user.role === 'teacher' &&
@@ -105,7 +106,7 @@ export default function RoomHeader({
                     iconOnly
                     text
                     title={isFullscreen ? 'Полный экран' : 'Отключить полный экран'}
-                    onClick={onFullscreen}
+                    onClick={onFullscreenToggle}
                 />
 
                 <Button

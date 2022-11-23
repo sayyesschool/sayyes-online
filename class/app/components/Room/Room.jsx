@@ -5,24 +5,21 @@ import classnames from 'classnames';
 import { useBoolean } from 'shared/hooks/state';
 import { useFullScreen } from 'shared/hooks/screen';
 
-import useLocalAudio from 'app/hooks/useLocalAudio';
 import useRoomContext from 'app/hooks/useRoomContext';
 import useSharedState from 'app/hooks/useSharedState';
 
 import Chat from 'app/components/Chat';
-import Course from 'app/components/Course';
-import Courses from 'app/components/Courses';
+// import Courses from 'app/components/Courses';
 import MainParticipant from 'app/components/MainParticipant';
 import ParticipantList from 'app/components/ParticipantList';
 import RoomHeader from 'app/components/RoomHeader';
 import RoomContent from 'app/components/RoomContent';
 import RoomSidePanel from 'app/components/RoomSidePanel';
 import ScreenShareAlert from 'app/components/ScreenShareAlert';
-import Whiteboard from 'app/components/Whiteboard';
+import MiroWhiteboard from 'app/components/MiroWhiteboard';
 
 export default function Room({ user, enrollment }) {
     const location = useLocation();
-    const [localAudio, setLocalAudioEnabled] = useLocalAudio();
     const sharedState = useSharedState();
     const { room, participants, isSharingScreen, toggleScreenShare } = useRoomContext();
 
@@ -30,7 +27,6 @@ export default function Room({ user, enrollment }) {
     const [isFullscreen, toggleFullscreen] = useFullScreen(rootRef);
     const [isChatOpen, toggleChatOpen] = useBoolean(false);
     const [numberOfUnreadMessages, setNumberOfUnreadMessages] = useState();
-    const [shouldBeUnmuted, setShouldBeUnmuted] = useState();
 
     useEffect(() => {
         const namesById = {
@@ -52,26 +48,10 @@ export default function Room({ user, enrollment }) {
     }, [isChatOpen]);
 
     const handleSync = useCallback(() => {
-        sharedState.update({
+        sharedState.updateDoc({
             path: location.pathname
         });
     }, [location]);
-
-    const handleMedia = useCallback(media => {
-        if (!localAudio) return;
-
-        if (media) {
-            if (localAudio.isEnabled) {
-                setLocalAudioEnabled(false);
-                setShouldBeUnmuted(true);
-            }
-        } else {
-            if (!localAudio.isEnabled && shouldBeUnmuted) {
-                setLocalAudioEnabled(true);
-                setShouldBeUnmuted(false);
-            }
-        }
-    }, [localAudio, shouldBeUnmuted]);
 
     const handleChatConnected = useCallback(channel => {
         channel.getUnconsumedMessagesCount()
@@ -83,10 +63,11 @@ export default function Room({ user, enrollment }) {
 
     const handleDisconnect = useCallback(() => {
         room.disconnect();
-    }, []);
+    }, [room]);
 
     return (
         <div ref={rootRef} className={classnames('room', {
+            'room--fullscreen': isFullscreen,
             'room--showing-content': location.pathname !== '/'
         })}>
             <RoomHeader
@@ -97,7 +78,7 @@ export default function Room({ user, enrollment }) {
                 isFullscreen={isFullscreen}
                 numberOfUnreadMessages={numberOfUnreadMessages}
                 onChatToggle={toggleChatOpen}
-                onFullscreen={toggleFullscreen}
+                onFullscreenToggle={toggleFullscreen}
                 onSync={handleSync}
                 onDisconnect={handleDisconnect}
             />
@@ -119,29 +100,15 @@ export default function Room({ user, enrollment }) {
                     <MainParticipant />
                 </Route>
 
-                <Route exact path="/courses">
+                {/* <Route path="/courses">
                     <Courses
-                        courses={enrollment.courses}
-                    />
-                </Route>
-
-                <Route
-                    path={[
-                        '/courses/:courseId/units/:unitId',
-                        '/courses/:courseId/lessons/lessons/:lessonId',
-                        '/courses/:courseId/exercises/lessons/:exerciseId',
-                        '/courses/:courseId'
-                    ]}
-                >
-                    <Course
                         user={user}
-                        sharedState={sharedState}
-                        onMedia={handleMedia}
+                        enrollment={enrollment}
                     />
-                </Route>
+                </Route> */}
 
                 <Route path="/whiteboard">
-                    <Whiteboard />
+                    <MiroWhiteboard />
                 </Route>
 
                 <ParticipantList />

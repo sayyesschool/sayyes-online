@@ -1,0 +1,15 @@
+.miro-whiteboard {
+    position: relative;
+
+    .ui-button {
+        position: absolute;
+        bottom: 8px;
+        left: 50%;
+    }
+
+    iframe {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
