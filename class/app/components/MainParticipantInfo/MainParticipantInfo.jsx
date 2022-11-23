@@ -1,4 +1,3 @@
-import { Avatar, Label, Text } from '@fluentui/react-northstar';
 import classnames from 'classnames';
 
 import { Avatar, Label, Text } from 'shared/ui-components';
@@ -37,9 +36,8 @@ export default function MainParticipantInfo({ participant, children }) {
             data-cy-main-participant
             data-cy-participant={participant.identity}
         >
-            <div className="main-participant-info__container">
+            <div className="main-participant-info__identity-container">
                 <Label
-                    className="main-participant-info__identity"
                     icon={<AudioLevelIndicator audioTrack={audioTrack} />}
                     content={<>
                         {participant.name}

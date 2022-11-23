@@ -1,5 +1,5 @@
 import EventEmitter from 'events';
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Video from 'twilio-video';
 
 import { isMobile } from 'app/utils';
@@ -28,6 +28,11 @@ export default function useRoom(localTracks, options, onError) {
                 // a warning from the EventEmitter object. Here we increase the max listeners to suppress the warning.
                 room.setMaxListeners(15);
 
+                // All video tracks are published with 'low' priority because the video track
+                // that is displayed in the 'MainParticipant' component will have it's priority
+                // set to 'high' via track.setPriority()
+                room.localParticipant.videoTracks.forEach(publication => publication.setPriority('low'));
+
                 room.once('disconnected', () => {
                     // Reset the room only after all other `disconnected` listeners have been called.
                     setTimeout(() => setRoom(new EventEmitter()));
@@ -39,10 +44,6 @@ export default function useRoom(localTracks, options, onError) {
                     }
                 });
 
-                // All video tracks are published with 'low' priority because the video track
-                // that is displayed in the 'MainParticipant' component will have it's priority
-                // set to 'high' via track.setPriority()
-                room.localParticipant.videoTracks.forEach(publication => publication.setPriority('low'));
 
                 // Add a listener to disconnect from the room when a user closes their browser
                 window.addEventListener('beforeunload', disconnect);
@@ -62,7 +63,7 @@ export default function useRoom(localTracks, options, onError) {
     }, [localTracks, onError]);
 
     const disconnect = useCallback(() => {
-        room.disconnect();
+        room?.disconnect();
     }, [room]);
 
     return { room, connect, disconnect, isConnecting };

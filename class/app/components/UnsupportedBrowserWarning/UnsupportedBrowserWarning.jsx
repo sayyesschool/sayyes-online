@@ -1,6 +1,6 @@
 import Video from 'twilio-video';
 
-import { Header, List, Segment, Text } from 'shared/ui-components';
+import { Header, List, Surface, Text } from 'shared/ui-components';
 
 const browsers = [
     { title: 'Chrome', url: 'https://www.google.ru/chrome' },
@@ -13,7 +13,7 @@ export default function UnsupportedBrowserWarning({ children }) {
     if (!Video.isSupported) {
         return (
             <div className="unsupported-browser-warning">
-                <Segment>
+                <Surface>
                     <Header
                         content="Ваш браузер или устройство не поддерживается"
                     />
@@ -29,7 +29,7 @@ export default function UnsupportedBrowserWarning({ children }) {
                             />
                         )}
                     </List>
-                </Segment>
+                </Surface>
             </div>
         );
     }

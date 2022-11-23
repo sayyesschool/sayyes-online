@@ -4,6 +4,7 @@ import useRoomContext from 'app/hooks/useRoomContext';
 
 export default function useRoomState() {
     const { room } = useRoomContext();
+
     const [state, setState] = useState('disconnected');
 
     useEffect(() => {
