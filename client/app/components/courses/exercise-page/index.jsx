@@ -40,6 +40,7 @@ export default function ExercisePage({ match }) {
                 <Grid columns="minmax(0, 2fr) minmax(0, 1fr)">
                     <Page.Section>
                         <ExerciseContent
+                            key={exercise.id}
                             exercise={exercise}
                             onProgressChange={handleExerciseProgressChange}
                         />
@@ -48,6 +49,7 @@ export default function ExercisePage({ match }) {
                     <Page.Section title="Упражнения" compact>
                         <ExercisesList
                             exercises={lesson.exercises}
+                            selectedExercise={exercise}
                         />
                     </Page.Section>
                 </Grid>
