@@ -3,7 +3,13 @@ import classnames from 'classnames';
 
 import './index.scss';
 
-export default function Select({ values, checked, onChange = Function.prototype, ...props }) {
+export default function Select({
+    values,
+    correctValue,
+    checked,
+    onChange = Function.prototype,
+    ...props
+}) {
     const [value, setValue] = useState('');
 
     const handleChange = useCallback(event => {
@@ -12,10 +18,11 @@ export default function Select({ values, checked, onChange = Function.prototype,
         onChange(value);
     }, [onChange]);
 
-    const isCorrect = values?.includes(value);
+    const isCorrect = checked ? value === correctValue : undefined;
+
     const classNames = classnames('inline-select', {
-        'inline-select--correct': checked && isCorrect,
-        'inline-select--incorrect': checked && !isCorrect
+        'inline-select--correct': isCorrect === true,
+        'inline-select--incorrect': isCorrect === false
     });
 
     return (

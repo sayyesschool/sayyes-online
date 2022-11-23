@@ -1,4 +1,4 @@
-import { createElement, forwardRef, useImperativeHandle, useState } from 'react';
+import { createElement, memo } from 'react';
 import classnames from 'classnames';
 
 import AudioItem from './audio';
@@ -31,13 +31,13 @@ const Components = {
     video: VideoItem
 };
 
-export default forwardRef(function ExerciseItem({ item, checked, ...props }, ref) {
-    const [state, setState] = useState(item?.state);
-
-    useImperativeHandle(ref, () => ({
-        get state() { return state; }
-    }));
-
+export default memo(function ExerciseItem({
+    item,
+    checked,
+    state,
+    onUpdateState,
+    ...props
+}) {
     const classNames = classnames('exercise-item', `exercise-item--${item.type}`);
 
     return (
@@ -47,7 +47,7 @@ export default forwardRef(function ExerciseItem({ item, checked, ...props }, ref
                     item,
                     checked,
                     state,
-                    setState
+                    onUpdateState
                 })
             }
         </div>

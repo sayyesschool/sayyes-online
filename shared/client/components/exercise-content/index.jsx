@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useState } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
 import { Button } from 'shared/ui-components';
@@ -7,46 +7,49 @@ import ExerciseItem from 'shared/components/exercise-item';
 import './index.scss';
 
 export default function ExerciseContent({ exercise, onProgressChange }) {
-    const exerciseContentRef = useRef();
-
+    const [state, setState] = useState(exercise.state || {});
     const [isSaving, setSaving] = useBoolean(false);
     const [isChecked, setChecked] = useBoolean(false);
 
     const handleSave = useCallback(() => {
         setSaving(true);
 
-        return onProgressChange(exercise, {
-            state: exerciseContentRef.current.state
-        }).then(() => setSaving(false));
-    }, [exercise]);
+        return onProgressChange(exercise, { state })
+            .then(() => setSaving(false));
+    }, [state, exercise]);
 
     const handleCheck = useCallback(() => {
         setChecked(true);
     }, []);
 
+    const handleUpdateState = useCallback((itemId, state) => {
+        setState(oldState => ({
+            ...oldState,
+            [itemId]: state
+        }));
+    }, []);
+
     const hasSaveableItems = exercise.items.some(item =>
-        item.type === 'input' ||
         item.type === 'essay' ||
-        item.type === 'fib'
+        item.type === 'fib' ||
+        item.type === 'input'
     );
 
     const hasCheckableItems = exercise.items.some(item =>
-        item.type === 'input' ||
-        item.type === 'fib'
+        item.type === 'fib' ||
+        (item.type === 'input' && item.items?.length > 0)
     );
 
     return (
         <article className="exercise">
-            {/* <header className="exercise-header">
-                <Text as="h1" className="exercise-title">{exercise.title}</Text>
-            </header> */}
-
             <section className="exercise-content">
                 {exercise.items.map(item =>
                     <ExerciseItem
                         key={item.id}
                         item={item}
+                        state={state[item.id]}
                         checked={isChecked}
+                        onUpdateState={handleUpdateState}
                     />
                 )}
             </section>

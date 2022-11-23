@@ -1,11 +1,19 @@
 import { forwardRef, useCallback, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
+import classnames from 'classnames';
 
 import './index.scss';
 
-function InlineTextarea({ onChange = Function.prototype, ...props }, ref) {
+function InlineTextarea({
+    value: _value = '',
+    correctValues,
+    checked,
+    required,
+    onChange = Function.prototype,
+    ...props
+}, ref) {
     const elementRef = useRef();
 
-    const [value, setValue] = useState(props.value || '');
+    const [value, setValue] = useState(_value);
 
     useImperativeHandle(ref, () => elementRef.current);
 
@@ -15,8 +23,8 @@ function InlineTextarea({ onChange = Function.prototype, ...props }, ref) {
         const element = elementRef.current;
 
         function setHeight() {
-            element.style.height = '36px';
-            element.style.height = `${element.scrollHeight + 3}px`;
+            element.style.height = '30px';
+            element.style.height = `${element.scrollHeight + 2}px`;
         }
 
         setHeight();
@@ -32,11 +40,23 @@ function InlineTextarea({ onChange = Function.prototype, ...props }, ref) {
         onChange(value);
     }, [onChange]);
 
+    const isCorrect = (checked && required) ? (
+        correctValues?.length > 0 ?
+            correctValues?.includes(value?.trim().toLocaleLowerCase()) :
+            value !== ''
+    ) : undefined;
+
+    const classNames = classnames('inline-textarea', {
+        'inline-textarea--correct': isCorrect === true,
+        'inline-textarea--incorrect': isCorrect === false
+    });
+
     return (
         <textarea
             ref={elementRef}
-            className="inline-textarea"
+            className={classNames}
             value={value}
+            required={required}
             onChange={handleChange}
             {...props}
         />

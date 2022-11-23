@@ -73,32 +73,34 @@ function elementToObject(element) {
     if (type === '#text') {
         return element.textContent === '\n' ? undefined : element.textContent;
     } else if (type === 'input' && element.type === 'text') {
-        const values = element.dataset.values.split(',');
+        const correctValues = element.dataset.values.split(',').filter(value => !!value).map(value => value.trim().toLowerCase());
 
         return {
             type: 'input',
             props: {
-                values,
-                required: values?.length > 0
+                correctValues,
+                required: correctValues?.length > 0
             }
         };
     } else if (type === 'textarea' && element.type === 'textarea') {
-        const values = element.dataset.values.split(',');
+        const correctValues = element.dataset.values.split(',').filter(value => !!value).map(value => value.trim().toLowerCase());
 
         return {
             type: 'textarea',
             props: {
-                values,
-                required: values?.length > 0
+                correctValues,
+                required: correctValues?.length > 0
             }
         };
     } else if (type === 'select') {
         const values = Array.from(element.children).map(option => option.value);
+        const correctValue = values.find(value => value.includes('*'));
 
         return {
             type: 'select',
             props: {
                 values,
+                correctValue,
                 required: values?.length > 0
             }
         };

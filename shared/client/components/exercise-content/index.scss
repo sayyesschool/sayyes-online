@@ -8,6 +8,8 @@
     }
 
     .exercise-content + .exercise-footer {
+        display: flex;
+        gap: .5rem;
         margin-top: 1rem;
     }
 }

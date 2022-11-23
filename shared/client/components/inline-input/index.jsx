@@ -3,8 +3,15 @@ import classnames from 'classnames';
 
 import './index.scss';
 
-export default function InlineInput({ values, checked, onChange = Function.prototype, ...props }) {
-    const [value, setValue] = useState(props.value || '');
+export default function InlineInput({
+    value: _value = '',
+    correctValues,
+    checked,
+    required,
+    onChange = Function.prototype,
+    ...props
+}) {
+    const [value, setValue] = useState(_value);
 
     const handleChange = useCallback(event => {
         const value = event.target.value;
@@ -12,11 +19,15 @@ export default function InlineInput({ values, checked, onChange = Function.proto
         onChange(value);
     }, [onChange]);
 
-    const isCorrect = values?.includes(value);
+    const isCorrect = (checked && required) ? (
+        correctValues?.length > 0 ?
+            correctValues?.includes(value?.trim().toLocaleLowerCase()) :
+            value !== ''
+    ) : undefined;
 
     const classNames = classnames('inline-input', {
-        'inline-input--correct': checked && isCorrect,
-        'inline-input--incorrect': checked && !isCorrect
+        'inline-input--correct': isCorrect === true,
+        'inline-input--incorrect': isCorrect === false
     });
 
     return (
@@ -25,6 +36,7 @@ export default function InlineInput({ values, checked, onChange = Function.proto
 
             <input
                 value={value}
+                required={required}
                 onChange={handleChange}
                 {...props}
             />

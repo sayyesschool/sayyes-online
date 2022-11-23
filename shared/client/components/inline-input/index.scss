@@ -26,12 +26,16 @@
     }
 
     &--correct {
-        color: forestgreen;
-        background-color: rgba(34, 139, 34, .12);
+        input {
+            color: forestgreen;
+            background-color: rgba(34, 139, 34, .12);
+        }
     }
 
     &--incorrect {
-        color: firebrick;
-        background-color: rgba(178, 34, 34, .12);
+        input {
+            color: firebrick;
+            background-color: rgba(178, 34, 34, .12);
+        }
     }
 }

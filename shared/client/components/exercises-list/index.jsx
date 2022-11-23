@@ -6,17 +6,14 @@ import List from 'shared/ui-components/list';
 
 import './index.scss';
 
-export default function ExercisesList({ exercises }) {
+export default function ExercisesList({ exercises, selectedExercise }) {
     return (
-        <List className="exercises-list">
+        <List as="nav" className="exercises-list">
             {exercises.map((exercise, index) =>
                 <List.Item
                     key={exercise.id}
                     as={NavLink}
                     to={exercise.uri}
-                    avatar={
-                        <Avatar key={exercise.id} text={index + 1} size="medium" />
-                    }
                     media={
                         <Icon>{exercise.completed ? 'check_circle_outline' : 'radio_button_unchecked'}</Icon>
                     }
@@ -24,6 +21,7 @@ export default function ExercisesList({ exercises }) {
                     content={exercise.description}
                     navigable
                     selectable
+                    selected={exercise.id === selectedExercise?.id}
                 />
             )}
         </List>
