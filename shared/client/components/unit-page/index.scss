@@ -1,27 +1,3 @@
-@use 'mdc-react/src/side-sheet';
-
-#unit-page {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 64px);
-    background-color: #f1f3f4;
-
-    .page-header {
-        max-width: 1024px;
-        margin-top: 1rem;
-    }
-
-    .page-content {
-        flex: 1;
-        width: 100%;
-        max-width: 1024px;
-    }
-
-    .mdc-side-sheet {
-        top: 0;
-        right: 0;
-        z-index: 4;
-        position: absolute;
-        @include mixins.width(360px);
-    }
+.page.unit-page {
+    
 }

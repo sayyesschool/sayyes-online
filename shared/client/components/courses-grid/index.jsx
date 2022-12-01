@@ -7,7 +7,7 @@ import Text from 'shared/ui-components/text';
 
 export default function CoursesGrid({ courses }) {
     return (
-        <Grid className="courses-grid">
+        <Grid columns="4" className="courses-grid">
             {courses.map(course =>
                 <Card
                     key={course.id}
@@ -23,8 +23,7 @@ export default function CoursesGrid({ courses }) {
 
 
                     <Card.Header>
-                        <Text>{course.title}</Text>
-                        <Text>{course.subtitle}</Text>
+                        <Text as="h3">{course.title}</Text>
                     </Card.Header>
                 </Card>
             )}

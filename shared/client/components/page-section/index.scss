@@ -34,10 +34,10 @@
 
     &__content {
         padding: 8px 16px 16px;
-        
-        // > .ui-form {
-        //     padding: 8px 16px 16px;
-        // }
+
+        &:empty {
+            padding: 0;
+        }
 
         .ui-list__item {
             padding-left: 1rem;

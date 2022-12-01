@@ -6,7 +6,7 @@ import ExerciseItem from 'shared/components/exercise-item';
 
 import './index.scss';
 
-export default function ExerciseContent({ exercise, onProgressChange }) {
+export default function ExerciseContent({ exercise, readonly, onProgressChange }) {
     const [state, setState] = useState(exercise.state || {});
     const [isSaving, setSaving] = useBoolean(false);
     const [isChecked, setChecked] = useBoolean(false);
@@ -29,7 +29,7 @@ export default function ExerciseContent({ exercise, onProgressChange }) {
         }));
     }, []);
 
-    const hasSaveableItems = exercise.items.some(item =>
+    const hasSaveableItems = readonly ? false : exercise.items.some(item =>
         item.type === 'essay' ||
         item.type === 'fib' ||
         item.type === 'input'

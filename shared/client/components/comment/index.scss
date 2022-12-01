@@ -1,53 +1,16 @@
-.comment-card {
-    box-shadow: none;
-    overflow: visible;
+.comment {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
 
-    .comment-content {
-        p {
-            line-height: 1.4;
-
-            &:last-child {
-                margin-bottom: 0;
-            }
-        }
-    }
-
-    .mdc-card__header {
-        padding: 0 0 8px;
-    }
-
-    .mdc-card__title {
-        font-size: 1rem;
-        line-height: 1.4;
-    }
-
-    .mdc-card__subtitle {
-        font-size: 0.8rem;
-        line-height: 1 !important;
-    }
-
-    .mdc-card__section.mdc-card__section--primary {
-        padding: 8px 0 0 42px !important;
-    }
-
-    .mdc-card__actions {
+    .comment-actions {
+        display: flex;
         justify-content: space-between;
     }
 
-    + .comment-card {
-        margin-top: 1rem;
-    }
-
-    &--editing {
-        .mdc-card__header {
-            padding: 8px;
-        }
-
-        .text-editor {
-            border-left: none;
-            border-right: none;
-            border-radius: 0;
-            border-color: rgba(0,0,0,0.12);
+    .ui-chat__messagecontent {
+        p:last-child {
+            margin-bottom: 0;
         }
     }
 }

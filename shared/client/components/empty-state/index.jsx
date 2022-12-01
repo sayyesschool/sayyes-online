@@ -14,10 +14,10 @@ export default function EmptyState({ icon, title, description, className, ...pro
                 <Icon className="empty-state__icon">{icon}</Icon>
             }
 
-            <Text className="empty-state__title">{title}</Text>
+            <Text as="h3" className="empty-state__title">{title}</Text>
 
             {description &&
-                <Text className="empty-state__description">{description}</Text>
+                <Text as="p" className="empty-state__description">{description}</Text>
             }
         </div>
     );

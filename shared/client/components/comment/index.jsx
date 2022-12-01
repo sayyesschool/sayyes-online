@@ -36,21 +36,25 @@ export default function Comment({
     const isUserAuthor = user?.id === author?.id;
 
     return isEditing ? (
-        <>
+        <div className="comment comment--editing">
             <CommentForm
                 id="comment-form"
                 comment={comment}
                 onSubmit={handleSubmit}
             />
 
-            <Button type="button" onClick={handleToggle}>Отменить</Button>
-
-            <Button type="submit" form="comment-form" outlined>Сохранить</Button>
-        </>
+            <div className="comment-actions">
+                <Button type="button" flat onClick={handleToggle}>Отменить</Button>
+                <Button type="submit" form="comment-form" primary flat>Сохранить</Button>
+            </div>
+        </div>
     ) : (
         <ChatMessage
+            className="comment"
             author={author.fullname}
             timestamp={comment.datetimeLabel}
+            density="compact"
+            mine={isUserAuthor}
             content={
                 <div dangerouslySetInnerHTML={{ __html: comment.content }} />
             }

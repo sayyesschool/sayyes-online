@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
 import { Avatar, Box, Button, Flex, Header, Icon, MenuButton, Surface, Text } from 'shared/ui-components';
+import { Chat } from 'shared/components/chat';
 import Comment from 'shared/components/comment';
 import PostContent from 'shared/components/post-content';
 import PostForm from 'shared/components/post-form';
@@ -53,8 +54,7 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
                 <MenuButton
                     trigger={
                         <Button
-                            icon={<Icon>more_vert</Icon>}
-                            iconOnly
+                            icon="more_vert"
                             text
                         />
                     }
@@ -96,8 +96,8 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
 
 
                 {!isEditing && post.comments.length > 0 &&
-                    <Flex column>
-                        <Text>Комментарии</Text>
+                    <div className="post-comments">
+                        <Text as="h4">Комментарии</Text>
 
                         {post.comments.map(comment =>
                             <Comment
@@ -108,7 +108,7 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
                                 onDelete={handleDeleteComment}
                             />
                         )}
-                    </Flex>
+                    </div>
                 }
 
                 {isCommenting &&
