@@ -1,5 +1,5 @@
 import { useEnrollment } from 'shared/hooks/enrollments';
-import { Button, Flex, Grid, Icon, MenuButton } from 'shared/ui-components';
+import { Button, Flex, Grid, MenuButton } from 'shared/ui-components';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 
@@ -27,7 +27,7 @@ export default function EnrollmentPage({ match }) {
                         key="class"
                         as="a"
                         href={enrollment.classUrl}
-                        icon={<Icon>video_call</Icon>}
+                        icon="video_call"
                         content="Перейти в класс"
                         primary
                     />,
@@ -36,7 +36,7 @@ export default function EnrollmentPage({ match }) {
                             key="menu"
                             trigger={
                                 <Button
-                                    icon={<Icon>more_vert</Icon>}
+                                    icon="more_vert"
                                     iconOnly
                                     text
                                 />
