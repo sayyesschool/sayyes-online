@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import { useStore } from 'shared/hooks/store';
@@ -15,7 +15,7 @@ import NotificationAlert from 'shared/components/notification-alert';
 
 // import navItems from 'app/data/nav';
 // import Account from 'app/components/account';
-// import Courses from 'app/components/courses';
+import Courses from 'app/components/courses';
 import Home from 'app/components/home';
 import Enrollments from 'app/components/enrollments';
 // import Materials from 'app/components/materials';
@@ -54,7 +54,7 @@ export default function App() {
     if (!user) return <LoadingIndicator />;
 
     return (
-        <Fragment>
+        <div className="app">
             <AppHeader
                 user={user}
             >
@@ -65,7 +65,7 @@ export default function App() {
                 <Switch>
                     <Route exact path="/" component={Home} />
                     {/* <Route path="/account" component={Account} /> */}
-                    {/* <Route path="/courses" component={Courses} /> */}
+                    <Route path="/courses" component={Courses} />
                     <Route path="/enrollments" component={Enrollments} />
                     {/* <Route path="/materials" component={Materials} />
                     <Route path="/posts/:id" component={Post} /> */}
@@ -78,6 +78,6 @@ export default function App() {
                 text={notification.text}
                 onClose={handleSnackbarClose}
             />
-        </Fragment>
+        </div>
     );
 }
