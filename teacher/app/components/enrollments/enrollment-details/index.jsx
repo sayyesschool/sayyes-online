@@ -1,94 +1,85 @@
-import {
-    Avatar,
-    Card,
-    IconButton,
-    List
-} from 'mdc-react';
-
 import { useBoolean } from 'shared/hooks/state';
+import { Avatar, Button, List } from 'shared/ui-components';
 import DetailsList from 'shared/components/details-list';
+import PageSection from 'shared/components/page-section';
 
 export default function EnrollmentDetails({ enrollment }) {
     const [isOpen, toggleOpen] = useBoolean(false);
 
     return (
-        <section className="enrollment-details">
-            <Card>
-                <Card.PrimaryAction onClick={toggleOpen}>
-                    <Card.Header
-                        title="Детали обучения"
-                        actions={
-                            <IconButton
-                                icon={isOpen ? 'expand_less' : 'expand_more'}
-                            />
-                        }
+        <PageSection
+            className="enrollment-details"
+            title="Детали обучения"
+            actions={
+                <Button
+                    icon={isOpen ? 'expand_less' : 'expand_more'}
+                    text
+                    onClick={toggleOpen}
+                />
+            }
+            compact
+        >
+            {isOpen &&
+                <DetailsList>
+                    <List.Item
+                        icon="portrait"
+                        header={enrollment.ageLabel || '[Не указана]'}
+                        content="Возрастная группа"
                     />
-                </Card.PrimaryAction>
 
-                {isOpen &&
-                    <Card.Section>
-                        <DetailsList>
-                            <List.Item
-                                icon="portrait"
-                                primaryText={enrollment.ageLabel || '[Не указана]'}
-                                secondaryText="Возрастная группа"
-                            />
+                    <List.Item
+                        icon="timelapse"
+                        header={enrollment.lessonDuration + ' мин.'}
+                        content="Продолжительность урока"
+                    />
 
-                            <List.Item
-                                icon="timelapse"
-                                primaryText={enrollment.lessonDuration + ' мин.'}
-                                secondaryText="Продолжительность урока"
-                            />
+                    <List.Item
+                        icon="signal_cellular_alt"
+                        header={enrollment.levelLabel || '[Не указан]'}
+                        content="Уровень"
+                    />
 
-                            <List.Item
-                                icon="signal_cellular_alt"
-                                primaryText={enrollment.levelLabel || '[Не указан]'}
-                                secondaryText="Уровень"
-                            />
+                    <List.Item
+                        icon="flag"
+                        header={enrollment.goal || '[Не указана]'}
+                        content="Цель"
+                    />
 
-                            <List.Item
-                                icon="flag"
-                                primaryText={enrollment.goal || '[Не указана]'}
-                                secondaryText="Цель"
-                            />
+                    <List.Item
+                        icon="star"
+                        header={enrollment.experience || '[Не указан]'}
+                        content="Опыт"
+                    />
 
-                            <List.Item
-                                icon="star"
-                                primaryText={enrollment.experience || '[Не указан]'}
-                                secondaryText="Опыт"
-                            />
+                    <List.Item
+                        icon="checklist"
+                        header={enrollment.preferences || '[Не указаны]'}
+                        content="Предпочтения"
+                    />
 
-                            <List.Item
-                                icon="checklist"
-                                primaryText={enrollment.preferences || '[Не указаны]'}
-                                secondaryText="Предпочтения"
-                            />
-
-                            {enrollment.manager &&
-                                <List.Item
-                                    icon="person"
-                                    primaryText={enrollment.manager.fullname}
-                                    secondaryText="Менеджер"
-                                    end={
-                                        <Avatar
-                                            src={enrollment.manager.imageUrl}
-                                            text={enrollment.manager.initials}
-                                        />
-                                    }
+                    {enrollment.manager &&
+                        <List.Item
+                            icon="person"
+                            header={enrollment.manager.fullname}
+                            content="Менеджер"
+                            end={
+                                <Avatar
+                                    src={enrollment.manager.imageUrl}
+                                    text={enrollment.manager.initials}
                                 />
                             }
+                        />
+                    }
 
-                            {enrollment.note &&
-                                <List.Item
-                                    icon="notes"
-                                    primaryText={enrollment.note}
-                                    secondaryText="Заметки"
-                                />
-                            }
-                        </DetailsList>
-                    </Card.Section>
-                }
-            </Card>
-        </section>
+                    {enrollment.note &&
+                        <List.Item
+                            icon="notes"
+                            header={enrollment.note}
+                            content="Заметки"
+                        />
+                    }
+                </DetailsList>
+            }
+        </PageSection>
     );
 }

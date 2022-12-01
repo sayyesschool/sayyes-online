@@ -1,11 +1,9 @@
 import { useCallback } from 'react';
-import {
-    Card
-} from 'mdc-react';
 
 import LoadingIndicator from 'shared/components/loading-indicator';
-import MenuButton from 'shared/components/menu-button';
+import { Button, MenuButton, Spinner } from 'shared/ui-components';
 import CoursesList from 'shared/components/courses-list';
+import PageSection from 'shared/components/page-section';
 
 import { useStore, useActions } from 'app/hooks/store';
 
@@ -16,51 +14,54 @@ export default function EnrollmentCourses({ enrollment }) {
     const handleAddCourse = useCallback(courseId => {
         const courses = enrollment.courses.concat(courseId);
 
-        enrollmentActions.updateEnrollment(enrollment.id, { courses });
+        return enrollmentActions.updateEnrollment(enrollment.id, { courses });
     }, [enrollment]);
 
     const handleRemoveCourse = useCallback(courseId => {
         const courses = enrollment.courses.filter(id => id !== courseId);
 
-        enrollmentActions.updateEnrollment(enrollment.id, { courses });
+        return enrollmentActions.updateEnrollment(enrollment.id, { courses });
     }, [enrollment]);
 
-    if (!courses) return <LoadingIndicator />;
-
     const enrollmentCourses = courses
-        .filter(course => enrollment.courses.includes(course.id));
+        ?.filter(course => enrollment.courses.includes(course.id));
 
     const items = courses
-        .filter(course => !enrollment.courses.includes(course.id))
+        ?.filter(course => !enrollment.courses.includes(course.id))
         .map(course => ({
             key: course.id,
-            leadingThumbnail: <img src={course.imageUrl} />,
-            text: course.title,
+            media: <img src={course.imageUrl} />,
+            content: course.title,
             onClick: () => handleAddCourse(course.id)
         }));
 
     return (
-        <section className="enrollment-courses">
-            <Card>
-                <Card.Header
-                    title="Курсы"
-                    actions={
-                        <MenuButton
-                            icon="add"
-                            items={items}
-                        />
-                    }
+        <PageSection
+            className="enrollment-courses"
+            title="Курсы"
+            actions={
+                courses ?
+                    <MenuButton
+                        trigger={
+                            <Button
+                                icon="add"
+                                title="Добавить курс"
+                                text
+                            />
+                        }
+                        menu={items}
+                    />
+                    :
+                    <Spinner size="small" />
+            }
+            compact
+        >
+            {enrollmentCourses?.length > 0 &&
+                <CoursesList
+                    courses={enrollmentCourses}
+                    onRemove={handleRemoveCourse}
                 />
-
-                {enrollmentCourses.length > 0 &&
-                    <Card.Section>
-                        <CoursesList
-                            courses={enrollmentCourses}
-                            onRemove={handleRemoveCourse}
-                        />
-                    </Card.Section>
-                }
-            </Card>
-        </section>
+            }
+        </PageSection>
     );
 }

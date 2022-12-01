@@ -1,26 +1,26 @@
 import { useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import FormDialog from 'shared/components/form-dialog';
-import ScheduleCard from 'shared/components/schedule-card';
 import EnrollmentScheduleForm from 'shared/components/enrollment-schedule-form';
-
-import './index.scss';
+import FormDialog from 'shared/components/form-dialog';
+import PageSection from 'shared/components/page-section';
+import WeekSchedule from 'shared/components/week-schedule';
 
 export default function EnrollmentSchedule({ enrollment, onUpdate }) {
     const [isFormOpen, toggleFormOpen] = useBoolean(false);
 
     const handleSubmit = useCallback(data => {
-        onUpdate(data)
+        return onUpdate(data)
             .then(() => toggleFormOpen(false));
     }, []);
 
     return (
-        <section className="enrollment-schedule">
-            <ScheduleCard
-                schedule={enrollment.schedule}
-                editable
-            />
+        <PageSection className="enrollment-schedule" title="Расписание" compact>
+            {enrollment.schedule?.length > 0 &&
+                <WeekSchedule
+                    schedule={enrollment.schedule}
+                />
+            }
 
             <FormDialog
                 title="Расписание занятий"
@@ -34,6 +34,6 @@ export default function EnrollmentSchedule({ enrollment, onUpdate }) {
                     onSubmit={handleSubmit}
                 />
             </FormDialog>
-        </section>
+        </PageSection>
     );
 }

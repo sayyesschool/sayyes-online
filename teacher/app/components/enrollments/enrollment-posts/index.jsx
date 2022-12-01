@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 
 import PostsFeed from 'shared/components/posts-feed';
+import PageSection from 'shared/components/page-section';
 
 import './index.scss';
 
@@ -14,11 +15,11 @@ export default function EnrollmentPosts({ enrollment }) {
     }, [enrollment]);
 
     return (
-        <section className="enrollment-posts">
+        <PageSection className="enrollment-posts" compact ghost>
             <PostsFeed
                 query={{ enrollment: enrollment.id }}
                 beforeCreate={beforeCreate}
             />
-        </section>
+        </PageSection>
     );
 }

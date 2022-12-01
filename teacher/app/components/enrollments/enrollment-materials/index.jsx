@@ -1,13 +1,9 @@
 import { useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import {
-    Card,
-    IconButton,
-    List
-} from 'mdc-react';
 
+import { Button, MenuButton } from 'shared/ui-components';
 import LoadingIndicator from 'shared/components/loading-indicator';
-import MenuButton from 'shared/components/menu-button';
+import MaterialsList from 'shared/components/materials-list';
+import PageSection from 'shared/components/page-section';
 
 import { useStore, useActions } from 'app/hooks/store';
 
@@ -39,49 +35,35 @@ export default function EnrollmentMaterials({ enrollment }) {
         .filter(material => !enrollment.materials.includes(material.id))
         .map(material => ({
             key: material.id,
-            leadingThumbnail: <img src={material.imageUrl} />,
-            primaryText: material.title,
-            secondaryText: material.subtitle,
+            media: <img src={material.imageUrl} />,
+            content: material.title,
             onClick: () => handleAddMaterial(material.id)
         }));
 
     return (
-        <section className="enrollment-materials">
-            <Card>
-                <Card.Header
-                    title="Пособия"
-                    actions={
-                        <MenuButton
+        <PageSection
+            className="enrollment-materials"
+            title="Материалы"
+            actions={
+                <MenuButton
+                    trigger={
+                        <Button
                             icon="add"
-                            items={items}
+                            title="Добавить материал"
+                            text
                         />
                     }
+                    menu={items}
                 />
-
-                {enrollmentMaterials.length > 0 &&
-                    <Card.Section>
-                        <List>
-                            {enrollmentMaterials.map(material =>
-                                <List.Item
-                                    key={material.id}
-                                    component={Link}
-                                    to={material.uri}
-                                    leadingThumbnail={<img src={material.imageUrl} />}
-                                    primaryText={material.title}
-                                    secondaryText={material.subtitle}
-                                    trailingIcon={
-                                        <IconButton
-                                            icon="remove"
-                                            title="Убрать курс"
-                                            onClick={event => handleRemoveMaterial(event, material.id)}
-                                        />
-                                    }
-                                />
-                            )}
-                        </List>
-                    </Card.Section>
-                }
-            </Card>
-        </section>
+            }
+            compact
+        >
+            {enrollmentMaterials.length > 0 &&
+                <MaterialsList
+                    materials={enrollment.materials}
+                    onRemove={handleRemoveMaterial}
+                />
+            }
+        </PageSection>
     );
 }

@@ -1,24 +1,19 @@
 import { useCallback, useState } from 'react';
-import {
-    Card,
-    IconButton,
-} from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
+import { Button } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LessonPillGroup from 'shared/components/lessons-pill-group';
+import PageSection from 'shared/components/page-section';
 
 import { useActions } from 'app/hooks/store';
 import LessonForm from 'app/components/lessons/lesson-form';
-
-import './index.scss';
 
 export default function EnrollmentLessons({ enrollment }) {
     const lessonActions = useActions('lessons');
 
     const [lesson, setLesson] = useState();
-
     const [isNewLessonFormOpen, toggleNewLessonFormOpen] = useBoolean(false);
     const [isEditLessonFormOpen, toggleEditLessonFormOpen] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
@@ -40,7 +35,7 @@ export default function EnrollmentLessons({ enrollment }) {
             .then(() => toggleConfirmationDialogOpen(false));
     }, [lesson]);
 
-    const handleUpdate = useCallback(lesson => {
+    const handleEdit = useCallback(lesson => {
         setLesson(lesson);
         toggleEditLessonFormOpen(true);
     }, []);
@@ -56,31 +51,27 @@ export default function EnrollmentLessons({ enrollment }) {
     const lessonsDurationDelta = enrollment.lessonDuration * enrollment.lessons.length - lessonsDuration;
 
     return (
-        <section className="enrollment-lessons">
-            <Card>
-                <Card.Header
-                    title="Занятия"
-                    subtitle={lessonsDurationDelta !== 0 && ((lessonsDurationDelta < 0 ? 'Превышение на' : 'Осталось') + ` ${Math.abs(lessonsDurationDelta)} мин.`)}
-                    actions={[
-                        <IconButton
-                            key="add-lesson"
-                            icon="add"
-                            title="Создать урок"
-                            onClick={toggleNewLessonFormOpen}
-                        />
-                    ]}
+        <PageSection
+            className="enrollment-lessons"
+            title="Занятия"
+            description={lessonsDurationDelta !== 0 && ((lessonsDurationDelta < 0 ? 'Превышение на' : 'Осталось') + ` ${Math.abs(lessonsDurationDelta)} мин.`)}
+            actions={
+                <Button
+                    key="add-lesson"
+                    icon="add"
+                    title="Создать урок"
+                    text
+                    onClick={toggleNewLessonFormOpen}
                 />
-
-                {enrollment.lessons.length > 0 &&
-                    <Card.Section secondary>
-                        <LessonPillGroup
-                            lessons={enrollment.lessons}
-                            onClick={handleUpdate}
-                            onDelete={handleDelete}
-                        />
-                    </Card.Section>
-                }
-            </Card>
+            }
+        >
+            {enrollment.lessons.length > 0 &&
+                <LessonPillGroup
+                    lessons={enrollment.lessons}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                />
+            }
 
             <FormDialog
                 form="new-lesson-form"
@@ -92,8 +83,8 @@ export default function EnrollmentLessons({ enrollment }) {
                     id="new-lesson-form"
                     lesson={{
                         duration: enrollment.lessonDuration,
-                        client: enrollment?.client,
-                        teacher: enrollment?.teacher
+                        client: enrollment?.client?.id,
+                        teacher: enrollment?.teachers[0]
                     }}
                     onSubmit={createLesson}
                 />
@@ -119,6 +110,6 @@ export default function EnrollmentLessons({ enrollment }) {
                 onConfirm={deleteLesson}
                 onClose={() => toggleConfirmationDialogOpen(false)}
             />
-        </section>
+        </PageSection>
     );
 }

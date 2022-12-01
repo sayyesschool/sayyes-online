@@ -7,28 +7,24 @@ import Form from 'shared/ui-components/form';
 import './index.scss';
 
 const statuses = [
-    { key: 'scheduled', value: 'scheduled', header: 'Запланирован' },
-    { key: 'ended', value: 'ended', header: 'Завершился' },
-    { key: 'missed', value: 'missed', header: 'Пропущен' },
-    { key: 'canceled', value: 'canceled', header: 'Отменен' }
+    { key: 'scheduled', value: 'scheduled', content: 'Запланирован' },
+    { key: 'ended', value: 'ended', content: 'Завершился' },
+    { key: 'missed', value: 'missed', content: 'Пропущен' },
+    { key: 'canceled', value: 'canceled', content: 'Отменен' }
 ];
 
-const defaultLesson = {
+const getDefaultData = data => ({
     status: 'scheduled',
     duration: 50,
     date: moment().format('YYYY-MM-DDTHH:mm'),
-    note: ''
-};
+    note: '',
+    ...data
+});
 
 const minDate = moment().subtract(1, 'hour');
 
-export default function LessonForm({ lesson = defaultLesson, onSubmit, ...props }) {
-    const { data, getData, handleChange } = useFormData({
-        status: lesson.status,
-        duration: lesson.duration,
-        date: lesson.date,
-        note: ''
-    });
+export default function LessonForm({ lesson, onSubmit, ...props }) {
+    const { data, getData, handleChange } = useFormData(getDefaultData(lesson));
 
     const handleSubmit = useCallback(() => {
         getData(data => {
