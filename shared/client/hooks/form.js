@@ -121,7 +121,7 @@ export function useFormData(initialData, deps = []) {
                     ...data,
                     [name1]: array
                 };
-            } else if (isObject(data[name1])) {
+            } else if (!Array.isArray(data[name1]) && isObject(data[name1])) {
                 return {
                     ...data,
                     [name1]: {

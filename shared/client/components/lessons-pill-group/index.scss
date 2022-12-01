@@ -3,15 +3,18 @@
 .lessons-pill-group {
     display: flex;
     flex-wrap: wrap;
-    padding: 0;
-    margin-left: -4px;
-    margin-right: -4px;
+    gap: 4px;
+
+    .ui-menubutton {
+        width: calc(25% - 4px);
+    }
 
     .lesson-pill {
-        width: calc(20% - .5rem);
+        width: 100%;
         height: auto;
+        min-width: unset;
         max-height: none;
-        margin: .25rem;
+        margin: 0;
         padding: 4px 6px;
         transition: background-color .2s;
 
@@ -23,6 +26,10 @@
             span {
                 line-height: 1;
             }
+        }
+
+        .ui-pill__action {
+            margin: 0;
         }
 
         &--missed {

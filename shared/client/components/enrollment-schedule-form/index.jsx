@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import moment from 'moment';
 
 import { useBoolean } from 'shared/hooks/state';
-import useForm from 'shared/hooks/form';
+import { useFormData } from 'shared/hooks/form';
 import { rescheduleLessons } from 'shared/libs/enrollment';
 import { Form, FormCheckbox, FormInput } from 'shared/ui-components/form';
 import Text from 'shared/ui-components/text';
@@ -15,7 +15,7 @@ export default function EnrollmentScheduleForm({ enrollment, onSubmit, ...props 
     const [lessons, setLessons] = useState([]);
     const [shouldUpdateLessons, toggleShouldUpdateLessons] = useBoolean(false);
 
-    const { data, handleChange } = useForm({
+    const { data, handleChange } = useFormData({
         schedule: enrollment.schedule,
         startDate: enrollment.lessons.length > 0 ? new Date() : undefined
     });
@@ -33,6 +33,8 @@ export default function EnrollmentScheduleForm({ enrollment, onSubmit, ...props 
     const handleSubmit = useCallback(() => {
         onSubmit(data);
     }, [data]);
+
+    console.log(data);
 
     return (
         <Form className="enrollment-schedule-form" onSubmit={handleSubmit} {...props}>

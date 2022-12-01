@@ -39,6 +39,11 @@
         //     padding: 8px 16px 16px;
         // }
 
+        .ui-list__item {
+            padding-left: 1rem;
+            padding-right: .5rem;
+        }
+
         > .text-editor {
             border-top: 1px solid rgba(0, 0, 0, .12);
         }

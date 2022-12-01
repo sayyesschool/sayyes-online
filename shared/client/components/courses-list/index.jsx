@@ -7,6 +7,7 @@ import List from 'shared/ui-components/list';
 
 export default function CoursesList({ courses, onRemove }) {
     const handleRemove = useCallback((event, courseId) => {
+        event.preventDefault();
         event.stopPropagation();
 
         onRemove(courseId);
@@ -27,6 +28,7 @@ export default function CoursesList({ courses, onRemove }) {
                         <Button
                             icon="remove"
                             title="Убрать курс"
+                            text
                             onClick={event => handleRemove(event, course.id)}
                         />
                     }

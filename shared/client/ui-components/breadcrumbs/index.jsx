@@ -12,7 +12,7 @@ export default function Breadcrumbs({ items, ...props }) {
             {items.map((item, index, items) =>
                 <Fragment key={index}>
                     <Breadcrumb.Item>
-                        <Breadcrumb.Link as={Link} to={item.url} title={item.title}>
+                        <Breadcrumb.Link as={item.url && Link} to={item.url} title={item.title}>
                             {item.text}
                         </Breadcrumb.Link>
                     </Breadcrumb.Item>

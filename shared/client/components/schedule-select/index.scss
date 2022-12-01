@@ -7,22 +7,9 @@
 
     .schedule-select-item {
         display: flex;
-        align-items: center;
+        gap: 8px;
+        align-items: flex-end;
         margin-bottom: .5rem;
-
-        .mdc-select {
-            flex: 1;
-            margin-right: 8px;
-        }
-
-        .mdc-text-field {
-            margin-right: 8px;
-            margin-top: 0 !important;
-        }
-
-        .mdc-icon-button {
-            margin-left: auto;
-        }
     }
 
     .schedule-select-button--add {

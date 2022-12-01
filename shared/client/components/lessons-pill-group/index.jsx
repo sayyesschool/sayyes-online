@@ -30,7 +30,13 @@ export default function LessonsPillGroup({
     );
 }
 
-function LessonPill({ lesson, readonly, onEdit = Function.prototype, onDelete = Function.prototype, onRefund = Function.prototype }) {
+function LessonPill({
+    lesson,
+    readonly,
+    onEdit = Function.prototype,
+    onDelete = Function.prototype,
+    onRefund = Function.prototype
+}) {
     const [isMenuOpen, toggleMenuOpen] = useBoolean(false);
 
     const handleEdit = useCallback(() => {
@@ -46,48 +52,45 @@ function LessonPill({ lesson, readonly, onEdit = Function.prototype, onDelete = 
     }, [lesson, onRefund]);
 
     return (
-        <Pill
-            key={lesson.id || lesson.date.valueOf()}
-            className={classnames('lesson-pill', `lesson-pill--${lesson.status}`)}
-            //icon={lesson.trial ? <Icon>tour</Icon> : undefined}
-            action={!readonly &&
-                <MenuButton
-                    open={isMenuOpen}
-                    trigger={<Icon name="more_vert" />}
-                    onOpenChange={toggleMenuOpen}
-                    menu={[
-                        {
-                            key: 'edit',
-                            content: 'Изменить',
-                            onClick: handleEdit
-                        },
-                        {
-                            key: 'delete',
-                            content: 'Удалить',
-                            onClick: handleDelete
-                        },
-                        {
-                            key: 'refund',
-                            content: 'Вернуть на счет',
-                            disabled: lesson.status !== 'scheduled',
-                            onClick: handleRefund
-                        }
-                    ]}
-                />
-            }
-            onDismiss={!readonly && toggleMenuOpen}
-            rectangular
-            actionable={!readonly}
-        >
-            <span>
-                <span className="lesson-date">{lesson.date.format('D.M')}</span>
-                <span className="lesson-weekday"> {lesson.date.format('dd')}</span>
-            </span>
+        <MenuButton
+            open={readonly ? false : isMenuOpen}
+            trigger={
+                <Pill
+                    key={lesson.id || lesson.date.valueOf()}
+                    className={classnames('lesson-pill', `lesson-pill--${lesson.status}`)}
+                    actionable
+                    rectangular
+                >
+                    <span>
+                        <span className="lesson-date">{lesson.date.format('D.M')}</span>
+                        <span className="lesson-weekday"> {lesson.date.format('dd')}</span>
+                    </span>
 
-            <span>
-                <span className="lesson-time">{lesson.date.format('H:mm')}</span>
-                <span className="lesson-duration"> {`${lesson.duration} мин.`}</span>
-            </span>
-        </Pill>
+                    <span>
+                        <span className="lesson-time">{lesson.date.format('H:mm')}</span>
+                        <span className="lesson-duration"> {`${lesson.duration} мин.`}</span>
+                    </span>
+                </Pill>
+            }
+            onOpenChange={toggleMenuOpen}
+            menu={[
+                {
+                    key: 'edit',
+                    content: 'Изменить',
+                    onClick: handleEdit
+                },
+                {
+                    key: 'delete',
+                    content: 'Удалить',
+                    onClick: handleDelete
+                },
+                {
+                    key: 'refund',
+                    content: 'Вернуть на счет',
+                    disabled: lesson.status !== 'scheduled',
+                    onClick: handleRefund
+                }
+            ]}
+        />
     );
 }
