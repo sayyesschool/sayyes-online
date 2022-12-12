@@ -1,4 +1,4 @@
-import { teamsDarkTheme } from '@fluentui/react-northstar';
+import { teamsTheme, teamsDarkTheme } from '@fluentui/react-northstar';
 import '@fluentui/react-icons-northstar';
 
 export default {

@@ -1,20 +1,17 @@
-import { Link } from 'react-router-dom';
-
 import Card from 'shared/ui-components/card';
 import Image from 'shared/ui-components/image';
 import Text from 'shared/ui-components/text';
 
 import './index.scss';
 
-export default function LessonCard({ lesson, onSelect }) {
+export default function LessonCard({ lesson, onSelect, ...props }) {
     return (
         <Card
             className="lesson-card"
-            as={!onSelect ? Link : undefined}
-            to={!onSelect ? lesson.uri : undefined}
             horizontal
             compact
             onClick={onSelect && (() => onSelect(lesson))}
+            {...props}
         >
             <Card.Preview horizontal>
                 <Image src={lesson.imageUrl} alt="" />

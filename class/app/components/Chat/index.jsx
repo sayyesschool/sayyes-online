@@ -2,10 +2,9 @@ import { useCallback, useEffect, useRef } from 'react';
 import moment from 'moment';
 
 import { useChat } from 'shared/hooks/twilio';
-import { Button, Icon } from 'shared/ui-components';
+import { Button, Icon, Textarea } from 'shared/ui-components';
 import { Chat as FluentChat } from 'shared/components/chat';
 import LoadingIndicator from 'shared/components/loading-indicator';
-import TextArea from 'shared/components/textarea';
 
 import './index.scss';
 
@@ -15,7 +14,7 @@ export default function Chat({ name, user, onConnected }) {
     const mainRef = useRef();
     const audioRef = useRef();
     const sendButtonRef = useRef();
-    const textAreaRef = useRef();
+    const textareaRef = useRef();
 
     useEffect(() => {
         chat.connect({
@@ -32,7 +31,7 @@ export default function Chat({ name, user, onConnected }) {
     }, [chat?.messages]);
 
     const handleConnected = useCallback(channel => {
-        audioRef.current = new Audio('http://static.sayyesonline.ru/assets/audios/chat-new-message.mp3');
+        audioRef.current = new Audio(STORAGE_URL + '/assets/audios/chat-new-message.mp3');
         onConnected(channel);
     }, [onConnected]);
 
@@ -45,13 +44,13 @@ export default function Chat({ name, user, onConnected }) {
     const handleSubmit = useCallback(event => {
         event.preventDefault();
 
-        if (!textAreaRef.current.value) return;
+        if (!textareaRef.current.value) return;
 
-        chat.sendMessage(textAreaRef.current.value);
+        chat.sendMessage(textareaRef.current.value);
 
-        textAreaRef.current.value = '';
-        textAreaRef.current.style.height = '32px';
-        textAreaRef.current.focus();
+        textareaRef.current.value = '';
+        textareaRef.current.style.height = '32px';
+        textareaRef.current.focus();
     }, [chat]);
 
     const handleDelete = useCallback(message => {
@@ -108,8 +107,8 @@ export default function Chat({ name, user, onConnected }) {
 
             <footer className="chat__footer">
                 <form className="message-form" onSubmit={handleSubmit}>
-                    <TextArea
-                        ref={textAreaRef}
+                    <Textarea
+                        ref={textareaRef}
                         placeholder="Сообщение"
                         defaultValue=""
                         autoResize

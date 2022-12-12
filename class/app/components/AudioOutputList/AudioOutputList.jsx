@@ -1,4 +1,4 @@
-import { Select, Text } from 'shared/ui-components';
+import { FormSelect, Text } from 'shared/ui-components';
 
 import useAppState from 'app/hooks/useAppState';
 import { useAudioOutputDevices } from 'app/hooks/deviceHooks';
@@ -12,7 +12,7 @@ export default function AudioOutputList() {
     return (
         <div className="audio-output-list">
             {audioOutputDevices.length > 1 ?
-                <Select
+                <FormSelect
                     label="Динамики"
                     value={activeSinkId}
                     options={audioOutputDevices.map(device => ({

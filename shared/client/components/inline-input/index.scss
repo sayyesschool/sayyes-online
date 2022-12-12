@@ -3,6 +3,7 @@
     position: relative;
     vertical-align: middle;
     border-radius: 4px;
+    background-color: #e3e3e3;
 
     span {
         min-width: 32px;
@@ -22,20 +23,16 @@
         outline: none;
         cursor: pointer;
         letter-spacing: normal;
-        background-color: #e3e3e3;
+        background-color: transparent;
     }
 
     &--correct {
-        input {
-            color: forestgreen;
-            background-color: rgba(34, 139, 34, .12);
-        }
+        color: forestgreen;
+        background-color: rgba(34, 139, 34, .12);
     }
 
     &--incorrect {
-        input {
-            color: firebrick;
-            background-color: rgba(178, 34, 34, .12);
-        }
+        color: firebrick;
+        background-color: rgba(178, 34, 34, .12);
     }
 }

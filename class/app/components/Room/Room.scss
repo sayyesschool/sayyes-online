@@ -23,8 +23,9 @@
     }
 
     .room-content {
+        position: relative;
         height: calc(100% - 48px);
-        margin: 0;
+        overflow-y: auto;
     }
 
     .room-side-panel {

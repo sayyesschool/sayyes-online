@@ -17,15 +17,15 @@ export function useCourses(query) {
     return [courses, actions];
 }
 
-export function useCourse(id) {
+export function useCourse(courseId, query) {
     const [course, actions] = useStore(state => (state.courses && 'single' in state.courses) ? state.courses.single : state.course, courseActions);
 
     useEffect(() => {
-        if (course?.id === id || course?.slug === id) return;
+        if (course?.id === courseId || course?.slug === courseId) return;
 
         actions.unsetCourse();
-        actions.getCourse(id);
-    }, [id]);
+        actions.getCourse(courseId, query);
+    }, [courseId, query]);
 
     return [
         useMemo(() => mapCourse(course), [course]),

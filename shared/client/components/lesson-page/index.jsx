@@ -11,8 +11,8 @@ import ExercisesList from 'shared/components/exercises-list';
 
 import './index.scss';
 
-export default function LessonPage({ match }) {
-    const [course, actions] = useCourse(match.params.course);
+export default function LessonPage({ match, location }) {
+    const [course, actions] = useCourse(match.params.course, location.search);
 
     const rootRef = useRef();
 
@@ -38,7 +38,7 @@ export default function LessonPage({ match }) {
 
     if (!lesson) return <LoadingIndicator />;
 
-    return <Redirect to={exercise.uri} />;
+    return <Redirect to={exercise.uri + (course.enrollmentId ? `?enrollmentId=${course.enrollmentId}` : '')} />;
 
     return (
         <Page ref={rootRef} className="lesson-page">

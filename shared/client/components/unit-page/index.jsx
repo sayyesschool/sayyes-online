@@ -5,8 +5,8 @@ import UnitContent from 'shared/components/unit-content';
 
 import './index.scss';
 
-export default function UnitPage({ match }) {
-    const [course] = useCourse(match.params.course);
+export default function UnitPage({ match, location }) {
+    const [course] = useCourse(match.params.course, location.search);
 
     if (!course) return <LoadingIndicator />;
 

@@ -50,13 +50,14 @@ export default function RoomHeader({
                             icon: <Icon>video_camera_front</Icon>,
                             content: 'Видео'
                         },
-                        // {
-                        //     as: NavLink,
-                        //     to: '/courses',
-                        //     value: 'courses',
-                        //     icon: <Icon>book</Icon>,
-                        //     content: 'Курс'
-                        // },
+                        {
+                            key: 'courses',
+                            as: NavLink,
+                            to: '/courses',
+                            value: 'courses',
+                            icon: <Icon>book</Icon>,
+                            content: 'Курс'
+                        },
                         {
                             key: 'whiteboard',
                             as: NavLink,

@@ -1,4 +1,4 @@
-import { Select, Text } from 'shared/ui-components';
+import { FormSelect, Text } from 'shared/ui-components';
 
 import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_VIDEO_INPUT_KEY } from 'app/constants';
 import useRoomContext from 'app/hooks/useRoomContext';
@@ -31,7 +31,7 @@ export default function VideoInputList() {
             )}
 
             {videoInputDevices.length > 1 ?
-                <Select
+                <FormSelect
                     label="Камера"
                     value={localVideoInputDeviceId || ''}
                     options={videoInputDevices.map(device => ({

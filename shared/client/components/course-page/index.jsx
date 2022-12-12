@@ -5,15 +5,15 @@ import Page from 'shared/components/page';
 
 import './index.scss';
 
-export default function CoursePage({ match }) {
-    const [course] = useCourse(match.params.course);
+export default function CoursePage({ match, location }) {
+    const [course] = useCourse(match.params.course, location.search);
 
     if (!course) return <LoadingIndicator />;
 
     return (
         <Page id={course.slug} className="course-page">
             <Page.Header
-                overline="Курс"
+                breadcrumbs={[{ text: 'Курс' }]}
                 title={course.title}
             />
 

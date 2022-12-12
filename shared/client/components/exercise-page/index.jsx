@@ -10,24 +10,27 @@ import Page from 'shared/components/page';
 
 import './index.scss';
 
-export default function ExercisePage({ match }) {
+export default function ExercisePage({ match, location }) {
     const [user] = useUser();
-    const [course, actions] = useCourse(match.params.course);
+    const [course, actions] = useCourse(match.params.course, location.search);
 
     const rootRef = useRef();
 
     const exercise = course?.exercisesById.get(match.params.exercise);
 
     const handleExerciseProgressChange = useCallback((exercise, data) => {
-        return actions.updateExerciseProgress(course.id, exercise.id, data);
+        return actions.updateExerciseProgress(exercise.progressId, {
+            ...data,
+            enrollment: match.params.enrollment || ENROLLMENT_ID,
+            course: course.id,
+            exercise: exercise.id
+        });
     }, [course, exercise]);
 
     if (!exercise) return <LoadingIndicator />;
 
     const lesson = course?.lessonsById.get(exercise.lessonId);
     const unit = course?.unitsById.get(exercise.unitId);
-
-    console.log(user);
 
     return (
         <Page ref={rootRef} className="exercise-page">
@@ -45,14 +48,15 @@ export default function ExercisePage({ match }) {
                     <Page.Section>
                         <ExerciseContent
                             key={exercise.id}
+                            user={user}
                             exercise={exercise}
-                            readonly={true}
                             onProgressChange={handleExerciseProgressChange}
                         />
                     </Page.Section>
 
                     <Page.Section title="Упражнения" compact>
                         <ExercisesList
+                            course={course}
                             exercises={lesson.exercises}
                             selectedExercise={exercise}
                         />

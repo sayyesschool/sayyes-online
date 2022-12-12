@@ -1,9 +1,11 @@
-import AppContent from 'shared/components/app-content';
+import { forwardRef } from 'react';
 
 import './index.scss';
 
-export default function RoomContent({ ...props }) {
+function RoomContent({ ...props }, ref) {
     return (
-        <AppContent className="room-content" {...props} />
+        <div ref={ref} className="room-content" {...props} />
     );
 }
+
+export default forwardRef(RoomContent);

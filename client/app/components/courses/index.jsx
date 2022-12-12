@@ -1,9 +1,9 @@
 import { Route, Switch } from 'react-router-dom';
 
-import Course from './course-page';
-import Unit from './unit-page';
-import Lesson from './lesson-page';
-import Exercise from './exercise-page';
+import Course from 'shared/components/course-page';
+import Unit from 'shared/components/unit-page';
+import Lesson from 'shared/components/lesson-page';
+import Exercise from 'shared/components/exercise-page';
 
 import './index.scss';
 

@@ -1,39 +1,27 @@
-import { useCallback, useRef, useState } from 'react';
-import { Route, Link, useParams } from 'react-router-dom';
+import { useCallback, useState } from 'react';
+import { Route, Switch } from 'react-router-dom';
 
 import { useUpdated } from 'shared/hooks/lifecycle';
-import { useScrollClassName } from 'shared/hooks/screen';
-import { useCourse } from 'shared/hooks/courses';
-import { Dialog, Surface } from 'shared/ui-components';
-import LoadingIndicator from 'shared/components/loading-indicator';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
-import BottomSheet from 'shared/components/bottom-sheet';
-import CourseContent from 'shared/components/course-content';
-import UnitContent from 'shared/components/unit-content';
-import LessonContent from 'shared/components/lesson-content';
+import { Dialog } from 'shared/ui-components';
+import CoursesGrid from 'shared/components/courses-grid';
+import Course from 'shared/components/course-page';
+import Unit from 'shared/components/unit-page';
+import Lesson from 'shared/components/lesson-page';
+import Exercise from 'shared/components/exercise-page';
 import AudioPlayer from 'shared/components/audio-player';
 import VideoPlayer from 'shared/components/video-player';
+import BottomSheet from 'shared/components/bottom-sheet';
 
 import useLocalAudio from 'app/hooks/useLocalAudio';
-import Canvas from 'app/components/Canvas';
 
 import './index.scss';
 
-export default function CoursesPage({ user, enrollment, sharedState, updateSharedState, onMedia }) {
-    const params = useParams();
-
+export default function CourseRouter({ user, enrollment, sharedState, updateSharedState, onMedia }) {
     const [localAudio, setLocalAudioEnabled] = useLocalAudio();
-
-    const [course] = useCourse(params.courseId);
-
-    const rootRef = useRef();
 
     const [audio, setAudio] = useState(null);
     const [video, setVideo] = useState(null);
     const [shouldBeUnmuted, setShouldBeUnmuted] = useState();
-
-    useScrollClassName(rootRef, 'course-page--scrolling', [course]);
 
     useUpdated(() => {
         if (sharedState?.audio) {
@@ -43,7 +31,7 @@ export default function CoursesPage({ user, enrollment, sharedState, updateShare
         if (sharedState?.video) {
             setVideo(course.videosByFilename.get(sharedState.video));
         }
-    }, [course, sharedState]);
+    }, [sharedState]);
 
     const handleMedia = useCallback(media => {
         if (!localAudio) return;
@@ -85,62 +73,19 @@ export default function CoursesPage({ user, enrollment, sharedState, updateShare
         onMedia(video);
     }, [user]);
 
-    if (!course) return <LoadingIndicator />;
-
-    const unit = course.unitsById.get(params.unitId);
-    const lesson = course.lessonsById.get(params.lessonId);
-
     return (
-        <div ref={rootRef} className="course-page">
-            <PageHeader
-                breadcrumbs={[
-                    (unit &&
-                        <Link to={`/courses/${course.id}`}>{course.title}</Link>
-                    ),
-                    (lesson &&
-                        <Link to={`/courses/${course.id}`}>{unit.title}</Link>
-                    )
-                ].filter(v => !!v)}
-                title={lesson?.title || unit?.title || course.title}
-            />
-
-            <PageContent>
+        <>
+            <Switch>
                 <Route exact path="/courses">
-                    <CoursesGrid
-                        courses={enrollment.courses}
-                    />
+                    <div className="page">
+                        <CoursesGrid courses={enrollment.courses} />
+                    </div>
                 </Route>
-
-                <Route exact path="/courses/:courseId">
-                    <CourseContent
-                        course={course}
-                    />
-                </Route>
-
-                <Route exact path="/courses/:courseId/units/:unitId">
-                    <UnitContent
-                        course={course}
-                        unit={unit}
-                    />
-                </Route>
-
-                <Route exact path="/courses/:courseId/lessons/:lessonId">
-                    {lesson?.image ?
-                        <Surface>
-                            <Canvas
-                                type={user.role === 'teacher' ? 'local' : 'remote'}
-                                imageSrc={lesson.imageUrl}
-                            />
-                        </Surface>
-                        :
-                        <LessonContent
-                            course={course}
-                            unit={unit}
-                            lesson={lesson}
-                        />
-                    }
-                </Route>
-            </PageContent>
+                <Route exact path="/courses/:course" component={Course} />
+                <Route exact path="/courses/:course/units/:unit" component={Unit} />
+                <Route exact path="/courses/:course/lessons/:lesson" component={Lesson} />
+                <Route exact path="/courses/:course/exercises/:exercise" component={Exercise} />
+            </Switch>
 
             <BottomSheet
                 open={!!audio}
@@ -170,6 +115,6 @@ export default function CoursesPage({ user, enrollment, sharedState, updateShare
                 }
                 onClose={() => setVideo(null)}
             />
-        </div>
+        </>
     );
 }

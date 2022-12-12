@@ -1,16 +1,13 @@
-import { Link } from 'react-router-dom';
-
 import { Card, Image, Text } from 'shared/ui-components';
 
 import './index.scss';
 
-export default function UnitCard({ unit, onSelectUnit }) {
+export default function UnitCard({ unit, onSelectUnit, ...props }) {
     return (
         <Card
             className="unit-card"
-            as={!onSelectUnit ? Link : undefined}
-            to={!onSelectUnit ? unit.uri : undefined}
             onClick={onSelectUnit && (() => onSelectUnit(unit))}
+            {...props}
         >
             <Card.Preview>
                 <Image src={unit.imageUrl} alt="" />

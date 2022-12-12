@@ -5,9 +5,9 @@ const Comment = require('../comment');
 const ObjectId = Schema.Types.ObjectId;
 
 const Progress = new Schema({
-    user: { type: ObjectId, required: true },
-    course: { type: ObjectId, required: true },
-    exercise: { type: ObjectId, required: true },
+    enrollment: { type: ObjectId, required: true, alias: 'enrollmentId' },
+    course: { type: ObjectId, required: true, alias: 'courseId' },
+    exercise: { type: ObjectId, required: true, alias: 'exerciseId' },
     submitted: { type: Boolean, default: false },
     completed: { type: Boolean, default: false },
     state: { type: Object },

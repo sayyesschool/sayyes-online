@@ -24,8 +24,6 @@ export default function MiroWhiteboard() {
 
     const board = sharedState?.data?.board;
 
-    if (!board) return <LoadingIndicator />;
-
     return (
         <div className="miro-whiteboard">
             <Button

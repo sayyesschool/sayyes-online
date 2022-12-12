@@ -61,7 +61,6 @@ function ExerciseInputItem({ item }, ref) {
                                 <Button
                                     type="button"
                                     icon="delete"
-                                    iconOnly
                                     text
                                     onClick={() => handleDeleteItem(item)}
                                 />
@@ -73,7 +72,7 @@ function ExerciseInputItem({ item }, ref) {
 
                 <input
                     defaultValue=""
-                    placeholder="Введите ответ"
+                    placeholder="Введите ответ и нажмите Enter"
                     onKeyPress={handleKeyPress}
                 />
             </Flex>

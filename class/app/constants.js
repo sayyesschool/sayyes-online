@@ -1,7 +1,7 @@
 export const DEFAULT_VIDEO_CONSTRAINTS = {
     width: 1280,
     height: 720,
-    frameRate: 24,
+    frameRate: 24
 };
 
 // These are used to store the selected media devices in localStorage

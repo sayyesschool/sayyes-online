@@ -18,7 +18,8 @@ const Exercise = new Schema({
             const progress = exercise.parent()?.progress?.find(item => item.exercise.toString() === exercise.id);
 
             if (progress) {
-                object.isCompleted = progress.completed;
+                object.progressId = progress.id;
+                object.completed = progress.completed;
                 object.state = progress.state;
             }
 

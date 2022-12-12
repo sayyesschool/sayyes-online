@@ -9,9 +9,9 @@ export default (api, apiUrl) => store => next => action => {
 
     next({ ...action, type: REQUEST, request: undefined });
 
-    const { method, url: path, query, body } = action.request;
-    const qs = typeof query === 'object' ? new URLSearchParams(query).toString() : query;
-    const url = apiUrl + path + (qs ? `?${qs}` : '');
+    const { method, url: path, query = '', body } = action.request;
+    const qs = new URLSearchParams(query).toString();
+    const url = (path.startsWith('http') ? path : apiUrl + path) + (qs ? `?${qs}` : '');
 
     return api[method](url, body)
         .then(data => {

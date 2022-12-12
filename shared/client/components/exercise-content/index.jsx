@@ -6,7 +6,7 @@ import ExerciseItem from 'shared/components/exercise-item';
 
 import './index.scss';
 
-export default function ExerciseContent({ exercise, readonly, onProgressChange }) {
+export default function ExerciseContent({ user, exercise, onProgressChange, onComplete }) {
     const [state, setState] = useState(exercise.state || {});
     const [isSaving, setSaving] = useBoolean(false);
     const [isChecked, setChecked] = useBoolean(false);
@@ -15,8 +15,15 @@ export default function ExerciseContent({ exercise, readonly, onProgressChange }
         setSaving(true);
 
         return onProgressChange(exercise, { state })
-            .then(() => setSaving(false));
-    }, [state, exercise]);
+            .finally(() => setSaving(false));
+    }, [state, exercise, onProgressChange]);
+
+    const handleComplete = useCallback(() => {
+        setSaving(true);
+
+        return onProgressChange(exercise, { completed: !exercise.completed })
+            .finally(() => setSaving(false));
+    }, [exercise, onComplete]);
 
     const handleCheck = useCallback(() => {
         setChecked(true);
@@ -29,7 +36,7 @@ export default function ExerciseContent({ exercise, readonly, onProgressChange }
         }));
     }, []);
 
-    const hasSaveableItems = readonly ? false : exercise.items.some(item =>
+    const hasSaveableItems = user.role === 'client' && exercise.items.some(item =>
         item.type === 'essay' ||
         item.type === 'fib' ||
         item.type === 'input'
@@ -49,6 +56,7 @@ export default function ExerciseContent({ exercise, readonly, onProgressChange }
                         item={item}
                         state={state[item.id]}
                         checked={isChecked}
+                        disabled={user.role === 'teacher' || exercise.completed}
                         onUpdateState={handleUpdateState}
                     />
                 )}
@@ -58,7 +66,7 @@ export default function ExerciseContent({ exercise, readonly, onProgressChange }
                 {hasCheckableItems &&
                     <Button
                         content="Проверить"
-                        icon="done_all"
+                        icon="done"
                         primary
                         flat
                         onClick={handleCheck}
@@ -73,6 +81,18 @@ export default function ExerciseContent({ exercise, readonly, onProgressChange }
                         flat
                         disabled={isSaving}
                         onClick={handleSave}
+                    />
+                }
+
+                {user.role === 'teacher' &&
+                    <Button
+                        content={exercise.completed ? 'Отметить как невыполненное' : 'Отметить как выполненное'}
+                        icon={exercise.completed ? 'task_alt' : undefined}
+                        primary={!exercise.completed}
+                        secondary={exercise.completed}
+                        flat
+                        disabled={isSaving}
+                        onClick={handleComplete}
                     />
                 }
             </footer>

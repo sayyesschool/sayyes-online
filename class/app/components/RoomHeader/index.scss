@@ -1,10 +1,12 @@
 .room-header {
+    position: sticky;
     height: 48px;
     display: flex;
     padding: 0 1rem;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+    z-index: 2;
 
     &__text,
     &__tabs,
@@ -13,10 +15,25 @@
     }
 
     &__tabs {
+        height: 100%;
         justify-content: center;
 
         .ui-menu {
             border: none;
+        }
+
+        .ui-menu__itemwrapper,
+        .ui-menu__item {
+            height: 100%;
+        }
+
+        .ui-menu__item {
+            display: flex;
+            align-items: center;
+        }
+
+        .ui-menu__itemicon {
+            margin-bottom: 0;
         }
     }
 

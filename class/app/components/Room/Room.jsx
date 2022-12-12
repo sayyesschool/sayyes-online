@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useLocation, Route } from 'react-router-dom';
+import { useLocation, Route, Switch } from 'react-router-dom';
 import classnames from 'classnames';
 
 import { useBoolean } from 'shared/hooks/state';
-import { useFullScreen } from 'shared/hooks/screen';
+import { useFullScreen, useScrollClassName } from 'shared/hooks/screen';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import useSharedState from 'app/hooks/useSharedState';
 
 import Chat from 'app/components/Chat';
-// import Courses from 'app/components/Courses';
+import Courses from 'app/components/Courses';
 import MainParticipant from 'app/components/MainParticipant';
 import ParticipantList from 'app/components/ParticipantList';
 import RoomHeader from 'app/components/RoomHeader';
@@ -24,9 +24,13 @@ export default function Room({ user, enrollment }) {
     const { room, participants, isSharingScreen, toggleScreenShare } = useRoomContext();
 
     const rootRef = useRef();
+    const contentRef = useRef();
+
     const [isFullscreen, toggleFullscreen] = useFullScreen(rootRef);
     const [isChatOpen, toggleChatOpen] = useBoolean(false);
     const [numberOfUnreadMessages, setNumberOfUnreadMessages] = useState();
+
+    useScrollClassName(contentRef, 'room-content--scrolling', []);
 
     useEffect(() => {
         const namesById = {
@@ -95,21 +99,23 @@ export default function Room({ user, enrollment }) {
                 />
             </RoomSidePanel>
 
-            <RoomContent>
-                <Route exact path="/">
-                    <MainParticipant />
-                </Route>
+            <RoomContent ref={contentRef}>
+                <Switch>
+                    <Route exact path="/">
+                        <MainParticipant />
+                    </Route>
 
-                {/* <Route path="/courses">
-                    <Courses
-                        user={user}
-                        enrollment={enrollment}
-                    />
-                </Route> */}
+                    <Route path="/courses">
+                        <Courses
+                            user={user}
+                            enrollment={enrollment}
+                        />
+                    </Route>
 
-                <Route path="/whiteboard">
-                    <MiroWhiteboard />
-                </Route>
+                    <Route path="/whiteboard">
+                        <MiroWhiteboard />
+                    </Route>
+                </Switch>
 
                 <ParticipantList />
             </RoomContent>
