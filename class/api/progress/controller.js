@@ -27,10 +27,9 @@ module.exports = ({
                 new: true
             })
         ).then(progress => {
-            console.log(progress);
             res.json({
                 ok: true,
-                message: 'Прогресс изменен',
+                message: 'Прогресс сохранен',
                 data: progress
             });
         }).catch(next);

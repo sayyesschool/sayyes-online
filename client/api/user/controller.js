@@ -49,6 +49,7 @@ function map(user) {
         fullname: user.fullname,
         email: user.email,
         initials: user.initials,
-        balance: user.balance
+        balance: user.balance,
+        role: user.role
     };
 }
