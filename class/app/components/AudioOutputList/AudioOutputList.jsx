@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { FormSelect, Text } from 'shared/ui-components';
 
 import useAppState from 'app/hooks/useAppState';
@@ -8,6 +10,10 @@ export default function AudioOutputList() {
     const audioOutputDevices = useAudioOutputDevices();
 
     const activeOutputLabel = audioOutputDevices.find(device => device.deviceId === activeSinkId)?.label;
+
+    const handleDeviceChange = useCallback((_, { value }) => {
+        setActiveSinkId(value);
+    }, [setActiveSinkId]);
 
     return (
         <div className="audio-output-list">
@@ -20,7 +26,7 @@ export default function AudioOutputList() {
                         value: device.deviceId,
                         header: device.label
                     }))}
-                    onChange={e => setActiveSinkId(e.target.value)}
+                    onChange={handleDeviceChange}
                 />
                 :
                 <Text>{activeOutputLabel || 'System Default Audio Output'}</Text>

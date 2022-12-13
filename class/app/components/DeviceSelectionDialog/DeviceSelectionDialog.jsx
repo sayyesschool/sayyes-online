@@ -22,6 +22,7 @@ export default function DeviceSelectionDialog({ open, onClose }) {
             </>}
             confirmButton={{
                 content: 'Принять',
+                flat: true,
                 onClick: onClose
             }}
             onClose={onClose}

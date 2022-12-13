@@ -16,10 +16,13 @@ export default function AudioInputList() {
     const mediaStreamTrack = useMediaStreamTrack(localAudioTrack);
     const localAudioInputDeviceId = mediaStreamTrack?.getSettings().deviceId;
 
-    const replaceTrack = useCallback(newDeviceId => {
+    const handleDeviceChange = useCallback((_, { value: newDeviceId }) => {
         window.localStorage.setItem(SELECTED_AUDIO_INPUT_KEY, newDeviceId);
-        localAudioTrack?.restart({ deviceId: { exact: newDeviceId } });
-    }, []);
+
+        if (localAudioTrack) {
+            localAudioTrack.restart({ deviceId: { exact: newDeviceId } });
+        }
+    }, [localAudioTrack]);
 
     return (
         <div className="audio-input-list">
@@ -38,7 +41,7 @@ export default function AudioInputList() {
                         value: device.deviceId,
                         header: device.label
                     }))}
-                    onChange={e => replaceTrack(e.target.value)}
+                    onChange={handleDeviceChange}
                 />
                 :
                 <Text>{localAudioTrack?.mediaStreamTrack.label || 'No Local Audio'}</Text>

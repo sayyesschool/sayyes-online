@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { FormSelect, Text } from 'shared/ui-components';
 
 import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_VIDEO_INPUT_KEY } from 'app/constants';
@@ -14,13 +16,16 @@ export default function VideoInputList() {
     const mediaStreamTrack = useMediaStreamTrack(localVideoTrack);
     const localVideoInputDeviceId = mediaStreamTrack?.getSettings().deviceId;
 
-    function replaceTrack(newDeviceId) {
+    const handleDeviceChange = useCallback((_, { value: newDeviceId }) => {
         window.localStorage.setItem(SELECTED_VIDEO_INPUT_KEY, newDeviceId);
-        localVideoTrack.restart({
-            ...(DEFAULT_VIDEO_CONSTRAINTS),
-            deviceId: { exact: newDeviceId },
-        });
-    }
+
+        if (localVideoTrack) {
+            localVideoTrack.restart({
+                ...(DEFAULT_VIDEO_CONSTRAINTS),
+                deviceId: { exact: newDeviceId }
+            });
+        }
+    }, [localVideoTrack]);
 
     return (
         <div className="video-input-list">
@@ -33,13 +38,14 @@ export default function VideoInputList() {
             {videoInputDevices.length > 1 ?
                 <FormSelect
                     label="Камера"
+                    name="camera"
                     value={localVideoInputDeviceId || ''}
                     options={videoInputDevices.map(device => ({
                         key: device.deviceId,
                         value: device.deviceId,
                         header: device.label
                     }))}
-                    onChange={e => replaceTrack(e.target.value)}
+                    onChange={handleDeviceChange}
                 />
                 :
                 <Text>{localVideoTrack?.mediaStreamTrack.label || 'No Local Video'}</Text>
