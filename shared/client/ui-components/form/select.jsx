@@ -26,7 +26,7 @@ export default function FormSelect({ name, value, options, label, required, sear
                 required: true
             }}
             name={name}
-            value={optionsRef.current.get(value)?.content}
+            value={optionsRef.current.get(value)?.header}
             items={options}
             toggleIndicator={<Icon>expand_more</Icon>}
             clearIndicator={<Icon>clear</Icon>}
