@@ -12,7 +12,7 @@ const Components = {
     textarea: Textarea
 };
 
-export default function ExerciseFIBItem({ item, checked }) {
+export default function ExerciseFIBItem({ item, checked, completed, state = {}, onUpdateState }) {
     const content = useMemo(() => {
         let key = 1;
 
@@ -24,6 +24,7 @@ export default function ExerciseFIBItem({ item, checked }) {
             if (item.type in Components) {
                 item.type = Components[item.type];
                 item.props.checked = checked;
+                item.props.completed = completed;
             }
 
             return item;

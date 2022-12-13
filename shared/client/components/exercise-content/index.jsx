@@ -55,7 +55,8 @@ export default function ExerciseContent({ user, exercise, onProgressChange, onCo
                         key={item.id}
                         item={item}
                         state={state[item.id]}
-                        checked={isChecked}
+                        checked={exercise.completed || isChecked}
+                        completed={exercise.completed}
                         disabled={user.role === 'teacher' || exercise.completed}
                         onUpdateState={handleUpdateState}
                     />

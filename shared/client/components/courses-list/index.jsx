@@ -5,7 +5,7 @@ import Button from 'shared/ui-components/button';
 import Image from 'shared/ui-components/image';
 import List from 'shared/ui-components/list';
 
-export default function CoursesList({ courses, onRemove }) {
+export default function CoursesList({ enrollment, courses, onRemove }) {
     const handleRemove = useCallback((event, courseId) => {
         event.preventDefault();
         event.stopPropagation();
@@ -19,7 +19,7 @@ export default function CoursesList({ courses, onRemove }) {
                 <List.Item
                     key={course.id}
                     as={Link}
-                    to={course.uri}
+                    to={course.uri + (enrollment ? `?enrollmentId=${enrollment.id}` : '')}
                     media={course.imageUrl &&
                         <Image src={course.imageUrl} alt="" />
                     }

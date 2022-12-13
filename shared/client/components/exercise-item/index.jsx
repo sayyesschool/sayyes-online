@@ -34,6 +34,7 @@ const Components = {
 export default memo(function ExerciseItem({
     item,
     checked,
+    completed,
     state,
     onUpdateState,
     ...props
@@ -46,6 +47,7 @@ export default memo(function ExerciseItem({
                 createElement(Components[item.type], {
                     item,
                     checked,
+                    completed,
                     state,
                     onUpdateState
                 })

@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 
-import { Button, MenuButton } from 'shared/ui-components';
-import LoadingIndicator from 'shared/components/loading-indicator';
+import { Button, MenuButton, Spinner } from 'shared/ui-components';
 import MaterialsList from 'shared/components/materials-list';
 import PageSection from 'shared/components/page-section';
 
@@ -26,13 +25,11 @@ export default function EnrollmentMaterials({ enrollment }) {
         return enrollmentActions.updateEnrollment(enrollment.id, { materials });
     }, [enrollment]);
 
-    if (!materials) return <LoadingIndicator />;
-
     const enrollmentMaterials = materials
-        .filter(material => enrollment.materials.includes(material.id));
+        ?.filter(material => enrollment.materials.includes(material.id));
 
     const items = materials
-        .filter(material => !enrollment.materials.includes(material.id))
+        ?.filter(material => !enrollment.materials.includes(material.id))
         .map(material => ({
             key: material.id,
             media: <img src={material.imageUrl} />,
@@ -44,7 +41,7 @@ export default function EnrollmentMaterials({ enrollment }) {
         <PageSection
             className="enrollment-materials"
             title="Материалы"
-            actions={
+            actions={materials ?
                 <MenuButton
                     trigger={
                         <Button
@@ -55,6 +52,8 @@ export default function EnrollmentMaterials({ enrollment }) {
                     }
                     menu={items}
                 />
+                :
+                <Spinner size="small" />
             }
             compact
         >

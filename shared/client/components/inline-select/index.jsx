@@ -7,10 +7,11 @@ export default function Select({
     values,
     correctValue,
     checked,
+    completed,
     onChange = Function.prototype,
     ...props
 }) {
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState(completed ? correctValue : '');
 
     const handleChange = useCallback(event => {
         const value = event.target.value;

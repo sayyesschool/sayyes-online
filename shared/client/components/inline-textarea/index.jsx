@@ -7,13 +7,14 @@ function InlineTextarea({
     value: _value = '',
     correctValues,
     checked,
+    completed,
     required,
     onChange = Function.prototype,
     ...props
 }, ref) {
     const elementRef = useRef();
 
-    const [value, setValue] = useState(_value);
+    const [value, setValue] = useState(completed ? correctValues[0] : _value);
 
     useImperativeHandle(ref, () => elementRef.current);
 

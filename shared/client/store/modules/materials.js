@@ -1,6 +1,6 @@
 import { createAction, createReducer, combineReducers } from 'shared/store';
 
-const BASE_URL = `${APP_URL}/class`;
+const BASE_URL = `${APP_URL}/class/api`;
 
 export const getMaterials = createAction('GET_MATERIALS', query => ({
     request: {

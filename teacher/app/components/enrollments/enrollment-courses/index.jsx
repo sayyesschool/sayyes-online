@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 
-import LoadingIndicator from 'shared/components/loading-indicator';
 import { Button, MenuButton, Spinner } from 'shared/ui-components';
 import CoursesList from 'shared/components/courses-list';
 import PageSection from 'shared/components/page-section';
@@ -39,25 +38,25 @@ export default function EnrollmentCourses({ enrollment }) {
         <PageSection
             className="enrollment-courses"
             title="Курсы"
-            actions={
-                courses ?
-                    <MenuButton
-                        trigger={
-                            <Button
-                                icon="add"
-                                title="Добавить курс"
-                                text
-                            />
-                        }
-                        menu={items}
-                    />
-                    :
-                    <Spinner size="small" />
+            actions={courses ?
+                <MenuButton
+                    trigger={
+                        <Button
+                            icon="add"
+                            title="Добавить курс"
+                            text
+                        />
+                    }
+                    menu={items}
+                />
+                :
+                <Spinner size="small" />
             }
             compact
         >
             {enrollmentCourses?.length > 0 &&
                 <CoursesList
+                    enrollment={enrollment}
                     courses={enrollmentCourses}
                     onRemove={handleRemoveCourse}
                 />

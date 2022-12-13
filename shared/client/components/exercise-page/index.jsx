@@ -19,9 +19,10 @@ export default function ExercisePage({ match, location }) {
     const exercise = course?.exercisesById.get(match.params.exercise);
 
     const handleExerciseProgressChange = useCallback((exercise, data) => {
+        console.log(course);
         return actions.updateExerciseProgress(exercise.progressId, {
             ...data,
-            enrollment: match.params.enrollment || ENROLLMENT_ID,
+            enrollment: course.enrollmentId,
             course: course.id,
             exercise: exercise.id
         });
