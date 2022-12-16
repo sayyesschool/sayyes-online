@@ -24,6 +24,7 @@ module.exports = context => {
         const role = req.user.role;
 
         if (role === 'manager') return res.redirect('/admin');
+        if (role === 'client') return res.redirect('/client');
         if (role === 'teacher') return res.redirect('/teacher');
 
         next();
