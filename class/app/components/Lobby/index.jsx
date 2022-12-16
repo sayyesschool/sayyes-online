@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { testPreflight } from 'twilio-video';
 
+import { Header, Button } from 'shared/ui-components';
+
 import useRoomContext from 'app/hooks/useRoomContext';
 import DeviceSelectionScreen from 'app/components/DeviceSelectionScreen';
 import MediaErrorDialog from 'app/components/MediaErrorDialog';
@@ -27,6 +29,17 @@ export default function Lobby({ user }) {
             {testPreflight &&
                 <PreflightTest />
             }
+
+            <Button
+                as="a"
+                href={`/${user.role}`}
+                icon="chevron_left"
+                text
+            >
+                Вернуться в кабинет
+            </Button>
+
+            <Header content="Вход в класс" />
 
             <DeviceSelectionScreen
                 name={user.fullname}

@@ -17,7 +17,7 @@ export default function MainParticipant() {
     ) ? 'high' : null;
 
     return (
-        /* audio is disabled for this participant component because this participant's audio  is already being rendered in the <ParticipantList /> component.  */
+        /* audio is disabled for this participant component because this participant's audio is already being rendered in the <ParticipantList /> component.  */
         <MainParticipantInfo participant={mainParticipant}>
             <ParticipantTracks
                 participant={mainParticipant}

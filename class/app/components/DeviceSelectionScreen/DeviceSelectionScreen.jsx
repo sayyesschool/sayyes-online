@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Button, Flex, Header, Icon } from 'shared/ui-components';
+import { Button, Flex, Icon } from 'shared/ui-components';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import LocalVideoPreview from 'app/components/LocalVideoPreview';
@@ -22,8 +22,6 @@ export default function DeviceSelectionScreen({ name }) {
 
     return (
         <div className="device-selection-screen">
-            <Header content="Вход в класс" />
-
             <LocalVideoPreview identity={name} />
 
             <Flex space="between">
