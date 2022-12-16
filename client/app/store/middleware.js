@@ -7,5 +7,5 @@ import api from 'shared/store/middleware/api';
 import notification from 'shared/store/middleware/notification';
 
 export default composeWithDevTools(
-    applyMiddleware(api(client, '/api'), notification, promise)
+    applyMiddleware(api(client, '/client/api'), notification, promise)
 );

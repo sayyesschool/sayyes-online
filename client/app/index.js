@@ -12,7 +12,7 @@ import App from './components';
 render(
     <StoreProvider store={store}>
         <ThemeProvider theme={theme}>
-            <Router>
+            <Router basename="/client">
                 <App />
             </Router>
         </ThemeProvider>

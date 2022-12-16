@@ -11,8 +11,10 @@ const user = require('./user');
 module.exports = context => {
     const router = Router();
 
+    router.use('/courses*', redirectToClass);
     router.use('/enrollments', enrollments(context));
     router.use('/lessons', lessons(context));
+    router.use('/materials*', redirectToClass);
     router.use('/meetings', meetings(context));
     router.use('/packs', packs(context));
     router.use('/payments', payments(context));
@@ -21,8 +23,15 @@ module.exports = context => {
 
     router.use((error, req, res, next) => {
         console.error(error);
-        res.status(error.status || 500).send({ ok: false, error: error.message || error });
+        res.status(error.status || 500).send({
+            ok: false,
+            error: typeof error === 'object' ? error.message : error
+        });
     });
 
     return router;
 };
+
+function redirectToClass(req, res) {
+    res.redirect(req.originalUrl.replace('client', 'class'));
+}
