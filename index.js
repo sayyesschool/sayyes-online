@@ -21,8 +21,8 @@ server.use(auth(context));
 server.use('/api', api(context));
 server.use('/admin', admin(context));
 server.use('/class', classroom(context));
+server.use('/client', client(context));
 server.use('/teacher', teacher(context));
-server.use(client(context));
 server.use(main(context));
 
 db.connect(config.MONGODB_URI);
