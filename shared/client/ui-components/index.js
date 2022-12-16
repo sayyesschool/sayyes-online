@@ -18,6 +18,7 @@ export { default as IconButton } from './icon-button';
 export { default as Image } from './image';
 export { default as Input } from './input';
 export { default as Label } from './label';
+export { default as Link } from './link';
 export { default as List } from './list';
 export { default as Loader } from './loader';
 export { default as Menu } from './menu';

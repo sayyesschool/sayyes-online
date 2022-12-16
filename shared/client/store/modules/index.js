@@ -12,5 +12,4 @@ export * as payments from 'shared/store/modules/payments';
 export * as requests from 'shared/store/modules/requests';
 export * as rooms from 'shared/store/modules/rooms';
 export * as teachers from 'shared/store/modules/teachers';
-export * as tickets from 'shared/store/modules/tickets';
 export * as user from 'shared/store/modules/user';
