@@ -9,8 +9,10 @@ const user = require('./user');
 module.exports = core => {
     const router = Router();
 
+    router.use('/courses*', redirectToClass);
     router.use('/enrollments', enrollments(core));
     router.use('/lessons', lessons(core));
+    router.use('/materials*', redirectToClass);
     router.use('/payments', payments(core));
     router.use('/posts', posts(core));
     router.use('/user', user(core));
@@ -29,3 +31,7 @@ module.exports = core => {
 
     return router;
 };
+
+function redirectToClass(req, res) {
+    res.redirect(req.originalUrl.replace('teacher', 'class'));
+}
