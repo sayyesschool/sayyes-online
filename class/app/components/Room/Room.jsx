@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useLocation, Route, Switch } from 'react-router-dom';
+import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 import classnames from 'classnames';
 
 import { useBoolean } from 'shared/hooks/state';
@@ -11,6 +11,7 @@ import useSharedState from 'app/hooks/useSharedState';
 import Chat from 'app/components/Chat';
 import Courses from 'app/components/Courses';
 import MainParticipant from 'app/components/MainParticipant';
+import ParticipantAudioTracks from 'app/components/ParticipantAudioTracks';
 import ParticipantList from 'app/components/ParticipantList';
 import RoomHeader from 'app/components/RoomHeader';
 import RoomContent from 'app/components/RoomContent';
@@ -19,9 +20,10 @@ import ScreenShareAlert from 'app/components/ScreenShareAlert';
 import MiroWhiteboard from 'app/components/MiroWhiteboard';
 
 export default function Room({ user, enrollment }) {
-    const location = useLocation();
     const sharedState = useSharedState();
     const { room, participants, isSharingScreen, toggleScreenShare } = useRoomContext();
+    const location = useLocation();
+    const history = useHistory();
 
     const rootRef = useRef();
     const contentRef = useRef();
@@ -50,6 +52,12 @@ export default function Room({ user, enrollment }) {
             setNumberOfUnreadMessages(undefined);
         }
     }, [isChatOpen]);
+
+    useEffect(() => {
+        if (!sharedState.data?.path) return;
+
+        history.push(sharedState.data.path);
+    }, [sharedState.data?.path]);
 
     const handleSync = useCallback(() => {
         sharedState.updateDoc({
@@ -100,6 +108,8 @@ export default function Room({ user, enrollment }) {
             </RoomSidePanel>
 
             <RoomContent ref={contentRef}>
+                <ParticipantAudioTracks />
+
                 <Switch>
                     <Route exact path="/">
                         <MainParticipant />

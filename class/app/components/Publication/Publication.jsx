@@ -1,5 +1,4 @@
 import useTrack from 'app/hooks/useTrack';
-import AudioTrack from 'app/components/AudioTrack';
 import VideoTrack from 'app/components/VideoTrack';
 
 export default function Publication({ publication, local, videoOnly, videoPriority }) {
@@ -7,6 +6,8 @@ export default function Publication({ publication, local, videoOnly, videoPriori
 
     if (!track) return null;
 
+    // Even though we only have one case here, let's keep this switch() in case
+    // we even need to add a 'data' case for rendering DataTracks.
     switch (track.kind) {
         case 'video':
             return (
@@ -16,8 +17,7 @@ export default function Publication({ publication, local, videoOnly, videoPriori
                     local={track.name.includes('camera') && local}
                 />
             );
-        case 'audio':
-            return videoOnly ? null : <AudioTrack track={track} />;
+        // All participant audio tracks are rendered in ParticipantAudioTracks.tsx
         default:
             return null;
     }

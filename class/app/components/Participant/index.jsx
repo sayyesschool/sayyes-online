@@ -1,7 +1,9 @@
+import { memo } from 'react';
+
 import ParticipantInfo from 'app/components/ParticipantInfo';
 import ParticipantTracks from 'app/components/ParticipantTracks';
 
-export default function Participant({
+function Participant({
     participant,
     videoOnly,
     local,
@@ -27,3 +29,5 @@ export default function Participant({
         </ParticipantInfo>
     );
 }
+
+export default memo(Participant);

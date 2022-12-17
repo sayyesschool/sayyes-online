@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useRouteMatch } from 'react-router-dom';
 
 import { Button, Flex, Icon, Tabs, Text } from 'shared/ui-components';
 
@@ -12,6 +12,8 @@ import ToggleVideoButton from 'app/components/ToggleVideoButton';
 import ToggleScreenShareButton from 'app/components/ToggleScreenShareButton';
 
 import './index.scss';
+
+const views = [undefined, 'courses', 'whiteboard'];
 
 export default function RoomHeader({
     user,
@@ -29,9 +31,9 @@ export default function RoomHeader({
 }) {
     const roomState = useRoomState();
     const connectedTime = useConnectedTime();
+    const match = useRouteMatch('/:view?');
 
     const isReconnecting = roomState === 'reconnecting';
-    const path = location.pathname.split('/')[1] || '/';
 
     return (
         <header className="room-header" {...props}>
@@ -41,13 +43,14 @@ export default function RoomHeader({
 
             <Flex className="room-header__tabs">
                 <Tabs
+                    defaultActiveIndex={views.indexOf(match.params?.view)}
                     items={[
                         {
                             key: 'video',
                             as: NavLink,
                             to: '/',
                             value: '/',
-                            icon: <Icon>video_camera_front</Icon>,
+                            icon: 'video_camera_front',
                             content: 'Видео'
                         },
                         {
@@ -55,7 +58,7 @@ export default function RoomHeader({
                             as: NavLink,
                             to: '/courses',
                             value: 'courses',
-                            icon: <Icon>book</Icon>,
+                            icon: 'book',
                             content: 'Курс'
                         },
                         {
@@ -63,7 +66,7 @@ export default function RoomHeader({
                             as: NavLink,
                             to: '/whiteboard',
                             value: 'whiteboard',
-                            icon: <Icon>draw</Icon>,
+                            icon: 'draw',
                             content: 'Доска'
                         }
                     ]}

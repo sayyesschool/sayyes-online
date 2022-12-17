@@ -25,9 +25,13 @@ module.exports = ({ Enrollment }) => ({
                     return next(error);
                 }
 
+                const data = enrollment.toJSON();
+
+                data.courses?.forEach(course => course.enrollmentId = enrollment.id);
+
                 res.json({
                     ok: true,
-                    data: enrollment
+                    data
                 });
             })
             .catch(next);

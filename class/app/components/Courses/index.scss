@@ -2,6 +2,10 @@
     max-width: 1024px;
     margin: 0 auto 2rem;
 
+    .courses-grid {
+        margin: 1rem;
+    }
+
     .room-content--scrolling & {
         .page-header {
             position: sticky;
