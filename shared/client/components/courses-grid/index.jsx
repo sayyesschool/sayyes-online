@@ -12,7 +12,10 @@ export default function CoursesGrid({ courses }) {
                 <Card
                     key={course.id}
                     as={Link}
-                    to={course.uri}
+                    to={{
+                        pathname: course.uri,
+                        search: course.enrollmentId && `?enrollmentId=${course.enrollmentId}`
+                    }}
                 >
                     <Card.Preview>
                         <Image

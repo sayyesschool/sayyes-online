@@ -50,6 +50,8 @@ export function useSyncDoc(token, docId) {
             doc.on('updated', data => {
                 //if (data.isLocal) return;
 
+                console.log(data);
+
                 setData(data.data);
             });
 
