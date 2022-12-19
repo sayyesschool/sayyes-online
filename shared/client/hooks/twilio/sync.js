@@ -47,20 +47,16 @@ export function useSyncDoc(token, docId) {
 
     useEffect(() => {
         syncRef.current?.document(docId).then(doc => {
+            docRef.current = doc;
+            setData(doc.data);
+            doc.mutate(() => ({}));
             doc.on('updated', data => {
-                //if (data.isLocal) return;
-
-                console.log(data);
-
                 setData(data.data);
             });
-
-            setData(doc.data);
-            docRef.current = doc;
         });
 
         return () => {
-            docRef.current?.set({});
+            docRef.current?.removeAllListeners();
             docRef.current?.close();
         };
     }, []);
