@@ -2,10 +2,10 @@ import classnames from 'classnames';
 
 import { Avatar, Icon, Label, Text } from 'shared/ui-components';
 
-import usePublications from 'app/hooks/usePublications';
-import useTrack from 'app/hooks/useTrack';
 import useIsTrackSwitchedOff from 'app/hooks/useIsTrackSwitchedOff';
 import useParticipantIsReconnecting from 'app/hooks/useParticipantIsReconnecting';
+import usePublications from 'app/hooks/usePublications';
+import useTrack from 'app/hooks/useTrack';
 import AudioLevelIndicator from 'app/components/AudioLevelIndicator';
 import NetworkQualityLevel from 'app/components/NetworkQualityLevel';
 
@@ -26,6 +26,8 @@ export default function ParticipantInfo({
 
     const audioTrack = useTrack(audioPublication);
     const videoTrack = useTrack(videoPublication);
+
+    console.log(publications);
 
     const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack);
     const isVideoEnabled = Boolean(videoPublication);

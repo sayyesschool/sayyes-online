@@ -6,8 +6,6 @@ import useRemoteDataTrack from 'app/hooks/useRemoteDataTrack';
 import './index.scss';
 
 export function PointerProvider({ ...props }) {
-    const canvasRef = useRef();
-
     const dataTrack = useLocalDataTrack();
 
     useEffect(() => {

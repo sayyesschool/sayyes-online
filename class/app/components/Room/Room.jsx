@@ -61,7 +61,7 @@ export default function Room({ user, enrollment }) {
 
     const handleSync = useCallback(() => {
         sharedState.updateDoc({
-            path: location.pathname
+            path: location.pathname + location.search
         });
     }, [location]);
 
@@ -109,12 +109,10 @@ export default function Room({ user, enrollment }) {
 
             <RoomContent ref={contentRef}>
                 <ParticipantAudioTracks />
+                <MainParticipant />
+                <ParticipantList />
 
                 <Switch>
-                    <Route exact path="/">
-                        <MainParticipant />
-                    </Route>
-
                     <Route path="/courses">
                         <Courses
                             user={user}
@@ -126,8 +124,6 @@ export default function Room({ user, enrollment }) {
                         <MiroWhiteboard />
                     </Route>
                 </Switch>
-
-                <ParticipantList />
             </RoomContent>
 
             {isSharingScreen &&

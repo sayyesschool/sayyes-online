@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 
 import { Button } from 'shared/ui-components';
-import LoadingIndicator from 'shared/components/loading-indicator';
 
 import useSharedState from 'app/hooks/useSharedState';
 

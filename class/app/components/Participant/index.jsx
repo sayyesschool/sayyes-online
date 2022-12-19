@@ -3,7 +3,7 @@ import { memo } from 'react';
 import ParticipantInfo from 'app/components/ParticipantInfo';
 import ParticipantTracks from 'app/components/ParticipantTracks';
 
-function Participant({
+export default memo(function Participant({
     participant,
     videoOnly,
     local,
@@ -28,6 +28,4 @@ function Participant({
             />
         </ParticipantInfo>
     );
-}
-
-export default memo(Participant);
+});
