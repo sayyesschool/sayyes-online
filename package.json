@@ -67,10 +67,10 @@
     "redux": "^4.1.1",
     "redux-promise": "^0.6.0",
     "request": "^2.88.2",
-    "twilio": "^3.77.1",
+    "twilio": "^3.84.1",
     "twilio-chat": "^6.0.0",
-    "twilio-sync": "^3.1.0",
-    "twilio-video": "^2.21.1",
+    "twilio-sync": "^3.2.2",
+    "twilio-video": "^2.26.0",
     "uuid": "^8.3.2",
     "yookassa": "^0.1.1"
   },
