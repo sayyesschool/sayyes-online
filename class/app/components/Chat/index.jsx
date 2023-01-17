@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import moment from 'moment';
 
 import { useChat } from 'shared/hooks/twilio';
@@ -15,6 +15,8 @@ export default function Chat({ name, user, onConnected }) {
     const audioRef = useRef();
     const sendButtonRef = useRef();
     const textareaRef = useRef();
+
+    const [value, setValue] = useState('');
 
     useEffect(() => {
         chat.connect({
@@ -41,29 +43,31 @@ export default function Chat({ name, user, onConnected }) {
         }
     }, []);
 
-    const handleSubmit = useCallback(event => {
-        event.preventDefault();
-
-        if (!textareaRef.current.value) return;
-
-        chat.sendMessage(textareaRef.current.value);
-
-        textareaRef.current.value = '';
-        textareaRef.current.style.height = '32px';
-        textareaRef.current.focus();
-    }, [chat]);
-
     const handleDelete = useCallback(message => {
         chat.deleteMessage(message);
     }, [chat]);
+
+    const handleChange = useCallback(event => {
+        //onTyping();
+        setValue(event.target.value);
+    }, []);
 
     const handleKeyPress = useCallback(event => {
         //onTyping();
 
         if (event.key === 'Enter' && !event.shiftKey) {
-            return handleSubmit(event);
+            event.preventDefault();
+
+            const value = textareaRef.current.value;
+
+            if (!value) return;
+
+            chat.sendMessage(value);
+            setValue('');
+            textareaRef.current.style.height = '32px';
+            textareaRef.current.focus();
         }
-    }, [handleSubmit]);
+    }, []);
 
     if (!chat.messages) return <LoadingIndicator />;
 
@@ -106,12 +110,13 @@ export default function Chat({ name, user, onConnected }) {
             </section>
 
             <footer className="chat__footer">
-                <form className="message-form" onSubmit={handleSubmit}>
+                <form className="message-form">
                     <Textarea
                         ref={textareaRef}
+                        value={value}
                         placeholder="Сообщение"
-                        defaultValue=""
                         autoResize
+                        onChange={handleChange}
                         onKeyPress={handleKeyPress}
                     />
 

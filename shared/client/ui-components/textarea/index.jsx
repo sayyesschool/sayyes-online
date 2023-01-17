@@ -1,17 +1,13 @@
-import { forwardRef, useImperativeHandle, useLayoutEffect, useRef } from 'react';
+import { forwardRef, useLayoutEffect } from 'react';
 import { TextArea as FluentTextArea } from '@fluentui/react-northstar';
 
 import './index.scss';
 
 function Textarea({ minHeight = 32, native, autoResize, ...props }, ref) {
-    const elementRef = useRef();
-
-    useImperativeHandle(ref, () => elementRef.current, []);
-
     useLayoutEffect(() => {
-        if (!elementRef.current || !autoResize) return;
+        if (!ref.current || !autoResize) return;
 
-        const element = elementRef.current;
+        const element = ref.current;
 
         function setHeight() {
             element.style.height = `${minHeight}px`;
@@ -29,7 +25,7 @@ function Textarea({ minHeight = 32, native, autoResize, ...props }, ref) {
 
     return (
         <Element
-            ref={elementRef}
+            ref={ref}
             {...props}
         />
     );
