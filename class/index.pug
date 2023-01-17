@@ -8,6 +8,8 @@ append head
 append body
     script.
         window.ENROLLMENT_ID = '#{ENROLLMENT_ID}';
+        window.MIRO_CLIENT_ID = '#{MIRO_CLIENT_ID}';
+        window.MIRO_TOKEN = '#{MIRO_TOKEN}';
     script(src="https://miro.com/app/static/boardsPicker.1.0.js")
     script(src="/build/class.vendors.js")
     script(src="/build/class.main.js")
