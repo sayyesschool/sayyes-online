@@ -2,32 +2,32 @@ import classnames from 'classnames';
 
 import { Avatar, Label, Text } from 'shared/ui-components';
 
-import useRoomContext from 'app/hooks/useRoomContext';
 import useIsTrackSwitchedOff from 'app/hooks/useIsTrackSwitchedOff';
+import useParticipantIsReconnecting from 'app/hooks/useParticipantIsReconnecting';
 import usePublications from 'app/hooks/usePublications';
 import useTrack from 'app/hooks/useTrack';
-import useParticipantIsReconnecting from 'app/hooks/useParticipantIsReconnecting';
+import AudioLevelIndicator from 'app/components/AudioLevelIndicator';
 
-import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
-
-export default function MainParticipantInfo({ participant, children }) {
-    const { localParticipant, screenShareParticipant } = useRoomContext();
+export default function MainParticipantInfo({
+    participant,
+    local,
+    fullWidth,
+    children
+}) {
     const publications = usePublications(participant);
-    const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack);
     const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
     const audioPublication = publications.find(p => p.kind === 'audio');
     const videoPublication = publications.find(p => p.trackName.includes('camera'));
     const screenSharePublication = publications.find(p => p.trackName.includes('screen'));
 
-    const videoTrack = useTrack(screenSharePublication || videoPublication);
     const audioTrack = useTrack(audioPublication);
+    const videoTrack = useTrack(screenSharePublication || videoPublication);
+    const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack);
 
-    const isLocal = localParticipant === participant;
     const isVideoEnabled = Boolean(videoTrack);
-    const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
     const classNames = classnames('main-participant-info', {
-        'main-participant-info--fullwidth': !isRemoteParticipantScreenSharing,
+        'main-participant-info--fullwidth': fullWidth
     });
 
     return (
@@ -41,7 +41,7 @@ export default function MainParticipantInfo({ participant, children }) {
                     icon={<AudioLevelIndicator audioTrack={audioTrack} />}
                     content={<>
                         {participant.name}
-                        {isLocal && ' (Вы)'}
+                        {local && ' (Вы)'}
                         {screenSharePublication && ' - Экран'}
                     </>}
                     color="white"

@@ -1,5 +1,4 @@
 import useRoomContext from 'app/hooks/useRoomContext';
-
 import MainParticipantInfo from 'app/components/MainParticipantInfo';
 import ParticipantTracks from 'app/components/ParticipantTracks';
 
@@ -18,7 +17,11 @@ export default function MainParticipant() {
 
     return (
         /* audio is disabled for this participant component because this participant's audio is already being rendered in the <ParticipantList /> component.  */
-        <MainParticipantInfo participant={mainParticipant}>
+        <MainParticipantInfo
+            participant={mainParticipant}
+            local={mainParticipant === localParticipant}
+            fullWidth={!screenShareParticipant || screenShareParticipant === localParticipant}
+        >
             <ParticipantTracks
                 participant={mainParticipant}
                 local={mainParticipant === localParticipant}

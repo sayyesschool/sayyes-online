@@ -10,10 +10,12 @@ export default function useTrack(publication) {
         if (publication) {
             const removeTrack = () => setTrack(null);
 
+            console.log('SUBSCRIBE', track);
             publication.on('subscribed', setTrack);
             publication.on('unsubscribed', removeTrack);
 
             return () => {
+                console.log('UNSUBSCRIBE', track);
                 publication.off('subscribed', setTrack);
                 publication.off('unsubscribed', removeTrack);
             };

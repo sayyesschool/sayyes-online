@@ -9,6 +9,10 @@
     background: rgb(45, 44, 44);
 
     &--showing-content {
+        .main-participant-info {
+            display: none;
+        }
+        
         .participant-list {
             border-left: 1px solid #3b3b3b;
         }
