@@ -1,10 +1,7 @@
 import classnames from 'classnames';
 
 import { useBoolean } from 'shared/hooks/state';
-import Button from 'shared/ui-components/button';
-import Flex from 'shared/ui-components/flex';
-import Icon from 'shared/ui-components/icon';
-import Text from 'shared/ui-components/text';
+import { Button, Flex, Icon, Text } from 'shared/ui-components';
 import AudioPlayer from 'shared/components/audio-player';
 
 import './index.scss';
