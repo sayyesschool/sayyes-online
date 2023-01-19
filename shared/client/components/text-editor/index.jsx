@@ -18,6 +18,30 @@ const defaultConfig = {
     uploadAdapter: {
         uploadUrl: '/api/storage/images'
     },
+    style: {
+        definitions: [
+            {
+                name: 'Основной цвет',
+                element: 'span',
+                classes: ['ck-primary-color']
+            },
+            {
+                name: 'Второстепенный цвет',
+                element: 'span',
+                classes: ['ck-secondary-color']
+            },
+            {
+                name: 'Приглушенный цвет',
+                element: 'span',
+                classes: ['ck-muted-color']
+            },
+            {
+                name: 'Word Bubble',
+                element: 'span',
+                classes: ['word-bubble']
+            }
+        ]
+    },
     imageRemoveEvent: {
         callback: (imagesSrc, nodeObjects) => {
             return Promise.allSettled(imagesSrc.map(src => {
