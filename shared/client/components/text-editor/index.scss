@@ -26,9 +26,11 @@
         }
     }
 
-    .mdc-card & {
-        .ck-content {
-            border-radius: 0 0 10px 10px !important;
-        }
+    .word-bubble {
+        background-color: #d3d3d3;
+        border-radius: 4px;
+        padding: 2px 4px;
+        display: inline-block;
+        line-height: 1;
     }
 }

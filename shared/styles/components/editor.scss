@@ -1,4 +1,15 @@
 @use '@sayyes/ckeditor5-classic/build/ckeditor.css';
+@use '../variables';
+
+.ck-editor {
+    .ck-primary-color {
+        color: variables.$primary-color;
+    }
+
+    .ck-secondary-color {
+        color: variables.$secondary-color;
+    }
+}
 
 @mixin dark-theme {
     :root {

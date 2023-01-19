@@ -1,9 +1,18 @@
 .text-content {
     img {
         width: auto;
+        max-width: 100%;
     }
 
     :last-child {
         margin-bottom: 0;
+    }
+
+    .word-bubble {
+        background-color: #d3d3d3;
+        border-radius: 4px;
+        padding: 2px 4px;
+        display: inline-block;
+        line-height: 1;
     }
 }
