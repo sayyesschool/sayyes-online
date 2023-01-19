@@ -24,11 +24,11 @@ export const exerciseTypeMenuItems = [
         content: 'Аудио',
         value: 'audio'
     },
-    // {
-    //     key: 'video',
-    //     content: 'Видео',
-    //     value: 'video'
-    // },
+    {
+        key: 'video',
+        content: 'Видео',
+        value: 'video'
+    },
     {
         key: 'divider',
         content: 'Разделитель',
