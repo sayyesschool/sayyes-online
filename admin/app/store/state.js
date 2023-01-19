@@ -54,10 +54,5 @@ export default {
         single: null
     },
 
-    tickets: {
-        list: null,
-        single: null
-    },
-
     user: null
 };
