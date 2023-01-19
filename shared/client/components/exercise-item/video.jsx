@@ -5,5 +5,5 @@ export default function ExerciseVideoItem({ item }) {
         <VideoContent
             video={item.video}
         />
-    ) : null;
+    ) : 'Видео';
 }

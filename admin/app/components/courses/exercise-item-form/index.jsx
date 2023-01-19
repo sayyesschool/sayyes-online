@@ -13,6 +13,7 @@ import ImageItem from './image';
 import ImagesItem from './images';
 import InputItem from './input';
 import TextItem from './text';
+import VideoItem from './video';
 
 import './index.scss';
 
@@ -27,7 +28,8 @@ const Components = {
     image: ImageItem,
     images: ImagesItem,
     input: InputItem,
-    text: TextItem
+    text: TextItem,
+    video: VideoItem
 };
 
 const labelsByType = {
@@ -41,16 +43,18 @@ const labelsByType = {
     image: 'Изображение',
     images: 'Изображения',
     input: 'Ввод',
-    text: 'Текст'
+    text: 'Текст',
+    video: 'Видео'
 };
 
 const defaultItem = {
     type: '',
-    title: '',
+    title: ''
 };
 
 export default function ExerciseItemForm({ item = defaultItem, onCancel, onSubmit, ...props }) {
     const itemRef = useRef();
+
     const [isLoading, setLoading] = useState();
 
     const handleSubmit = useCallback(event => {
@@ -65,7 +69,7 @@ export default function ExerciseItemForm({ item = defaultItem, onCancel, onSubmi
         } else {
             onSubmit(data);
         }
-    }, []);
+    }, [onSubmit]);
 
     return (
         <form id={item.id} className={`exercise-item-form exercise-item-form--${item.type}`} onSubmit={handleSubmit} {...props}>
