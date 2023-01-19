@@ -54,7 +54,7 @@ const defaultI18n = {
     advertisement: 'Реклама',
 };
 
-function VideoPlayer({ src, provider, options = {}, ...props }, ref) {
+function VideoPlayer({ src, provider = 'server', options = {}, ...props }, ref) {
     const videoRef = useRef();
     const playerRef = useRef();
 
@@ -72,11 +72,13 @@ function VideoPlayer({ src, provider, options = {}, ...props }, ref) {
     }, []);
 
     return (
-        <div className={classnames('video-player', { 'plyr__video-embed': provider !== 'server' })}>
+        <div className="video-player">
             {provider === 'server' ?
                 <video ref={videoRef} src={src} {...props} />
                 :
-                <iframe src={src} allowFullScreen allowTransparency allow="autoplay" />
+                <div className="plyr__video-embed">
+                    <iframe ref={videoRef} src={src} allowFullScreen allowTransparency allow="autoplay" />
+                </div>
             }
         </div>
     );
