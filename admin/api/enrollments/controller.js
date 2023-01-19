@@ -174,7 +174,6 @@ module.exports = ({
             Enrollment.findById(req.params.id),
             Lesson.deleteMany({ _id: { $in: req.body.lessonIds } })
         ]).then(([enrollment, result]) => {
-            console.log(result);
             const amountToReturn = enrollment.lessonPrice * result.deletedCount;
 
             return Transaction.create({

@@ -400,8 +400,6 @@ module.exports = ({
             }).then(({ exercises: [exercise] }) => {
                 const item = exercise.items.find(item => item.id == req.params.item);
 
-                console.log('DELETED', item);
-
                 res.json({
                     ok: true,
                     message: 'Элемент удален',
