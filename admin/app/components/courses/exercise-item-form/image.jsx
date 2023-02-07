@@ -67,6 +67,9 @@ function ExerciseImageItem({ item }, ref) {
                 <Button
                     type="button"
                     content="Выбрать файл"
+                    primary
+                    text
+                    fluid
                     onClick={pick}
                 />
                 :
