@@ -14,11 +14,6 @@ export const exerciseTypeMenuItems = [
         content: 'Изображение',
         value: 'image'
     },
-    // {
-    //     key: 'images',
-    //     content: 'Несколько изображений',
-    //     value: 'images'
-    // },
     {
         key: 'audio',
         content: 'Аудио',
@@ -57,6 +52,10 @@ export const exerciseTypeMenuItems = [
         key: 'input',
         content: 'Ввод',
         value: 'input'
+    }, {
+        key: 'input2',
+        content: 'Ввод (новый)',
+        value: 'input2'
     },
     {
         key: 'fib',

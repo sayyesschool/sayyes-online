@@ -12,6 +12,7 @@ import FIBItem from './fib';
 import ImageItem from './image';
 import ImagesItem from './images';
 import InputItem from './input';
+import InputItem2 from './input2';
 import TextItem from './text';
 import VideoItem from './video';
 
@@ -28,6 +29,7 @@ const Components = {
     image: ImageItem,
     images: ImagesItem,
     input: InputItem,
+    input2: InputItem2,
     text: TextItem,
     video: VideoItem
 };
@@ -43,6 +45,7 @@ const labelsByType = {
     image: 'Изображение',
     images: 'Изображения',
     input: 'Ввод',
+    input2: 'Ввод (новый)',
     text: 'Текст',
     video: 'Видео'
 };
