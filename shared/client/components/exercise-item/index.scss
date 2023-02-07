@@ -195,5 +195,14 @@
             min-width: 2em;
             padding: .4em;
         }
+
+        figure {
+            margin: 0;
+            clear: both;
+            display: table;
+            margin: .9em auto;
+            min-width: 50px;
+            text-align: center;
+        }
     }
 }
