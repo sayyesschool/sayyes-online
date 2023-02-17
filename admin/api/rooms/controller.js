@@ -2,7 +2,7 @@ module.exports = ({
     models: { Room }
 }) => ({
     get: (req, res, next) => {
-        Room.find(req.query)
+        Room.findWithLessonCountFor(30, 'days')
             .then(rooms => {
                 res.json({
                     ok: true,

@@ -4,6 +4,7 @@ const columns = [
     { key: 'title', content: 'Название' },
     { key: 'login', content: 'Логин' },
     { key: 'password', content: 'Пароль' },
+    { key: 'lessons', content: 'Кол-во уроков за 30 дней' },
     { key: 'active', content: 'Работает' }
 ];
 
@@ -28,6 +29,8 @@ export default function RoomsTable({ rooms, onEdit, onToggleActive, onDelete }) 
                     <Table.Cell content={room.login} />
 
                     <Table.Cell content={room.password} />
+
+                    <Table.Cell content={room.lessonCount} />
 
                     <Table.Cell
                         content={

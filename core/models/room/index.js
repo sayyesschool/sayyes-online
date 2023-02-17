@@ -16,6 +16,13 @@ Room.virtual('lessons', {
     foreignField: 'room'
 });
 
+Room.virtual('lessonCount', {
+    ref: 'Lesson',
+    localField: '_id',
+    foreignField: 'room',
+    count: true
+});
+
 Room.statics.findAvailable = function(from, duration) {
     const { years, months, date } = moment(from).utc().toObject();
     const startDate = new Date(Date.UTC(years, months, date));
@@ -38,6 +45,22 @@ Room.statics.findAvailable = function(from, duration) {
             });
 
             return room;
+        });
+};
+
+Room.statics.findWithLessonCountFor = function(amount = 0, unit = 'days') {
+    const today = moment().utc();
+    const thirtyDaysAgo = today.clone().subtract(amount, unit);
+
+    return this.find()
+        .populate({
+            path: 'lessonCount',
+            match: {
+                date: {
+                    $gte: thirtyDaysAgo.toDate(),
+                    $lt: today.toDate()
+                }
+            }
         });
 };
 
