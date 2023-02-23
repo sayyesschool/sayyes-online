@@ -11,14 +11,25 @@ export default function MiroWhiteboard() {
 
     const handleOpenWhiteboard = useCallback(() => {
         miroBoardsPicker.open({
-            clientId: '3458764527308095545',
-            action: 'select',
+            clientId: window.MIRO_CLIENT_ID,
+            action: 'access-link',
+            allowCreateAnonymousBoards: true,
+            getToken: () => Promise.resolve(window.MIRO_TOKEN),
             success: function(result) {
                 sharedState.updateDoc({
                     board: result
                 });
             }
         });
+        // miroBoardsPicker.open({
+        //     clientId: window.MIRO_CLIENT_ID,
+        //     action: 'select',
+        //     success: result => {
+        //         sharedState.updateDoc({
+        //             board: result
+        //         });
+        //     }
+        // });
     }, []);
 
     const board = sharedState?.data?.board;
