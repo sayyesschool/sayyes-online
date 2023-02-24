@@ -1,20 +1,26 @@
-extends /shared/views/layouts/shared
+extends /shared/layouts/page
 
-append main
+append head
+    style.
+        #content {
+            max-width: 360px;
+            text-align: center;
+        }
+
+block main
     main#content
-        +mdc-typography(title)(element='h1' type='headline4')
-    
-        +mdc-card
-            +form()(method='post')
-                +mdc-card__section()(secondary)
-                    +mdc-text-field('password')(
-                        type='password'
-                        placeholder='Новый пароль'
-                        minlength='6'
-                        maxlength='128'
-                        fullwidth
-                        required
-                    )
-                
-                +mdc-card__actions
-                    +mdc-card__button('Сохранить')(type='submit')
+        h1= title
+
+        +form(method='post')
+            div.form-floating
+                input.form-control(
+                    id="password-input"
+                    type="password"
+                    name="password"
+                    minlength="6"
+                    maxlength="128"
+                    required
+                )
+                label(for="password-input") Новый пароль
+            
+            button.btn.btn-primary.w-100.mt-3(type="submit") Сохранить

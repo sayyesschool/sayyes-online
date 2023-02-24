@@ -72,7 +72,7 @@ module.exports = ({ Auth }) => ({
     showResetPasswordForm: (req, res) => {
         if (!req.params.token) return res.redirect('/');
 
-        res.render('shared/views/pages/reset', {
+        res.render('auth/pages/reset', {
             id: 'reset',
             title: 'Сброс пароля',
             token: req.params.token
