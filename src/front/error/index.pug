@@ -1,0 +1,17 @@
+extends /shared/layouts/page
+
+block main
+    main#content
+        h1 Ой, произошла ошибка
+
+        p.lead= message
+
+        if error
+            p= error.message
+
+            if IS_DEVELOPMENT
+                pre= error.stack
+        
+        p Если это уже не первый раз, напишите пожалуйста в службу поддержки.
+
+        a.btn-btn-primary(href="mailto:support@sayes.ru?subject=Ошибка%20на%20сайте") Сообщить об ошибке

@@ -3,6 +3,8 @@ const express = require('express');
 const moment = require('moment');
 
 const main = require('./main');
+const error = require('./error');
+const notFound = require('./not-found');
 
 module.exports = context => {
     const app = express();
@@ -31,6 +33,8 @@ module.exports = context => {
     });
 
     app.use('/', main(context));
+    app.use(notFound);
+    app.use(error);
 
     return app;
 };
