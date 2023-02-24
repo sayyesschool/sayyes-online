@@ -1,31 +1,34 @@
 const path = require('path');
+const dotenv = require('dotenv');
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const CssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
-const { STATIC_URL, STORAGE_URL, YANDEX_METRIKA_ID, GOOGLE_ANALYTICS_ID } = require('./config');
+dotenv.config();
+
+const { STATIC_URL, STORAGE_URL, YANDEX_METRIKA_ID, GOOGLE_ANALYTICS_ID } = process.env;
 
 module.exports = [
     env => config({ name: 'admin', env }),
     env => config({ name: 'class', env }),
     env => config({ name: 'client', env }),
     env => config({
-        name: 'main',
+        name: 'front',
         env,
         override: {
             entry: [
-                './main/shared/styles/index.scss',
-                './main/shared/scripts.js'
+                './src/front/shared/styles/index.scss',
+                './src/front/shared/scripts.js'
             ],
             output: {
                 path: path.resolve(__dirname, 'public'),
-                filename: 'build/[name].js'
+                filename: 'js/[name].js'
             },
             plugins: [
                 new CssExtractPlugin({
-                    filename: 'build/[name].css'
+                    filename: 'css/[name].css'
                 })
             ],
             optimization: {
@@ -42,11 +45,11 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
     return {
         name,
 
-        entry: `./${name}/app/index.js`,
+        entry: `./src/${name}/app/index.js`,
 
         output: {
-            path: path.resolve(__dirname, 'public', 'build'),
-            filename: `${name}.[name].js`
+            path: path.resolve(__dirname, 'public'),
+            filename: `js/${name}.[name].js`
         },
 
         module: {
@@ -94,7 +97,7 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
                                 sassOptions: {
                                     includePaths: [
                                         path.resolve('node_modules'),
-                                        path.resolve('shared')
+                                        path.resolve('src')
                                     ]
                                 }
                             }
@@ -105,7 +108,7 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
             ]
         },
 
-        devtool: env.development ? 'eval-source-map' : undefined,
+        devtool: env.development ? 'eval-source-map' : 'source-map',
 
         plugins: [
             new webpack.DefinePlugin({
@@ -118,7 +121,7 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
                 'GOOGLE_ANALYTICS_ID': JSON.stringify(GOOGLE_ANALYTICS_ID)
             }),
             new CssExtractPlugin({
-                filename: `${name}.[name].css`
+                filename: `css/${name}.[name].css`
             }),
             ...plugins
         ],
@@ -153,12 +156,12 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
             extensions: ['.js', '.json', '.jsx', '*'],
 
             alias: {
-                'app': path.resolve(__dirname, name, 'app'),
-                'core': path.resolve(__dirname, 'core'),
-                'shared/data': path.resolve(__dirname, 'shared', 'data'),
-                'shared/libs': path.resolve(__dirname, 'shared', 'libs'),
-                'shared/utils': path.resolve(__dirname, 'shared', 'utils'),
-                'shared': path.resolve(__dirname, 'shared', 'client')
+                'app': path.resolve(__dirname, 'src', name, 'app'),
+                'core': path.resolve(__dirname, 'src', 'core'),
+                'shared/data': path.resolve(__dirname, 'src', 'shared', 'data'),
+                'shared/libs': path.resolve(__dirname, 'src', 'shared', 'libs'),
+                'shared/utils': path.resolve(__dirname, 'src', 'shared', 'utils'),
+                'shared': path.resolve(__dirname, 'src', 'shared', 'client')
             },
 
             fallback: {

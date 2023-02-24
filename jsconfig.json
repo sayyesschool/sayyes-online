@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "paths": {
+            "@/*": ["./*"],
+            "shared/*": ["./shared/*"]
+        },
+        "target": "es2022"
+    },
+    "include": [
+        "src/**/*"
+    ]
+}

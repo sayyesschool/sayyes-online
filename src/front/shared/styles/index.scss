@@ -1,0 +1,9 @@
+@use 'shared/styles/variables';
+@use 'bootstrap' with (
+    $primary: variables.$primary-color,
+    $font-family-sans-serif: variables.$font-family
+);
+@use 'shared/styles/base';
+@use 'shared/styles/components';
+
+@use '../../main';
