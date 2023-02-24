@@ -1,11 +1,9 @@
-@use '@material/tab';
-@use '@material/tab-indicator';
 @use 'shared/styles/variables';
 
 #header {
     align-items: center;
 
-    .logo {
+    .navbar-brand {
         width: unset;
         height: 100%;
         margin-left: 1rem;
@@ -13,27 +11,6 @@
         img {
             height: 48px;
             width: auto;
-        }
-    }
-
-    .mdc-top-app-bar__title {
-        overflow: visible;
-        text-overflow: unset;
-
-        a {
-            color: white;
-            text-decoration: none;
-        }
-    }
-
-    .mdc-tab {
-        @include tab.icon-color(on-primary);
-        @include tab.text-label-color(on-primary);
-        @include tab.states-color(on-primary);
-        @include tab.active-states-color(on-primary);
-    
-        .mdc-tab-indicator {
-            display: none;
         }
     }
 

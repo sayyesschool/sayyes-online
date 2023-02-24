@@ -1,8 +1,10 @@
-footer#footer
-    ul.nav.justify-content-center.border-bottom.pb-3.mb-3
+footer#footer.p-3
+    ul.nav.justify-content-center.mb-3
         li.nav-item
             a.nav-link.px-2.text-muted(href="/agreement") Пользовательское соглашение
+        li.nav-item
             a.nav-link.px-2.text-muted(href="/policy") Политика конфиденциальности
+        li.nav-item
             a.nav-link.px-2.text-muted(href="/rules") Правила использования
 
-    p.text-center.text-muted = © 2013 - #{new Date().getFullYear()} SAY YES!, Все права защищены
+    p.text-center.text-muted.mb-0 © #{new Date().getFullYear()} SAY YES!, Все права защищены
