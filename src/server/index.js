@@ -1,15 +1,13 @@
 const express = require('express');
 
 const middleware = require('./middleware');
-const errorPage = require('./pages/error');
-const notFoundPage = require('./pages/not-found');
 
 module.exports = (config, db) => {
     const server = express();
 
     server.set('trust proxy', true);
     server.set('view engine', 'pug');
-    server.set('views', __dirname);
+    server.set('views', config.APP_PATH);
 
     server.locals.ENV = server.get('env');
     server.locals.VERSION = config.APP_VERSION;
@@ -25,11 +23,6 @@ module.exports = (config, db) => {
     server.use(middleware.logger);
     server.use(middleware.session(config, db.connection));
     server.use(...middleware.flash);
-
-    server.on('mount', () => {
-        server.use(errorPage);
-        server.use(notFoundPage);
-    });
 
     process.on('SIGTERM', () => {
         console.info('SIGTERM signal received.');
