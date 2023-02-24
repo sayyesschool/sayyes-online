@@ -24,11 +24,11 @@ module.exports = [
             ],
             output: {
                 path: path.resolve(__dirname, 'public'),
-                filename: 'js/[name].js'
+                filename: 'js/front.js'
             },
             plugins: [
                 new CssExtractPlugin({
-                    filename: 'css/[name].css'
+                    filename: 'css/front.css'
                 })
             ],
             optimization: {
