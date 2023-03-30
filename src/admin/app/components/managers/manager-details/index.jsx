@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 import moment from 'moment';
 
-import { Image } from 'shared/ui-components';
 import DataContext from 'shared/contexts/data';
 import DetailsList from 'shared/components/details-list';
 import PageSection from 'shared/components/page-section';
+import { Image } from 'shared/ui-components';
 
 export default function ManagerDetails({ manager }) {
     const data = useContext(DataContext);
@@ -19,7 +19,6 @@ export default function ManagerDetails({ manager }) {
                 <Image
                     src={manager.imageUrl}
                     alt=""
-                    fluid
                 />
             }
 

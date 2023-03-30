@@ -7,7 +7,7 @@ import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import PageSection from 'shared/components/page-section';
 
-import { useStore } from 'app/hooks/store';
+import { useStore } from 'app/store';
 import PacksTable from 'app/components/packs/packs-table';
 import PackForm from 'app/components/packs/pack-form';
 
@@ -24,12 +24,12 @@ export default function Packs() {
     }, []);
 
     const createPack = useCallback(data => {
-        actions.createPack(data)
+        return actions.createPack(data)
             .then(() => toggleCreateFormOpen(false));
     }, []);
 
     const updatePack = useCallback(data => {
-        actions.updatePack(pack.id, data)
+        return actions.updatePack(pack.id, data)
             .then(() => {
                 setPack(null);
                 toggleEditFormOpen(false);
@@ -37,7 +37,7 @@ export default function Packs() {
     }, [pack]);
 
     const deletePack = useCallback(() => {
-        actions.delete(pack.id)
+        return actions.delete(pack.id)
             .then(() => {
                 setPack(null);
                 toggleDeleteDialogOpen(false);
@@ -63,14 +63,12 @@ export default function Packs() {
     return (
         <PageSection
             title="Пакеты"
-            actions={
-                <Button
-                    title="Создать"
-                    icon="add"
-                    text
-                    onClick={handleCreate}
-                />
-            }
+            actions={[{
+                key: 'add',
+                icon: 'add',
+                onClick: handleCreate
+            }]}
+            variant="outlined"
             compact
         >
             <PacksTable

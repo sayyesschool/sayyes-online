@@ -4,6 +4,11 @@ export default {
         single: null
     },
 
+    courses: {
+        list: null,
+        single: null
+    },
+
     enrollments: {
         list: null,
         single: null

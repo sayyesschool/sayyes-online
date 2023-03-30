@@ -1,7 +1,5 @@
 import { Switch, Route, NavLink, useRouteMatch } from 'react-router-dom';
 
-
-import { Menu } from 'shared/ui-components';
 import Page from 'shared/components/page';
 
 import Packs from './packs';
@@ -9,7 +7,7 @@ import Rooms from './rooms';
 
 import './index.scss';
 
-const menuItems = [
+const tabs = [
     {
         key: 'packs',
         url: '/settings/packs',
@@ -26,21 +24,16 @@ export default function SettingsPage() {
     const match = useRouteMatch('/settings/:view');
 
     return (
-        <Page id="settings-page">
-            <Page.Header title="Настройки"
-                menu={
-                    <Menu
-                        items={menuItems.map(item => ({
-                            key: item.key,
-                            as: NavLink,
-                            to: item.url,
-                            content: item.content,
-                            active: match?.url === item.url
-                        }))}
-                        primary
-                        underlined
-                    />
-                }
+        <Page className="sy-SettingsPage">
+            <Page.Header
+                title="Настройки"
+                tabs={tabs.map(tab => ({
+                    key: tab.key,
+                    as: NavLink,
+                    to: tab.url,
+                    content: tab.content,
+                    active: match?.url === tab.url
+                }))}
             />
 
             <Page.Content>

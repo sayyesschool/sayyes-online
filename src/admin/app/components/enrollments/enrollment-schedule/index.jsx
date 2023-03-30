@@ -2,12 +2,9 @@ import { useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
-import { Button, Icon } from 'shared/ui-components';
 import EnrollmentScheduleForm from 'shared/components/enrollment-schedule-form';
 import WeekSchedule from 'shared/components/week-schedule';
 import PageSection from 'shared/components/page-section';
-
-import './index.scss';
 
 export default function EnrollmentSchedule({ enrollment, onUpdate }) {
     const [isFormOpen, toggleFormOpen] = useBoolean(false);
@@ -19,16 +16,13 @@ export default function EnrollmentSchedule({ enrollment, onUpdate }) {
 
     return (
         <PageSection
-            className="enrollment-schedule"
+            className="sy-EnrollmentSchedule"
             title="Расписание"
-            actions={
-                <Button
-                    icon={<Icon>edit</Icon>}
-                    text
-                    iconOnly
-                    onClick={toggleFormOpen}
-                />
-            }
+            actions={[{
+                key: 'edit',
+                icon: 'edit',
+                onClick: toggleFormOpen
+            }]}
             compact
         >
             {enrollment.schedule?.length > 0 &&

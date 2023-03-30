@@ -1,12 +1,12 @@
 import { useCallback, useState } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Button, Icon, Tabs } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
+import { Tabs } from 'shared/ui-components';
 
-import { useActions } from 'app/hooks/store';
+import { useActions } from 'app/store';
 import PaymentForm from 'app/components/payments/payment-form';
 import TransactionsList from 'app/components/transactions/transactions-list';
 
@@ -49,33 +49,51 @@ export default function ClientTransactions({ client }) {
         toggleConfirmationDialogOpen(true);
     }, []);
 
+    const handleTabChange = useCallback((event, value) => {
+        setView(value);
+    }, []);
+
     const transactions = client?.transactions;
     const debitTransactions = transactions.filter(t => t.type === 'debit');
     const creditTransactions = transactions.filter(t => t.type === 'credit');
 
     return (
         <PageSection
-            className="client-transactions"
-            title={
-                <Tabs
-                    items={[
-                        { key: 'debit', value: 'debit', content: 'Поступления' },
-                        { key: 'credit', value: 'credit', content: 'Списания' }
-                    ]}
-                    onChange={setView}
-                />
-            }
-            actions={
-                <Button
-                    icon={<Icon name="add" />}
-                    title="Создать"
-                    text
-                    iconOnly
-                    onClick={toggleCreateFormOpen}
-                />
-            }
-            compact
+            className="sy-ClientTransactions"
+            title="Платежи"
+            actions={[
+                {
+                    key: 'add',
+                    icon: 'add',
+                    onClick: toggleCreateFormOpen
+                }
+            ]}
         >
+            <Tabs
+                value={view}
+                items={[
+                    {
+                        key: 'debit',
+                        value: 'debit',
+                        icon: 'add',
+                        content: 'Поступления',
+                        variant: view === 'debit' ? 'soft' : 'plain',
+                        color: 'success'
+                    },
+                    {
+                        key: 'credit',
+                        value: 'credit',
+                        icon: 'remove',
+                        content: 'Списания',
+                        variant: view === 'credit' ? 'soft' : 'plain',
+                        color: 'danger'
+                    }
+                ]}
+                size="sm"
+                variant="plain"
+                onChange={handleTabChange}
+            />
+
             {transactions?.length > 0 &&
                 <TransactionsList
                     transactions={view === 'debit' ? debitTransactions : creditTransactions}

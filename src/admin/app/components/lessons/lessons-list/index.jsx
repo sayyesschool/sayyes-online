@@ -1,26 +1,26 @@
 import { Link } from 'react-router-dom';
 
-import { List, Status } from 'shared/ui-components';
-import { StatusByType } from 'shared/data/lesson';
+import StatusIcon from 'shared/components/status-icon';
+import { List, Text } from 'shared/ui-components';
 
-export default function LessonsList({ lessons }) {
+export default function LessonsList({ lessons, statusIcon = true }) {
     return (
-        <List className="lessons-list">
+        <List className="sy-LessonsList">
             {lessons?.map(lesson =>
                 <List.Item
                     key={lesson.id}
-                    component={Link}
+                    as={Link}
                     to={lesson.url}
-                    media={
-                        <Status
-                            size="large"
-                            state={StatusByType[lesson.status]}
+                    decorator={statusIcon &&
+                        <StatusIcon
+                            status={lesson.status}
                         />
                     }
-                    header="Урок"
-                    content={new Date(lesson.date).toLocaleString()}
-                    headerMedia={lesson.teacher?.fullname}
-                    contentMedia={lesson.room?.title}
+                    content={<>
+                        <Text type="body2">{lesson.teacher?.fullname}</Text>
+                        <Text type="body3">{lesson.dateTimeString}</Text>
+                        <Text type="body3">{lesson.room?.name}</Text>
+                    </>}
                 />
             )}
         </List>

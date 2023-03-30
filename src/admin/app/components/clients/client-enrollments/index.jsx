@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Button, Icon } from 'shared/ui-components';
 import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
 
@@ -25,17 +24,16 @@ export default function ClientEnrollments({ client }) {
 
     return (
         <PageSection
-            className="client-enrollments"
+            className="sy-ClientEnrollments"
             title="Обучение"
-            actions={
-                <Button
-                    icon={<Icon name="add" />}
-                    title="Создать обучение"
-                    text
-                    iconOnly
-                    onClick={toggleEnrollmentFormOpen}
-                />
-            }
+            actions={[
+                {
+                    key: 'add',
+                    icon: 'add',
+                    title: 'Создать обучение',
+                    onClick: toggleEnrollmentFormOpen
+                }
+            ]}
             compact
         >
             <EnrollmentsList

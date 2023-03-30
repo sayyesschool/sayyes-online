@@ -1,12 +1,11 @@
 import { useCallback, useState } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Button, Icon } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
 
-import { useActions } from 'app/hooks/store';
+import { useActions } from 'app/store';
 import PaymentForm from 'app/components/payments/payment-form';
 import PaymentsList from 'app/components/payments/payments-list';
 
@@ -52,17 +51,14 @@ export default function ClientPayments({ client }) {
 
     return (
         <PageSection
-            className="client-payments"
+            className="sy-ClientPayments"
             title="Платежи"
-            actions={
-                <Button
-                    icon={<Icon name="add" />}
-                    title="Создать платеж"
-                    text
-                    iconOnly
-                    onClick={toggleCreateFormOpen}
-                />
-            }
+            actions={[{
+                key: 'add',
+                icon: 'add',
+                title: 'Создать платеж',
+                onClick: toggleCreateFormOpen
+            }]}
             compact
         >
             {payments?.length > 0 &&

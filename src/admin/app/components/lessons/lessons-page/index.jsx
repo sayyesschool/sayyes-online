@@ -26,21 +26,19 @@ export default function Lessons() {
     if (!lessons) return <LoadingIndicator />;
 
     return (
-        <Page id="lessons-page">
+        <Page className="sy-LessonsPage">
             <Page.Header
                 title="Уроки"
-                toolbar={[
-                    {
-                        key: 'add',
-                        title: 'Создать',
-                        icon: 'add',
-                        onClick: toggleFormOpen
-                    }
-                ]}
+                actions={[{
+                    key: 'add',
+                    title: 'Создать',
+                    icon: 'add',
+                    onClick: toggleFormOpen
+                }]}
             />
 
             <Page.Content>
-                <Page.Section compact>
+                <Page.Section variant="outlined" compact>
                     <LessonsTable
                         lessons={lessons}
                     />

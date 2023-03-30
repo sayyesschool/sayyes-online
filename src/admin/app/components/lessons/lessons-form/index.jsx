@@ -3,9 +3,9 @@ import moment from 'moment';
 
 import { scheduleLessons } from 'shared/libs/enrollment';
 import { useFormData } from 'shared/hooks/form';
-import Form from 'shared/ui-components/form';
 import UserSelect from 'shared/components/user-select';
 import LessonsPillGroup from 'shared/components/lessons-pill-group';
+import { Form } from 'shared/ui-components';
 
 import { useStore } from 'app/hooks/store';
 
@@ -40,7 +40,7 @@ export default function LessonsForm({ enrollment, onSubmit, ...props }) {
     }, [lessons]);
 
     return (
-        <Form className="lessons-form" onSubmit={handleSubmit} {...props}>
+        <Form className="sy-LessonsForm" onSubmit={handleSubmit} {...props}>
             <Form.Input
                 label="Начальная дата"
                 type="date"

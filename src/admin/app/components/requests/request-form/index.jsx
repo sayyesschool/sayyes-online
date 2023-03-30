@@ -1,12 +1,11 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 
-import useForm from 'shared/hooks/form';
+import { useFormData } from 'shared/hooks/form';
+import UserSelect from 'shared/components/user-select';
 import { Flex, Form, Text } from 'shared/ui-components';
-import PeopleSelect from 'shared/components/user-select';
+import { requestChannelOptions, requestStatusOptions, requestSourceOptions } from 'shared/data/request';
 
 import { useStore } from 'app/hooks/store';
-
-import './index.scss';
 
 const defaultRequest = {
     status: 'new',
@@ -17,14 +16,12 @@ const defaultRequest = {
     note: undefined
 };
 
-export default forwardRef(RequestForm);
-
 function RequestForm({ request = {}, onSubmit, ...props }, ref) {
-    const formRef = useRef();
-
     const [managers] = useStore('managers.list');
 
-    const { data, handleChange } = useForm({
+    const formRef = useRef();
+
+    const { data, handleChange } = useFormData({
         ...defaultRequest,
         ...request,
         client: request.client?.id,
@@ -42,19 +39,15 @@ function RequestForm({ request = {}, onSubmit, ...props }, ref) {
         onSubmit(data);
     }
 
+    console.log('MANAGER', managers);
+
     return (
-        <Form ref={formRef} className="request-form" onSubmit={handleSubmit} {...props}>
+        <Form ref={formRef} className="sy-RequestForm" onSubmit={handleSubmit} {...props}>
             <Form.Select
                 name="status"
                 value={data.status}
                 label="Статус"
-                options={[
-                    { key: 'new', value: 'new', text: 'Новая' },
-                    { key: 'processing', value: 'processing', text: 'В обработке' },
-                    { key: 'resolved', value: 'resolved', text: 'Успешная' },
-                    { key: 'rejected', value: 'rejected', text: 'Отказ' },
-                    { key: 'postponed', value: 'postponed', text: 'Отложенная' },
-                ]}
+                options={requestStatusOptions}
                 required
                 onChange={handleChange}
             />
@@ -81,27 +74,27 @@ function RequestForm({ request = {}, onSubmit, ...props }, ref) {
             />
 
             {data.client &&
-                <PeopleSelect
+                <UserSelect
                     name="client"
                     label="Клиент"
                     value={data.client}
                     options={[{
                         key: request.client.id,
                         value: request.client.id,
-                        text: request.client.fullname
+                        label: request.client.fullname
                     }]}
                     disabled
                 />
             }
 
-            <PeopleSelect
+            <UserSelect
                 name="manager"
                 value={data.manager}
                 label="Менеджер"
-                options={managers.map(manager => ({
+                options={managers?.map(manager => ({
                     key: manager.id,
                     value: manager.id,
-                    text: manager.fullname
+                    label: manager.fullname
                 }))}
                 required
                 onChange={handleChange}
@@ -111,13 +104,7 @@ function RequestForm({ request = {}, onSubmit, ...props }, ref) {
                 name="channel"
                 value={data.channel}
                 label="Канал связи"
-                options={[
-                    { key: 'null', value: '', text: '' },
-                    { key: 'site', value: 'site', text: 'Сайт' },
-                    { key: 'call', value: 'call', text: 'Звонок' },
-                    { key: 'whatsapp', value: 'whatsapp', text: 'WhatsApp' },
-                    { key: 'instagram', value: 'instagram', text: 'Instagram' },
-                ]}
+                options={requestChannelOptions}
                 onChange={handleChange}
             />
 
@@ -125,14 +112,7 @@ function RequestForm({ request = {}, onSubmit, ...props }, ref) {
                 name="source"
                 value={data.source}
                 label="Источник"
-                options={[
-                    { key: 'null', value: '', text: '' },
-                    { key: 'instagram', value: 'instagram', text: 'Инстаграм' },
-                    { key: 'whatsapp', value: 'whatsapp', text: 'WhatsApp' },
-                    { key: 'yandex', value: 'yandex', text: 'Яндекс' },
-                    { key: 'google', value: 'google', text: 'Google' },
-                    { key: 'referral', value: 'referral', text: 'Рекомендация' }
-                ]}
+                options={requestSourceOptions}
                 onChange={handleChange}
             />
 
@@ -184,3 +164,5 @@ function RequestForm({ request = {}, onSubmit, ...props }, ref) {
         </Form>
     );
 }
+
+export default forwardRef(RequestForm);

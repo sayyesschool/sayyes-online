@@ -1,93 +1,96 @@
 import { Link } from 'react-router-dom';
 
-import { Button, Icon, Pill, Table } from 'shared/ui-components';
-import StatusLabel from 'shared/components/status-label';
+import StatusChip from 'shared/components/status-chip';
+import { Chip, IconButton, Table, Text } from 'shared/ui-components';
+import { LessonStatusLabel } from 'shared/data/lesson';
 
 export default function LessonsTable({ lessons, onView, onEdit, onDelete }) {
     return (
-        <Table className="lessons-table">
-            <Table.Row header>
-                {columns.map(col =>
-                    <Table.Cell
-                        key={col.key}
-                        content={col.text}
-                    />
-                )}
-            </Table.Row>
+        <Table className="sy-LessonsTable">
+            <Table.Head>
+                <Table.Row header>
+                    {columns.map(col =>
+                        <Table.Cell
+                            key={col.key}
+                            content={col.text}
+                            header
+                        />
+                    )}
+                </Table.Row>
+            </Table.Head>
 
-            {lessons.map(lesson =>
-                <Table.Row key={lesson.id}>
-                    <Table.Cell
-                        content={lesson.client &&
-                            <Pill
-                                as={Link}
-                                to={`/clients/${lesson.client.id}`}
-                                content={lesson.client.fullname}
-                                appearance="outline"
-                            />
-                        }
-                    />
+            <Table.Body>
+                {lessons.map(lesson =>
+                    <Table.Row key={lesson.id}>
+                        <Table.Cell>
+                            {lesson.client &&
+                                <Chip
+                                    as={Link}
+                                    to={`/clients/${lesson.client.id}`}
+                                    content={lesson.client.fullname}
+                                    variant="outlined"
+                                />
+                            }
+                        </Table.Cell>
 
-                    <Table.Cell
-                        content={lesson.teacher &&
-                            <Pill
-                                as={Link}
-                                to={`/teachers/${lesson.teacher.id}`}
-                                content={lesson.teacher.fullname}
-                                appearance="outline"
-                            />
-                        }
-                    />
+                        <Table.Cell>
+                            {lesson.teacher &&
+                                <Chip
+                                    as={Link}
+                                    to={`/teachers/${lesson.teacher.id}`}
+                                    content={lesson.teacher.fullname}
+                                    variant="outlined"
+                                />
+                            }
+                        </Table.Cell>
 
-                    <Table.Cell
-                        content={
-                            <StatusLabel
+                        <Table.Cell>
+                            <StatusChip
                                 status={lesson.status}
-                                content={lesson.statusLabel}
+                                content={LessonStatusLabel[lesson.status]}
                             />
-                        }
-                    />
+                        </Table.Cell>
 
-                    <Table.Cell content={lesson.dateTimeLabel} />
+                        <Table.Cell>
+                            <Text>{lesson.dateString}</Text>
+                            <Text type="body2">{lesson.timeString}</Text>
+                        </Table.Cell>
 
-                    <Table.Cell content={lesson.trial ? 'Да' : 'Нет'} />
+                        <Table.Cell content={lesson.trial ? 'Да' : 'Нет'} />
 
-                    <Table.Cell content={lesson.free ? 'Да' : 'Нет'} />
+                        <Table.Cell content={lesson.free ? 'Да' : 'Нет'} />
 
-                    <Table.Cell
-                        content={
-                            <Button.Group
+                        <Table.Cell>
+                            <IconButton.Group
                                 buttons={[
                                     {
                                         key: 'view',
                                         title: 'Посмотреть',
-                                        icon: <Icon>preview</Icon>,
-                                        iconOnly: true,
-                                        text: true,
+                                        icon: 'preview',
                                         onClick: () => onView(lesson)
                                     },
                                     {
                                         key: 'edit',
                                         title: 'Изменить',
-                                        icon: <Icon>edit</Icon>,
-                                        iconOnly: true,
-                                        text: true,
+                                        icon: 'edit',
                                         onClick: () => onEdit(lesson)
                                     },
                                     {
                                         key: 'delete',
                                         title: 'Удалить',
-                                        icon: <Icon>delete</Icon>,
-                                        iconOnly: true,
-                                        text: true,
+                                        icon: 'delete',
                                         onClick: () => onDelete(lesson)
                                     }
                                 ]}
+                                size="sm"
+                                color="neutral"
+                                variant="plain"
+                                align="end"
                             />
-                        }
-                    />
-                </Table.Row>
-            )}
+                        </Table.Cell>
+                    </Table.Row>
+                )}
+            </Table.Body>
         </Table>
     );
 }

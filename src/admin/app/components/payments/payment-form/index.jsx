@@ -1,12 +1,9 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import moment from 'moment';
 
-import useForm from 'shared/hooks/form';
-import Form from 'shared/ui-components/form';
-
+import { useFormData } from 'shared/hooks/form';
+import { Form } from 'shared/ui-components';
 import { paymentMethodOptions, operatorOptions } from 'shared/data/payment';
-
-import './index.scss';
 
 export default forwardRef(PaymentForm);
 
@@ -26,7 +23,7 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
         get data() { return data; }
     }));
 
-    const { data, onChange } = useForm({
+    const { data, handleChange } = useFormData({
         ...defaultPayment,
         ...payment
     }, [payment]);
@@ -39,7 +36,7 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
     }, [data]);
 
     return (
-        <Form ref={formRef} className="payment-form" onSubmit={handleSubmit} {...props}>
+        <Form ref={formRef} className="sy-PaymentForm" onSubmit={handleSubmit} {...props}>
             <Form.Input
                 type="text"
                 name="description"
@@ -47,7 +44,7 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
                 label="Описание"
                 fluid
                 required
-                onChange={onChange}
+                onChange={handleChange}
             />
 
             <Form.Input
@@ -58,7 +55,7 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
                 suffix="руб."
                 min={1}
                 required
-                onChange={onChange}
+                onChange={handleChange}
             />
 
             <Form.Input
@@ -66,7 +63,7 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
                 name="paidAt"
                 value={moment(data.paidAt).format('YYYY-MM-DD')}
                 label="Дата"
-                onChange={onChange}
+                onChange={handleChange}
             />
 
             <Form.Select
@@ -74,7 +71,7 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
                 value={data.paymentMethod}
                 label="Способ оплаты"
                 options={paymentMethodOptions}
-                onChange={onChange}
+                onChange={handleChange}
             />
 
             {(data.paymentMethod !== '' && data.paymentMethod !== 'cash') &&
@@ -83,7 +80,7 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
                     value={data.operator}
                     label="Оператор"
                     options={operatorOptions}
-                    onChange={onChange}
+                    onChange={handleChange}
                 />
             }
 
@@ -92,7 +89,7 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
                 name="note"
                 value={data.note}
                 label="Заметка"
-                onChange={onChange}
+                onChange={handleChange}
             />
         </Form>
     );

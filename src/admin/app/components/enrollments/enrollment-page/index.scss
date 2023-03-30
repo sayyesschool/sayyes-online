@@ -1,11 +1,10 @@
-#enrollment-page {
+.sy-EnrollmentPage {
     .page-content {
         margin: auto !important;
         padding-top: 0;
     }
 
-    .enrollment-meta,
-    .enrollment-status {
+    .sy-EnrollmentStatus {
         margin-bottom: 1rem;
     }
 }

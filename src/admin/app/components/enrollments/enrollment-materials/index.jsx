@@ -1,9 +1,10 @@
 import { useCallback } from 'react';
 
-import { Button, Icon, List, MenuButton } from 'shared/ui-components';
+import MaterialsList from 'shared/components/materials-list';
 import PageSection from 'shared/components/page-section';
+import { IconButton, MenuButton } from 'shared/ui-components';
 
-import { useStore, useActions } from 'app/hooks/store';
+import { useStore, useActions } from 'app/store';
 
 export default function EnrollmentMaterials({ enrollment }) {
     const [materials = []] = useStore('materials.list');
@@ -35,44 +36,29 @@ export default function EnrollmentMaterials({ enrollment }) {
 
     return (
         <PageSection
-            className="enrollment-materials"
+            className="sy-EnrollmentMaterials"
             title="Пособия"
             actions={
                 <MenuButton
                     trigger={
-                        <Button
-                            icon={<Icon>add</Icon>}
-                            text
-                            iconOnly
+                        <IconButton
+                            icon="add"
+                            color="neutral"
+                            size="sm"
+                            variant="plain"
                         />
                     }
-                    align="end"
-                    menu={items}
+                    items={items}
                     onMenuItemClick={handleAddMaterial}
                 />
             }
             compact
         >
             {enrollmentMaterials.length > 0 &&
-                <List>
-                    {enrollmentMaterials.map(material =>
-                        <List.Item
-                            key={material.id}
-                            media={<img src={material.imageUrl} />}
-                            header={material.title}
-                            content={material.subtitle}
-                            endMedia={
-                                <Button
-                                    title="Убрать материал"
-                                    icon={<Icon>remove</Icon>}
-                                    iconOnly
-                                    text
-                                    onClick={() => handleRemoveMaterial(material.id)}
-                                />
-                            }
-                        />
-                    )}
-                </List>
+                <MaterialsList
+                    materials={enrollmentMaterials}
+                    onRemove={handleRemoveMaterial}
+                />
             }
         </PageSection>
     );

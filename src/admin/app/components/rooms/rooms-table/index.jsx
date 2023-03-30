@@ -1,76 +1,72 @@
-import { Button, Checkbox, Icon, Table } from 'shared/ui-components';
+import { IconButton, Switch, Table } from 'shared/ui-components';
 
 const columns = [
     { key: 'title', content: 'Название' },
     { key: 'login', content: 'Логин' },
     { key: 'password', content: 'Пароль' },
     { key: 'lessons', content: 'Кол-во уроков за 30 дней' },
-    { key: 'active', content: 'Работает' }
+    { key: 'active', content: 'Работает' },
+    { key: 'actions' }
 ];
 
 export default function RoomsTable({ rooms, onEdit, onToggleActive, onDelete }) {
     return (
         <Table className="rooms-table">
-            <Table.Row header>
-                {columns.map(col =>
-                    <Table.Cell
-                        key={col.key}
-                        content={col.content}
-                    />
-                )}
+            <Table.Head>
+                <Table.Row header>
+                    {columns.map(col =>
+                        <Table.Cell
+                            key={col.key}
+                            content={col.content}
+                            header
+                        />
+                    )}
+                </Table.Row>
+            </Table.Head>
 
-                <Table.Cell />
-            </Table.Row>
+            <Table.Body>
+                {rooms.map(room =>
+                    <Table.Row key={room.id}>
+                        <Table.Cell content={room.title} />
 
-            {rooms.map(room =>
-                <Table.Row key={room.id}>
-                    <Table.Cell content={room.title} />
+                        <Table.Cell content={room.login} />
 
-                    <Table.Cell content={room.login} />
+                        <Table.Cell content={room.password} />
 
-                    <Table.Cell content={room.password} />
+                        <Table.Cell content={room.lessonCount} />
 
-                    <Table.Cell content={room.lessonCount} />
-
-                    <Table.Cell
-                        content={
-                            <Checkbox
+                        <Table.Cell>
+                            <Switch
                                 checked={room.active}
-                                toggle
+                                size="sm"
                                 onChange={() => onToggleActive(room)}
                             />
-                        }
-                    />
+                        </Table.Cell>
 
-                    <Table.Cell
-                        className="ui-table__cell--actions"
-                        content={
-                            <Button.Group
+                        <Table.Cell align="end">
+                            <IconButton.Group
                                 buttons={[
                                     {
                                         key: 'edit',
-                                        icon: <Icon>edit</Icon>,
-                                        iconOnly: true,
-                                        flat: true,
-                                        text: true,
+                                        icon: 'edit',
                                         title: 'Изменить',
                                         onClick: () => onEdit(room)
                                     },
                                     {
                                         key: 'delete',
-                                        icon: <Icon>delete</Icon>,
-                                        iconOnly: true,
-                                        flat: true,
-                                        text: true,
+                                        icon: 'delete',
                                         title: 'Удалить',
                                         onClick: () => onDelete(room)
                                     }
                                 ]}
+                                size="sm"
+                                variant="plain"
+                                color="neutral"
                             />
-                        }
-                    />
-                </Table.Row>
-            )}
+                        </Table.Cell>
+                    </Table.Row>
+                )}
+            </Table.Body>
         </Table>
     );
 }

@@ -1,20 +1,13 @@
 import { useCallback } from 'react';
 import moment from 'moment';
 
-import useForm from 'shared/hooks/form';
-import Form from 'shared/ui-components/form';
-import PeopleSelect from 'shared/components/user-select';
-
-import { useStore } from 'app/hooks/store';
-
-import './index.scss';
+import { useFormData } from 'shared/hooks/form';
+import { Flex, Form } from 'shared/ui-components';
 
 export default function RequestSearchForm({ onSubmit, ...props }) {
-    const [managers] = useStore('managers.list');
-
-    const { data, handleChange, getData } = useForm({
+    const { data, handleChange, getData } = useFormData({
         query: '',
-        statuses: [],
+        status: '',
         createdAt: '',
         manager: ''
     });
@@ -24,49 +17,38 @@ export default function RequestSearchForm({ onSubmit, ...props }) {
     }, []);
 
     return (
-        <Form className="request-search-form" onSubmit={handleSubmit} {...props}>
-            <Form.Input
-                type="search"
-                name="query"
-                value={data.query}
-                placeholder="Имя, телефон или email"
-                onChange={handleChange}
-            />
+        <Form className="sy-RequestSearchForm" onSubmit={handleSubmit} {...props}>
+            <Flex gap="smaller">
+                <Form.Input
+                    type="search"
+                    name="query"
+                    value={data.query}
+                    placeholder="Имя, телефон или email"
+                    onChange={handleChange}
+                />
 
-            <Form.Select
-                name="statuses"
-                value={data.statuses}
-                placeholder="Статус"
-                options={[
-                    { key: 'new', value: 'new', header: 'Новая' },
-                    { key: 'pending', value: 'pending', header: 'В обработке' },
-                    { key: 'resolved', value: 'resolved', header: 'Успешная' },
-                    { key: 'rejected', value: 'rejected', header: 'Отказ' },
-                    { key: 'postponed', value: 'postponed', header: 'Отложенная' }
-                ]}
-                multiple
-                onChange={handleChange}
-            />
+                <Form.Select
+                    name="status"
+                    value={data.status}
+                    placeholder="Статус"
+                    options={[
+                        { key: 'new', value: 'new', content: 'Новая' },
+                        { key: 'pending', value: 'pending', content: 'В обработке' },
+                        { key: 'resolved', value: 'resolved', content: 'Успешная' },
+                        { key: 'rejected', value: 'rejected', content: 'Отказ' },
+                        { key: 'postponed', value: 'postponed', content: 'Отложенная' }
+                    ]}
+                    onChange={handleChange}
+                />
 
-            <Form.Input
-                type="date"
-                name="createdAt"
-                value={moment(data.createdAt).format('YYYY-MM-DD')}
-                placeholder="Дата создания"
-                onChange={handleChange}
-            />
-
-            <PeopleSelect
-                name="manager"
-                value={data.manager}
-                placeholder="Менеджер"
-                options={(managers || []).map(manager => ({
-                    key: manager.id,
-                    value: manager.id,
-                    content: manager.fullname
-                }))}
-                onChange={handleChange}
-            />
+                <Form.Input
+                    type="date"
+                    name="createdAt"
+                    value={moment(data.createdAt).format('YYYY-MM-DD')}
+                    placeholder="Дата создания"
+                    onChange={handleChange}
+                />
+            </Flex>
         </Form>
     );
 }

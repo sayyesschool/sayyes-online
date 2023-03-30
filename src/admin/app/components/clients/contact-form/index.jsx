@@ -1,7 +1,7 @@
 import { forwardRef, useRef, useImperativeHandle } from 'react';
 
-import useForm from 'shared/hooks/form';
-import Form from 'shared/ui-components/form';
+import { useFormData } from 'shared/hooks/form';
+import { Form } from 'shared/ui-components';
 
 const defaultContact = {
     relation: '',
@@ -14,12 +14,10 @@ const defaultContact = {
     note: ''
 };
 
-export default forwardRef(ContactForm);
-
 function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
     const formRef = useRef();
 
-    const { data, handleChange } = useForm({
+    const { data, handleChange } = useFormData({
         ...defaultContact,
         ...contact
     }, [contact?.id]);
@@ -30,13 +28,12 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
     }));
 
     return (
-        <Form ref={formRef} className="contact-form" onSubmit={() => onSubmit(data)} {...props}>
+        <Form ref={formRef} className="sy-ContactForm" onSubmit={() => onSubmit(data)} {...props}>
             <Form.Input
                 type="text"
                 name="relation"
                 value={data.relation}
                 label="Кем приходится"
-                fluid
                 onChange={handleChange}
             />
 
@@ -44,7 +41,6 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
                 name="firstname"
                 value={data.firstname}
                 label="Имя"
-                fluid
                 required
                 onChange={handleChange}
             />
@@ -53,7 +49,6 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
                 name="lastname"
                 value={data.lastname}
                 label="Фамилия"
-                fluid
                 onChange={handleChange}
             />
 
@@ -61,7 +56,6 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
                 name="patronym"
                 value={data.patronym}
                 label="Отчество"
-                fluid
                 onChange={handleChange}
             />
 
@@ -71,7 +65,6 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
                 value={data.phone}
                 label="Телефон"
                 required
-                fluid
                 onChange={handleChange}
             />
 
@@ -80,7 +73,6 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
                 name="altPhone"
                 value={data.altPhone}
                 label="Дополнительный телефон"
-                fluid
                 onChange={handleChange}
             />
 
@@ -89,7 +81,6 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
                 name="email"
                 value={data.email}
                 label="Электронная почта"
-                fluid
                 onChange={handleChange}
             />
 
@@ -98,7 +89,6 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
                 name="occupation"
                 value={data.occupation}
                 label="Род деятельности"
-                fluid
                 onChange={handleChange}
             />
 
@@ -106,9 +96,10 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
                 name="note"
                 value={data.note}
                 label="Примечание"
-                fluid
                 onChange={handleChange}
             />
         </Form>
     );
 }
+
+export default forwardRef(ContactForm);

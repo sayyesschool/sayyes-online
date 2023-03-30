@@ -1,39 +1,71 @@
-import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
 import moment from 'moment';
 
-import useForm from 'shared/hooks/form';
-import Form from 'shared/ui-components/form';
+import { useFormData } from 'shared/hooks/form';
 import TimeZoneSelect from 'shared/components/timezone-select';
+import { Form, IconButton } from 'shared/ui-components';
+import { generatePassword } from 'shared/utils/password';
 
-const defaultManager = {
-    firstname: '',
-    lastname: '',
-    email: '',
-    phone: '',
-    timezone: '',
-    note: ''
-};
+const genderItems = [
+    { key: 'male', value: 'male', label: 'Мужской' },
+    { key: 'value', value: 'female', label: 'Женский' }
+];
 
-export default forwardRef(ManagerForm);
+const getDefaultData = ({
+    firstname = '',
+    lastname = '',
+    patronym = '',
+    phone = '',
+    email = '',
+    dob = '',
+    gender = '',
+    timezone = '',
+    note = ''
+}) => ({
+    firstname,
+    lastname,
+    patronym,
+    phone,
+    email,
+    gender,
+    dob: dob ? moment(dob).format('YYYY-MM-DD') : '',
+    timezone,
+    note
+});
 
-function ManagerForm({ manager = {}, onSubmit, ...props }, ref) {
+function ManagerForm({
+    manager = {},
+    onSubmit,
+    ...props
+}, ref) {
     const formRef = useRef();
-
-    const { data, handleChange } = useForm({
-        ...defaultManager,
-        ...manager,
-        requests: undefined,
-        enrollments: undefined,
-        payments: undefined
-    });
 
     useImperativeHandle(ref, () => ({
         get form() { return formRef.current; },
         get data() { return data; }
     }));
 
+    const { data, getData, handleChange } = useFormData(getDefaultData(manager));
+
+    const [password, setPassword] = useState(!manager.id && generatePassword());
+
+    const handleSubmit = useCallback(() => {
+        getData(data => {
+            if (!manager.id) {
+                data.password = password;
+            }
+
+            onSubmit(data);
+        });
+    }, [manager]);
+
     return (
-        <Form ref={formRef} className="manager-form" onSubmit={() => onSubmit(data)} {...props}>
+        <Form
+            ref={formRef}
+            className="sy-ManagerForm"
+            onSubmit={handleSubmit}
+            {...props}
+        >
             <Form.Input
                 label="Имя"
                 name="firstname"
@@ -71,20 +103,34 @@ function ManagerForm({ manager = {}, onSubmit, ...props }, ref) {
                 type="email"
                 name="email"
                 value={data.email}
+                required
                 onChange={handleChange}
             />
+
+            {!manager.id &&
+                <Form.Input
+                    label="Пароль"
+                    type="text"
+                    name="password"
+                    value={password}
+                    autoComplete="off"
+                    endDecorator={
+                        <IconButton
+                            icon="sync_lock"
+                            color="neutral"
+                            size="sm"
+                            variant="plain"
+                            onClick={() => setPassword(generatePassword())}
+                        />
+                    }
+                />
+            }
 
             <Form.Input
                 label="Дата рождения"
                 type="date"
                 name="dob"
-                value={data.dob ? moment(data.dob).format('YYYY-MM-DD') : ''}
-                onChange={handleChange}
-            />
-
-            <TimeZoneSelect
-                name="timezone"
-                value={data.timezone}
+                value={data.dob}
                 onChange={handleChange}
             />
 
@@ -92,10 +138,13 @@ function ManagerForm({ manager = {}, onSubmit, ...props }, ref) {
                 label="Пол"
                 name="gender"
                 value={data.gender}
-                items={[
-                    { value: 'male', label: 'Мужской' },
-                    { value: 'female', label: 'Женский' }
-                ]}
+                items={genderItems}
+                onChange={handleChange}
+            />
+
+            <TimeZoneSelect
+                name="timezone"
+                value={data.timezone}
                 onChange={handleChange}
             />
 
@@ -108,3 +157,5 @@ function ManagerForm({ manager = {}, onSubmit, ...props }, ref) {
         </Form>
     );
 }
+
+export default forwardRef(ManagerForm);

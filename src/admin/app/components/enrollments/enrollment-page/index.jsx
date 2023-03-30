@@ -2,11 +2,11 @@ import { useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useEnrollment } from 'shared/hooks/enrollments';
-import { Button, Flex, Icon, Grid } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { Badge, Flex, IconButton, Grid } from 'shared/ui-components';
 
 import EnrollmentForm from 'app/components/enrollments/enrollment-form';
 import EnrollmentComments from 'app/components/enrollments/enrollment-comments';
@@ -49,29 +49,31 @@ export default function EnrollmentPage({ match, history }) {
     if (!enrollment) return <LoadingIndicator />;
 
     return (
-        <Page id="enrollment-page" loading={!enrollment}>
+        <Page className="sy-EnrollmentPage">
             <Page.Header
                 breadcrumbs={[
-                    { text: enrollment.client.fullname, url: enrollment?.client.url }
+                    { content: enrollment.client.fullname, to: enrollment?.client.url }
                 ]}
                 title={enrollment.domainLabel}
-                toolbar={[
+                actions={[
                     (enrollment.client?.hhid && {
+                        key: 'hhid',
                         element: 'a',
                         href: `https://sayes.t8s.ru/Profile/${enrollment.client.hhid}`,
                         target: '_blank',
                         icon: 'link',
                         title: 'Открыть в Hollihop'
                     }),
-                    <Button
-                        key="comments"
-                        icon={<Icon>comment</Icon>}
-                        title="Открыть комментарии"
-                        text
-                        iconOnly
-                        data-comments-count={enrollment.comments.length}
-                        onClick={toggleSidePanel}
-                    />,
+                    <Badge key="comments" badgeContent={enrollment.comments.length}>
+                        <IconButton
+                            icon="comment"
+                            title="Открыть комментарии"
+                            color="neutral"
+                            size="sm"
+                            variant="soft"
+                            onClick={toggleSidePanel}
+                        />
+                    </Badge>,
                     {
                         key: 'edit',
                         title: 'Изменить',
@@ -97,41 +99,47 @@ export default function EnrollmentPage({ match, history }) {
                     onUpdate={updateEnrollment}
                 />
 
-                <Grid columns="minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr)">
-                    <Flex gap="gap.medium" column>
-                        <EnrollmentDetails
-                            enrollment={enrollment}
-                        />
-                    </Flex>
+                <Grid spacing={2}>
+                    <Grid.Item xs={3}>
+                        <Flex gap="medium" column>
+                            <EnrollmentDetails
+                                enrollment={enrollment}
+                            />
+                        </Flex>
+                    </Grid.Item>
 
-                    <Flex gap="gap.medium" column>
-                        <EnrollmentLessons
-                            enrollment={enrollment}
-                        />
+                    <Grid.Item xs={6}>
+                        <Flex gap="medium" column>
+                            <EnrollmentLessons
+                                enrollment={enrollment}
+                            />
 
-                        <EnrollmentComments
-                            enrollment={enrollment}
-                        />
-                    </Flex>
+                            <EnrollmentComments
+                                enrollment={enrollment}
+                            />
+                        </Flex>
+                    </Grid.Item>
 
-                    <Flex gap="gap.medium" column>
-                        <EnrollmentSchedule
-                            enrollment={enrollment}
-                            onUpdate={updateEnrollmentSchedule}
-                        />
+                    <Grid.Item xs={3}>
+                        <Flex gap="medium" column>
+                            <EnrollmentSchedule
+                                enrollment={enrollment}
+                                onUpdate={updateEnrollmentSchedule}
+                            />
 
-                        {/* <EnrollmentPayments
+                            {/* <EnrollmentPayments
                             enrollment={enrollment}
                         /> */}
 
-                        <EnrollmentCourses
-                            enrollment={enrollment}
-                        />
+                            <EnrollmentCourses
+                                enrollment={enrollment}
+                            />
 
-                        <EnrollmentMaterials
-                            enrollment={enrollment}
-                        />
-                    </Flex>
+                            <EnrollmentMaterials
+                                enrollment={enrollment}
+                            />
+                        </Flex>
+                    </Grid.Item>
 
                     {/* <EnrollmentTrialLesson
                         enrollment={enrollment}

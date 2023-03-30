@@ -1,13 +1,10 @@
-import Icon from 'shared/ui-components/icon';
 import DetailsList from 'shared/components/details-list';
 import PageSection from 'shared/components/page-section';
-
-import './index.scss';
 
 export default function EnrollmentDetails({ enrollment }) {
     return (
         <PageSection
-            className="enrollment-details"
+            className="sy-EnrollmentDetails"
             title="Основные данные"
             compact
         >
@@ -15,63 +12,63 @@ export default function EnrollmentDetails({ enrollment }) {
                 items={[
                     {
                         key: 'type',
-                        media: <Icon>people</Icon>,
-                        header: enrollment.typeLabel,
-                        content: 'Тип'
+                        media: 'people',
+                        header: 'Тип',
+                        content: enrollment.typeLabel
                     },
                     {
                         key: 'format',
-                        media: <Icon>home_work</Icon>,
-                        header: enrollment.formatLabel,
-                        content: 'Формат'
+                        media: 'home_work',
+                        header: 'Формат',
+                        content: enrollment.formatLabel
                     },
                     {
                         key: 'age',
-                        media: <Icon>portrait</Icon>,
-                        header: enrollment.ageLabel,
-                        content: 'Возрастная группа'
+                        media: 'portrait',
+                        header: 'Возрастная группа',
+                        content: enrollment.ageLabel
                     },
                     {
                         key: 'teacherType',
-                        media: <Icon>person</Icon>,
-                        header: enrollment.teacherTypeLabel,
-                        content: 'Тип преподавателя'
+                        media: 'person',
+                        header: 'Тип преподавателя',
+                        content: enrollment.teacherTypeLabel
                     },
                     {
                         key: 'lessonDuration',
-                        media: <Icon>timelapse</Icon>,
-                        header: enrollment.lessonDuration + ' мин.',
-                        content: 'Продолжительность урока'
+                        media: 'timelapse',
+                        header: 'Продолжительность урока',
+                        content: enrollment.lessonDuration + ' мин.'
                     },
                     {
                         key: 'level',
-                        media: <Icon>signal_cellular_alt</Icon>,
-                        header: enrollment.levelLabel,
-                        content: 'Уровень'
+                        media: 'signal_cellular_alt',
+                        header: 'Уровень',
+                        content: enrollment.levelLabel
                     },
                     {
                         key: 'purpose',
-                        media: <Icon>flag</Icon>,
-                        header: enrollment.purposeLabel,
-                        content: 'Цель'
+                        media: 'flag',
+                        header: 'Цель',
+                        content: enrollment.purposeLabel
                     },
                     {
                         key: 'experience',
-                        media: <Icon>star</Icon>,
-                        header: enrollment.experience,
-                        content: 'Опыт',
+                        media: 'star',
+                        header: 'Опыт',
+                        content: enrollment.experience,
                     },
                     {
                         key: 'preferences',
-                        media: <Icon>checklist</Icon>,
-                        header: enrollment.preferences,
-                        content: 'Предпочтения'
+                        media: 'checklist',
+                        header: 'Предпочтения',
+                        content: enrollment.preferences
                     },
                     enrollment.note && {
                         key: 'note',
-                        media: <Icon>notes</Icon>,
-                        header: enrollment.note,
-                        content: 'Примечание'
+                        media: 'notes',
+                        header: 'Примечание',
+                        content: enrollment.note
                     }
                 ]}
             />

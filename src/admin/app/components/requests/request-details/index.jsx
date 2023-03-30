@@ -1,21 +1,12 @@
 import moment from 'moment';
 
-import { Button, Icon, List, MenuButton, Text } from 'shared/ui-components';
 import PageSection from 'shared/components/page-section';
-
-import './index.scss';
-
-const statusMenuItems = [
-    { key: 'pending', value: 'pending', content: 'В обработке' },
-    { key: 'resolved', value: 'resolved', content: 'Успешная' },
-    { key: 'rejected', value: 'rejected', content: 'Отказ' },
-    { key: 'postponed', value: 'postponed', content: 'Отложенная' },
-];
+import { Button, Icon, List, MenuButton, Text } from 'shared/ui-components';
 
 export default function RequestDetails({ request }) {
     return (
         <PageSection
-            className="request-details"
+            className="sy-RequestDetails"
             title="Общая информация"
         >
             <List>
@@ -23,7 +14,7 @@ export default function RequestDetails({ request }) {
                     icon={request.statusIcon}
                     header={request.statusLabel}
                     content="Статус"
-                    trailingIcon={
+                    endAction={
                         <MenuButton
                             trigger={
                                 <Button

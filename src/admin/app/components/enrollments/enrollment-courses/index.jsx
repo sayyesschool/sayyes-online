@@ -1,18 +1,17 @@
 import { useCallback } from 'react';
 
-import { Button, Icon, MenuButton } from 'shared/ui-components';
+import CoursesList from 'shared/components/courses-list';
 import PageSection from 'shared/components/page-section';
+import { IconButton, MenuButton } from 'shared/ui-components';
 
-import { useStore, useActions } from 'app/hooks/store';
-import CoursesList from 'app/components/courses/courses-list';
+import { useStore, useActions } from 'app/store';
 
 export default function EnrollmentCourses({ enrollment }) {
     const [courses] = useStore('courses.list');
     const actions = useActions('enrollments');
 
-    const handleAddCourse = useCallback((event, component) => {
-        const courseId = component.value;
-        const courses = enrollment.courses.concat(courseId);
+    const handleAddCourse = useCallback((item) => {
+        const courses = enrollment.courses.concat(item.value);
 
         return actions.updateEnrollment(enrollment.id, { courses });
     }, [enrollment]);
@@ -24,7 +23,11 @@ export default function EnrollmentCourses({ enrollment }) {
     }, [enrollment]);
 
     const enrollmentCourses = courses
-        .filter(course => enrollment.courses.includes(course.id));
+        .filter(course => enrollment.courses.includes(course.id))
+        .map(course => ({
+            ...course,
+            uri: course.uri + `?enrollmentId=${enrollment.id}`
+        }));
 
     const items = courses
         .filter(course => !enrollment.courses.includes(course.id))
@@ -36,19 +39,20 @@ export default function EnrollmentCourses({ enrollment }) {
 
     return (
         <PageSection
-            className="enrollment-courses"
+            className="sy-EnrollmentCourses"
             title="Курсы"
             actions={
                 <MenuButton
                     trigger={
-                        <Button
-                            icon={<Icon>add</Icon>}
-                            text
-                            iconOnly
+                        <IconButton
+                            icon="add"
+                            color="neutral"
+                            size="sm"
+                            variant="plain"
                         />
                     }
                     align="end"
-                    menu={items}
+                    items={items}
                     onMenuItemClick={handleAddCourse}
                 />
             }

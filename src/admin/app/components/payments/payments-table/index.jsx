@@ -1,106 +1,87 @@
 import { Link } from 'react-router-dom';
 
-import { Button, Icon, Pill, Table } from 'shared/ui-components';
-import StatusLabel from 'shared/components/status-label';
+import PersonChip from 'shared/components/person-chip';
+import StatusChip from 'shared/components/status-chip';
+import { IconButton, Table } from 'shared/ui-components';
+
+const columns = [
+    { key: 'amount', text: 'Сумма, руб.' },
+    { key: 'description', text: 'Описание' },
+    { key: 'date', text: 'Дата' },
+    { key: 'user', text: 'Клиент' },
+    { key: 'status', text: 'Статус' },
+    { key: 'method', text: 'Способ оплаты' },
+    { key: 'actions' }
+];
 
 export default function PaymentsTable({ payments, onEdit, onDelete }) {
     return (
-        <Table className="payments-table">
-            <Table.Row header>
-                {columns.map(col =>
-                    <Table.Cell
-                        key={col.key}
-                        content={col.text}
-                    />
-                )}
+        <Table className="sy-PaymentsTable">
+            <Table.Head>
+                <Table.Row header>
+                    {columns.map(col =>
+                        <Table.Cell
+                            key={col.key}
+                            content={col.text}
+                            header
+                        />
+                    )}
+                </Table.Row>
+            </Table.Head>
 
-                <Table.Cell />
-            </Table.Row>
+            <Table.Body>
+                {payments.map(payment =>
+                    <Table.Row key={payment.id}>
+                        <Table.Cell content={payment.amount} />
 
-            {payments.map(payment =>
-                <Table.Row key={payment.id}>
-                    <Table.Cell content={payment.amount} />
+                        <Table.Cell content={payment.description} />
 
-                    <Table.Cell content={payment.description} />
+                        <Table.Cell content={payment.date} />
 
-                    <Table.Cell content={payment.date} />
+                        <Table.Cell>
+                            {payment.client &&
+                                <PersonChip
+                                    as={Link}
+                                    to={`/clients/${payment.client.id}`}
+                                    imageSrc={payment.client.imageUrl}
+                                    content={payment.client.fullname}
+                                />
+                            }
+                        </Table.Cell>
 
-                    <Table.Cell
-                        content={payment.client &&
-                            <Pill
-                                as={Link}
-                                to={`/clients/${payment.client.id}`}
-                                image={payment.client.imageUrl}
-                                content={payment.client.fullname}
-                                appearance="inverted"
-                            />
-                        }
-                    />
-
-                    <Table.Cell
-                        content={
-                            <StatusLabel
+                        <Table.Cell>
+                            <StatusChip
                                 status={payment.status}
                                 content={payment.statusLabel}
                             />
-                        }
-                    />
+                        </Table.Cell>
 
-                    <Table.Cell content={payment.paymentMethod} />
+                        <Table.Cell content={payment.paymentMethod} />
 
-                    <Table.Cell
-                        content={
-                            <Button.Group
+                        <Table.Cell align="end">
+                            <IconButton.Group
                                 buttons={[
                                     {
                                         key: 'edit',
                                         title: 'Изменить',
-                                        icon: <Icon>edit</Icon>,
-                                        iconOnly: true,
-                                        text: true,
+                                        icon: 'edit',
                                         onClick: () => onEdit(payment)
                                     },
                                     {
                                         key: 'delete',
                                         title: 'Удалить',
-                                        icon: <Icon>delete</Icon>,
-                                        iconOnly: true,
-                                        text: true,
+                                        icon: 'delete',
                                         onClick: () => onDelete(payment)
                                     }
                                 ]}
+                                color="neutral"
+                                size="sm"
+                                variant="plain"
                             />
-                        }
-                    />
-                </Table.Row>
-            )}
+                        </Table.Cell>
+                    </Table.Row>
+                )}
+            </Table.Body>
         </Table>
     );
 }
-
-const columns = [
-    {
-        key: 'amount',
-        text: 'Сумма, руб.'
-    },
-    {
-        key: 'description',
-        text: 'Описание'
-    },
-    {
-        key: 'date',
-        text: 'Дата'
-    },
-    {
-        key: 'user',
-        text: 'Клиент'
-    },
-    {
-        key: 'status',
-        text: 'Статус'
-    },
-    {
-        key: 'method',
-        text: 'Способ оплаты'
-    }
-];

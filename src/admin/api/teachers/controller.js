@@ -19,10 +19,17 @@ module.exports = ({
             .populate({
                 path: 'enrollments',
                 select: 'status type domain format client schedules',
-                populate: { path: 'client', select: 'firstname lastname' }
+                populate: {
+                    path: 'client',
+                    select: 'firstname lastname'
+                }
             })
             .populate({
-                path: 'lessons'
+                path: 'lessons',
+                populate: {
+                    path: 'room',
+                    select: 'title'
+                }
             })
             .then(teacher => {
                 res.json({

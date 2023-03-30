@@ -1,3 +1,10 @@
-.request-process-form-dialog {
-    
+.sy-RequestProcessForm {
+    min-width: 480px;
+
+    .ui-Form,
+    fieldset {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+    }
 }

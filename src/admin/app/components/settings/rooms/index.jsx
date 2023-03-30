@@ -7,7 +7,7 @@ import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import PageSection from 'shared/components/page-section';
 
-import { useStore } from 'app/hooks/store';
+import { useStore } from 'app/store';
 import RoomForm from 'app/components/rooms/room-form';
 import RoomsTable from 'app/components/rooms/rooms-table';
 
@@ -23,12 +23,12 @@ export default function Rooms() {
     }, []);
 
     const createRoom = useCallback(data => {
-        actions.createRoom(data)
+        return actions.createRoom(data)
             .then(() => toggleFormOpen(false));
     }, []);
 
     const updateRoom = useCallback(data => {
-        actions.updateRoom(room.id, data)
+        return actions.updateRoom(room.id, data)
             .then(() => {
                 setRoom();
                 toggleFormOpen(false);
@@ -36,7 +36,7 @@ export default function Rooms() {
     }, [room]);
 
     const deleteRoom = useCallback(() => {
-        actions.deleteRoom(room.id)
+        return actions.deleteRoom(room.id)
             .then(() => {
                 setRoom();
                 toggleConfirmDialogOpen(false);
@@ -44,7 +44,7 @@ export default function Rooms() {
     }, [room]);
 
     const toggleRoomActive = useCallback((room) => {
-        actions.updateRoom(room.id, { active: !room.active });
+        return actions.updateRoom(room.id, { active: !room.active });
     }, []);
 
     const handleCreate = useCallback(() => {
@@ -67,14 +67,13 @@ export default function Rooms() {
     return (
         <PageSection
             title="Комнаты"
-            actions={
-                <Button
-                    title="Создать"
-                    icon="add"
-                    text
-                    onClick={handleCreate}
-                />
-            }
+            actions={[{
+                key: 'add',
+                icon: 'add',
+                title: 'Создать',
+                onClick: handleCreate
+            }]}
+            variant="outlined"
             compact
         >
             <RoomsTable

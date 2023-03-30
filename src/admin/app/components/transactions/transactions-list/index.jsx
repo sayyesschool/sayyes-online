@@ -1,21 +1,4 @@
-import { Button, Icon, List, Text } from 'shared/ui-components';
-
-import './index.scss';
-
-const typeToColor = {
-    debit: 'green',
-    credit: 'red'
-};
-
-const typeToState = {
-    debit: 'success',
-    credit: 'error'
-};
-
-const typeToSign = {
-    debit: '+',
-    credit: '-'
-};
+import { IconButton, List, Text } from 'shared/ui-components';
 
 export default function TransactionsList({ transactions, onClick, onDelete }) {
     return (
@@ -23,15 +6,17 @@ export default function TransactionsList({ transactions, onClick, onDelete }) {
             {transactions.map(transaction =>
                 <List.Item
                     key={transaction.id}
-                    header={<Text color={typeToColor[transaction.type]}>{typeToSign[transaction.type]} {transaction.amount} руб.</Text>}
-                    content={transaction.description}
-                    headerMedia={transaction.enrollment?.domainLabel}
-                    endMedia={
-                        <Button
-                            icon={<Icon>delete</Icon>}
+                    content={<>
+                        <Text>{transaction.amount} руб.</Text>
+                        <Text type="body2">{transaction.description}</Text>
+                    </>}
+                    end={
+                        <IconButton
+                            icon="delete"
                             title="Удалить транзакцию"
-                            iconOnly
-                            text
+                            color="neutral"
+                            size="sm"
+                            variant="plain"
                             onClick={event => onDelete(event, transaction)}
                         />
                     }

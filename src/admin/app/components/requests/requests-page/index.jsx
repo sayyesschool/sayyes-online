@@ -6,13 +6,11 @@ import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 
-import { useStore, useActions } from 'app/hooks/store';
+import { useStore, useActions } from 'app/store';
 import RequestsTable from 'app/components/requests/requests-table';
 import RequestForm from 'app/components/requests/request-form';
 import RequestProcessFormDialog from 'app/components/requests/request-process-form-dialog';
 import RequestSearchForm from 'app/components/requests/request-search-form';
-
-import './index.scss';
 
 export default function RequestsPage({ history }) {
     const [user] = useStore('user');
@@ -119,7 +117,7 @@ export default function RequestsPage({ history }) {
     if (!requests) return <LoadingIndicator />;
 
     return (
-        <Page id="requests-page">
+        <Page className="sy-RequestsPage">
             <Page.Header
                 title="Заявки"
                 toolbar={[
@@ -132,13 +130,11 @@ export default function RequestsPage({ history }) {
             />
 
             <Page.Content>
-                <Page.Section compact>
-                    {isSearchFormOpen &&
-                        <RequestSearchForm
-                            onSubmit={handleSearch}
-                        />
-                    }
+                <RequestSearchForm
+                    onSubmit={handleSearch}
+                />
 
+                <Page.Section variant="outlined" compact>
                     <RequestsTable
                         requests={requests}
                         manager={user}
@@ -184,6 +180,6 @@ export default function RequestsPage({ history }) {
                 onConfirm={handleExistingClient}
                 onClose={handleContinueProcessing}
             />
-        </Page >
+        </Page>
     );
 }

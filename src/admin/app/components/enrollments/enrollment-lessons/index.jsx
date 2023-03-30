@@ -2,18 +2,15 @@ import { useCallback, useState } from 'react';
 
 import http from 'shared/services/http';
 import { useBoolean } from 'shared/hooks/state';
-import { Alert, Button, Icon, MenuButton, Text } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LessonPillGroup from 'shared/components/lessons-pill-group';
 import PageSection from 'shared/components/page-section';
+import { Alert, IconButton, MenuButton, Text } from 'shared/ui-components';
 
-import { useActions } from 'app/hooks/store';
+import { useActions } from 'app/store';
 import LessonForm from 'app/components/lessons/lesson-form';
 import LessonsForm from 'app/components/lessons/lessons-form';
-import LessonsPillGroup from 'shared/components/lessons-pill-group';
-
-import './index.scss';
 
 export default function EnrollmentLessons({ enrollment }) {
     const lessonActions = useActions('lessons');
@@ -96,15 +93,22 @@ export default function EnrollmentLessons({ enrollment }) {
 
     return (
         <PageSection
-            className="enrollment-lessons"
+            className="sy-EnrollmentLessons"
             title="Занятия"
             actions={
                 <>
                     <MenuButton
                         open={isMenuOpen}
-                        onOpenChange={toggleMenuOpen}
-                        trigger={<Button icon={<Icon>add</Icon>} text iconOnly title="Создать" />}
-                        menu={[
+                        trigger={
+                            <IconButton
+                                icon="add"
+                                title="Создать"
+                                color="neutral"
+                                size="sm"
+                                variant="plain"
+                            />
+                        }
+                        items={[
                             {
                                 key: 'single',
                                 content: 'Создать один урок',
@@ -118,14 +122,13 @@ export default function EnrollmentLessons({ enrollment }) {
                                 onClick: toggleLessonsFormOpen
                             }
                         ]}
+                        onOpenChange={toggleMenuOpen}
                     />
 
                     {enrollment.schedule?.length > 1 &&
-                        <Button
+                        <IconButton
+                            icon="add"
                             title="Вернуть денежные средства"
-                            icon={<Icon>add</Icon>}
-                            text
-                            iconOnly
                             onClick={handleRefundRequest}
                         />
                     }
@@ -133,10 +136,13 @@ export default function EnrollmentLessons({ enrollment }) {
             }
         >
             {enrollment.status === 'active' && enrollment.lessons.filter(l => l.status === 'scheduled').length === 0 &&
-                <Alert header="Закончились уроки" danger />
+                <Alert
+                    content="Закончились уроки"
+                    color="danger"
+                />
             }
 
-            {enrollment.lessons.length > 0 &&
+            {enrollment.lessons?.length > 0 &&
                 <LessonPillGroup
                     lessons={enrollment.lessons}
                     onEdit={handleEdit}
@@ -197,7 +203,7 @@ export default function EnrollmentLessons({ enrollment }) {
             >
                 <Text as="p">Сумма возврата за уроки составляет <strong>{enrollment.lessonPrice * lessonsToRefund?.length} руб.</strong></Text>
 
-                <LessonsPillGroup
+                <LessonPillGroup
                     lessons={lessonsToRefund}
                 />
             </ConfirmationDialog>

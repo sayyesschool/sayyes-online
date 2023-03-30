@@ -1,15 +1,12 @@
 import { useState, useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Button, Icon } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
 
 import ContactForm from 'app/components/clients/contact-form';
 import ContactsList from 'app/components/clients/contacts-list';
-
-import './index.scss';
 
 export default function ClientContacts({ client, onUpdate }) {
     const [contact, setContact] = useState();
@@ -51,24 +48,24 @@ export default function ClientContacts({ client, onUpdate }) {
 
     return (
         <PageSection
-            className="client-contacts"
+            className="sy-ClientContacts"
             title="Контакты"
-            actions={
-                <Button
-                    icon={<Icon name="add" />}
-                    title="Добавить контакт"
-                    text
-                    iconOnly
-                    onClick={toggleCreateForm}
-                />
-            }
+            actions={[
+                {
+                    key: 'add',
+                    icon: 'add',
+                    onClick: toggleCreateForm
+                }
+            ]}
             compact
         >
-            <ContactsList
-                contacts={client.contacts}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-            />
+            {client.contacts?.length > 0 &&
+                <ContactsList
+                    contacts={client.contacts}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                />
+            }
 
             <FormDialog
                 form="contact-form"

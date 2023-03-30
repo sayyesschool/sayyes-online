@@ -1,30 +1,24 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 
-import Form from 'shared/ui-components/form';
-
+import { useFormData } from 'shared/hooks/form';
+// import ScheduleSelect from 'shared/components/schedule-select';
+// import DateTimeSelect from 'shared/components/datetime-select';
+import UserSelect from 'shared/components/user-select';
+import { Form } from 'shared/ui-components';
 import {
     defaultEnrollment, domainOptions, typeOptions, formatOptions,
     ageOptions, teacherTypeOptions, levelOptions, purposeOptions
 } from 'shared/data/enrollment';
 
-import useForm from 'shared/hooks/form';
-// import ScheduleSelect from 'shared/components/schedule-select';
-// import DateTimeSelect from 'shared/components/datetime-select';
-import UserSelect from 'shared/components/user-select';
-
-import { useStore } from 'app/hooks/store';
-
-import './index.scss';
-
-export default forwardRef(EnrollmentForm);
+import { useStore } from 'app/store';
 
 function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
     const formRef = useRef();
 
-    const [teachers] = useStore('teachers.list');
     const [managers] = useStore('managers.list');
+    const [teachers] = useStore('teachers.list');
 
-    const { data, handleChange } = useForm({
+    const { data, handleChange } = useFormData({
         ...defaultEnrollment,
         ...enrollment,
         client: enrollment.client?.id || '',
@@ -44,14 +38,16 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
         onSubmit(data);
     }, [data, onSubmit]);
 
+    const managersMap = new Map(managers.map(manager => [manager.id, manager]));
+    const teachersMap = new Map(teachers.map(teacher => [teacher.id, teacher]));
+
     return (
-        <Form ref={formRef} className="enrollment-form" onSubmit={handleSubmit} {...props}>
+        <Form ref={formRef} className="sy-EnrollmentForm" onSubmit={handleSubmit} {...props}>
             <Form.Select
                 name="domain"
                 value={data.domain}
                 label="Направление"
                 options={domainOptions}
-                fluid
                 required
                 onChange={handleChange}
             />
@@ -61,7 +57,6 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 value={data.type}
                 label="Тип"
                 options={typeOptions}
-                fluid
                 required
                 onChange={handleChange}
             />
@@ -71,7 +66,6 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 value={data.format}
                 label="Формат"
                 options={formatOptions}
-                fluid
                 required
                 onChange={handleChange}
             />
@@ -81,7 +75,6 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 value={data.age}
                 label="Возрастная группа"
                 options={ageOptions}
-                fluid
                 onChange={handleChange}
             />
 
@@ -90,7 +83,6 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 value={data.teacherType}
                 label="Тип преподавателя"
                 options={teacherTypeOptions}
-                fluid
                 onChange={handleChange}
             />
 
@@ -99,7 +91,6 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 name="lessonDuration"
                 value={data.lessonDuration}
                 label="Продолжительность урока"
-                fluid
                 onChange={handleChange}
             />
 
@@ -108,7 +99,6 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 value={data.level}
                 label="Уровень"
                 options={levelOptions}
-                fluid
                 onChange={handleChange}
             />
 
@@ -117,25 +107,20 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 value={data.purpose}
                 label="Цель"
                 options={purposeOptions}
-                fluid
                 onChange={handleChange}
             />
 
-            <Form.Input
+            <Form.Textarea
                 name="experience"
                 value={data.experience}
                 label="Опыт"
-                fluid
-                textarea
                 onChange={handleChange}
             />
 
-            <Form.Input
+            <Form.Textarea
                 name="preferences"
                 value={data.preferences}
                 label="Пожелания"
-                fluid
-                textarea
                 onChange={handleChange}
             />
 
@@ -153,12 +138,10 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             /> */}
 
-            <Form.Input
+            <Form.Textarea
                 name="note"
                 value={data.note}
                 label="Примечание"
-                fluid
-                textarea
                 onChange={handleChange}
             />
 
@@ -168,23 +151,23 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                         name="managers"
                         value={data.managers}
                         label="Менеджеры"
-                        items={managers.map(manager => ({
+                        options={managers.map(manager => ({
                             key: manager.id,
                             value: manager.id,
-                            text: manager.fullname
+                            label: manager.fullname
                         }))}
                         multiple
                         onChange={handleChange}
                     />
 
-                    <PeopleSelect
+                    <UserSelect
                         name="teachers"
                         value={data.teachers}
                         label="Преподаватели"
-                        items={teachers.map(teacher => ({
+                        options={teachers.map(teacher => ({
                             key: teacher.id,
                             value: teacher.id,
-                            text: teacher.fullname
+                            label: teacher.fullname
                         }))}
                         multiple
                         onChange={handleChange}
@@ -194,3 +177,5 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
         </Form>
     );
 }
+
+export default forwardRef(EnrollmentForm);

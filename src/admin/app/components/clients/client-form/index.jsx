@@ -1,9 +1,9 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import moment from 'moment';
 
-import { useFormData } from 'shared/hooks/form';
-import Form from 'shared/ui-components/form';
+import { useForm } from 'shared/hooks/form';
 import TimeZoneSelect from 'shared/components/timezone-select';
+import { Form } from 'shared/ui-components';
 
 const genderOptions = [
     { key: 'male', value: 'male', label: 'Мужской' },
@@ -42,31 +42,41 @@ const getFormData = ({
     note
 });
 
-export default forwardRef(ClientForm);
+const ClientForm = forwardRef(({
+    client = {},
+    onSubmit,
 
-function ClientForm({ client = {}, onSubmit, ...props }, ref) {
+    ...props
+}, ref) => {
     const formRef = useRef();
-
-    const { data, handleChange } = useFormData(getFormData(client), [client?.id]);
 
     useImperativeHandle(ref, () => ({
         get form() { return formRef.current; },
         get data() { return data; }
     }));
 
+    const { data, handleChange, handleSubmit } = useForm({
+        values: getFormData(client),
+        onSubmit
+    }, [client?.id]);
+
     return (
-        <Form ref={formRef} className="client-form" onSubmit={() => onSubmit(data)} {...props}>
+        <Form
+            ref={formRef}
+            className="sy-ClientForm"
+            onSubmit={handleSubmit}
+            {...props}
+        >
             <Form.Input
-                type="text"
                 name="hhid"
-                value={data.hhid}
+                value={data.hhid.value}
                 label="Hollihop ID"
                 onChange={handleChange}
             />
 
             <Form.Input
                 name="firstname"
-                value={data.firstname}
+                value={data.firstname.value}
                 label="Имя"
                 required
                 onChange={handleChange}
@@ -74,14 +84,14 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
 
             <Form.Input
                 name="lastname"
-                value={data.lastname}
+                value={data.lastname.value}
                 label="Фамилия"
                 onChange={handleChange}
             />
 
             <Form.Input
                 name="patronym"
-                value={data.patronym}
+                value={data.patronym.value}
                 label="Отчество"
                 onChange={handleChange}
             />
@@ -89,7 +99,7 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
             <Form.Input
                 type="phone"
                 name="phone"
-                value={data.phone}
+                value={data.phone.value}
                 label="Телефон"
                 required
                 onChange={handleChange}
@@ -98,7 +108,7 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
             <Form.Input
                 type="phone"
                 name="altPhone"
-                value={data.altPhone}
+                value={data.altPhone.value}
                 label="Дополнительный телефон"
                 onChange={handleChange}
             />
@@ -106,14 +116,14 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
             <Form.Input
                 type="email"
                 name="email"
-                value={data.email}
+                value={data.email.value}
                 label="Электронная почта"
                 onChange={handleChange}
             />
 
             <Form.RadioGroup
                 name="gender"
-                value={data.gender}
+                value={data.gender.value}
                 label="Пол"
                 items={genderOptions}
                 onChange={handleChange}
@@ -163,11 +173,13 @@ function ClientForm({ client = {}, onSubmit, ...props }, ref) {
 
             <Form.Textarea
                 name="note"
-                value={data.note}
+                value={data.note.value}
                 label="Примечание"
                 resize="auto"
                 onChange={handleChange}
             />
         </Form>
     );
-}
+});
+
+export default ClientForm;

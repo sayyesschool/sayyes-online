@@ -1,11 +1,8 @@
 import { useCallback } from 'react';
 
 import { useFormData } from 'shared/hooks/form';
-import Form from 'shared/ui-components/form';
-
-import { ageOptions, domainOptions, teacherOptions } from 'app/data/pack';
-
-import './index.scss';
+import { Form } from 'shared/ui-components';
+import { ageOptions, domainOptions, teacherOptions } from 'shared/data/pack';
 
 const defaultPack = {
     age: '',
@@ -27,7 +24,7 @@ export default function PackForm({ pack = {}, onSubmit, ...props }) {
     }, [data]);
 
     return (
-        <Form className="pack-form" onSubmit={handleSubmit} {...props}>
+        <Form className="sy-PackForm" onSubmit={handleSubmit} {...props}>
             <Form.Select
                 name="age"
                 value={data.age}

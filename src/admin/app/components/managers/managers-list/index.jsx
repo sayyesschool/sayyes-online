@@ -4,15 +4,17 @@ import { List } from 'shared/ui-components';
 
 export default function ManagersList({ managers }) {
     return (
-        <List className="managers-list">
+        <List className="sy-ManagersList">
             {managers.map(manager =>
                 <List.Item
                     key={manager.id}
-                    component={Link}
+                    as={Link}
                     to={manager.url}
-                    header={manager.fullname}
-                    content={manager.email}
-                    contentMedia={manager.phone}
+                    content={<>
+                        <Text type="body2">{manager.fullname}</Text>
+                        <Text type="body3">{manager.email}</Text>
+                        <Text type="body3">{manager.phone}</Text>
+                    </>}
                 />
             )}
         </List>

@@ -1,20 +1,17 @@
-import { useContext } from 'react';
 import moment from 'moment';
 
 import { Image } from 'shared/ui-components';
 import DetailsList from 'shared/components/details-list';
 import PageSection from 'shared/components/page-section';
-import DataContext from 'shared/contexts/data';
+import { timezonesMap as timezones } from 'shared/data/timezones';
 
 export default function TeacherDetails({ teacher }) {
-    const { timezones } = useContext(DataContext);
-
     return (
         <PageSection className="teacher-details" compact>
             {teacher.imageUrl &&
                 <Image
                     src={teacher.imageUrl}
-                    square
+                    ratio="1/1"
                 />
             }
 
@@ -23,33 +20,33 @@ export default function TeacherDetails({ teacher }) {
                     {
                         key: 'phone',
                         icon: 'phone',
-                        header: teacher.phone || '[Не указан]',
-                        content: 'Телефон'
+                        header: 'Телефон',
+                        content: teacher.phone || '[Не указан]'
                     },
                     {
                         key: 'email',
                         icon: 'email',
-                        header: teacher.email || '[Не указана]',
-                        content: 'Электронная почта'
+                        header: 'Электронная почта',
+                        content: teacher.email || '[Не указана]'
                     },
                     {
                         key: 'dob',
                         icon: 'cake',
-                        header: teacher.dob ? moment(teacher.dob).format('DD.MM.YYYY') : '[Не указана]',
-                        headerMedia: teacher.age,
-                        content: 'Дата рождения'
+                        header: 'Дата рождения',
+                        content: teacher.dob ? moment(teacher.dob).format('DD.MM.YYYY') : '[Не указана]',
+                        headerMedia: teacher.age
                     },
                     {
                         key: 'timezone',
                         icon: 'public',
-                        header: teacher.timezone ? timezones.get(teacher.timezone) : '[Не указан]',
-                        content: 'Часовой пояс'
+                        header: 'Часовой пояс',
+                        content: teacher.timezone ? timezones.get(teacher.timezone) : '[Не указан]'
                     },
                     teacher.note && {
                         key: 'note',
                         icon: 'notes',
-                        header: teacher.note,
-                        content: 'Примечание'
+                        header: 'Примечание',
+                        content: teacher.note
                     }
                 ]}
             />

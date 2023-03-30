@@ -2,12 +2,10 @@ import { useCallback, useState } from 'react';
 import moment from 'moment';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Button, Icon, List } from 'shared/ui-components';
 import DateTimeSelect from 'shared/components/datetime-select';
 import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
-
-import './index.scss';
+import { Button, Icon, List } from 'shared/ui-components';
 
 export default function EnrollmentTrialLesson({ enrollment, onUpdate }) {
     const [items, setItems] = useState(enrollment.trialLessonSchedule);
@@ -27,22 +25,23 @@ export default function EnrollmentTrialLesson({ enrollment, onUpdate }) {
 
     return (
         <PageSection
-            className="enrollment-trial-lesson"
+            className="sy-EnrollmentTrialLesson"
             title="Расписание ВУ"
-            actions={
-                <Button
-                    icon={<Icon>edit</Icon>}
-                    onClick={toggleFormOpen}
-                />
-            }
+            actions={[{
+                key: 'edit',
+                icon: 'edit',
+                onClick: toggleFormOpen
+            }]}
         >
             {hasItems &&
                 <List>
                     {enrollment.trialLessonSchedule.map(item =>
                         <List.Item
                             key={item.id}
-                            header={moment(item.date).format('DD.MM.YYYY')}
-                            headerMedia={`${item.from} - ${item.to}`}
+                            content={<>
+                                <Text type="body2">{moment(item.date).format('DD.MM.YYYY')}</Text>
+                                <Text type="body3">{item.from} - {item.to}</Text>
+                            </>}
                         />
                     )}
                 </List>

@@ -1,14 +1,14 @@
 import { useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Avatar } from 'shared/ui-components';
 import Chat from 'shared/components/chat';
 import Comment from 'shared/components/comment';
 import CommentForm from 'shared/components/comment-form';
 import PageSection from 'shared/components/page-section';
 import EmptyState from 'shared/components/empty-state';
+import { Avatar } from 'shared/ui-components';
 
-import { useStore, useActions } from 'app/hooks/store';
+import { useStore, useActions } from 'app/store';
 
 import './index.scss';
 
@@ -38,7 +38,7 @@ export default function EnrollmentComments({ enrollment }) {
 
     return (
         <PageSection
-            className="enrollment-comments"
+            className="sy-EnrollmentComments"
             title="Комментарии"
         >
             {enrollment.comments?.length > 0 ?

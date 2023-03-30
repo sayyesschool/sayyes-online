@@ -1,12 +1,9 @@
-.enrollment-status {
+.sy-EnrollmentStatus {
     display: flex;
     align-items: center;
+    gap: .5rem;
 
-    .stepper {
+    .sy-Stepper {
         flex: 1;
-    }
-
-    .ui-menubutton {
-        margin-left: 1rem;
     }
 }

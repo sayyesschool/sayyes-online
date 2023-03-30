@@ -1,12 +1,11 @@
 import { useCallback, useState } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Button, Icon } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
 
-import { useActions } from 'app/hooks/store';
+import { useActions } from 'app/store';
 import PaymentForm from 'app/components/payments/payment-form';
 import PaymentsList from 'app/components/payments/payments-list';
 
@@ -51,16 +50,13 @@ export default function EnrollmentPayments({ enrollment }) {
 
     return (
         <PageSection
-            className="enrollment-payments"
+            className="sy-EnrollmentPayments"
             title="Платежи"
-            actions={
-                <Button
-                    icon={<Icon>add</Icon>}
-                    text
-                    iconOnly
-                    onClick={toggleCreateFormOpen}
-                />
-            }
+            actions={[{
+                key: 'add',
+                icon: 'add',
+                onClick: toggleCreateFormOpen
+            }]}
         >
             {enrollment.payments?.length > 0 &&
                 <PaymentsList

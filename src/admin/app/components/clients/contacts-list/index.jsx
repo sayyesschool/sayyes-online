@@ -1,34 +1,40 @@
-import { Avatar, Icon, List } from 'shared/ui-components';
+import { IconButton, List, MenuButton, Text } from 'shared/ui-components';
 
 export default function ContactsList({ contacts, onEdit, onDelete }) {
     return (
-        <List>
+        <List className="sy-ContactList">
             {contacts?.map(contact =>
                 <List.Item
-                    media={
-                        <Avatar name={contact.fullname} />
+                    content={<>
+                        <Text type="body2">{contact.fullname}</Text>
+                        <Text type="body3">{contact.relation}</Text>
+                        <Text type="body3">{contact.phone}</Text>
+                        <Text type="body3">{contact.email}</Text>
+                    </>}
+                    endAction={
+                        <MenuButton
+                            trigger={
+                                <IconButton
+                                    icon="more_vert"
+                                    color="neutral"
+                                    size="sm"
+                                    variant="plain"
+                                />
+                            }
+                            items={[
+                                {
+                                    key: 'edit',
+                                    content: 'Редактировать',
+                                    onClick: () => onEdit(contact)
+                                },
+                                {
+                                    key: 'delete',
+                                    content: 'Удалить',
+                                    onClick: () => onDelete(contact)
+                                }
+                            ]}
+                        />
                     }
-                    header={contact.fullname}
-                    headerMedia={contact.phone}
-                    content={contact.relation}
-                    contentMedia={contact.email}
-                // endMedia={
-                //     <MenuButton
-                //         trigger={<Icon>more_vert</Icon>}
-                //         menu={[
-                //             {
-                //                 key: 'edit',
-                //                 content: 'Редактировать',
-                //                 onClick: () => onEdit(contact)
-                //             },
-                //             {
-                //                 key: 'delete',
-                //                 content: 'Удалить',
-                //                 onClick: () => onDelete(contact)
-                //             },
-                //         ]}
-                //     />
-                // }
                 />
             )}
         </List>

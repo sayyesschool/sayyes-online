@@ -1,30 +1,29 @@
 import { Link } from 'react-router-dom';
 
-import { Avatar, Icon, List, Status } from 'shared/ui-components';
-
-import './index.scss';
+import StatusIcon from 'shared/components/status-icon';
+import { Avatar, List, Text } from 'shared/ui-components';
 
 export default function EnrollmentsList({ enrollments }) {
     return (
-        <List className="enrollments-list">
+        <List className="sy-EnrollmentsList">
             {enrollments.map(enrollment =>
                 <List.Item
                     key={enrollment.id}
                     as={Link}
                     to={enrollment.url}
-                    //media={<MaterialIcon icon={enrollment.statusIcon} />}
-                    media={
-                        <Status state="info" />
+                    decorator={
+                        <StatusIcon status="info" />
                     }
-                    header={enrollment.domainLabel}
-                    content={enrollment.statusLabel}
-                    endMedia={enrollment.teacher &&
+                    content={<>
+                        <Text type="body1">{enrollment.domainLabel}</Text>
+                        <Text type="body2">{enrollment.statusLabel}</Text>
+                    </>}
+                    end={enrollment.teacher &&
                         <Avatar
-                            name={enrollment.teacher.fullname}
+                            text={enrollment.teacher.fullname}
                             title={enrollment.teacher.fullname}
                         />
                     }
-                    navigable
                 />
             )}
         </List>

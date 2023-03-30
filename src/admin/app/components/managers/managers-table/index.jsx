@@ -1,45 +1,62 @@
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
-import { MenuButton, Table } from 'shared/ui-components';
+import { IconButton, Link, MenuButton, Table } from 'shared/ui-components';
+import { timezonesMap } from 'shared/data/timezones';
+
+const columns = [
+    { key: 'fullname', text: 'Имя и фамилия' },
+    { key: 'email', text: 'Email' },
+    { key: 'phone', text: 'Телефон' },
+    { key: 'dob', text: 'День рождения' },
+    { key: 'timezone', text: 'Часовой пояс' },
+    { key: 'actions' }
+];
 
 export default function ManagersTable({ managers, onEdit, onDelete }) {
     return (
         <Table className="managers-table">
-            <Table.Row header>
-                {columns.map(col =>
-                    <Table.Cell
-                        key={col.key}
-                        content={col.text}
-                    />
-                )}
+            <Table.Head>
+                <Table.Row header>
+                    {columns.map(col =>
+                        <Table.Cell
+                            key={col.key}
+                            content={col.text}
+                            header
+                        />
+                    )}
+                </Table.Row>
+            </Table.Head>
 
-                <Table.Cell />
-            </Table.Row>
+            <Table.Body>
+                {managers.map(manager =>
+                    <Table.Row key={manager.id}>
+                        <Table.Cell>
+                            <Link as={RouterLink} to={`/managers/${manager.id}`}>{manager.fullname}</Link>
+                        </Table.Cell>
 
-            {managers.map(manager =>
-                <Table.Row key={manager.id}>
-                    <Table.Cell
-                        content={
-                            <Link to={`/managers/${manager.id}`}>{manager.fullname}</Link>
-                        }
-                    />
+                        <Table.Cell content={manager.email} />
 
-                    <Table.Cell content={manager.email} />
+                        <Table.Cell content={manager.phone} />
 
-                    <Table.Cell content={manager.phone} />
+                        <Table.Cell
+                            content={manager.birthdate &&
+                                `${manager.birthdate} (${manager.age})`
+                            }
+                        />
 
-                    <Table.Cell
-                        content={manager.birthdate &&
-                            `${manager.birthdate} (${manager.age})`
-                        }
-                    />
+                        <Table.Cell content={timezonesMap.get(manager.timezone) || ''} />
 
-                    <Table.Cell content={manager.timezone} />
-
-                    <Table.Cell
-                        content={
+                        <Table.Cell align="end">
                             <MenuButton
-                                menu={[
+                                trigger={
+                                    <IconButton
+                                        icon="more_vert"
+                                        size="sm"
+                                        color="neutral"
+                                        variant="plain"
+                                    />
+                                }
+                                items={[
                                     {
                                         key: 'edit',
                                         content: 'Изменить',
@@ -52,33 +69,10 @@ export default function ManagersTable({ managers, onEdit, onDelete }) {
                                     }
                                 ]}
                             />
-                        }
-                    />
-                </Table.Row>
-            )}
+                        </Table.Cell>
+                    </Table.Row>
+                )}
+            </Table.Body>
         </Table>
     );
 }
-
-const columns = [
-    {
-        key: 'fullname',
-        text: 'Имя и фамилия'
-    },
-    {
-        key: 'email',
-        text: 'Email'
-    },
-    {
-        key: 'phone',
-        text: 'Телефон'
-    },
-    {
-        key: 'dob',
-        text: 'День рождения'
-    },
-    {
-        key: 'timezone',
-        text: 'Часовой пояс'
-    }
-];

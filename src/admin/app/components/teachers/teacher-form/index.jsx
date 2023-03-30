@@ -1,12 +1,10 @@
-import { forwardRef, useCallback, useState } from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
 import moment from 'moment';
 
 import { useFormData } from 'shared/hooks/form';
-import { Form, Icon } from 'shared/ui-components';
 import TimeZoneSelect from 'shared/components/timezone-select';
+import { Form, IconButton } from 'shared/ui-components';
 import { generatePassword } from 'shared/utils/password';
-
-export default forwardRef(TeacherForm);
 
 const genderItems = [
     { key: 'male', value: 'male', label: 'Мужской' },
@@ -35,7 +33,18 @@ const getDefaultData = ({
     note
 });
 
-function TeacherForm({ teacher = {}, onSubmit, ...props }, ref) {
+function TeacherForm({
+    teacher = {},
+    onSubmit,
+    ...props
+}, ref) {
+    const formRef = useRef();
+
+    useImperativeHandle(ref, () => ({
+        get form() { return formRef.current; },
+        get data() { return data; }
+    }));
+
     const { data, getData, handleChange } = useFormData(getDefaultData(teacher));
 
     const [password, setPassword] = useState(!teacher.id && generatePassword());
@@ -51,7 +60,12 @@ function TeacherForm({ teacher = {}, onSubmit, ...props }, ref) {
     }, [teacher]);
 
     return (
-        <Form onSubmit={handleSubmit} {...props}>
+        <Form
+            ref={ref}
+            className="sy-TeacherForm"
+            onSubmit={handleSubmit}
+            {...props}
+        >
             <Form.Input
                 label="Имя"
                 name="firstname"
@@ -99,7 +113,15 @@ function TeacherForm({ teacher = {}, onSubmit, ...props }, ref) {
                     name="password"
                     value={password}
                     autoComplete="off"
-                    icon={<Icon onClick={() => setPassword(generatePassword())}>sync_lock</Icon>}
+                    endDecorator={
+                        <IconButton
+                            icon="sync_lock"
+                            color="neutral"
+                            size="sm"
+                            variant="plain"
+                            onClick={() => setPassword(generatePassword())}
+                        />
+                    }
                 />
             }
 
@@ -134,3 +156,5 @@ function TeacherForm({ teacher = {}, onSubmit, ...props }, ref) {
         </Form>
     );
 }
+
+export default forwardRef(TeacherForm);

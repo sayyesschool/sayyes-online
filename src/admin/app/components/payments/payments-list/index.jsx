@@ -1,29 +1,26 @@
-import { Button, Icon, List, Status } from 'shared/ui-components';
-
-import './index.scss';
+import StatusIcon from 'shared/components/status-icon';
+import { IconButton, List, Text } from 'shared/ui-components';
 
 export default function PaymentsList({ payments, onClick, onDelete }) {
     return (
-        <List className="payments-list">
+        <List className="sy-PaymentsList">
             {payments.map(payment =>
                 <List.Item
                     key={payment.id}
-                    //media={<Icon>{payment.statusIcon}</Icon>}
-                    media={
-                        <Status state="success" />
+                    decorator={
+                        <StatusIcon status={payment.status} />
                     }
-                    header={`${payment.amount} руб.`}
-                    content={payment.description}
-                    endMedia={
-                        <Button
-                            icon={<Icon>delete</Icon>}
+                    content={<>
+                        <Text>{`${payment.amount} руб.`}</Text>
+                        <Text>{payment.description}</Text>
+                    </>}
+                    endAction={
+                        <IconButton
+                            icon="delete"
                             title="Удалить платеж"
-                            iconOnly
-                            text
-                            onClick={event => onDelete(event, payment)}
+                            onClick={() => onDelete(payment)}
                         />
                     }
-                    navigable
                     onClick={() => onClick(payment)}
                 />
             )}

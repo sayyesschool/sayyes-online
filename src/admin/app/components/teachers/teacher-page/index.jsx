@@ -13,8 +13,6 @@ import TeacherDetails from 'app/components/teachers/teacher-details';
 import TeacherEnrollments from 'app/components/teachers/teacher-enrollments';
 import TeacherLessons from 'app/components/teachers/teacher-lessons';
 
-import './index.scss';
-
 export default function TeacherPage({ match, location, history }) {
     const [teacher, actions] = useStore('teachers.single');
 
@@ -47,7 +45,7 @@ export default function TeacherPage({ match, location, history }) {
     if (!teacher) return <LoadingIndicator />;
 
     return (
-        <Page id="teacher-page">
+        <Page className="sy-TeacherPage">
             <Page.Header
                 title={teacher?.fullname}
                 breadcrumbs={[
@@ -56,7 +54,7 @@ export default function TeacherPage({ match, location, history }) {
                         url: '/teachers'
                     }
                 ]}
-                toolbar={[
+                actions={[
                     {
                         key: 'edit',
                         title: 'Редактировать',
@@ -73,21 +71,25 @@ export default function TeacherPage({ match, location, history }) {
             />
 
             <Page.Content>
-                <Grid columns="minmax(0, 1fr) minmax(0, 3fr)">
-                    <TeacherDetails
-                        teacher={teacher}
-                        onEdit={toggleTeacherFormOpen}
-                    />
-
-                    <Flex gap="gap.medium" column>
-                        <TeacherEnrollments
+                <Grid gap="medium">
+                    <Grid.Item xs={3}>
+                        <TeacherDetails
                             teacher={teacher}
+                            onEdit={toggleTeacherFormOpen}
                         />
+                    </Grid.Item>
 
+                    <Grid.Item xs={3}>
                         <TeacherLessons
                             teacher={teacher}
                         />
-                    </Flex>
+                    </Grid.Item>
+
+                    <Grid.Item xs={3}>
+                        <TeacherEnrollments
+                            teacher={teacher}
+                        />
+                    </Grid.Item>
                 </Grid>
             </Page.Content>
 

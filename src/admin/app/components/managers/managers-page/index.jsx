@@ -6,7 +6,7 @@ import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 
-import { useStore } from 'app/hooks/store';
+import { useStore } from 'app/store';
 import ManagersTable from 'app/components/managers/managers-table';
 import ManagerForm from 'app/components/managers/manager-form';
 
@@ -14,7 +14,7 @@ export default function ManagersPage({ history }) {
     const [managers, actions] = useStore('managers.list');
     const [manager, setManager] = useState();
 
-    const [isManagerFormOpen, toggleManagerFormOpen] = useBoolean(false);
+    const [isFormOpen, toggleFormOpen] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     useEffect(() => {
@@ -23,7 +23,7 @@ export default function ManagersPage({ history }) {
 
     const createManager = useCallback(data => {
         return actions.createManager(data)
-            .then(() => toggleManagerFormOpen(false));
+            .then(() => toggleFormOpen(false));
     }, []);
 
     const deleteManager = useCallback(() => {
@@ -46,21 +46,19 @@ export default function ManagersPage({ history }) {
     if (!managers) return <LoadingIndicator />;
 
     return (
-        <Page id="managers-page">
+        <Page className="sy-ManagersPage">
             <Page.Header
                 title="Менеджеры"
-                toolbar={[
-                    {
-                        key: 'add',
-                        icon: 'add',
-                        content: 'Создать',
-                        onClick: toggleManagerFormOpen
-                    }
-                ]}
+                actions={[{
+                    key: 'add',
+                    icon: 'add',
+                    title: 'Создать',
+                    onClick: toggleFormOpen
+                }]}
             />
 
             <Page.Content>
-                <Page.Section compact>
+                <Page.Section variant="outlined" compact>
                     <ManagersTable
                         managers={managers}
                         onEdit={handleEdit}
@@ -72,8 +70,8 @@ export default function ManagersPage({ history }) {
             <FormDialog
                 form="manager-form"
                 title="Новый менеджер"
-                open={isManagerFormOpen}
-                onClose={toggleManagerFormOpen}
+                open={isFormOpen}
+                onClose={toggleFormOpen}
             >
                 <ManagerForm
                     id="manager-form"

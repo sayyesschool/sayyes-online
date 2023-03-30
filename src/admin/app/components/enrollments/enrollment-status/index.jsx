@@ -1,5 +1,5 @@
-import { Button, Icon, MenuButton } from 'shared/ui-components';
 import Stepper from 'shared/components/stepper';
+import { IconButton, MenuButton } from 'shared/ui-components';
 import { statusOptions } from 'shared/data/enrollment';
 
 import './index.scss';
@@ -8,11 +8,11 @@ export default function EnrollmentStatus({ enrollment, onUpdate }) {
     const { status } = enrollment;
 
     return (
-        <section className="enrollment-status">
+        <section className="sy-EnrollmentStatus">
             <Stepper>
                 <Stepper.Step
-                    graphic={<Icon>pending</Icon>}
-                    label="Обработка"
+                    icon="pending"
+                    content="Обработка"
                     active={status === 'processing'}
                     completed={status === 'trial' || status === 'payment'}
                 />
@@ -20,8 +20,8 @@ export default function EnrollmentStatus({ enrollment, onUpdate }) {
                 <Stepper.Divider />
 
                 <Stepper.Step
-                    graphic={<Icon>event_available</Icon>}
-                    label="Пробный урок"
+                    icon="event_available"
+                    content="Пробный урок"
                     active={status === 'trial'}
                     completed={status === 'payment'}
                 />
@@ -29,38 +29,38 @@ export default function EnrollmentStatus({ enrollment, onUpdate }) {
                 <Stepper.Divider />
 
                 <Stepper.Step
-                    graphic={<Icon>payment</Icon>}
-                    label="Оплата"
+                    icon="payment"
+                    content="Оплата"
                     active={status === 'payment'}
                 />
 
                 <Stepper.Divider />
 
                 <Stepper.Step
-                    graphic={<Icon>school</Icon>}
-                    label="Обучение"
+                    icon="school"
+                    content="Обучение"
                     active={status === 'active'}
                 />
 
                 <Stepper.Divider />
 
                 <Stepper.Step
-                    graphic={<Icon>check_circle</Icon>}
-                    label="Завершено"
+                    icon="check_circle"
+                    content="Завершено"
                     active={status === 'completed'}
                 />
             </Stepper>
 
             <MenuButton
                 trigger={
-                    <Button
-                        icon={<Icon>more_vert</Icon>}
-                        text
-                        iconOnly
+                    <IconButton
+                        icon="more_vert"
+                        color="neutral"
+                        size="sm"
+                        variant="plain"
                     />
                 }
-                align="end"
-                menu={statusOptions.map(status => ({
+                items={statusOptions.map(status => ({
                     ...status,
                     activated: status.value === enrollment.status,
                     onClick: () => onUpdate({ status: status.value })

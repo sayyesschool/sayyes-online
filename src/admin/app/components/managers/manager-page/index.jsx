@@ -43,38 +43,35 @@ export default function ManagerPage({ match, location, history }) {
     if (!manager) return <LoadingIndicator />;
 
     return (
-        <Page id="manager">
+        <Page className="sy-ManagerPage">
             <Page.Header
                 breadcrumbs={[
-                    { text: 'Менеджеры', url: '/managers' }
+                    { content: 'Менеджеры', to: '/managers' }
                 ]}
                 title={manager?.fullname}
-                toolbar={[
-                    {
-                        key: 'edit',
-                        title: 'Редактировать',
-                        icon: 'edit',
-                        onClick: toggleManagerFormOpen
-                    },
-                    {
-                        key: 'delete',
-                        title: 'Удалить',
-                        icon: 'delete',
-                        onClick: toggleConfirmationDialogOpen
-                    }
-                ]}
+                actions={[{
+                    key: 'edit',
+                    title: 'Редактировать',
+                    icon: 'edit',
+                    onClick: toggleManagerFormOpen
+                }, {
+                    key: 'delete',
+                    title: 'Удалить',
+                    icon: 'delete',
+                    onClick: toggleConfirmationDialogOpen
+                }]}
             />
 
             <Page.Content>
-                <Grid columns="minmax(0, 1fr) minmax(0, 2fr)">
-                    <Flex gap="gap.medium" column>
+                <Grid>
+                    <Flex gap="medium" column>
                         <ManagerDetails
                             manager={manager}
                             onEdit={toggleManagerFormOpen}
                         />
                     </Flex>
 
-                    <Flex gap="gap.medium" column>
+                    <Flex gap="medium" column>
                         <ManagerRequests
                             requests={manager.requests}
                         />

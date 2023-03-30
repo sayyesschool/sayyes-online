@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef } from 'react';
 
-import { Accordion, Dialog, Flex, Status } from 'shared/ui-components';
+import { Accordion, Button, Dialog } from 'shared/ui-components';
 
 import ClientForm from 'app/components/clients/client-form';
 import EnrollmentForm from 'app/components/enrollments/enrollment-form';
@@ -43,70 +43,62 @@ export default function RequestProcessFormDialog({ request, open, onSubmit, onCl
 
     return (
         <Dialog
-            className="request-process-dialog"
-            header="Обработка заявки"
+            title="Обработка заявки"
             open={open}
             content={
-                <Accordion
-                    defaultActiveIndex={[0]}
-                    panels={[
-                        {
-                            key: 'client',
-                            title: (
-                                <Flex vAlign="center" space="between">
-                                    Клиент
-                                    <Status status="unknown" />
-                                </Flex>
-                            ),
-                            content: (
-                                <ClientForm
-                                    ref={clientFormRef}
-                                    client={client}
-                                />
-                            )
-                        },
-                        {
-                            key: 'enrollment',
-                            title: (
-                                <Flex vAlign="center" space="between">
-                                    Обучение
-                                    <Status status="unknown" />
-                                </Flex>
-                            ),
-                            content: (
-                                <EnrollmentForm
-                                    ref={enrollmentFormRef}
-                                />
-                            )
-                        },
-                        {
-                            key: 'request',
-                            title: (
-                                <Flex vAlign="center" space="between">
-                                    Обращение
-                                    <Status status="unknown" />
-                                </Flex>
-                            ),
-                            content: (
-                                <RequestForm
-                                    ref={requestFormRef}
-                                    request={request}
-                                />
-                            )
-                        }
-                    ]}
-                />
+                <div className="sy-RequestProcessForm">
+                    <Accordion
+                        defaultActiveIndex={[0]}
+                        items={[
+                            {
+                                key: 'client',
+                                header: 'Клиент',
+                                content: (
+                                    <ClientForm
+                                        ref={clientFormRef}
+                                        client={client}
+                                    />
+                                )
+                            },
+                            {
+                                key: 'enrollment',
+                                header: 'Обучение',
+                                content: (
+                                    <EnrollmentForm
+                                        ref={enrollmentFormRef}
+                                    />
+                                )
+                            },
+                            {
+                                key: 'request',
+                                header: 'Обращение',
+                                content: (
+                                    <RequestForm
+                                        ref={requestFormRef}
+                                        request={request}
+                                    />
+                                )
+                            }
+                        ]}
+                    />
+                </div>
             }
-            cancelButton={{
-                type: 'submit',
-                content: 'Отменить',
-                onClick: onClose
-            }}
-            confirmButton={{
-                type: 'button',
-                content: 'Сохранить',
-                onClick: handleSubmit
-            }}
+            actions={[
+                <Button
+                    key="cancel"
+                    type="submit"
+                    content="Отменить"
+                    variant="plain"
+                    onClick={onClose}
+                />,
+
+                <Button
+                    key="submit"
+                    type="button"
+                    content="Сохранить"
+                    onClick={handleSubmit}
+                />
+            ]}
             onClose={onClose}
         />
     );

@@ -4,8 +4,9 @@ import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
 
-import { useStore } from 'app/hooks/store';
+import { useStore } from 'app/store';
 import PaymentForm from 'app/components/payments/payment-form';
+import PaymentSearchForm from 'app/components/payments/payment-search-form';
 import PaymentsTable from 'app/components/payments/payments-table';
 
 export default function Payments({ match, history }) {
@@ -49,24 +50,28 @@ export default function Payments({ match, history }) {
         history.push('/payments');
     }, []);
 
+    const handleSearch = useCallback(params => {
+        console.log(params);
+    }, []);
+
     return (
         <Page id="payments" loading={!payments}>
             <Page.Header
                 title="Платежи"
-                toolbar={[
-                    {
-                        key: 'add',
-                        icon: 'add',
-                        iconOnly: true,
-                        text: true,
-                        title: 'Новый платеж',
-                        onClick: togglePaymentFormOpen
-                    }
-                ]}
+                actions={[{
+                    key: 'add',
+                    icon: 'add',
+                    title: 'Новый платеж',
+                    onClick: togglePaymentFormOpen
+                }]}
             />
 
             <Page.Content>
-                <Page.Section compact>
+                <PaymentSearchForm
+                    onSubmit={handleSearch}
+                />
+
+                <Page.Section variant="outlined" compact>
                     <PaymentsTable
                         payments={payments}
                         onEdit={handleEdit}

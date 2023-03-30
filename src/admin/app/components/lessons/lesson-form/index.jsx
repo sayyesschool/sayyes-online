@@ -1,12 +1,10 @@
 import { useCallback } from 'react';
 import moment from 'moment';
 
-import useForm from 'shared/hooks/form';
-import Form from 'shared/ui-components/form';
+import { useFormData } from 'shared/hooks/form';
+import { Checkbox, Form } from 'shared/ui-components';
 
 import { useStore } from 'app/hooks/store';
-
-import './index.scss';
 
 const statuses = [
     { key: 'scheduled', value: 'scheduled', header: 'Запланировано' },
@@ -36,7 +34,7 @@ const getFormData = ({
 export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
     const [teachers] = useStore('teachers.list');
 
-    const { data, handleChange } = useForm(getFormData(lesson));
+    const { data, handleChange } = useFormData(getFormData(lesson));
 
     const handleSubmit = useCallback(() => {
         data.date = moment(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
@@ -46,7 +44,7 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
     }, [data]);
 
     return (
-        <Form className="lesson-form" onSubmit={handleSubmit} {...props}>
+        <Form className="sy-LessonForm" onSubmit={handleSubmit} {...props}>
             <Form.Select
                 label="Статус"
                 name="status"
@@ -87,7 +85,7 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <Form.Checkbox
+            <Checkbox
                 label="Пробное"
                 name="trial"
                 checked={data.trial}
@@ -95,7 +93,7 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <Form.Checkbox
+            <Checkbox
                 label="Бесплатное"
                 name="free"
                 checked={data.free}
@@ -103,7 +101,7 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <Form.Checkbox
+            <Checkbox
                 label="Подтвержденное"
                 name="confirmed"
                 checked={data.confirmed}

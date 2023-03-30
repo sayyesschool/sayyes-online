@@ -9,6 +9,7 @@ import Page from 'shared/components/page';
 import { useStore } from 'app/hooks/store';
 import ClientsTable from 'app/components/clients/clients-table';
 import ClientForm from 'app/components/clients/client-form';
+import ClientsSearchForm from 'app/components/clients/clients-search-form';
 
 export default function ClientsPage({ history }) {
     const [clients, actions] = useStore('clients.list');
@@ -46,21 +47,21 @@ export default function ClientsPage({ history }) {
     if (!clients) return <LoadingIndicator />;
 
     return (
-        <Page id="clients-page">
+        <Page className="sy-ClientsPage">
             <Page.Header
                 title="Клиенты"
-                toolbar={[
-                    {
-                        key: 'add',
-                        icon: 'add',
-                        content: 'Создать',
-                        onClick: toggleFormOpen
-                    }
-                ]}
+                actions={[{
+                    key: 'add',
+                    icon: 'add',
+                    title: 'Создать',
+                    onClick: toggleFormOpen
+                }]}
             />
 
             <Page.Content>
-                <Page.Section compact>
+                <ClientsSearchForm />
+
+                <Page.Section variant="outlined" compact>
                     <ClientsTable
                         clients={clients}
                         onEdit={handleEdit}

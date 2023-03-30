@@ -1,37 +1,37 @@
-import { Label, Text } from 'shared/ui-components';
+import PersonChip from 'shared/components/person-chip';
 
-import './index.scss';
+import { ChipGroup, Flex, Label } from 'shared/ui-components';
 
 export default function EnrollmentMeta({ enrollment }) {
     return (
-        <section className="enrollment-meta">
-            <div className="enrollment-meta__section">
-                <Text>{enrollment.managers.length > 1 ? 'Менеджеры' : 'Менеджер'}: </Text>
+        <section className="sy-EnrollmentMeta">
+            <Flex gap="small">
+                <Label content={enrollment.managers.length > 1 ? 'Менеджеры:' : 'Менеджер:'} horizontal>
+                    <ChipGroup>
+                        {enrollment.managers?.map(manager =>
+                            <PersonChip
+                                key={manager.id}
+                                imageSrc={manager?.imageUrl}
+                                content={manager?.fullname}
+                            />
+                        )}
+                    </ChipGroup>
+                </Label>
 
-                {enrollment.managers.map(manager =>
-                    <Label
-                        key={manager.id}
-                        className="person-label"
-                        image={manager?.imageUrl}
-                        content={manager?.fullname}
-                    />
-                )}
-            </div>
-
-            {enrollment.teachers.length > 0 &&
-                <div className="enrollment-meta__section">
-                    <Text>{enrollment.teachers.length > 1 ? 'Преподаватели' : 'Преподаватель'}: </Text>
-
-                    {enrollment.teachers.map(teacher =>
-                        <Label
-                            key={teacher.id}
-                            className="person-label"
-                            image={teacher?.imageUrl}
-                            content={teacher?.fullname}
-                        />
-                    )}
-                </div>
-            }
+                {enrollment.teachers.length > 0 &&
+                    <Label content={enrollment.teachers.length > 1 ? 'Преподаватели:' : 'Преподаватель:'} horizontal>
+                        <ChipGroup>
+                            {enrollment.teachers.map(teacher =>
+                                <PersonChip
+                                    key={teacher.id}
+                                    imageSrc={teacher?.imageUrl}
+                                    content={teacher?.fullname}
+                                />
+                            )}
+                        </ChipGroup>
+                    </Label>
+                }
+            </Flex>
         </section>
     );
 }

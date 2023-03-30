@@ -1,34 +1,21 @@
-import { Link } from 'react-router-dom';
-
-import { Avatar, List } from 'shared/ui-components';
 import PageSection from 'shared/components/page-section';
+
+import EnrollmentsList from 'app/components/enrollments/enrollments-list';
 
 export default function ManagerEnrollments({ manager }) {
     return (
         <PageSection
-            className="manager-enrollments"
+            className="sy-ManagerEnrollments"
             title="Обучение"
             compact
         >
             {manager.enrollments?.length > 0 &&
-                <List>
-                    {manager.enrollments.map(enrollment =>
-                        <List.Item
-                            key={enrollment.id}
-                            component={Link}
-                            to={`${manager.url}${enrollment.url}`}
-                            media={enrollment.statusIcon}
-                            header={enrollment.title}
-                            content={enrollment.statusLabel}
-                            endMedia={enrollment.teacher &&
-                                <Avatar
-                                    name={enrollment.teacher.initials}
-                                    title={enrollment.teacher.fullname}
-                                />
-                            }
-                        />
-                    )}
-                </List>
+                <EnrollmentsList
+                    enrollments={manager.enrollments.map(enrollment => ({
+                        ...enrollment,
+                        url: `${manager.url}${enrollment.url}`
+                    }))}
+                />
             }
         </PageSection>
     );

@@ -6,7 +6,7 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
 
-import { useStore } from 'app/hooks/store';
+import { useStore } from 'app/store';
 import TeachersTable from 'app/components/teachers/teachers-table';
 import TeacherForm from 'app/components/teachers/teacher-form';
 
@@ -42,21 +42,19 @@ export default function TeachersPage({ history }) {
     if (!teachers) return <LoadingIndicator />;
 
     return (
-        <Page id="teachers-page">
+        <Page className="sy-TeachersPage">
             <Page.Header
                 title="Преподаватели"
-                toolbar={[
-                    {
-                        key: 'add',
-                        title: 'Создать',
-                        icon: 'add',
-                        onClick: toggleFormOpen
-                    }
-                ]}
+                actions={[{
+                    key: 'add',
+                    icon: 'add',
+                    title: 'Создать',
+                    onClick: toggleFormOpen
+                }]}
             />
 
             <Page.Content>
-                <Page.Section compact>
+                <Page.Section variant="outlined" compact>
                     <TeachersTable
                         teachers={teachers}
                         onEdit={handleEdit}

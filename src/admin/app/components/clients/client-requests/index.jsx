@@ -4,7 +4,11 @@ import RequestsList from 'app/components/requests/requests-list';
 
 export default function ClientRequests({ requests }) {
     return (
-        <PageSection className="client-requests" title="Заявки" compact>
+        <PageSection
+            className="sy-ClientRequests"
+            title="Заявки"
+            compact
+        >
             {requests?.length > 0 &&
                 <RequestsList
                     requests={requests}

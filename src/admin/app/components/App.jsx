@@ -8,7 +8,6 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 import NotificationAlert from 'shared/components/notification-alert';
 // import SearchForm from 'shared/components/search-form';
 
-import navItems from 'app/data/nav';
 import UI from 'app/contexts/ui';
 import { useStore, useActions } from 'app/hooks/store';
 
@@ -38,39 +37,43 @@ export default function App({ routes }) {
         notificationActions.hideNotification();
     }, []);
 
-    if (!user) return <LoadingIndicator className="app-loading-indicator" />;
+    if (!user) return <LoadingIndicator className="AppLoadingIndicator" />;
+
+    console.log(notification);
 
     return (
-        <UI.Provider value={{
-            showNotification: notificationActions.showNotification,
-            hideNotification: notificationActions.hideNotification
-        }}>
-            <AppHeader
-                user={user}
-            />
+        <div className="App">
+            <UI.Provider value={{
+                showNotification: notificationActions.showNotification,
+                hideNotification: notificationActions.hideNotification
+            }}>
+                {/* <AppHeader
+                    user={user}
+                /> */}
 
-            <AppBar
-                user={user}
-                items={navItems}
-            />
+                <AppBar
+                    user={user}
+                    routes={routes.filter(route => !route.hidden)}
+                />
 
-            <AppContent>
-                <Switch>
-                    {routes.map(route =>
-                        <Route
-                            key={route.path}
-                            {...route}
-                        />
-                    )}
-                </Switch>
-            </AppContent>
+                <AppContent>
+                    <Switch>
+                        {routes.map(route =>
+                            <Route
+                                key={route.path}
+                                {...route}
+                            />
+                        )}
+                    </Switch>
+                </AppContent>
 
-            <NotificationAlert
-                type={notification.type}
-                open={notification.active}
-                content={notification.text}
-                onClose={handleAlertClose}
-            />
-        </UI.Provider>
+                <NotificationAlert
+                    type={notification.type}
+                    open={notification.active}
+                    content={notification.text}
+                    onClose={handleAlertClose}
+                />
+            </UI.Provider>
+        </div>
     );
 }

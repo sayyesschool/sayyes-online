@@ -5,14 +5,12 @@ import DataContext from 'shared/contexts/data';
 import DetailsList from 'shared/components/details-list';
 import PageSection from 'shared/components/page-section';
 
-import './index.scss';
-
 export default function ClientDetails({ client }) {
     const data = useContext(DataContext);
 
     return (
         <PageSection
-            className="client-details"
+            className="sy-ClientDetails"
             title="Основные данные"
             compact
         >
@@ -21,56 +19,56 @@ export default function ClientDetails({ client }) {
                     {
                         key: 'phone',
                         icon: 'phone',
-                        header: client.phone || '[Не указан]',
-                        content: 'Телефон'
+                        content: client.phone || '[Не указан]',
+                        header: 'Телефон'
                     },
                     client.altPhone && {
                         key: 'altPhone',
                         icon: 'phone',
-                        header: client.altPhone,
-                        content: 'Дополнительный телефон',
+                        content: client.altPhone,
+                        header: 'Дополнительный телефон',
                     },
                     {
                         key: 'email',
                         icon: 'email',
-                        header: client.email || '[Не указана]',
-                        content: 'Электронная почта'
+                        content: client.email || '[Не указана]',
+                        header: 'Электронная почта'
                     },
                     {
                         key: 'dob',
                         icon: 'cake',
-                        header: client.dob ? moment(client.dob).format('DD.MM.YYYY') : '[Не указана]',
-                        content: 'Дата рождения'
+                        content: client.dob ? moment(client.dob).format('DD.MM.YYYY') : '[Не указана]',
+                        header: 'Дата рождения'
                     },
                     client.address && {
                         key: 'address',
                         icon: 'location_city',
-                        header: client.address,
-                        content: 'Адрес'
+                        content: client.address,
+                        header: 'Адрес'
                     },
                     {
                         key: 'timezone',
                         icon: 'public',
-                        header: client.timezone ? data.timezones.get(client.timezone) : '[Не указан]',
-                        content: 'Часовой пояс'
+                        content: client.timezone ? data.timezones.get(client.timezone) : '[Не указан]',
+                        header: 'Часовой пояс'
                     },
                     client.occupation && {
                         key: 'occupation',
                         icon: 'work',
-                        header: client.occupation,
-                        content: 'Род деятельности'
+                        content: client.occupation,
+                        header: 'Род деятельности'
                     },
                     client.interests && {
                         key: 'interests',
                         icon: 'golf_course',
-                        header: client.interests,
-                        content: 'Интересы'
+                        content: client.interests,
+                        header: 'Интересы'
                     },
                     client.note && {
                         key: 'note',
                         icon: 'notes',
-                        header: client.note,
-                        content: 'Примечание'
+                        content: client.note,
+                        header: 'Примечание'
                     }
                 ]}
             />
