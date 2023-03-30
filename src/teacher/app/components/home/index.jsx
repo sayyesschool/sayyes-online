@@ -3,12 +3,12 @@ import { useCallback, useState } from 'react';
 import { useBoolean } from 'shared/hooks/state';
 import { useEnrollments } from 'shared/hooks/enrollments';
 import { useLessons } from 'shared/hooks/lessons';
-import { Button, Dialog, Flex, Grid, Icon } from 'shared/ui-components';
 import Calendar from 'shared/components/calendar';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { Button, Dialog, Flex, Grid, Icon } from 'shared/ui-components';
 
 import EnrollmentsList from 'app/components/enrollments/enrollments-list';
 import LessonDetails from 'app/components/lessons/lesson-details';
@@ -97,40 +97,36 @@ export default function HomePage() {
     });
 
     return (
-        <Page id="home-page">
+        <Page className="HomePage">
             <Page.Header
                 title="Главная"
-                toolbar={[
-                    {
-                        key: 'add-lesson',
-                        kind: 'custom',
-                        content: (
-                            <Button
-                                icon={<Icon>add</Icon>}
-                                content="Запланировать урок"
-                                primary
-                                onClick={toggleFormDialogOpen}
-                            />
-                        )
-                    }
-                ]}
+                actions={[{
+                    key: 'add',
+                    icon: 'add',
+                    content: 'Запланировать урок',
+                    onClick: toggleFormDialogOpen
+                }]}
             />
 
             <Page.Content>
-                <Grid columns="1fr 3fr">
-                    <Page.Section title="Активные студенты" compact>
-                        <EnrollmentsList
-                            enrollments={enrollments}
-                        />
-                    </Page.Section>
+                <Grid spacing={2}>
+                    <Grid.Item lg={3}>
+                        <Page.Section title="Активные студенты" compact>
+                            <EnrollmentsList
+                                enrollments={enrollments}
+                            />
+                        </Page.Section>
+                    </Grid.Item>
 
-                    <Page.Section compact>
-                        <Calendar
-                            view="week-time"
-                            events={events}
-                            onEventClick={handleEventClick}
-                        />
-                    </Page.Section>
+                    <Grid.Item lg={9}>
+                        <Page.Section compact>
+                            <Calendar
+                                view="week-time"
+                                events={events}
+                                onEventClick={handleEventClick}
+                            />
+                        </Page.Section>
+                    </Grid.Item>
                 </Grid>
             </Page.Content>
 
@@ -150,7 +146,7 @@ export default function HomePage() {
                 title="Детали урока"
                 open={isDialogOpen}
                 footer={
-                    <Flex gap="gap.smaller">
+                    <Flex gap="smaller">
                         <Button
                             icon={<Icon>edit</Icon>}
                             content="Изменить"

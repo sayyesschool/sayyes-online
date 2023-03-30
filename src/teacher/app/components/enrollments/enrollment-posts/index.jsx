@@ -15,7 +15,11 @@ export default function EnrollmentPosts({ enrollment }) {
     }, [enrollment]);
 
     return (
-        <PageSection className="enrollment-posts" compact ghost>
+        <PageSection
+            className="EnrollmentPosts"
+            sx={{ backgroundColor: 'transparent' }}
+            compact
+        >
             <PostsFeed
                 query={{ enrollment: enrollment.id }}
                 beforeCreate={beforeCreate}

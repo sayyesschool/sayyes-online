@@ -1,7 +1,7 @@
 import { useEnrollment } from 'shared/hooks/enrollments';
-import { Button, Flex, Grid, MenuButton } from 'shared/ui-components';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { Button, Flex, Grid, MenuButton } from 'shared/ui-components';
 
 import EnrollmentClient from 'app/components/enrollments/enrollment-client';
 import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';
@@ -19,10 +19,10 @@ export default function EnrollmentPage({ match }) {
     if (!enrollment) return <LoadingIndicator />;
 
     return (
-        <Page id="enrollment-page">
+        <Page className="EnrollmentPage">
             <Page.Header
                 title={enrollment.domainLabel}
-                breadcrumbs={[{ text: enrollment.client.fullname }]}
+                breadcrumbs={[{ content: enrollment.client.fullname }]}
                 actions={[
                     <Button
                         key="class"
@@ -36,13 +36,14 @@ export default function EnrollmentPage({ match }) {
                         <MenuButton
                             key="menu"
                             trigger={
-                                <Button
+                                <IconButton
                                     icon="more_vert"
-                                    iconOnly
-                                    text
+                                    color="neutral"
+                                    size="sm"
+                                    variant="plain"
                                 />
                             }
-                            menu={[
+                            items={[
                                 {
                                     key: 'zoom',
                                     element: 'a',
@@ -57,36 +58,40 @@ export default function EnrollmentPage({ match }) {
             />
 
             <Page.Content>
-                <Grid columns="minmax(0, 2fr) minmax(0, 1fr)">
-                    <EnrollmentPosts
-                        enrollment={enrollment}
-                    />
-
-                    <Flex gap="gap.medium" column>
-                        <EnrollmentClient
-                            client={enrollment.client}
-                        />
-
-                        <EnrollmentDetails
+                <Grid spacing={2}>
+                    <Grid.Item lg={8}>
+                        <EnrollmentPosts
                             enrollment={enrollment}
                         />
+                    </Grid.Item>
 
-                        <EnrollmentSchedule
-                            enrollment={enrollment}
-                        />
+                    <Grid.Item lg={4}>
+                        <Flex gap="medium" column>
+                            <EnrollmentClient
+                                client={enrollment.client}
+                            />
 
-                        <EnrollmentLessons
-                            enrollment={enrollment}
-                        />
+                            <EnrollmentDetails
+                                enrollment={enrollment}
+                            />
 
-                        <EnrollmentCourses
-                            enrollment={enrollment}
-                        />
+                            <EnrollmentSchedule
+                                enrollment={enrollment}
+                            />
 
-                        <EnrollmentMaterials
-                            enrollment={enrollment}
-                        />
-                    </Flex>
+                            <EnrollmentLessons
+                                enrollment={enrollment}
+                            />
+
+                            <EnrollmentCourses
+                                enrollment={enrollment}
+                            />
+
+                            <EnrollmentMaterials
+                                enrollment={enrollment}
+                            />
+                        </Flex>
+                    </Grid.Item>
                 </Grid>
             </Page.Content>
         </Page>

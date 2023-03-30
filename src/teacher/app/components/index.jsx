@@ -54,7 +54,7 @@ export default function App() {
     if (!user) return <LoadingIndicator />;
 
     return (
-        <div className="app">
+        <div className="App">
             <AppHeader
                 user={user}
             >

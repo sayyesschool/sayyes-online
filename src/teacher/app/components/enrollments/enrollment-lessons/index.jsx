@@ -1,13 +1,12 @@
 import { useCallback, useState } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Button } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LessonPillGroup from 'shared/components/lessons-pill-group';
 import PageSection from 'shared/components/page-section';
 
-import { useActions } from 'app/hooks/store';
+import { useActions } from 'app/store/hooks';
 import LessonForm from 'app/components/lessons/lesson-form';
 
 export default function EnrollmentLessons({ enrollment }) {
@@ -52,18 +51,15 @@ export default function EnrollmentLessons({ enrollment }) {
 
     return (
         <PageSection
-            className="enrollment-lessons"
+            className="EnrollmentLessons"
             title="Занятия"
             description={lessonsDurationDelta !== 0 && ((lessonsDurationDelta < 0 ? 'Превышение на' : 'Осталось') + ` ${Math.abs(lessonsDurationDelta)} мин.`)}
-            actions={
-                <Button
-                    key="add-lesson"
-                    icon="add"
-                    title="Создать урок"
-                    text
-                    onClick={toggleNewLessonFormOpen}
-                />
-            }
+            actions={[{
+                key: 'add-lesson',
+                icon: 'add',
+                title: 'Создать урок',
+                onClick: toggleNewLessonFormOpen
+            }]}
         >
             {enrollment.lessons.length > 0 &&
                 <LessonPillGroup

@@ -1,7 +1,7 @@
 import moment from 'moment';
 
-import { Alert, List, Status } from 'shared/ui-components';
-import { StatusByType } from 'shared/data/lesson';
+import StatusIcon from 'shared/components/status-icon';
+import { Alert, List } from 'shared/ui-components';
 
 import './index.scss';
 
@@ -16,15 +16,14 @@ export default function LessonDetails({ lesson }) {
     );
 
     return (
-        <section className="lesson-details">
+        <section className="LessonDetails">
             <List>
                 <List.Item
                     header={lesson.statusLabel}
                     content="Статус"
                     endMedia={
-                        <Status
-                            size="large"
-                            state={StatusByType[lesson.status]}
+                        <StatusIcon
+                            state={lesson.status}
                         />
                     }
                 />

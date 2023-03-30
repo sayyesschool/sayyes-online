@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { Avatar, List } from 'shared/ui-components';
+import { Avatar, List, Text } from 'shared/ui-components';
 
 export default function EnrollmentsList({ enrollments }) {
     return (
@@ -10,14 +10,16 @@ export default function EnrollmentsList({ enrollments }) {
                     key={enrollment.id}
                     as={Link}
                     to={enrollment.url}
-                    media={
+                    decorator={
                         <Avatar
-                            name={enrollment.client.fullname}
+                            imageUrl={enrollment.client.imageUrl}
+                            name={enrollment.client.initials}
                         />
                     }
-                    header={enrollment.client.fullname}
-                    content={enrollment.domainLabel}
-                    selectable
+                    content={<>
+                        <Text type="body1">{enrollment.client.fullname}</Text>
+                        <Text type="body2">{enrollment.domainLabel}</Text>
+                    </>}
                 />
             )}
         </List>

@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 
-import { Button, MenuButton, Spinner } from 'shared/ui-components';
 import MaterialsList from 'shared/components/materials-list';
 import PageSection from 'shared/components/page-section';
+import { IconButton, MenuButton, Spinner } from 'shared/ui-components';
 
-import { useStore, useActions } from 'app/hooks/store';
+import { useStore, useActions } from 'app/store/hooks';
 
 export default function EnrollmentMaterials({ enrollment }) {
     const [materials] = useStore('materials.list');
@@ -44,16 +44,16 @@ export default function EnrollmentMaterials({ enrollment }) {
             actions={materials ?
                 <MenuButton
                     trigger={
-                        <Button
+                        <IconButton
                             icon="add"
                             title="Добавить материал"
-                            text
+                            size="sm"
                         />
                     }
-                    menu={items}
+                    items={items}
                 />
                 :
-                <Spinner size="small" />
+                <Spinner size="sm" />
             }
             compact
         >

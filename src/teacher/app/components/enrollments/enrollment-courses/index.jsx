@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 
-import { Button, MenuButton, Spinner } from 'shared/ui-components';
+import { IconButton, MenuButton, Spinner } from 'shared/ui-components';
 import CoursesList from 'shared/components/courses-list';
 import PageSection from 'shared/components/page-section';
 
-import { useStore, useActions } from 'app/hooks/store';
+import { useStore, useActions } from 'app/store/hooks';
 
 export default function EnrollmentCourses({ enrollment }) {
     const [courses] = useStore('courses.list');
@@ -36,21 +36,21 @@ export default function EnrollmentCourses({ enrollment }) {
 
     return (
         <PageSection
-            className="enrollment-courses"
+            className="EnrollmentCourses"
             title="Курсы"
             actions={courses ?
                 <MenuButton
                     trigger={
-                        <Button
+                        <IconButton
                             icon="add"
                             title="Добавить курс"
-                            text
+                            size="sm"
                         />
                     }
-                    menu={items}
+                    items={items}
                 />
                 :
-                <Spinner size="small" />
+                <Spinner size="sm" />
             }
             compact
         >

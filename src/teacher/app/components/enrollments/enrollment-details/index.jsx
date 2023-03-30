@@ -1,7 +1,7 @@
 import { useBoolean } from 'shared/hooks/state';
-import { Avatar, Button, List } from 'shared/ui-components';
 import DetailsList from 'shared/components/details-list';
 import PageSection from 'shared/components/page-section';
+import { Avatar, List } from 'shared/ui-components';
 
 export default function EnrollmentDetails({ enrollment }) {
     const [isOpen, toggleOpen] = useBoolean(false);
@@ -10,13 +10,11 @@ export default function EnrollmentDetails({ enrollment }) {
         <PageSection
             className="enrollment-details"
             title="Детали обучения"
-            actions={
-                <Button
-                    icon={isOpen ? 'expand_less' : 'expand_more'}
-                    text
-                    onClick={toggleOpen}
-                />
-            }
+            actions={[{
+                key: 'edit',
+                icon: isOpen ? 'expand_less' : 'expand_more',
+                onClick: toggleOpen
+            }]}
             compact
         >
             {isOpen &&
