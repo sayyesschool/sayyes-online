@@ -1,15 +1,9 @@
 @use 'shared/styles/variables';
 
 .enrollment-pay-card {
-    &.ui-segment {
-        padding: 0;
-        border: none;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
     &__section {
         padding: 1rem;
+        width: 25%;
     }
 
     &__details-section {

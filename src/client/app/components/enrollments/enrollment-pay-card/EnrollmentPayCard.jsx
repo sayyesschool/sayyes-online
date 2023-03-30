@@ -1,12 +1,10 @@
 import { useCallback, useState } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Box, Button, Checkbox, Flex, Header, Icon, Image, Surface, Text } from 'shared/ui-components';
+import { Box, Button, Checkbox, Flex, Heading, Icon, Image, Surface, Text } from 'shared/ui-components';
 
 import EnrollmentPackCard from 'app/components/enrollments/enrollment-pack-card';
 import EnrollmentCheckoutForm from 'app/components/enrollments/enrollment-checkout-form';
-
-import './index.scss';
 
 export default function EnrollmentPayCard({ enrollment, onCheckout, onCancel, ...props }) {
     const [selectedPack, setSelectedPack] = useState(enrollment?.packs[0]);
@@ -22,7 +20,7 @@ export default function EnrollmentPayCard({ enrollment, onCheckout, onCancel, ..
             <Flex>
                 <Flex.Item size="size.quarter">
                     <Box className="enrollment-pay-card__section enrollment-pay-card__details-section">
-                        <Header
+                        <Heading
                             as="h3"
                             content="Направление обучения"
                         />
@@ -40,7 +38,7 @@ export default function EnrollmentPayCard({ enrollment, onCheckout, onCancel, ..
 
                 <Flex.Item size="size.half">
                     <Box className="enrollment-pay-card__section enrollment-pay-card__steps-section">
-                        <Header
+                        <Heading
                             as="h3"
                             content="Выбор пакета"
                         />
@@ -67,7 +65,7 @@ export default function EnrollmentPayCard({ enrollment, onCheckout, onCancel, ..
                 <Flex.Item size="size.quarter">
                     <Box className="enrollment-pay-card__section enrollment-pay-card__checkout-section">
                         <Flex space="between">
-                            <Header
+                            <Heading
                                 as="h3"
                                 content="К оплате"
                             />

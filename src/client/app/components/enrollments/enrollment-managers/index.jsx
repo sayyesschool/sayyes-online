@@ -1,37 +1,35 @@
-import { Avatar, Button, Icon, List, MenuButton } from 'shared/ui-components';
 import PageSection from 'shared/components/page-section';
-
-import './index.scss';
+import { Avatar, IconButton, List, MenuButton, Text } from 'shared/ui-components';
 
 export default function EnrollmentManagers({ enrollment }) {
     return (
         <PageSection
             className="enrollment-managers"
             title={enrollment.managers.length > 1 ? 'Менеджеры' : 'Менеджер'}
+            compact
         >
             <List>
                 {enrollment.managers.map(manager =>
                     <List.Item
                         key={manager.id}
-                        media={
+                        decorator={
                             <Avatar
-                                image={manager.imageUrl}
-                                name={manager.fullname}
-                                size="large"
+                                imageUrl={manager.imageUrl}
+                                text={manager.initials}
                             />
                         }
-                        header={manager.firstname}
-                        content={manager.lastname}
-                        endMedia={
+                        content={manager.fullname}
+                        endAction={
                             <MenuButton
                                 trigger={
-                                    <Button
-                                        icon={<Icon>more_vert</Icon>}
-                                        iconOnly
-                                        text
+                                    <IconButton
+                                        icon="more_vert"
+                                        color="neutral"
+                                        size="sm"
+                                        variant="plain"
                                     />
                                 }
-                                menu={[
+                                items={[
                                     {
                                         key: 'whatsapp',
                                         element: 'a',

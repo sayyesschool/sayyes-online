@@ -19,7 +19,7 @@ export default function EnrollmentPage({ match }) {
     if (!enrollment) return <LoadingIndicator />;
 
     return (
-        <Page id="enrollment-page">
+        <Page className="EnrollmentPage">
             <Page.Header
                 title={enrollment.domainLabel}
                 actions={[
@@ -58,42 +58,44 @@ export default function EnrollmentPage({ match }) {
             </Page.Header>
 
             <Page.Content>
-                <Grid columns="minmax(0, 2fr) minmax(0, 1fr)">
-                    <Flex>
+                <Grid spacing={2}>
+                    <Grid.Item lg={7}>
                         <EnrollmentPosts
                             enrollment={enrollment}
                         />
-                    </Flex>
+                    </Grid.Item>
 
-                    <Flex column>
-                        <EnrollmentLessons
-                            enrollment={enrollment}
-                        />
-
-                        <EnrollmentSchedule
-                            enrollment={enrollment}
-                        />
-
-                        <EnrollmentTeachers
-                            enrollment={enrollment}
-                        />
-
-                        <EnrollmentManagers
-                            enrollment={enrollment}
-                        />
-
-                        {enrollment.courses?.length > 0 &&
-                            <EnrollmentCourses
+                    <Grid.Item lg={5}>
+                        <Flex gap="medium" column>
+                            <EnrollmentLessons
                                 enrollment={enrollment}
                             />
-                        }
 
-                        {enrollment.materials?.length > 0 &&
-                            <EnrollmentMaterials
+                            <EnrollmentSchedule
                                 enrollment={enrollment}
                             />
-                        }
-                    </Flex>
+
+                            <EnrollmentTeachers
+                                enrollment={enrollment}
+                            />
+
+                            <EnrollmentManagers
+                                enrollment={enrollment}
+                            />
+
+                            {enrollment.courses?.length > 0 &&
+                                <EnrollmentCourses
+                                    enrollment={enrollment}
+                                />
+                            }
+
+                            {enrollment.materials?.length > 0 &&
+                                <EnrollmentMaterials
+                                    enrollment={enrollment}
+                                />
+                            }
+                        </Flex>
+                    </Grid.Item>
                 </Grid>
             </Page.Content>
         </Page>

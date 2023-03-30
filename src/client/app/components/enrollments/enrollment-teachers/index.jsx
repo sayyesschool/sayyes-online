@@ -1,27 +1,24 @@
-import { Avatar, List } from 'shared/ui-components';
 import PageSection from 'shared/components/page-section';
-
-import './index.scss';
+import { Avatar, List, Text } from 'shared/ui-components';
 
 export default function EnrollmentTeachers({ enrollment }) {
     return (
         <PageSection
-            className="enrollment-teacher"
+            className="EnrollmentTeachers"
             title={enrollment.managers.length > 1 ? 'Преподаватели' : 'Преподаватель'}
+            compact
         >
             <List>
                 {enrollment.teachers.map(teacher =>
                     <List.Item
                         key={teacher.id}
-                        media={
+                        decorator={
                             <Avatar
-                                image={teacher.imageUrl}
-                                name={teacher.fullname}
-                                size="large"
+                                imageUrl={teacher.imageUrl}
+                                text={teacher.initials}
                             />
                         }
-                        header={teacher.firstname}
-                        content={teacher.lastname}
+                        content={teacher.fullname}
                     />
                 )}
             </List>

@@ -1,19 +1,6 @@
-#enrollment-page {
-    .page-header {
-        &__inner {
-            max-width: 1024px;
-            padding-bottom: 1rem;
-        }
-    }
-
-    .page-content {
+.Page.EnrollmentPage {
+    .PageHeader,
+    .PageContent {
         max-width: 1024px;
-        padding-top: 1rem;
-
-        > .ui-grid {
-            > .ui-flex {
-                gap: 1rem;
-            }
-        }
     }
 }

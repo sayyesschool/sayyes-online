@@ -4,8 +4,8 @@ include /shared/mixins/yandex-metrika
 include /shared/mixins/google-analytics
 
 append head
-    link(rel="stylesheet" href="/build/client.vendors.css")
-    link(rel="stylesheet" href="/build/client.main.css")
+    link(rel="stylesheet" href="/css/client.vendors.css")
+    link(rel="stylesheet" href="/css/client.main.css")
 
 append body
     //include /shared/views/includes/footer
@@ -14,5 +14,5 @@ append body
     //-     +yandex-metrika(YANDEX_METRIKA_ID)(defer)
     //-     +google-analytics(GOOGLE_ANALYTICS_ID)
         
-    script(src="/build/client.vendors.js")
-    script(src="/build/client.main.js")
+    script(src="/js/client.vendors.js")
+    script(src="/js/client.main.js")

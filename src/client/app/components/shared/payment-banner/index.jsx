@@ -4,11 +4,11 @@ export default function PaymentAlert({ onActionClick }) {
     return (
         <Alert
             className="payment-alert"
-            icon={<Icon>warning</Icon>}
+            start={<Icon>warning</Icon>}
             content="Пора платить!"
-            actions={[
+            end={
                 <Button onClick={onActionClick}>Оплатить</Button>
-            ]}
+            }
         />
     );
 }
