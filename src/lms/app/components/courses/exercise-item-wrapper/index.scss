@@ -1,0 +1,55 @@
+.exercise-item-wrapper {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 1rem 0;
+
+    &--editing {
+        margin-right: 0;
+    }
+
+    .exercise-item {
+        width: 100%;
+        transition: background-color .2s;
+    }
+
+    &__add-above-button {
+        position: absolute;
+        top: -22px;
+        left: 50%;
+        opacity: 0;
+    }
+
+    &__add-below-button {
+        position: absolute;
+        bottom: 4px;
+        left: 50%;
+        opacity: 0;
+    }
+
+    &__menu-button {
+        opacity: 0;
+        transition: opacity .2s;
+    }
+
+    &:hover {
+        .exercise-item {
+            background-color: rgb(245, 245, 245);
+            border-radius: 4px;
+        }
+
+        .exercise-item-wrapper__menu-button,
+        .exercise-item-wrapper__add-above-button,
+        .exercise-item-wrapper__add-below-button {
+            opacity: 1;
+            transition: opacity .2s;
+        }
+    }
+
+    & + & {
+        .exercise-item-wrapper__add-above-button {
+            display: none;
+        }
+    }
+}
