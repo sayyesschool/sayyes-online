@@ -1,25 +1,21 @@
-import { Card, Image, Text } from 'shared/ui-components';
+import { Card, Heading, Image, Text } from 'shared/ui-components';
 
 import './index.scss';
 
 export default function UnitCard({ unit, onSelectUnit, ...props }) {
     return (
         <Card
-            className="unit-card"
+            className="UnitCard"
             onClick={onSelectUnit && (() => onSelectUnit(unit))}
             {...props}
         >
-            <Card.Preview>
-                <Image src={unit.imageUrl} alt="" />
-            </Card.Preview>
+            <Image src={unit.imageUrl} alt="" />
 
-            <Card.Header fitted>
-                <Text as="h3">{unit.title}</Text>
+            <Heading as="h3" type="h6">{unit.title}</Heading>
 
-                {unit.lessons &&
-                    <Text as="p">{unit.lessons?.length} уроков</Text>
-                }
-            </Card.Header>
+            {unit.lessons &&
+                <Text as="p">{unit.lessons?.length} уроков</Text>
+            }
         </Card>
     );
 }

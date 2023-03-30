@@ -1,23 +1,17 @@
-import { Link } from 'react-router-dom';
-
-import Card from 'shared/ui-components/card';
-
-import './index.scss';
+import { Card, Heading, Image, Text } from 'shared/ui-components';
 
 export default function MaterialCard({ material, ...props }) {
     return (
         <Card
-            component={Link}
-            to={material.url}
-            className="material-card"
-            outlined {...props}
+            className="sy-MaterialCard"
+            {...props}
         >
-            <Card.Media imageUrl={material.imageUrl} wide>
-                <Card.Header
-                    title={material.title}
-                    subtitle={material.subtitle}
-                />
-            </Card.Media>
+            <Card.Overflow>
+                <Image src={material.imageUrl} />
+            </Card.Overflow>
+
+            <Heading>{material.title}</Heading>
+            <Text>{material.subtitle}</Text>
         </Card>
     );
 }

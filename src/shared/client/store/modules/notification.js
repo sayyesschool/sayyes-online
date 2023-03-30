@@ -1,4 +1,4 @@
-import { createAction, createReducer } from 'shared/store/utils';
+import { createAction, createReducer } from 'shared/store/helpers';
 
 export const showNotification = createAction('SHOW_NOTIFICATION', data => ({
     notification: {

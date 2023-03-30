@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 import moment from 'moment';
 
 import { getWeekData, getWeekLabel } from 'shared/libs/calendar';
-import { Button, Icon, Text } from 'shared/ui-components';
+import { IconButton, Text } from 'shared/ui-components';
 import { formatTime } from 'shared/utils/format';
 
 import WeekTimeEvent from './WeekTimeEvent';
@@ -32,28 +32,30 @@ export default function WeekTimeView({
     const label = getWeekLabel(dateRef.current);
 
     return (
-        <article className="calendar calendar--week-view calendar--week-time-view">
-            <header className="calendar__header">
-                <Button
-                    icon={<Icon>chevron_left</Icon>}
+        <>
+            <header className="Calendar__header">
+                <IconButton
+                    icon="chevron_left"
                     title="Предыдущая неделя"
-                    iconOnly
-                    flat
+                    color="neutral"
+                    size="sm"
+                    variant="plain"
                     onClick={handlePrevWeekButtonClick}
                 />
 
                 <Text>{label}</Text>
 
-                <Button
-                    icon={<Icon>chevron_right</Icon>}
+                <IconButton
+                    icon="chevron_right"
                     title="Следующая неделя"
-                    iconOnly
-                    flat
+                    color="neutral"
+                    size="sm"
+                    variant="plain"
                     onClick={handleNextWeekButtonClick}
                 />
             </header>
 
-            <section className="calendar__week">
+            <section className="Calendar__week">
                 <table>
                     <colgroup>
                         <col />
@@ -73,9 +75,14 @@ export default function WeekTimeView({
                                 <th
                                     key={day.weekday}
                                     scope="col"
-                                    className={day.isToday ? 'today' : undefined}
                                 >
-                                    <Text color={day.isToday ? 'brand' : undefined}>{day.label}</Text>
+                                    <Text
+                                        as="span"
+                                        content={day.label}
+                                        display="inline-block"
+                                        color={day.isToday ? 'primary' : undefined}
+                                        variant={day.isToday ? 'soft' : undefined}
+                                    />
                                 </th>
                             )}
                         </tr>
@@ -110,6 +117,6 @@ export default function WeekTimeView({
                     </tbody>
                 </table>
             </section>
-        </article>
+        </>
     );
 }

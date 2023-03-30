@@ -1,4 +1,4 @@
-import { createAction, createReducer, combineReducers } from 'shared/store';
+import { createAction, createReducer, combineReducers } from 'shared/store/helpers';
 
 export const getMaterials = createAction('GET_MATERIALS', query => ({
     request: {

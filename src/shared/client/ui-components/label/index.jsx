@@ -1,1 +1,0 @@
-export { Label as default } from '@fluentui/react-northstar';

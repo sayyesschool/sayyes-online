@@ -1,4 +1,4 @@
-import { createAction, createReducer, combineReducers } from 'shared/store';
+import { createAction, createReducer, combineReducers } from 'shared/store/helpers';
 
 import { createComment, updateComment, deleteComment } from './comments';
 import { createLesson, createLessons, updateLesson, deleteLesson } from './lessons';

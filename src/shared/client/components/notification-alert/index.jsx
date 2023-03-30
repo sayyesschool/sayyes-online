@@ -1,44 +1,33 @@
-import { useEffect, useRef } from 'react';
 import classnames from 'classnames';
 
-import { Alert } from 'shared/ui-components';
+import { Alert, Notification } from 'shared/ui-components';
 
 import './index.scss';
 
-export default function NotificationSnackbar({ type, open, text, className, onClose, ...props }) {
-    const timeoutRef = useRef();
+const ColorMap = {
 
-    useEffect(() => {
-        if (open === true) {
-            timeoutRef.current = setTimeout(() => {
-                clearTimeout(timeoutRef.current);
-                timeoutRef.current = null;
-                onClose();
-            }, 5000);
-        }
+};
 
-        return () => {
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current);
-                timeoutRef.current = null;
-            }
-        };
-    }, [open]);
+export default function NotificationAlert({
+    type,
+    open,
+    content,
+    onClose,
 
-    const classNames = classnames('notification-alert', className);
+    className,
+    ...props
+}) {
+    const classNames = classnames('sy-NotificationAlert', className);
 
     return (
-        <Alert
-            className={classNames}
-            content={text}
-            visible={open}
-            info={type === 'info'}
-            danger={type === 'error'}
-            warning={type === 'warning'}
-            success={type === 'success'}
-            dismissible
-            onVisibleChange={onClose}
-            {...props}
-        />
+        <Notification open={open} onClose={onClose}>
+            <Alert
+                className={classNames}
+                content={content}
+                color={ColorMap[type]}
+                {...props}
+            />
+        </Notification>
     );
 }
+

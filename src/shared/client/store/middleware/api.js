@@ -1,4 +1,4 @@
-export default (api, apiUrl) => store => next => action => {
+export default (httpClient, baseUrl) => store => next => action => {
     if (!action.request) return next(action);
 
     const [
@@ -11,9 +11,9 @@ export default (api, apiUrl) => store => next => action => {
 
     const { method, url: path, query = '', body } = action.request;
     const qs = new URLSearchParams(query).toString();
-    const url = (path.startsWith('http') ? path : apiUrl + path) + (qs ? `?${qs}` : '');
+    const url = (path.startsWith('http') ? path : baseUrl + path) + (qs ? `?${qs}` : '');
 
-    return api[method](url, body)
+    return httpClient[method](url, body)
         .then(data => {
             next({
                 type: SUCCESS,

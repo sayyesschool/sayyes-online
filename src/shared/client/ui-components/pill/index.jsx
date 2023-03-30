@@ -1,1 +1,0 @@
-export { Pill as default, Pill, PillGroup } from '@fluentui/react-northstar';

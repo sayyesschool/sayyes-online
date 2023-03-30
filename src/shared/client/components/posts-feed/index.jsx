@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
 import { usePosts } from 'shared/hooks/posts';
-import { Button, Flex, Header, Icon, Surface } from 'shared/ui-components';
+import { Button, Flex, Heading, Icon, Surface } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import EmptyState from 'shared/components/empty-state';
@@ -56,16 +56,16 @@ export default function PostsFeed({ query, beforeCreate = noop }) {
     if (!posts) return <LoadingIndicator />;
 
     return (
-        <div className="posts-feed">
-            <Flex space="between">
-                <Header as="h2">Записи</Header>
+        <div className="PostsFeed">
+            <Flex alignItems="center" justifyContent="space-between">
+                <Heading as="h2">Записи</Heading>
 
                 {!isPostFormOpen &&
                     <Button
                         className="new-post-button"
-                        icon={<Icon>create</Icon>}
+                        icon="create"
                         content="Новая запись"
-                        primary
+                        variant="plain"
                         onClick={togglePostFormOpen}
                     />
                 }
@@ -73,7 +73,7 @@ export default function PostsFeed({ query, beforeCreate = noop }) {
 
             {isPostFormOpen &&
                 <Surface className="new-post-card">
-                    <Header as="h3">Новая запись</Header>
+                    <Heading as="h3">Новая запись</Heading>
 
                     <PostForm
                         user={user}

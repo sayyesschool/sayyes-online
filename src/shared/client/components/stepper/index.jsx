@@ -1,13 +1,16 @@
 import { Children, isValidElement, cloneElement } from 'react';
 import classnames from 'classnames';
 
-import Icon from 'shared/ui-components/icon';
+import { Icon } from 'shared/ui-components';
 
 import './index.scss';
 
-function Stepper({ steps, children = steps }) {
+function Stepper({
+    steps,
+    children = steps
+}) {
     return (
-        <div className="stepper">
+        <div className="sy-Stepper">
             {Children.map(children, (step, index) =>
                 isValidElement(step) ?
                     cloneElement(step) :
@@ -17,28 +20,36 @@ function Stepper({ steps, children = steps }) {
     );
 }
 
-function Step({ graphic, label, completed, vertical, active }) {
+function Step({
+    icon,
+    content,
+    completed,
+    vertical,
+    active
+}) {
+    const classNames = classnames('sy-StepperStep', {
+        'sy-StepperStep--completed': completed,
+        'sy-StepperStep--active': active,
+        'sy-StepperStep--vertical': vertical
+    });
+
     return (
-        <span className={classnames('stepper__step', {
-            'stepper__step--completed': completed,
-            'stepper__step--active': active,
-            'stepper__step--vertical': vertical
-        })}>
-            <span className="stepper__step__graphic">
+        <span className={classNames}>
+            <span className="sy-StepperStep__decorator">
                 {completed ?
                     <Icon>check</Icon> :
-                    graphic
+                    <Icon>{icon}</Icon>
                 }
             </span>
-            <span className="stepper__step__label">{label}</span>
+            <span className="sy-StepperStep__content">{content}</span>
         </span>
     );
 }
 
 function Divider({ vertical }) {
     return (
-        <hr className={classnames('stepper__divider', {
-            'stepper__divider--vertical': vertical
+        <hr className={classnames('sy-StepperDivider', {
+            'sy-StepperDivider--vertical': vertical
         })} />
     );
 }

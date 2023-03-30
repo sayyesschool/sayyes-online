@@ -2,9 +2,8 @@ import { useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
 import { ChatMessage } from 'shared/components/chat';
-import Button from 'shared/ui-components/button';
-import Icon from 'shared/ui-components/icon';
 import CommentForm from 'shared/components/comment-form';
+import { Button, Flex, Icon } from 'shared/ui-components';
 
 import './index.scss';
 
@@ -36,17 +35,28 @@ export default function Comment({
     const isUserAuthor = user?.id === author?.id;
 
     return isEditing ? (
-        <div className="comment comment--editing">
+        <div className="Comment Comment--editing">
             <CommentForm
                 id="comment-form"
                 comment={comment}
                 onSubmit={handleSubmit}
             />
 
-            <div className="comment-actions">
-                <Button type="button" flat onClick={handleToggle}>Отменить</Button>
-                <Button type="submit" form="comment-form" primary flat>Сохранить</Button>
-            </div>
+            <Flex justifyContent="space-between">
+                <Button
+                    type="button"
+                    content="Отменить"
+                    color="neutral"
+                    variant="plain"
+                    onClick={handleToggle}
+                />
+
+                <Button
+                    type="submit"
+                    content="Сохранить"
+                    form="comment-form"
+                />
+            </Flex>
         </div>
     ) : (
         <ChatMessage

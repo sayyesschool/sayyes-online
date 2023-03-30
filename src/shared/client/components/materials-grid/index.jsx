@@ -1,19 +1,17 @@
-import {
-    LayoutGrid
-} from 'mdc-react';
+import { Grid } from 'shared/ui-components';
 
 import MaterialCard from 'shared/components/material-card';
 
 export default function MaterialGrid({ materials, ...props }) {
     return (
-        <LayoutGrid className="materials-grid" {...props}>
+        <Grid className="sy-MaterialsGrid" gap="medium" {...props}>
             {materials?.map(material =>
-                <LayoutGrid.Cell span="2">
+                <Grid.Item xs={2}>
                     <MaterialCard
                         material={material}
                     />
-                </LayoutGrid.Cell>
+                </Grid.Item>
             )}
-        </LayoutGrid>
+        </Grid>
     );
 }

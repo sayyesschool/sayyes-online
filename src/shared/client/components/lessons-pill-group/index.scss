@@ -1,16 +1,12 @@
-@use 'sass:color';
-
-.lessons-pill-group {
+.LessonsChipGroup {
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
 
-    .ui-menubutton {
-        width: calc(25% - 4px);
-    }
+    .LessonChip {
+        --Chip-radius: 8px;
 
-    .lesson-pill {
-        width: 100%;
+        width: calc(25% - 4px);
         height: auto;
         min-width: unset;
         max-height: none;
@@ -18,8 +14,7 @@
         padding: 4px 6px;
         transition: background-color .2s;
 
-        .ui-pillcontent {
-            padding: 0;
+        .MuiChip-label {
             display: flex;
             flex-direction: column;
 
@@ -30,32 +25,6 @@
 
         .ui-pill__action {
             margin: 0;
-        }
-
-        &--missed {
-            background-color: orange;
-
-            &:hover {
-                background-color: color.scale(orange, $lightness: -10%);
-            }
-        }
-        
-        &--ended {
-            color: white;
-            background-color: forestgreen;
-
-            &:hover {
-                background-color: color.scale(forestgreen, $lightness: -10%);
-            }
-        }
-
-        &--canceled {
-            color: white;
-            background-color: tomato;
-
-            &:hover {
-                background-color: color.scale(tomato, $lightness: -10%);
-            }
         }
 
         .lesson-date,

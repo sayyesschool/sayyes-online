@@ -1,1 +1,3 @@
-export { Accordion as default } from '@fluentui/react-northstar';
+import './Accordion.scss';
+
+export { default, default as Accordion } from './Accordion';

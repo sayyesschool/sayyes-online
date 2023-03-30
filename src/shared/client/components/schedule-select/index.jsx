@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 
-import { Button, Icon, Input, Text } from 'shared/ui-components';
-import Select from 'shared/ui-components/form/select';
+import { Button, FormSelect, Icon, Input, Text } from 'shared/ui-components';
 
 import './index.scss';
 
@@ -48,7 +47,7 @@ export default function ScheduleSelect({ name, label, schedule, onChange }) {
 
             {schedule?.map((item, index) =>
                 <div key={index} className="schedule-select-item">
-                    <Select
+                    <FormSelect
                         label="День недели"
                         name="day"
                         value={String(item.day)}

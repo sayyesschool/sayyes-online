@@ -1,3 +1,5 @@
+import classnames from 'classnames';
+
 import MonthView from './MonthView';
 import WeekView from './WeekView';
 import WeekTimeView from './WeekTimeView';
@@ -20,12 +22,16 @@ function Calendar({
 
     if (!Component) return null;
 
+    const classNames = classnames('Calendar', `Calendar--${view}`);
+
     return (
-        <Component
-            selectedDate={value}
-            events={events}
-            {...props}
-        />
+        <div className={classNames}>
+            <Component
+                selectedDate={value}
+                events={events}
+                {...props}
+            />
+        </div>
     );
 }
 

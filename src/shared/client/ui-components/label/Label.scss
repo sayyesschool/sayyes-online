@@ -1,0 +1,16 @@
+.ui-Label {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+
+    &__content {
+        display: block;
+        font-size: .8rem;
+    }
+
+    &--horizontal {
+        flex-direction: row;
+        align-items: center;
+        gap: .5rem;
+    }
+}

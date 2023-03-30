@@ -1,1 +1,1 @@
-export { Alert as default } from '@fluentui/react-northstar';
+export { default, default as Alert } from './Alert';

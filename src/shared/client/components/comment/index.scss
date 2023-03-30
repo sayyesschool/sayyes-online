@@ -1,16 +1,5 @@
-.comment {
+.Comment {
     display: flex;
     flex-direction: column;
     gap: .5rem;
-
-    .comment-actions {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .ui-chat__messagecontent {
-        p:last-child {
-            margin-bottom: 0;
-        }
-    }
 }

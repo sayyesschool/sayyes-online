@@ -1,1 +1,0 @@
-export { Carousel as default } from '@fluentui/react-northstar';

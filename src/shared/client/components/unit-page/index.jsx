@@ -13,11 +13,11 @@ export default function UnitPage({ match, location }) {
     const unit = course.unitsById.get(match.params.unit);
 
     return (
-        <Page className="unit-page">
+        <Page className="UnitPage">
             <Page.Header
                 title={unit.title}
                 breadcrumbs={[
-                    { url: course.url, text: course.title }
+                    { to: course.uri, content: course.title }
                 ]}
             />
 

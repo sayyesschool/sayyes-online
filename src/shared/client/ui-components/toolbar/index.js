@@ -1,1 +1,0 @@
-export { Toolbar as default } from '@fluentui/react-northstar';

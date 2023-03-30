@@ -1,4 +1,4 @@
-import { createAction, createReducer, combineReducers } from 'shared/store/utils';
+import { createAction, createReducer, combineReducers } from 'shared/store/helpers';
 
 export const getLessons = createAction('GET_LESSONS', query => {
     return {

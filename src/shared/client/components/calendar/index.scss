@@ -1,19 +1,19 @@
 @use 'shared/styles/variables';
 
-.calendar {
+.Calendar {
     overflow: hidden;
     
     &__header {
         display: flex;
         justify-content: center;
         align-items: center;
+        gap: .5rem;
         padding: .5rem;
     }
 
     table {
-        table-layout: fixed;
         width: 100%;
-        border: 1px solid #e1dfdd;
+        table-layout: fixed;
         border-collapse: collapse;
 
         th {
@@ -40,9 +40,19 @@
                 border-right: none;
             }
         }
+
+        tbody {
+            tr:last-child {
+                th, td {
+                    border-bottom: none;
+                }
+            }
+        }
     }
 
-    .calendar-event {
+    .CalendarEvent {
+        --Chip-radius: 0px;
+
         position: absolute;
         top: 0;
         width: 100%;
@@ -66,7 +76,7 @@
     }
 }
 
-.calendar--month-view {
+.Calendar--month {
     table {
         border-spacing: 0;
 
@@ -94,7 +104,7 @@
         }
     }
 
-    .calendar__day {
+    .Calendar__day {
         position: relative;
 
         &:hover {
@@ -113,21 +123,21 @@
             box-sizing: border-box;
         }
 
-        &.calendar__day--today {
+        &.Calendar__day--today {
             &::before {
                 border: 3px solid variables.$primary-color;
             }
         }
 
-        &.calendar__day--selected {
+        &.Calendar__day--selected {
             border: 1px solid variables.$primary-color;
         }
 
-        &.calendar__day--today.calendar__day--selected {
+        &.Calendar__day--today.Calendar__day--selected {
             border: 2px solid lightgray;
         }
 
-        .calendar__day-label {
+        .Calendar__day-label {
             position: absolute;
             top: 6px;
             right: 8px;
@@ -135,31 +145,31 @@
     }
 }
 
-.calendar--week-view {
-    .calendar__week {
+.Calendar--week {
+    .Calendar__week {
         display: flex;
         min-height: 128px;
     }
 
-    .calendar__day {
+    .Calendar__day {
         flex: 1;
         text-align: center;
 
-        &--today .calendar__day-name {
+        &--today .Calendar__day-name {
             border-bottom: solid 3px #6c167b;
         }
 
-        + .calendar__day {
+        + .Calendar__day {
             border-left: 1px solid rgba(0, 0, 0, 0.12);
         }
     }
 
-    .calendar__day-name {
+    .Calendar__day-name {
         width: 100%;
         border-bottom: solid 3px transparent;
     }
 
-    .calendar__day-events {
+    .Calendar__day-events {
         padding: 8px;
     }
 
@@ -207,14 +217,10 @@
     }
 }
 
-.calendar--week-time-view {
-    .calendar__header {
-        .ui-text {
-            margin: 0 8px;
-        }
-    }
-
+.Calendar--week-time {
     table {
+        border: none;
+        
         thead {
             th {
                 text-transform: capitalize;

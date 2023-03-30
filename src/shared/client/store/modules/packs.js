@@ -1,4 +1,4 @@
-import { createAction, createReducer, combineReducers } from 'shared/store';
+import { createAction, createReducer, combineReducers } from 'shared/store/helpers';
 
 const path = '/packs';
 

@@ -16,23 +16,18 @@ function isObject(value) {
 
 export default useFormData;
 
-export function useForm({ ref, values, fields = values, onSubmit } = {}, deps = []) {
-    const formRef = useRef();
-
+export function useForm({ values, fields = values, onSubmit } = {}, deps = []) {
     const [data, setData] = useState(() => toData(fields));
     const [meta, setMeta] = useState(defaultMeta);
-
-    useImperativeHandle(ref, () => ({
-        get form() { return formRef.current; },
-        get data() { return data; }
-    }));
 
     useEffect(() => {
         setData(toData(fields));
         setMeta(defaultMeta);
     }, deps);
 
-    const handleChange = useCallback((event, { name, value }) => {
+    const handleChange = useCallback(({ target } = {}) => {
+        const { name, value } = target;
+
         setMeta(meta => ({ ...meta, touched: true }));
 
         setData(data => {
@@ -108,7 +103,9 @@ export function useFormData(initialData, deps = []) {
         setData(initialData);
     }, deps);
 
-    const handleChange = useCallback((event, { name, value }) => {
+    const handleChange = useCallback(({ target } = {}) => {
+        const { name, value } = target;
+
         setData(data => {
             const [name1, name2] = name.split('.');
 

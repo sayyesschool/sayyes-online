@@ -97,8 +97,8 @@
             counter-increment: number;
             float: left;
             margin-right: .5rem;
-            margin-top: 1px;
             font-weight: bold;
+            line-height: 24px;
         }
 
         &:not(:first-of-type) {

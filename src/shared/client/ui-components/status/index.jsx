@@ -1,1 +1,0 @@
-export { Status as default } from '@fluentui/react-northstar';

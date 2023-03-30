@@ -3,7 +3,7 @@ import moment from 'moment';
 import classnames from 'classnames';
 
 import { getMonthData } from 'shared/libs/calendar';
-import { Button, Dropdown, Icon, Status, Text } from 'shared/ui-components';
+import { Button, Select, Text } from 'shared/ui-components';
 
 export default function MonthView({
     selectedDate,
@@ -51,30 +51,30 @@ export default function MonthView({
     const data = useMemo(() => getMonthData(dateRef.current), [year, month]);
 
     return (
-        <div className="calendar calendar--month-view">
-            <header className="calendar__header">
+        <>
+            <header className="Calendar__header">
                 <Button
-                    icon={<Icon>chevron_left</Icon>}
+                    icon="chevron_left"
                     iconOnly
                     onClick={handlePrevMonthButtonClick}
                 />
 
-                <Dropdown
+                <Select
                     className="calendar__select calendar__month-select"
-                    items={monthNames.map((text, index) => ({ key: index, value: index, content: text }))}
+                    options={monthNames.map((text, index) => ({ key: index, value: index, content: text }))}
                     placeholder="Select your hero"
                     checkable
                 />
 
-                <Dropdown
+                <Select
                     className="calendar__select calendar__year-select"
-                    items={years.map(year => ({ key: year, value: year, content: year }))}
+                    options={years.map(year => ({ key: year, value: year, content: year }))}
                     placeholder="Select your hero"
                     checkable
                 />
 
                 <Button
-                    icon={<Icon>chevron_right</Icon>}
+                    icon="chevron_right"
                     iconOnly
                     onClick={handleNextMonthButtonClick}
                 />
@@ -91,17 +91,17 @@ export default function MonthView({
 
                 <section>
                     {data.map((week, index) =>
-                        <div key={index} className="calendar__week">
+                        <div key={index} className="Calendar__week">
                             {week.map((date, index) =>
                                 <div
-                                    className={classnames('calendar__day', date && {
-                                        'calendar__day--today': date.isSame(todayRef.current, 'day'),
-                                        'calendar__day--selected': selectedDate && date.isSame(selectedDate, 'day'),
-                                        'calendar__day--has-events': eventsByDate.has(date.format('YYYY-MM-DD'))
+                                    className={classnames('Calendar__day', date && {
+                                        'Calendar__day--today': date.isSame(todayRef.current, 'day'),
+                                        'Calendar__day--selected': selectedDate && date.isSame(selectedDate, 'day'),
+                                        'Calendar__day--has-events': eventsByDate.has(date.format('YYYY-MM-DD'))
                                     })}
                                 >
                                     {date &&
-                                        <div className="calendar__day-label">{date.date()}</div>
+                                        <div className="Calendar__day-label">{date.date()}</div>
                                     }
                                 </div>
                             )}
@@ -109,7 +109,7 @@ export default function MonthView({
                     )}
                 </section>
             </article>
-        </div>
+        </>
     );
 }
 
@@ -126,9 +126,7 @@ function CalendarDay({ date, today, selected, events, onClick }) {
 
     return (
         <div className={classNames} >
-            <Status value={events?.length} noBackground>
-                { }
-            </Status>
+
         </div>
     );
 }

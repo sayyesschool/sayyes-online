@@ -1,10 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import classnames from 'classnames';
 
-import Checkbox from 'shared/ui-components/checkbox';
-import Icon from 'shared/ui-components/icon';
-import List from 'shared/ui-components/list';
-import { RadioGroupItem } from 'shared/ui-components/radio-group';
+import { Checkbox, List, Radio } from 'shared/ui-components';
 import TextContent from 'shared/components/text-content';
 
 function getDefaultState(item) {
@@ -57,10 +54,8 @@ export default function ExerciseChoiceItem({
                                 disabled={checked}
                             />
                             :
-                            <RadioGroupItem
+                            <Radio
                                 checked={item.id === state}
-                                indicator={<Icon>radio_button_unchecked</Icon>}
-                                checkedIndicator={<Icon>radio_button_checked</Icon>}
                                 disabled={checked}
                             />
                         }

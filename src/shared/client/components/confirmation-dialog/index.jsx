@@ -8,7 +8,7 @@ export default function ConfirmationDialog({
     title = 'Подтвердите действие',
     message,
     content = message,
-    cancelButtonContent = 'Отмена',
+    cancelButtonContent = 'Отменить',
     confirmButtonContent = 'Подтвердить',
     onConfirm,
     onClose,
@@ -31,21 +31,29 @@ export default function ConfirmationDialog({
     return (
         <Dialog
             open={open}
-            header={title}
+            title={title}
             content={children}
-            cancelButton={{
-                type: 'button',
-                content: cancelButtonContent,
-                onClick: onClose
-            }}
-            confirmButton={{
-                type: 'button',
-                content: confirmButtonContent,
-                primary: true,
-                disabled: isConfirmButtonDisabled,
-                loading: isConfirmButtonDisabled,
-                onClick: handleConfirm
-            }}
+            actions={[
+                {
+                    key: 'cancel',
+                    type: 'button',
+                    content: cancelButtonContent,
+                    color: 'danger',
+                    variant: 'soft',
+                    onClick: onClose
+                },
+                {
+                    key: 'confirm',
+                    type: 'button',
+                    content: confirmButtonContent,
+                    color: 'success',
+                    variant: 'soft',
+                    disabled: isConfirmButtonDisabled,
+                    loading: isConfirmButtonDisabled,
+                    onClick: handleConfirm
+                }
+            ]}
+            withCloseButton={false}
             {...props}
         />
     );

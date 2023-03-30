@@ -1,8 +1,7 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
-import Button from 'shared/ui-components/button';
-import List from 'shared/ui-components/list';
+import { IconButton, Image, List } from 'shared/ui-components';
 
 export default function MaterialsList({ materials, onRemove }) {
     const handleRemove = useCallback((event, materialId) => {
@@ -12,19 +11,25 @@ export default function MaterialsList({ materials, onRemove }) {
     }, []);
 
     return (
-        <List>
-            {materials.map(material =>
+        <List className="MaterialsList">
+            {materials?.map(material =>
                 <List.Item
                     key={material.id}
                     as={Link}
                     to={material.uri}
-                    media={<img src={material.imageUrl} />}
-                    header={material.title}
-                    content={material.subtitle}
+                    media={
+                        <Image src={material.imageUrl} alt="" />
+                    }
+                    content={<>
+                        <Text type="body1">{material.subtitle}</Text>
+                        <Text type="body2">{material.title}</Text>
+                    </>}
                     endMedia={onRemove &&
-                        <Button
+                        <IconButton
                             icon="remove"
                             title="Убрать курс"
+                            color="danger"
+                            size="sm"
                             onClick={event => handleRemove(event, material.id)}
                         />
                     }

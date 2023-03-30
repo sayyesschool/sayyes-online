@@ -3,8 +3,9 @@ import classnames from 'classnames';
 
 import storage from 'shared/services/storage';
 import { useBoolean } from 'shared/hooks/state';
-import { Button, Dialog, Icon, Image, Input, Loader, Text } from 'shared/ui-components';
+import { Button, Dialog, Icon, Image, Input, Text } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
+import LoadingIndicator from 'shared/components/loading-indicator';
 import PageSection from 'shared/components/page-section';
 
 import './index.scss';
@@ -80,8 +81,8 @@ export default function ImageSection({ className, image, uploadPath, onUpdate, o
             title="Изображение"
             className={classNames}
             actions={isLoading ?
-                <Loader
-                    size="small"
+                <LoadingIndicator
+                    size="sm"
                 />
                 :
                 (!image?.url ?

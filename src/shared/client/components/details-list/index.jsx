@@ -1,16 +1,20 @@
-import Icon from 'shared/ui-components/icon';
-import List from 'shared/ui-components/list';
+import { Icon, List, Text } from 'shared/ui-components';
 
 import './index.scss';
 
 export default function DetailsList({ items = [], children }) {
     return (
-        <List className="details-list">
-            {items.filter(item => item).map(item =>
+        <List className="sy-DetailsList">
+            {items.filter(item => !!item).map(item =>
                 <List.Item
                     key={item.key}
-                    media={item.icon && <Icon>{item.icon}</Icon>}
-                    {...item}
+                    decorator={item.icon &&
+                        <Icon>{item.icon}</Icon>
+                    }
+                    content={<>
+                        <Text type="body2">{item.header}</Text>
+                        <Text type="body1">{item.content}</Text>
+                    </>}
                 />
             )}
 

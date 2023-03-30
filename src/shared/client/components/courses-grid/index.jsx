@@ -1,14 +1,11 @@
 import { Link } from 'react-router-dom';
 
-import Card from 'shared/ui-components/card';
-import Grid from 'shared/ui-components/grid';
-import Image from 'shared/ui-components/image';
-import Text from 'shared/ui-components/text';
+import { Card, Grid, Heading, Image } from 'shared/ui-components';
 
-export default function CoursesGrid({ courses }) {
+export default function CoursesGrid({ courses, ...props }) {
     return (
-        <Grid columns="4" className="courses-grid">
-            {courses.map(course =>
+        <Grid className="sy-CoursesGrid" gap="medium" {...props}>
+            {courses?.map(course =>
                 <Card
                     key={course.id}
                     as={Link}
@@ -17,17 +14,11 @@ export default function CoursesGrid({ courses }) {
                         search: course.enrollmentId && `?enrollmentId=${course.enrollmentId}`
                     }}
                 >
-                    <Card.Preview>
-                        <Image
-                            src={course.imageUrl}
-                            alt=""
-                        />
-                    </Card.Preview>
+                    <Card.Overflow>
+                        <Image src={course.imageUrl} />
+                    </Card.Overflow>
 
-
-                    <Card.Header>
-                        <Text as="h3">{course.title}</Text>
-                    </Card.Header>
+                    <Heading as="h3">{course.title}</Heading>
                 </Card>
             )}
         </Grid>

@@ -29,8 +29,8 @@ export default function WeekView({ eventsByDate }) {
     const label = getWeekLabel(dateRef.current);
 
     return (
-        <article className="calendar calendar--week-view">
-            <header className="calendar__header">
+        <>
+            <header className="Calendar__header">
                 <Button.Group
                     buttons={[
                         {
@@ -55,17 +55,17 @@ export default function WeekView({ eventsByDate }) {
                 />
             </header>
 
-            <section className="calendar__week">
+            <section className="Calendar__week">
                 {data.map(date =>
                     <div
                         key={date.valueOf()}
-                        className={classnames('calendar__day', {
-                            'calendar__day--today': date.isSame(todayRef.current) && 'today'
+                        className={classnames('Calendar__day', {
+                            'Calendar__day--today': date.isSame(todayRef.current) && 'today'
                         })}
                     >
-                        <Text className="calendar__day-name" as="div" type="overline">{date.format('dd')}, {date.date()}</Text>
+                        <Text className="Calendar__day-name" as="div" type="overline">{date.format('dd')}, {date.date()}</Text>
 
-                        <div className="calendar__day-events">
+                        <div className="Calendar__day-events">
                             {eventsByDate.has(date.toDate().toLocaleDateString()) &&
                                 <CalendarEvent
                                     event={eventsByDate.get(date.toDate().toLocaleDateString())}
@@ -75,7 +75,7 @@ export default function WeekView({ eventsByDate }) {
                     </div>
                 )}
             </section>
-        </article>
+        </>
     );
 }
 

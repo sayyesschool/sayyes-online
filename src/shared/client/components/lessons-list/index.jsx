@@ -8,7 +8,7 @@ import './index.scss';
 export default function LessonsList({ unit, lessons, onSelect }) {
     return (
         <List>
-            {lessons.map((lesson, index) =>
+            {lessons?.map((lesson, index) =>
                 <List.Item
                     key={lesson.id}
                     as={!onSelect ? Link : undefined}

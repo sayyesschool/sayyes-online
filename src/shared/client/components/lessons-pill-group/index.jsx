@@ -3,11 +3,11 @@ import classnames from 'classnames';
 import moment from 'moment';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Icon, MenuButton, Pill, PillGroup } from 'shared/ui-components';
+import { Chip, Flex, MenuButton } from 'shared/ui-components';
 
 import './index.scss';
 
-export default function LessonsPillGroup({
+export default function LessonsChipGroup({
     lessons,
     readonly,
     onEdit,
@@ -15,9 +15,9 @@ export default function LessonsPillGroup({
     onRefund
 }) {
     return (
-        <PillGroup className="lessons-pill-group">
+        <Flex className="LessonsChipGroup" gap="smaller">
             {lessons.map(lesson => ({ ...lesson, date: moment(lesson.date) })).map(lesson =>
-                <LessonPill
+                <LessonChip
                     key={lesson.id}
                     lesson={lesson}
                     readonly={readonly}
@@ -26,11 +26,18 @@ export default function LessonsPillGroup({
                     onRefund={onRefund}
                 />
             )}
-        </PillGroup>
+        </Flex>
     );
 }
 
-function LessonPill({
+const StatusColor = {
+    missed: 'warning',
+    ended: 'success',
+    scheduled: 'neutral',
+    canceled: 'danger'
+};
+
+function LessonChip({
     lesson,
     readonly,
     onEdit = Function.prototype,
@@ -55,11 +62,11 @@ function LessonPill({
         <MenuButton
             open={readonly ? false : isMenuOpen}
             trigger={
-                <Pill
+                <Chip
                     key={lesson.id || lesson.date.valueOf()}
-                    className={classnames('lesson-pill', `lesson-pill--${lesson.status}`)}
-                    actionable
-                    rectangular
+                    className={classnames('LessonChip', `LessonChip--${lesson.status}`)}
+                    variant="soft"
+                    color={StatusColor[lesson.status]}
                 >
                     <span>
                         <span className="lesson-date">{lesson.date.format('D.M')}</span>
@@ -70,10 +77,9 @@ function LessonPill({
                         <span className="lesson-time">{lesson.date.format('H:mm')}</span>
                         <span className="lesson-duration"> {`${lesson.duration} мин.`}</span>
                     </span>
-                </Pill>
+                </Chip>
             }
-            onOpenChange={toggleMenuOpen}
-            menu={[
+            items={[
                 {
                     key: 'edit',
                     content: 'Изменить',
@@ -91,6 +97,7 @@ function LessonPill({
                     onClick: handleRefund
                 }
             ]}
+            onOpenChange={toggleMenuOpen}
         />
     );
 }

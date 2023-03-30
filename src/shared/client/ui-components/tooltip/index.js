@@ -1,1 +1,1 @@
-export { Tooltip as default } from '@fluentui/react-northstar';
+export { default, default as Tooltip } from './Tooltip';

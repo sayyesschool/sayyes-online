@@ -1,20 +1,12 @@
 @use 'shared/styles/variables';
-@use '@material/theme';
-@use '@material/typography' with (
-    $styles-subtitle1: (
-        font-family: unquote('Nunito, Arial, Helvetica, sans-serif'),
-        font-weight: 600,
-        color: variables.$heading-color
-    )
-);
 
-.stepper {
+.sy-Stepper {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 
-    &__step {
+    &Step {
         position: relative;
         display: flex;
         flex-direction: row;
@@ -22,7 +14,7 @@
         padding-left: 8px;
         padding-right: 8px;
 
-        &__graphic {
+        &__decorator {
             display: inline-flex;
             justify-content: center;
             align-items: center;
@@ -38,19 +30,17 @@
             font-family: Nunito;
         }
         
-        &__label {
+        &__content {
             width: 100%;
-            @include typography.typography(subtitle1);
-            @include theme.property(color, text-secondary-on-light);
             line-height: 1.5;
         }
 
-        &--active &__graphic {
+        &--active &__decorator {
             background-color: variables.$secondary-color;
         }
 
-        &--active &__label {
-            @include theme.property(color, text-primary-on-light);
+        &--active &__content {
+            
         }
 
         &--vertical {
@@ -60,7 +50,7 @@
             text-align: center;
         }
 
-        &--vertical &__graphic {
+        &--vertical &__decorator {
             margin-right: 0;
             margin-bottom: 8px;
         }
@@ -74,12 +64,8 @@
         }
     }
 
-    &__divider {
+    &Divider {
         flex: 1 1;
         margin: 0;
-    }
-
-    &--vertical {
-
     }
 }

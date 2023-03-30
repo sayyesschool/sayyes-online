@@ -1,7 +1,7 @@
 import { cloneElement, useCallback, useEffect, useRef } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Dialog, Icon } from 'shared/ui-components';
+import { Button, Dialog } from 'shared/ui-components';
 
 import './index.scss';
 
@@ -37,24 +37,23 @@ export default function FormDialog({
 
     return (
         <Dialog
-            className="form-dialog"
+            className="sy-FormDialog"
             open={open}
-            header={title}
-            headerAction={{
-                icon: <Icon>close</Icon>,
-                title: 'Закрыть',
-                onClick: onClose
-            }}
+            title={title}
+            layout="center"
             content={cloneElement(children, {
                 onSubmit: handleSubmit
             })}
-            confirmButton={{
-                type: 'submit',
-                form,
-                content: submitButtonText,
-                disabled: isSubmitting,
-                loading: isSubmitting
-            }}
+            actions={[
+                <Button
+                    key="submit"
+                    type="submit"
+                    form={form}
+                    content={submitButtonText}
+                    disabled={isSubmitting}
+                    loading={isSubmitting}
+                />
+            ]}
             onClose={onClose}
             {...props}
         />

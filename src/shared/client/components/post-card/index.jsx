@@ -1,64 +1,59 @@
 import { useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Avatar, Box, Button, Flex, Header, Icon, MenuButton, Surface, Text } from 'shared/ui-components';
-import { Chat } from 'shared/components/chat';
-import Comment from 'shared/components/comment';
 import PostContent from 'shared/components/post-content';
+import PostComments from 'shared/components/post-comments';
 import PostForm from 'shared/components/post-form';
+import { Avatar, Box, Button, Card, Flex, Icon, IconButton, MenuButton, Text } from 'shared/ui-components';
 
 import './index.scss';
 
-export default function PostCard({ user, post, onUpdate, onDelete, onCreateComment, onUpdateComment, onDeleteComment }) {
+export default function PostCard({
+    user,
+    post,
+    onUpdate,
+    onDelete,
+    onCreateComment,
+    onUpdateComment,
+    onDeleteComment
+}) {
     const [isEditing, toggleEditing] = useBoolean(false);
-    const [isCommenting, toggleCommenting] = useBoolean(false);
 
     const handleUpdate = useCallback(data => {
         return onUpdate(post.id, data)
             .then(() => toggleEditing(false));
-    }, [post]);
+    }, [post, onUpdate]);
 
     const handleDelete = useCallback(() => {
         return onDelete(post.id);
-    }, [post]);
-
-    const handleCreateComment = useCallback((_, data) => {
-        return onCreateComment(post.id, data)
-            .then(() => toggleCommenting(false));
-    }, [post]);
-
-    const handleUpdateComment = useCallback((commentId, data) => {
-        return onUpdateComment(post.id, commentId, data);
-    }, [post]);
-
-    const handleDeleteComment = useCallback(commentId => {
-        return onDeleteComment(post.id, commentId);
-    }, [post]);
+    }, [post, onDelete]);
 
     return (
-        <Surface as="article" className="post-card">
-            <Flex className="post-card__header" space="between">
-                <Flex gap="gap.medium" vAlign="center">
+        <Card as="article" className="PostCard">
+            <Flex className="PostCard__header" alignItems="center" justifyContent="space-between">
+                <Flex gap="medium" alignItems="center">
                     <Avatar
-                        image={post.user.imageUrl}
-                        name={post.user?.initials}
-                        size="large"
+                        imageSrc={post.user.imageUrl}
+                        text={post.user?.initials}
+                        size="lg"
                     />
 
                     <Flex column>
-                        <Text weight="bold">{post.user.fullname}</Text>
-                        <Text timestamp>{post.datetimeLabel}</Text>
+                        <Text type="body1">{post.user.fullname}</Text>
+                        <Text type="body2">{post.datetimeLabel}</Text>
                     </Flex>
                 </Flex>
 
                 <MenuButton
                     trigger={
-                        <Button
+                        <IconButton
                             icon="more_vert"
-                            text
+                            color="neutral"
+                            size="sm"
+                            variant="plain"
                         />
                     }
-                    menu={[
+                    items={[
                         {
                             key: 'edit',
                             icon: <Icon>edit</Icon>,
@@ -75,7 +70,7 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
                 />
             </Flex>
 
-            <Box className="post-card__content">
+            <Box className="PostCard__body">
                 {isEditing ?
                     <PostForm
                         id="update-post-form"
@@ -84,61 +79,27 @@ export default function PostCard({ user, post, onUpdate, onDelete, onCreateComme
                     />
                     :
                     <>
-                        {post.title &&
-                            <Header as="h3">{post.title}</Header>
-                        }
-
                         <PostContent
                             post={post}
                         />
+
+                        <PostComments
+                            user={user}
+                            post={post}
+                            onCreate={onCreateComment}
+                            onUpdate={onUpdateComment}
+                            onDelete={onDeleteComment}
+                        />
                     </>
                 }
-
-
-                {!isEditing && post.comments.length > 0 &&
-                    <div className="post-comments">
-                        <Text as="h4">Комментарии</Text>
-
-                        {post.comments.map(comment =>
-                            <Comment
-                                key={comment.id}
-                                user={user}
-                                comment={comment}
-                                onSave={handleUpdateComment}
-                                onDelete={handleDeleteComment}
-                            />
-                        )}
-                    </div>
-                }
-
-                {isCommenting &&
-                    <Comment
-                        user={user}
-                        editing
-                        onToggle={toggleCommenting}
-                        onSave={handleCreateComment}
-                    />
-                }
             </Box>
 
-            <Box className="post-card__footer">
-                {isEditing ?
-                    <Flex space="between">
-                        <Button text onClick={toggleEditing}>Отменить</Button>
-                        <Button type="submit" form="update-post-form" primary flat>Сохранить</Button>
-                    </Flex>
-                    :
-                    (!isCommenting &&
-                        <Button
-                            className="reply-button"
-                            icon={<Icon>reply</Icon>}
-                            content="Ответить"
-                            text
-                            onClick={toggleCommenting}
-                        />
-                    )
-                }
-            </Box>
-        </Surface>
+            {isEditing &&
+                <Flex className="PostCard__footer" justifyContent="space-between">
+                    <Button text onClick={toggleEditing}>Отменить</Button>
+                    <Button type="submit" form="update-post-form" primary flat>Сохранить</Button>
+                </Flex>
+            }
+        </Card>
     );
 }

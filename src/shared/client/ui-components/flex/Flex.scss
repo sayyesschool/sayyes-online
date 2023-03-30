@@ -1,0 +1,31 @@
+.ui-Flex {
+    &--gap {
+        &-smallest {
+            gap: .25rem;
+        }
+    
+        &-smaller {
+            gap: .5rem;
+        }
+    
+        &-small {
+            gap: .75rem;
+        }
+    
+        &-medium {
+            gap: 1rem;
+        }
+    
+        &-large {
+            gap: 1.25rem;
+        }
+    
+        &-larger {
+            gap: 1.5rem;
+        }
+    
+        &-largest {
+            gap: 1.75rem
+        }
+    }
+}

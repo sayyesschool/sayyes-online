@@ -1,4 +1,4 @@
-import { createAction, createReducer, combineReducers } from 'shared/store/utils';
+import { createAction, createReducer, combineReducers } from 'shared/store/helpers';
 
 export const getManagers = createAction('GET_MANAGERS', query => ({
     request: {

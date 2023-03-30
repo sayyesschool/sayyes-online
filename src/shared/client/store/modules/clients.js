@@ -1,16 +1,14 @@
-import { createAction, createReducer, combineReducers } from 'shared/store';
+import { createAction, createReducer, combineReducers } from 'shared/store/helpers';
 
 import { createPayment, updatePayment, deletePayment } from './payments';
 
-export const getClients = createAction('GET_CLIENTS', query => {
-    return {
-        request: {
-            method: 'get',
-            url: '/clients',
-            query
-        }
-    };
-});
+export const getClients = createAction('GET_CLIENTS', query => ({
+    request: {
+        method: 'get',
+        url: '/clients',
+        query
+    }
+}));
 
 export const getClient = createAction('GET_CLIENT', clientId => ({
     request: {

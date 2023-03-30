@@ -1,31 +1,28 @@
-import Card from 'shared/ui-components/card';
-import Image from 'shared/ui-components/image';
-import Text from 'shared/ui-components/text';
+import { Card, Heading, Image, Text } from 'shared/ui-components';
 
 import './index.scss';
 
 export default function LessonCard({ lesson, onSelect, ...props }) {
     return (
         <Card
-            className="lesson-card"
-            horizontal
-            compact
+            className="LessonCard"
+            orientation="horizontal"
             onClick={onSelect && (() => onSelect(lesson))}
             {...props}
         >
-            <Card.Preview horizontal>
-                <Image src={lesson.imageUrl} alt="" />
-            </Card.Preview>
+            <Card.Overflow>
+                <Image src={lesson.imageUrl} alt="" ratio="16/9" sx={{ width: '256px' }} />
+            </Card.Overflow>
 
-            <Card.Body>
-                <Text as="h2">{lesson.title}</Text>
+            <Card.Content sx={{ px: 2 }}>
+                <Heading as="h2" type="h5">{lesson.title}</Heading>
 
-                {lesson.description &&
-                    <Text as="p" dangerouslySetInnerHTML={{ __html: lesson.description }} />
-                }
+                {/* {lesson.description &&
+                <Text as="p" dangerouslySetInnerHTML={{ __html: lesson.description }} />
+            } */}
 
                 <Text as="p">{lesson.exercises?.length} упражнений</Text>
-            </Card.Body>
+            </Card.Content>
         </Card>
     );
 }

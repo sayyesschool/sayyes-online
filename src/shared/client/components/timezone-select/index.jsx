@@ -1,10 +1,10 @@
-import timezones from 'shared/data/timezones';
-import { FormSelect, Icon } from 'shared/ui-components';
+import { FormAutocomplete } from 'shared/ui-components';
+import { timezones, timezonesMap } from 'shared/data/timezones';
 
 const timezoneOptions = timezones.map(item => ({
     key: item.value,
     value: item.value,
-    header: item.text
+    label: item.text
 }));
 
 export default function TimeZoneSelect({
@@ -14,13 +14,12 @@ export default function TimeZoneSelect({
     ...props
 }) {
     return (
-        <FormSelect
+        <FormAutocomplete
             name={name}
             label={label}
             options={timezoneOptions}
-            toggleIndicator={<Icon>expand_more</Icon>}
-            fluid
-            search
+            getOptionLabel={option => (option.label ?? timezonesMap.get(option)) || ''}
+            isOptionEqualToValue={(option, value) => option.value === value}
             {...props}
         />
     );

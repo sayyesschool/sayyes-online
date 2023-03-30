@@ -1,1 +1,0 @@
-export { Input as default } from '@fluentui/react-northstar';

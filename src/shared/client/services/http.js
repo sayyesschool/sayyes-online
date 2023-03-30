@@ -1,4 +1,4 @@
-export function request(url, { headers = {}, body, ...rest }) {
+export function request(url, { headers = {}, body, ...rest } = {}) {
     const isJSON = (typeof body === 'object') && !(body instanceof FormData);
     const options = {
         credentials: 'same-origin',

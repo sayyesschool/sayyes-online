@@ -1,11 +1,9 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
-import Button from 'shared/ui-components/button';
-import Image from 'shared/ui-components/image';
-import List from 'shared/ui-components/list';
+import { IconButton, Image, List } from 'shared/ui-components';
 
-export default function CoursesList({ enrollment, courses, onRemove }) {
+export default function CoursesList({ courses, onRemove }) {
     const handleRemove = useCallback((event, courseId) => {
         event.preventDefault();
         event.stopPropagation();
@@ -14,22 +12,23 @@ export default function CoursesList({ enrollment, courses, onRemove }) {
     }, []);
 
     return (
-        <List>
+        <List className="CoursesList">
             {courses.map(course =>
                 <List.Item
                     key={course.id}
                     as={Link}
-                    to={course.uri + (enrollment ? `?enrollmentId=${enrollment.id}` : '')}
-                    media={course.imageUrl &&
-                        <Image src={course.imageUrl} alt="" />
+                    to={course.uri}
+                    decorator={course.imageUrl &&
+                        <Image imageUrl={course.imageUrl} alt="" />
                     }
-                    header={course.title}
-                    endMedia={onRemove &&
-                        <Button
+                    content={course.title}
+                    endAction={onRemove &&
+                        <IconButton
                             icon="remove"
                             title="Убрать курс"
-                            text
                             onClick={event => handleRemove(event, course.id)}
+                            color="danger"
+                            size="sm"
                         />
                     }
                 />

@@ -1,20 +1,20 @@
 @use 'shared/styles/variables';
 
-.week-schedule {
+.WeekSchedule {
     display: flex;
 
-    .day-schedule {
+    &__day {
         flex: 1 1 40px;
         display: flex;
         flex-direction: column;
         border-bottom: 0;
-
-        + .day-schedule {
-            border-left: 1px #dadada solid;
-        }
     }
 
-    .day-name {
+    &__day + &__day {
+        border-left: 1px #dadada solid;
+    }
+
+    &__day-name {
         display: flex;
         align-items: center;
         min-height: 100%;
@@ -36,7 +36,7 @@
         }
     }
 
-    .day-content {
+    &__day-content {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -44,8 +44,11 @@
         padding: 8px 4px;
     }
 
-    .day-event {
-        text-align: center;
+    &__day-event {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
 
         &::before {
             content: '';

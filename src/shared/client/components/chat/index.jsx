@@ -1,1 +1,3 @@
-export { Chat as default, Chat, ChatMessage } from '@fluentui/react-northstar';
+export default function Chat() { }
+
+export function ChatMessage() { }

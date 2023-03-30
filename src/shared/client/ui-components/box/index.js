@@ -1,1 +1,1 @@
-export { Box as default } from '@fluentui/react-northstar';
+export { default, default as Box } from './Box';

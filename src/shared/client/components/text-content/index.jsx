@@ -2,8 +2,15 @@ import classnames from 'classnames';
 
 import './index.scss';
 
-export default function TextContent({ text, className, children = text, ...props }) {
-    const classNames = classnames('text-content', className);
+export default function TextContent({
+    text,
+    content = text,
+
+    children = content,
+    className,
+    ...props
+}) {
+    const classNames = classnames('TextContent', className);
 
     return (
         <div

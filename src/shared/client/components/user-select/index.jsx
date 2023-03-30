@@ -1,9 +1,18 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import api from 'shared/services/api';
-import FormDropdown from 'shared/ui-components/form/dropdown';
+import { FormAutocomplete } from 'shared/ui-components';
 
-export default function UserSelect({ resolveUrl, ...props }) {
+export default function UserSelect({
+    name,
+    options,
+    resolveUrl,
+    onChange,
+
+    ...props
+}) {
+    const optionsMap = useMemo(() => new Map(options.map(option => [option.value, option.label])), [options]);
+
     const [results, setResults] = useState();
 
     const onResolveStudentSuggestions = (query, selectedItems) => {
@@ -16,14 +25,23 @@ export default function UserSelect({ resolveUrl, ...props }) {
         }
     };
 
+    const handleChange = useCallback((event, options) => {
+        onChange({
+            target: {
+                name,
+                value: options.map(o => typeof o === 'string' ? o : o.value)
+            }
+        });
+    }, [name, onChange]);
+
     return (
-        <FormDropdown
-            className="user-select"
-            //placeholder="Start typing a name"
-            noResultsMessage="We couldn't find any matches."
-            multiple
-            search
-            fluid
+        <FormAutocomplete
+            className="sy-UserSelect"
+            name={name}
+            onChange={handleChange}
+            options={options}
+            getOptionLabel={option => option.label || optionsMap.get(option)}
+            isOptionEqualToValue={(option, value) => option.value === value}
             {...props}
         />
     );
