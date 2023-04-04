@@ -1,4 +1,4 @@
-import { Avatar, Label } from 'shared/ui-components';
+import { Avatar, Text } from 'shared/ui-components';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import VideoTrack from 'app/components/VideoTrack';
@@ -10,22 +10,24 @@ export default function LocalVideoPreview({ identity }) {
     const videoTrack = localTracks.find(track => track.name.includes('camera'));
 
     return (
-        <div className="local-video-preview">
-            <div className="local-video-preview__inner-container">
+        <div className="LocalVideoPreview">
+            <div className="LocalVideoPreview__inner-container">
                 {videoTrack ?
                     <VideoTrack track={videoTrack} local />
                     :
-                    <div className="local-video-preview__avatar-container">
-                        <Avatar name={identity} />
+                    <div className="LocalVideoPreview__avatar-container">
+                        <Avatar size="lg" />
                     </div>
                 }
             </div>
 
-            <div className="local-video-preview__identity-container">
-                <Label className="local-video-preview__identity"
-                    icon={<LocalAudioLevelIndicator />}
+            <div className="LocalVideoPreview__identity-container">
+                <Text
+                    as="div"
+                    startDecorator={<LocalAudioLevelIndicator />}
                     content={identity}
                     color="white"
+                    type="body2"
                 />
             </div>
         </div>

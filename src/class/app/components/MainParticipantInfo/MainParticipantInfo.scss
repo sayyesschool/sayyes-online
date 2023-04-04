@@ -5,35 +5,30 @@
     display: flex;
     align-items: center;
     height: 100%;
+    background-color: black;
     z-index: 1;
-
-    &__identity-container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        margin: 4px;
-        z-index: 2;
-
-        .ui-label {
-            background-color: rgb(41, 40, 40, .5);
-        }
-    }
 
     &__avatar-container {
         display: flex;
         align-items: center;
         justify-content: center;
-        background: black;
         position: absolute;
         top: 0;
         right: 0;
         bottom: 0;
         left: 0;
         z-index: 1;
+    }
 
-        & svg {
-            transform: scale(2);
-        }
+    &__identity-container {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        margin: 4px;
+        padding: 4px;
+        background-color: rgb(41, 40, 40, .5);
+        border-radius: 4px;
+        z-index: 2;
     }
 
     &__reconnecting-container {

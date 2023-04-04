@@ -24,9 +24,9 @@ export default function useRoom(localTracks, options, onError) {
                     room.disconnect();
                 }
 
-                // This app can add up to 13 'participantDisconnected' listeners to the room object, which can trigger
+                // This app can add up to 16 'participantDisconnected' listeners to the room object, which can trigger
                 // a warning from the EventEmitter object. Here we increase the max listeners to suppress the warning.
-                room.setMaxListeners(15);
+                room.setMaxListeners(16);
 
                 // All video tracks are published with 'low' priority because the video track
                 // that is displayed in the 'MainParticipant' component will have it's priority

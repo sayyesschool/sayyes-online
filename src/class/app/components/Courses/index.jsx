@@ -2,7 +2,6 @@ import { useCallback, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import { useUpdated } from 'shared/hooks/lifecycle';
-import { Dialog } from 'shared/ui-components';
 import CoursesGrid from 'shared/components/courses-grid';
 import Course from 'shared/components/course-page';
 import Unit from 'shared/components/unit-page';
@@ -11,6 +10,7 @@ import Exercise from 'shared/components/exercise-page';
 import AudioPlayer from 'shared/components/audio-player';
 import VideoPlayer from 'shared/components/video-player';
 import BottomSheet from 'shared/components/bottom-sheet';
+import { Dialog } from 'shared/ui-components';
 
 import useLocalAudio from 'app/hooks/useLocalAudio';
 

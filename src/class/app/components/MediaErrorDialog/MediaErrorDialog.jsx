@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Dialog, Text } from 'shared/ui-components';
 
 import useRoomContext from 'app/hooks/useRoomContext';
-import { useHasAudioInputDevices, useHasVideoInputDevices } from 'app/hooks/deviceHooks';
+import { useHasAudioInputDevices, useHasVideoInputDevices } from 'app/hooks/useDevices';
 
 export default function MediaErrorDialog({ error }) {
     const { isAcquiringLocalTracks } = useRoomContext();
@@ -35,6 +35,19 @@ export function getContent(hasAudio, hasVideo, error) {
 
     switch (true) {
         // This error is emitted when the user or the user's system has denied permission to use the media devices
+
+        // permission to only their camera, or only their microphone.
+        case error?.message === 'CameraPermissionsDenied':
+            title = 'Unable to Access Media:';
+            message =
+                'The user has denied permission to use video. Please grant permission to the browser to access the camera.';
+            break;
+        case error?.message === 'MicrophonePermissionsDenied':
+            title = 'Unable to Access Media:';
+            message =
+                'The user has denied permission to use audio. Please grant permission to the browser to access the microphone.';
+            break;
+
         case error?.name === 'NotAllowedError':
             title = 'Unable to Access Media:';
 

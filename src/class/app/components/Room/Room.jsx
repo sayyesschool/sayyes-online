@@ -20,8 +20,8 @@ import ScreenShareAlert from 'app/components/ScreenShareAlert';
 import MiroWhiteboard from 'app/components/MiroWhiteboard';
 
 export default function Room({ user, enrollment }) {
-    const sharedState = useSharedState();
     const { room, participants, isSharingScreen, toggleScreenShare } = useRoomContext();
+    const sharedState = useSharedState();
     const location = useLocation();
     const history = useHistory();
 
@@ -32,7 +32,7 @@ export default function Room({ user, enrollment }) {
     const [isChatOpen, toggleChatOpen] = useBoolean(false);
     const [numberOfUnreadMessages, setNumberOfUnreadMessages] = useState();
 
-    useScrollClassName(contentRef, 'room-content--scrolling', []);
+    useScrollClassName(contentRef, 'RoomContent--scrolling', []);
 
     useEffect(() => {
         const namesById = {
@@ -78,9 +78,9 @@ export default function Room({ user, enrollment }) {
     }, [room]);
 
     return (
-        <div ref={rootRef} className={classnames('room', {
-            'room--fullscreen': isFullscreen,
-            'room--showing-content': location.pathname !== '/'
+        <div ref={rootRef} className={classnames('Room', {
+            'Room--fullscreen': isFullscreen,
+            'Room--showing-content': location.pathname !== '/'
         })}>
             <RoomHeader
                 user={user}
@@ -101,13 +101,19 @@ export default function Room({ user, enrollment }) {
                 onClose={() => toggleChatOpen(false)}
             >
                 <Chat
-                    name={enrollment.id}
-                    user={user}
+                    conversationId={enrollment.id}
+                    userId={user.id}
+                    participants={participants}
                     onConnected={handleChatConnected}
                 />
             </RoomSidePanel>
 
             <RoomContent ref={contentRef}>
+                {/* 
+                    This ParticipantAudioTracks component will render the audio track for all participants in the room.
+                    It is in a separate component so that the audio tracks will always be rendered, and that they will never be 
+                    unnecessarily unmounted/mounted as the user switches between Gallery View and speaker View.
+                */}
                 <ParticipantAudioTracks />
                 <MainParticipant />
                 <ParticipantList />

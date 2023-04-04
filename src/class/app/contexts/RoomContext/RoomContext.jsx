@@ -8,9 +8,8 @@ import useParticipants from 'app/hooks/useParticipants';
 import useSelectedParticipant from 'app/hooks/useSelectedParticipant';
 import useScreenShareToggle from 'app/hooks/useScreenShareToggle';
 import useScreenShareParticipant from 'app/hooks/useScreenShareParticipant';
-import useHandleRoomDisconnectionErrors from 'app/hooks/useHandleRoomDisconnectionErrors';
+import useHandleRoomDisconnection from 'app/hooks/useHandleRoomDisconnection';
 import useHandleTrackPublicationFailed from 'app/hooks/useHandleTrackPublicationFailed';
-import useHandleOnDisconnect from 'app/hooks/useHandleOnDisconnect';
 
 export const RoomContext = createContext(null);
 
@@ -36,9 +35,8 @@ export function RoomProvider({
     const screenShareParticipant = useScreenShareParticipant(room);
     const [selectedParticipant, setSelectedParticipant] = useSelectedParticipant(room);
     const [isSharingScreen, toggleScreenShare] = useScreenShareToggle(room, onError);
-    useHandleRoomDisconnectionErrors(room, onError);
+    useHandleRoomDisconnection(room, onDisconnect, onError);
     useHandleTrackPublicationFailed(room, onError);
-    useHandleOnDisconnect(room, onDisconnect);
 
     const localParticipant = room.localParticipant;
     const remoteScreenShareParticipant = screenShareParticipant !== localParticipant ? screenShareParticipant : null;

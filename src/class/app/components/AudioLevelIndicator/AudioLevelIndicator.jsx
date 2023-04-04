@@ -8,10 +8,9 @@ let clipId = 0;
 const getUniqueClipId = () => clipId++;
 
 const AudioContext = window.AudioContext || window.webkitAudioContext;
-let audioContext;
 
 export function initializeAnalyser(stream) {
-    audioContext = audioContext || new AudioContext();
+    const audioContext = new AudioContext(); // Create a new audioContext for each audio indicator
     const audioSource = audioContext.createMediaStreamSource(stream);
 
     const analyser = audioContext.createAnalyser();
@@ -19,8 +18,19 @@ export function initializeAnalyser(stream) {
     analyser.fftSize = 256;
 
     audioSource.connect(analyser);
+
+    // Here we provide a way for the audioContext to be closed.
+    // Closing the audioContext allows the unused audioSource to be garbage collected.
+    stream.addEventListener('cleanup', () => {
+        if (audioContext.state !== 'closed') {
+            audioContext.close();
+        }
+    });
+
     return analyser;
 }
+
+const isIOS = /iPhone|iPad/.test(navigator.userAgent);
 
 function AudioLevelIndicator({ audioTrack, color = 'white' }) {
     const isTrackEnabled = useIsTrackEnabled(audioTrack);
@@ -40,12 +50,20 @@ function AudioLevelIndicator({ audioTrack, color = 'white' }) {
             // we stop the cloned track that is stored in 'newMediaStream'. It is important that we stop
             // all tracks when they are not in use. Browsers like Firefox don't let you create a new stream
             // from a new audio device while the active audio device still has active tracks.
-            const stopAllMediaStreamTracks = () => newMediaStream.getTracks().forEach(track => track.stop());
+            const stopAllMediaStreamTracks = () => {
+                if (isIOS) {
+                    // If we are on iOS, then we want to stop the MediaStreamTrack that we have previously cloned.
+                    // If we are not on iOS, then we do not stop the MediaStreamTrack since it is the original and still in use.
+                    newMediaStream.getTracks().forEach(track => track.stop());
+                }
+                newMediaStream.dispatchEvent(new Event('cleanup')); // Stop the audioContext
+            };
             audioTrack.on('stopped', stopAllMediaStreamTracks);
 
             const reinitializeAnalyser = () => {
                 stopAllMediaStreamTracks();
-                newMediaStream = new MediaStream([mediaStreamTrack.clone()]);
+                // We only clone the mediaStreamTrack on iOS.
+                newMediaStream = new MediaStream([isIOS ? mediaStreamTrack.clone() : mediaStreamTrack]);
                 setAnalyser(initializeAnalyser(newMediaStream));
             };
 

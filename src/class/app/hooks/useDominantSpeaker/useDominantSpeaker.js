@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 export default function useDominantSpeaker(room) {
-    const [dominantSpeaker, setDominantSpeaker] = useState(room.dominantSpeaker);
+    const [dominantSpeaker, setDominantSpeaker] = useState(room?.dominantSpeaker);
 
     useEffect(() => {
         if (room?.state !== 'connected') return;

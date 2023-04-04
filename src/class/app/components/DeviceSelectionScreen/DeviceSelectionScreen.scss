@@ -1,6 +1,6 @@
 @use 'shared/styles/mixins' as *;
 
-.device-selection-screen {
+.DeviceSelectionScreen {
     min-width: 640px;
 
     @include breakpoint('sm') {
@@ -8,7 +8,7 @@
         width: 100%;
     }
 
-    .local-video-preview {
+    .LocalVideoPreview {
         margin-bottom: 1rem;
     }
 }

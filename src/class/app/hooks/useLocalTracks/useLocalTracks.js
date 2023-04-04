@@ -6,9 +6,17 @@ import {
     SELECTED_AUDIO_INPUT_KEY,
     SELECTED_VIDEO_INPUT_KEY
 } from 'app/constants';
-import { useAudioInputDevices, useVideoInputDevices } from 'app/hooks/deviceHooks';
+import useAppState from 'app/hooks/useAppState';
+import { useAudioInputDevices, useVideoInputDevices } from 'app/hooks/useDevices';
+import { isPermissionDenied } from 'app/utils';
+
+// const noiseCancellationOptions = {
+//     sdkAssetsPath: '/noisecancellation',
+//     vendor: 'krisp',
+// };
 
 export default function useLocalTracks() {
+    const { setIsKrispEnabled, setIsKrispInstalled } = useAppState();
     const [audioTrack, setAudioTrack] = useState();
     const [videoTrack, setVideoTrack] = useState();
     const [isAcquiringLocalTracks, setIsAcquiringLocalTracks] = useState(false);
@@ -16,8 +24,8 @@ export default function useLocalTracks() {
     const localAudioDevices = useAudioInputDevices();
     const localVideoDevices = useVideoInputDevices();
 
-    const hasAudio = localAudioDevices.length > 0;
-    const hasVideo = localVideoDevices.length > 0;
+    const hasAudioInputDevices = localAudioDevices.length > 0;
+    const hasVideoInputDevices = localVideoDevices.length > 0;
 
     const getLocalAudioTrack = useCallback(deviceId => {
         const options = {};
@@ -33,11 +41,17 @@ export default function useLocalTracks() {
             });
     }, []);
 
-    const getLocalVideoTrack = useCallback(newOptions => {
+    const getLocalVideoTrack = useCallback(() => {
+        const selectedVideoDeviceId = window.localStorage.getItem(SELECTED_VIDEO_INPUT_KEY);
+
+        const hasSelectedVideoDevice = localVideoDevices.some(
+            device => selectedVideoDeviceId && device.deviceId === selectedVideoDeviceId
+        );
+
         const options = {
             ...DEFAULT_VIDEO_CONSTRAINTS,
             name: `camera-${Date.now()}`,
-            ...newOptions,
+            ...(hasSelectedVideoDevice && { deviceId: { exact: selectedVideoDeviceId } })
         };
 
         return createLocalVideoTrack(options)
@@ -45,17 +59,10 @@ export default function useLocalTracks() {
                 setVideoTrack(newTrack);
                 return newTrack;
             });
-    }, []);
+    }, [localVideoDevices]);
 
-    const removeLocalVideoTrack = useCallback(() => {
-        if (videoTrack) {
-            videoTrack.stop();
-            setVideoTrack(undefined);
-        }
-    }, [videoTrack]);
-
-    const getAudioAndVideoTracks = useCallback(() => {
-        if (!hasAudio && !hasVideo) return Promise.resolve();
+    const getAudioAndVideoTracks = useCallback(async () => {
+        if (!hasAudioInputDevices && !hasVideoInputDevices) return Promise.resolve();
         if (isAcquiringLocalTracks || audioTrack || videoTrack) return Promise.resolve();
 
         setIsAcquiringLocalTracks(true);
@@ -70,30 +77,78 @@ export default function useLocalTracks() {
             device => selectedVideoDeviceId && device.deviceId === selectedVideoDeviceId
         );
 
+        // In Chrome, it is possible to deny permissions to only audio or only video.
+        // If that has happened, then we don't want to attempt to acquire the device.
+        const isCameraPermissionDenied = await isPermissionDenied('camera');
+        const isMicrophonePermissionDenied = await isPermissionDenied('microphone');
+
+        const shouldAcquireAudio = hasAudioInputDevices && !isMicrophonePermissionDenied;
+        const shouldAcquireVideo = hasVideoInputDevices && !isCameraPermissionDenied;
+
         const localTrackConstraints = {
-            video: hasVideo && {
+            audio: shouldAcquireAudio && {
+                // noiseCancellationOptions,
+                ...(hasSelectedAudioDevice && { deviceId: { exact: selectedAudioDeviceId } }),
+            },
+            video: shouldAcquireVideo && {
                 ...DEFAULT_VIDEO_CONSTRAINTS,
                 name: `camera-${Date.now()}`,
                 ...(hasSelectedVideoDevice && { deviceId: { exact: selectedVideoDeviceId } }),
-            },
-            audio: hasSelectedAudioDevice ? { deviceId: { exact: selectedAudioDeviceId } } : hasAudio,
+            }
         };
 
         return createLocalTracks(localTrackConstraints)
             .then(tracks => {
-                const videoTrack = tracks.find(track => track.kind === 'video');
                 const audioTrack = tracks.find(track => track.kind === 'audio');
-
-                if (videoTrack) {
-                    setVideoTrack(videoTrack);
-                }
+                const videoTrack = tracks.find(track => track.kind === 'video');
 
                 if (audioTrack) {
                     setAudioTrack(audioTrack);
+                    if (audioTrack.noiseCancellation) {
+                        setIsKrispEnabled(true);
+                        setIsKrispInstalled(true);
+                    }
+                }
+
+                if (videoTrack) {
+                    setVideoTrack(videoTrack);
+                    // Save the deviceId so it can be picked up by the VideoInputList component. This only matters
+                    // in cases where the user's video is disabled.
+                    window.localStorage.setItem(
+                        SELECTED_VIDEO_INPUT_KEY,
+                        videoTrack.mediaStreamTrack.getSettings().deviceId ?? ''
+                    );
+                }
+
+                // These custom errors will be picked up by the MediaErrorSnackbar component.
+                if (isCameraPermissionDenied && isMicrophonePermissionDenied) {
+                    throw new Error('NotAllowedError');
+                }
+
+                if (isCameraPermissionDenied) {
+                    throw new Error('CameraPermissionsDenied');
+                }
+
+                if (isMicrophonePermissionDenied) {
+                    throw new Error('MicrophonePermissionsDenied');
                 }
             })
             .finally(() => setIsAcquiringLocalTracks(false));
-    }, [hasAudio, hasVideo, audioTrack, videoTrack, localAudioDevices, localVideoDevices, isAcquiringLocalTracks]);
+    }, [hasAudioInputDevices, hasVideoInputDevices, audioTrack, videoTrack, localAudioDevices, localVideoDevices, isAcquiringLocalTracks]);
+
+    const removeLocalAudioTrack = useCallback(() => {
+        if (audioTrack) {
+            audioTrack.stop();
+            setAudioTrack(undefined);
+        }
+    }, [audioTrack]);
+
+    const removeLocalVideoTrack = useCallback(() => {
+        if (videoTrack) {
+            videoTrack.stop();
+            setVideoTrack(undefined);
+        }
+    }, [videoTrack]);
 
     const localTracks = [audioTrack, videoTrack].filter(track => track !== undefined);
 
@@ -101,8 +156,9 @@ export default function useLocalTracks() {
         localTracks,
         getLocalVideoTrack,
         getLocalAudioTrack,
-        isAcquiringLocalTracks,
-        removeLocalVideoTrack,
         getAudioAndVideoTracks,
+        isAcquiringLocalTracks,
+        removeLocalAudioTrack,
+        removeLocalVideoTrack,
     };
 }

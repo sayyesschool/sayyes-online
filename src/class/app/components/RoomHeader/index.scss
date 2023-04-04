@@ -1,78 +1,29 @@
-.room-header {
+.RoomHeader {
     position: sticky;
     height: 48px;
     display: flex;
     padding: 0 1rem;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+    background-color: white;
+    box-shadow: var(--joy-shadowRing, 0 0 #000),0.3px 0.8px 1.1px rgba(var(--joy-shadowChannel, 187 187 187) / 0.11),0.5px 1.3px 1.8px -0.6px rgba(var(--joy-shadowChannel, 187 187 187) / 0.18),1.1px 2.7px 3.8px -1.2px rgba(var(--joy-shadowChannel, 187 187 187) / 0.26);
     z-index: 2;
 
     &__text,
     &__tabs,
     &__actions {
         flex: 1;
+        display: flex;
+        align-items: center;
     }
 
     &__tabs {
-        height: 100%;
         justify-content: center;
-
-        .ui-menu {
-            border: none;
-        }
-
-        .ui-menu__itemwrapper,
-        .ui-menu__item {
-            height: 100%;
-        }
-
-        .ui-menu__item {
-            display: flex;
-            align-items: center;
-        }
-
-        .ui-menu__itemicon {
-            margin-bottom: 0;
-        }
     }
 
     &__actions {
         flex-shrink: 0;
         justify-content: flex-end;
-    }
-
-    .chat-button {
-        &[data-count]::after {
-            content: attr(data-count);
-    
-            position: absolute;
-
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-content: center;
-            align-items: center;
-            
-            font-size: 10px;
-            box-sizing: border-box;
-            min-width: 16px;
-            height: 16px;
-            line-height: 1;
-            border-radius: 10px;
-    
-            transform: scale(1) translate(50%, -50%);
-            transform-origin: 100% 0%;
-    
-            background: #e71985;
-            color: white;
-            z-index: 1;
-        }
-    }
-
-    .end-call-button {
-        margin-left: .5rem;
-        background-color: firebrick;
+        gap: .25rem;
     }
 }

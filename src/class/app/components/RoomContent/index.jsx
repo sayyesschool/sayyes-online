@@ -4,7 +4,7 @@ import './index.scss';
 
 function RoomContent({ ...props }, ref) {
     return (
-        <div ref={ref} className="room-content" {...props} />
+        <div ref={ref} className="RoomContent" {...props} />
     );
 }
 

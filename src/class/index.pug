@@ -2,8 +2,8 @@ extends /shared/layouts/app
 
 append head
     meta(name="color-scheme" content="dark light")
-    link(rel="stylesheet" href="/build/class.vendors.css")
-    link(rel="stylesheet" href="/build/class.main.css")
+    link(rel="stylesheet" href="/css/class.vendors.css")
+    link(rel="stylesheet" href="/css/class.main.css")
 
 append body
     script.
@@ -11,5 +11,5 @@ append body
         window.MIRO_CLIENT_ID = '#{MIRO_CLIENT_ID}';
         window.MIRO_TOKEN = '#{MIRO_TOKEN}';
     script(src="https://miro.com/app/static/boardsPicker.1.0.js")
-    script(src="/build/class.vendors.js")
-    script(src="/build/class.main.js")
+    script(src="/js/class.vendors.js")
+    script(src="/js/class.main.js")

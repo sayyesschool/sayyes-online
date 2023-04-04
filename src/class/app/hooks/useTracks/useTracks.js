@@ -10,9 +10,13 @@ export default function useTracks(participant) {
 
         setTracks(subscribedTracks);
 
-        const handleTrackSubscribed = (track) => setTracks(prevTracks => [...prevTracks, track]);
-        const handleTrackUnsubscribed = (track) =>
+        function handleTrackSubscribed(track) {
+            setTracks(prevTracks => [...prevTracks, track]);
+        }
+
+        function handleTrackUnsubscribed(track) {
             setTracks(prevTracks => prevTracks.filter(t => t !== track));
+        }
 
         participant.on('trackSubscribed', handleTrackSubscribed);
         participant.on('trackUnsubscribed', handleTrackUnsubscribed);

@@ -27,8 +27,6 @@ export default function ParticipantInfo({
     const audioTrack = useTrack(audioPublication);
     const videoTrack = useTrack(videoPublication);
 
-    console.log(publications);
-
     const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack);
     const isVideoEnabled = Boolean(videoPublication);
     const isScreenShareEnabled = Boolean(screenSharePublication);

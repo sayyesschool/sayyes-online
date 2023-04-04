@@ -1,11 +1,11 @@
-.room-side-panel {
+.RoomSidePanel {
     position: absolute;
     right: 0;
     width: 360px;
     height: 100%;
     display: none;
     flex-direction: column;
-    border-left: 1px solid rgba(255,255,255,.12);
+    border-left: 1px solid rgba(0, 0, 0, .12);
 
     &--open {
         display: flex;
@@ -15,7 +15,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: .5rem 0 .5rem 1rem;
+        padding: .5rem .5rem .5rem 1rem;
         border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     }
 

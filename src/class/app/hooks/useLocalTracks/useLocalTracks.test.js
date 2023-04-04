@@ -2,7 +2,7 @@ import Video from 'twilio-video';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { SELECTED_AUDIO_INPUT_KEY, SELECTED_VIDEO_INPUT_KEY } from 'app/constants';
 import useLocalTracks from './useLocalTracks';
-import { useAudioInputDevices, useVideoInputDevices } from 'app/hooks/deviceHooks';
+import { useAudioInputDevices, useVideoInputDevices } from 'app/hooks/useDevices';
 
 jest.mock('../../../hooks/deviceHooks/deviceHooks');
 const mockUseAudioInputDevices = useAudioInputDevices;

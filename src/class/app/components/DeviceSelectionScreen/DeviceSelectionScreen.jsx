@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Button, Flex, Icon } from 'shared/ui-components';
+import { Button, IconButton, Flex } from 'shared/ui-components';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import LocalVideoPreview from 'app/components/LocalVideoPreview';
@@ -21,31 +21,28 @@ export default function DeviceSelectionScreen({ name }) {
     const disableButtons = isAcquiringLocalTracks || isConnecting;
 
     return (
-        <div className="device-selection-screen">
+        <div className="DeviceSelectionScreen">
             <LocalVideoPreview identity={name} />
 
-            <Flex space="between">
-                <Flex>
+            <Flex alignItems="center" justifyContent="space-between">
+                <IconButton.Group>
                     <ToggleAudioButton disabled={disableButtons} />
 
                     <ToggleVideoButton disabled={disableButtons} />
 
-                    <Button
-                        icon={<Icon>settings</Icon>}
-                        iconOnly
-                        text
+                    <IconButton
+                        icon="settings"
                         title="Настройки"
+                        size="small"
                         disabled={disableButtons}
                         onClick={toggleDeviceSettingsOpen}
                     />
-                </Flex>
+                </IconButton.Group>
 
                 <Button
-                    className="connect-button"
                     content="Присоединиться"
-                    primary
-                    disabled={disableButtons}
                     loading={isConnecting}
+                    disabled={disableButtons}
                     onClick={handleConnect}
                 />
             </Flex>

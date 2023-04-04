@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 
-import { Avatar, Label, Text } from 'shared/ui-components';
+import { Avatar, Text } from 'shared/ui-components';
 
 import useIsTrackSwitchedOff from 'app/hooks/useIsTrackSwitchedOff';
 import useParticipantIsReconnecting from 'app/hooks/useParticipantIsReconnecting';
@@ -26,6 +26,7 @@ export default function MainParticipantInfo({
     const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack);
 
     const isVideoEnabled = Boolean(videoTrack);
+
     const classNames = classnames('main-participant-info', {
         'main-participant-info--fullwidth': fullWidth
     });
@@ -33,12 +34,15 @@ export default function MainParticipantInfo({
     return (
         <div
             className={classNames}
-            data-cy-main-participant
-            data-cy-participant={participant.identity}
+            data-main-participant
+            data-participant={participant.identity}
         >
             <div className="main-participant-info__identity-container">
-                <Label
-                    icon={<AudioLevelIndicator audioTrack={audioTrack} />}
+                <Text
+                    type="body2"
+                    startDecorator={
+                        <AudioLevelIndicator audioTrack={audioTrack} />
+                    }
                     content={<>
                         {participant.name}
                         {local && ' (Вы)'}
@@ -48,17 +52,17 @@ export default function MainParticipantInfo({
                 />
             </div>
 
-            {(!isVideoEnabled || isVideoSwitchedOff) && (
+            {(!isVideoEnabled || isVideoSwitchedOff) &&
                 <div className="main-participant-info__avatar-container">
-                    <Avatar name={participant.name} />
+                    <Avatar size="lg" />
                 </div>
-            )}
+            }
 
-            {isParticipantReconnecting && (
+            {isParticipantReconnecting &&
                 <div className="main-participant-info__reconnecting-container">
                     <Text>Reconnecting...</Text>
                 </div>
-            )}
+            }
 
             {children}
         </div>

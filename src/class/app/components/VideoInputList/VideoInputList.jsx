@@ -1,11 +1,11 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 import { FormSelect, Text } from 'shared/ui-components';
 
 import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_VIDEO_INPUT_KEY } from 'app/constants';
 import useRoomContext from 'app/hooks/useRoomContext';
 import useMediaStreamTrack from 'app/hooks/useMediaStreamTrack';
-import { useVideoInputDevices } from 'app/hooks/deviceHooks';
+import { useVideoInputDevices } from 'app/hooks/useDevices';
 import VideoTrack from 'app/components/VideoTrack';
 
 export default function VideoInputList() {
@@ -14,9 +14,15 @@ export default function VideoInputList() {
 
     const localVideoTrack = localTracks.find(track => track.kind === 'video');
     const mediaStreamTrack = useMediaStreamTrack(localVideoTrack);
-    const localVideoInputDeviceId = mediaStreamTrack?.getSettings().deviceId;
+    const [storedLocalVideoDeviceId, setStoredLocalVideoDeviceId] = useState(
+        window.localStorage.getItem(SELECTED_VIDEO_INPUT_KEY)
+    );
+    const localVideoInputDeviceId = mediaStreamTrack?.getSettings().deviceId || storedLocalVideoDeviceId;
 
     const handleDeviceChange = useCallback((_, { value: newDeviceId }) => {
+        // Here we store the device ID in the component state. This is so we can re-render this component display
+        // to display the name of the selected device when it is changed while the users camera is off.
+        setStoredLocalVideoDeviceId(newDeviceId);
         window.localStorage.setItem(SELECTED_VIDEO_INPUT_KEY, newDeviceId);
 
         if (localVideoTrack) {
@@ -28,12 +34,10 @@ export default function VideoInputList() {
     }, [localVideoTrack]);
 
     return (
-        <div className="video-input-list">
-            {localVideoTrack && (
-                <div className="video-preview">
-                    <VideoTrack track={localVideoTrack} local />
-                </div>
-            )}
+        <div className="VideoInputList">
+            {localVideoTrack &&
+                <VideoTrack track={localVideoTrack} local />
+            }
 
             {videoInputDevices.length > 1 ?
                 <FormSelect
@@ -43,7 +47,8 @@ export default function VideoInputList() {
                     options={videoInputDevices.map(device => ({
                         key: device.deviceId,
                         value: device.deviceId,
-                        header: device.label
+                        content: device.label,
+                        label: device.label
                     }))}
                     onChange={handleDeviceChange}
                 />

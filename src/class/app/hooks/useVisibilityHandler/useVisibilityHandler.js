@@ -17,28 +17,29 @@ import { isMobile } from 'app/utils';
 export default function useVisibilityHandler() {
     const { room } = useRoomContext();
     const [isVideoEnabled, toggleVideoEnabled] = useLocalVideoToggle();
+
     const shouldRepublishVideoOnForeground = useRef(false);
 
     useEffect(() => {
-        if (isMobile) {
-            function handleVisibilityChange() {
-                // We don't need to unpublish the local video track if it has already been unpublished
-                if (document.visibilityState === 'hidden' && isVideoEnabled) {
-                    shouldRepublishVideoOnForeground.current = true;
-                    toggleVideoEnabled();
+        if (!room || !isMobile) return;
 
-                    // Don't publish the local video track if it wasn't published before the app was backgrounded
-                } else if (shouldRepublishVideoOnForeground.current) {
-                    shouldRepublishVideoOnForeground.current = false;
-                    toggleVideoEnabled();
-                }
+        function handleVisibilityChange() {
+            // We don't need to unpublish the local video track if it has already been unpublished
+            if (document.visibilityState === 'hidden' && isVideoEnabled) {
+                shouldRepublishVideoOnForeground.current = true;
+                toggleVideoEnabled();
+
+                // Don't publish the local video track if it wasn't published before the app was backgrounded
+            } else if (shouldRepublishVideoOnForeground.current) {
+                shouldRepublishVideoOnForeground.current = false;
+                toggleVideoEnabled();
             }
-
-            document.addEventListener('visibilitychange', handleVisibilityChange);
-
-            return () => {
-                document.removeEventListener('visibilitychange', handleVisibilityChange);
-            };
         }
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
     }, [room, isVideoEnabled, toggleVideoEnabled]);
 }

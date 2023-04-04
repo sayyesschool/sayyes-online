@@ -25,7 +25,10 @@ export default function ConnectionOptionsDialog({ open, onClose }) {
     const roomState = useRoomState();
 
     const handleChange = useCallback(event => {
-        dispatchSetting({ name: event.target.name, value: event.target.value });
+        dispatchSetting({
+            name: event.target.name,
+            value: event.target.value
+        });
     }, [dispatchSetting]);
 
     const handleNumberChange = useCallback(event => {

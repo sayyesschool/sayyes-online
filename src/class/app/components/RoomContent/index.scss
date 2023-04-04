@@ -6,10 +6,11 @@ $sidebarMobilePadding: 8px;
 $participantBorderWidth: 2px;
 $totalMobileSidebarHeight: $sidebarMobileHeight + ($sidebarMobilePadding * 2) + $participantBorderWidth;
 
-.room-content {
+.RoomContent {
     display: grid;
     grid-template-columns: 1fr 355px;
     grid-template-rows: 100%;
+    background-color: rgb(245, 245, 245);
 
     @include breakpoint(sm) {
         grid-template-columns: 100%;

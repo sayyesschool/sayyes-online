@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 import EventEmitter from 'events';
 
-import useHandleRoomDisconnectionErrors from './useHandleRoomDisconnectionErrors';
+import useHandleRoomDisconnectionErrors from './useHandleRoomDisconnection';
 import { Room, TwilioError } from 'twilio-video';
 
 describe('the useHandleRoomDisconnectionErrors hook', () => {
@@ -27,7 +27,7 @@ describe('the useHandleRoomDisconnectionErrors hook', () => {
 
   it('should tear down old listeners when receiving a new room', () => {
     const originalMockRoom = mockRoom;
-    const { rerender } = renderHook(() => useHandleRoomDisconnectionErrors(mockRoom, () => {}));
+    const { rerender } = renderHook(() => useHandleRoomDisconnectionErrors(mockRoom, () => { }));
     expect(originalMockRoom.listenerCount('disconnected')).toBe(1);
 
     act(() => {
@@ -41,7 +41,7 @@ describe('the useHandleRoomDisconnectionErrors hook', () => {
   });
 
   it('should clean up listeners on unmount', () => {
-    const { unmount } = renderHook(() => useHandleRoomDisconnectionErrors(mockRoom, () => {}));
+    const { unmount } = renderHook(() => useHandleRoomDisconnectionErrors(mockRoom, () => { }));
     unmount();
     expect(mockRoom.listenerCount('disconnected')).toBe(0);
   });

@@ -21,7 +21,7 @@ export default function App() {
     if (!user || !enrollment) return <LoadingIndicator fullscreen />;
 
     return (
-        <div className="app">
+        <div className="App">
             {roomState === 'disconnected' ?
                 <Lobby
                     user={user}

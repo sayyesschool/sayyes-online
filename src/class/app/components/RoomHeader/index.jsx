@@ -1,15 +1,15 @@
 import { NavLink, useRouteMatch } from 'react-router-dom';
 
-import { Button, Flex, Icon, Tabs, Text } from 'shared/ui-components';
-
-import { formatTime } from 'app/utils';
+import { Button, Tabs } from 'shared/ui-components';
 
 import useRoomState from 'app/hooks/useRoomState';
-import useConnectedTime from 'app/hooks/useConnectedTime';
 
+import ConnectedTime from 'app/components/ConnectedTime';
 import ToggleAudioButton from 'app/components/ToggleAudioButton';
-import ToggleVideoButton from 'app/components/ToggleVideoButton';
+import ToggleChatButton from 'app/components/ToggleChatButton';
+import ToggleFullscreenButton from 'app/components/ToggleFullscreenButton';
 import ToggleScreenShareButton from 'app/components/ToggleScreenShareButton';
+import ToggleVideoButton from 'app/components/ToggleVideoButton';
 
 import './index.scss';
 
@@ -26,24 +26,27 @@ export default function RoomHeader({
     onFullscreenToggle,
     onSync,
     onDisconnect,
+
     children,
     ...props
 }) {
     const roomState = useRoomState();
-    const connectedTime = useConnectedTime();
+
     const match = useRouteMatch('/:view?');
 
     const isReconnecting = roomState === 'reconnecting';
 
     return (
-        <header className="room-header" {...props}>
-            <Flex className="room-header__text">
-                <Text>{formatTime(connectedTime)}</Text>
-            </Flex>
+        <header className="RoomHeader" {...props}>
+            <div className="RoomHeader__text">
+                <ConnectedTime />
+            </div>
 
-            <Flex className="room-header__tabs">
+            <div className="RoomHeader__tabs">
                 <Tabs
-                    defaultActiveIndex={views.indexOf(match.params?.view)}
+                    defaultValue={views.indexOf(match.params?.view)}
+                    size="sm"
+                    variant="plain"
                     items={[
                         {
                             key: 'video',
@@ -51,48 +54,48 @@ export default function RoomHeader({
                             to: '/',
                             value: '/',
                             icon: 'video_camera_front',
-                            content: 'Видео'
+                            content: 'Видео',
+                            color: match.url === '/' ? 'primary' : 'neutral',
+                            variant: match.url === '/' ? 'soft' : 'plain'
                         },
                         {
                             key: 'courses',
                             as: NavLink,
                             to: '/courses',
-                            value: 'courses',
+                            value: '/courses',
                             icon: 'book',
-                            content: 'Курс'
+                            content: 'Курс',
+                            color: match.url === '/courses' ? 'primary' : 'neutral',
+                            variant: match.url === '/courses' ? 'soft' : 'plain'
                         },
                         {
                             key: 'whiteboard',
                             as: NavLink,
                             to: '/whiteboard',
-                            value: 'whiteboard',
+                            value: '/whiteboard',
                             icon: 'draw',
-                            content: 'Доска'
+                            content: 'Доска',
+                            color: match.url === '/whiteboard' ? 'primary' : 'neutral',
+                            variant: match.url === '/whiteboard' ? 'soft' : 'plain'
                         }
                     ]}
                 />
-            </Flex>
+            </div>
 
-            <Flex className="room-header__actions">
-                {user.role === 'teacher' &&
-                    <Button
-                        className="sync-button"
-                        icon={<Icon>sync</Icon>}
-                        iconOnly
-                        text
+            <div className="RoomHeader__actions">
+                {/* {user.role === 'teacher' &&
+                    <IconButton
+                        icon="waving_hand"
                         title="Синхронизировать"
+                        variant="plain"
+                        size="sm"
                         onClick={onSync}
                     />
-                }
+                } */}
 
-                <Button
-                    className="chat-button"
-                    title="Чат"
-                    icon={<Icon>forum</Icon>}
-                    primary={isChatOpen}
-                    data-count={numberOfUnreadMessages || undefined}
-                    iconOnly
-                    text
+                <ToggleChatButton
+                    active={isChatOpen}
+                    numberOfUnreadMessages={numberOfUnreadMessages}
                     onClick={onChatToggle}
                 />
 
@@ -104,23 +107,19 @@ export default function RoomHeader({
                     <ToggleScreenShareButton disabled={isReconnecting} />
                 }
 
-                <Button
-                    className="toggle-fullscreen-button"
-                    icon={<Icon>{isFullscreen ? 'fullscreen_exit' : 'fullscreen'}</Icon>}
-                    iconOnly
-                    text
-                    title={isFullscreen ? 'Полный экран' : 'Отключить полный экран'}
+                <ToggleFullscreenButton
+                    active={isFullscreen}
                     onClick={onFullscreenToggle}
                 />
 
                 <Button
-                    className="end-call-button"
                     content="Завершить"
-                    primary
-                    flat
+                    color="danger"
+                    variant="solid"
+                    size="sm"
                     onClick={onDisconnect}
                 />
-            </Flex>
+            </div>
         </header>
     );
 }

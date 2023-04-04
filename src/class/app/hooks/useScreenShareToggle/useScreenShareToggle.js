@@ -2,6 +2,7 @@ import { useRef, useState, useCallback } from 'react';
 
 export default function useScreenShareToggle(room, onError) {
     const stopScreenShareRef = useRef(null);
+
     const [isSharing, setIsSharing] = useState(false);
 
     const shareScreen = useCallback(() => {
@@ -41,15 +42,21 @@ export default function useScreenShareToggle(room, onError) {
             })
             .catch(error => {
                 // Don't display an error if the user closes the screen share dialog
-                if (error.name !== 'AbortError' && error.name !== 'NotAllowedError') {
+                if (
+                    error.message === 'Permission denied by system' ||
+                    (error.name !== 'AbortError' && error.name !== 'NotAllowedError')) {
                     onError(error);
                 }
             });
     }, [room, onError]);
 
     const toggleScreenShare = useCallback(() => {
-        !isSharing ? shareScreen() : stopScreenShareRef.current();
-    }, [isSharing, shareScreen, stopScreenShareRef]);
+        if (isSharing) {
+            stopScreenShareRef.current();
+        } else {
+            shareScreen();
+        }
+    }, [isSharing, shareScreen]);
 
     return [isSharing, toggleScreenShare];
 }

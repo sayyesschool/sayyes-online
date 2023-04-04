@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 
@@ -11,8 +11,6 @@ export default function useLocalVideoToggle() {
         onError,
     } = useRoomContext();
 
-    const previousDeviceIdRef = useRef();
-
     const [isPublishing, setIsPublishing] = useState(false);
 
     const videoTrack = localTracks.find(track => track.name.includes('camera'));
@@ -23,12 +21,11 @@ export default function useLocalVideoToggle() {
                 const localTrackPublication = localParticipant?.unpublishTrack(videoTrack);
                 // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
                 localParticipant?.emit('trackUnpublished', localTrackPublication);
-                previousDeviceIdRef.current = videoTrack.mediaStreamTrack.getSettings().deviceId;
                 removeLocalVideoTrack();
             } else {
                 setIsPublishing(true);
 
-                getLocalVideoTrack({ deviceId: { exact: previousDeviceIdRef.current } })
+                getLocalVideoTrack()
                     .then(track => localParticipant?.publishTrack(track, { priority: 'low' }))
                     .catch(onError)
                     .finally(() => setIsPublishing(false));

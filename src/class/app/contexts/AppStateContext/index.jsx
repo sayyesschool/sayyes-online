@@ -11,6 +11,8 @@ export function AppStateProvider({ children }) {
     const [activeSinkId, setActiveSinkId] = useActiveSinkId();
     const [settings, dispatchSetting] = useReducer(settingsReducer, initialSettings);
     const [isFetching, setIsFetching] = useState(false);
+    const [isKrispEnabled, setIsKrispEnabled] = useState(false);
+    const [isKrispInstalled, setIsKrispInstalled] = useState(false);
     const [error, setError] = useState(null);
 
     return (

@@ -1,11 +1,8 @@
-.video-input-list {
-    .video-preview {
+.VideoInputList {
+    video {
+        display: block;
         width: 300px;
         max-height: 200px;
         margin: .5em auto;
-
-        video {
-            max-height: 200px;
-        }
     }
 }

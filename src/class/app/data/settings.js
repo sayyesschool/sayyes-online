@@ -1,14 +1,12 @@
 import { isMobile } from 'app/utils';
 
 export const initialSettings = {
-    trackSwitchOffMode: undefined,
-    dominantSpeakerPriority: 'standard',
     bandwidthProfileMode: 'collaboration',
-    maxTracks: isMobile ? '5' : '10',
+    clientTrackSwitchOffControl: 'auto',
+    contentPreferencesMode: 'auto',
+    dominantSpeakerPriority: 'standard',
     maxAudioBitrate: '16000',
-    renderDimensionLow: 'low',
-    renderDimensionStandard: '960p',
-    renderDimensionHigh: 'wide1080p',
+    trackSwitchOffMode: undefined
 };
 
 // This inputLabels object is used by ConnectionOptions.tsx. It is used to populate the id, name, and label props

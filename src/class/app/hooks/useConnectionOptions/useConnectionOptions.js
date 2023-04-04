@@ -1,15 +1,13 @@
 import { useMemo } from 'react';
 
 import useAppState from 'app/hooks/useAppState';
-import { getResolution } from 'app/data/settings';
 import { isMobile, removeUndefineds } from 'app/utils';
 
 export default function useConnectionOptions() {
     const { roomType, settings } = useAppState();
 
     return useMemo(() => {
-        // See: https://media.twiliocdn.com/sdk/js/video/releases/2.0.0/docs/global.html#ConnectOptions
-        // for available connection options.
+        // See: https://sdk.twilio.com/js/video/releases/2.0.0/docs/global.html#ConnectOptions for available connection options.
         const connectionOptions = {
             // Bandwidth Profile, Dominant Speaker, and Network Quality
             // features are only available in Small Group or Group Rooms.
@@ -19,25 +17,16 @@ export default function useConnectionOptions() {
                 video: {
                     mode: settings.bandwidthProfileMode,
                     dominantSpeakerPriority: settings.dominantSpeakerPriority,
-                    renderDimensions: {
-                        low: getResolution(settings.renderDimensionLow),
-                        standard: getResolution(settings.renderDimensionStandard),
-                        high: getResolution(settings.renderDimensionHigh),
-                    },
-                    maxTracks: Number(settings.maxTracks),
-                },
+                    contentPreferencesMode: settings.contentPreferencesMode,
+                    clientTrackSwitchOffControl: settings.clientTrackSwitchOffControl,
+                    trackSwitchOffMode: settings.trackSwitchOffMode
+                }
             },
             dominantSpeaker: true,
             networkQuality: { local: 1, remote: 1 },
-
             // Comment this line if you are playing music.
             maxAudioBitrate: Number(settings.maxAudioBitrate),
-
-            // VP8 simulcast enables the media server in a Small Group or Group Room
-            // to adapt your encoded video quality for each RemoteParticipant based on
-            // their individual bandwidth constraints. Simulcast should be disabled if
-            // you are using Peer-to-Peer or 'Go' Rooms.
-            preferredVideoCodecs: [{ codec: 'VP8', simulcast: roomType !== 'peer-to-peer' && roomType !== 'go' }],
+            preferredVideoCodecs: 'auto'
         };
 
         // For mobile browsers, limit the maximum incoming video bitrate to 2.5 Mbps.

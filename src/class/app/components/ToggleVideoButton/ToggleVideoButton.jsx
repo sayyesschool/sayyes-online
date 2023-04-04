@@ -1,13 +1,14 @@
 import { useCallback, useRef } from 'react';
 
-import { Button, Icon, Tooltip } from 'shared/ui-components';
+import { IconButton, Tooltip } from 'shared/ui-components';
 
-import { useHasVideoInputDevices } from 'app/hooks/deviceHooks';
+import { useHasVideoInputDevices } from 'app/hooks/useDevices';
 import useLocalVideoToggle from 'app/hooks/useLocalVideoToggle';
 
 export default function ToggleVideoButton({ disabled }) {
     const [isVideoEnabled, toggleVideoEnabled] = useLocalVideoToggle();
     const hasVideoDevices = useHasVideoInputDevices();
+
     const lastClickTimeRef = useRef(0);
 
     const toggleVideo = useCallback(() => {
@@ -20,17 +21,16 @@ export default function ToggleVideoButton({ disabled }) {
     return (
         <Tooltip
             content={!hasVideoDevices ? 'Нет видео' : isVideoEnabled ? 'Выключить камеру' : 'Включить камеру'}
-            trigger={
-                <Button
-                    icon={<Icon>{isVideoEnabled ? 'videocam' : 'videocam_off'}</Icon>}
-                    iconOnly
-                    text
-                    primary={isVideoEnabled}
-                    disabledFocusable={!hasVideoDevices || disabled}
-                    onClick={toggleVideo}
-                />
-            }
             style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
-        />
+        >
+            <IconButton
+                icon={isVideoEnabled ? 'videocam' : 'videocam_off'}
+                color={isVideoEnabled ? 'primary' : 'neutral'}
+                variant={isVideoEnabled ? 'soft' : 'plain'}
+                size="sm"
+                disabled={!hasVideoDevices || disabled}
+                onClick={toggleVideo}
+            />
+        </Tooltip>
     );
 }

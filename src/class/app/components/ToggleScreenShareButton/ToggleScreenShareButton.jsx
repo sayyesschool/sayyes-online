@@ -1,4 +1,4 @@
-import { Button, Icon, Tooltip } from 'shared/ui-components';
+import { IconButton, Tooltip } from 'shared/ui-components';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import useScreenShareParticipant from 'app/hooks/useScreenShareParticipant';
@@ -31,16 +31,16 @@ export default function ToggleScreenShareButton({ disabled }) {
     return (
         <Tooltip
             content={tooltipMessage}
-            trigger={
-                <Button
-                    icon={<Icon>{isSharingScreen ? 'stop_screen_share' : 'screen_share'}</Icon>}
-                    iconOnly
-                    text
-                    disabledFocusable={isDisabled}
-                    onClick={toggleScreenShare}
-                />
-            }
             style={{ cursor: isDisabled ? 'not-allowed' : 'pointer' }}
-        />
+        >
+            <IconButton
+                icon={isSharingScreen ? 'stop_screen_share' : 'screen_share'}
+                color={isSharingScreen ? 'primary' : 'neutral'}
+                variant={isSharingScreen ? 'soft' : 'plain'}
+                size="sm"
+                disabled={isDisabled}
+                onClick={toggleScreenShare}
+            />
+        </Tooltip>
     );
 }

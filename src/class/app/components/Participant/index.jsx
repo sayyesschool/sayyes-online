@@ -5,10 +5,11 @@ import ParticipantTracks from 'app/components/ParticipantTracks';
 
 export default memo(function Participant({
     participant,
-    videoOnly,
     local,
     hidden,
     selected,
+    dominantSpeaker,
+    videoOnly,
     screenShareEnabled,
     onClick
 }) {
@@ -18,6 +19,7 @@ export default memo(function Participant({
             local={local}
             hidden={hidden}
             selected={selected}
+            dominantSpeaker={dominantSpeaker}
             onClick={onClick}
         >
             <ParticipantTracks

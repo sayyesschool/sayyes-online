@@ -1,4 +1,4 @@
-import { Button, Icon, Tooltip } from 'shared/ui-components';
+import { IconButton, Tooltip } from 'shared/ui-components';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import useLocalAudioToggle from 'app/hooks/useLocalAudioToggle';
@@ -12,17 +12,16 @@ export default function ToggleAudioButton({ disabled }) {
     return (
         <Tooltip
             content={!hasAudioTrack ? 'Нет звука' : isAudioEnabled ? 'Выключить микрофон' : 'Включить микрофон'}
-            trigger={
-                <Button
-                    icon={<Icon>{isAudioEnabled ? 'mic' : 'mic_off'}</Icon>}
-                    iconOnly
-                    text
-                    primary={isAudioEnabled}
-                    disabledFocusable={!hasAudioTrack || disabled}
-                    onClick={toggleAudioEnabled}
-                />
-            }
             style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
-        />
+        >
+            <IconButton
+                icon={isAudioEnabled ? 'mic' : 'mic_off'}
+                color={isAudioEnabled ? 'primary' : 'neutral'}
+                variant={isAudioEnabled ? 'soft' : 'plain'}
+                size="sm"
+                disabled={!hasAudioTrack || disabled}
+                onClick={toggleAudioEnabled}
+            />
+        </Tooltip>
     );
 }

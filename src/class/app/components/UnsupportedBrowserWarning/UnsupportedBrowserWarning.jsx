@@ -1,6 +1,6 @@
 import Video from 'twilio-video';
 
-import { Header, List, Surface, Text } from 'shared/ui-components';
+import { Heading, List, Surface, Text } from 'shared/ui-components';
 
 const browsers = [
     { title: 'Chrome', url: 'https://www.google.ru/chrome' },
@@ -14,7 +14,7 @@ export default function UnsupportedBrowserWarning({ children }) {
         return (
             <div className="unsupported-browser-warning">
                 <Surface>
-                    <Header
+                    <Heading
                         content="Ваш браузер или устройство не поддерживается"
                     />
 
@@ -25,7 +25,7 @@ export default function UnsupportedBrowserWarning({ children }) {
                             <List.Item
                                 as="a"
                                 href={browser.url}
-                                header={browser.title}
+                                Heading={browser.title}
                             />
                         )}
                     </List>

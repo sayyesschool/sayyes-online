@@ -7,11 +7,13 @@ export default function usePublications(participant) {
         // Reset the publications when the 'participant' variable changes.
         setPublications(Array.from(participant.tracks.values()));
 
-        const publicationAdded = publication =>
+        function publicationAdded(publication) {
             setPublications(prevPublications => [...prevPublications, publication]);
+        }
 
-        const publicationRemoved = publication =>
+        function publicationRemoved(publication) {
             setPublications(prevPublications => prevPublications.filter(p => p !== publication));
+        }
 
         participant.on('trackPublished', publicationAdded);
         participant.on('trackUnpublished', publicationRemoved);

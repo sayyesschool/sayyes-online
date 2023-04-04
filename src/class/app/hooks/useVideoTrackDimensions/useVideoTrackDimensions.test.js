@@ -3,7 +3,7 @@ import EventEmitter from 'events';
 import useVideoTrackDimensions from './useVideoTrackDimensions';
 
 describe('the useVideoTrackDimensions hook', () => {
-  let mockTrack: any;
+  let mockTrack;
 
   beforeEach(() => {
     mockTrack = new EventEmitter();
