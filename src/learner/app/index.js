@@ -13,7 +13,7 @@ import App from './components';
 render(
     <StoreProvider store={store}>
         <ThemeProvider theme={theme}>
-            <Router basename="/client">
+            <Router basename="/learner">
                 <App />
             </Router>
         </ThemeProvider>

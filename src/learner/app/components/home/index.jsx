@@ -12,6 +12,8 @@ import EnrollmentDetailsCard from 'app/components/enrollments/enrollment-details
 import EnrollmentStatusCard from 'app/components/enrollments/enrollment-status-card';
 import EnrollmentPayCard from 'app/components/enrollments/enrollment-pay-card';
 
+import './index.scss';
+
 export default function HomePage() {
     const [user] = useUser();
     const [enrollments, enrollmentActions] = useEnrollments();

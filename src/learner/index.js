@@ -1,6 +1,5 @@
 const express = require('express');
 
-const auth = require('./auth');
 const api = require('./api');
 
 module.exports = context => {
@@ -13,7 +12,9 @@ module.exports = context => {
         Object.assign(app.locals, parent.locals);
     });
 
-    app.use(auth);
+    app.use((req, res, next) =>
+        req.user?.role === 'learner' ? next() : next('router')
+    );
     app.use(context.middleware.tokens(context.libs.twilio));
     app.use('/api', api(context));
     app.use((req, res) => res.render('index'));
