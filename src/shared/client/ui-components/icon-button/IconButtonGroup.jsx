@@ -1,4 +1,4 @@
-import { Children, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import classnames from 'classnames';
 import Box from '@mui/system/Box';
 
@@ -12,6 +12,7 @@ const IconButtonGroup = forwardRef(({
     align,
 
     className,
+    children,
     ...props
 }, ref) => {
     const classNames = classnames('ui-IconButtonGroup', className);
@@ -25,7 +26,7 @@ const IconButtonGroup = forwardRef(({
             justifyContent={align}
             {...props}
         >
-            {buttons.map(button =>
+            {buttons?.map(button =>
                 <IconButton
                     {...button}
                     color={color}
@@ -33,6 +34,8 @@ const IconButtonGroup = forwardRef(({
                     variant={variant}
                 />
             )}
+
+            {children}
         </Box>
     );
 });

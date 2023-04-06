@@ -1,3 +1,7 @@
-export default function Chat() { }
+export function ChatMessageList() {
+    return null;
+}
 
-export function ChatMessage() { }
+export function ChatMessage() {
+    return null;
+}

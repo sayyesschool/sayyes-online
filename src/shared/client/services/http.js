@@ -1,7 +1,8 @@
 export function request(url, { headers = {}, body, ...rest } = {}) {
     const isJSON = (typeof body === 'object') && !(body instanceof FormData);
     const options = {
-        credentials: 'same-origin',
+        mode: 'cors',
+        credentials: 'include',
         headers: {
             'CSRF-Token': window.CSRF_TOKEN,
             'X-Requested-With': 'XMLHttpRequest',

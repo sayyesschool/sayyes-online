@@ -9,13 +9,14 @@ export default function LoadingIndicator({
     className,
     ...props
 }) {
-    const classNames = classnames(className, 'loading-indicator', {
-        'loading-indicator--fullscreen': fullscreen
+    const classNames = classnames(className, 'LoadingIndicator', {
+        'LoadingIndicator--fullscreen': fullscreen
     });
 
     return (
         <div className={classNames}>
             <CircularProgress {...props} />
+
             {text &&
                 <Text>{text}</Text>
             }

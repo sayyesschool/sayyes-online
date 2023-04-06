@@ -4,6 +4,8 @@ import classnames from 'classnames';
 import JoyBadge from '@mui/joy/Badge';
 
 const Badge = forwardRef(({
+    content,
+
     className,
     ...props
 }, ref) => {
@@ -13,6 +15,7 @@ const Badge = forwardRef(({
         <JoyBadge
             ref={ref}
             className={classNames}
+            badgeContent={content}
             {...props}
         />
     );

@@ -1,6 +1,10 @@
 @use 'shared/styles/mixins';
 
 .PageContent {
+    max-width: 1280px;
+    margin: auto;
+    padding: 1rem 1rem 6rem;
+
     > .ui-Grid {
         align-items: flex-start;
 

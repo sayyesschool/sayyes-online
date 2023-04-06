@@ -8,7 +8,7 @@ const Form = forwardRef(({
     className,
     ...props
 }, ref) => {
-    const classNames = classnames('ui-Form', className);
+    const classNames = classnames(className, 'ui-Form');
 
     const handleSubmit = useCallback(event => {
         if (preventDefault)

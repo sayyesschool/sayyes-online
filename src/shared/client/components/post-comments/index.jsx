@@ -2,7 +2,9 @@ import { useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
 import Comment from 'shared/components/comment';
-import { Box, Button, Heading } from 'shared/ui-components';
+import { Box, Button, Flex, Heading } from 'shared/ui-components';
+
+import './index.scss';
 
 export default function PostComments({
     user,
@@ -29,18 +31,22 @@ export default function PostComments({
     return (
         <Box className="PostComments">
             {post.comments.length > 0 &&
-                <Heading as="h4">Комментарии</Heading>
+                <Heading as="h6" content="Комментарии" />
             }
 
-            {post.comments.map(comment =>
-                <Comment
-                    key={comment.id}
-                    user={user}
-                    comment={comment}
-                    onSave={handleUpdateComment}
-                    onDelete={handleDeleteComment}
-                />
-            )}
+            {post.comments &&
+                <Flex gap="large" column sx={{ width: '100%' }}>
+                    {post.comments.map(comment =>
+                        <Comment
+                            key={comment.id}
+                            user={user}
+                            comment={comment}
+                            onSave={handleUpdateComment}
+                            onDelete={handleDeleteComment}
+                        />
+                    )}
+                </Flex>
+            }
 
             {isCommenting ?
                 <Comment

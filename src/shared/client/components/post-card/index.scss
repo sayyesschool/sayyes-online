@@ -4,15 +4,18 @@
     flex-direction: column;
     gap: 1rem;
 
-    &__content:not(:empty) {
-        // padding: .5rem 1rem;
+    &__header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
     }
 
-    &__footer:not(:empty) {
-        // padding: 0 8px 8px 0;
+    &__footer {
+        display: flex;
+        justify-content: space-between;
     }
 
-    .post-comments {
+    .PostComments {
         margin-top: 1rem;
     }
 }

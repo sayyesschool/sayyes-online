@@ -9,14 +9,18 @@ $line-height: 24px;
 
 $primary-color: #5a1294 !default;
 $secondary-color: #e71985 !default;
-$body-color: #ffffff !default;
+
+$body-color: #f1f3f4 !default;
 $background-color: #ffffff !default;
 $surface-color: #ffffff !default;
 $error-color: #d32f2f !default;
+
 $heading-color: #414141 !default;
 $text-color: #576366 !default;
 $text-light-color: #ffffff !default;
 $text-dark-color: #424242 !default;
+
+$on-primary-color: $text-light-color;
 
 $facebook-color: #4267b2;
 $google-color: #ea4335;

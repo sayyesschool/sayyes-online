@@ -1,5 +1,18 @@
 .Comment {
     display: flex;
-    flex-direction: column;
-    gap: .5rem;
+    gap: 1rem;
+    align-items: flex-start;
+
+    &--editing {
+        flex-direction: column;
+        gap: .5rem;
+    }
+
+    .CommentForm {
+        width: 100%;
+    }
+
+    .TextContent {
+        margin-top: .5rem;
+    }
 }

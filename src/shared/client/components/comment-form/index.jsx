@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react';
 
+import ContentEditor from 'shared/components/content-editor';
 import Form from 'shared/ui-components/form';
-import TextEditor from 'shared/components/text-editor';
 
 import './index.scss';
 
@@ -15,8 +15,8 @@ export default function CommentForm({ comment = {}, onSubmit, ...props }) {
     }, []);
 
     return (
-        <Form className="comment-form" onSubmit={handleSubmit} {...props}>
-            <TextEditor
+        <Form className="CommentForm" onSubmit={handleSubmit} {...props}>
+            <ContentEditor
                 ref={editorRef}
                 defaultValue={comment.content}
             />

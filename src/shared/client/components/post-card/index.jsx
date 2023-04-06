@@ -30,7 +30,7 @@ export default function PostCard({
 
     return (
         <Card as="article" className="PostCard">
-            <Flex className="PostCard__header" alignItems="center" justifyContent="space-between">
+            <Box className="PostCard__header">
                 <Flex gap="medium" alignItems="center">
                     <Avatar
                         imageSrc={post.user.imageUrl}
@@ -68,7 +68,7 @@ export default function PostCard({
                         }
                     ]}
                 />
-            </Flex>
+            </Box>
 
             <Box className="PostCard__body">
                 {isEditing ?
@@ -95,10 +95,19 @@ export default function PostCard({
             </Box>
 
             {isEditing &&
-                <Flex className="PostCard__footer" justifyContent="space-between">
-                    <Button text onClick={toggleEditing}>Отменить</Button>
-                    <Button type="submit" form="update-post-form" primary flat>Сохранить</Button>
-                </Flex>
+                <Box className="PostCard__footer">
+                    <Button
+                        content="Отменить"
+                        variant="plain"
+                        onClick={toggleEditing}
+                    />
+
+                    <Button
+                        type="submit"
+                        content="Сохранить"
+                        form="update-post-form"
+                    />
+                </Box>
             }
         </Card>
     );

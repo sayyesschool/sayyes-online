@@ -7,7 +7,7 @@ const Box = forwardRef(({
     className,
     ...props
 }, ref) => {
-    const classNames = classnames('ui-Box', className);
+    const classNames = classnames(className, 'ui-Box');
 
     return (
         <JoyBox

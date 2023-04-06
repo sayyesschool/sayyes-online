@@ -13,6 +13,7 @@ const Select = forwardRef(({
     onChange,
 
     className,
+    children,
     ...props
 }, ref) => {
     const classNames = classnames('ui-Select', className);
@@ -37,8 +38,13 @@ const Select = forwardRef(({
             {...props}
         >
             {options?.map(option =>
-                <Option {...option} />
+                <Option
+                    label={option.label || option.content}
+                    {...option}
+                />
             )}
+
+            {children}
         </JoySelect>
     );
 });

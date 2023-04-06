@@ -1,24 +1,42 @@
-import { useRef, useState, useCallback, useMemo } from 'react';
-import { Client } from 'twilio-chat';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Client } from '@twilio/conversations';
 
-export function useChat(token, identity) {
+export function useChat({ token, identity }) {
     const clientRef = useRef();
-    const channelRef = useRef();
+    const conversationRef = useRef();
 
-    const [state, setState] = useState();
-    const [messages, setMessages] = useState();
+    const [participants, setParticipants] = useState([]);
+    const [messages, setMessages] = useState([]);
+    const [clientState, setClientState] = useState();
+    const [connectionState, setConnectionState] = useState();
+    const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
     const [isTyping, setTyping] = useState(false);
 
-    const connect = useCallback(({
-        name,
-        onConnected = Function.prototype,
-        onMemberJoined = Function.prototype,
-        onMemberLeft = Function.prototype,
-        onMessageAdded = Function.prototype,
-        onMessageRemoved = Function.prototype
-    }) => {
+    useEffect(() => {
+        if (clientRef.current) return;
+
+        const client = new Client(token);
+
+        clientRef.current = client;
+
+        client.on('tokenAboutToExpire', tokenExpired);
+        client.on('tokenExpired', tokenExpired);
+        client.on('stateChanged', handleStateChanged);
+        client.on('connectionStateChanged', handleConnectionStateChanged);
+
+        return () => {
+            const client = clientRef.current;
+
+            client.off('tokenAboutToExpire', tokenExpired);
+            client.off('tokenExpired', tokenExpired);
+            client.off('stateChanged', handleStateChanged);
+            client.off('connectionStateChanged', handleConnectionStateChanged);
+
+            client.shutdown();
+        };
+
         function tokenExpired() {
-            fetch(`/twilio/tokens/chat?identity=${identity}&room=${name}`)
+            fetch(`/twilio/tokens/chat?identity=${identity}`)
                 .then(token => {
                     client.updateToken(token);
                 })
@@ -27,126 +45,158 @@ export function useChat(token, identity) {
                 });
         }
 
-        function memberJoined(member) {
-            onMemberJoined(member);
+        function handleStateChanged(state) {
+            setClientState(state);
+
+            if (state === 'failed') {
+                console.error("There was a problem connecting to Twilio's conversation service.");
+                // onError(new Error("There was a problem connecting to Twilio's conversation service."));
+            }
         }
 
-        function memberLeft(member) {
-            onMemberLeft(member);
+        function handleConnectionStateChanged(state) {
+            setConnectionState(state);
+        }
+    }, [token, identity]);
+
+    useEffect(() => {
+        if (
+            connectionState !== 'connected' || conversationRef.current
+        ) return;
+
+        getConversationById(clientRef.current, identity)
+            .then(conversation => {
+                conversationRef.current = conversation;
+
+                conversation.getParticipants()
+                    .then(participants => setParticipants(participants));
+
+                /* get the latest messages of the conversation. optional arguments:
+                    pageSize | 30,
+                    anchor | "end",
+                    direction | "backwards"
+                */
+                conversation.getMessages(100)
+                    .then(messagesPaginator => {
+                        const messages = messagesPaginator.items.map(message => mapMessage(message, identity));
+                        setMessages(messages);
+                    });
+
+                return conversation;
+            })
+            .then(conversation => {
+                conversation.on('participantJoined', handleParticipantJoined);
+                conversation.on('participantLeft', handleParticipantLeft);
+                conversation.on('messageAdded', handleMessageAdded);
+                conversation.on('messageRemoved', handleMessageRemoved);
+                conversation.on('typingStarted', handleTypingStarted);
+                conversation.on('typingEnded', handleTypingEnded);
+            })
+            .catch(e => {
+                console.dir(e);
+                // onError(new Error('There was a problem getting the Conversation associated with this room.'));
+            });
+
+        return () => {
+            const conversation = conversationRef.current;
+
+            conversation?.off('participantJoined', handleParticipantJoined);
+            conversation?.off('participantLeft', handleParticipantLeft);
+            conversation?.off('messageAdded', handleMessageAdded);
+            conversation?.off('messageRemoved', handleMessageRemoved);
+            conversation?.off('typingStarted', handleTypingStarted);
+            conversation?.off('typingEnded', handleTypingEnded);
+        };
+
+        function handleParticipantJoined(participant) {
+            setParticipants(participants => participants.concat(participant));
         }
 
-        function messageAdded(message) {
-            message.id = message.sid;
-            message.isLocal = message.author === identity;
-            message.isRemote = message.author !== identity;
-
-            onMessageAdded(message);
-            setMessages(messages => messages.concat(message));
+        function handleParticipantLeft(participant) {
+            setParticipants(participants => participants.concat(participant));
         }
 
-        function messageRemoved(message) {
-            onMessageRemoved(message);
+        function handleMessageAdded(message) {
+            // onMessageAdded(message);
+            setMessages(messages => messages.concat(mapMessage(message, identity)));
+        }
+
+        function handleMessageRemoved(message) {
+            // onMessageRemoved(message);
             setMessages(messages => messages.filter(m => m.sid !== message.sid));
         }
 
-        function typingStarted(member) {
+        function handleTypingStarted(member) {
             setTyping(true);
         }
 
-        function typingEnded(member) {
+        function handleTypingEnded(member) {
             setTyping(false);
         }
-
-        Client.create(token).then(client => {
-            client.on('tokenExpired', tokenExpired);
-            client.on('connectionStateChanged', setState);
-
-            clientRef.current = client;
-
-            return client.getChannelByUniqueName(name);
-        })
-            .catch(() => {
-                return clientRef.current.createChannel({
-                    uniqueName: name,
-                    isPrivate: false
-                });
-            })
-            .then(channel => {
-                return channel.join().catch(error => {
-                    if (channel.status === 'joined') {
-                        return channel;
-                    } else {
-                        throw error;
-                    }
-                });
-            })
-            .then(channel => {
-                onConnected(channel);
-
-                channel.on('memberJoined', memberJoined);
-                channel.on('memberLeft', memberLeft);
-                channel.on('messageAdded', messageAdded);
-                channel.on('messageRemoved', messageRemoved);
-                channel.on('typingStarted', typingStarted);
-                channel.on('typingEnded', typingEnded);
-
-                channelRef.current = channel;
-
-                return channel.getMessages(100);
-            })
-            .then(messages => {
-                setMessages(messages.items);
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }, [token, identity]);
-
-    const disconnect = useCallback(() => {
-        channelRef.current.leave().then(leftChannel => {
-            leftChannel.removeListener('messageAdded', messageAdded);
-            leftChannel.removeListener('memberJoined', memberJoined);
-            leftChannel.removeListener('memberLeft', memberLeft);
-            leftChannel.removeListener('typingStarted', typingStarted);
-            leftChannel.removeListener('typingEnded', typingEnded);
-        });
-        clientRef.current?.shutdown();
-    }, []);
+    }, [connectionState, identity]);
 
     const sendMessage = useCallback(message => {
-        channelRef.current.sendMessage(message);
+        conversationRef.current.sendMessage(message);
     }, []);
 
     const deleteMessage = useCallback(message => {
-        messages.find(m => m.sid === message.id)?.remove().catch(error => console.error('ERROR', error));
+        messages.find(m => m.sid === message.id)?.remove()
+            .catch(error => console.error('ERROR', error));
     }, [messages]);
+
+    console.log(messages);
 
     return useMemo(() => ({
         get client() {
             return clientRef.current;
         },
-        get channel() {
-            return channelRef.current;
+        get conversation() {
+            return conversationRef.current;
         },
         get isConnected() {
-            return state === 'connected';
+            return clientState === 'connected';
         },
-        get messages() {
-            return messages?.map(message => ({
-                id: message.sid,
-                author: message.author,
-                isLocal: message.author === identity,
-                isRemote: message.author !== identity,
-                body: message.body,
-                datetime: message.dateCreated,
-                type: message.type
-            }));
-        },
-        state,
-        connect,
-        disconnect,
+        state: clientState,
+        messages,
         sendMessage,
         deleteMessage,
         isTyping
-    }), [state, messages, isTyping]);
+    }), [clientState, messages, isTyping]);
+}
+
+function getConversationById(client, identity) {
+    console.log(client, identity);
+    return client.getConversationByUniqueName(identity)
+        .catch(error => {
+            if (error.status === 404) {
+                return client.createConversation({
+                    uniqueName: identity
+                });
+            }
+
+            throw error;
+        })
+        .then(conversation => {
+            console.log('conversation', conversation);
+            return conversation.join().catch(error => {
+                if (conversation.status === 'joined') {
+                    return conversation;
+                } else {
+                    throw error;
+                }
+            });
+        });
+}
+
+function mapMessage(message, identity) {
+    return {
+        id: message.sid,
+        author: message.author,
+        type: message.type,
+        isLocal: message.author === identity,
+        isRemote: message.author !== identity,
+        body: message.body,
+        createdAt: message.dateCreated,
+        updatedAt: message.dateUpdated
+    };
 }

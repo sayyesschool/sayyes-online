@@ -4,22 +4,24 @@ import classnames from 'classnames';
 import JoyTooltip from '@mui/joy/Tooltip';
 
 const Tooltip = forwardRef(({
+    anchor,
     content,
 
     className,
-    children = content,
+    children = anchor,
     ...props
 }, ref) => {
     const classNames = classnames('ui-Tooltip', className);
 
     return (
-        <JoyTypography
+        <JoyTooltip
             ref={ref}
             className={classNames}
+            title={content}
             {...props}
         >
             {children}
-        </JoyTypography>
+        </JoyTooltip>
     );
 });
 

@@ -44,8 +44,6 @@ function LessonChip({
     onDelete = Function.prototype,
     onRefund = Function.prototype
 }) {
-    const [isMenuOpen, toggleMenuOpen] = useBoolean(false);
-
     const handleEdit = useCallback(() => {
         onEdit(lesson);
     }, [lesson, onEdit]);
@@ -60,7 +58,7 @@ function LessonChip({
 
     return (
         <MenuButton
-            open={readonly ? false : isMenuOpen}
+            disabled={readonly}
             trigger={
                 <Chip
                     key={lesson.id || lesson.date.valueOf()}
@@ -97,7 +95,6 @@ function LessonChip({
                     onClick: handleRefund
                 }
             ]}
-            onOpenChange={toggleMenuOpen}
         />
     );
 }

@@ -110,3 +110,7 @@ img::-moz-selection {
 .material-icons {
     font-family: 'Material Icons Round';
 }
+
+.MuiPopper-root {
+    z-index: 1;
+}

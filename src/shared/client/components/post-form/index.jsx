@@ -1,15 +1,19 @@
 import { useCallback, useRef } from 'react';
 
-import useForm from 'shared/hooks/form';
+import { useFormData } from 'shared/hooks/form';
+import ContentEditor from 'shared/components/content-editor';
 import Form from 'shared/ui-components/form';
-import TextEditor from 'shared/components/text-editor';
 
 import './index.scss';
 
-export default function PostForm({ id = 'post-form', post = {}, onSubmit }) {
+export default function PostForm({
+    id = 'post-form',
+    post = {},
+    onSubmit
+}) {
     const editorRef = useRef();
 
-    const { data, handleChange } = useForm({
+    const { data, handleChange } = useFormData({
         title: post.title || '',
         content: post.content || ''
     });
@@ -23,7 +27,7 @@ export default function PostForm({ id = 'post-form', post = {}, onSubmit }) {
     }, [data]);
 
     return (
-        <Form id={id} className="post-form" onSubmit={handleSubmit}>
+        <Form id={id} className="PostForm" onSubmit={handleSubmit}>
             <Form.Input
                 name="title"
                 value={data.title}
@@ -32,7 +36,7 @@ export default function PostForm({ id = 'post-form', post = {}, onSubmit }) {
                 onChange={handleChange}
             />
 
-            <TextEditor
+            <ContentEditor
                 ref={editorRef}
                 defaultValue={data.content}
             />

@@ -2,15 +2,16 @@ import { forwardRef, isValidElement } from 'react';
 import classnames from 'classnames';
 
 import JoyTab from '@mui/joy/Tab';
-import ListItemDecorator from '@mui/joy/ListItemDecorator';
 
 import Icon from '../icon/Icon';
+import Text from '../text/Text';
 
 const Tab = forwardRef(({
     icon,
     start,
     content,
     end,
+    color,
 
     as,
     children = content,
@@ -24,17 +25,17 @@ const Tab = forwardRef(({
             ref={ref}
             component={as}
             className={classNames}
+            color={color}
             {...props}
         >
-            {icon &&
-                <ListItemDecorator>
-                    {isValidElement(icon) ? icon :
-                        <Icon>{icon}</Icon>
-                    }
-                </ListItemDecorator>
-            }
-
-            {children}
+            <Text
+                color={color}
+                startDecorator={icon && (isValidElement(icon) ?
+                    icon : <Icon>{icon}</Icon>
+                )}
+            >
+                {children}
+            </Text>
         </JoyTab>
     );
 });

@@ -15,6 +15,7 @@ export default function DetailsList({ items = [], children }) {
                         <Text type="body2">{item.header}</Text>
                         <Text type="body1">{item.content}</Text>
                     </>}
+                    end={item.end}
                 />
             )}
 

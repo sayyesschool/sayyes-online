@@ -5,6 +5,7 @@ import Menu from '../menu/Menu';
 const MenuButton = forwardRef(({
     trigger,
     items,
+    disabled,
     onMenuClose = Function.prototype,
     onMenuItemClick,
 
@@ -15,8 +16,10 @@ const MenuButton = forwardRef(({
     const [open, setOpen] = useState(false);
 
     const handleTriggerClick = useCallback(() => {
+        if (disabled) return;
+
         setOpen(open => !open);
-    }, []);
+    }, [disabled]);
 
     const handleClose = useCallback(() => {
         setOpen(false);
@@ -28,6 +31,7 @@ const MenuButton = forwardRef(({
             {isValidElement(trigger) &&
                 cloneElement(trigger, {
                     ref: triggerRef,
+                    disabled,
                     onClick: handleTriggerClick
                 })
             }

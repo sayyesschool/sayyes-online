@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
 import { usePosts } from 'shared/hooks/posts';
-import { Button, Flex, Heading, Icon, Surface } from 'shared/ui-components';
+import { Button, Flex, Heading, Surface } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import EmptyState from 'shared/components/empty-state';
@@ -22,98 +22,18 @@ export default function PostsFeed({ query, beforeCreate = noop }) {
     const [isPostFormOpen, togglePostFormOpen] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
-    const createPost = useCallback(data => {
-        return actions.createPost(beforeCreate(data))
-            .then(() => togglePostFormOpen());
-    }, [beforeCreate]);
-
-    const updatePost = useCallback((postId, data) => {
-        return actions.updatePost(postId, data);
-    }, []);
-
-    const deletePost = useCallback(() => {
-        return actions.deletePost(postId)
-            .then(() => toggleConfirmationDialogOpen(false));
-    }, [postId]);
-
-    const handleDeletePost = useCallback(postId => {
-        setPostId(postId);
-        toggleConfirmationDialogOpen(true);
-    }, []);
-
-    const createComment = useCallback((postId, data) => {
-        return actions.createComment(postId, data);
-    }, []);
-
-    const updateComment = useCallback((postId, commentId, data) => {
-        return actions.updateComment(postId, commentId, data);
-    }, []);
-
-    const deleteComment = useCallback((postId, commentId) => {
-        return actions.deleteComment(postId, commentId);
-    }, []);
-
-    if (!posts) return <LoadingIndicator />;
-
     return (
         <div className="PostsFeed">
             <Flex alignItems="center" justifyContent="space-between">
                 <Heading as="h2">Записи</Heading>
 
-                {!isPostFormOpen &&
-                    <Button
-                        className="new-post-button"
-                        icon="create"
-                        content="Новая запись"
-                        variant="plain"
-                        onClick={togglePostFormOpen}
-                    />
+                {
                 }
             </Flex>
 
-            {isPostFormOpen &&
-                <Surface className="new-post-card">
-                    <Heading as="h3">Новая запись</Heading>
 
-                    <PostForm
-                        user={user}
-                        onSubmit={createPost}
-                    />
 
-                    <Flex space="between">
-                        <Button flat onClick={togglePostFormOpen}>Отменить</Button>
-                        <Button type="submit" form="post-form" primary flat>Сохранить</Button>
-                    </Flex>
-                </Surface>
-            }
 
-            {posts.length > 0 ?
-                posts.map(post =>
-                    <PostCard
-                        key={post.id}
-                        user={user}
-                        post={post}
-                        onUpdate={updatePost}
-                        onDelete={handleDeletePost}
-                        onCreateComment={createComment}
-                        onUpdateComment={updateComment}
-                        onDeleteComment={deleteComment}
-                    />
-                ) : (
-                    <EmptyState
-                        icon="feed"
-                        title="Записей пока нет"
-                    />
-                )
-            }
-
-            <ConfirmationDialog
-                title="Подтвердите действие"
-                message="Вы действительно хотите удалить запись и комментарии к ней?"
-                open={isConfirmationDialogOpen}
-                onConfirm={deletePost}
-                onClose={toggleConfirmationDialogOpen}
-            />
         </div>
     );
 }

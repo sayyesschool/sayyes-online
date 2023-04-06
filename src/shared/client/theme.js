@@ -1,6 +1,6 @@
-import { extendTheme } from '@mui/joy/styles';
+import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
 
-export default extendTheme({
+export const theme = extendTheme({
     fontFamily: {
         body: 'Nunito, Arial, Helvetica, Segoe UI, sans-serif',
         display: 'Nunito, Arial, Helvetica, Segoe UI, sans-serif'
@@ -28,6 +28,13 @@ export default extendTheme({
             styleOverrides: {
                 content: {
                     backgroundColor: 'transparent'
+                }
+            }
+        },
+        JoyListItemButton: {
+            styleOverrides: {
+                root: {
+                    gap: '.5rem'
                 }
             }
         },
@@ -67,3 +74,7 @@ export default extendTheme({
     }
 });
 
+export {
+    theme as default,
+    CssVarsProvider as ThemeProvider
+};

@@ -50,16 +50,21 @@ export default function Dialog({
                 <Box sx={{
                     overflowY: 'auto',
                     overflowX: 'hidden',
-                    margin: '.75rem 0'
+                    margin: '.75rem 0',
+                    '&:last-child': {
+                        marginBottom: 0
+                    }
                 }}>
                     {children}
                 </Box>
 
-                <Flex gap="smaller">
-                    {actions?.map(action => isValidElement(action) ? action :
-                        <Button {...action} />
-                    )}
-                </Flex>
+                {isValidElement(actions) ? actions : (Array.isArray(actions) &&
+                    <Flex gap="smaller" justifyContent="flex-end">
+                        {actions?.map(action => isValidElement(action) ? action :
+                            <Button {...action} />
+                        )}
+                    </Flex>
+                )}
             </ModalDialog>
         </Modal>
     );

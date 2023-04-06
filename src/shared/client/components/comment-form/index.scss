@@ -1,3 +1,6 @@
-.comment-form {
-    
+.CommentForm {
+    .ContentEditor {
+        border: 1px solid var(--joy-palette-neutral-outlinedBorder);
+        border-radius: 8px;
+    }
 }

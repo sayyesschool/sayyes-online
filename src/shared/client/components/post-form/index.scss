@@ -1,10 +1,10 @@
-.post-form {
-    .ui-form__input {
-        margin: 0;
-    }
-    
-    .ui-input {
-        border: 1px solid rgba(0,0,0,.12);
-        border-radius: 4px;
+.PostForm {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+    .ContentEditor {
+        border: 1px solid var(--joy-palette-neutral-outlinedBorder);
+        border-radius: 8px;
     }
 }

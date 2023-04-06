@@ -1,17 +1,7 @@
 import classnames from 'classnames';
 
 import { Icon } from 'shared/ui-components';
-
-const StatusIconByType = {
-    active: 'pending',
-    new: 'fiber_new',
-    processing: 'pending',
-    completed: 'circle_check',
-    succeeded: 'done',
-    canceled: 'cancel',
-    scheduled: 'schedule',
-    ended: 'success'
-};
+import { StatusIcon as StatusIconMap } from 'shared/data/status';
 
 export default function StatusIcon({ status, className, ...props }) {
     const classNames = classnames('StatusIcon', {
@@ -21,7 +11,7 @@ export default function StatusIcon({ status, className, ...props }) {
     return (
         <Icon
             className={classNames}
-            name={StatusIconByType[status]}
+            name={StatusIconMap[status]}
             {...props}
         />
     );

@@ -25,7 +25,7 @@ export default function ExercisePage({ match, location }) {
         });
     }, [course, exercise]);
 
-    if (!exercise) return <LoadingIndicator />;
+    if (!exercise) return <LoadingIndicator fullscreen />;
 
     const lesson = course?.lessonsById.get(exercise.lessonId);
     const unit = course?.unitsById.get(exercise.unitId);

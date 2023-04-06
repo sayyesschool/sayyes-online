@@ -2,15 +2,7 @@ import classnames from 'classnames';
 
 import { Chip } from 'shared/ui-components';
 import StatusIcon from 'shared/components/status-icon';
-
-const StatusColor = {
-    new: 'primary',
-    processing: 'warning',
-    postponed: 'neutral',
-    completed: 'success',
-    canceled: 'danger',
-    succeeded: 'success'
-};
+import { StatusLabel, StatusColor } from 'shared/data/status';
 
 export default function StatusChip({ status, className, ...props }) {
     const classNames = classnames('sy-StatusChip', {
@@ -23,6 +15,7 @@ export default function StatusChip({ status, className, ...props }) {
             start={
                 <StatusIcon status={status} />
             }
+            content={StatusLabel[status]}
             color={StatusColor[status]}
             variant="soft"
             {...props}

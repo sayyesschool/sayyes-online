@@ -9,7 +9,7 @@ export default function AppHeader({
 }) {
     return (
         <header className="AppHeader" {...props}>
-            <Link className="AppHeader__home-link" to="/">Say Yes Online</Link>
+            <Link className="AppHeader__home-link" to="/">Say Yes</Link>
 
             <UserMenu
                 user={user}

@@ -1,10 +1,12 @@
-import { forwardRef } from 'react';
+import { isValidElement, forwardRef } from 'react';
 import classnames from 'classnames';
 
 import JoyListItem from '@mui/joy/ListItem';
 import JoyListItemButton from '@mui/joy/ListItemButton';
 import JoyListItemContent from '@mui/joy/ListItemContent';
 import JoyListItemDecorator from '@mui/joy/ListItemDecorator';
+
+import Text from '../text/Text';
 
 const ListItem = forwardRef(({
     start,
@@ -31,7 +33,13 @@ const ListItem = forwardRef(({
 
         {content &&
             <JoyListItemContent>
-                {content}
+                {isValidElement(content) ? content : (
+                    typeof content === 'object' ? (<>
+                        <Text type="body1">{content.primary}</Text>
+                        <Text type="body2">{content.secondary}</Text>
+                        <Text type="body3">{content.tertiary}</Text>
+                    </>) : content
+                )}
             </JoyListItemContent>
         }
 

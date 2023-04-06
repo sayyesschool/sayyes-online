@@ -1,7 +1,7 @@
 @use 'shared/styles/variables';
 
 $fill-color: variables.$primary-color;
-$ink-color: white;
+$ink-color: variables.$on-primary-color;
 
 .AppHeader {
     padding: 8px 16px;

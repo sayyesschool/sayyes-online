@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import { ChatMessage } from 'shared/components/chat';
 import CommentForm from 'shared/components/comment-form';
-import { Button, Flex, Icon } from 'shared/ui-components';
+import TextContent from 'shared/components/text-content';
+import { Avatar, Box, Button, Flex, Icon, IconButton, MenuButton, Text } from 'shared/ui-components';
 
 import './index.scss';
 
@@ -18,8 +18,7 @@ export default function Comment({
     const [isEditing, toggleEditing] = useBoolean(editing);
 
     const handleSubmit = useCallback(data => {
-        return onSave(comment.id, data)
-            .then(() => toggleEditing(false));
+        return onSave(comment.id, data);
     }, [comment, onSave]);
 
     const handleDelete = useCallback(() => {
@@ -42,7 +41,7 @@ export default function Comment({
                 onSubmit={handleSubmit}
             />
 
-            <Flex justifyContent="space-between">
+            <Flex justifyContent="space-between" sx={{ width: '100%' }}>
                 <Button
                     type="button"
                     content="Отменить"
@@ -59,33 +58,52 @@ export default function Comment({
             </Flex>
         </div>
     ) : (
-        <ChatMessage
-            className="comment"
-            author={author.fullname}
-            timestamp={comment.datetimeLabel}
-            density="compact"
-            mine={isUserAuthor}
-            content={
-                <div dangerouslySetInnerHTML={{ __html: comment.content }} />
-            }
-            actionMenu={(isUserAuthor && !isEditing) && {
-                iconOnly: true,
-                text: true,
-                items: [
+        <div className="Comment">
+            <Avatar
+                src="https://api-prod-minimal-v4.vercel.app/assets/images/avatars/avatar_1.jpg"
+            />
+
+            <Box sx={{ flex: '1' }}>
+                <Text
+                    type="body2"
+                    content={author.fullname}
+                    sx={{ lineHeight: '1' }}
+                />
+
+                <Text
+                    type="body3"
+                    content={comment.datetimeLabel}
+                />
+
+                <TextContent
+                    content={comment.content}
+                />
+            </Box>
+
+            <MenuButton
+                trigger={
+                    <IconButton
+                        icon="more_vert"
+                        color="neutral"
+                        size="sm"
+                        variant="plain"
+                    />
+                }
+                items={[
                     {
                         key: 'edit',
                         icon: <Icon>edit</Icon>,
-                        title: 'Редактировать',
+                        content: 'Редактировать',
                         onClick: toggleEditing
                     },
                     {
                         key: 'delete',
                         icon: <Icon>delete</Icon>,
-                        title: 'Удалить',
+                        content: 'Удалить',
                         onClick: handleDelete
                     }
-                ]
-            }}
-        />
+                ]}
+            />
+        </div>
     );
 }
