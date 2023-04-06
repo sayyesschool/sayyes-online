@@ -6,16 +6,17 @@ const payments = require('./payments');
 const posts = require('./posts');
 const user = require('./user');
 
-module.exports = core => {
+module.exports = context => {
     const router = Router();
 
-    router.use('/courses*', redirectToClass);
-    router.use('/enrollments', enrollments(core));
-    router.use('/lessons', lessons(core));
-    router.use('/materials*', redirectToClass);
-    router.use('/payments', payments(core));
-    router.use('/posts', posts(core));
-    router.use('/user', user(core));
+    router.use('/courses*', redirectToLMS);
+    router.use('/materials*', redirectToLMS);
+
+    router.use('/enrollments', enrollments(context));
+    router.use('/lessons', lessons(context));
+    router.use('/payments', payments(context));
+    router.use('/posts', posts(context));
+    router.use('/user', user(context));
 
     router.use((req, res) => {
         res.status(404).send({ ok: false, error: 'Не найдено' });
@@ -32,6 +33,6 @@ module.exports = core => {
     return router;
 };
 
-function redirectToClass(req, res) {
-    res.redirect(req.originalUrl.replace('teacher', 'class'));
+function redirectToLMS(req, res) {
+    res.redirect(req.originalUrl.replace('teacher', 'lms'));
 }

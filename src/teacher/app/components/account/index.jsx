@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 
 import { useUser } from 'shared/hooks/user';
-import Button from 'shared/ui-components/button';
 import Page from 'shared/components/page';
+import { Button } from 'shared/ui-components';
 
 import ProfileForm from 'app/components/account/profile-form';
 

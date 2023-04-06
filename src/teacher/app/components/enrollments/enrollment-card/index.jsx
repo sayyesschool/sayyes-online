@@ -2,7 +2,7 @@ import { Avatar, Card } from 'shared/ui-components';
 
 export default function EnrollmentCard({ enrollment, ...props }) {
     return (
-        <Card {...props}>
+        <Card className="EnrollmentCard" {...props}>
             <Card.Header
                 media={
                     <Avatar text={enrollment.client.initials} />

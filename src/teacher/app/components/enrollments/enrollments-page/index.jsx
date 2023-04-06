@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 
 import { useEnrollments } from 'shared/hooks/enrollments';
-import { Grid } from 'shared/ui-components';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { Grid } from 'shared/ui-components';
 
 import EnrollmentCard from 'app/components/enrollments/enrollment-card';
 
@@ -15,7 +15,7 @@ export default function EnrollmentsPage() {
     if (!enrollments) return <LoadingIndicator />;
 
     return (
-        <Page id="enrollments">
+        <Page className="EnrollmentsPage">
             <Page.Header
                 title="Ученики"
             />

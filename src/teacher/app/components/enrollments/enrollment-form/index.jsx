@@ -1,26 +1,23 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 
-import {
-    defaultEnrollment, domainOptions, typeOptions, formatOptions,
-    ageOptions, teacherTypeOptions, levelOptions, purposeOptions
-} from 'shared/../data/enrollment';
-
-import useForm from 'shared/hooks/form';
+import { useFormData } from 'shared/hooks/form';
 import Form from 'shared/ui-components/form';
 import ScheduleSelect from 'shared/components/schedule-select';
 import DateTimeSelect from 'shared/components/datetime-select';
 import PeopleSelect from 'shared/components/people-select';
+import {
+    defaultEnrollment, domainOptions, typeOptions, formatOptions,
+    ageOptions, teacherTypeOptions, levelOptions, purposeOptions
+} from 'shared/data/enrollment';
 
-import { useStore } from 'app/hooks/store';
-
-import './index.scss';
-
-export default forwardRef(EnrollmentForm);
-
-function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
+function EnrollmentForm({
+    enrollment = {},
+    onSubmit,
+    ...props
+}, ref) {
     const formRef = useRef();
 
-    const { data, handleChange } = useForm({
+    const { data, handleChange } = useFormData({
         ...defaultEnrollment,
         ...enrollment,
         client: enrollment.client?.id || '',
@@ -176,3 +173,5 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
         </Form>
     );
 }
+
+export default forwardRef(EnrollmentForm);

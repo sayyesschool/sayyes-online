@@ -8,13 +8,11 @@ import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import { Button, Dialog, Flex, Grid, Icon } from 'shared/ui-components';
+import { Button, Dialog, Grid } from 'shared/ui-components';
 
 import EnrollmentsList from 'app/components/enrollments/enrollments-list';
 import LessonDetails from 'app/components/lessons/lesson-details';
 import LessonForm from 'app/components/lessons/lesson-form';
-
-import './index.scss';
 
 export default function HomePage() {
     const [lessons, actions] = useLessons();
@@ -68,7 +66,7 @@ export default function HomePage() {
             });
     }, [actions, lesson]);
 
-    if (!lessons) return <LoadingIndicator />;
+    if (!lessons) return <LoadingIndicator fullscreen />;
 
     const events = lessons.map(lesson => {
         const date = new Date(lesson.date);
@@ -145,21 +143,22 @@ export default function HomePage() {
             <Dialog
                 title="Детали урока"
                 open={isDialogOpen}
-                footer={
-                    <Flex gap="smaller">
-                        <Button
-                            icon={<Icon>edit</Icon>}
-                            content="Изменить"
-                            onClick={handleUpdateRequest}
-                        />
-
-                        <Button
-                            icon={<Icon>delete</Icon>}
-                            content="Удалить"
-                            onClick={handleDeleteRequest}
-                        />
-                    </Flex>
-                }
+                actions={[
+                    <Button
+                        icon="edit"
+                        content="Изменить"
+                        variant="soft"
+                        color="neutral"
+                        onClick={handleUpdateRequest}
+                    />,
+                    <Button
+                        icon="delete"
+                        content="Удалить"
+                        variant="soft"
+                        color="danger"
+                        onClick={handleDeleteRequest}
+                    />
+                ]}
                 onClose={toggleDialogOpen}
             >
                 <LessonDetails

@@ -1,40 +1,10 @@
-@use 'shared/styles/variables';
-
-$fill-color: variables.$primary-color;
-$ink-color: white;
-
-body {
-    background-color: #f1f3f4;
-}
-
 .App {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-
-    .AppHeader {
-        background-color: $fill-color;
-        color: $ink-color;
-    }
-
-    .AppContent {
-        position: relative;
-        flex: 1;
-        margin: unset;
-    }
 }
 
-.Page {
-    .PageHeader {
-        &__inner {
-            max-width: 1280px;
-            margin: auto;
-        }
-    }
-
-    .PageContent {
-        max-width: 1280px;
-        margin: auto;
-        padding: 1rem;
-    }
+.PageHeader,
+.PageContent {
+    max-width: 1024px;
 }

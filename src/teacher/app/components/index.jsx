@@ -51,7 +51,7 @@ export default function App() {
         actions.hideNotification();
     }, []);
 
-    if (!user) return <LoadingIndicator />;
+    if (!user) return <LoadingIndicator fullscreen />;
 
     return (
         <div className="App">

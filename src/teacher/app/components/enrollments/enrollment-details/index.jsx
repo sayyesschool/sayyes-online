@@ -1,14 +1,14 @@
 import { useBoolean } from 'shared/hooks/state';
 import DetailsList from 'shared/components/details-list';
 import PageSection from 'shared/components/page-section';
-import { Avatar, List } from 'shared/ui-components';
+import { Avatar } from 'shared/ui-components';
 
 export default function EnrollmentDetails({ enrollment }) {
     const [isOpen, toggleOpen] = useBoolean(false);
 
     return (
         <PageSection
-            className="enrollment-details"
+            className="EnrollmentDetails"
             title="Детали обучения"
             actions={[{
                 key: 'edit',
@@ -18,65 +18,64 @@ export default function EnrollmentDetails({ enrollment }) {
             compact
         >
             {isOpen &&
-                <DetailsList>
-                    <List.Item
-                        icon="portrait"
-                        header={enrollment.ageLabel || '[Не указана]'}
-                        content="Возрастная группа"
-                    />
-
-                    <List.Item
-                        icon="timelapse"
-                        header={enrollment.lessonDuration + ' мин.'}
-                        content="Продолжительность урока"
-                    />
-
-                    <List.Item
-                        icon="signal_cellular_alt"
-                        header={enrollment.levelLabel || '[Не указан]'}
-                        content="Уровень"
-                    />
-
-                    <List.Item
-                        icon="flag"
-                        header={enrollment.goal || '[Не указана]'}
-                        content="Цель"
-                    />
-
-                    <List.Item
-                        icon="star"
-                        header={enrollment.experience || '[Не указан]'}
-                        content="Опыт"
-                    />
-
-                    <List.Item
-                        icon="checklist"
-                        header={enrollment.preferences || '[Не указаны]'}
-                        content="Предпочтения"
-                    />
-
-                    {enrollment.manager &&
-                        <List.Item
-                            icon="person"
-                            header={enrollment.manager.fullname}
-                            content="Менеджер"
-                            end={
+                <DetailsList
+                    items={[
+                        {
+                            key: 'age',
+                            icon: 'portrait',
+                            header: 'Возрастная группа',
+                            content: enrollment.ageLabel || '[Не указана]'
+                        },
+                        {
+                            key: 'lessonDuration',
+                            icon: 'timelapse',
+                            header: 'Продолжительность урока',
+                            content: enrollment.lessonDuration + ' мин.'
+                        },
+                        {
+                            key: 'levelLabel',
+                            icon: 'signal_cellular_alt',
+                            header: 'Уровень',
+                            content: enrollment.levelLabel || '[Не указан]'
+                        },
+                        {
+                            key: 'goal',
+                            icon: 'flag',
+                            header: 'Цель',
+                            content: enrollment.goal || '[Не указана]'
+                        },
+                        {
+                            key: 'experience',
+                            icon: 'star',
+                            header: 'Опыт',
+                            content: enrollment.experience || '[Не указан]'
+                        },
+                        {
+                            key: 'preferences',
+                            icon: 'checklist',
+                            header: 'Предпочтения',
+                            content: enrollment.preferences || '[Не указаны]'
+                        },
+                        enrollment.manager && {
+                            key: 'manager',
+                            icon: 'person',
+                            header: 'Менеджер',
+                            content: enrollment.manager.fullname,
+                            end: (
                                 <Avatar
                                     src={enrollment.manager.imageUrl}
                                     text={enrollment.manager.initials}
                                 />
-                            }
-                        />
-                    }
-
-                    {enrollment.note &&
-                        <List.Item
-                            icon="notes"
-                            header={enrollment.note}
-                            content="Заметки"
-                        />
-                    }
-                </DetailsList>
+                            )
+                        },
+                        enrollment.note && {
+                            key: 'note',
+                            icon: 'notes',
+                            header: 'Заметки',
+                            content: enrollment.note
+                        }
+                    ]}
+                />
             }
         </PageSection>
     );

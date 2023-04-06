@@ -16,13 +16,13 @@ import './index.scss';
 export default function EnrollmentPage({ match }) {
     const [enrollment] = useEnrollment(match.params.id);
 
-    if (!enrollment) return <LoadingIndicator />;
+    if (!enrollment) return <LoadingIndicator fullscreen />;
 
     return (
         <Page className="EnrollmentPage">
             <Page.Header
                 title={enrollment.domainLabel}
-                breadcrumbs={[{ content: enrollment.client.fullname }]}
+                breadcrumbs={[{ key: 'client', content: enrollment.client.fullname }]}
                 actions={[
                     <Button
                         key="class"
@@ -30,7 +30,6 @@ export default function EnrollmentPage({ match }) {
                         href={enrollment.classUrl}
                         icon="video_call"
                         content="Перейти в класс"
-                        primary
                     />,
                     (enrollment.teachers[0]?.zoomUrl &&
                         <MenuButton

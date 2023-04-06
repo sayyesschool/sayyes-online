@@ -3,7 +3,7 @@ import {
     IconButton,
     List
 } from 'mdc-react';
-import moment from 'moment';
+import datetime from 'shared/utils/datetime';
 
 export default function ProfileCard({ user }) {
     return (
@@ -41,7 +41,7 @@ export default function ProfileCard({ user }) {
 
                     <List.Item
                         icon="cake"
-                        primaryText={moment(user.dob).format('DD.MM.YYYY')}
+                        primaryText={datetime(user.dob).format('DD.MM.YYYY')}
                         secondaryText="Дата рождения"
                     />
 

@@ -15,7 +15,8 @@ export default function EnrollmentLessons({ enrollment }) {
     const [lesson, setLesson] = useState();
     const [isNewLessonFormOpen, toggleNewLessonFormOpen] = useBoolean(false);
     const [isEditLessonFormOpen, toggleEditLessonFormOpen] = useBoolean(false);
-    const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
+    const [isRefundConfirmationDialogOpen, toggleRefundConfirmationDialogOpen] = useBoolean(false);
+    const [isDeleteConfirmationDialogOpen, toggleDeleteConfirmationDialogOpen] = useBoolean(false);
 
     const createLesson = useCallback(data => {
         data.enrollment = enrollment.id;
@@ -29,9 +30,14 @@ export default function EnrollmentLessons({ enrollment }) {
             .then(() => toggleEditLessonFormOpen(false));
     }, [lesson]);
 
+    const refundLesson = useCallback(() => {
+        return lessonActions.deleteLesson(lesson.id)
+            .then(() => toggleDeleteConfirmationDialogOpen(false));
+    }, [lesson]);
+
     const deleteLesson = useCallback(() => {
         return lessonActions.deleteLesson(lesson.id)
-            .then(() => toggleConfirmationDialogOpen(false));
+            .then(() => toggleDeleteConfirmationDialogOpen(false));
     }, [lesson]);
 
     const handleEdit = useCallback(lesson => {
@@ -39,11 +45,14 @@ export default function EnrollmentLessons({ enrollment }) {
         toggleEditLessonFormOpen(true);
     }, []);
 
-    const handleDelete = useCallback((event, lesson) => {
-        event.stopPropagation();
-
+    const handleRefund = useCallback(lesson => {
         setLesson(lesson);
-        toggleConfirmationDialogOpen(true);
+        toggleRefundConfirmationDialogOpen(true);
+    }, []);
+
+    const handleDelete = useCallback(lesson => {
+        setLesson(lesson);
+        toggleDeleteConfirmationDialogOpen(true);
     }, []);
 
     const lessonsDuration = enrollment.lessons.reduce((total, lesson) => total + lesson.duration, 0);
@@ -65,6 +74,7 @@ export default function EnrollmentLessons({ enrollment }) {
                 <LessonPillGroup
                     lessons={enrollment.lessons}
                     onEdit={handleEdit}
+                    onRefund={handleRefund}
                     onDelete={handleDelete}
                 />
             }
@@ -101,10 +111,18 @@ export default function EnrollmentLessons({ enrollment }) {
 
             <ConfirmationDialog
                 title="Подтвердите действие"
+                message="Вы действительно хотите вернуть деньги за урок?"
+                open={isRefundConfirmationDialogOpen}
+                onConfirm={refundLesson}
+                onClose={() => toggleRefundConfirmationDialogOpen(false)}
+            />
+
+            <ConfirmationDialog
+                title="Подтвердите действие"
                 message="Вы действительно хотите удалить урок?"
-                open={isConfirmationDialogOpen}
+                open={isDeleteConfirmationDialogOpen}
                 onConfirm={deleteLesson}
-                onClose={() => toggleConfirmationDialogOpen(false)}
+                onClose={() => toggleDeleteConfirmationDialogOpen(false)}
             />
         </PageSection>
     );

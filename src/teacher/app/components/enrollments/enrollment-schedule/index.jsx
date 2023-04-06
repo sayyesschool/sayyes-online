@@ -15,7 +15,11 @@ export default function EnrollmentSchedule({ enrollment, onUpdate }) {
     }, []);
 
     return (
-        <PageSection className="enrollment-schedule" title="Расписание" compact>
+        <PageSection
+            className="EnrollmentSchedule"
+            title="Расписание"
+            compact
+        >
             {enrollment.schedule?.length > 0 &&
                 <WeekSchedule
                     schedule={enrollment.schedule}

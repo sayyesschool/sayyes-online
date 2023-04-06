@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
-import moment from 'moment';
 
 import { useFormData } from 'shared/hooks/form';
 import Form from 'shared/ui-components/form';
+import datetime from 'shared/utils/datetime';
 
 import './index.scss';
 
-const statuses = [
+const statusOptions = [
     { key: 'scheduled', value: 'scheduled', content: 'Запланирован' },
     { key: 'ended', value: 'ended', content: 'Завершился' },
     { key: 'missed', value: 'missed', content: 'Пропущен' },
@@ -16,12 +16,12 @@ const statuses = [
 const getDefaultData = data => ({
     status: 'scheduled',
     duration: 50,
-    date: moment().format('YYYY-MM-DDTHH:mm'),
+    date: datetime().format('YYYY-MM-DDTHH:mm'),
     note: '',
     ...data
 });
 
-const minDate = moment().subtract(1, 'hour');
+const minDate = datetime().subtract(1, 'hour');
 
 export default function LessonForm({ lesson, onSubmit, ...props }) {
     const { data, getData, handleChange } = useFormData(getDefaultData(lesson));
@@ -36,44 +36,44 @@ export default function LessonForm({ lesson, onSubmit, ...props }) {
     }, [onSubmit]);
 
     return (
-        <Form className="lesson-form" onSubmit={handleSubmit} {...props}>
+        <Form
+            className="LessonForm"
+            onSubmit={handleSubmit}
+            {...props}
+        >
             <Form.Select
+                label="Статус"
                 name="status"
                 value={data.status}
-                options={statuses}
-                label="Статус"
+                options={statusOptions}
                 required
-                fluid
                 onChange={handleChange}
             />
 
             <Form.Input
+                label="Дата и время"
                 type="datetime-local"
                 name="date"
-                value={moment(data.date).format('YYYY-MM-DDTHH:mm')}
-                label="Дата и время"
+                value={datetime(data.date).format('YYYY-MM-DDTHH:mm')}
                 min={data.status === 'scheduled' && minDate.format('YYYY-MM-DDTHH:mm')}
-                message={`Московское время: ${moment(data.date).utc().add(3, 'hours').format('HH:mm')}`}
+                message={`Московское время: ${datetime(data.date).utc().add(3, 'hours').format('HH:mm')}`}
                 required
-                fluid
                 onChange={handleChange}
             />
 
             <Form.Input
+                label="Продолжительность, мин."
                 type="number"
                 name="duration"
-                step="5"
                 value={data.duration}
-                label="Продолжительность, мин."
-                fluid
+                step="5"
                 onChange={handleChange}
             />
 
             <Form.Textarea
+                label="Примечание"
                 name="note"
                 value={data.note}
-                label="Примечание"
-                fluid
                 onChange={handleChange}
             />
         </Form>
