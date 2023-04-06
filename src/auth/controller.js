@@ -1,6 +1,8 @@
 const strategies = require('./strategies');
 
-module.exports = ({ Auth }) => ({
+module.exports = ({
+    services: { Auth }
+}) => ({
     register: (req, res) => {
         Auth.register({
             email: req.body.email,

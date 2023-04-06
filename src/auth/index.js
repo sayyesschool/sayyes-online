@@ -1,25 +1,48 @@
-const { Router } = require('express');
+const express = require('express');
+const path = require('path');
+const vhost = require('vhost');
+
+const api = require('./api');
 const Middleware = require('./middleware');
 const Controller = require('./controller');
 
-module.exports = context => {
-    const router = Router();
-    const middleware = Middleware(context.models);
-    const controller = Controller(context.services);
+module.exports = {
+    middleware: context => Middleware(context),
+    app: context => {
+        const app = express();
+        const controller = Controller(context);
 
-    router.use(middleware.user);
+        app.set('view engine', 'pug');
+        app.set('views', path.join(__dirname, 'views'));
 
-    router.post('/register', controller.register);
-    router.post('/login', controller.login);
-    router.get('/logout', controller.logout);
+        app.locals.basedir = context.config.APP_PATH;
 
-    router.post('/oauth', controller.authenticate);
-    router.get('/oauth/:provider/callback', controller.callback, controller.redirect);
-    router.get('/oauth/:provider/connect', controller.connect);
+        app.use('/api', api);
 
-    router.post('/reset', controller.sendResetPasswordToken);
-    router.get('/reset/:token', controller.showResetPasswordForm);
-    router.post('/reset/:token', controller.resetPassword);
+        // app.use((req, res, next) => {
+        //     if (!req.user) return next();
 
-    return router;
+        //     console.log(req.user);
+
+        //     console.log(`//${req.user.role}.${context.config.APP_DOMAIN}${req.originalUrl}`);
+
+        //     res.redirect(`//${req.user.role}.${context.config.APP_DOMAIN}${req.originalUrl}`);
+        // });
+
+        app.get('/', (req, res) => res.render('login', { user: req.user }));
+
+        app.post('/register', controller.register);
+        app.post('/login', controller.login);
+        app.get('/logout', controller.logout);
+
+        app.post('/oauth', controller.authenticate);
+        app.get('/oauth/:provider/callback', controller.callback, controller.redirect);
+        app.get('/oauth/:provider/connect', controller.connect);
+
+        app.post('/reset', controller.sendResetPasswordToken);
+        app.get('/reset/:token', controller.showResetPasswordForm);
+        app.post('/reset/:token', controller.resetPassword);
+
+        return vhost(`auth.${context.config.APP_DOMAIN}`, app);
+    }
 };
