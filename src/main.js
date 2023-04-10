@@ -1,29 +1,32 @@
 const config = require('./config');
-const shared = require('./shared');
 const db = require('./db');
-const core = require('./core')(config, shared);
-const server = require('./server')(config, db);
+const core = require('./core');
 const api = require('./api');
 const auth = require('./auth');
-const admin = require('./admin');
+const authMiddleware = require('./auth/middleware');
+const cms = require('./cms');
+const crm = require('./crm');
 const classroom = require('./class');
-const client = require('./client');
-const front = require('./front');
+const learner = require('./learner');
+const server = require('./server');
 const teacher = require('./teacher');
 
-const context = {
-    config,
-    ...core,
-    middleware: server.middleware
+const context = core(config);
+
+context.middleware = {
+    auth: authMiddleware(context)
 };
 
-server.use(auth(context));
-server.use('/api', api(context));
-server.use('/admin', admin(context));
-server.use('/class', classroom(context));
-server.use('/client', client(context));
-server.use('/teacher', teacher(context));
-server.use(front(context));
-
 db.connect(config.MONGODB_URI);
-server.listen(config.APP_PORT, () => console.log('Server started'));
+
+server(config, db)
+    .use(auth(context))
+    .use('/api', api(context))
+    .use('/cms', cms(context))
+    .use('/class', classroom(context))
+    .use('/crm', crm(context))
+    .use('/client', learner(context))
+    .use('/teacher', teacher(context))
+    .listen(config.APP_PORT, () => {
+        console.log('Server started');
+    });
