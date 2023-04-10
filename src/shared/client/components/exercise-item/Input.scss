@@ -1,0 +1,25 @@
+.ExerciseInputItem {
+    .ui-Input {
+        margin-bottom: 8px;
+    }
+
+    .ui-Flex {
+        label {
+            flex: none;
+            margin-right: 8px;
+        }
+
+        .ui-Label {
+            + .ui-Label {
+                margin-left: 4px;
+            }
+        }
+
+        input {
+            flex: 1;
+            margin-left: 8px;
+            border: none;
+            outline: none;
+        }
+    }
+}

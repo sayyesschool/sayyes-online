@@ -9,7 +9,7 @@ export default function Form({
     className,
     ...props
 }) {
-    const classNames = classnames('sy-Form', className);
+    const classNames = classnames('Form', className);
 
     return (
         <UIForm

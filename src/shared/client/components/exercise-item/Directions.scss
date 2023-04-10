@@ -1,0 +1,16 @@
+.ExerciseDirectionsItem {
+    display: flex;
+    margin-bottom: 1rem;
+
+    &::before {
+        content: counter(number) ".";
+        counter-increment: number;
+        float: left;
+        margin-right: .5rem;
+        font-weight: bold;
+    }
+
+    &:not(:first-of-type) {
+        margin-top: 2rem;
+    }
+}

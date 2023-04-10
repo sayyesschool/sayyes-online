@@ -1,10 +1,7 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
-import Button from 'shared/ui-components/button';
-import Icon from 'shared/ui-components/icon';
-import Input from 'shared/ui-components/input';
-import Text from 'shared/ui-components/text';
 import AudioPlayer from 'shared/components/audio-player';
+import { Button, Input, Text } from 'shared/ui-components';
 
 import './index.scss';
 
@@ -50,7 +47,7 @@ function AudioField({
     }, []);
 
     return (
-        <div className="audio-field">
+        <div className="AudioField">
             <input
                 ref={inputRef}
                 type="file"
@@ -63,10 +60,10 @@ function AudioField({
             <Input
                 value={file.name}
                 label={label}
-                icon={
+                endDecorator={
                     <Button
                         type="button"
-                        icon={<Icon>upload_file</Icon>}
+                        icon="upload_file"
                         onClick={handleClick}
                     />
                 }

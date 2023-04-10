@@ -33,41 +33,43 @@ export default function PostCard({
             <Box className="PostCard__header">
                 <Flex gap="medium" alignItems="center">
                     <Avatar
-                        imageSrc={post.user.imageUrl}
-                        text={post.user?.initials}
+                        imageSrc={post.author.imageUrl}
+                        text={post.author?.initials}
                         size="lg"
                     />
 
                     <Flex column>
-                        <Text type="body1">{post.user.fullname}</Text>
-                        <Text type="body2">{post.datetimeLabel}</Text>
+                        <Text type="body1">{post.author.fullname}</Text>
+                        <Text type="body2">{post.formattedDateTime}</Text>
                     </Flex>
                 </Flex>
 
-                <MenuButton
-                    trigger={
-                        <IconButton
-                            icon="more_vert"
-                            color="neutral"
-                            size="sm"
-                            variant="plain"
-                        />
-                    }
-                    items={[
-                        {
-                            key: 'edit',
-                            icon: <Icon>edit</Icon>,
-                            content: 'Редактировать',
-                            onClick: toggleEditing
-                        },
-                        {
-                            key: 'delete',
-                            icon: <Icon>delete</Icon>,
-                            content: 'Удалить',
-                            onClick: handleDelete
+                {user?.id === post?.author?.id &&
+                    <MenuButton
+                        trigger={
+                            <IconButton
+                                icon="more_vert"
+                                color="neutral"
+                                size="sm"
+                                variant="plain"
+                            />
                         }
-                    ]}
-                />
+                        items={[
+                            {
+                                key: 'edit',
+                                icon: <Icon>edit</Icon>,
+                                content: 'Редактировать',
+                                onClick: toggleEditing
+                            },
+                            {
+                                key: 'delete',
+                                icon: <Icon>delete</Icon>,
+                                content: 'Удалить',
+                                onClick: handleDelete
+                            }
+                        ]}
+                    />
+                }
             </Box>
 
             <Box className="PostCard__body">

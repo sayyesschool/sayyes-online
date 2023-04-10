@@ -1,5 +1,5 @@
-.audio-content {
-    .audio-player {
+.AudioContent {
+    .AudioPlayer {
         flex: 1;
 
         .plyr__controls {
@@ -7,8 +7,9 @@
         }
     }
 
-    .audio-script {
+    &__text {
         max-height: 480px;
+        margin-top: 1rem;
         overflow: auto;
     }
 }

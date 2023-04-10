@@ -8,7 +8,7 @@ export default function ExercisesList({
     selectedExercise
 }) {
     return (
-        <List as="nav" className="ExercisesList">
+        <List className="ExercisesList">
             {exercises.map((exercise, index) =>
                 <List.Item
                     key={exercise.id}

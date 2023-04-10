@@ -3,7 +3,7 @@ import { Card, Heading, Image, Text } from 'shared/ui-components';
 export default function MaterialCard({ material, ...props }) {
     return (
         <Card
-            className="sy-MaterialCard"
+            className="MaterialCard"
             {...props}
         >
             <Card.Overflow>

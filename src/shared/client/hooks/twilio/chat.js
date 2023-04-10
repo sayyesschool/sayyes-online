@@ -144,8 +144,6 @@ export function useChat({ token, identity }) {
             .catch(error => console.error('ERROR', error));
     }, [messages]);
 
-    console.log(messages);
-
     return useMemo(() => ({
         get client() {
             return clientRef.current;
@@ -165,7 +163,6 @@ export function useChat({ token, identity }) {
 }
 
 function getConversationById(client, identity) {
-    console.log(client, identity);
     return client.getConversationByUniqueName(identity)
         .catch(error => {
             if (error.status === 404) {
@@ -177,7 +174,6 @@ function getConversationById(client, identity) {
             throw error;
         })
         .then(conversation => {
-            console.log('conversation', conversation);
             return conversation.join().catch(error => {
                 if (conversation.status === 'joined') {
                     return conversation;

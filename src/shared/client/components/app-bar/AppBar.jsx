@@ -9,8 +9,8 @@ export default function AppBar({
     ...props
 }) {
     return (
-        <div className="sy-AppBar" {...props}>
-            <div className="sy-AppBar__logo">
+        <div className="AppBar" {...props}>
+            <div className="AppBar__logo">
                 <img src="https://static.sayes.ru/images/logos/sayyes-purple.png" />
             </div>
 

@@ -7,7 +7,7 @@ import './index.scss';
 
 export default function AudioList({ audios, selectedAudio, onSelect, onDelete }) {
     return (
-        <List className="audio-list">
+        <List className="AudioList">
             {audios.map(audio =>
                 <AudioListItem
                     key={audio.id}

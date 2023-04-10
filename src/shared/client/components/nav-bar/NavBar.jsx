@@ -26,7 +26,8 @@ function NavBarItem({ icon, text, to, exact }) {
                 sx={{
                     flexDirection: 'column',
                     alignItems: 'center',
-                    justifyContent: 'center'
+                    justifyContent: 'center',
+                    gap: '0.25rem'
                 }}
             >
                 {icon &&

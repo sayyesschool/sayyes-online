@@ -5,8 +5,8 @@ import StatusIcon from 'shared/components/status-icon';
 import { StatusLabel, StatusColor } from 'shared/data/status';
 
 export default function StatusChip({ status, className, ...props }) {
-    const classNames = classnames('sy-StatusChip', {
-        [`sy-StatusChip--${status}`]: status
+    const classNames = classnames('StatusChip', {
+        [`StatusChip--${status}`]: status
     }, className);
 
     return (

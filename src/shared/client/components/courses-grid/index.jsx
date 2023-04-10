@@ -4,7 +4,7 @@ import { Card, Grid, Heading, Image } from 'shared/ui-components';
 
 export default function CoursesGrid({ courses, ...props }) {
     return (
-        <Grid className="sy-CoursesGrid" gap="medium" {...props}>
+        <Grid className="CoursesGrid" gap="medium" {...props}>
             {courses?.map(course =>
                 <Card
                     key={course.id}

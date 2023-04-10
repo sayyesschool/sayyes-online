@@ -62,7 +62,7 @@ function UserForm({
     return (
         <Form
             ref={ref}
-            className="sy-UserForm"
+            className="UserForm"
             onSubmit={handleSubmit}
             {...props}
         >

@@ -1,11 +1,16 @@
 import { useCallback } from 'react';
 import classnames from 'classnames';
 
-import Checkbox from 'shared/ui-components/checkbox';
-import List from 'shared/ui-components/list';
 import TextContent from 'shared/components/text-content';
+import { Checkbox, List } from 'shared/ui-components';
 
-export default function ExerciseBooleanItem({ item, checked, selected, state = {}, setState }) {
+export default function ExerciseBooleanItem({
+    item,
+    checked,
+    selected,
+    state = {},
+    setState
+}) {
     const handleChange = useCallback(selected => {
         setState((state = {}) => ({
             ...state,

@@ -2,12 +2,12 @@ import { useCallback, useRef, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { useCourse } from 'shared/hooks/courses';
-import { Grid, Flex, IconButton } from 'shared/ui-components';
-import LoadingIndicator from 'shared/components/loading-indicator';
-import Page from 'shared/components/page';
-import ExerciseContent from 'shared/components/exercise-content';
+import Exercise from 'shared/components/exercise';
 import ExerciseComments from 'shared/components/exercise-comments';
 import ExercisesList from 'shared/components/exercises-list';
+import LoadingIndicator from 'shared/components/loading-indicator';
+import Page from 'shared/components/page';
+import { Grid, Flex, IconButton } from 'shared/ui-components';
 
 import './index.scss';
 
@@ -62,7 +62,7 @@ export default function LessonPage({ match, location }) {
                 <Grid columns="minmax(0, 2fr) minmax(0, 1fr)">
                     <Flex column gap="gap.medium">
                         <Page.Section>
-                            <ExerciseContent
+                            <Exercise
                                 exercise={exercise}
                                 onProgressChange={handleExerciseProgressChange}
                             />

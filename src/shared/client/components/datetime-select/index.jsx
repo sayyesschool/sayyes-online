@@ -1,9 +1,6 @@
 import { useCallback } from 'react';
 
-import Button from 'shared/ui-components/button';
-import Icon from 'shared/ui-components/icon';
-import Input from 'shared/ui-components/input';
-import Text from 'shared/ui-components/text';
+import { Button, Input, Text } from 'shared/ui-components';
 
 import './index.scss';
 
@@ -23,58 +20,78 @@ export default function DateTimeSelect({ name, label, items, onChange }) {
     }, [items, onChange]);
 
     return (
-        <div className="datetime-select">
+        <div className="DateTimeSelect">
             {label &&
                 <Text>{label}</Text>
             }
 
-            {items?.map((item, index) =>
-                <div key={index} className="datetime-select-item">
-                    <Input
-                        type="date"
-                        name="date"
-                        value={item.date}
-                        label="Дата"
-                        filled
-                        onChange={event => handleChange(item, event.target)}
+            <div className="DateTimeSelect__fields">
+                {items?.map((item, index) =>
+                    <DateTimeSelectItem
+                        key={index}
+                        item={item}
+                        onChange={handleChange}
+                        onDelete={handleDelete}
                     />
-
-                    <Input
-                        type="time"
-                        name="from"
-                        value={item.from}
-                        label="С"
-                        step="1800"
-                        filled
-                        onChange={event => handleChange(item, event.target)}
-                    />
-
-                    <Input
-                        type="time"
-                        name="to"
-                        value={item.to}
-                        label="До"
-                        step="1800"
-                        filled
-                        onChange={event => handleChange(item, event.target)}
-                    />
-
-                    <Button
-                        type="button"
-                        icon={<Icon>delete</Icon>}
-                        text
-                        iconOnly
-                        onClick={() => handleDelete(item)}
-                    />
-                </div>
-            )}
+                )}
+            </div>
 
             <Button
-                className="datetime-select-button--add"
                 type="button"
-                icon={<Icon>add</Icon>}
+                icon="add"
                 content="Добавить"
+                color="neutral"
+                size="small"
+                variant="plain"
                 onClick={handleAdd}
+            />
+        </div>
+    );
+}
+
+function DateTimeSelectItem({
+    item,
+    onChange,
+    onDelete
+}) {
+    return (
+        <div className="DateTimeSelectItem">
+            <Input
+                type="date"
+                name="date"
+                value={item.date}
+                label="Дата"
+                filled
+                onChange={event => onChange(item, event.target)}
+            />
+
+            <Input
+                type="time"
+                name="from"
+                value={item.from}
+                label="С"
+                step="1800"
+                filled
+                onChange={event => onChange(item, event.target)}
+            />
+
+            <Input
+                type="time"
+                name="to"
+                value={item.to}
+                label="До"
+                step="1800"
+                filled
+                onChange={event => onChange(item, event.target)}
+            />
+
+            <Button
+                type="button"
+                icon="delete"
+                color="neutral"
+                size="small"
+                variant="plain"
+                onClick={() => onDelete(item)}
             />
         </div>
     );

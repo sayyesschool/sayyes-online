@@ -17,7 +17,7 @@ export default function NotificationAlert({
     className,
     ...props
 }) {
-    const classNames = classnames('sy-NotificationAlert', className);
+    const classNames = classnames('NotificationAlert', className);
 
     return (
         <Notification open={open} onClose={onClose}>

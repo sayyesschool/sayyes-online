@@ -1,16 +1,17 @@
 import { useState } from 'react';
 
-import Button from 'shared/ui-components/button';
-import Flex from 'shared/ui-components/flex';
-import Icon from 'shared/ui-components/icon';
-import Surface from 'shared/ui-components/surface';
 import Calendar from 'shared/components/calendar';
+import { Button, Flex, Icon, Surface } from 'shared/ui-components';
 
-export default function CalendarCard({ title, events, defaultView = 'week' }) {
+export default function CalendarCard({
+    title,
+    events,
+    defaultView = 'week'
+}) {
     const [view, setView] = useState(defaultView);
 
     return (
-        <Surface className="calendar-card">
+        <Surface className="CalendarCard">
             <Flex>
                 {title}
 

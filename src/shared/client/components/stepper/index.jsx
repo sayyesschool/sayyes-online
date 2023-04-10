@@ -10,7 +10,7 @@ function Stepper({
     children = steps
 }) {
     return (
-        <div className="sy-Stepper">
+        <div className="Stepper">
             {Children.map(children, (step, index) =>
                 isValidElement(step) ?
                     cloneElement(step) :
@@ -27,29 +27,29 @@ function Step({
     vertical,
     active
 }) {
-    const classNames = classnames('sy-StepperStep', {
-        'sy-StepperStep--completed': completed,
-        'sy-StepperStep--active': active,
-        'sy-StepperStep--vertical': vertical
+    const classNames = classnames('StepperStep', {
+        'StepperStep--completed': completed,
+        'StepperStep--active': active,
+        'StepperStep--vertical': vertical
     });
 
     return (
         <span className={classNames}>
-            <span className="sy-StepperStep__decorator">
+            <span className="StepperStep__decorator">
                 {completed ?
                     <Icon>check</Icon> :
                     <Icon>{icon}</Icon>
                 }
             </span>
-            <span className="sy-StepperStep__content">{content}</span>
+            <span className="StepperStep__content">{content}</span>
         </span>
     );
 }
 
 function Divider({ vertical }) {
     return (
-        <hr className={classnames('sy-StepperDivider', {
-            'sy-StepperDivider--vertical': vertical
+        <hr className={classnames('StepperDivider', {
+            'StepperDivider--vertical': vertical
         })} />
     );
 }

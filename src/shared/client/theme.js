@@ -1,6 +1,6 @@
 import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
 
-export const theme = extendTheme({
+const theme = extendTheme({
     fontFamily: {
         body: 'Nunito, Arial, Helvetica, Segoe UI, sans-serif',
         display: 'Nunito, Arial, Helvetica, Segoe UI, sans-serif'
@@ -76,5 +76,6 @@ export const theme = extendTheme({
 
 export {
     theme as default,
+    theme,
     CssVarsProvider as ThemeProvider
 };

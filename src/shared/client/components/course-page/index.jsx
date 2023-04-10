@@ -6,7 +6,7 @@ import Page from 'shared/components/page';
 export default function CoursePage({ match, location }) {
     const [course] = useCourse(match.params.course, location.search);
 
-    if (!course) return <LoadingIndicator fullscreen />;
+    if (!course) return <LoadingIndicator />;
 
     return (
         <Page id={course.slug} className="CoursePage">

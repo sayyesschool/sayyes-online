@@ -76,7 +76,6 @@ class ImageRemoveEvent {
         const removedImageNodes = [];
 
         for (const node of removedNodes) {
-            console.log(node);
             const removedNode = node.position.nodeAfter;
             removedImageNodes.push(removedNode);
             removedImagesSrc.push(removedNode.getAttribute('src'));

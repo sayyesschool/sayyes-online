@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import Dialog from 'shared/ui-components/dialog';
+import { Dialog } from 'shared/ui-components';
 
 export default function ConfirmationDialog({
     open,
@@ -30,6 +30,7 @@ export default function ConfirmationDialog({
 
     return (
         <Dialog
+            className="ConfirmationDialog"
             open={open}
             title={title}
             content={children}

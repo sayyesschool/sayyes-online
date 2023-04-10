@@ -1,4 +1,4 @@
-import Divider from 'shared/ui-components/divider';
+import { Divider } from 'shared/ui-components';
 
 export default function ExerciseDividerItem({ item }) {
     return (

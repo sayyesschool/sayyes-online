@@ -5,16 +5,24 @@ import Icon from 'shared/ui-components/icon';
 
 import './index.scss';
 
-export default function BottomSheet({ open = false, children, onClose }) {
+export default function BottomSheet({
+    open = false,
+    onClose,
+
+    children,
+    ...props
+}) {
+    const classNames = classnames('BottomSheet', {
+        'BottomSheet--open': open
+    });
+
     return (
-        <div className={classnames('bottom-sheet', {
-            'bottom-sheet--open': open
-        })}>
-            <div className="bottom-sheet__content">
+        <div className={classNames} {...props}>
+            <div className="BottomSheet__content">
                 {children}
             </div>
 
-            <div className="bottom-sheet__actions">
+            <div className="BottomSheet__actions">
                 {onClose &&
                     <Button
                         icon={<Icon>close</Icon>}

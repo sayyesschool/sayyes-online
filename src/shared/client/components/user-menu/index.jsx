@@ -10,10 +10,10 @@ export default function UserMenu({
 }) {
     return (
         <MenuButton
-            className="sy-UserMenu"
+            className="UserMenu"
             trigger={
                 <Avatar
-                    className="sy-UserAvatar"
+                    className="UserAvatar"
                     image={user.imageUrl}
                     text={user.initials}
                 />

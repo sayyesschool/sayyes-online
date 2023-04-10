@@ -31,7 +31,6 @@ export default function Comment({
     }, [onToggle]);
 
     const author = comment.author || user;
-    const isUserAuthor = user?.id === author?.id;
 
     return isEditing ? (
         <div className="Comment Comment--editing">
@@ -80,30 +79,32 @@ export default function Comment({
                 />
             </Box>
 
-            <MenuButton
-                trigger={
-                    <IconButton
-                        icon="more_vert"
-                        color="neutral"
-                        size="sm"
-                        variant="plain"
-                    />
-                }
-                items={[
-                    {
-                        key: 'edit',
-                        icon: <Icon>edit</Icon>,
-                        content: 'Редактировать',
-                        onClick: toggleEditing
-                    },
-                    {
-                        key: 'delete',
-                        icon: <Icon>delete</Icon>,
-                        content: 'Удалить',
-                        onClick: handleDelete
+            {user?.id === author?.id &&
+                <MenuButton
+                    trigger={
+                        <IconButton
+                            icon="more_vert"
+                            color="neutral"
+                            size="sm"
+                            variant="plain"
+                        />
                     }
-                ]}
-            />
+                    items={[
+                        {
+                            key: 'edit',
+                            icon: <Icon>edit</Icon>,
+                            content: 'Редактировать',
+                            onClick: toggleEditing
+                        },
+                        {
+                            key: 'delete',
+                            icon: <Icon>delete</Icon>,
+                            content: 'Удалить',
+                            onClick: handleDelete
+                        }
+                    ]}
+                />
+            }
         </div>
     );
 }

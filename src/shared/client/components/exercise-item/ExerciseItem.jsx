@@ -1,20 +1,17 @@
 import { createElement, memo } from 'react';
 import classnames from 'classnames';
 
-import AudioItem from './audio';
-import BooleanItem from './boolean';
-import ChoiceItem from './choice';
-import DirectionsItem from './directions';
-import DividerItem from './divider';
-import EssayItem from './essay';
-import FIBItem from './fib';
-import ImageItem from './image';
-import ImagesItem from './images';
-import InputItem from './input';
-import TextItem from './text';
-import VideoItem from './video';
-
-import './index.scss';
+import AudioItem from './Audio';
+import BooleanItem from './Boolean';
+import ChoiceItem from './Choice';
+import DirectionsItem from './Directions';
+import DividerItem from './Divider';
+import EssayItem from './Essay';
+import FIBItem from './FIB';
+import ImageItem from './Image';
+import InputItem from './Input';
+import TextItem from './Text';
+import VideoItem from './Video';
 
 const Components = {
     audio: AudioItem,
@@ -25,7 +22,6 @@ const Components = {
     essay: EssayItem,
     fib: FIBItem,
     image: ImageItem,
-    images: ImagesItem,
     input: InputItem,
     text: TextItem,
     video: VideoItem
@@ -39,7 +35,7 @@ export default memo(function ExerciseItem({
     onUpdateState,
     ...props
 }) {
-    const classNames = classnames('exercise-item', `exercise-item--${item.type}`);
+    const classNames = classnames('ExerciseItem', getItemClassName(item.type));
 
     return (
         <div id={item.id} className={classNames} {...props}>
@@ -55,3 +51,7 @@ export default memo(function ExerciseItem({
         </div>
     );
 });
+
+function getItemClassName(type) {
+    return `Exercise${type[0].toUpperCase() + type.slice(1)}Item`;
+}

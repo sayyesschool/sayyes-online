@@ -1,9 +1,9 @@
 import { useCallback, useRef } from 'react';
 
-import useForm from 'shared/hooks/form';
-import { Form, FormInput } from 'shared/ui-components/form';
+import { useFormData } from 'shared/hooks/form';
 import AudioField from 'shared/components/audio-field';
 import TextEditor from 'shared/components/text-editor';
+import { Form } from 'shared/ui-components';
 
 const defaultAudio = {
     title: '',
@@ -16,7 +16,7 @@ export default function AudioForm({ audio = {}, path, onSubmit, ...props }) {
     const textEditorRef = useRef();
     const fileInputRef = useRef();
 
-    const { data, handleChange, getData } = useForm({
+    const { data, handleChange, getData } = useFormData({
         ...defaultAudio,
         ...audio
     }, [audio.id]);
@@ -39,8 +39,8 @@ export default function AudioForm({ audio = {}, path, onSubmit, ...props }) {
     }, [path]);
 
     return (
-        <Form className="audio-form" onSubmit={handleSubmit} {...props}>
-            <FormInput
+        <Form className="AudioForm" onSubmit={handleSubmit} {...props}>
+            <Form.Input
                 name="title"
                 label="Название"
                 value={data.title}
@@ -48,7 +48,7 @@ export default function AudioForm({ audio = {}, path, onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <FormInput
+            <Form.Input
                 type="number"
                 name="duration"
                 label="Продолжительность"

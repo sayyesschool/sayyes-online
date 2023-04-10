@@ -1,31 +1,28 @@
 import { useCallback, useMemo } from 'react';
 import classnames from 'classnames';
 
-import { Checkbox, List, Radio } from 'shared/ui-components';
 import TextContent from 'shared/components/text-content';
-
-function getDefaultState(item) {
-    return item.items?.filter(item => item.correct).length > 1 ? [] : undefined;
-}
+import { Checkbox, List, Radio } from 'shared/ui-components';
 
 export default function ExerciseChoiceItem({
     item,
     checked,
     state = getDefaultState(item),
-    setState
+    onUpdateState
 }) {
+    console.log('ExerciseChoiceItem state', state);
     const isMultiple = useMemo(() => item.items?.filter(item => item.correct).length > 1);
 
-    const handleChange = useCallback(item => {
+    const handleChange = useCallback(_item => {
         if (isMultiple) {
-            setState((chosenItems = []) => chosenItems.includes(item.id) ?
-                chosenItems.filter(id => id !== item.id) :
-                chosenItems.concat(item.id)
+            onUpdateState(item.id, state.includes(_item.id) ?
+                state.filter(itemId => itemId !== _item.id) :
+                state.concat(_item.id)
             );
         } else {
-            setState(item.id);
+            onUpdateState(item.id, _item.id);
         }
-    }, [isMultiple]);
+    }, [item, isMultiple, onUpdateState]);
 
     const isItemChosen = useCallback(item => {
         if (isMultiple) {
@@ -39,16 +36,16 @@ export default function ExerciseChoiceItem({
         <>
             <TextContent>{item.text}</TextContent>
 
-            <List as="div">
+            <List>
                 {item.items?.map(item =>
                     <List.Item
                         key={item.id}
                         as="label"
-                        className={classnames('exercise-choice-item', checked && {
-                            'exercise-choice-item--correct': item.correct,
-                            'exercise-choice-item--incorrect': !item.correct && isItemChosen(item)
+                        className={classnames('ExerciseChoiceItem', checked && {
+                            'ExerciseChoiceItem--correct': item.correct,
+                            'ExerciseChoiceItem--incorrect': !item.correct && isItemChosen(item)
                         })}
-                        media={isMultiple ?
+                        decorator={isMultiple ?
                             <Checkbox
                                 checked={state.includes(item.id)}
                                 disabled={checked}
@@ -61,11 +58,15 @@ export default function ExerciseChoiceItem({
                         }
                         content={item.text}
                         selected={checked && (item.correct || isItemChosen(item))}
-                        selectable
+                        interactive={!checked}
                         onClick={() => handleChange(item)}
                     />
                 )}
             </List>
         </>
     );
+}
+
+function getDefaultState(item) {
+    return item.items?.filter(item => item.correct).length > 1 ? [] : undefined;
 }

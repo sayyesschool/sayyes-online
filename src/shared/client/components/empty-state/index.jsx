@@ -1,23 +1,22 @@
 import classnames from 'classnames';
 
-import Icon from 'shared/ui-components/icon';
-import Text from 'shared/ui-components/text';
+import { Icon, Text } from 'shared/ui-components';
 
 import './index.scss';
 
 export default function EmptyState({ icon, title, description, className, ...props }) {
-    const classNames = classnames('empty-state', className);
+    const classNames = classnames('EmptyState', className);
 
     return (
         <div className={classNames} {...props}>
             {icon &&
-                <Icon className="empty-state__icon">{icon}</Icon>
+                <Icon className="EmptyState__icon">{icon}</Icon>
             }
 
-            <Text as="h3" className="empty-state__title">{title}</Text>
+            <Text as="h3" className="EmptyState__title">{title}</Text>
 
             {description &&
-                <Text as="p" className="empty-state__description">{description}</Text>
+                <Text as="p" className="EmptyState__description">{description}</Text>
             }
         </div>
     );

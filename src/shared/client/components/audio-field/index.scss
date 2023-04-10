@@ -1,13 +1,13 @@
-.audio-field {
+.AudioField {
     input[type="file"] {
         display: none;
     }
 
-    .ui-input {
+    .fui-Input {
         width: 100%;
     }
 
-    .audio-player {
+    .AudioPlayer {
         border: 1px solid rgba(0,0,0,.38);
         border-radius: 0 0 4px 4px;
         border-top: 0;

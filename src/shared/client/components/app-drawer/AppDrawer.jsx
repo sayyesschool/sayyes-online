@@ -1,7 +1,11 @@
 import classnames from 'classnames';
 
-export default function AppSideSheet({ className, children, ...props }) {
-    const classNames = classnames('app-side-sheet', className);
+export default function AppDrawer({
+    className,
+    children,
+    ...props
+}) {
+    const classNames = classnames('AppDrawer', className);
 
     return (
         <div

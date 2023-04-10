@@ -1,4 +1,4 @@
-.sy-AppBar {
+.AppBar {
     position: fixed;
     display: flex;
     flex-direction: column;
@@ -11,7 +11,7 @@
         padding: .25rem;
     }
 
-    .sy-UserAvatar {
+    .UserAvatar {
         margin-top: auto;
         margin-left: auto;
         margin-right: auto;

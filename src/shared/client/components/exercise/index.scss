@@ -1,0 +1,15 @@
+.Exercise {
+    &__content {
+        counter-reset: number;
+    }
+
+    &__footer {
+        display: flex;
+        gap: .5rem;
+        margin-top: 1rem;
+
+        &:empty {
+            margin-top: 0;
+        }
+    }
+}

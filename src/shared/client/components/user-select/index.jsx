@@ -36,7 +36,7 @@ export default function UserSelect({
 
     return (
         <FormAutocomplete
-            className="sy-UserSelect"
+            className="UserSelect"
             name={name}
             onChange={handleChange}
             options={options}

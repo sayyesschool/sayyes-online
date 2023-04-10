@@ -2,7 +2,7 @@ import { useCallback, useRef } from 'react';
 
 import { useCourse } from 'shared/hooks/courses';
 import { useUser } from 'shared/hooks/user';
-import ExerciseContent from 'shared/components/exercise-content';
+import Exercise from 'shared/components/exercise';
 import ExercisesList from 'shared/components/exercises-list';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
@@ -25,7 +25,7 @@ export default function ExercisePage({ match, location }) {
         });
     }, [course, exercise]);
 
-    if (!exercise) return <LoadingIndicator fullscreen />;
+    if (!exercise) return <LoadingIndicator />;
 
     const lesson = course?.lessonsById.get(exercise.lessonId);
     const unit = course?.unitsById.get(exercise.unitId);
@@ -45,7 +45,7 @@ export default function ExercisePage({ match, location }) {
                 <Grid spacing={2}>
                     <Grid.Item lg={8}>
                         <Page.Section>
-                            <ExerciseContent
+                            <Exercise
                                 key={exercise.id}
                                 user={user}
                                 exercise={exercise}

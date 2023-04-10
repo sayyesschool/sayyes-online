@@ -37,7 +37,7 @@ export default function FormDialog({
 
     return (
         <Dialog
-            className="sy-FormDialog"
+            className="FormDialog"
             open={open}
             title={title}
             layout="center"

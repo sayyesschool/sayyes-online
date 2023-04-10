@@ -10,7 +10,9 @@ export default function EssayExerciseContent({ item, state, onUpdateState }) {
 
     return (
         <>
-            <TextContent>{item.text}</TextContent>
+            <TextContent
+                content={item.text}
+            />
 
             <TextEditor
                 value={state}

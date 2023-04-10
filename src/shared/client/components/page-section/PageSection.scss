@@ -31,6 +31,10 @@
         }
     }
 
+    &__header:empty + &__content {
+        padding: 16px;
+    }
+
     // &__header + &__content {
     //     max-height: calc(100vh - 48px - 77px - 32px - 40px);
     // }

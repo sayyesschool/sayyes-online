@@ -5,11 +5,9 @@ import { useBoolean } from 'shared/hooks/state';
 import { useFormData } from 'shared/hooks/form';
 import { rescheduleLessons } from 'shared/libs/enrollment';
 import { Form, FormCheckbox, FormInput } from 'shared/ui-components/form';
-import Text from 'shared/ui-components/text';
 import LessonPillGroup from 'shared/components/lessons-pill-group';
 import ScheduleSelect from 'shared/components/schedule-select';
-
-import './index.scss';
+import { Text } from 'shared/ui-components';
 
 export default function EnrollmentScheduleForm({ enrollment, onSubmit, ...props }) {
     const [lessons, setLessons] = useState([]);
@@ -34,10 +32,8 @@ export default function EnrollmentScheduleForm({ enrollment, onSubmit, ...props 
         onSubmit(data);
     }, [data]);
 
-    console.log(data);
-
     return (
-        <Form className="enrollment-schedule-form" onSubmit={handleSubmit} {...props}>
+        <Form className="EnrollmentScheduleForm" onSubmit={handleSubmit} {...props}>
             <ScheduleSelect
                 name="schedule"
                 schedule={data.schedule}

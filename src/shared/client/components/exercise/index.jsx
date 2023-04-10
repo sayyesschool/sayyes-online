@@ -1,12 +1,17 @@
 import { useCallback, useState } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Button } from 'shared/ui-components';
 import ExerciseItem from 'shared/components/exercise-item';
+import { Button } from 'shared/ui-components';
 
 import './index.scss';
 
-export default function ExerciseContent({ user, exercise, onProgressChange, onComplete }) {
+export default function Exercise({
+    user,
+    exercise,
+    onProgressChange,
+    onComplete
+}) {
     const [state, setState] = useState(exercise.state || {});
     const [isSaving, setSaving] = useBoolean(false);
     const [isChecked, setChecked] = useBoolean(false);
@@ -30,6 +35,7 @@ export default function ExerciseContent({ user, exercise, onProgressChange, onCo
     }, []);
 
     const handleUpdateState = useCallback((itemId, state) => {
+        console.log('handleUpdateState', itemId, state);
         setState(oldState => ({
             ...oldState,
             [itemId]: state
@@ -48,8 +54,8 @@ export default function ExerciseContent({ user, exercise, onProgressChange, onCo
     );
 
     return (
-        <article className="exercise">
-            <section className="exercise-content">
+        <article className="Exercise">
+            <section className="Exercise__content">
                 {exercise.items.map(item =>
                     <ExerciseItem
                         key={item.id}
@@ -63,13 +69,11 @@ export default function ExerciseContent({ user, exercise, onProgressChange, onCo
                 )}
             </section>
 
-            <footer className="exercise-footer">
+            <footer className="Exercise__footer">
                 {hasCheckableItems &&
                     <Button
                         content="Проверить"
                         icon="done"
-                        primary
-                        flat
                         onClick={handleCheck}
                     />
                 }
@@ -78,8 +82,6 @@ export default function ExerciseContent({ user, exercise, onProgressChange, onCo
                     <Button
                         content="Сохранить"
                         icon="save"
-                        primary
-                        flat
                         disabled={isSaving}
                         onClick={handleSave}
                     />
@@ -89,9 +91,6 @@ export default function ExerciseContent({ user, exercise, onProgressChange, onCo
                     <Button
                         content={exercise.completed ? 'Отметить как невыполненное' : 'Отметить как выполненное'}
                         icon={exercise.completed ? 'task_alt' : undefined}
-                        primary={!exercise.completed}
-                        secondary={exercise.completed}
-                        flat
                         disabled={isSaving}
                         onClick={handleComplete}
                     />

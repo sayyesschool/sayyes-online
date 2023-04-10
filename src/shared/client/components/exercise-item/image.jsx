@@ -1,5 +1,4 @@
-import Image from 'shared/ui-components/image';
-import Text from 'shared/ui-components/text';
+import { Image, Text } from 'shared/ui-components';
 
 export default function ExerciseImageItem({ item = {} }) {
     return (

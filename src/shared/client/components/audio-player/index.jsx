@@ -5,7 +5,10 @@ import { defaultI18n } from './constants';
 
 import './index.scss';
 
-const AudioPlayer = forwardRef(function AudioPlayer({ options, ...props }, ref) {
+const AudioPlayer = forwardRef(function AudioPlayer({
+    options = {},
+    ...props
+}, ref) {
     const audioRef = useRef();
     const playerRef = useRef();
 
@@ -23,14 +26,10 @@ const AudioPlayer = forwardRef(function AudioPlayer({ options, ...props }, ref) 
     }, []);
 
     return (
-        <div className="audio-player">
+        <div className="AudioPlayer">
             <audio ref={audioRef} {...props} />
         </div>
     );
 });
-
-AudioPlayer.defaultProps = {
-    options: {}
-};
 
 export default AudioPlayer;

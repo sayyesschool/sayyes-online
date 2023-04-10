@@ -1,0 +1,15 @@
+.ExerciseFIBItem {
+    position: relative;
+
+    .ContentEditor {
+        margin-right: 36px;
+        border: 1px solid rgba(0, 0, 0, .12);
+        border-radius: 4px;
+    }
+
+    .ui-Button {
+        position: absolute;
+        top: 0;
+        right: 0
+    }
+}

@@ -9,7 +9,7 @@ export default function CoursesPage() {
     if (!courses) return <LoadingIndicator />;
 
     return (
-        <Page id="courses">
+        <Page className="CoursesPage">
             <Page.Header
                 title="Курсы"
             />

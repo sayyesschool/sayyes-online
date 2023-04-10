@@ -4,7 +4,7 @@ import './index.scss';
 
 export default function DetailsList({ items = [], children }) {
     return (
-        <List className="sy-DetailsList">
+        <List className="DetailsList">
             {items.filter(item => !!item).map(item =>
                 <List.Item
                     key={item.key}
