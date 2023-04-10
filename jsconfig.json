@@ -1,13 +1,16 @@
 {
-    "compilerOptions": {
-        "baseUrl": "./src",
-        "paths": {
-            "@/*": ["./*"],
-            "shared/*": ["./shared/*"]
-        },
-        "target": "es2022"
-    },
     "include": [
-        "src/**/*"
-    ]
+        "./src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ],
+    "compilerOptions": {
+        "paths": {
+            "@/*": ["./src/*"],
+            "shared/*": ["./src/shared/*"],
+        },
+        "target": "es2020"
+    }
 }
