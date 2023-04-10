@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import classnames from 'classnames';
 
 import { Avatar, Icon, Label, Text } from 'shared/ui-components';
@@ -6,15 +7,19 @@ import useIsTrackSwitchedOff from 'app/hooks/useIsTrackSwitchedOff';
 import useParticipantIsReconnecting from 'app/hooks/useParticipantIsReconnecting';
 import usePublications from 'app/hooks/usePublications';
 import useTrack from 'app/hooks/useTrack';
+
 import AudioLevelIndicator from 'app/components/AudioLevelIndicator';
 import NetworkQualityLevel from 'app/components/NetworkQualityLevel';
+import ParticipantTracks from 'app/components/ParticipantTracks';
 
-export default function ParticipantInfo({
+export default memo(function Participant({
     participant,
     local,
     hidden,
     selected,
-    children,
+    dominantSpeaker,
+    videoOnly,
+    screenShareEnabled,
     onClick
 }) {
     const publications = usePublications(participant);
@@ -31,9 +36,9 @@ export default function ParticipantInfo({
     const isVideoEnabled = Boolean(videoPublication);
     const isScreenShareEnabled = Boolean(screenSharePublication);
 
-    const classNames = classnames('participant-info', {
-        'participant-info--hidden': hidden,
-        'participant-info--cursor-pointer': Boolean(onClick)
+    const classNames = classnames('Participant', {
+        'Participant--hidden': hidden,
+        'Participant--cursor-pointer': Boolean(onClick)
     });
 
     return (
@@ -41,51 +46,58 @@ export default function ParticipantInfo({
             className={classNames}
             onClick={onClick}
         >
-            <div className="participant-info__info-container">
-                <div className="participant-info__network-quality-container">
+            <div className="Participant__info-container">
+                <div className="Participant__network-quality-container">
                     <NetworkQualityLevel participant={participant} />
                 </div>
 
-                <div className="participant-info__info-row-bottom">
+                <div className="Participant__info-row-bottom">
                     {isScreenShareEnabled &&
-                        <span className="participant-info__screen-share-icon-container">
+                        <span className="Participant__screen-share-icon-container">
                             <Icon>screen_share</Icon>
                         </span>
                     }
 
-                    <Label
-                        className="participant-info__identity"
-                        icon={<AudioLevelIndicator audioTrack={audioTrack} />}
-                        content={<>
-                            {participant.name}
-                            {local && ' (Вы)'}
-                        </>}
-                        color="white"
-                    />
+                    <div className="Participant__identity-container">
+                        <Text
+                            type="body2"
+                            startDecorator={<AudioLevelIndicator audioTrack={audioTrack} />}
+                            content={<>
+                                {participant.name}
+                                {local && ' (Вы)'}
+                            </>}
+                            textColor="common.white"
+                        />
+                    </div>
                 </div>
 
                 {selected &&
-                    <div className="participant-info__pin-icon-container">
+                    <div className="Participant__pin-icon-container">
                         <Icon>push_pin</Icon>
                     </div>
                 }
             </div>
 
-            <div className="participant-info__inner-container">
+            <div className="Participant__inner-container">
                 {(!isVideoEnabled || isVideoSwitchedOff) && (
-                    <div className="participant-info__avatar-container">
+                    <div className="Participant__avatar-container">
                         <Avatar name={participant.name} />
                     </div>
                 )}
 
                 {isParticipantReconnecting && (
-                    <div className="participant-info__reconnecting-container">
+                    <div className="Participant__reconnecting-container">
                         <Text>Reconnecting...</Text>
                     </div>
                 )}
 
-                {children}
+                <ParticipantTracks
+                    participant={participant}
+                    local={local}
+                    videoOnly={videoOnly}
+                    screenShareEnabled={screenShareEnabled}
+                />
             </div>
         </div>
     );
-}
+});

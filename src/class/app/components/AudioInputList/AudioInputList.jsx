@@ -20,7 +20,7 @@ export default function AudioInputList() {
     const mediaStreamTrack = useMediaStreamTrack(localAudioTrack);
     const localAudioInputDeviceId = srcMediaStreamTrack?.getSettings().deviceId || mediaStreamTrack?.getSettings().deviceId;
 
-    const handleDeviceChange = useCallback((_, { value: newDeviceId }) => {
+    const handleDeviceChange = useCallback((_, newDeviceId) => {
         window.localStorage.setItem(SELECTED_AUDIO_INPUT_KEY, newDeviceId);
 
         if (localAudioTrack) {

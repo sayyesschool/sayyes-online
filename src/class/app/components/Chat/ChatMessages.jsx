@@ -1,9 +1,17 @@
+import { useEffect, useRef } from 'react';
+
 // import MessageListScrollContainer from './MessageListScrollContainer';
 import ChatMessage from './ChatMessage';
 
 export default function ChatMessages({ messages }) {
+    const rootRef = useRef();
+
+    useEffect(() => {
+        rootRef.current?.scrollTo(0, rootRef.current?.scrollHeight);
+    }, [messages]);
+
     return (
-        <div className="ChatMessages">
+        <div ref={rootRef} className="ChatMessages">
             {/* <MessageListScrollContainer messages={messages}> */}
             {messages.map((message, i) => {
                 const time = getFormattedTime(message.createdAt);

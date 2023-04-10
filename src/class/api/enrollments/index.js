@@ -8,8 +8,12 @@ module.exports = context => {
 
     router.get('/', controller.getMany);
 
-    router.route('/:id')
+    router.route('/:enrollmentId')
         .get(controller.getOne);
+
+    router.route('/:enrollmentId/courses/:courseId', controller.getCourse);
+
+    router.route('/:enrollmentId/materials', controller.getMaterials);
 
     return router;
 };

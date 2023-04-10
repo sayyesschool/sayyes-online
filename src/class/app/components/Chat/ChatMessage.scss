@@ -1,0 +1,75 @@
+.ChatMessage {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 1.425em 0 0.083em;
+    color: #606B85;
+
+    &__info {
+        font-size: 10px;
+        text-align: right;
+    }
+
+    &__content {
+        font-size: 14px;
+        text-align: left;
+    }
+
+    &--local {
+        align-items: flex-end;
+        align-self: flex-end;
+    }
+
+    &--remote {
+        align-items: flex-start;
+        align-self: flex-start;
+    }
+
+    &--text {
+        display: inline-flex;
+        padding: 0.5em 0.8em 0.6em;
+        border-radius: 16px;
+        word-break: break-word;
+        hyphens: auto;
+        white-space: pre-wrap;
+    }
+
+    &--text + &--text {
+        margin-top: 0.1rem;
+    }
+
+    &--media {
+        display: flex;
+        padding: 0.8rem 1.5rem;
+        margin: 0.5rem 0;
+        border: 1px solid #e4e7e9;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    &--local &--attached-top {
+        border-bottom-right-radius: 4px;
+    }
+
+    &--local &--attached-middle {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+    }
+
+    &--local &--attached-bottom {
+        border-top-right-radius: 4px;
+    }
+
+    &--remote &--attached-top {
+        border-bottom-left-radius: 4px;
+    }
+
+    &--remote &--attached-middle {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+
+    &--remote &--attached-bottom {
+        border-top-left-radius: 4px;
+    }
+}

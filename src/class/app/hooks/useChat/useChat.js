@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Client } from '@twilio/conversations';
 
-export default function useChat({ token, conversationId, userId }) {
+export default function useChat({ token, conversationId, userId, participantsById }) {
     const clientRef = useRef();
     const conversationRef = useRef();
+    const audioRef = useRef(new Audio(STORAGE_URL + '/assets/audios/chat-new-message.mp3'));
 
     const [participants, setParticipants] = useState();
     const [messages, setMessages] = useState();
@@ -64,7 +65,7 @@ export default function useChat({ token, conversationId, userId }) {
             connectionState !== 'connected' || conversationRef.current
         ) return;
 
-        getConversationById(clientRef.current, conversationId)
+        getConversationById(clientRef.current, conversationId, userId, participantsById)
             .then(conversation => {
                 conversationRef.current = conversation;
 
@@ -118,7 +119,13 @@ export default function useChat({ token, conversationId, userId }) {
 
         function handleMessageAdded(message) {
             // onMessageAdded(message);
-            setMessages(messages => messages.concat(mapMessage(message, userId)));
+            const mappedMessage = mapMessage(message, userId);
+
+            if (mappedMessage.isRemote) {
+                audioRef.current?.play();
+            }
+
+            setMessages(messages => messages.concat(mappedMessage));
         }
 
         function handleMessageRemoved(message) {
@@ -140,11 +147,9 @@ export default function useChat({ token, conversationId, userId }) {
     }, []);
 
     const deleteMessage = useCallback(message => {
-        messages.find(m => m.sid === message.id)?.remove()
+        messages.find(m => m.id === message.id)?.remove()
             .catch(error => console.error('ERROR', error));
     }, [messages]);
-
-    console.log(messages);
 
     return useMemo(() => ({
         get client() {
@@ -164,20 +169,22 @@ export default function useChat({ token, conversationId, userId }) {
     }), [clientState, messages, isTyping]);
 }
 
-function getConversationById(client, identity) {
-    console.log(client, identity);
-    return client.getConversationByUniqueName(identity)
+function getConversationById(client, conversationId, participantsById) {
+    return client.getConversationByUniqueName(conversationId)
         .catch(error => {
-            if (error.status === 404) {
-                return client.createConversation({
-                    uniqueName: identity
-                });
-            }
+            if (error.status !== 404) throw error;
 
-            throw error;
+            return client.createConversation({
+                uniqueName: identity
+            }).then(conversation => {
+                return Promise.all(
+                    Object.keys(participantsById).map(participantId => {
+                        return conversation.add(participantId);
+                    })
+                ).then(() => conversation);
+            });
         })
         .then(conversation => {
-            console.log('conversation', conversation);
             return conversation.join().catch(error => {
                 if (conversation.status === 'joined') {
                     return conversation;

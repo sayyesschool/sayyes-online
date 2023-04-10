@@ -1,6 +1,6 @@
 @use 'shared/styles/mixins' as *;
 
-.participant-info {
+.Participant {
     position: relative;
     display: flex;
     align-items: center;
@@ -98,15 +98,11 @@
         color: #fff;
     }
 
-    &__identity {
-        background-color: rgb(41, 40, 40, .5);
+    &__identity-container {
         margin: 4px;
-
-        .ui-box {
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
+        padding: 0 4px 0 0;
+        border-radius: 4px;
+        background-color: rgb(41, 40, 40, .5);
     }
 
     &__info-row-bottom {

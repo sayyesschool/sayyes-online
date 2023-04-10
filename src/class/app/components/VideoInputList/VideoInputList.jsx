@@ -19,7 +19,7 @@ export default function VideoInputList() {
     );
     const localVideoInputDeviceId = mediaStreamTrack?.getSettings().deviceId || storedLocalVideoDeviceId;
 
-    const handleDeviceChange = useCallback((_, { value: newDeviceId }) => {
+    const handleDeviceChange = useCallback((_, newDeviceId) => {
         // Here we store the device ID in the component state. This is so we can re-render this component display
         // to display the name of the selected device when it is changed while the users camera is off.
         setStoredLocalVideoDeviceId(newDeviceId);

@@ -4,15 +4,9 @@ const Controller = require('./controller');
 
 module.exports = context => {
     const router = Router();
-    const controller = Controller(context);
+    const controller = Controller(context.models);
 
-    router.get('/', controller.getMany);
-    router.get('/:id', controller.getOne);
-
-    router.route('/:course/exercises/:exercise/comments/:comment?')
-        .post(controller.createExerciseComment)
-        .put(controller.updateExerciseComment)
-        .delete(controller.deleteExerciseComment);
+    router.get('/:courseId', controller.getOne);
 
     return router;
 };

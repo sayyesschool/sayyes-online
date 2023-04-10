@@ -17,13 +17,13 @@ $totalMobileSidebarHeight: $sidebarMobileHeight + ($sidebarMobilePadding * 2) + 
         grid-template-rows: 1fr auto;
     }
 
-    .main-participant-info {
+    .MainParticipant {
         &--fullwidth {
             grid-area: 1 / 1 / 2 / 3;
         }
     }
 
-    .participant-list {
+    .ParticipantList {
         grid-area: 1 / 2 / 1 / 3;
 
         @include breakpoint(lt-md) {

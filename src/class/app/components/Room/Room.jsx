@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 import classnames from 'classnames';
 
@@ -27,6 +27,10 @@ export default function Room({ user, enrollment }) {
 
     const rootRef = useRef();
     const contentRef = useRef();
+    const participantsById = useMemo(() => ({
+        [enrollment.client.id]: enrollment.client.fullname,
+        [enrollment.teacher.id]: enrollment.teacher.fullname
+    }));
 
     const [isFullscreen, toggleFullscreen] = useFullScreen(rootRef);
     const [isChatOpen, toggleChatOpen] = useBoolean(false);
@@ -103,7 +107,7 @@ export default function Room({ user, enrollment }) {
                 <Chat
                     conversationId={enrollment.id}
                     userId={user.id}
-                    participants={participants}
+                    participantsById={participantsById}
                     onConnected={handleChatConnected}
                 />
             </RoomSidePanel>

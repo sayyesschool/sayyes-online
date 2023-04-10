@@ -1,17 +1,18 @@
 .page {
+    width: 100%;
     max-width: 1024px;
     margin: 0 auto 2rem;
 
-    .courses-grid {
+    .CoursesGrid {
         margin: 1rem;
     }
 
-    .room-content--scrolling & {
+    .RoomContent--scrolling & {
         .page-header {
             position: sticky;
             top: 0;
             background-color: #2d2c2c;
-            box-shadow: 0px 6px 4px -4px rgb(0 0 0 / 20%);
+        box-shadow: 0px 6px 4px -4px rgb(0 0 0 / 20%);
             z-index: 1;
 
             .page-header__inner {

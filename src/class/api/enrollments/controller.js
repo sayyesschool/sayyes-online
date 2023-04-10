@@ -1,4 +1,6 @@
-module.exports = ({ Enrollment }) => ({
+module.exports = ({
+    Enrollment
+}) => ({
     getMany: (req, res, next) => {
         Enrollment.find({ teacher: req.user.id, ...req.query })
             .populate('client', 'firstname lastname fullname email')
@@ -13,7 +15,7 @@ module.exports = ({ Enrollment }) => ({
     },
 
     getOne: (req, res, next) => {
-        Enrollment.findById(req.params.id)
+        Enrollment.findById(req.params.enrollmentId)
             .populate('client', 'firstname lastname fullname')
             .populate('clients', 'firstname lastname fullname')
             .populate('teacher', 'firstname lastname fullname')

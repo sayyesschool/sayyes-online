@@ -11,7 +11,7 @@ export default function AudioOutputList() {
 
     const activeOutputLabel = audioOutputDevices.find(device => device.deviceId === activeSinkId)?.label;
 
-    const handleDeviceChange = useCallback((_, { value }) => {
+    const handleDeviceChange = useCallback((_, value) => {
         setActiveSinkId(value);
     }, [setActiveSinkId]);
 

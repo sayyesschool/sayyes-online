@@ -4,79 +4,11 @@
     width: 100%;
     height: 100%;
 
-    &__main {
+    .ChatMessages {
         flex: 1;
-        padding: 8px;
-        overflow-x: hidden;
-        overflow-y: auto;
     }
 
-    &__form {
+    .ChatInput {
         margin-top: auto;
-        padding: 4px;
-    }
-}
-
-.ChatMessages {
-    display: flex;
-    flex-direction: column;
-}
-
-.ChatMessage {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 4px;
-    padding: 1.425em 0 0.083em;
-    color: #606B85;
-
-    &__info {
-        font-size: 10px;
-        text-align: right;
-    }
-
-    &__content {
-        font-size: 14px;
-        text-align: left;
-    }
-
-    &--local {
-        background-color: #CCE4FF;
-        align-self: flex-end;
-    }
-
-    &--text {
-        display: inline-flex;
-        margin: 0.3em 0 0;
-        padding: 0.5em 0.8em 0.6em;
-        border-radius: 16px;
-        word-break: break-word;
-        background-color: #E1E3EA;
-        hyphens: auto;
-        white-space: pre-wrap;
-    }
-
-    &--media {
-        display: flex;
-        padding: 0.9em 1.5em;
-        margin: 0.6em 0;
-        border: 2px solid #e4e7e9;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-}
-
-.ChatMessageMedia {
-    &__info {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin-left: 1.5rem;
-        min-width: 0;
-
-        p {
-            margin: 0;
-            font-size: 12px;
-        }
     }
 }

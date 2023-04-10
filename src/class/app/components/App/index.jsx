@@ -18,7 +18,7 @@ export default function App() {
 
     useVisibilityHandler();
 
-    if (!user || !enrollment) return <LoadingIndicator fullscreen />;
+    if (!user || !enrollment) return <LoadingIndicator fluid />;
 
     return (
         <div className="App">

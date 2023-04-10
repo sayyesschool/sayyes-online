@@ -26,7 +26,7 @@ export default function LocalVideoPreview({ identity }) {
                     as="div"
                     startDecorator={<LocalAudioLevelIndicator />}
                     content={identity}
-                    color="white"
+                    textColor="common.white"
                     type="body2"
                 />
             </div>

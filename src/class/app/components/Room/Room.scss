@@ -8,20 +8,16 @@
     overflow-y: auto;
 
     &--showing-content {
-        .main-participant-info {
+        .MainParticipant {
             display: none;
         }
         
-        .participant-list {
-            border-left: 1px solid #3b3b3b;
+        .ParticipantList {
+            border-left: 1px solid rgba(0,0,0,.12);
         }
         
         .participant-info--hidden {
             display: flex;
-        }
-
-        .RoomContent {
-            grid-template-columns: 1fr;
         }
     }
 
@@ -33,7 +29,7 @@
         .Page {
             width: 100%;
             max-width: 1024px;
-            margin: auto;
+            margin: 0 auto;
         }
     }
 

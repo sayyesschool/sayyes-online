@@ -17,8 +17,8 @@ export default function ParticipantList() {
 
     const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
 
-    const classNames = classnames('participant-list', {
-        'participant-list--transparent-background': !isRemoteParticipantScreenSharing
+    const classNames = classnames('ParticipantList', {
+        'ParticipantList--transparent-background': !isRemoteParticipantScreenSharing
     });
 
     return (
