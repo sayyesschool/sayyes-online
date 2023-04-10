@@ -4,17 +4,18 @@ const { Schema, models } = require('mongoose');
 
 const Person = require('./person');
 
-const roles = {
-    admin: 'Администратор',
-    client: 'Клиент',
-    manager: 'Менеджер',
-    student: 'Студент',
-    teacher: 'Преподаватель'
+const UserRole = {
+    Administrator: 'administrator',
+    Customer: 'customer',
+    Editor: 'editor',
+    Learner: 'learner',
+    Manager: 'manager',
+    Teacher: 'teacher'
 };
 
 const User = new Schema([Person, {
     password: { type: String, trim: true },
-    role: { type: String, enum: Object.keys(roles), default: 'client' },
+    role: { type: String, enum: Object.values(UserRole), default: UserRole.Customer },
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
     activated: { type: Boolean, default: false, alias: 'isActivated' },
     timezone: { type: String },
@@ -41,14 +42,6 @@ const User = new Schema([Person, {
 
 /* Virtuals */
 
-User.virtual('roleLabel').get(function() {
-    return roles[this.role];
-});
-
-User.virtual('timezoneLabel').get(function() {
-    return roles[this.role];
-});
-
 User.virtual('url').get(function() {
     return `/${this.role}s/${this.id}`;
 });
@@ -64,6 +57,8 @@ User.virtual('transactions', {
 });
 
 /* Statics */
+
+User.statics.Role = UserRole;
 
 User.statics.hashPassword = function(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync());

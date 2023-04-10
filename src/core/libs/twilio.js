@@ -35,13 +35,13 @@ module.exports = ({
             const token = new AccessToken(
                 TWILIO_ACCOUNT_ID,
                 TWILIO_API_KEY,
-                TWILIO_API_SECRET
+                TWILIO_API_SECRET,
+                { identity }
             );
             const chatGrant = new ChatGrant({
                 serviceSid: TWILIO_CHAT_SERVICE_ID
             });
 
-            token.identity = identity;
             token.addGrant(chatGrant);
 
             return token.toJwt();

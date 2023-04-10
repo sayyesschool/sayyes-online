@@ -1,18 +1,30 @@
-const statuses = {
-    new: 'Новая',
-    processing: 'В обработке',
-    completed: 'Завершена',
-    canceled: 'Отменена'
+const RequestChannel = {
+    None: '',
+    Site: 'site',
+    Call: 'call',
+    WhatsApp: 'whatsapp',
+    Instagram: 'instagram'
 };
 
-const statusIcons = {
-    new: 'new_releases',
-    processing: 'edit',
-    completed: 'check_circle',
-    canceled: 'cancel'
+const RequestSource = {
+    None: '',
+    Instagram: 'instagram',
+    WhatsApp: 'whatsapp',
+    Yandex: 'yandex',
+    Google: 'google',
+    Recommendation: 'recommendation'
+};
+
+const RequestStatus = {
+    New: 'new',
+    Processing: 'processing',
+    Postponed: 'postponed',
+    Completed: 'completed',
+    Canceled: 'canceled'
 };
 
 module.exports = {
-    statuses,
-    statusIcons
+    RequestChannel,
+    RequestSource,
+    RequestStatus
 };

@@ -1,11 +1,11 @@
 const { Schema } = require('mongoose');
 const moment = require('moment');
 
-const { Status, StatusLabel, StatusIcon } = require('./constants');
+const { LessonType, LessonStatus } = require('./constants');
 
 const Lesson = new Schema({
-    type: { type: String, enum: ['online', 'offline'] },
-    status: { type: String, enum: Object.values(Status), default: Status.SCHEDULED },
+    type: { type: String, enum: Object.values(LessonType) },
+    status: { type: String, enum: Object.values(LessonStatus), default: LessonStatus.Scheduled },
     date: { type: Date, set: value => moment(value).utc().format('YYYY-MM-DDTHH:mm:ss[Z]') },
     duration: { type: Number, default: 60 },
     trial: { type: Boolean, default: false },
@@ -19,9 +19,6 @@ const Lesson = new Schema({
 }, {
     timestamps: true
 });
-
-Lesson.statics.Status = Status;
-Lesson.statics.StatusIcon = StatusIcon;
 
 Lesson.statics.findConflicting = function(teacherId, from, duration) {
     const { years, months, date } = moment(from).utc().toObject();
@@ -53,7 +50,7 @@ Lesson.statics.findConflicting = function(teacherId, from, duration) {
 Lesson.statics.findScheduled = function() {
     return this.find({
         date: { $gte: new Date() },
-        status: Status.SCHEDULED
+        status: LessonStatus.Scheduled
     }).sort({ date: 1 });
 };
 
@@ -77,14 +74,6 @@ Lesson.virtual('url').get(function() {
     return `/lessons/${this.id}`;
 });
 
-Lesson.virtual('statusLabel').get(function() {
-    return StatusLabel[this.status];
-});
-
-Lesson.virtual('statusIcon').get(function() {
-    return StatusIcon[this.status];
-});
-
 Lesson.virtual('startAt').get(function() {
     return moment(this.date).toDate();
 });
@@ -93,8 +82,16 @@ Lesson.virtual('endAt').get(function() {
     return moment(this.date).add(this.duration, 'minutes').toDate();
 });
 
-Lesson.virtual('dateTimeLabel').get(function() {
-    return moment(this.date).format('DD.mm.YYYY в HH:mm');
+Lesson.virtual('dateString').get(function() {
+    return moment(this.date).format('DD.MM.YYYY');
+});
+
+Lesson.virtual('timeString').get(function() {
+    return moment(this.date).format('HH:mm');
+});
+
+Lesson.virtual('dateTimeString').get(function() {
+    return moment(this.date).format('DD.MM.YYYY, HH:mm');
 });
 
 module.exports = Lesson;

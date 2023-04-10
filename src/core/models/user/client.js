@@ -3,7 +3,7 @@ const { Schema } = require('mongoose');
 const Contact = require('./contact');
 
 const Client = new Schema({
-    balance: { type: Number },
+    balance: { type: Number, default: 0 },
     altPhone: {
         type: String,
         trim: true,
@@ -29,12 +29,6 @@ Client.virtual('requests', {
 
 Client.virtual('lessons', {
     ref: 'Lesson',
-    localField: '_id',
-    foreignField: 'client'
-});
-
-Client.virtual('enrollments', {
-    ref: 'Enrollment',
     localField: '_id',
     foreignField: 'client'
 });

@@ -19,9 +19,9 @@ const UserSchema = require('./user');
 const User = model('User', UserSchema);
 const Admin = User.discriminator('Admin', UserSchema.Admin, 'admin');
 const Client = User.discriminator('Client', UserSchema.Client, 'client');
+const Learner = User.discriminator('Learner', UserSchema.Learner, 'student');
 const Manager = User.discriminator('Manager', UserSchema.Manager, 'manager');
 const Teacher = User.discriminator('Teacher', UserSchema.Teacher, 'teacher');
-const Student = User.discriminator('Student', UserSchema.Student, 'student');
 
 module.exports = () => ({
     Comment: model('Comment', Comment),
@@ -41,7 +41,7 @@ module.exports = () => ({
     User,
     Admin,
     Client,
+    Learner,
     Manager,
-    Teacher,
-    Student
+    Teacher
 });

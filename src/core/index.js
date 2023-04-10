@@ -8,6 +8,7 @@ module.exports = (config) => {
     const services = configureServices(config, libs, models);
 
     return {
+        config,
         libs,
         models,
         services

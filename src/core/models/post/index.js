@@ -6,8 +6,7 @@ const Comment = require('../comment');
 const Post = new Schema({
     title: { type: String, trim: true },
     content: { type: String, default: '' },
-    published: { type: Boolean, default: true },
-    user: { type: Schema.Types.ObjectId, ref: 'User' },
+    author: { type: Schema.Types.ObjectId, ref: 'User' },
     enrollment: { type: Schema.Types.ObjectId, ref: 'Enrollment' },
     comments: [Comment]
 }, {
@@ -31,11 +30,11 @@ Post.virtual('statusIcon').get(function() {
 });
 
 
-Post.virtual('dateCreated').get(function() {
+Post.virtual('formattedDate').get(function() {
     return moment(this.createdAt).format('DD.MM.YY');
 });
 
-Post.virtual('datetimeLabel').get(function() {
+Post.virtual('formattedDateTime').get(function() {
     return moment(this.createdAt).tz('Europe/Moscow').format('D MMM YYYY в H:mm');
 });
 

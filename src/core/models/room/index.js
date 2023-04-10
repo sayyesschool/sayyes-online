@@ -2,7 +2,7 @@ const { Schema } = require('mongoose');
 const moment = require('moment');
 
 const Room = new Schema({
-    title: { type: String, trim: true },
+    title: { type: String, trim: true, alias: 'name' },
     login: { type: String },
     password: { type: String },
     active: { type: Boolean, default: false }

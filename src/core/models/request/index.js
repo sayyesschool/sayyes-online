@@ -1,16 +1,32 @@
 const { Schema } = require('mongoose');
+const moment = require('moment');
 
-const { statuses, statusIcons } = require('./constants');
+const { RequestChannel, RequestSource, RequestStatus } = require('./constants');
 
 const Request = new Schema({
-    status: { type: String, enum: Object.keys(statuses), default: 'new' },
-    description: { type: String, default: 'Заявка на обучение' },
+    status: {
+        type: String, enum:
+            Object.values(RequestStatus),
+        default: RequestStatus.New
+    },
+    description: {
+        type: String,
+        default: 'Заявка на обучение'
+    },
     contact: {
         name: { type: String },
         phone: { type: String, set: value => value.trim().replace(/[\s()\-\+]+/g, '') }
     },
-    channel: { type: String, default: '' },
-    source: { type: String, default: '' },
+    channel: {
+        type: String,
+        enum: Object.values(RequestChannel),
+        default: RequestChannel.None
+    },
+    source: {
+        type: String,
+        enum: Object.values(RequestSource),
+        default: RequestSource.None
+    },
     referrer: { type: String },
     utm: {
         source: { type: String, default: '' },
@@ -33,12 +49,16 @@ Request.virtual('url').get(function() {
     return `requests/${this.id}`;
 });
 
-Request.virtual('statusLabel').get(function() {
-    return statuses[this.status];
+Request.virtual('dateString').get(function() {
+    return moment(this.createdAt).format('DD.MM.YYYY');
 });
 
-Request.virtual('statusIcon').get(function() {
-    return statusIcons[this.status];
+Request.virtual('timeString').get(function() {
+    return moment(this.createdAt).format('H:mm');
+});
+
+Request.virtual('dateTimeString').get(function() {
+    return moment(this.createdAt).format('D MMM, H:mm');
 });
 
 module.exports = Request;
