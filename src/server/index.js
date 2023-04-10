@@ -1,8 +1,11 @@
+const cors = require('cors');
 const express = require('express');
+const https = require('https');
 
 const middleware = require('./middleware');
+const pages = require('./pages');
 
-module.exports = (config, db) => {
+module.exports = (config, db, options) => {
     const server = express();
 
     server.set('trust proxy', true);
@@ -16,6 +19,12 @@ module.exports = (config, db) => {
     server.locals.FACEBOOK_PIXEL_ID = config.FACEBOOK_PIXEL_ID;
     server.locals.basedir = config.APP_PATH;
 
+    server.use(cors({
+        // origin: '*',
+        origin: /sayyes\.(ru|local)$/,
+        credentials: true
+    }));
+
     server.use(express.static('public'));
     server.use('/lib', express.static('node_modules'));
     server.use(express.json());
@@ -23,6 +32,7 @@ module.exports = (config, db) => {
     server.use(middleware.logger);
     server.use(middleware.session(config, db.connection));
     server.use(...middleware.flash);
+    //server.use(pages); 
 
     process.on('SIGTERM', () => {
         console.info('SIGTERM signal received.');
@@ -34,7 +44,20 @@ module.exports = (config, db) => {
         });
     });
 
-    server.middleware = middleware;
-
     return server;
+
+    // return {
+    //     use(...args) {
+    //         server.use(...args);
+    //         return this;
+    //     },
+    //     listen(port, ...rest) {
+    //         if (options) {
+    //             https.createServer(options, server)
+    //                 .listen(port, ...rest);
+    //         } else {
+    //             server.listen(port, ...rest);
+    //         }
+    //     }
+    // };
 };

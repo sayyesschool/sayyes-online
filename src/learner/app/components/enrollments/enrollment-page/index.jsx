@@ -1,5 +1,6 @@
 import { useEnrollment } from 'shared/hooks/enrollments';
 import { Button, Flex, Grid, MenuButton } from 'shared/ui-components';
+import EnrollmentPosts from 'shared/components/enrollment-posts';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 
@@ -7,7 +8,6 @@ import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';
 import EnrollmentLessons from 'app/components/enrollments/enrollment-lessons';
 import EnrollmentManagers from 'app/components/enrollments/enrollment-managers';
 import EnrollmentMaterials from 'app/components/enrollments/enrollment-materials';
-import EnrollmentPosts from 'app/components/enrollments/enrollment-posts';
 import EnrollmentSchedule from 'app/components/enrollments/enrollment-schedule';
 import EnrollmentTeachers from 'app/components/enrollments/enrollment-teachers';
 
@@ -29,7 +29,6 @@ export default function EnrollmentPage({ match }) {
                         href={enrollment.classUrl}
                         icon="video_call"
                         content="Перейти в класс"
-                        primary
                     />,
                     (enrollment.teachers[0]?.zoomUrl &&
                         <MenuButton
@@ -59,13 +58,13 @@ export default function EnrollmentPage({ match }) {
 
             <Page.Content>
                 <Grid spacing={2}>
-                    <Grid.Item lg={7}>
+                    <Grid.Item lg={8}>
                         <EnrollmentPosts
                             enrollment={enrollment}
                         />
                     </Grid.Item>
 
-                    <Grid.Item lg={5}>
+                    <Grid.Item lg={4}>
                         <Flex gap="medium" column>
                             <EnrollmentLessons
                                 enrollment={enrollment}

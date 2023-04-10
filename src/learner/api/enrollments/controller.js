@@ -61,7 +61,6 @@ module.exports = ({
     },
 
     pay: (req, res, next) => {
-        console.log(req.body);
         Promise.all([
             Enrollment.findOne({ _id: req.params.id, client: req.user.id }),
             Pack.findById(req.body.packId)

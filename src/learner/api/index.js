@@ -11,10 +11,11 @@ const user = require('./user');
 module.exports = context => {
     const router = Router();
 
-    router.use('/courses*', redirectToClass);
+    router.use('/courses*', redirectToCMS);
+    router.use('/materials*', redirectToCMS);
+
     router.use('/enrollments', enrollments(context));
     router.use('/lessons', lessons(context));
-    router.use('/materials*', redirectToClass);
     router.use('/meetings', meetings(context));
     router.use('/packs', packs(context));
     router.use('/payments', payments(context));
@@ -32,6 +33,6 @@ module.exports = context => {
     return router;
 };
 
-function redirectToClass(req, res) {
-    res.redirect(req.originalUrl.replace('client', 'class'));
+function redirectToCMS(req, res) {
+    res.redirect(req.originalUrl.replace('learner', 'cms'));
 }
