@@ -45,7 +45,7 @@ export default function ClientPage({ match, location, history }) {
     if (!client) return <LoadingIndicator />;
 
     return (
-        <Page className="sy-ClientPage">
+        <Page className="ClientPage">
             <Page.Header
                 breadcrumbs={[
                     { content: 'Клиенты', to: '/clients' }

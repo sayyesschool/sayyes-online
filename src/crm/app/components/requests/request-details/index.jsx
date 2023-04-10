@@ -6,7 +6,7 @@ import { Button, Icon, List, MenuButton, Text } from 'shared/ui-components';
 export default function RequestDetails({ request }) {
     return (
         <PageSection
-            className="sy-RequestDetails"
+            className="RequestDetails"
             title="Общая информация"
         >
             <List>

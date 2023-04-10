@@ -4,7 +4,7 @@ import { ChipGroup, Flex, Label } from 'shared/ui-components';
 
 export default function EnrollmentMeta({ enrollment }) {
     return (
-        <section className="sy-EnrollmentMeta">
+        <section className="EnrollmentMeta">
             <Flex gap="small">
                 <Label content={enrollment.managers.length > 1 ? 'Менеджеры:' : 'Менеджер:'} horizontal>
                     <ChipGroup>

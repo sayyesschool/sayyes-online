@@ -27,7 +27,7 @@ export default function PaymentSearchForm({
     }, [data]);
 
     return (
-        <Form className="sy-PaymentSearchForm" onSubmit={handleSubmit} {...props}>
+        <Form className="PaymentSearchForm" onSubmit={handleSubmit} {...props}>
             <Flex gap="smaller">
                 <Form.Input
                     type="number"

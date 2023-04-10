@@ -14,7 +14,7 @@ const columns = [
 
 export default function PacksTable({ packs, onEdit, onDelete }) {
     return (
-        <Table className="sy-PacksTable">
+        <Table className="PacksTable">
             <Table.Head>
                 <Table.Row header>
                     {columns.map(col =>

@@ -6,7 +6,7 @@ import { LessonStatusLabel } from 'shared/data/lesson';
 
 export default function LessonsTable({ lessons, onView, onEdit, onDelete }) {
     return (
-        <Table className="sy-LessonsTable">
+        <Table className="LessonsTable">
             <Table.Head>
                 <Table.Row header>
                     {columns.map(col =>

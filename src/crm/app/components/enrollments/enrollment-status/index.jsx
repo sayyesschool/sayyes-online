@@ -8,7 +8,7 @@ export default function EnrollmentStatus({ enrollment, onUpdate }) {
     const { status } = enrollment;
 
     return (
-        <section className="sy-EnrollmentStatus">
+        <section className="EnrollmentStatus">
             <Stepper>
                 <Stepper.Step
                     icon="pending"

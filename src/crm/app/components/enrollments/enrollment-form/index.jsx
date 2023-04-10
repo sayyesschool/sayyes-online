@@ -42,7 +42,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
     const teachersMap = new Map(teachers.map(teacher => [teacher.id, teacher]));
 
     return (
-        <Form ref={formRef} className="sy-EnrollmentForm" onSubmit={handleSubmit} {...props}>
+        <Form ref={formRef} className="EnrollmentForm" onSubmit={handleSubmit} {...props}>
             <Form.Select
                 name="domain"
                 value={data.domain}

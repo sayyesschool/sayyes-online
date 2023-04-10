@@ -4,7 +4,7 @@ import PageSection from 'shared/components/page-section';
 export default function EnrollmentDetails({ enrollment }) {
     return (
         <PageSection
-            className="sy-EnrollmentDetails"
+            className="EnrollmentDetails"
             title="Основные данные"
             compact
         >

@@ -63,7 +63,7 @@ const ClientForm = forwardRef(({
     return (
         <Form
             ref={formRef}
-            className="sy-ClientForm"
+            className="ClientForm"
             onSubmit={handleSubmit}
             {...props}
         >

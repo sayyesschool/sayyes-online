@@ -25,7 +25,7 @@ export default function EnrollmentTrialLesson({ enrollment, onUpdate }) {
 
     return (
         <PageSection
-            className="sy-EnrollmentTrialLesson"
+            className="EnrollmentTrialLesson"
             title="Расписание ВУ"
             actions={[{
                 key: 'edit',

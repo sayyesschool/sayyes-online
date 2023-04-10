@@ -37,9 +37,7 @@ export default function App({ routes }) {
         notificationActions.hideNotification();
     }, []);
 
-    if (!user) return <LoadingIndicator className="AppLoadingIndicator" />;
-
-    console.log(notification);
+    if (!user) return <LoadingIndicator fullscreen />;
 
     return (
         <div className="App">

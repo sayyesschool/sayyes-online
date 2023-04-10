@@ -39,10 +39,8 @@ function RequestForm({ request = {}, onSubmit, ...props }, ref) {
         onSubmit(data);
     }
 
-    console.log('MANAGER', managers);
-
     return (
-        <Form ref={formRef} className="sy-RequestForm" onSubmit={handleSubmit} {...props}>
+        <Form ref={formRef} className="Form" onSubmit={handleSubmit} {...props}>
             <Form.Select
                 name="status"
                 value={data.status}

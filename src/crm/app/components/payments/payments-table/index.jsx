@@ -16,7 +16,7 @@ const columns = [
 
 export default function PaymentsTable({ payments, onEdit, onDelete }) {
     return (
-        <Table className="sy-PaymentsTable">
+        <Table className="PaymentsTable">
             <Table.Head>
                 <Table.Row header>
                     {columns.map(col =>

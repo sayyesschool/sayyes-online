@@ -40,7 +40,7 @@ export default function LessonsForm({ enrollment, onSubmit, ...props }) {
     }, [lessons]);
 
     return (
-        <Form className="sy-LessonsForm" onSubmit={handleSubmit} {...props}>
+        <Form className="LessonsForm" onSubmit={handleSubmit} {...props}>
             <Form.Input
                 label="Начальная дата"
                 type="date"

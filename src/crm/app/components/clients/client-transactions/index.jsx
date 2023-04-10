@@ -59,7 +59,7 @@ export default function ClientTransactions({ client }) {
 
     return (
         <PageSection
-            className="sy-ClientTransactions"
+            className="ClientTransactions"
             title="Платежи"
             actions={[
                 {

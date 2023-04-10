@@ -1,16 +1,11 @@
 @use 'shared/styles/mixins';
 @use 'shared/styles/variables';
 
-body {
-    background-color: rgb(245, 245, 245) !important;
-    overflow: hidden;
-}
-
 .AppLoadingIndicator {
     position: fixed;
 }
 
-.sy-AppContent {
+.AppContent {
     height: 100vh;
     margin-left: 73px;
     overflow-x: hidden;
@@ -51,7 +46,7 @@ input[type='file'] {
     display: none;
 }
 
-.sy-FormDialog {
+.FormDialog {
     .ui-Form,
     fieldset {
         display: flex;

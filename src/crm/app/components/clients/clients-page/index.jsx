@@ -47,7 +47,7 @@ export default function ClientsPage({ history }) {
     if (!clients) return <LoadingIndicator />;
 
     return (
-        <Page className="sy-ClientsPage">
+        <Page className="ClientsPage">
             <Page.Header
                 title="Клиенты"
                 actions={[{

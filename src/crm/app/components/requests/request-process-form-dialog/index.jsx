@@ -46,7 +46,7 @@ export default function RequestProcessFormDialog({ request, open, onSubmit, onCl
             title="Обработка заявки"
             open={open}
             content={
-                <div className="sy-RequestProcessForm">
+                <div className="RequestProcessForm">
                     <Accordion
                         defaultActiveIndex={[0]}
                         items={[

@@ -45,7 +45,7 @@ export default function TeacherPage({ match, location, history }) {
     if (!teacher) return <LoadingIndicator />;
 
     return (
-        <Page className="sy-TeacherPage">
+        <Page className="TeacherPage">
             <Page.Header
                 title={teacher?.fullname}
                 breadcrumbs={[

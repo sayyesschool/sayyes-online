@@ -49,7 +49,7 @@ export default function EnrollmentPage({ match, history }) {
     if (!enrollment) return <LoadingIndicator />;
 
     return (
-        <Page className="sy-EnrollmentPage">
+        <Page className="EnrollmentPage">
             <Page.Header
                 breadcrumbs={[
                     { content: enrollment.client.fullname, to: enrollment?.client.url }

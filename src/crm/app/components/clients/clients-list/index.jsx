@@ -4,7 +4,7 @@ import { List, Text } from 'shared/ui-components';
 
 export default function ClientsList({ clients }) {
     return (
-        <List className="sy-ClientsList">
+        <List className="ClientsList">
             {clients.map(client =>
                 <List.Item
                     key={client.id}

@@ -5,7 +5,7 @@ import { Avatar, List, ListItem, Text } from 'shared/ui-components';
 
 export default function RequestsList({ requests }) {
     return (
-        <List className="sy-RequestsList">
+        <List className="RequestsList">
             {requests?.map(request =>
                 <ListItem
                     key={request.id}

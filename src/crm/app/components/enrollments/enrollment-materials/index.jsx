@@ -36,7 +36,7 @@ export default function EnrollmentMaterials({ enrollment }) {
 
     return (
         <PageSection
-            className="sy-EnrollmentMaterials"
+            className="EnrollmentMaterials"
             title="Пособия"
             actions={
                 <MenuButton

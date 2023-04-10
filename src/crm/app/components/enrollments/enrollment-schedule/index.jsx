@@ -16,7 +16,7 @@ export default function EnrollmentSchedule({ enrollment, onUpdate }) {
 
     return (
         <PageSection
-            className="sy-EnrollmentSchedule"
+            className="EnrollmentSchedule"
             title="Расписание"
             actions={[{
                 key: 'edit',

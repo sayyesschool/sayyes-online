@@ -24,7 +24,7 @@ export default function SettingsPage() {
     const match = useRouteMatch('/settings/:view');
 
     return (
-        <Page className="sy-SettingsPage">
+        <Page className="SettingsPage">
             <Page.Header
                 title="Настройки"
                 tabs={tabs.map(tab => ({

@@ -62,7 +62,7 @@ function ManagerForm({
     return (
         <Form
             ref={formRef}
-            className="sy-ManagerForm"
+            className="ManagerForm"
             onSubmit={handleSubmit}
             {...props}
         >

@@ -36,7 +36,7 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
     }, [data]);
 
     return (
-        <Form ref={formRef} className="sy-PaymentForm" onSubmit={handleSubmit} {...props}>
+        <Form ref={formRef} className="tForm" onSubmit={handleSubmit} {...props}>
             <Form.Input
                 type="text"
                 name="description"

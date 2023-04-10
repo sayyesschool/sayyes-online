@@ -51,7 +51,7 @@ export default function ClientPayments({ client }) {
 
     return (
         <PageSection
-            className="sy-ClientPayments"
+            className="ClientPayments"
             title="Платежи"
             actions={[{
                 key: 'add',

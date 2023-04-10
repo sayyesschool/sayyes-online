@@ -17,7 +17,7 @@ export default function RequestSearchForm({ onSubmit, ...props }) {
     }, []);
 
     return (
-        <Form className="sy-RequestSearchForm" onSubmit={handleSubmit} {...props}>
+        <Form className="RequestSearchForm" onSubmit={handleSubmit} {...props}>
             <Flex gap="smaller">
                 <Form.Input
                     type="search"

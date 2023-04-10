@@ -3,7 +3,7 @@ import { IconButton, List, Text } from 'shared/ui-components';
 
 export default function PaymentsList({ payments, onClick, onDelete }) {
     return (
-        <List className="sy-PaymentsList">
+        <List className="PaymentsList">
             {payments.map(payment =>
                 <List.Item
                     key={payment.id}

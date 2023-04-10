@@ -22,7 +22,7 @@ const columns = [
 
 export default function ClientsTable({ clients, onEdit, onDelete }) {
     return (
-        <Table className="sy-ClientsTable">
+        <Table className="ClientsTable">
             <Table.Head>
                 <Table.Row header>
                     {columns.map(col =>

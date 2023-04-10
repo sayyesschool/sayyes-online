@@ -18,7 +18,7 @@ const columns = [
 
 export default function RequestsTable({ requests, manager, onProcess, onEdit, onDelete }) {
     return (
-        <Table className="sy-RequestsTable">
+        <Table className="RequestsTable">
             <Table.Head>
                 <Table.Row header>
                     {columns.map(col =>

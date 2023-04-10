@@ -93,7 +93,7 @@ export default function EnrollmentLessons({ enrollment }) {
 
     return (
         <PageSection
-            className="sy-EnrollmentLessons"
+            className="EnrollmentLessons"
             title="Занятия"
             actions={
                 <>

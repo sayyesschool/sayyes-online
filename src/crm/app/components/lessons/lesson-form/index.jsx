@@ -44,7 +44,7 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
     }, [data]);
 
     return (
-        <Form className="sy-LessonForm" onSubmit={handleSubmit} {...props}>
+        <Form className="LessonForm" onSubmit={handleSubmit} {...props}>
             <Form.Select
                 label="Статус"
                 name="status"

@@ -24,7 +24,7 @@ export default function ClientEnrollments({ client }) {
 
     return (
         <PageSection
-            className="sy-ClientEnrollments"
+            className="ClientEnrollments"
             title="Обучение"
             actions={[
                 {

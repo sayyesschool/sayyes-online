@@ -5,7 +5,7 @@ import EnrollmentsList from 'app/components/enrollments/enrollments-list';
 export default function ManagerEnrollments({ manager }) {
     return (
         <PageSection
-            className="sy-ManagerEnrollments"
+            className="rEnrollments"
             title="Обучение"
             compact
         >

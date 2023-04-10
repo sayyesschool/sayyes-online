@@ -48,7 +48,7 @@ export default function ClientContacts({ client, onUpdate }) {
 
     return (
         <PageSection
-            className="sy-ClientContacts"
+            className="ClientContacts"
             title="Контакты"
             actions={[
                 {

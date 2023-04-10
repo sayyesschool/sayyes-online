@@ -42,7 +42,7 @@ export default function TeachersPage({ history }) {
     if (!teachers) return <LoadingIndicator />;
 
     return (
-        <Page className="sy-TeachersPage">
+        <Page className="TeachersPage">
             <Page.Header
                 title="Преподаватели"
                 actions={[{

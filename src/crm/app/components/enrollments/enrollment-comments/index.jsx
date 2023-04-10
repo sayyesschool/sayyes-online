@@ -1,16 +1,12 @@
 import { useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import Chat from 'shared/components/chat';
 import Comment from 'shared/components/comment';
 import CommentForm from 'shared/components/comment-form';
-import PageSection from 'shared/components/page-section';
 import EmptyState from 'shared/components/empty-state';
-import { Avatar } from 'shared/ui-components';
+import PageSection from 'shared/components/page-section';
 
 import { useStore, useActions } from 'app/store';
-
-import './index.scss';
 
 export default function EnrollmentComments({ enrollment }) {
     const [user] = useStore('user');
@@ -38,24 +34,18 @@ export default function EnrollmentComments({ enrollment }) {
 
     return (
         <PageSection
-            className="sy-EnrollmentComments"
+            className="EnrollmentComments"
             title="Комментарии"
         >
             {enrollment.comments?.length > 0 ?
-                <Chat
-                    items={enrollment.comments.map(comment => ({
-                        key: comment.id,
-                        gutter:
-                            <Avatar name={comment.author.fullname} />,
-                        message:
-                            <Comment
-                                user={user}
-                                comment={comment}
-                                onSave={updateComment}
-                                onDelete={deleteComment}
-                            />
-                    }))}
-                />
+                enrollment.comments?.map(comment =>
+                    <Comment
+                        user={user}
+                        comment={comment}
+                        onSave={updateComment}
+                        onDelete={deleteComment}
+                    />
+                )
                 :
                 <EmptyState
                     icon="comment"

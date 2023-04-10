@@ -13,7 +13,7 @@ const columns = [
 
 export default function TeachersTable({ teachers, onEdit, onDelete }) {
     return (
-        <Table className="sy-TeachersTable">
+        <Table className="TeachersTable">
             <Table.Head>
                 <Table.Row header>
                     {columns.map(col =>

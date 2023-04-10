@@ -5,7 +5,7 @@ import { Avatar, List, Text } from 'shared/ui-components';
 
 export default function EnrollmentsList({ enrollments }) {
     return (
-        <List className="sy-EnrollmentsList">
+        <List className="EnrollmentsList">
             {enrollments.map(enrollment =>
                 <List.Item
                     key={enrollment.id}

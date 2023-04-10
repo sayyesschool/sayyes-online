@@ -10,7 +10,7 @@ export default function ClientDetails({ client }) {
 
     return (
         <PageSection
-            className="sy-ClientDetails"
+            className="ClientDetails"
             title="Основные данные"
             compact
         >

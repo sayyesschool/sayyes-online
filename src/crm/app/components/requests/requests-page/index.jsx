@@ -117,7 +117,7 @@ export default function RequestsPage({ history }) {
     if (!requests) return <LoadingIndicator />;
 
     return (
-        <Page className="sy-RequestsPage">
+        <Page className="RequestsPage">
             <Page.Header
                 title="Заявки"
                 toolbar={[

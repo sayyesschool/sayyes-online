@@ -2,7 +2,7 @@ import { IconButton, List, MenuButton, Text } from 'shared/ui-components';
 
 export default function ContactsList({ contacts, onEdit, onDelete }) {
     return (
-        <List className="sy-ContactList">
+        <List className="ContactList">
             {contacts?.map(contact =>
                 <List.Item
                     content={<>

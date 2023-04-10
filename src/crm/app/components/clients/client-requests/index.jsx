@@ -5,7 +5,7 @@ import RequestsList from 'app/components/requests/requests-list';
 export default function ClientRequests({ requests }) {
     return (
         <PageSection
-            className="sy-ClientRequests"
+            className="ClientRequests"
             title="Заявки"
             compact
         >

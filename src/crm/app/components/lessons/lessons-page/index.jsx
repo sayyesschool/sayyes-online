@@ -26,7 +26,7 @@ export default function Lessons() {
     if (!lessons) return <LoadingIndicator />;
 
     return (
-        <Page className="sy-LessonsPage">
+        <Page className="LessonsPage">
             <Page.Header
                 title="Уроки"
                 actions={[{

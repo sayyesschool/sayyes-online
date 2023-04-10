@@ -24,7 +24,7 @@ export default function PackForm({ pack = {}, onSubmit, ...props }) {
     }, [data]);
 
     return (
-        <Form className="sy-PackForm" onSubmit={handleSubmit} {...props}>
+        <Form className="PackForm" onSubmit={handleSubmit} {...props}>
             <Form.Select
                 name="age"
                 value={data.age}

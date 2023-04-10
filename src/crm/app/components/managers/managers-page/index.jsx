@@ -46,7 +46,7 @@ export default function ManagersPage({ history }) {
     if (!managers) return <LoadingIndicator />;
 
     return (
-        <Page className="sy-ManagersPage">
+        <Page className="ManagersPage">
             <Page.Header
                 title="Менеджеры"
                 actions={[{

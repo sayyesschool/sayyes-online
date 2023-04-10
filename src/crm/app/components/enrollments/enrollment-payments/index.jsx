@@ -50,7 +50,7 @@ export default function EnrollmentPayments({ enrollment }) {
 
     return (
         <PageSection
-            className="sy-EnrollmentPayments"
+            className="EnrollmentPayments"
             title="Платежи"
             actions={[{
                 key: 'add',

@@ -5,7 +5,7 @@ import { List, Text } from 'shared/ui-components';
 
 export default function LessonsList({ lessons, statusIcon = true }) {
     return (
-        <List className="sy-LessonsList">
+        <List className="LessonsList">
             {lessons?.map(lesson =>
                 <List.Item
                     key={lesson.id}

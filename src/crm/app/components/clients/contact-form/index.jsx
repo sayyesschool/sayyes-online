@@ -28,7 +28,7 @@ function ContactForm({ contact = {}, onSubmit, ...props }, ref) {
     }));
 
     return (
-        <Form ref={formRef} className="sy-ContactForm" onSubmit={() => onSubmit(data)} {...props}>
+        <Form ref={formRef} className="ContactForm" onSubmit={() => onSubmit(data)} {...props}>
             <Form.Input
                 type="text"
                 name="relation"

@@ -39,7 +39,7 @@ export default function EnrollmentCourses({ enrollment }) {
 
     return (
         <PageSection
-            className="sy-EnrollmentCourses"
+            className="EnrollmentCourses"
             title="Курсы"
             actions={
                 <MenuButton

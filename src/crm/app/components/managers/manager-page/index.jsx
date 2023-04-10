@@ -43,7 +43,7 @@ export default function ManagerPage({ match, location, history }) {
     if (!manager) return <LoadingIndicator />;
 
     return (
-        <Page className="sy-ManagerPage">
+        <Page className="ManagerPage">
             <Page.Header
                 breadcrumbs={[
                     { content: 'Менеджеры', to: '/managers' }
