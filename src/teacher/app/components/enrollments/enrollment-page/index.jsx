@@ -3,12 +3,13 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { Button, Flex, Grid, MenuButton } from 'shared/ui-components';
 
+import EnrollmentPosts from 'shared/components/enrollment-posts';
+
 import EnrollmentClient from 'app/components/enrollments/enrollment-client';
 import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';
 import EnrollmentDetails from 'app/components/enrollments/enrollment-details';
 import EnrollmentLessons from 'app/components/enrollments/enrollment-lessons';
 import EnrollmentMaterials from 'app/components/enrollments/enrollment-materials';
-import EnrollmentPosts from 'app/components/enrollments/enrollment-posts';
 import EnrollmentSchedule from 'app/components/enrollments/enrollment-schedule';
 
 import './index.scss';
@@ -16,7 +17,7 @@ import './index.scss';
 export default function EnrollmentPage({ match }) {
     const [enrollment] = useEnrollment(match.params.id);
 
-    if (!enrollment) return <LoadingIndicator fullscreen />;
+    if (!enrollment) return <LoadingIndicator />;
 
     return (
         <Page className="EnrollmentPage">

@@ -9,8 +9,8 @@ const user = require('./user');
 module.exports = context => {
     const router = Router();
 
-    router.use('/courses*', redirectToLMS);
-    router.use('/materials*', redirectToLMS);
+    router.use('/courses*', redirectToCMS);
+    router.use('/materials*', redirectToCMS);
 
     router.use('/enrollments', enrollments(context));
     router.use('/lessons', lessons(context));
@@ -33,6 +33,6 @@ module.exports = context => {
     return router;
 };
 
-function redirectToLMS(req, res) {
-    res.redirect(req.originalUrl.replace('teacher', 'lms'));
+function redirectToCMS(req, res) {
+    res.redirect(req.originalUrl.replace('teacher', 'cms'));
 }

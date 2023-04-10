@@ -3,7 +3,7 @@ module.exports = ({
 }) => ({
     getMany: (req, res, next) => {
         Post.find({ ...req.query })
-            .populate('user', 'firstname lastname email imageUrl')
+            .populate('author', 'firstname lastname email imageUrl')
             .populate('comments.author', 'firstname lastname email imageUrl')
             .sort({ createdAt: -1 })
             .then(posts => {
