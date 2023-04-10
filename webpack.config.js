@@ -11,31 +11,10 @@ dotenv.config();
 const { STATIC_URL, STORAGE_URL, YANDEX_METRIKA_ID, GOOGLE_ANALYTICS_ID } = process.env;
 
 module.exports = [
-    env => config({ name: 'admin', env }),
     env => config({ name: 'class', env }),
-    env => config({ name: 'client', env }),
-    env => config({
-        name: 'front',
-        env,
-        override: {
-            entry: [
-                './src/front/shared/styles/index.scss',
-                './src/front/shared/scripts.js'
-            ],
-            output: {
-                path: path.resolve(__dirname, 'public'),
-                filename: 'js/front.js'
-            },
-            plugins: [
-                new CssExtractPlugin({
-                    filename: 'css/front.css'
-                })
-            ],
-            optimization: {
-                minimize: true
-            }
-        }
-    }),
+    env => config({ name: 'cms', env }),
+    env => config({ name: 'crm', env }),
+    env => config({ name: 'learner', env }),
     env => config({ name: 'teacher', env })
 ];
 
@@ -156,6 +135,7 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
             extensions: ['.js', '.json', '.jsx', '*'],
 
             alias: {
+                '@': path.resolve(__dirname, 'src'),
                 'app': path.resolve(__dirname, 'src', name, 'app'),
                 'core': path.resolve(__dirname, 'src', 'core'),
                 'shared/data': path.resolve(__dirname, 'src', 'shared', 'data'),
