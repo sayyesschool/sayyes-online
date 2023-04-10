@@ -12,6 +12,7 @@ module.exports = ({ APP_ENV, APP_DOMAIN, SESSION_SECRET }, connection) => expres
         domain: APP_DOMAIN,
         httpOnly: true,
         secure: APP_ENV === 'production',
+        // sameSite: 'None',
         signed: true,
         maxAge: 1000 * 60 * 60 * 24 * 3 // 3 days
     },
