@@ -15,24 +15,24 @@ append head
             border-radius: 0;
         }
 
-        .form-signin {
+        .form {
             display: flex;
             flex-direction: column;
             width: 100%;
             max-width: 330px;
             margin: auto;
             gap: 1rem;
+        }
 
-            img {
-                width: 128px;
-            }
+        .form img {
+            width: 128px;
         }
 
 block body
     main
         include /shared/includes/flash
 
-        form.form-signin(method='post' action='/login')
+        form.form(method='post' action='/login')
             div
                 img(src="https://static.sayes.ru/images/logos/sayyes-purple.png")
 

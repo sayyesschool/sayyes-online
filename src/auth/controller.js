@@ -1,6 +1,7 @@
 const strategies = require('./strategies');
 
 module.exports = ({
+    models: { User },
     services: { Auth }
 }) => ({
     register: (req, res) => {
@@ -25,8 +26,9 @@ module.exports = ({
             })
             .catch(error => {
                 req.flash('error', error.message || error);
-            })
-            .finally(() => res.redirect('back'));
+            }).finally(() => {
+                res.redirect('back');
+            });
     },
 
     logout: (req, res) => {

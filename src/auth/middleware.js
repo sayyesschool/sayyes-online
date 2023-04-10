@@ -7,6 +7,7 @@ module.exports = ({
 
         User.findById(req.session.userId).then(user => {
             req.user = user;
+            res.locals.user = user;
 
             next();
         });
@@ -30,5 +31,20 @@ module.exports = ({
 
     authenticatedRouter: (req, res, next) => {
         req.user ? next() : next('router');
+    },
+
+    redirectUser: (req, res, next) => {
+        if (!req.user) return next();
+
+        if (req.user.role === 'editor')
+            return res.redirect('/cms');
+        if (req.user.role === 'manager')
+            return res.redirect('/crm');
+        if (req.user.role === 'client')
+            return res.redirect('/client');
+        if (req.user.role === 'teacher')
+            return res.redirect('/teacher');
+
+        next();
     }
 });
