@@ -2,12 +2,13 @@ import { useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useCourse } from 'shared/hooks/courses';
-import { Flex, Grid } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
+import EditableText from 'shared/components/editable-text';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { Flex, Grid } from 'shared/ui-components';
 
-import CourseDetails from 'app/components/courses/course-details';
+import CourseContent from 'app/components/courses/course-content';
 import CourseImage from 'app/components/courses/course-image';
 import CourseUnits from 'app/components/courses/course-units';
 
@@ -18,6 +19,10 @@ export default function CoursePage({ match, history }) {
 
     const handleUpdateCourse = useCallback(data => {
         return actions.updateCourse(course.id, data);
+    }, [course]);
+
+    const handleUpdateCourseTitle = useCallback(title => {
+        return actions.updateCourse(course.id, { title });
     }, [course]);
 
     const handleDeleteCourse = useCallback(() => {
@@ -33,14 +38,20 @@ export default function CoursePage({ match, history }) {
         return actions.deleteUnit(course.id, unit.id);
     }, [course]);
 
-    if (!course) return <LoadingIndicator />;
+    if (!course) return <LoadingIndicator fluid />;
 
     return (
         <Page className="CoursePage">
             <Page.Header
-                title={course.title}
+                title={
+                    <EditableText
+                        content={course.title}
+                        required
+                        onUpdate={handleUpdateCourseTitle}
+                    />
+                }
                 breadcrumbs={[
-                    { key: 'courses', text: 'Курсы', url: '/courses' }
+                    { key: 'courses', content: 'Курсы', to: '/courses' }
                 ]}
                 actions={[
                     {
@@ -53,21 +64,14 @@ export default function CoursePage({ match, history }) {
 
             <Page.Content>
                 <Grid spacing={2}>
-                    <Grid.Item xs={9}>
-                        <Flex gap="medium" column>
-                            <CourseDetails
-                                course={course}
-                                onUpdate={handleUpdateCourse}
-                            />
-
-                            {/* <CourseImage
-                                course={course}
-                                onUpdate={handleUpdateCourse}
-                            /> */}
-                        </Flex>
+                    <Grid.Item xs={8}>
+                        <CourseContent
+                            course={course}
+                            onUpdate={handleUpdateCourse}
+                        />
                     </Grid.Item>
 
-                    <Grid.Item xs={3}>
+                    <Grid.Item xs={4}>
                         <CourseUnits
                             course={course}
                             onCreate={handleCreateUnit}

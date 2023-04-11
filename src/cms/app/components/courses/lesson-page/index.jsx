@@ -1,15 +1,14 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useLesson } from 'shared/hooks/courses';
-import { Flex, Grid, Tabs } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
+import EditableText from 'shared/components/editable-text';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { Grid } from 'shared/ui-components';
 
 import LessonContent from 'app/components/courses/lesson-content';
-import LessonDetails from 'app/components/courses/lesson-details';
-import LessonImage from 'app/components/courses/lesson-image';
 import LessonExercises from 'app/components/courses/lesson-exercises';
 
 export default function LessonPage({ match, history }) {
@@ -19,6 +18,10 @@ export default function LessonPage({ match, history }) {
 
     const handleUpdateLesson = useCallback(data => {
         return actions.updateLesson(course.id, lesson.id, data);
+    }, [course, lesson]);
+
+    const handleUpdateLessonTitle = useCallback(title => {
+        return actions.updateLesson(course.id, lesson.id, { title });
     }, [course, lesson]);
 
     const handleDeleteLesson = useCallback(() => {
@@ -37,12 +40,18 @@ export default function LessonPage({ match, history }) {
         return actions.deleteExercise(course.id, exercise.id);
     }, [course]);
 
-    if (!lesson) return <LoadingIndicator />;
+    if (!lesson) return <LoadingIndicator fluid />;
 
     return (
         <Page className="LessonPage">
             <Page.Header
-                title={lesson.title}
+                title={
+                    <EditableText
+                        content={lesson.title}
+                        required
+                        onUpdate={handleUpdateLessonTitle}
+                    />
+                }
                 breadcrumbs={[
                     { key: 'courses', content: 'Курсы', to: '/courses' },
                     { key: 'course', content: course.title, to: course.uri, title: 'Курс' },
@@ -60,21 +69,7 @@ export default function LessonPage({ match, history }) {
 
             <Page.Content>
                 <Grid spacing={2}>
-                    <Grid.Item xs={3}>
-                        <Flex gap="medium" column>
-                            <LessonDetails
-                                lesson={lesson}
-                                onUpdate={handleUpdateLesson}
-                            />
-
-                            {/* <LessonImage
-                                lesson={lesson}
-                                onUpdate={handleUpdateLesson}
-                            /> */}
-                        </Flex>
-                    </Grid.Item>
-
-                    <Grid.Item xs={6}>
+                    <Grid.Item xs={8}>
                         <LessonContent
                             lesson={lesson}
                             onUpdate={handleUpdateLesson}

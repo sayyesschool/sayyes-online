@@ -4,7 +4,7 @@ import { Button, Image, List } from 'shared/ui-components';
 
 export default function CoursesList({ courses, onItemClick, onDelete }) {
     return (
-        <List className="courses-list">
+        <List className="CoursesList">
             {courses.map(course =>
                 <List.Item
                     key={course.id}

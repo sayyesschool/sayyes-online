@@ -25,7 +25,7 @@ export default function CourseForm({ course = defaultCourse, onSubmit, ...props 
     }, []);
 
     return (
-        <Form className="course-form" onSubmit={handleSubmit} {...props}>
+        <Form className="CourseForm" onSubmit={handleSubmit} {...props}>
             <Form.Input
                 name="title"
                 label="Название"

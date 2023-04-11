@@ -1,4 +1,6 @@
 .exercise-items {
+    counter-reset: number;
+    
     &:not(.page-section--compact) {
         > .page-section__content:not(:empty) {
             padding: 0 1rem 1rem 1rem;

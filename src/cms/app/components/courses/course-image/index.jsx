@@ -9,7 +9,7 @@ export default function CourseImage({ course, uploadPath, onUpdate }) {
 
     return (
         <ImageSection
-            className="course-image"
+            className="CourseImage"
             image={course.image}
             uploadPath={uploadPath}
             onUpdate={handleUpdate}

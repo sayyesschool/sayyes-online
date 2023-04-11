@@ -2,10 +2,11 @@ import { useCallback, useEffect } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useExercise } from 'shared/hooks/courses';
-import { Flex, Grid } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
+import EditableText from 'shared/components/editable-text';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { Flex, Grid } from 'shared/ui-components';
 
 import ExerciseDetails from 'app/components/courses/exercise-details';
 import ExerciseItems from 'app/components/courses/exercise-items';
@@ -26,6 +27,10 @@ export default function ExercisePage({ match, history }) {
         return actions.updateExercise(course.id, exercise.id, data);
     }, [course, exercise]);
 
+    const handleUpdateExerciseTitle = useCallback(title => {
+        return actions.updateExercise(course.id, exercise.id, { title });
+    }, [course, exercise]);
+
     const handleDelete = useCallback(() => {
         return actions.deleteExercise(course.id, exercise.id)
             .then(() => history.push(lesson.url));
@@ -43,12 +48,18 @@ export default function ExercisePage({ match, history }) {
         return actions.deleteExerciseItem(course.id, exercise.id, itemId, data);
     }, [course, exercise]);
 
-    if (!exercise?.items) return <LoadingIndicator />;
+    if (!exercise?.items) return <LoadingIndicator fluid />;
 
     return (
         <Page id="ExercisePage">
             <Page.Header
-                title={exercise.title}
+                title={
+                    <EditableText
+                        content={exercise.title}
+                        required
+                        onUpdate={handleUpdateExerciseTitle}
+                    />
+                }
                 breadcrumbs={[
                     { key: 'courses', content: 'Курсы', to: '/courses' },
                     { key: 'course', content: course.title, to: course.uri, title: 'Курс' },
@@ -68,29 +79,20 @@ export default function ExercisePage({ match, history }) {
             <Page.Content>
                 <Grid spacing={2}>
                     <Grid.Item xs={8}>
-                        <Flex gap="medium" column>
-                            <ExerciseItems
-                                exercise={exercise}
-                                onCreate={handleCreateItem}
-                                onUpdate={handleUpdateItem}
-                                onDelete={handleDeleteItem}
-                                onReorder={handleUpdate}
-                            />
-                        </Flex>
+                        <ExerciseItems
+                            exercise={exercise}
+                            onCreate={handleCreateItem}
+                            onUpdate={handleUpdateItem}
+                            onDelete={handleDeleteItem}
+                            onReorder={handleUpdate}
+                        />
                     </Grid.Item>
 
                     <Grid.Item xs={4}>
-                        <Flex gap="medium" column>
-                            <ExerciseDetails
-                                exercise={exercise}
-                                onUpdate={handleUpdate}
-                            />
-
-                            <ExerciseNotes
-                                exercise={exercise}
-                                onUpdate={handleUpdate}
-                            />
-                        </Flex>
+                        <ExerciseNotes
+                            exercise={exercise}
+                            onUpdate={handleUpdate}
+                        />
                     </Grid.Item>
                 </Grid>
             </Page.Content>

@@ -4,7 +4,7 @@ import { MenuButton, Table } from 'shared/ui-components';
 
 export default function CoursesTable({ courses, onEdit, onDelete }) {
     return (
-        <Table className="courses-table">
+        <Table className="CoursesTable">
             <Table.Row header>
                 {columns.map(col =>
                     <Table.Cell

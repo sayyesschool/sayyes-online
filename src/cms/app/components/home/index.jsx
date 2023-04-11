@@ -1,7 +1,6 @@
-import Page from 'shared/components/page';
 import CoursesGrid from 'shared/components/courses-grid';
 import MaterialsGrid from 'shared/components/materials-grid';
-import { Heading } from 'shared/ui-components';
+import Page from 'shared/components/page';
 
 import { useStore } from 'app/store';
 
@@ -13,18 +12,18 @@ export default function HomePage() {
 
     return (
         <Page className="HomePage">
-            <Page.Header title="Главная" />
-
             <Page.Content>
-                <Heading type="h6" content="Курсы" />
-                <CoursesGrid
-                    courses={courses}
-                />
+                <Page.Section title="Курсы" compact plain>
+                    <CoursesGrid
+                        courses={courses}
+                    />
+                </Page.Section>
 
-                <Heading type="h6" content="Материалы" />
-                <MaterialsGrid
-                    materials={materials}
-                />
+                <Page.Section title="Материалы" compact plain>
+                    <MaterialsGrid
+                        materials={materials}
+                    />
+                </Page.Section>
             </Page.Content>
         </Page>
     );

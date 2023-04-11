@@ -2,14 +2,13 @@ import { useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
 import { use } from 'shared/hooks/courses';
-import { Flex, Grid } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
+import EditableText from 'shared/components/editable-text';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { Grid } from 'shared/ui-components';
 
 import UnitContent from 'app/components/courses/unit-content';
-import UnitDetails from 'app/components/courses/unit-details';
-import UnitImage from 'app/components/courses/unit-image';
 import UnitLessons from 'app/components/courses/unit-lessons';
 
 export default function UnitPage({ match, history }) {
@@ -19,6 +18,10 @@ export default function UnitPage({ match, history }) {
 
     const handleUpdateUnit = useCallback(data => {
         return actions.updateUnit(course.id, unit.id, data);
+    }, [course, unit]);
+
+    const handleUpdateUnitTitle = useCallback(title => {
+        return actions.updateUnit(course.id, unit.id, { title });
     }, [course, unit]);
 
     const handleDeleteUnit = useCallback(() => {
@@ -36,12 +39,18 @@ export default function UnitPage({ match, history }) {
         return actions.deleteLesson(course.id, lesson.id);
     }, [course]);
 
-    if (!unit) return <LoadingIndicator />;
+    if (!unit) return <LoadingIndicator fluid />;
 
     return (
-        <Page id="unit-page">
+        <Page className="UnitPage">
             <Page.Header
-                title={unit.title}
+                title={
+                    <EditableText
+                        content={unit.title}
+                        required
+                        onUpdate={handleUpdateUnitTitle}
+                    />
+                }
                 breadcrumbs={[
                     { key: 'courses', content: 'Курсы', to: '/courses' },
                     { key: 'course', content: course.title, to: course.uri, title: 'Курс' }
@@ -58,28 +67,14 @@ export default function UnitPage({ match, history }) {
 
             <Page.Content>
                 <Grid spacing={2}>
-                    <Grid.Item xs={3}>
-                        <Flex gap="medium" column>
-                            <UnitDetails
-                                unit={unit}
-                                onUpdate={handleUpdateUnit}
-                            />
-
-                            {/* <UnitImage
-                                unit={unit}
-                                onUpdate={handleUpdateUnit}
-                            /> */}
-                        </Flex>
-                    </Grid.Item>
-
-                    <Grid.Item xs={6}>
+                    <Grid.Item xs={8}>
                         <UnitContent
                             unit={unit}
                             onUpdate={handleUpdateUnit}
                         />
                     </Grid.Item>
 
-                    <Grid.Item xs={3}>
+                    <Grid.Item xs={4}>
                         <UnitLessons
                             course={course}
                             unit={unit}
