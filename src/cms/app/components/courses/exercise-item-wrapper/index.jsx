@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
 import classnames from 'classnames';
 
-import { IconButton, Icon, MenuButton } from 'shared/ui-components';
 import ExerciseItem from 'shared/components/exercise-item';
-import ExerciseItemForm from 'app/components/courses/exercise-item-form';
+import { IconButton, Icon, MenuButton } from 'shared/ui-components';
 import { exerciseTypeMenuItems } from 'shared/data/exercise';
+
+import ExerciseItemForm from 'app/components/courses/exercise-item-form';
 
 import './index.scss';
 
@@ -71,8 +72,8 @@ export default function ExerciseItemWrapper({
     }, [index, onMove]);
 
     return (
-        <div id={item.id} className={classnames('exercise-item-wrapper', {
-            'exercise-item-wrapper--editing': editing
+        <div id={item.id} className={classnames('ExerciseItemWrapper', {
+            'ExerciseItemWrapper--editing': editing
         })}>
             {editing ?
                 <ExerciseItemForm
@@ -91,6 +92,7 @@ export default function ExerciseItemWrapper({
                     <MenuButton
                         trigger={
                             <IconButton
+                                className="ExerciseItemWrapper__menu-button"
                                 icon="more_vert"
                                 color="neutral"
                                 size="sm"
@@ -103,6 +105,16 @@ export default function ExerciseItemWrapper({
                                 content: 'Добавить выше',
                                 onItemClick: handleAddAbove,
                                 items: exerciseTypeMenuItems
+                            },
+                            {
+                                key: 'add_below',
+                                content: 'Добавить ниже',
+                                onItemClick: handleAddBelow,
+                                items: exerciseTypeMenuItems
+                            },
+                            {
+                                key: 'divider-1',
+                                kind: 'divider'
                             },
                             {
                                 key: 'move_up',
@@ -119,7 +131,7 @@ export default function ExerciseItemWrapper({
                                 onClick: handleMoveDown
                             },
                             {
-                                key: 'divider-1',
+                                key: 'divider-2',
                                 kind: 'divider'
                             },
                             {
