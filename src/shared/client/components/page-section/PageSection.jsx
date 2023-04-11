@@ -10,13 +10,15 @@ export default function PageSection({
     actions,
     header,
     compact,
+    plain,
 
     children,
     className,
     ...props
 }) {
     const classNames = classnames('PageSection', {
-        'PageSection--compact': compact
+        'PageSection--compact': compact,
+        'PageSection--plain': plain
     }, className);
 
     return (

@@ -47,7 +47,8 @@
         padding: 0;
     }
 
-    &--transparent {
-        background-color: transparent;
+    &--plain {
+        background-color: transparent !important;
+        overflow: visible;
     }
 }
