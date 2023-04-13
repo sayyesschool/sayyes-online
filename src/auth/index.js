@@ -15,10 +15,9 @@ module.exports = context => {
 
     app.locals.basedir = context.config.APP_PATH;
 
-    app.use(middleware.authenticate);
     app.use('/api', api);
 
-    app.get('/', middleware.redirectUser, (req, res) => {
+    app.get('/', (req, res) => {
         res.render('login');
     });
 

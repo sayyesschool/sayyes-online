@@ -27,7 +27,7 @@ module.exports = ({
             .catch(error => {
                 req.flash('error', error.message || error);
             }).finally(() => {
-                res.redirect('back');
+                res.redirect('/');
             });
     },
 
