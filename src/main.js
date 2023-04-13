@@ -20,13 +20,15 @@ context.middleware = {
 db.connect(config.MONGODB_URI);
 
 server(config, db)
-    .use(auth(context))
+    .use(context.middleware.auth.authenticate)
+    .use('/auth', auth(context))
     .use('/api', api(context))
     .use('/cms', cms(context))
     .use('/class', classroom(context))
     .use('/crm', crm(context))
     .use('/client', learner(context))
     .use('/teacher', teacher(context))
+    .use(context.middleware.auth.redirect)
     .listen(config.APP_PORT, () => {
         console.log('Server started');
     });
