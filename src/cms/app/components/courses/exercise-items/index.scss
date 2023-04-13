@@ -1,21 +1,9 @@
-.exercise-items {
+.ExerciseItems {
     counter-reset: number;
     
     &:not(.page-section--compact) {
         > .page-section__content:not(:empty) {
             padding: 0 1rem 1rem 1rem;
-        }
-    }
-
-    .new-item-button {
-        display: flex;
-
-        &:not(:first-child) {
-            margin-top: 1rem;
-        }
-
-        .ui-button {
-            margin: auto;
         }
     }
 }

@@ -12,14 +12,16 @@ import './index.scss';
 export default function ExerciseItemWrapper({
     index,
     item,
+    state,
     editing,
     isFirst,
     isLast,
-    onEdit,
-    onUpdate,
     onAdd,
     onMove,
-    onDelete
+    onEdit,
+    onUpdate,
+    onDelete,
+    onUpdateState
 }) {
     const handleEdit = useCallback(() => {
         onEdit(item.id);
@@ -54,13 +56,12 @@ export default function ExerciseItemWrapper({
         });
     }, [item, onDelete]);
 
-    const handleAddAbove = useCallback((event, component) => {
-        console.log(event, component);
-        onAdd(component.value, index);
+    const handleAddAbove = useCallback((_, { value }) => {
+        onAdd(value, index);
     }, [index, onAdd]);
 
-    const handleAddBelow = useCallback((event, component) => {
-        onAdd(component.value, index + 1);
+    const handleAddBelow = useCallback((_, { value }) => {
+        onAdd(value, index + 1);
     }, [index, onAdd]);
 
     const handleMoveUp = useCallback(() => {
@@ -87,6 +88,8 @@ export default function ExerciseItemWrapper({
                     <ExerciseItem
                         id={undefined}
                         item={item}
+                        state={state}
+                        onUpdateState={onUpdateState}
                     />
 
                     <MenuButton
@@ -102,12 +105,14 @@ export default function ExerciseItemWrapper({
                         items={[
                             {
                                 key: 'add_above',
+                                decorator: <Icon>arrow_upward</Icon>,
                                 content: 'Добавить выше',
                                 onItemClick: handleAddAbove,
                                 items: exerciseTypeMenuItems
                             },
                             {
                                 key: 'add_below',
+                                decorator: <Icon>arrow_downward</Icon>,
                                 content: 'Добавить ниже',
                                 onItemClick: handleAddBelow,
                                 items: exerciseTypeMenuItems
@@ -118,14 +123,14 @@ export default function ExerciseItemWrapper({
                             },
                             {
                                 key: 'move_up',
-                                decorator: <Icon>arrow_upward</Icon>,
+                                decorator: <Icon>move_up</Icon>,
                                 content: 'Переместить выше',
                                 disabled: isFirst,
                                 onClick: handleMoveUp
                             },
                             {
                                 key: 'move_down',
-                                decorator: <Icon>arrow_downward</Icon>,
+                                decorator: <Icon>move_down</Icon>,
                                 content: 'Переместить ниже',
                                 disabled: isLast,
                                 onClick: handleMoveDown
@@ -144,6 +149,7 @@ export default function ExerciseItemWrapper({
                                 key: 'delete',
                                 decorator: <Icon>delete</Icon>,
                                 content: 'Удалить',
+                                color: 'danger',
                                 onClick: handleDelete
                             }
                         ]}

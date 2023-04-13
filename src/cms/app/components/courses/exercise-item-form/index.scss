@@ -27,6 +27,8 @@
     &--image {
         .exercise-item-form__image-wrapper {
             position: relative;
+            display: inline-flex;
+            align-self: flex-start;
 
             &::before {
                 content: '';
@@ -40,7 +42,7 @@
             }
 
             &::after {
-                content: 'Выбрать файл';
+                content: 'Выбрать другое изображение';
                 width: 100%;
                 height: 100%;
                 display: flex;

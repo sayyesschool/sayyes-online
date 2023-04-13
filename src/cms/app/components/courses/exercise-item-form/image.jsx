@@ -27,10 +27,10 @@ function ExerciseImageItem({ item }, ref) {
     }), [item, file]);
 
     return (
-        <Flex padding="padding.medium" gap="gap.small" column>
+        <Flex padding={1} gap="small" column>
             {file &&
                 <>
-                    <Text size="small">Выбранный файл:</Text>
+                    <Text type="body2">Выбранное изображение:</Text>
 
                     <div
                         className="exercise-item-form__image-wrapper"
@@ -42,11 +42,10 @@ function ExerciseImageItem({ item }, ref) {
                         />
                     </div>
 
-                    <Text as="p">
-                        Название: <Text temporary>{file.name}</Text>
-                        <br />
-                        Размер: <Text temporary>{Math.round(file.size / 1000)} КБ</Text>
-                    </Text>
+                    <div>
+                        <Text type="body2">Название: <b>{file.name}</b></Text>
+                        <Text type="body2">Размер: <b>{Math.round(file.size / 1000)} КБ</b></Text>
+                    </div>
                 </>
             }
 
@@ -67,19 +66,16 @@ function ExerciseImageItem({ item }, ref) {
                 <Button
                     type="button"
                     content="Выбрать файл"
-                    primary
-                    text
-                    fluid
+                    variant="plain"
+                    size="sm"
                     onClick={pick}
                 />
                 :
                 <Input
                     ref={inputRef}
-                    type="text"
-                    label="Описание"
+                    placeholder="Описание"
                     name="caption"
                     defaultValue={item.image?.caption}
-                    fluid
                 />
             }
         </Flex>

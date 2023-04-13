@@ -12,10 +12,10 @@ import UI from 'app/contexts/ui';
 import './App.scss';
 
 export default function App({ routes }) {
+    const [user, userActions] = useStore('user');
+    const [notification, notificationActions] = useStore('notification');
     const courseActions = useActions('courses');
     const materialActions = useActions('materials');
-    const [notification, notificationActions] = useStore('notification');
-    const [user, userActions] = useStore('user');
 
     useEffect(() => {
         userActions.getUser();
@@ -52,7 +52,7 @@ export default function App({ routes }) {
 
                 <NotificationAlert
                     type={notification.type}
-                    open={notification.active}
+                    open={notification.open}
                     content={notification.text}
                     onClose={handleAlertClose}
                 />

@@ -12,7 +12,7 @@ export default function UnitsList({ units, onDelete }) {
     }, [onDelete]);
 
     return (
-        <List className="UnitsList NumberedList" navigable>
+        <List className="UnitsList NumberedList">
             {units.map((unit, index) =>
                 <List.Item
                     key={unit.id}

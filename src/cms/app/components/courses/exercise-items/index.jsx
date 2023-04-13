@@ -18,6 +18,7 @@ export default function ExerciseItems({
     onDelete,
     onReorder
 }) {
+    const [state, setState] = useState(exercise.state || {});
     const [editingItemId, setEditingItemId] = useState();
     const [deletingItem, setDeletingItem] = useState();
 
@@ -72,9 +73,16 @@ export default function ExerciseItems({
         toggleConfirmationDialogOpen(true);
     }, []);
 
+    const handleUpdateState = useCallback((itemId, state) => {
+        setState(oldState => ({
+            ...oldState,
+            [itemId]: state
+        }));
+    }, []);
+
     return (
         <PageSection
-            className="exercise-items"
+            className="ExerciseItems"
             title="Элементы"
         >
             {exercise.items.map((item, index) =>
@@ -82,19 +90,20 @@ export default function ExerciseItems({
                     key={item.id}
                     index={index}
                     item={item}
+                    state={state}
                     editing={editingItemId === item.id}
                     isFirst={index === 0}
                     isLast={index === exercise.items.length - 1}
+                    onAdd={handleAdd}
+                    onMove={handleMove}
                     onEdit={handleEdit}
                     onUpdate={handleUpdate}
                     onDelete={handleDeleteRequest}
-                    onAdd={handleAdd}
-                    onMove={handleMove}
+                    onUpdateState={handleUpdateState}
                 />
             )}
 
             <MenuButton
-                className="new-item-button"
                 trigger={
                     <Button
                         icon="add"
