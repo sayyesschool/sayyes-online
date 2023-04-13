@@ -35,8 +35,8 @@ export const exerciseTypeMenuItems = [
         value: 'divider'
     },
     {
-        key: '_divider',
-        kind: 'divider',
+        key: 'divider-1',
+        kind: 'divider'
     },
     {
         key: 'boolean',

@@ -23,7 +23,7 @@ export default function AppHeader({
                     {
                         key: 'logout',
                         as: 'a',
-                        href: '/logout',
+                        href: '/auth/logout',
                         content: 'Выйти'
                     }
                 ]}

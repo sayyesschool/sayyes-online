@@ -20,7 +20,8 @@ const Notification = forwardRef(({
             ref={ref}
             className={classNames}
             open={open}
-            autoHideDuration={5000}
+            // autoHideDuration={5000}
+            disableWindowBlurListener
             onClose={onClose}
             {...props}
         >

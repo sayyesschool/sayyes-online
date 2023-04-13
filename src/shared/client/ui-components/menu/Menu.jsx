@@ -49,7 +49,6 @@ const Menu = forwardRef(({
                     ref={ref}
                     className={classNames}
                     variant="outlined"
-                //onKeyDown={handleListKeyDown}
                 >
                     {items?.map(item =>
                         item.kind === 'divider' ?

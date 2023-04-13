@@ -36,7 +36,7 @@ export default function AppBar({
                     {
                         key: 'logout',
                         as: 'a',
-                        href: '/logout',
+                        href: '/auth/logout',
                         content: 'Выйти'
                     }
                 ]}

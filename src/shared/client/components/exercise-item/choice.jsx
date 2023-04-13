@@ -10,7 +10,7 @@ export default function ExerciseChoiceItem({
     state = getDefaultState(item),
     onUpdateState
 }) {
-    console.log('ExerciseChoiceItem state', state);
+    console.log('ExerciseChoiceItem state', state, onUpdateState);
     const isMultiple = useMemo(() => item.items?.filter(item => item.correct).length > 1);
 
     const handleChange = useCallback(_item => {

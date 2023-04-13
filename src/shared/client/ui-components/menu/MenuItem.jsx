@@ -2,15 +2,20 @@ import { forwardRef, useCallback, useState } from 'react';
 import classnames from 'classnames';
 
 import Popup from '@mui/base/PopperUnstyled';
-import MenuList from '@mui/joy/MenuList';
+import ListDivider from '@mui/joy/ListDivider';
+import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import JoyMenuItem from '@mui/joy/MenuItem';
+import MenuList from '@mui/joy/MenuList';
 
 const MenuItem = forwardRef(({
     value,
     content,
+    decorator,
     items,
+    color,
     onClick = Function.prototype,
     onClicked = Function.prototype,
+    onItemClick = Function.prototype,
     onMenuClose = Function.prototype,
 
     children = content,
@@ -23,16 +28,21 @@ const MenuItem = forwardRef(({
     const handleClick = useCallback(event => {
         onClick(event, { value });
 
-        if (items) {
-            setAnchorElement(event.currentTarget);
-            setOpen(true);
-        }
-
         onClicked(event, {
             value,
             shouldClose: !items
         });
+
+        if (items) {
+            setAnchorElement(event.currentTarget);
+            setOpen(true);
+        }
     }, [value, items, onClick, onClicked]);
+
+    const handleSubItemClicked = useCallback((event, { value }) => {
+        onItemClick(event, { value });
+        onMenuClose();
+    }, [onItemClick, onMenuClose]);
 
     const classNames = classnames('ui-MenuItem');
 
@@ -40,9 +50,16 @@ const MenuItem = forwardRef(({
         <JoyMenuItem
             ref={ref}
             className={classNames}
+            color={color}
             onClick={handleClick}
             {...props}
         >
+            {decorator &&
+                <ListItemDecorator sx={color ? { color: 'inherit' } : undefined}>
+                    {decorator}
+                </ListItemDecorator>
+            }
+
             {children}
 
             {items &&
@@ -61,9 +78,14 @@ const MenuItem = forwardRef(({
                 >
                     <MenuList>
                         {items?.map(item =>
-                            <MenuItem
-                                {...item}
-                            />
+                            item.kind === 'divider' ?
+                                <ListDivider key={item.key} />
+                                :
+                                <MenuItem
+                                    {...item}
+                                    onClick={handleClick}
+                                    onClicked={handleSubItemClicked}
+                                />
                         )}
                     </MenuList>
                 </Popup>

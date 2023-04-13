@@ -35,7 +35,6 @@ export default function Exercise({
     }, []);
 
     const handleUpdateState = useCallback((itemId, state) => {
-        console.log('handleUpdateState', itemId, state);
         setState(oldState => ({
             ...oldState,
             [itemId]: state
@@ -52,6 +51,8 @@ export default function Exercise({
         item.type === 'fib' ||
         (item.type === 'input' && item.items?.length > 0)
     );
+
+    console.log('handleUpdateState', handleUpdateState);
 
     return (
         <article className="Exercise">
