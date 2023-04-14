@@ -1,10 +1,9 @@
-import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import moment from 'moment';
 
 import { useFormData } from 'shared/hooks/form';
 import TimeZoneSelect from 'shared/components/timezone-select';
-import { Form, IconButton } from 'shared/ui-components';
-import { generatePassword } from 'shared/utils/password';
+import { Form } from 'shared/ui-components';
 
 const genderItems = [
     { key: 'male', value: 'male', label: 'Мужской' },
@@ -46,8 +45,6 @@ function TeacherForm({
     }));
 
     const { data, getData, handleChange } = useFormData(getDefaultData(teacher));
-
-    const [password, setPassword] = useState(!teacher.id && generatePassword());
 
     const handleSubmit = useCallback(() => {
         getData(data => {
@@ -105,25 +102,6 @@ function TeacherForm({
                 value={data.email}
                 onChange={handleChange}
             />
-
-            {!teacher.id &&
-                <Form.Input
-                    label="Пароль"
-                    type="text"
-                    name="password"
-                    value={password}
-                    autoComplete="off"
-                    endDecorator={
-                        <IconButton
-                            icon="sync_lock"
-                            color="neutral"
-                            size="sm"
-                            variant="plain"
-                            onClick={() => setPassword(generatePassword())}
-                        />
-                    }
-                />
-            }
 
             <Form.Input
                 label="Дата рождения"

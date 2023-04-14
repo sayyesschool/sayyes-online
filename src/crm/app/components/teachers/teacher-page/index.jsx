@@ -1,22 +1,24 @@
 import { useCallback, useEffect } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Flex, Grid } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
+import { Grid } from 'shared/ui-components';
 
 import { useStore } from 'app/hooks/store';
 import TeacherForm from 'app/components/teachers/teacher-form';
 import TeacherDetails from 'app/components/teachers/teacher-details';
 import TeacherEnrollments from 'app/components/teachers/teacher-enrollments';
 import TeacherLessons from 'app/components/teachers/teacher-lessons';
+import PasswordForm from 'app/components/shared/password-form';
 
 export default function TeacherPage({ match, location, history }) {
     const [teacher, actions] = useStore('teachers.single');
 
     const [isTeacherFormOpen, toggleTeacherFormOpen] = useBoolean(false);
+    const [isPasswordDialogOpen, togglePasswordDialogOpen] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     useEffect(() => {
@@ -37,6 +39,11 @@ export default function TeacherPage({ match, location, history }) {
             .then(() => toggleTeacherFormOpen(false));
     }, [teacher]);
 
+    const updatePassword = useCallback(password => {
+        return actions.updateTeacher(teacher.id, { password })
+            .finally(() => togglePasswordDialogOpen(false));
+    }, [teacher]);
+
     const deleteTeacher = useCallback(() => {
         return actions.deleteTeacher(teacher.id)
             .then(() => history.push('/teachers'));
@@ -55,6 +62,12 @@ export default function TeacherPage({ match, location, history }) {
                     }
                 ]}
                 actions={[
+                    {
+                        key: 'password',
+                        title: 'Изменить пароль',
+                        icon: 'password',
+                        onClick: togglePasswordDialogOpen
+                    },
                     {
                         key: 'edit',
                         title: 'Редактировать',
@@ -103,6 +116,18 @@ export default function TeacherPage({ match, location, history }) {
                     id="teacher-form"
                     teacher={teacher}
                     onSubmit={updateTeacher}
+                />
+            </FormDialog>
+
+            <FormDialog
+                form="password-form"
+                title="Изменение пароля"
+                open={isPasswordDialogOpen}
+                onClose={togglePasswordDialogOpen}
+            >
+                <PasswordForm
+                    id="password-form"
+                    onSubmit={updatePassword}
                 />
             </FormDialog>
 

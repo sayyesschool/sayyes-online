@@ -14,11 +14,13 @@ import ClientContacts from 'app/components/clients/client-contacts';
 import ClientEnrollments from 'app/components/clients/client-enrollments';
 import ClientRequests from 'app/components/clients/client-requests';
 import ClientTransactions from 'app/components/clients/client-transactions';
+import PasswordForm from 'app/components/shared/password-form';
 
 export default function ClientPage({ match, location, history }) {
     const [client, clientActions] = useStore('clients.single');
 
     const [isClientFormOpen, toggleClientFormOpen] = useBoolean(false);
+    const [isPasswordDialogOpen, togglePasswordDialogOpen] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     useEffect(() => {
@@ -35,6 +37,11 @@ export default function ClientPage({ match, location, history }) {
     const updateClient = useCallback(data => {
         return clientActions.updateClient(client.id, data)
             .finally(() => toggleClientFormOpen(false));
+    }, [client]);
+
+    const updatePassword = useCallback(password => {
+        return clientActions.updateClient(client.id, { password })
+            .finally(() => togglePasswordDialogOpen(false));
     }, [client]);
 
     const deleteClient = useCallback(() => {
@@ -54,12 +61,18 @@ export default function ClientPage({ match, location, history }) {
                 description={`Баланс: ${client?.balance} руб.`}
                 actions={[
                     (client.hhid && {
-                        element: 'a',
+                        as: 'a',
                         href: `https://sayes.t8s.ru/Profile/${client.hhid}`,
                         target: '_blank',
                         icon: 'link',
                         title: 'Открыть в Hollihop'
                     }),
+                    {
+                        key: 'password',
+                        title: 'Изменить пароль',
+                        icon: 'password',
+                        onClick: togglePasswordDialogOpen
+                    },
                     {
                         key: 'edit',
                         title: 'Редактировать',
@@ -118,6 +131,18 @@ export default function ClientPage({ match, location, history }) {
                     id="client-form"
                     client={client}
                     onSubmit={updateClient}
+                />
+            </FormDialog>
+
+            <FormDialog
+                form="password-form"
+                title="Изменение пароля"
+                open={isPasswordDialogOpen}
+                onClose={togglePasswordDialogOpen}
+            >
+                <PasswordForm
+                    id="password-form"
+                    onSubmit={updatePassword}
                 />
             </FormDialog>
 
