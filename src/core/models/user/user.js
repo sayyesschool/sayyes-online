@@ -14,7 +14,7 @@ const UserRole = {
 };
 
 const User = new Schema([Person, {
-    password: { type: String, trim: true },
+    password: { type: String, trim: true, set: value => bcrypt.hashSync(value, bcrypt.genSaltSync()) },
     role: { type: String, enum: Object.values(UserRole), default: UserRole.Customer },
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
     activated: { type: Boolean, default: false, alias: 'isActivated' },
@@ -102,6 +102,7 @@ User.methods.isResetPasswordTokenValid = function(token) {
 
 // Generate password
 User.pre('save', function(next) {
+    console.log('PRE SAVE', this.password);
     if (!this.isModified('password')) return next();
 
     this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync());
