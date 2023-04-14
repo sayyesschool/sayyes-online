@@ -1,15 +1,16 @@
 import { memo } from 'react';
 import classnames from 'classnames';
 
-import { Avatar, Icon, Label, Text } from 'shared/ui-components';
+import { Avatar, Icon, Text } from 'shared/ui-components';
 
 import useIsTrackSwitchedOff from 'app/hooks/useIsTrackSwitchedOff';
 import useParticipantIsReconnecting from 'app/hooks/useParticipantIsReconnecting';
+import useParticipantNetworkQualityLevel from 'app/hooks/useParticipantNetworkQualityLevel';
 import usePublications from 'app/hooks/usePublications';
 import useTrack from 'app/hooks/useTrack';
 
 import AudioLevelIndicator from 'app/components/AudioLevelIndicator';
-import NetworkQualityLevel from 'app/components/NetworkQualityLevel';
+import NetworkQualityIndicator from 'app/components/NetworkQualityIndicator';
 import ParticipantTracks from 'app/components/ParticipantTracks';
 
 export default memo(function Participant({
@@ -24,6 +25,7 @@ export default memo(function Participant({
 }) {
     const publications = usePublications(participant);
     const isParticipantReconnecting = useParticipantIsReconnecting(participant);
+    const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
 
     const audioPublication = publications.find(p => p.kind === 'audio');
     const videoPublication = publications.find(p => p.trackName.includes('camera'));
@@ -47,9 +49,13 @@ export default memo(function Participant({
             onClick={onClick}
         >
             <div className="Participant__info-container">
-                <div className="Participant__network-quality-container">
-                    <NetworkQualityLevel participant={participant} />
-                </div>
+                {networkQualityLevel &&
+                    <div className="Participant__network-quality-container">
+                        <NetworkQualityIndicator
+                            networkQualityLevel={networkQualityLevel}
+                        />
+                    </div>
+                }
 
                 <div className="Participant__info-row-bottom">
                     {isScreenShareEnabled &&
