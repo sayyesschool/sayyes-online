@@ -65,7 +65,7 @@ export default function useChat({ token, conversationId, userId, participantsByI
             connectionState !== 'connected' || conversationRef.current
         ) return;
 
-        getConversationById(clientRef.current, conversationId, userId, participantsById)
+        getConversationById(clientRef.current, conversationId, participantsById)
             .then(conversation => {
                 conversationRef.current = conversation;
 
@@ -175,14 +175,22 @@ function getConversationById(client, conversationId, participantsById) {
             if (error.status !== 404) throw error;
 
             return client.createConversation({
-                uniqueName: identity
-            }).then(conversation => {
-                return Promise.all(
-                    Object.keys(participantsById).map(participantId => {
-                        return conversation.add(participantId);
-                    })
-                ).then(() => conversation);
+                uniqueName: conversationId
             });
+        })
+        .then(conversation => {
+            return conversation.getParticipants()
+                .then(participants => {
+                    const roomParticipantIds = participants.map(p => p.identity);
+                    const participantIdsToAdd = Array.from(Object.keys(participantsById))
+                        .filter(id => !roomParticipantIds.includes(id));
+
+                    return Promise.all(
+                        participantIdsToAdd.map(participantId => {
+                            return conversation.add(participantId);
+                        })
+                    ).then(() => conversation);
+                });
         })
         .then(conversation => {
             return conversation.join().catch(error => {
