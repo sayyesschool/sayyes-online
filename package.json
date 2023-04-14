@@ -71,7 +71,6 @@
     "redux-promise": "^0.6.0",
     "request": "^2.88.2",
     "twilio": "^3.84.1",
-    "twilio-chat": "^6.0.0",
     "twilio-sync": "^3.2.2",
     "twilio-video": "^2.26.0",
     "uuid": "^8.3.2",
