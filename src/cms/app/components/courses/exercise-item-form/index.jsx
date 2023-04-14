@@ -1,6 +1,8 @@
 import { createElement, useCallback, useRef, useState } from 'react';
+import classnames from 'classnames';
 
-import { IconButton, Flex, Icon, Text } from 'shared/ui-components';
+import { IconButton, Flex, Text } from 'shared/ui-components';
+import { capitalize } from 'shared/utils/string';
 
 import AudioItem from './audio';
 import BooleanItem from './boolean';
@@ -52,7 +54,12 @@ const defaultItem = {
     title: ''
 };
 
-export default function ExerciseItemForm({ item = defaultItem, onCancel, onSubmit, ...props }) {
+export default function ExerciseItemForm({
+    item = defaultItem,
+    onCancel,
+    onSubmit,
+    ...props
+}) {
     const itemRef = useRef();
 
     const [isLoading, setLoading] = useState();
@@ -71,8 +78,15 @@ export default function ExerciseItemForm({ item = defaultItem, onCancel, onSubmi
         }
     }, [onSubmit]);
 
+    const classNames = classnames('ExerciseItemForm', `Exercise${capitalize(item.type)}ItemForm`);
+
     return (
-        <form id={item.id} className={`exercise-item-form exercise-item-form--${item.type}`} onSubmit={handleSubmit} {...props}>
+        <form
+            id={item.id}
+            className={classNames}
+            onSubmit={handleSubmit}
+            {...props}
+        >
             <Flex space="between" alignItems="center" justifyContent="space-between" sx={{ padding: '4px 4px 4px 8px' }}>
                 <Text>{labelsByType[item.type]}</Text>
 
@@ -81,7 +95,6 @@ export default function ExerciseItemForm({ item = defaultItem, onCancel, onSubmi
                         {
                             key: 'save',
                             type: 'submit',
-                            form: 'exercise-item-form',
                             icon: 'save',
                             title: 'Сохранить',
                             loading: isLoading

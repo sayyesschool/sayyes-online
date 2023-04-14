@@ -31,15 +31,13 @@ export default function ExerciseBooleanItem({
                             'incorrect': item.correct !== selected,
                         })}
                         header={item.text}
-                        endMedia={
+                        decorator={
                             <Checkbox
                                 checked={selected}
                                 disabled={selected}
-                                toggle
                             />
                         }
                         selected={selected}
-                        selectable
                         onClick={() => handleChange(!selected)}
                     />
                 )}

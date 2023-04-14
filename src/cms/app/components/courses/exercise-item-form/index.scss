@@ -1,28 +1,11 @@
-.exercise-item-form {
+.ExerciseItemForm {
     width: 100%;
     border: 1px solid rgba(0, 0, 0, .12);
     border-radius: 4px;
 
-    > .text-editor {
-        &:not(:first-child) {
-            border-top: 1px solid rgba(0, 0, 0, .12);
-        }
+    + .ExerciseItem {
+        margin-bottom: 1rem;
     }
-
-    .ui-list {
-        .ui-list__item {
-            padding: 0 .5rem;
-            min-height: 2rem;
-
-            .ui-checkbox {
-                display: flex;
-            }
-        }
-    }
-
-    &--audio {}
-
-    &--video {}
 
     &--image {
         .exercise-item-form__image-wrapper {
