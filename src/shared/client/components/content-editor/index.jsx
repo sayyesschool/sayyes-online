@@ -57,8 +57,7 @@ const defaultConfig = {
 };
 
 function ContentEditor({
-    value,
-    defaultValue = value,
+    content,
     config,
     onChange = Function.prototype,
     ...props
@@ -72,7 +71,7 @@ function ContentEditor({
             <CKEditor
                 ref={ref}
                 editor={ClassicEditor}
-                data={defaultValue}
+                data={content}
                 config={config ? {
                     ...defaultConfig,
                     ...config
