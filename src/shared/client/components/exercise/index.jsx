@@ -52,8 +52,6 @@ export default function Exercise({
         (item.type === 'input' && item.items?.length > 0)
     );
 
-    console.log('handleUpdateState', handleUpdateState);
-
     return (
         <article className="Exercise">
             <section className="Exercise__content">
