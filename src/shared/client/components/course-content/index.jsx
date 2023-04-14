@@ -8,9 +8,8 @@ export default function CourseContent({ course, onSelectUnit }) {
         <section className="CourseContent">
             <Grid spacing={2}>
                 {course.units.map((unit, index) =>
-                    <Grid.Item lg={3}>
+                    <Grid.Item key={unit.id} lg={3}>
                         <UnitCard
-                            key={unit.id}
                             as={!onSelectUnit ? Link : undefined}
                             to={!onSelectUnit ? unit.uri + (course.enrollmentId ? `?enrollmentId=${course.enrollmentId}` : '') : undefined}
                             number={index + 1}

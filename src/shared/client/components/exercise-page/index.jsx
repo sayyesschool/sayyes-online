@@ -35,9 +35,9 @@ export default function ExercisePage({ match, location }) {
             <Page.Header
                 title={exercise.title}
                 breadcrumbs={[
-                    { to: course.uri, content: course.title },
-                    { to: unit.uri, content: unit.title },
-                    { to: lesson.uri, content: lesson.title }
+                    { key: 'course', to: course.uri, content: course.title },
+                    { key: 'unit', to: unit.uri, content: unit.title },
+                    { key: 'lesson', to: lesson.uri, content: lesson.title }
                 ]}
             />
 
