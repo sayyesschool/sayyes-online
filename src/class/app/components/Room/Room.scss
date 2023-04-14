@@ -29,9 +29,16 @@
         overflow-y: auto;
 
         .Page {
-            width: 100%;
-            max-width: 1024px;
-            margin: 0 auto;
+            position: relative;
+            height: 100%;
+            overflow-y: auto;
+
+            .PageHeader,
+            .PageContent {
+                width: 100%;
+                max-width: 1024px;
+                margin: 0 auto;
+            }
         }
     }
 
