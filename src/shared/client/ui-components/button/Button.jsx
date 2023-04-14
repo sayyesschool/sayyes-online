@@ -11,6 +11,7 @@ const Button = forwardRef(({
     content,
     end,
 
+    as,
     className,
     children = content,
     ...props
@@ -20,6 +21,7 @@ const Button = forwardRef(({
     return (
         <JoyButton
             ref={ref}
+            component={as}
             className={classNames}
             startDecorator={icon ?
                 <Icon>{icon}</Icon> :

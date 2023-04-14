@@ -8,6 +8,7 @@ import Icon from '../icon/Icon';
 const IconButton = forwardRef(({
     icon,
 
+    as,
     className,
     ...props
 }, ref) => {
@@ -16,6 +17,7 @@ const IconButton = forwardRef(({
     return (
         <JoyIconButton
             ref={ref}
+            component={as}
             className={classNames}
             color="neutral"
             variant="plain"
