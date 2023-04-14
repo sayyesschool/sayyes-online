@@ -1,6 +1,6 @@
 import { NavLink, useRouteMatch } from 'react-router-dom';
 
-import { Button, Tabs } from 'shared/ui-components';
+import { Button, IconButton, Tabs } from 'shared/ui-components';
 
 import useRoomState from 'app/hooks/useRoomState';
 
@@ -83,15 +83,15 @@ export default function RoomHeader({
             </div>
 
             <div className="RoomHeader__actions">
-                {/* {user.role === 'teacher' &&
+                {user.role === 'teacher' &&
                     <IconButton
-                        icon="waving_hand"
+                        icon="sync"
                         title="Синхронизировать"
                         variant="plain"
                         size="sm"
                         onClick={onSync}
                     />
-                } */}
+                }
 
                 <ToggleChatButton
                     active={isChatOpen}
