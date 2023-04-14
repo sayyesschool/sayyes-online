@@ -20,6 +20,7 @@
     "lint": "eslint",
     "start": "node src/main.js",
     "test": "jest",
+    "upload": "git push evennode master",
     "dbdump": "'C:\\Program Files\\MongoDB\\tools\\100\\bin\\mongodump.exe' --host 9a.mongo.evennode.com --port 27017 --username 1fad2999e128c7779c8692d685e5eaad --password 4R*I78UXfKscHvIk --db 1fad2999e128c7779c8692d685e5eaad"
   },
   "dependencies": {
