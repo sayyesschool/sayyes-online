@@ -1,15 +1,6 @@
 @use 'shared/styles/mixins';
 @use 'shared/styles/variables';
 
-body {
-    background-color: rgb(245, 245, 245) !important;
-    overflow: hidden;
-}
-
-.AppLoadingIndicator {
-    position: fixed;
-}
-
 .AppContent {
     max-height: calc(100vh - 56px);
     overflow-x: hidden;

@@ -27,7 +27,7 @@ export default function App({ routes }) {
         notificationActions.hideNotification();
     }, []);
 
-    if (!user) return <LoadingIndicator className="AppLoadingIndicator" />;
+    if (!user) return <LoadingIndicator fluid />;
 
     return (
         <div className="App">
