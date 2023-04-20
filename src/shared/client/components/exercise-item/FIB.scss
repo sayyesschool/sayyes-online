@@ -1,4 +1,4 @@
-.ExerciseFIBItem {
+.ExerciseFibItem {
     position: relative;
 
     .ContentEditor {
@@ -11,5 +11,17 @@
         position: absolute;
         top: 0;
         right: 0
+    }
+
+    p {
+        line-height: 1.4;
+
+        P:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    li {
+        line-height: 1.75;
     }
 }
