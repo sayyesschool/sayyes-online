@@ -16,19 +16,17 @@ export default function ExerciseInputItem({
 
     const Component = item.inline ? Input : Textarea;
 
-    return (
-        <>
-            {item.text &&
-                <TextContent>{item.text}</TextContent>
-            }
+    return (<>
+        {item.text &&
+            <TextContent>{item.text}</TextContent>
+        }
 
-            <Component
-                value={value}
-                correctValues={item.items}
-                checked={checked}
-                required
-                onChange={handleChange}
-            />
-        </>
-    );
+        <Component
+            value={value}
+            correctValues={item.items}
+            checked={checked}
+            required
+            onChange={handleChange}
+        />
+    </>);
 }

@@ -1,2 +1,2 @@
-export { default, default as Chip } from './Chip';
+export { default, default as Chip, ChipDelete } from './Chip';
 export { default as ChipGroup } from './ChipGroup';
