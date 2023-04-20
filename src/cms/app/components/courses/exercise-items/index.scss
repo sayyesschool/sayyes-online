@@ -1,6 +1,26 @@
 .ExerciseItems {
+    position: relative;
     counter-reset: number;
-    
+
+    .ExerciseItem {
+        width: 100%;
+        min-height: 1rem;
+        padding-right: 3rem;
+    }
+
+    .ExerciseItem ~ &__add-button,
+    .ExerciseItemForm ~ &__add-button {
+        margin-top: 1rem;
+    }
+
+    & &__item-menu-button {
+        position: absolute !important;
+        right: 16px;
+        top: -10000px;
+        min-width: 24px;
+        min-height: 24px;
+    }
+
     &:not(.page-section--compact) {
         > .page-section__content:not(:empty) {
             padding: 0 1rem 1rem 1rem;

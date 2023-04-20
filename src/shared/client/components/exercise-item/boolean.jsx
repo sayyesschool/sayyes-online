@@ -2,21 +2,21 @@ import { useCallback } from 'react';
 import classnames from 'classnames';
 
 import TextContent from 'shared/components/text-content';
-import { Checkbox, List } from 'shared/ui-components';
+import { List, Switch } from 'shared/ui-components';
 
 export default function ExerciseBooleanItem({
     item,
     checked,
     selected,
-    state = {},
-    setState
+    state,
+    onUpdateState
 }) {
-    const handleChange = useCallback(selected => {
-        setState((state = {}) => ({
+    const handleChange = useCallback(itemId => {
+        onUpdateState(item.id, {
             ...state,
-            [item.id]: selected
-        }));
-    }, [item]);
+            [itemId]: state ? !state[itemId] : true
+        });
+    }, [item, state, onUpdateState]);
 
     return (
         <>
@@ -26,21 +26,20 @@ export default function ExerciseBooleanItem({
                 {item.items?.map(item =>
                     <List.Item
                         key={item.id}
-                        className={checked && classnames({
-                            'correct': item.correct === selected,
-                            'incorrect': item.correct !== selected,
+                        className={classnames('ExerciseBooleanListItem', checked && {
+                            'ExerciseBooleanListItem--correct': state[item.id] === selected,
+                            'ExerciseBooleanListItem--incorrect': state[item.id] !== selected,
                         })}
-                        header={item.text}
-                        endMedia={
-                            <Checkbox
+                        content={item.text}
+                        endAction={
+                            <Switch
                                 checked={selected}
                                 disabled={selected}
-                                toggle
+                                size="sm"
+                                onChange={() => handleChange(item.id)}
                             />
                         }
                         selected={selected}
-                        selectable
-                        onClick={() => handleChange(!selected)}
                     />
                 )}
             </List>

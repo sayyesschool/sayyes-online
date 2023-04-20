@@ -10,7 +10,6 @@ export default function ExerciseChoiceItem({
     state = getDefaultState(item),
     onUpdateState
 }) {
-    console.log('ExerciseChoiceItem state', state, onUpdateState);
     const isMultiple = useMemo(() => item.items?.filter(item => item.correct).length > 1);
 
     const handleChange = useCallback(_item => {
@@ -22,7 +21,7 @@ export default function ExerciseChoiceItem({
         } else {
             onUpdateState(item.id, _item.id);
         }
-    }, [item, isMultiple, onUpdateState]);
+    }, [item, isMultiple, state, onUpdateState]);
 
     const isItemChosen = useCallback(item => {
         if (isMultiple) {
@@ -41,9 +40,9 @@ export default function ExerciseChoiceItem({
                     <List.Item
                         key={item.id}
                         as="label"
-                        className={classnames('ExerciseChoiceItem', checked && {
-                            'ExerciseChoiceItem--correct': item.correct,
-                            'ExerciseChoiceItem--incorrect': !item.correct && isItemChosen(item)
+                        className={classnames('ExerciseChoiceListItem', checked && {
+                            'ExerciseChoiceListItem--correct': item.correct,
+                            'ExerciseChoiceListItem--incorrect': !item.correct && isItemChosen(item)
                         })}
                         decorator={isMultiple ?
                             <Checkbox
