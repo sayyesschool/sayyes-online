@@ -4,14 +4,13 @@
 
     .ExerciseItem {
         width: 100%;
+        min-height: 1rem;
         padding-right: 3rem;
-        // transition: background-color .2s;
     }
-    
-    &:not(.page-section--compact) {
-        > .page-section__content:not(:empty) {
-            padding: 0 1rem 1rem 1rem;
-        }
+
+    .ExerciseItem ~ &__add-button,
+    .ExerciseItemForm ~ &__add-button {
+        margin-top: 1rem;
     }
 
     & &__item-menu-button {
@@ -20,5 +19,11 @@
         top: -10000px;
         min-width: 24px;
         min-height: 24px;
+    }
+
+    &:not(.page-section--compact) {
+        > .page-section__content:not(:empty) {
+            padding: 0 1rem 1rem 1rem;
+        }
     }
 }

@@ -41,16 +41,13 @@ export default function ExerciseItems({
     const handleAdd = useCallback((type, dir) => {
         const activeItemIndex = exercise.items.findIndex(item => item.id === activeItemId);
 
-        console.log('handleAdd', type, activeItemIndex, dir);
-
-        // return onCreate({ item: { type }, position: activeItemIndex + dir })
-        //     .then(response => setEditingItemId(response.data.item.id));
-    }, [activeItemId]);
+        return onCreate({ item: { type }, position: activeItemIndex + dir })
+            .then(response => setEditingItemId(response.data.item.id));
+    }, [exercise, activeItemId]);
 
     const handleUpdate = useCallback(data => {
-        console.log('handleUpdate', editingItemId, data);
-        // return onUpdate(editingItemId, data)
-        //     .then(() => setEditingItemId(undefined));
+        return onUpdate(editingItemId, data)
+            .then(() => setEditingItemId(undefined));
     }, [editingItemId]);
 
     const handleDelete = useCallback(() => {
@@ -58,13 +55,13 @@ export default function ExerciseItems({
 
         if (!deletingItem) return;
 
-        if (item.image?.url) {
+        if (deletingItem.image?.url) {
             deletingItem.file = {
                 url: item.image.url
             };
         }
 
-        if (item.audio?.url) {
+        if (deletingItem.audio?.url) {
             deletingItem.file = {
                 url: item.audio.url
             };
@@ -75,7 +72,7 @@ export default function ExerciseItems({
                 setActiveItemId(undefined);
                 toggleConfirmationDialogOpen(false);
             });
-    }, [activeItemId]);
+    }, [exercise, activeItemId]);
 
     const handleDeleteRequest = useCallback(() => {
         toggleConfirmationDialogOpen(true);
@@ -116,8 +113,9 @@ export default function ExerciseItems({
     const handleItemMouseOver = useCallback(event => {
         const element = event.currentTarget;
         setActiveItemId(element.id);
+
         itemMenuButtonRef.current.style.top = `${element.offsetTop}px`;
-    }, []);
+    }, [editingItemId]);
 
     const firstItem = exercise.items.at(0);
     const lastItem = exercise.items.at(-1);
@@ -148,75 +146,79 @@ export default function ExerciseItems({
                     />
             )}
 
-            <MenuButton
-                trigger={
-                    <IconButton
-                        ref={itemMenuButtonRef}
-                        className="ExerciseItems__item-menu-button"
-                        icon="more_vert"
-                        color="neutral"
-                        size="sm"
-                        variant="plain"
-                    />
-                }
-                items={[
-                    {
-                        key: 'add_above',
-                        decorator: <Icon>arrow_upward</Icon>,
-                        content: 'Добавить выше',
-                        onItemClick: (_, { value }) => handleAdd(value, -1),
-                        items: exerciseTypeMenuItems
-                    },
-                    {
-                        key: 'add_below',
-                        decorator: <Icon>arrow_downward</Icon>,
-                        content: 'Добавить ниже',
-                        onItemClick: (_, { value }) => handleAdd(value, 0),
-                        items: exerciseTypeMenuItems
-                    },
-                    {
-                        key: 'divider-1',
-                        kind: 'divider'
-                    },
-                    {
-                        key: 'move_up',
-                        decorator: <Icon>move_up</Icon>,
-                        content: 'Переместить выше',
-                        disabled: firstItem.id === activeItemId,
-                        onClick: () => handleMove(activeItemId, -1)
-                    },
-                    {
-                        key: 'move_down',
-                        decorator: <Icon>move_down</Icon>,
-                        content: 'Переместить ниже',
-                        disabled: lastItem.id === activeItemId,
-                        onClick: () => handleMove(activeItemId, 1)
-                    },
-                    {
-                        key: 'divider-2',
-                        kind: 'divider'
-                    },
-                    {
-                        key: 'edit',
-                        decorator: <Icon>edit</Icon>,
-                        content: 'Изменить',
-                        onClick: handleEdit
-                    },
-                    {
-                        key: 'delete',
-                        decorator: <Icon>delete</Icon>,
-                        content: 'Удалить',
-                        color: 'danger',
-                        onClick: handleDeleteRequest
+            {exercise.items &&
+                <MenuButton
+                    trigger={
+                        <IconButton
+                            ref={itemMenuButtonRef}
+                            className="ExerciseItems__item-menu-button"
+                            icon="more_vert"
+                            color="neutral"
+                            size="sm"
+                            variant="plain"
+                        />
                     }
-                ]}
-            />
+                    items={[
+                        {
+                            key: 'add_above',
+                            decorator: <Icon>arrow_upward</Icon>,
+                            content: 'Добавить выше',
+                            onItemClick: (_, { value }) => handleAdd(value, 0),
+                            items: exerciseTypeMenuItems
+                        },
+                        {
+                            key: 'add_below',
+                            decorator: <Icon>arrow_downward</Icon>,
+                            content: 'Добавить ниже',
+                            onItemClick: (_, { value }) => handleAdd(value, 1),
+                            items: exerciseTypeMenuItems
+                        },
+                        {
+                            key: 'divider-1',
+                            kind: 'divider'
+                        },
+                        {
+                            key: 'move_up',
+                            decorator: <Icon>move_up</Icon>,
+                            content: 'Переместить выше',
+                            disabled: firstItem?.id === activeItemId,
+                            onClick: () => handleMove(activeItemId, -1)
+                        },
+                        {
+                            key: 'move_down',
+                            decorator: <Icon>move_down</Icon>,
+                            content: 'Переместить ниже',
+                            disabled: lastItem?.id === activeItemId,
+                            onClick: () => handleMove(activeItemId, 1)
+                        },
+                        {
+                            key: 'divider-2',
+                            kind: 'divider'
+                        },
+                        {
+                            key: 'edit',
+                            decorator: <Icon>edit</Icon>,
+                            content: 'Изменить',
+                            onClick: handleEdit
+                        },
+                        {
+                            key: 'delete',
+                            decorator: <Icon>delete</Icon>,
+                            content: 'Удалить',
+                            color: 'danger',
+                            onClick: handleDeleteRequest
+                        }
+                    ]}
+                />
+            }
 
             <MenuButton
                 trigger={
                     <Button
+                        className="ExerciseItems__add-button"
                         icon="add"
                         content="Добавить элемент"
+                        size="sm"
                         variant="outlined"
                     />
                 }

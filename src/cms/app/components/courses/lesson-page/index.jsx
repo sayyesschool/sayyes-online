@@ -76,7 +76,7 @@ export default function LessonPage({ match, history }) {
                         />
                     </Grid.Item>
 
-                    <Grid.Item xs={3}>
+                    <Grid.Item xs={4}>
                         <LessonExercises
                             course={course}
                             lesson={lesson}

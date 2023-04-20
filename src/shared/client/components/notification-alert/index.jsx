@@ -17,8 +17,6 @@ export default function NotificationAlert({
     className,
     ...props
 }) {
-    console.log('TYPE', type);
-    console.log('OPEN', open);
     const classNames = classnames('NotificationAlert', className);
 
     return (

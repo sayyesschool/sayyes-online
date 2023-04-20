@@ -1,5 +1,7 @@
 .ExerciseAudioItem {
-    border: 1px solid rgba(0, 0, 0, .12);
-    border-radius: 4px;
-    padding: 4px;
+    .AudioContent {
+        border: 1px solid rgba(0, 0, 0, .12);
+        border-radius: 4px;
+        padding: 4px;
+    }
 }
