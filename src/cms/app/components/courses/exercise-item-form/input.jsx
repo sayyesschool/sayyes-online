@@ -1,7 +1,7 @@
 import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Button, Flex, Label, Input, Switch, Text } from 'shared/ui-components';
+import { Chip, Flex, FormField, Input } from 'shared/ui-components';
 
 function ExerciseInputItem({ item }, ref) {
     const [text, setText] = useState(item.text || '');
@@ -35,7 +35,7 @@ function ExerciseInputItem({ item }, ref) {
     }, []);
 
     return (
-        <Flex padding="padding.medium" gap="gap.small" column>
+        <Flex padding={1} gap="small" column>
             <Input
                 value={text}
                 placeholder="Вопрос"
@@ -43,39 +43,41 @@ function ExerciseInputItem({ item }, ref) {
                 onChange={handleTextChange}
             />
 
-            <Switch
-                label="В линию"
-                checked={isInline}
-                onChange={toggleInline}
-            />
+            {/* <Flex>
+                <Text>В линию</Text>
 
-            <Flex vAlign="center" gap="gap.smaller">
-                <Text>Ответы:</Text>
+                <Switch
+                    label="В линию"
+                    checked={isInline}
+                    onChange={toggleInline}
+                />
+            </Flex> */}
 
-                <Flex>
-                    {items.map(item =>
-                        <Label
-                            key={item}
-                            content={item}
-                            icon={
-                                <Button
-                                    type="button"
-                                    icon="delete"
-                                    text
-                                    onClick={() => handleDeleteItem(item)}
-                                />
-
-                            }
-                        />
-                    )}
-                </Flex>
-
-                <input
+            <FormField label="Ответы">
+                <Input
                     defaultValue=""
                     placeholder="Введите ответ и нажмите Enter"
+                    startDecorator={
+                        <Chip.Group>
+                            {items.map(item =>
+                                <Chip
+                                    key={item}
+                                    content={item}
+                                    endDecorator={
+                                        <Chip.Delete
+                                            onDelete={() => handleDeleteItem(item)}
+                                        />
+                                    }
+                                    size="sm"
+                                    color="neutral"
+                                    variant="outlined"
+                                />
+                            )}
+                        </Chip.Group>
+                    }
                     onKeyPress={handleKeyPress}
                 />
-            </Flex>
+            </FormField>
         </Flex>
     );
 }

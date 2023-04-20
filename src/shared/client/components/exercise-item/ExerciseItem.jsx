@@ -1,6 +1,8 @@
 import { createElement, memo } from 'react';
 import classnames from 'classnames';
 
+import { capitalize } from 'shared/utils/string';
+
 import AudioItem from './Audio';
 import BooleanItem from './Boolean';
 import ChoiceItem from './Choice';
@@ -35,7 +37,7 @@ export default memo(function ExerciseItem({
     onUpdateState,
     ...props
 }) {
-    const classNames = classnames('ExerciseItem', getItemClassName(item.type));
+    const classNames = classnames('ExerciseItem', `Exercise${capitalize(item.type)}Item`);
 
     return (
         <div id={item.id} className={classNames} {...props}>
@@ -51,7 +53,3 @@ export default memo(function ExerciseItem({
         </div>
     );
 });
-
-function getItemClassName(type) {
-    return `Exercise${type[0].toUpperCase() + type.slice(1)}Item`;
-}

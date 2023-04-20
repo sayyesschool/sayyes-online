@@ -2,6 +2,7 @@ import { forwardRef } from 'react';
 import classnames from 'classnames';
 
 import JoyChip from '@mui/joy/Chip';
+import ChipDelete from '@mui/joy/ChipDelete';
 
 const Chip = forwardRef(({
     start,
@@ -27,4 +28,7 @@ const Chip = forwardRef(({
     );
 });
 
+Chip.Delete = ChipDelete;
+
+export { ChipDelete };
 export default Chip;

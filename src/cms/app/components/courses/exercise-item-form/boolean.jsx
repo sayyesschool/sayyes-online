@@ -1,8 +1,8 @@
 import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
-import { Button, Checkbox, Input, List } from 'shared/ui-components';
-import TextEditor from 'shared/components/text-editor';
+import ContentEditor from 'shared/components/content-editor';
+import { Button, Checkbox, IconButton, Input, List } from 'shared/ui-components';
 
 function ExerciseBooleanItem({ item }, ref) {
     const [text, setText] = useState(item.text || '');
@@ -41,37 +41,35 @@ function ExerciseBooleanItem({ item }, ref) {
 
     return (
         <>
-            <TextEditor
+            <ContentEditor
                 value={item.text}
                 onChange={handleTextChange}
             />
 
             <List>
                 {items?.map(item =>
-                    <List.Item
-                        key={item.key}
-                        media={
-                            <Checkbox
-                                checked={item.correct}
-                                onChange={() => handleItemCorrect(item.id)}
-                            />
-                        }
-                        content={
-                            <Input
-                                value={item.text}
-                                fluid
-                                onChange={event => handleUpdateItem(item.id, event.target.value)}
-                            />
-                        }
-                        endMedia={
-                            <Button
-                                type="button"
-                                icon="delete"
-                                text
-                                onClick={() => handleDeleteItem(item.id)}
-                            />
-                        }
-                    />
+                    <List.Item key={item.key}>
+                        <Input
+                            start={
+                                <Checkbox
+                                    checked={item.correct}
+                                    onChange={() => handleItemCorrect(item.id)}
+                                />
+                            }
+                            value={item.text}
+                            end={
+                                <IconButton
+                                    type="button"
+                                    icon="delete"
+                                    color="danger"
+                                    size="sm"
+                                    variant="plain"
+                                    onClick={() => handleDeleteItem(item.id)}
+                                />
+                            }
+                            onChange={event => handleUpdateItem(item.id, event.target.value)}
+                        />
+                    </List.Item>
                 )}
             </List>
 
@@ -79,8 +77,9 @@ function ExerciseBooleanItem({ item }, ref) {
                 type="button"
                 content="Добавить утверждение"
                 icon="add"
-                text
-                fluid
+                variant="plain"
+                size="sm"
+                sx={{ ml: 2, mb: 1 }}
                 onClick={handleAddItem}
             />
         </>
