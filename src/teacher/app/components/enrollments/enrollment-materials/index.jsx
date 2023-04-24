@@ -39,7 +39,7 @@ export default function EnrollmentMaterials({ enrollment }) {
 
     return (
         <PageSection
-            className="enrollment-materials"
+            className="EnrollmentMaterials"
             title="Материалы"
             actions={materials ?
                 <MenuButton
@@ -57,7 +57,7 @@ export default function EnrollmentMaterials({ enrollment }) {
             }
             compact
         >
-            {enrollmentMaterials.length > 0 &&
+            {enrollmentMaterials?.length > 0 &&
                 <MaterialsList
                     materials={enrollment.materials}
                     onRemove={handleRemoveMaterial}

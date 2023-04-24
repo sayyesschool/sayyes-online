@@ -66,7 +66,7 @@ export default function HomePage() {
             });
     }, [actions, lesson]);
 
-    if (!lessons) return <LoadingIndicator />;
+    if (!lessons) return <LoadingIndicator fullscreen />;
 
     const events = lessons.map(lesson => {
         const date = new Date(lesson.date);
