@@ -21,7 +21,7 @@ function ExerciseFIBItem({ item }, ref) {
                 onChange={handleChange}
             />
 
-            <Text as="small" size="small">Для текстового поля используйте <code>{'{ответ 1|ответ 2|ответ 3}'}</code>. Для выбора используйте <code>{'[ответ 1|ответ 2|ответ 3*]'}</code></Text>
+            <Text px={2} py={1} as="small" type="body2">Для текстового поля используйте <code>{'{ответ 1|ответ 2|ответ 3}'}</code>. Для выбора используйте <code>{'[ответ 1|ответ 2|ответ 3*]'}</code></Text>
         </>
     );
 }
