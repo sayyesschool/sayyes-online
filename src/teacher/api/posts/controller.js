@@ -35,11 +35,11 @@ module.exports = ({
     },
 
     create: (req, res, next) => {
-        req.body.user = req.user.id;
+        req.body.author = req.user.id;
 
         Post.create(req.body)
             .then(post => {
-                post.user = req.user;
+                post.author = req.user;
 
                 res.json({
                     ok: true,
@@ -53,7 +53,7 @@ module.exports = ({
     update: (req, res, next) => {
         Post.findOneAndUpdate({
             _id: req.params.id,
-            user: req.user.id
+            author: req.user.id
         }, req.body, {
             new: true,
             projection: Object.keys(req.body)
@@ -71,7 +71,7 @@ module.exports = ({
     delete: (req, res, next) => {
         Post.findOneAndDelete({
             _id: req.params.id,
-            user: req.user.id
+            author: req.user.id
         })
             .then(post => {
                 res.json({
