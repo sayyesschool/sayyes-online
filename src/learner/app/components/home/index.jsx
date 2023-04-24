@@ -32,7 +32,7 @@ export default function HomePage() {
             });
     }, [activeEnrollment]);
 
-    if (!user || !enrollments) return <LoadingIndicator />;
+    if (!user || !enrollments) return <LoadingIndicator fullscreen />;
 
     // const events = lessons.map(lesson => ({
     //     id: lesson.id,

@@ -16,7 +16,7 @@ import './index.scss';
 export default function EnrollmentPage({ match }) {
     const [enrollment] = useEnrollment(match.params.id);
 
-    if (!enrollment) return <LoadingIndicator />;
+    if (!enrollment) return <LoadingIndicator fullscreen />;
 
     return (
         <Page className="EnrollmentPage">

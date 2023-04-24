@@ -22,7 +22,7 @@ import './index.scss';
 export default function App() {
     const [user] = useUser();
 
-    if (!user) return <LoadingIndicator />;
+    if (!user) return <LoadingIndicator fullscreen />;
 
     return (
         <div className="App">
