@@ -32,7 +32,6 @@ export default function PostForm({
                 name="title"
                 value={data.title}
                 placeholder="Название"
-                inverted
                 onChange={handleChange}
             />
 

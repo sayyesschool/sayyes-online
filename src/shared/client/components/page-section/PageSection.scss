@@ -42,8 +42,8 @@
     //     max-height: calc(100vh - 48px - 77px - 32px);
     // }
 
-    &--compact > &__content {
-        padding: 0 !important;
+    &--compact > &__header + &__content {
+        padding: 0;
     }
 
     &--plain {

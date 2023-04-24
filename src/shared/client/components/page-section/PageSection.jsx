@@ -35,8 +35,9 @@ export default function PageSection({
                 {(title || description) &&
                     <div className="PageSection__header-text">
                         <Heading as="h3" content={title} />
+
                         {description &&
-                            <Text content={description} />
+                            <Text type="body2" content={description} />
                         }
                     </div>
                 }

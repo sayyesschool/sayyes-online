@@ -99,25 +99,18 @@ export default function EnrollmentPosts({ enrollment }) {
                     </Card>
                 }
 
-                {posts.length > 0 ?
-                    posts.map(post =>
-                        <PostCard
-                            key={post.id}
-                            user={user}
-                            post={post}
-                            onUpdate={updatePost}
-                            onDelete={handleDeletePost}
-                            onCreateComment={createComment}
-                            onUpdateComment={updateComment}
-                            onDeleteComment={deleteComment}
-                        />
-                    ) : (
-                        <EmptyState
-                            icon="feed"
-                            title="Записей пока нет"
-                        />
-                    )
-                }
+                {posts?.map(post =>
+                    <PostCard
+                        key={post.id}
+                        user={user}
+                        post={post}
+                        onUpdate={updatePost}
+                        onDelete={handleDeletePost}
+                        onCreateComment={createComment}
+                        onUpdateComment={updateComment}
+                        onDeleteComment={deleteComment}
+                    />
+                )}
             </Flex>
 
             <ConfirmationDialog
