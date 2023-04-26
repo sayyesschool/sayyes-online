@@ -3,7 +3,7 @@ import { createAction, createReducer, combineReducers } from 'shared/store/helpe
 export const getMaterials = createAction('GET_MATERIALS', query => ({
     request: {
         method: 'get',
-        url: '/materials',
+        path: 'materials',
         query
     }
 }));
@@ -11,7 +11,7 @@ export const getMaterials = createAction('GET_MATERIALS', query => ({
 export const getMaterial = createAction('GET_MATERIAL', id => ({
     request: {
         method: 'get',
-        url: `/materials/${id}`
+        path: `materials/${id}`
     }
 }));
 
@@ -20,7 +20,7 @@ export const unsetMaterial = createAction('UNSET_MATERIAL');
 export const createMaterial = createAction('CREATE_MATERIAL', data => ({
     request: {
         method: 'post',
-        url: '/materials',
+        path: 'materials',
         body: data
     }
 }));
@@ -28,7 +28,7 @@ export const createMaterial = createAction('CREATE_MATERIAL', data => ({
 export const updateMaterial = createAction('UPDATE_MATERIAL', (id, data) => ({
     request: {
         method: 'put',
-        url: `/materials/${id}`,
+        path: `materials/${id}`,
         body: data
     }
 }));
@@ -36,7 +36,7 @@ export const updateMaterial = createAction('UPDATE_MATERIAL', (id, data) => ({
 export const deleteMaterial = createAction('DELETE_MATERIAL', (id, data) => ({
     request: {
         method: 'delete',
-        url: `/materials/${id}`,
+        path: `materials/${id}`,
         body: data
     }
 }));

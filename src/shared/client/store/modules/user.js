@@ -3,14 +3,14 @@ import { createAction, createReducer } from 'shared/store/helpers';
 export const getUser = createAction('GET_USER', () => ({
     request: {
         method: 'get',
-        url: '/user'
+        path: '/auth/api/user'
     }
 }));
 
 export const updateProfile = createAction('UPDATE_PROFILE', data => ({
     request: {
         method: 'put',
-        url: '/user/profile',
+        path: '/auth/api/user/profile',
         body: data
     }
 }));
@@ -18,7 +18,7 @@ export const updateProfile = createAction('UPDATE_PROFILE', data => ({
 export const updatePassword = createAction('UPDATE_PASSWORD', data => ({
     request: {
         method: 'put',
-        url: '/user/password',
+        path: '/auth/api/user/password',
         body: data
     }
 }));

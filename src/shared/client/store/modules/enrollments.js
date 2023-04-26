@@ -7,21 +7,21 @@ import { createPayment, updatePayment, deletePayment } from './payments';
 export const getEnrollments = createAction('GET_ENROLLMENTS', () => ({
     request: {
         method: 'get',
-        url: '/enrollments'
+        path: 'enrollments'
     }
 }));
 
 export const getEnrollment = createAction('GET_ENROLLMENT', id => ({
     request: {
         method: 'get',
-        url: `/enrollments/${id}`
+        path: `enrollments/${id}`
     }
 }));
 
 export const createEnrollment = createAction('CREATE_ENROLLMENT', data => ({
     request: {
         method: 'post',
-        url: '/enrollments',
+        path: 'enrollments',
         body: data
     }
 }));
@@ -29,7 +29,7 @@ export const createEnrollment = createAction('CREATE_ENROLLMENT', data => ({
 export const updateEnrollment = createAction('UPDATE_ENROLLMENT', (id, data) => ({
     request: {
         method: 'put',
-        url: `/enrollments/${id}`,
+        path: `enrollments/${id}`,
         body: data
     }
 }));
@@ -37,14 +37,14 @@ export const updateEnrollment = createAction('UPDATE_ENROLLMENT', (id, data) => 
 export const deleteEnrollment = createAction('DELETE_ENROLLMENT', id => ({
     request: {
         method: 'delete',
-        url: `/enrollments/${id}`
+        path: `enrollments/${id}`
     }
 }));
 
 export const payEnrollment = createAction('PAY_ENROLLMENT', (id, data) => ({
     request: {
         method: 'post',
-        url: `/enrollments/${id}/pay`,
+        path: `enrollments/${id}/pay`,
         body: data
     }
 }));
@@ -52,7 +52,7 @@ export const payEnrollment = createAction('PAY_ENROLLMENT', (id, data) => ({
 export const updateSchedule = createAction('UPDATE_ENROLLMENT_SCHEDULE', (id, data) => ({
     request: {
         method: 'put',
-        url: `/enrollments/${id}/schedule`,
+        path: `enrollments/${id}/schedule`,
         body: data
     }
 }));

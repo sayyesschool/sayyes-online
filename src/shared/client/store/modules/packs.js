@@ -1,11 +1,11 @@
 import { createAction, createReducer, combineReducers } from 'shared/store/helpers';
 
-const path = '/packs';
+const PATH = 'packs';
 
 export const getPacks = createAction('GET_PACKS', query => ({
     request: {
         method: 'get',
-        url: path,
+        path: PATH,
         query
     }
 }));
@@ -13,14 +13,14 @@ export const getPacks = createAction('GET_PACKS', query => ({
 export const getPack = createAction('GET_PACK', id => ({
     request: {
         method: 'get',
-        url: `${path}/${id}`
+        path: `${PATH}/${id}`
     }
 }));
 
 export const createPack = createAction('CREATE_PACK', data => ({
     request: {
         method: 'post',
-        url: path,
+        path: PATH,
         body: data
     }
 }));
@@ -28,7 +28,7 @@ export const createPack = createAction('CREATE_PACK', data => ({
 export const updatePack = createAction('UPDATE_PACK', (id, data) => ({
     request: {
         method: 'put',
-        url: `${path}/${id}`,
+        path: `${PATH}/${id}`,
         body: data
     }
 }));
@@ -36,7 +36,7 @@ export const updatePack = createAction('UPDATE_PACK', (id, data) => ({
 export const deletePack = createAction('DELETE_PACK', (id, data) => ({
     request: {
         method: 'delete',
-        url: `${path}/${id}`,
+        path: `${PATH}/${id}`,
         body: data
     }
 }));

@@ -5,7 +5,7 @@ import { createPayment, updatePayment, deletePayment } from './payments';
 export const getClients = createAction('GET_CLIENTS', query => ({
     request: {
         method: 'get',
-        url: '/clients',
+        path: 'clients',
         query
     }
 }));
@@ -13,14 +13,14 @@ export const getClients = createAction('GET_CLIENTS', query => ({
 export const getClient = createAction('GET_CLIENT', clientId => ({
     request: {
         method: 'get',
-        url: `/clients/${clientId}`
+        path: `clients/${clientId}`
     }
 }));
 
 export const createClient = createAction('CREATE_CLIENT', data => ({
     request: {
         method: 'post',
-        url: '/clients',
+        path: 'clients',
         body: data
     }
 }));
@@ -28,7 +28,7 @@ export const createClient = createAction('CREATE_CLIENT', data => ({
 export const updateClient = createAction('UPDATE_CLIENT', (clientId, data) => ({
     request: {
         method: 'put',
-        url: `/clients/${clientId}`,
+        path: `clients/${clientId}`,
         body: data
     }
 }));
@@ -36,7 +36,7 @@ export const updateClient = createAction('UPDATE_CLIENT', (clientId, data) => ({
 export const deleteClient = createAction('DELETE_CLIENT', (clientId, data) => ({
     request: {
         method: 'delete',
-        url: `/clients/${clientId}`,
+        path: `clients/${clientId}`,
         body: data
     }
 }));

@@ -1,6 +1,6 @@
 import { createAction, createReducer, combineReducers } from 'shared/store/helpers';
 
-const PATH = '/rooms';
+const PATH = 'rooms';
 
 export const getRooms = createAction('GETdd_ROOMS', query => ({
     request: {

@@ -14,8 +14,7 @@ module.exports = [
     env => config({ name: 'class', env }),
     env => config({ name: 'cms', env }),
     env => config({ name: 'crm', env }),
-    env => config({ name: 'learner', env }),
-    env => config({ name: 'teacher', env })
+    env => config({ name: 'lms', env })
 ];
 
 function config({ name, env, rules = [], plugins = [], override = {} }) {
@@ -138,6 +137,7 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
                 '@': path.resolve(__dirname, 'src'),
                 'app': path.resolve(__dirname, 'src', name, 'app'),
                 'core': path.resolve(__dirname, 'src', 'core'),
+                'lms': path.resolve(__dirname, 'src', 'lms'),
                 'shared/data': path.resolve(__dirname, 'src', 'shared', 'data'),
                 'shared/libs': path.resolve(__dirname, 'src', 'shared', 'libs'),
                 'shared/utils': path.resolve(__dirname, 'src', 'shared', 'utils'),

@@ -3,14 +3,15 @@ import { createAction, createReducer, combineReducers } from 'shared/store/helpe
 export const getTeachers = createAction('GET_TEACHERS', query => ({
     request: {
         method: 'get',
-        url: '/teachers' + (query ? ('?' + query) : '')
+        path: 'teachers',
+        query
     }
 }));
 
 export const getTeacher = createAction('GET_TEACHER', id => ({
     request: {
         method: 'get',
-        url: `/teachers/${id}`
+        path: `teachers/${id}`
     }
 }));
 
@@ -19,7 +20,7 @@ export const unsetTeacher = createAction('UNSET_TEACHER', () => null);
 export const createTeacher = createAction('CREATE_TEACHER', data => ({
     request: {
         method: 'post',
-        url: '/teachers',
+        path: 'teachers',
         body: data
     }
 }));
@@ -27,7 +28,7 @@ export const createTeacher = createAction('CREATE_TEACHER', data => ({
 export const updateTeacher = createAction('UPDATE_TEACHER', (id, data) => ({
     request: {
         method: 'put',
-        url: `/teachers/${id}`,
+        path: `teachers/${id}`,
         body: data
     }
 }));
@@ -35,7 +36,7 @@ export const updateTeacher = createAction('UPDATE_TEACHER', (id, data) => ({
 export const deleteTeacher = createAction('DELETE_TEACHER', (id, data) => ({
     request: {
         method: 'delete',
-        url: `/teachers/${id}`,
+        path: `teachers/${id}`,
         body: data
     }
 }));

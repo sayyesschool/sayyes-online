@@ -1,0 +1,18 @@
+extends /shared/layouts/app
+
+include /shared/mixins/yandex-metrika
+include /shared/mixins/google-analytics
+
+append head
+    // link(rel="stylesheet" href="/css/lms.vendors.css")
+    link(rel="stylesheet" href="/css/lms.main.css")
+
+append body
+    //include /shared/views/includes/footer
+
+    //- if ENV === 'production'
+    //-     +yandex-metrika(YANDEX_METRIKA_ID)(defer)
+    //-     +google-analytics(GOOGLE_ANALYTICS_ID)
+        
+    script(src="/js/lms.vendors.js")
+    script(src="/js/lms.main.js")

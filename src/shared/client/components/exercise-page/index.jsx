@@ -30,6 +30,8 @@ export default function ExercisePage({ match, location }) {
     const lesson = course?.lessonsById.get(exercise.lessonId);
     const unit = course?.unitsById.get(exercise.unitId);
 
+    console.log('EXERCISE PAGE', course, exercise, lesson, unit);
+
     return (
         <Page ref={rootRef} className="ExercisePage">
             <Page.Header

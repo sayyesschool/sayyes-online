@@ -3,21 +3,22 @@ import { createAction, createReducer, combineReducers } from 'shared/store/helpe
 export const getManagers = createAction('GET_MANAGERS', query => ({
     request: {
         method: 'get',
-        url: '/managers' + (query ? ('?' + query) : '')
+        path: 'managers',
+        query
     }
 }));
 
 export const getManager = createAction('GET_MANAGER', id => ({
     request: {
         method: 'get',
-        url: `/managers/${id}`
+        path: `managers/${id}`
     }
 }));
 
 export const createManager = createAction('CREATE_MANAGER', data => ({
     request: {
         method: 'post',
-        url: '/managers',
+        path: 'managers',
         body: data
     }
 }));
@@ -25,7 +26,7 @@ export const createManager = createAction('CREATE_MANAGER', data => ({
 export const updateManager = createAction('UPDATE_MANAGER', (id, data) => ({
     request: {
         method: 'put',
-        url: `/managers/${id}`,
+        path: `managers/${id}`,
         body: data
     }
 }));
@@ -33,7 +34,7 @@ export const updateManager = createAction('UPDATE_MANAGER', (id, data) => ({
 export const deleteManager = createAction('DELETE_MANAGER', (id, data) => ({
     request: {
         method: 'delete',
-        url: `/managers/${id}`,
+        path: `managers/${id}`,
         body: data
     }
 }));

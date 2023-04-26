@@ -9,9 +9,9 @@ export default (httpClient, baseUrl) => store => next => action => {
 
     next({ ...action, type: REQUEST, request: undefined });
 
-    const { method, url: path, query = '', body } = action.request;
+    const { method, path, query = '', body } = action.request;
     const qs = new URLSearchParams(query).toString();
-    const url = (path.startsWith('http') ? path : baseUrl + path) + (qs ? `?${qs}` : '');
+    const url = (path.startsWith('http') || path.startsWith('/') ? path : `${baseUrl}/${path}`) + (qs ? `?${qs}` : '');
 
     return httpClient[method](url, body)
         .then(data => {

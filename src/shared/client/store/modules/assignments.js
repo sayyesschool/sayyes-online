@@ -3,14 +3,14 @@ import { createAction, createReducer, combineReducers } from 'shared/store/helpe
 export const getAssignments = createAction('GET_ASSIGNMENTS', () => ({
     request: {
         method: 'get',
-        url: '/assignments'
+        path: 'assignments'
     }
 }));
 
 export const getAssignment = createAction('GET_ASSIGNMENT', id => ({
     request: {
         method: 'get',
-        url: `/assignments/${id}`
+        path: `assignments/${id}`
     }
 }));
 
@@ -19,7 +19,7 @@ export const unsetAssignment = createAction('UNSET_ASSIGNMENT');
 export const createAssignment = createAction('CREATE_ASSIGNMENT', data => ({
     request: {
         method: 'post',
-        url: '/assignments',
+        path: 'assignments',
         body: data
     }
 }));
@@ -27,7 +27,7 @@ export const createAssignment = createAction('CREATE_ASSIGNMENT', data => ({
 export const updateAssignment = createAction('UPDATE_ASSIGNMENT', (id, data) => ({
     request: {
         method: 'put',
-        url: `/assignments/${id}`,
+        path: `assignments/${id}`,
         body: data
     }
 }));
@@ -35,14 +35,14 @@ export const updateAssignment = createAction('UPDATE_ASSIGNMENT', (id, data) => 
 export const deleteAssignment = createAction('DELETE_ASSIGNMENT', id => ({
     request: {
         method: 'delete',
-        url: `/assignments/${id}`
+        path: `assignments/${id}`
     }
 }));
 
 export const createComment = createAction('CREATE_ASSIGNMENT_COMMENT', (id, data) => ({
     request: {
         method: 'post',
-        url: `/assignments/${id}/comments`,
+        path: `assignments/${id}/comments`,
         body: data
     }
 }));
@@ -50,7 +50,7 @@ export const createComment = createAction('CREATE_ASSIGNMENT_COMMENT', (id, data
 export const updateComment = createAction('UPDATE_ASSIGNMENT_COMMENT', (postId, commentId, data) => ({
     request: {
         method: 'put',
-        url: `/assignments/${postId}/comments/${commentId}`,
+        path: `assignments/${postId}/comments/${commentId}`,
         body: data
     }
 }));
@@ -58,7 +58,7 @@ export const updateComment = createAction('UPDATE_ASSIGNMENT_COMMENT', (postId, 
 export const deleteComment = createAction('DELETE_ASSIGNMENT_COMMENT', (postId, commentId) => ({
     request: {
         method: 'delete',
-        url: `/assignments/${postId}/comments/${commentId}`
+        path: `assignments/${postId}/comments/${commentId}`
     }
 }));
 

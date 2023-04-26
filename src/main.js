@@ -7,9 +7,8 @@ const authMiddleware = require('./auth/middleware');
 const cms = require('./cms');
 const crm = require('./crm');
 const classroom = require('./class');
-const learner = require('./learner');
+const lms = require('./lms');
 const server = require('./server');
-const teacher = require('./teacher');
 
 const context = core(config);
 
@@ -26,8 +25,7 @@ server(config, db)
     .use('/cms', cms(context))
     .use('/class', classroom(context))
     .use('/crm', crm(context))
-    .use('/client', learner(context))
-    .use('/teacher', teacher(context))
+    .use('/lms', lms(context))
     .use(context.middleware.auth.redirect)
     .listen(config.APP_PORT, () => {
         console.log('Server started');
