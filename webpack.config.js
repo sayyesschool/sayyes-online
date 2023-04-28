@@ -5,10 +5,17 @@ const autoprefixer = require('autoprefixer');
 const CssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const SentryWebpackPlugin = require('@sentry/webpack-plugin');
 
 dotenv.config();
 
-const { STATIC_URL, STORAGE_URL, YANDEX_METRIKA_ID, GOOGLE_ANALYTICS_ID } = process.env;
+const {
+    STATIC_URL,
+    STORAGE_URL,
+    YANDEX_METRIKA_ID,
+    GOOGLE_ANALYTICS_ID,
+    SENTRY_AUTH_TOKEN
+} = process.env;
 
 module.exports = [
     env => config({ name: 'class', env }),
@@ -93,6 +100,7 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
                 'process.env': JSON.stringify({}),
                 'APP_ENV': JSON.stringify(env),
                 'APP_URL': JSON.stringify(APP_URL),
+                'SENTRY_DSN': JSON.stringify(process.env.SENTRY_DSN || ''),
                 'STATIC_URL': JSON.stringify(STATIC_URL),
                 'STORAGE_URL': JSON.stringify(STORAGE_URL),
                 'YANDEX_METRIKA_ID': JSON.stringify(YANDEX_METRIKA_ID),
@@ -100,6 +108,12 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
             }),
             new CssExtractPlugin({
                 filename: `css/${name}.[name].css`
+            }),
+            new SentryWebpackPlugin({
+                org: 'say-yes',
+                project: 'app',
+                include: './public/js',
+                authToken: SENTRY_AUTH_TOKEN
             }),
             ...plugins
         ],

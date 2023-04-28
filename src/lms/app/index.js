@@ -1,22 +1,24 @@
 import { render } from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Provider as StoreProvider } from 'react-redux';
-import { CssVarsProvider as ThemeProvider } from '@mui/joy/styles';
 
-import './index.scss';
-
-import theme from 'shared/theme';
+import ErrorBoundary from 'shared/components/error-boundary';
+import { StoreProvider } from 'shared/store';
+import { ThemeProvider, theme } from 'shared/theme';
 
 import store from './store';
 import App from './components';
 
+import './index.scss';
+
 render(
-    <StoreProvider store={store}>
-        <ThemeProvider theme={theme}>
-            <Router basename="/lms">
-                <App />
-            </Router>
-        </ThemeProvider>
-    </StoreProvider>,
+    <ErrorBoundary>
+        <StoreProvider store={store}>
+            <ThemeProvider theme={theme}>
+                <Router basename="/lms">
+                    <App />
+                </Router>
+            </ThemeProvider>
+        </StoreProvider>
+    </ErrorBoundary>,
     document.getElementById('root')
 );
