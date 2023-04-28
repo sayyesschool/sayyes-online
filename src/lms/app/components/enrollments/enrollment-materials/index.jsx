@@ -58,7 +58,7 @@ export default function EnrollmentMaterials({ enrollment, readonly }) {
         >
             {enrollmentMaterials?.length > 0 &&
                 <MaterialsList
-                    materials={enrollment.materials}
+                    materials={enrollmentMaterials}
                     onRemove={!readonly && handleRemoveMaterial}
                 />
             }
