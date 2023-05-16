@@ -2,41 +2,41 @@ import { createAction, createReducer, combineReducers } from 'shared/store/helpe
 
 const PATH = 'rooms';
 
-export const getRooms = createAction('GETdd_ROOMS', query => ({
+export const getRooms = createAction('GET_ROOMS', query => ({
     request: {
         method: 'get',
-        url: PATH,
+        path: PATH,
         query
     }
 }));
 
-export const getRoom = createAction('GETdd_ROOM', id => ({
+export const getRoom = createAction('GET_ROOM', id => ({
     request: {
         method: 'get',
-        url: `${PATH}/${id}`
+        path: `${PATH}/${id}`
     }
 }));
 
-export const createRoom = createAction('CREATEdd_ROOM', data => ({
+export const createRoom = createAction('CREATE_ROOM', data => ({
     request: {
         method: 'post',
-        url: PATH,
+        path: PATH,
         body: data
     }
 }));
 
-export const updateRoom = createAction('UPDATEdd_ROOM', (id, data) => ({
+export const updateRoom = createAction('UPDATE_ROOM', (id, data) => ({
     request: {
         method: 'put',
-        url: `${PATH}/${id}`,
+        path: `${PATH}/${id}`,
         body: data
     }
 }));
 
-export const deleteRoom = createAction('DELETEdd_ROOM', (id, data) => ({
+export const deleteRoom = createAction('DELETE_ROOM', (id, data) => ({
     request: {
         method: 'delete',
-        url: `${PATH}/${id}`,
+        path: `${PATH}/${id}`,
         body: data
     }
 }));
