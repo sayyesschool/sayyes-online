@@ -41,5 +41,20 @@ module.exports = ({
                 });
             })
             .catch(next);
+    },
+
+    update: (req, res, next) => {
+        const keys = Object.keys(req.body);
+
+        Enrollment.findByIdAndUpdate(req.params.id, req.body, {
+            projection: keys.join(' '),
+            new: true
+        }).then(enrollment => {
+            res.json({
+                ok: true,
+                message: 'Обучение изменено',
+                data: enrollment
+            });
+        }).catch(next);
     }
 });

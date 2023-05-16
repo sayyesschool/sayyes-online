@@ -8,6 +8,7 @@ module.exports = context => {
 
     router.get('/', controller.getMany);
     router.get('/:id', controller.getOne);
+    router.put('/:id', controller.update);
 
     return router;
 };
