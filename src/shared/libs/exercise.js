@@ -100,7 +100,7 @@ function elementToObject(element) {
             type: 'select',
             props: {
                 values: values.map(value => value.replace('*', '')),
-                correctValue,
+                correctValue: correctValue.slice(0, correctValue.length - 1),
                 required: values?.length > 0
             }
         };
