@@ -16,6 +16,8 @@ export default function CoursesList({ courses, onRemove }) {
             {courses.map(course =>
                 <List.Item
                     key={course.id}
+                    as={Link}
+                    to={course.uri}
                     decorator={course.imageUrl &&
                         <Image imageUrl={course.imageUrl} alt="" />
                     }
