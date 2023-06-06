@@ -18,6 +18,7 @@ const MenuItem = forwardRef(({
     onItemClick = Function.prototype,
     onMenuClose = Function.prototype,
 
+    as,
     children = content,
     ...props
 }, ref) => {
@@ -48,6 +49,7 @@ const MenuItem = forwardRef(({
 
     return (
         <JoyMenuItem
+            component={as}
             ref={ref}
             className={classNames}
             color={color}
