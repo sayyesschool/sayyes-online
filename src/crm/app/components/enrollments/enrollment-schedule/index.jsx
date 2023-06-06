@@ -14,18 +14,20 @@ export default function EnrollmentSchedule({ enrollment, onUpdate }) {
             .then(() => toggleFormOpen(false));
     }, []);
 
+    const hasSchedule = enrollment.schedule?.length > 0;
+
     return (
         <PageSection
             className="EnrollmentSchedule"
             title="Расписание"
             actions={[{
                 key: 'edit',
-                icon: 'edit',
+                icon: hasSchedule ? 'edit' : 'add',
                 onClick: toggleFormOpen
             }]}
             compact
         >
-            {enrollment.schedule?.length > 0 &&
+            {hasSchedule &&
                 <WeekSchedule schedule={enrollment.schedule} />
             }
 
@@ -33,6 +35,7 @@ export default function EnrollmentSchedule({ enrollment, onUpdate }) {
                 title="Расписание занятий"
                 form="enrollment-schedule-form"
                 open={isFormOpen}
+                scrollableContent={false}
                 onClose={toggleFormOpen}
             >
                 <EnrollmentScheduleForm

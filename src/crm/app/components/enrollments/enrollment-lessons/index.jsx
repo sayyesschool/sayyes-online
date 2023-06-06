@@ -18,7 +18,6 @@ export default function EnrollmentLessons({ enrollment }) {
     const [lesson, setLesson] = useState();
     const [lessonsToRefund, setLessonsToRefund] = useState();
 
-    const [isMenuOpen, toggleMenuOpen] = useBoolean();
     const [isNewLessonFormOpen, toggleNewLessonFormOpen] = useBoolean(false);
     const [isEditLessonFormOpen, toggleEditLessonFormOpen] = useBoolean(false);
     const [isLessonsFormOpen, toggleLessonsFormOpen] = useBoolean(false);
@@ -79,16 +78,6 @@ export default function EnrollmentLessons({ enrollment }) {
         });
     }, [enrollment]);
 
-    const handleRefundRequest = useCallback(() => {
-        return http.get(`/admin/api/enrollments/${enrollment.id}/refund`)
-            .then(({ data }) => {
-                setLessonsToRefund(data);
-            })
-            .finally(() => {
-                toggleRefundDialog(true);
-            });
-    }, [enrollment]);
-
     const availableLessons = enrollment.lessons.filter(lesson => lesson.status === 'scheduled');
 
     return (
@@ -98,7 +87,6 @@ export default function EnrollmentLessons({ enrollment }) {
             actions={
                 <>
                     <MenuButton
-                        open={isMenuOpen}
                         trigger={
                             <IconButton
                                 icon="add"
@@ -122,16 +110,15 @@ export default function EnrollmentLessons({ enrollment }) {
                                 onClick: toggleLessonsFormOpen
                             }
                         ]}
-                        onOpenChange={toggleMenuOpen}
                     />
 
-                    {enrollment.schedule?.length > 1 &&
+                    {/* {enrollment.schedule?.length > 1 &&
                         <IconButton
                             icon="add"
                             title="Вернуть денежные средства"
                             onClick={handleRefundRequest}
                         />
-                    }
+                    } */}
                 </>
             }
         >
@@ -151,21 +138,6 @@ export default function EnrollmentLessons({ enrollment }) {
             }
 
             <FormDialog
-                form="lessons-form"
-                title="Новые занятия"
-                open={isLessonsFormOpen}
-                onClose={toggleLessonsFormOpen}
-            >
-                <Text>{enrollment.scheduleLabel}</Text>
-
-                <LessonsForm
-                    id="lessons-form"
-                    enrollment={enrollment}
-                    onSubmit={createLessons}
-                />
-            </FormDialog>
-
-            <FormDialog
                 form="create-lesson-form"
                 title="Новое занятие"
                 open={isNewLessonFormOpen}
@@ -179,6 +151,19 @@ export default function EnrollmentLessons({ enrollment }) {
                         teacher: enrollment?.teachers[0]
                     }}
                     onSubmit={createLesson}
+                />
+            </FormDialog>
+
+            <FormDialog
+                form="lessons-form"
+                title="Новые занятия"
+                open={isLessonsFormOpen}
+                onClose={toggleLessonsFormOpen}
+            >
+                <LessonsForm
+                    id="lessons-form"
+                    enrollment={enrollment}
+                    onSubmit={createLessons}
                 />
             </FormDialog>
 

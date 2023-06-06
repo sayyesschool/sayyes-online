@@ -5,7 +5,7 @@ import { scheduleLessons } from 'shared/libs/enrollment';
 import { useFormData } from 'shared/hooks/form';
 import UserSelect from 'shared/components/user-select';
 import LessonsPillGroup from 'shared/components/lessons-pill-group';
-import { Form } from 'shared/ui-components';
+import { Form, Text } from 'shared/ui-components';
 
 import { useStore } from 'app/hooks/store';
 
@@ -41,6 +41,8 @@ export default function LessonsForm({ enrollment, onSubmit, ...props }) {
 
     return (
         <Form className="LessonsForm" onSubmit={handleSubmit} {...props}>
+            <Text>{enrollment.scheduleLabel}</Text>
+
             <Form.Input
                 label="Начальная дата"
                 type="date"
@@ -58,23 +60,23 @@ export default function LessonsForm({ enrollment, onSubmit, ...props }) {
             />
 
             <Form.Input
-                label="Продолжительность"
+                label="Продолжительность, мин"
                 type="number"
                 name="duration"
                 value={data.duration}
-                suffix="мин."
                 step={5}
                 onChange={handleChange}
             />
 
             <UserSelect
+                label="Преподаватель"
                 name="teacher"
                 value={data.teacher}
-                label="Преподаватель"
                 options={teachers.map(teacher => ({
-                    key: teacher?.id,
-                    value: teacher?.id,
-                    text: teacher?.fullname
+                    key: teacher.id,
+                    value: teacher.id,
+                    label: teacher.fullname,
+                    content: teacher.fullname
                 }))}
                 onChange={handleChange}
             />
