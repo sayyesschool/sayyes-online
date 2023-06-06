@@ -18,11 +18,11 @@ function NavBarItem({ icon, text, to, exact }) {
     return (
         <ListItem className="NavBarItem">
             <ListItem.Button
-                as={NavLink}
                 className="NavBarItem__link"
+                activeClassName="NavBarItem__link--active"
+                component={NavLink}
                 to={to}
                 exact={exact}
-                activeClassName="NavBarItem__link--active"
                 sx={{
                     flexDirection: 'column',
                     alignItems: 'center',

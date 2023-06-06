@@ -18,6 +18,7 @@ export default function Dialog({
     layout,
     size,
     variant,
+    scrollableContent = true,
     withCloseButton = true,
     sx,
     onClose,
@@ -48,8 +49,7 @@ export default function Dialog({
                 }
 
                 <Box sx={{
-                    overflowY: 'auto',
-                    overflowX: 'hidden',
+                    overflow: scrollableContent ? 'hidden auto' : undefined,
                     margin: '.75rem 0',
                     '&:last-child': {
                         marginBottom: 0

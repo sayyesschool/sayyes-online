@@ -2,7 +2,7 @@ import { forwardRef, useCallback } from 'react';
 import classnames from 'classnames';
 
 import ClickAwayListener from '@mui/base/ClickAwayListener';
-import Popup from '@mui/base/PopperUnstyled';
+import Popup from '@mui/base/Popper';
 import MenuList from '@mui/joy/MenuList';
 import ListDivider from '@mui/joy/ListDivider';
 
@@ -46,6 +46,7 @@ const Menu = forwardRef(({
         >
             <ClickAwayListener onClickAway={handleClickAway}>
                 <MenuList
+                    key="menu-list"
                     ref={ref}
                     className={classNames}
                     variant="outlined"

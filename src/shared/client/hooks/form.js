@@ -104,7 +104,9 @@ export function useFormData(initialData, deps = []) {
     }, deps);
 
     const handleChange = useCallback(({ target } = {}) => {
-        const { name, value } = target;
+        const { name, value, checked } = target;
+
+        console.log(name, value, checked);
 
         setData(data => {
             const [name1, name2] = name.split('.');
@@ -129,7 +131,7 @@ export function useFormData(initialData, deps = []) {
             } else {
                 return {
                     ...data,
-                    [name1]: value
+                    [name1]: typeof data[name1] === 'boolean' ? checked : value
                 };
             }
         });

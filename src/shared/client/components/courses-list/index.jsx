@@ -9,15 +9,13 @@ export default function CoursesList({ courses, onRemove }) {
         event.stopPropagation();
 
         onRemove(courseId);
-    }, []);
+    }, [onRemove]);
 
     return (
         <List className="CoursesList">
             {courses.map(course =>
                 <List.Item
                     key={course.id}
-                    as={Link}
-                    to={course.uri}
                     decorator={course.imageUrl &&
                         <Image imageUrl={course.imageUrl} alt="" />
                     }
@@ -26,9 +24,9 @@ export default function CoursesList({ courses, onRemove }) {
                         <IconButton
                             icon="remove"
                             title="Убрать курс"
-                            onClick={event => handleRemove(event, course.id)}
                             color="danger"
                             size="sm"
+                            onClick={event => handleRemove(event, course.id)}
                         />
                     }
                 />

@@ -4,7 +4,7 @@ import moment from 'moment';
 import { useBoolean } from 'shared/hooks/state';
 import { useFormData } from 'shared/hooks/form';
 import { rescheduleLessons } from 'shared/libs/enrollment';
-import { Form, FormCheckbox, FormInput } from 'shared/ui-components/form';
+import { Checkbox, Form, FormInput } from 'shared/ui-components';
 import LessonPillGroup from 'shared/components/lessons-pill-group';
 import ScheduleSelect from 'shared/components/schedule-select';
 import { Text } from 'shared/ui-components';
@@ -41,7 +41,7 @@ export default function EnrollmentScheduleForm({ enrollment, onSubmit, ...props 
             />
 
             {enrollment.lessons?.length > 0 &&
-                <FormCheckbox
+                <Checkbox
                     label="Обновить уроки"
                     checked={shouldUpdateLessons}
                     onChange={toggleShouldUpdateLessons}
@@ -56,7 +56,6 @@ export default function EnrollmentScheduleForm({ enrollment, onSubmit, ...props 
                         value={moment(data.startDate).format('YYYY-MM-DD')}
                         min={moment().format('YYYY-MM-DD')}
                         label="С даты"
-                        filled
                         required
                         onChange={handleChange}
                     />

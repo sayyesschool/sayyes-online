@@ -1,18 +1,20 @@
-.schedule-select {
-    &__header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .schedule-select-item {
-        display: flex;
-        gap: 8px;
-        align-items: flex-end;
-        margin-bottom: .5rem;
-    }
-
-    .schedule-select-button--add {
+.ScheduleSelect {
+    &__add-button {
         margin-left: auto;
+    }
+}
+
+.ScheduleSelectItem {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    margin-bottom: .5rem;
+
+    &__day-select {
+        flex: 1;
+    }
+
+    &__time-input {
+        flex: 1;
     }
 }

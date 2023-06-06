@@ -79,6 +79,8 @@ export const enrollmentReducer = createReducer(null, {
     [updateEnrollment]: (state, action) => ({ ...state, ...action.data }),
     [deleteEnrollment]: (state, action) => null,
 
+    [updateSchedule]: (state, action) => ({ ...state, schedule: action.data.schedule }),
+
     [createLessons]: (state, action) => ({
         ...state,
         lessons: state.lessons.concat(...action.data.filter(lesson => lesson.enrollment === state.id))

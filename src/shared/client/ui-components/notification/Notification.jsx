@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import classnames from 'classnames';
 
-import SnackbarUnstyled from '@mui/base/SnackbarUnstyled';
+import Snackbar from '@mui/base/Snackbar';
 
 const Notification = forwardRef(({
     open,
@@ -16,7 +16,7 @@ const Notification = forwardRef(({
     }, className);
 
     return (
-        <SnackbarUnstyled
+        <Snackbar
             ref={ref}
             className={classNames}
             open={open}
@@ -26,7 +26,7 @@ const Notification = forwardRef(({
             {...props}
         >
             {children}
-        </SnackbarUnstyled>
+        </Snackbar>
     );
 });
 

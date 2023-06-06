@@ -38,10 +38,10 @@ export default function UserSelect({
         <FormAutocomplete
             className="UserSelect"
             name={name}
-            onChange={handleChange}
             options={options}
             getOptionLabel={option => option.label || optionsMap.get(option)}
             isOptionEqualToValue={(option, value) => option.value === value}
+            onChange={handleChange}
             {...props}
         />
     );

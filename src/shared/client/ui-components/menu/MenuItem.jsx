@@ -1,7 +1,7 @@
 import { forwardRef, useCallback, useState } from 'react';
 import classnames from 'classnames';
 
-import Popup from '@mui/base/PopperUnstyled';
+import Popup from '@mui/base/Popper';
 import ListDivider from '@mui/joy/ListDivider';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import JoyMenuItem from '@mui/joy/MenuItem';
@@ -55,7 +55,7 @@ const MenuItem = forwardRef(({
             {...props}
         >
             {decorator &&
-                <ListItemDecorator sx={color ? { color: 'inherit' } : undefined}>
+                <ListItemDecorator key="decorator" sx={color ? { color: 'inherit' } : undefined}>
                     {decorator}
                 </ListItemDecorator>
             }
@@ -64,6 +64,7 @@ const MenuItem = forwardRef(({
 
             {items &&
                 <Popup
+                    key="popup"
                     open={open}
                     anchorEl={anchorElement}
                     placement="right-start"
