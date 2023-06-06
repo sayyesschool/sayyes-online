@@ -109,14 +109,14 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
             new CssExtractPlugin({
                 filename: `css/${name}.[name].css`
             }),
-            new SentryWebpackPlugin({
+            env.production ? new SentryWebpackPlugin({
                 org: 'say-yes',
                 project: 'app',
                 include: './public/js',
                 authToken: SENTRY_AUTH_TOKEN
-            }),
+            }) : undefined,
             ...plugins
-        ],
+        ].filter(Boolean),
 
         optimization: {
             splitChunks: {
