@@ -1,7 +1,17 @@
-.ui-alert.screen-share-alert {
-    border: 1px solid rgba(255,255,255,.12);
+.ui-Alert.ScreenShareAlert {
     position: fixed;
-    left: .5rem;
+    left: 50%;
     bottom: .5rem;
+    transform: translateX(-50%);
+    opacity: .5;
     z-index: 1;
+    transition: opacity .2s;
+
+    &:hover {
+        opacity: 1;
+    }
+
+    .ui-Alert-endDecorator {
+        margin-left: 1rem;
+    }
 }
