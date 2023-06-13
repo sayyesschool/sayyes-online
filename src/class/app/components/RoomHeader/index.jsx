@@ -103,9 +103,7 @@ export default function RoomHeader({
 
                 <ToggleVideoButton disabled={isReconnecting} />
 
-                {!isSharingScreen &&
-                    <ToggleScreenShareButton disabled={isReconnecting} />
-                }
+                <ToggleScreenShareButton disabled={isReconnecting} />
 
                 <ToggleFullscreenButton
                     active={isFullscreen}
