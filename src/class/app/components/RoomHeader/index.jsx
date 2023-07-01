@@ -95,7 +95,7 @@ export default function RoomHeader({
 
                 <ToggleChatButton
                     active={isChatOpen}
-                    numberOfUnreadMessages={numberOfUnreadMessages}
+                    badgeCount={numberOfUnreadMessages}
                     onClick={onChatToggle}
                 />
 

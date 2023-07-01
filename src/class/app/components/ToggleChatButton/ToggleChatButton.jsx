@@ -2,11 +2,11 @@ import { Badge, IconButton } from 'shared/ui-components';
 
 export default function ToggleChatButton({
     active,
-    numberOfUnreadMessages,
+    badgeCount,
     ...props
 }) {
     return (
-        <Badge content={numberOfUnreadMessages || undefined} size="sm">
+        <Badge content={badgeCount || 0} size="sm">
             <IconButton
                 title="Чат"
                 icon="forum"

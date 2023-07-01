@@ -34,7 +34,7 @@ export default function Room({ user, enrollment }) {
 
     const [isFullscreen, toggleFullscreen] = useFullScreen(rootRef);
     const [isChatOpen, toggleChatOpen] = useBoolean(false);
-    const [numberOfUnreadMessages, setNumberOfUnreadMessages] = useState();
+    const [numberOfUnreadMessages, setNumberOfUnreadMessages] = useState(0);
 
     useScrollClassName(contentRef, 'RoomContent--scrolling', []);
 

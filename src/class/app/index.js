@@ -4,11 +4,11 @@ import { Provider as StoreProvider } from 'react-redux';
 
 import { ThemeProvider, theme } from 'shared/theme';
 
+import './index.scss';
+
 import store from './store';
 import { AppStateProvider } from './contexts/AppStateContext';
 import Root from './components';
-
-import './index.scss';
 
 render(
     <StoreProvider store={store}>

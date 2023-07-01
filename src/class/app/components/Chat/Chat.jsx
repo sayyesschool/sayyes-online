@@ -21,10 +21,6 @@ export default function Chat({
         participantsById
     });
 
-    const handleConnected = useCallback(channel => {
-        onConnected(channel);
-    }, [onConnected]);
-
     const handleTyping = useCallback(event => {
         //onTyping();
     }, []);
@@ -37,9 +33,17 @@ export default function Chat({
         return chat.sendMessage(file);
     }, [chat]);
 
+    const handleEditMessage = useCallback(message => {
+        console.log('handleEditMessage', message);
+    }, [chat]);
+
     const handleDeleteMessage = useCallback(message => {
         return chat.deleteMessage(message);
     }, [chat]);
+
+    const handleSeenLastMessage = useCallback(() => {
+        return chat.setAllMessagesRead();
+    }, []);
 
     if (!chat.messages) return <LoadingIndicator />;
 
@@ -47,7 +51,9 @@ export default function Chat({
         <div className="Chat">
             <ChatMessages
                 messages={chat.messages}
+                onEdit={handleEditMessage}
                 onDelete={handleDeleteMessage}
+                onSeenLastMessage={handleSeenLastMessage}
             />
 
             <ChatInput
