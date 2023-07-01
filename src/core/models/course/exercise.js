@@ -10,8 +10,8 @@ const Exercise = new Schema({
     image: { type: Image },
     notes: { type: String },
     items: [Item],
-    _unit: { type: Schema.Types.ObjectId, alias: 'unitId' },
-    _lesson: { type: Schema.Types.ObjectId, alias: 'lessonId' }
+    unitId: { type: Schema.Types.ObjectId },
+    lessonId: { type: Schema.Types.ObjectId }
 }, {
     toJSON: {
         transform: (exercise, object) => {

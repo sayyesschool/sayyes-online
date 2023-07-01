@@ -56,6 +56,19 @@ export function useLesson({ courseId, lessonId }) {
     }), [course, lessonId]);
 }
 
+export function useSection({ courseId, sectionId }) {
+    const [course, actions] = useCourse(courseId);
+    const section = course?.sectionsById?.get(sectionId);
+
+    return useMemo(() => !course ? EMPTY : ({
+        course,
+        section,
+        lesson: course.lessonsById?.get(section.lessonId),
+        unit: course.unitsById?.get(section.unitId),
+        actions
+    }), [course, sectionId]);
+}
+
 export function useExercise({ courseId, exerciseId }) {
     const [course, actions] = useCourse(courseId);
     const exercise = course?.exercisesById?.get(exerciseId);

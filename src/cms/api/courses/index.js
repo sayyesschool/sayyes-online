@@ -4,7 +4,7 @@ const Controller = require('./controller');
 
 module.exports = context => {
     const router = Router();
-    const { courses, units, lessons, exercises, items } = Controller(context);
+    const { courses, units, lessons, exercises, items, courses_v2, exercises_v2, items_v2 } = Controller(context);
 
     router.route('/')
         .get(courses.get)

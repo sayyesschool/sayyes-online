@@ -10,9 +10,12 @@ import { Grid } from 'shared/ui-components';
 
 import LessonContent from 'app/components/courses/lesson-content';
 import LessonExercises from 'app/components/courses/lesson-exercises';
+import LessonSections from 'app/components/courses/lesson-sections';
 
 export default function LessonPage({ match, history }) {
     const { course, unit, lesson, actions } = useLesson(match.params);
+
+    console.log('LESSON_PAGE', lesson);
 
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
@@ -38,6 +41,17 @@ export default function LessonPage({ match, history }) {
 
     const handleDeleteExercise = useCallback(exercise => {
         return actions.deleteExercise(course.id, exercise.id);
+    }, [course]);
+
+    const handleCreateSection = useCallback(data => {
+        data.unitId = unit.id;
+        data.lessonId = lesson.id;
+
+        return actions.createSection(course.id, data);
+    }, [course, unit, lesson]);
+
+    const handleDeleteSection = useCallback(section => {
+        return actions.deleteSection(course.id, section.id);
     }, [course]);
 
     if (!lesson) return <LoadingIndicator fluid />;
@@ -82,6 +96,13 @@ export default function LessonPage({ match, history }) {
                             lesson={lesson}
                             onCreate={handleCreateExercise}
                             onDelete={handleDeleteExercise}
+                            onReorder={handleUpdateLesson}
+                        />
+
+                        <LessonSections
+                            lesson={lesson}
+                            onCreate={handleCreateSection}
+                            onDelete={handleDeleteSection}
                             onReorder={handleUpdateLesson}
                         />
                     </Grid.Item>

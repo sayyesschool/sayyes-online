@@ -3,21 +3,14 @@ const { Schema } = require('mongoose');
 const Image = require('./image');
 
 const Lesson = new Schema({
+    unitId: { type: Schema.Types.ObjectId, required: true },
     slug: { type: String, required: true },
-    title: { type: String },
+    title: { type: String, required: true },
     description: { type: String },
     content: { type: String },
     image: { type: Image },
-    _unit: { type: Schema.Types.ObjectId, alias: 'unitId' },
+    _sections: [Schema.Types.ObjectId],
     _exercises: [Schema.Types.ObjectId]
-}, {
-    toJSON: {
-        transform: (lesson, object) => {
-            delete object._unit;
-
-            return object;
-        }
-    }
 });
 
 Lesson.virtual('uri').get(function() {

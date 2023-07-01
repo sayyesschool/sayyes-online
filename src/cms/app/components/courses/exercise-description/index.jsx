@@ -6,7 +6,7 @@ import TextEditor from 'shared/components/text-editor';
 
 import './index.scss';
 
-export default function ExerciseText({ exercise, onUpdate }) {
+export default function ExerciseDescription({ exercise, onUpdate }) {
     const textEditorRef = useRef();
 
     const handleUpdate = useCallback(() => {
@@ -17,15 +17,15 @@ export default function ExerciseText({ exercise, onUpdate }) {
 
     return (
         <PageSection
-            className="exercise-text"
-            title="Текст"
-            actions={
-                <Button
-                    icon="save"
-                    text
-                    onClick={handleUpdate}
-                />
-            }
+            className="ExerciseDescription"
+            title="Описание"
+            actions={[{
+                key: 'save',
+                icon: 'save',
+                title: 'Сохранить',
+                onClick: handleUpdate
+            }]}
+            compact
         >
             <TextEditor
                 ref={textEditorRef}

@@ -1,5 +1,5 @@
 module.exports = ({
-    models: { Course }
+    models: { Course, Exercise }
 }) => ({
     courses: {
         get: (req, res, next) => {
