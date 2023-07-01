@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 
-mongoose.Promise = global.Promise;
-
 mongoose.set('toObject', {
     virtuals: true,
     getters: true,
@@ -38,10 +36,8 @@ process.on('SIGINT', () => {
 
 module.exports = {
     connection: mongoose.connection,
-    connect: (url, cb) => mongoose.connect(url, {
-        autoIndex: false,
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false
-    }, cb)
+    connect: uri => mongoose.connect(uri, {
+        autoIndex: false
+    }),
+    disconnect: () => mongoose.disconnect()
 };
