@@ -1,39 +1,21 @@
-const { basename, extname, dirname } = require('path');
+const { basename, extname, join } = require('path/posix');
 const { Router } = require('express');
 const upload = require('multer')();
 const { v4: uuidv4 } = require('uuid');
 
 const router = Router();
 
-const validFolders = ['images'];
-
-function isFilename(path) {
-    return basename(path).includes('.');
-}
-
-function getUniqueFilename(file) {
-    return uuidv4() + extname(file.originalname);
-}
-
 module.exports = ({ services: { Storage } }) => {
-    router.param('folder', (req, res, next, folder) => {
-        if (!validFolders.includes(folder)) {
-            return next(new Error('Неверная директория'));
-        }
+    router.post('/', upload.single('file'), (req, res, next) => {
+        if (!req.file) return next(new Error('No file'));
+        if (!req.body.path) return next(new Error('No path'));
 
-        next();
-    });
-
-    router.post('/*', upload.single('file'), (req, res, next) => {
         const file = req.file;
+        const path = getNormalizedPath(req.body.path, file);
 
-        const path = (isFilename(req.path) ? dirname(req.path) : req.path).slice(1);
-        const filename = isFilename(req.path) ? basename(req.path) : getUniqueFilename(file);
-        const key = path.endsWith('/') ?
-            `${path}${filename}` :
-            `${path}/${filename}`;
+        console.log('STORAGE', path);
 
-        Storage.put(key, file.buffer)
+        Storage.put(path, file.buffer)
             .then(response => {
                 res.json({
                     ok: true,
@@ -46,7 +28,7 @@ module.exports = ({ services: { Storage } }) => {
             .catch(next);
     });
 
-    router.delete('/*', (req, res, next) => {
+    router.delete('/', (req, res, next) => {
         const key = req.path.slice(1);
 
         Storage.delete(key)
@@ -64,3 +46,15 @@ module.exports = ({ services: { Storage } }) => {
 
     return router;
 };
+
+function isFilename(path) {
+    return basename(path).includes('.');
+}
+
+function getUniqueFilename(file) {
+    return uuidv4() + extname(file.originalname);
+}
+
+function getNormalizedPath(path, file) {
+    return isFilename(path) ? path : join(path, getUniqueFilename(file));
+}
