@@ -1,12 +1,12 @@
 const upload = require('multer')();
 
-module.exports = ({ File }) => ({
+module.exports = ({ services: { Storage } }) => ({
     upload: [
         upload.single('image'),
         (req, res, next) => {
             if (!req.file) return next();
 
-            File.upload(req.file, {
+            Storage.upload(req.file, {
                 name: req.body.image,
                 path: `courses/${req.params.course}/images/`
             }).then(data => {
@@ -18,7 +18,7 @@ module.exports = ({ File }) => ({
     delete: (req, res, next) => {
         if (req.body.imageUrl) return next();
 
-        File.delete(req.body.imageUrl)
+        Storage.delete(req.body.imageUrl)
             .finally(() => next());
     }
 });
