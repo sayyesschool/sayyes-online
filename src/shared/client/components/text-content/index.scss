@@ -6,6 +6,10 @@
         max-width: 100%;
     }
 
+    p:empty {
+        height: 1px;
+    }
+
     :last-child {
         margin-bottom: 0;
     }

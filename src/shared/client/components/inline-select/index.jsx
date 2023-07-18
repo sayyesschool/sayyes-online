@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import './index.scss';
 
 export default function Select({
+    id,
     values,
     correctValue,
     checked,
@@ -16,20 +17,21 @@ export default function Select({
     const handleChange = useCallback(event => {
         const value = event.target.value;
         setValue(value);
-        onChange(value);
+        onChange(value, event.target, event);
     }, [onChange]);
 
     const isCorrect = checked ? value === correctValue : undefined;
 
-    const classNames = classnames('inline-select', {
-        'inline-select--correct': isCorrect === true,
-        'inline-select--incorrect': isCorrect === false
+    const classNames = classnames('InlineSelect', {
+        'InlineSelect--correct': isCorrect === true,
+        'InlineSelect--incorrect': isCorrect === false
     });
 
     return (
         <select
             className={classNames}
             value={value}
+            data-id={id}
             onChange={handleChange}
             {...props}
         >

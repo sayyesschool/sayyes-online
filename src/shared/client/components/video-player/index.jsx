@@ -54,7 +54,13 @@ const defaultI18n = {
     advertisement: 'Реклама',
 };
 
-function VideoPlayer({ src, provider = 'server', options = {}, ...props }, ref) {
+function VideoPlayer({
+    src,
+    provider = 'server',
+    options = {},
+    className,
+    ...props
+}, ref) {
     const videoRef = useRef();
     const playerRef = useRef();
 
@@ -71,8 +77,10 @@ function VideoPlayer({ src, provider = 'server', options = {}, ...props }, ref) 
         return () => player.destroy();
     }, []);
 
+    const classNames = classnames(className, 'VideoPlayer');
+
     return (
-        <div className="video-player">
+        <div className={classNames}>
             {provider === 'server' ?
                 <video ref={videoRef} src={src} {...props} />
                 :

@@ -1,27 +1,26 @@
-const regex = /{}|{[^{][^}]*}|{{}}|{{[^{][^}]*}}|\[\]|\[[^[][^\]]*\]/gm;
+// const regex = /{}|{[^{][^}]*}|{{}}|{{[^{][^}]*}}|\[\]|\[[^[][^\]]*\]:{([a-zA-Z])}/gm;
+const regex = /(?:(?<type>[{\[])(?<values>[\w\d|*]*)[}\]])(?::{(?<id>[\w\d]+)})?/gm;
 
-const typeBySymbol = {
+const ControlTypeBySymbol = {
     '{': 'input',
-    '{{': 'textarea',
     '[': 'select'
 };
 
-const htmlBySymbol = {
-    '{': values => `<input data-values="${values}">`,
-    '{{': values => `<textarea data-values="${values}"></textarea>`,
-    '[': values => `<select>${values.map(value => `<option value="${value}">${value}</option>`).join('')}</select>`
+const ControlHtmlByType = {
+    input: (values, id) => `<input ${id ? `data-id="${id}" ` : ''}data-values="${values}">`,
+    select: (values, id) => `<select ${id ? `data-id="${id}"` : ''}>${values.map(value => `<option value="${value}">${value}</option>`).join('')}</select>`
 };
 
 export function parseText(string) {
-    let result = [];
+    const result = [];
     let lastEndIndex = 0;
 
     for (let match of string.matchAll(regex)) {
+        const { type, values, id } = match.groups;
         const prevPart = string.slice(lastEndIndex, match.index);
-        const token = string.slice(match.index, match.index + match[0].length);
-        const component = tokenToObject(token);
+        const controlData = getControlData(type, values, id);
 
-        result.push(prevPart, component);
+        result.push(prevPart, controlData);
 
         lastEndIndex = match.index + match[0].length;
     }
@@ -47,11 +46,11 @@ function transformPlaceholders(string) {
     let lastEndIndex = 0;
 
     for (let match of string.matchAll(regex)) {
+        const { type, values, id } = match.groups;
         const prevPart = string.slice(lastEndIndex, match.index);
-        const token = string.slice(match.index, match.index + match[0].length);
-        const control = tokenToHtml(token);
+        const controlHtml = getControlHtml(type, values, id);
 
-        result += prevPart + control;
+        result += prevPart + controlHtml;
 
         lastEndIndex = match.index + match[0].length;
     }
@@ -63,32 +62,20 @@ function transformPlaceholders(string) {
 
 function elementToObject(element) {
     const type = element.nodeName.toLowerCase();
-
+    const id = element.dataset?.id;
     const style = element.style?.length > 0 ?
         Object.entries(element.style).reduce((result, [key, value]) => {
             if (isNaN(key) && value) result[key] = value;
             return result;
         }, {}) : undefined;
 
-    if (type === '#text') {
-        return element.textContent === '\n' ? undefined : element.textContent;
-    } else if (type === 'input' && element.type === 'text') {
-        // TODO: remove two+ spaces
-        const correctValues = element.dataset.values?.split(',').filter(value => !!value).map(value => value.trim().toLowerCase());
+    if (type === 'input' && element.type === 'text') {
+        const correctValues = element.dataset.values?.split(',');
 
         return {
-            type: 'input',
+            type,
             props: {
-                correctValues,
-                required: correctValues?.length > 0
-            }
-        };
-    } else if (type === 'textarea' && element.type === 'textarea') {
-        const correctValues = element.dataset.values.split(',').filter(value => !!value).map(value => value.trim().toLowerCase());
-
-        return {
-            type: 'textarea',
-            props: {
+                id,
                 correctValues,
                 required: correctValues?.length > 0
             }
@@ -98,8 +85,9 @@ function elementToObject(element) {
         const correctValue = values.find(value => value.includes('*'));
 
         return {
-            type: 'select',
+            type,
             props: {
+                id,
                 values: values.map(value => value.replace('*', '')),
                 correctValue: correctValue?.slice(0, correctValue.length - 1),
                 required: values?.length > 0
@@ -107,12 +95,14 @@ function elementToObject(element) {
         };
     } else if (type === 'img') {
         return {
-            type: 'img',
+            type,
             props: {
                 src: element.src,
                 alt: element.alt
             }
         };
+    } else if (type === '#text') {
+        return element.textContent === '\n' ? undefined : element.textContent;
     } else if (element.childNodes.length === 0) {
         return {
             type,
@@ -135,16 +125,19 @@ function elementToObject(element) {
             props: {
                 style
             },
-            children: Array.from(element.childNodes).map(child => elementToObject(child)).filter(child => child !== undefined)
+            children: Array.from(element.childNodes)
+                .map(child => elementToObject(child))
+                .filter(child => child !== undefined)
         };
     }
 }
 
-function tokenToObject(token) {
-    const type = typeBySymbol[token[0]];
-    const values = parseValues(token);
+function getControlData(symbol, rawValues, id) {
+    const type = ControlTypeBySymbol[symbol];
+    const values = parseValues(rawValues);
 
     return {
+        id,
         type,
         props: {
             values
@@ -152,13 +145,15 @@ function tokenToObject(token) {
     };
 }
 
-function tokenToHtml(token) {
-    const typeSymbol = token[0];
-    const values = parseValues(token);
+function getControlHtml(symbol, rawValues, id) {
+    const controlType = ControlTypeBySymbol[symbol];
+    const values = parseValues(rawValues);
 
-    return htmlBySymbol[typeSymbol](values);
+    return ControlHtmlByType[controlType](values, id);
 }
 
-function parseValues(token) {
-    return token.slice(1, -1).split('|').map(token => token.trim());
+function parseValues(rawValues) {
+    return rawValues.split('|')
+        .filter(value => !!value)
+        .map(token => token.trim().replace(/  +/g, ' ').toLowerCase());
 }

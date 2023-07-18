@@ -8,7 +8,6 @@ import ImageRemoveEventPlugin from 'shared/libs/text-editor/image-remove-event';
 import './index.scss';
 
 const defaultConfig = {
-    language: 'ru',
     mediaEmbed: {
         previewsInData: true
     },
@@ -18,6 +17,31 @@ const defaultConfig = {
     },
     style: {
         definitions: [
+            {
+                name: 'List',
+                element: 'ul',
+                classes: ['my-list']
+            },
+            {
+                name: 'Важный текст',
+                element: 'p',
+                classes: ['primary-text']
+            },
+            {
+                name: 'Вспомогательный текст',
+                element: 'p',
+                classes: ['secondary-text']
+            },
+            {
+                name: 'Декоративный текст',
+                element: 'p',
+                classes: ['decorative-text']
+            },
+            {
+                name: 'Текст диалога',
+                element: 'p',
+                classes: ['dialog-text']
+            },
             {
                 name: 'Основной цвет',
                 element: 'span',

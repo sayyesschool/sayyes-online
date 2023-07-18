@@ -1,6 +1,6 @@
 import { cloneElement, forwardRef, isValidElement, useCallback, useState } from 'react';
 
-import Menu from '../menu/Menu';
+import Menu from '../menu';
 
 const MenuButton = forwardRef(({
     trigger,

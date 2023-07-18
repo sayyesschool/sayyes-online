@@ -15,7 +15,7 @@ export const getCourses = createAction('GET_COURSES', query => {
 export const getCourse = createAction('GET_COURSE', (courseId, query) => ({
     request: {
         method: 'get',
-        path: `v2/courses/${courseId}`,
+        path: `courses/${courseId}`,
         query
     }
 }));
@@ -33,7 +33,7 @@ export const createCourse = createAction('CREATE_COURSE', data => ({
 export const updateCourse = createAction('UPDATE_COURSE', (courseId, data) => ({
     request: {
         method: 'put',
-        path: `v2/courses/${courseId}`,
+        path: `courses/${courseId}`,
         body: data
     }
 }));
@@ -51,7 +51,7 @@ export const deleteCourse = createAction('DELETE_COURSE', courseId => ({
 export const createUnit = createAction('CREATE_COURSE_UNIT', (courseId, data) => ({
     request: {
         method: 'post',
-        path: `v2/courses/${courseId}/units`,
+        path: `courses/${courseId}/units`,
         body: data
     }
 }));
@@ -59,7 +59,7 @@ export const createUnit = createAction('CREATE_COURSE_UNIT', (courseId, data) =>
 export const updateUnit = createAction('UPDATE_COURSE_UNIT', (courseId, unitId, data) => ({
     request: {
         method: 'put',
-        path: `v2/courses/${courseId}/units/${unitId}`,
+        path: `courses/${courseId}/units/${unitId}`,
         body: data
     }
 }));
@@ -67,7 +67,7 @@ export const updateUnit = createAction('UPDATE_COURSE_UNIT', (courseId, unitId, 
 export const deleteUnit = createAction('DELETE_COURSE_UNIT', (courseId, unitId) => ({
     request: {
         method: 'delete',
-        path: `v2/courses/${courseId}/units/${unitId}`
+        path: `courses/${courseId}/units/${unitId}`
     }
 }));
 
@@ -77,7 +77,7 @@ export const deleteUnit = createAction('DELETE_COURSE_UNIT', (courseId, unitId) 
 export const createLesson = createAction('CREATE_COURSE_LESSON', (courseId, data) => ({
     request: {
         method: 'post',
-        path: `v2/courses/${courseId}/lessons`,
+        path: `courses/${courseId}/lessons`,
         body: data
     }
 }));
@@ -85,7 +85,7 @@ export const createLesson = createAction('CREATE_COURSE_LESSON', (courseId, data
 export const updateLesson = createAction('UPDATE_COURSE_LESSON', (courseId, lessonId, data) => ({
     request: {
         method: 'put',
-        path: `v2/courses/${courseId}/lessons/${lessonId}`,
+        path: `courses/${courseId}/lessons/${lessonId}`,
         body: data
     }
 }));
@@ -93,7 +93,7 @@ export const updateLesson = createAction('UPDATE_COURSE_LESSON', (courseId, less
 export const deleteLesson = createAction('DELETE_COURSE_LESSON', (courseId, lessonId) => ({
     request: {
         method: 'delete',
-        path: `v2/courses/${courseId}/lessons/${lessonId}`,
+        path: `courses/${courseId}/lessons/${lessonId}`,
     }
 }));
 
@@ -103,7 +103,7 @@ export const deleteLesson = createAction('DELETE_COURSE_LESSON', (courseId, less
 export const createSection = createAction('CREATE_COURSE_SECTION', (courseId, data) => ({
     request: {
         method: 'post',
-        path: `v2/courses/${courseId}/sections`,
+        path: `courses/${courseId}/sections`,
         body: data
     }
 }));
@@ -111,7 +111,7 @@ export const createSection = createAction('CREATE_COURSE_SECTION', (courseId, da
 export const updateSection = createAction('UPDATE_COURSE_SECTION', (courseId, sectionId, data) => ({
     request: {
         method: 'put',
-        path: `v2/courses/${courseId}/sections/${sectionId}`,
+        path: `courses/${courseId}/sections/${sectionId}`,
         body: data
     }
 }));
@@ -119,14 +119,14 @@ export const updateSection = createAction('UPDATE_COURSE_SECTION', (courseId, se
 export const deleteSection = createAction('DELETE_COURSE_SECTION', (courseId, sectionId) => ({
     request: {
         method: 'delete',
-        path: `v2/courses/${courseId}/sections/${sectionId}`,
+        path: `courses/${courseId}/sections/${sectionId}`,
     }
 }));
 
 export const getSectionExercises = createAction('GET_COURSE_SECTION_EXERCISES', (courseId, sectionId) => ({
     request: {
         method: 'get',
-        path: `v2/courses/${courseId}/sections/${sectionId}/exercises`
+        path: `courses/${courseId}/sections/${sectionId}/exercises`
     }
 }));
 
@@ -136,14 +136,14 @@ export const getSectionExercises = createAction('GET_COURSE_SECTION_EXERCISES', 
 export const getExercise = createAction('GET_COURSE_EXERCISE', (courseId, exerciseId) => ({
     request: {
         method: 'get',
-        path: `v2/courses/${courseId}/exercises/${exerciseId}`
+        path: `courses/${courseId}/exercises/${exerciseId}`
     }
 }));
 
 export const createExercise = createAction('CREATE_COURSE_EXERCISE', (courseId, data) => ({
     request: {
         method: 'post',
-        path: `v2/courses/${courseId}/exercises`,
+        path: `courses/${courseId}/exercises`,
         body: data
     }
 }));
@@ -151,7 +151,7 @@ export const createExercise = createAction('CREATE_COURSE_EXERCISE', (courseId, 
 export const updateExercise = createAction('UPDATE_COURSE_EXERCISE', (courseId, exerciseId, data) => ({
     request: {
         method: 'put',
-        path: `v2/courses/${courseId}/exercises/${exerciseId}`,
+        path: `courses/${courseId}/exercises/${exerciseId}`,
         body: data
     }
 }));
@@ -159,7 +159,7 @@ export const updateExercise = createAction('UPDATE_COURSE_EXERCISE', (courseId, 
 export const deleteExercise = createAction('DELETE_COURSE_EXERCISE', (courseId, exerciseId) => ({
     request: {
         method: 'delete',
-        path: `v2/courses/${courseId}/exercises/${exerciseId}`
+        path: `courses/${courseId}/exercises/${exerciseId}`
     }
 }));
 
@@ -169,7 +169,7 @@ export const deleteExercise = createAction('DELETE_COURSE_EXERCISE', (courseId, 
 export const createExerciseItem = createAction('CREATE_COURSE_EXERCISE_ITEM', (courseId, exerciseId, data) => ({
     request: {
         method: 'post',
-        path: `v2/courses/${courseId}/exercises/${exerciseId}/items`,
+        path: `courses/${courseId}/exercises/${exerciseId}/items`,
         body: data
     }
 }));
@@ -177,7 +177,7 @@ export const createExerciseItem = createAction('CREATE_COURSE_EXERCISE_ITEM', (c
 export const updateExerciseItem = createAction('UPDATE_COURSE_EXERCISE_ITEM', (courseId, exerciseId, itemId, data) => ({
     request: {
         method: 'put',
-        path: `v2/courses/${courseId}/exercises/${exerciseId}/items/${itemId}`,
+        path: `courses/${courseId}/exercises/${exerciseId}/items/${itemId}`,
         body: data
     }
 }));
@@ -185,7 +185,7 @@ export const updateExerciseItem = createAction('UPDATE_COURSE_EXERCISE_ITEM', (c
 export const deleteExerciseItem = createAction('DELETE_COURSE_EXERCISE_ITEM', (courseId, exerciseId, itemId, body) => ({
     request: {
         method: 'delete',
-        path: `v2/courses/${courseId}/exercises/${exerciseId}/items/${itemId}`,
+        path: `courses/${courseId}/exercises/${exerciseId}/items/${itemId}`,
         body
     }
 }));
@@ -196,7 +196,7 @@ export const deleteExerciseItem = createAction('DELETE_COURSE_EXERCISE_ITEM', (c
 export const updateExerciseProgress = createAction('UPDATE_COURSE_EXERCISE_PROGRESS', (progressId = '', data) => ({
     request: {
         method: 'post',
-        path: `/progress/${progressId}`,
+        path: `progress/${progressId}`,
         body: data
     }
 }));
@@ -336,7 +336,7 @@ export const courseReducer = createReducer(null, {
         sections: state.sections.filter(section => section.id !== action.data.id),
         lessons: state.lessons.map(lesson => lesson.id !== action.data.lessonId ? lesson : {
             ...lesson,
-            _lessons: lesson._sections.filter(id => id !== action.data.id)
+            _sections: lesson._sections.filter(id => id !== action.data.id)
         }),
         exercises: state.exercises.filter(exercise => exercise.lessonId !== action.data.id)
     }),
@@ -422,8 +422,6 @@ const mapById = toMap(item => item.id);
 export function mapCourse(course) {
     if (!course) return;
 
-    console.log('mapCourse', course);
-
     course.unitsById = mapById(course.units);
     course.lessonsById = mapById(course.lessons);
     course.sectionsById = mapById(course.sections);
@@ -463,10 +461,6 @@ export function mapCourse(course) {
 
             return exercise;
         }).filter(Boolean);
-    });
-
-    course.exercises?.forEach(exercise => {
-        exercise.lesson = course.lessonsById.get(exercise._lesson);
     });
 
     return course;

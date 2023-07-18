@@ -17,7 +17,7 @@ export default function CoursesList({ courses, onRemove }) {
                 <List.Item
                     key={course.id}
                     as={Link}
-                    to={course.uri}
+                    to={course.url}
                     decorator={course.imageUrl &&
                         <Image imageUrl={course.imageUrl} alt="" />
                     }

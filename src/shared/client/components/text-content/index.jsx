@@ -4,9 +4,9 @@ import './index.scss';
 
 export default function TextContent({
     text,
-    content = text,
+    content,
 
-    children = content,
+    children = text,
     className,
     ...props
 }) {
@@ -15,8 +15,10 @@ export default function TextContent({
     return (
         <div
             className={classNames}
-            dangerouslySetInnerHTML={{ __html: children }}
+            dangerouslySetInnerHTML={content ? { __html: content } : undefined}
             {...props}
-        />
+        >
+            {children}
+        </div>
     );
 }

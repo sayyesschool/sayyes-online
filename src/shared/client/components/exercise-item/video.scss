@@ -1,16 +1,11 @@
-.AudioItem {
+.VideoItem {
     display: flex;
     flex-direction: column;
     gap: .5rem;
 
     &__player {
-        flex: 1;
-        border: 1px solid rgba(0, 0, 0, .12);
         border-radius: 4px;
-
-        .plyr__controls {
-            padding: 0;
-        }
+        overflow: hidden;
     }
 
     &__script {

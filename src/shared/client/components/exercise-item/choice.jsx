@@ -4,24 +4,29 @@ import classnames from 'classnames';
 import TextContent from 'shared/components/text-content';
 import { Checkbox, List, Radio } from 'shared/ui-components';
 
-export default function ExerciseChoiceItem({
-    item,
-    checked,
-    state = getDefaultState(item),
-    onUpdateState
-}) {
-    const isMultiple = useMemo(() => item.items?.filter(item => item.correct).length > 1);
+import './choice.scss';
 
-    const handleChange = useCallback(_item => {
+export default function ChoiceItem({
+    id,
+    content,
+    items = [],
+    checked,
+    state = getDefaultState(items),
+    onUpdateState,
+    className,
+}) {
+    const isMultiple = useMemo(() => items.filter(item => item.correct).length > 1);
+
+    const handleChange = useCallback(item => {
         if (isMultiple) {
-            onUpdateState(item.id, state.includes(_item.id) ?
-                state.filter(itemId => itemId !== _item.id) :
-                state.concat(_item.id)
+            onUpdateState(id, state.includes(item.id) ?
+                state.filter(itemId => itemId !== item.id) :
+                state.concat(item.id)
             );
         } else {
-            onUpdateState(item.id, _item.id);
+            onUpdateState(id, item.id);
         }
-    }, [item, isMultiple, state, onUpdateState]);
+    }, [id, isMultiple, state, onUpdateState]);
 
     const isItemChosen = useCallback(item => {
         if (isMultiple) {
@@ -32,17 +37,17 @@ export default function ExerciseChoiceItem({
     }, [state, isMultiple]);
 
     return (
-        <>
-            <TextContent>{item.text}</TextContent>
+        <div className={className}>
+            <TextContent content={content} />
 
             <List>
-                {item.items?.map(item =>
+                {items?.map(item =>
                     <List.Item
                         key={item.id}
                         as="label"
-                        className={classnames('ExerciseChoiceListItem', checked && {
-                            'ExerciseChoiceListItem--correct': item.correct,
-                            'ExerciseChoiceListItem--incorrect': !item.correct && isItemChosen(item)
+                        className={classnames('ChoiceListItem', checked && {
+                            'ChoiceListItem--correct': item.correct,
+                            'ChoiceListItem--incorrect': !item.correct && isItemChosen(item)
                         })}
                         decorator={isMultiple ?
                             <Checkbox
@@ -62,10 +67,10 @@ export default function ExerciseChoiceItem({
                     />
                 )}
             </List>
-        </>
+        </div>
     );
 }
 
-function getDefaultState(item) {
-    return item.items?.filter(item => item.correct).length > 1 ? [] : undefined;
+function getDefaultState(items) {
+    return items.filter(item => item.correct).length > 1 ? [] : undefined;
 }

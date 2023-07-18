@@ -1,7 +1,10 @@
-.ExerciseEssayItem {
-    .ContentEditor {
+.EssayItem {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .TextEditor {
         border: 1px solid rgba(0, 0, 0, .12);
         border-radius: 4px;
-        margin-top: 1rem;
     }
 }

@@ -1,8 +1,4 @@
-.ui-list {
-    .ui-list__itemmedia {
-        margin-right: 1rem;
-    }
-
+.ui-List-root {
     &.numbered-list {
         .ui-list__item {
             padding-left: 1.125rem;
@@ -18,4 +14,8 @@
             border-radius: 100%;
         }
     }
+}
+
+.ui-ListItem-root {
+    gap: 1rem;
 }

@@ -1,9 +1,11 @@
 import { createElement } from 'react';
 
 export function render(element, map) {
-    if (typeof element !== 'object') return element;
+    if (typeof element !== 'object')
+        return element;
 
-    if (Array.isArray(element)) return element.map(element => render(element, map));
+    if (Array.isArray(element))
+        return element.map(element => render(element, map));
 
     const { type, props, children } = typeof map === 'function' ? map(element) : element;
 

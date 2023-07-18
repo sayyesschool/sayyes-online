@@ -1,5 +1,6 @@
 import { forwardRef, useImperativeHandle, useEffect, useRef } from 'react';
 import Plyr from 'plyr';
+import classnames from 'classnames';
 
 import { defaultI18n } from './constants';
 
@@ -7,6 +8,7 @@ import './index.scss';
 
 const AudioPlayer = forwardRef(function AudioPlayer({
     options = {},
+    className,
     ...props
 }, ref) {
     const audioRef = useRef();
@@ -25,8 +27,10 @@ const AudioPlayer = forwardRef(function AudioPlayer({
         return () => player.destroy();
     }, []);
 
+    const classNames = classnames(className, 'AudioPlayer');
+
     return (
-        <div className="AudioPlayer">
+        <div className={classNames}>
             <audio ref={audioRef} {...props} />
         </div>
     );
