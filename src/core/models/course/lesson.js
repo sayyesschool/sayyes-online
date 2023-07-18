@@ -1,16 +1,13 @@
 const { Schema } = require('mongoose');
 
-const Image = require('./image');
+const Image = require('../image');
 
 const Lesson = new Schema({
-    unitId: { type: Schema.Types.ObjectId, required: true },
-    slug: { type: String, required: true },
     title: { type: String, required: true },
-    description: { type: String },
-    content: { type: String },
+    description: { type: String, default: '' },
     image: { type: Image },
-    _sections: [Schema.Types.ObjectId],
-    _exercises: [Schema.Types.ObjectId]
+    _unit: { type: Schema.Types.ObjectId, required: true },
+    _sections: [Schema.Types.ObjectId]
 });
 
 Lesson.virtual('uri').get(function() {
@@ -24,6 +21,14 @@ Lesson.virtual('url').get(function() {
 Lesson.virtual('courseId').get(function() {
     return this.parent()?.id;
 });
+
+Lesson.virtual('unitId')
+    .get(function() {
+        return this._unit;
+    })
+    .set(function(value) {
+        this._unit = value;
+    });
 
 Lesson.virtual('imageUrl').get(function() {
     return this.image?.url || `${process.env.STORAGE_URL}/courses/${this.courseId}/images/${this.id}.jpg`;

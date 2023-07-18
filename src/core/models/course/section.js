@@ -1,11 +1,10 @@
 const { Schema } = require('mongoose');
 
 const Section = new Schema({
-    unitId: { type: Schema.Types.ObjectId, required: true },
-    lessonId: { type: Schema.Types.ObjectId, required: true },
     title: { type: String, required: true },
-    description: { type: String },
-    content: { type: String },
+    description: { type: String, default: '' },
+    _unit: { type: Schema.Types.ObjectId, required: true },
+    _lesson: { type: Schema.Types.ObjectId, required: true },
     _exercises: [Schema.Types.ObjectId]
 });
 
@@ -20,6 +19,22 @@ Section.virtual('url').get(function() {
 Section.virtual('courseId').get(function() {
     return this.parent()?.id;
 });
+
+Section.virtual('unitId')
+    .get(function() {
+        return this._unit;
+    })
+    .set(function(value) {
+        this._unit = value;
+    });
+
+Section.virtual('lessonId')
+    .get(function() {
+        return this._lesson;
+    })
+    .set(function(value) {
+        this._lesson = value;
+    });
 
 Section.virtual('exercises', {
     ref: 'Exercise',

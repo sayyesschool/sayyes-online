@@ -1,7 +1,6 @@
 const { Schema } = require('mongoose');
 
-const Exercise = require('./exercise');
-const Image = require('./image');
+const Image = require('../image');
 const Lesson = require('./lesson');
 const Section = require('./section');
 const Unit = require('./unit');
@@ -16,8 +15,7 @@ const Course = new Schema({
     image: { type: Image },
     units: [Unit],
     lessons: [Lesson],
-    sections: [Section],
-    //exercises: [Exercise] // TODO: Remove
+    sections: [Section]
 });
 
 Course.virtual('uri').get(function() {
@@ -25,11 +23,11 @@ Course.virtual('uri').get(function() {
 });
 
 Course.virtual('url').get(function() {
-    return `/courses/${this.slug}`;
+    return `/courses/${this.id}`;
 });
 
 Course.virtual('imageUrl').get(function() {
-    return this.image?.url;
+    return this.image?.url || `${process.env.STORAGE_URL}/courses/${this.id}/images/${this.id}.png`;
 });
 
 Course.virtual('exercises', {

@@ -38,9 +38,11 @@ module.exports = (config, lib, models) => {
     const club = Club(lib.zoom, models, { mail: Mail, newsletter: Newsletter, checkout: Checkout });
     const file = File();
     const storage = new Storage({
-        endpoint: 'https://storage.yandexcloud.net',
-        region: 'ru-central1',
-        bucket: 'sayyesonline'
+        accessKeyId: config.YANDEX_CLOUD_ACCESS_KEY_ID,
+        secretAccessKey: config.YANDEX_CLOUD_SECRET_ACCESS_KEY,
+        endpoint: config.YANDEX_CLOUD_STORAGE_ENDPOINT,
+        region: config.YANDEX_CLOUD_STORAGE_REGION,
+        bucket: config.YANDEX_CLOUD_STORAGE_BUCKET
     });
 
     return {

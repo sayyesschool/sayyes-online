@@ -5,8 +5,7 @@ const Item = require('./item');
 const Exercise = new Schema({
     courseId: { type: Schema.Types.ObjectId, required: true },
     sectionId: { type: Schema.Types.ObjectId, required: true },
-    description: { type: String },
-    content: { type: String },
+    description: { type: String, default: '' },
     notes: { type: String },
     items: [Item]
 }, {
@@ -26,7 +25,7 @@ const Exercise = new Schema({
 });
 
 Exercise.virtual('url').get(function() {
-    return `${this.courseId}/exercises/${this.id}`;
+    return `/courses/${this.courseId}/exercises/${this.id}`;
 });
 
 Exercise.virtual('uri').get(function() {
