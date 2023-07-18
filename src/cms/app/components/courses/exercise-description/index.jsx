@@ -1,18 +1,15 @@
 import { useCallback, useRef } from 'react';
 
-import Button from 'shared/ui-components/button';
+import ContentEditor from 'shared/components/content-editor';
 import PageSection from 'shared/components/page-section';
-import TextEditor from 'shared/components/text-editor';
-
-import './index.scss';
 
 export default function ExerciseDescription({ exercise, onUpdate }) {
-    const textEditorRef = useRef();
+    const editorRef = useRef();
 
     const handleUpdate = useCallback(() => {
-        const text = textEditorRef.current.editor.getData();
+        const description = editorRef.current.editor.getData();
 
-        onUpdate({ text });
+        onUpdate({ description });
     }, [onUpdate]);
 
     return (
@@ -27,9 +24,9 @@ export default function ExerciseDescription({ exercise, onUpdate }) {
             }]}
             compact
         >
-            <TextEditor
-                ref={textEditorRef}
-                value={exercise.text}
+            <ContentEditor
+                ref={editorRef}
+                content={exercise.description}
             />
         </PageSection>
     );

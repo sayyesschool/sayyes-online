@@ -21,10 +21,8 @@ export default function LessonSections({
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     const handleCreate = useCallback(data => {
-        console.log('handleCreate', data);
-        toggleFormOpen(false);
-        // return onCreate(data)
-        //     .finally(() => toggleFormOpen(false));
+        return onCreate(data)
+            .finally(() => toggleFormOpen(false));
     }, []);
 
     const handleDelete = useCallback(() => {
@@ -35,22 +33,22 @@ export default function LessonSections({
     const handleReorder = useCallback((index, dir) => {
         const sections = lesson._sections.slice();
         const section = sections[index];
-        const othersection = sections[index + dir];
+        const otherSection = sections[index + dir];
 
         sections[index + dir] = section;
-        sections[index] = othersection;
+        sections[index] = otherSection;
 
         onReorder({ _sections: sections });
     }, [lesson]);
 
     const handleDeleteRequest = useCallback(section => {
-        setExercise(section);
+        setSection(section);
         toggleConfirmationDialogOpen(true);
     }, []);
 
     return (
         <PageSection
-            className="SectionExercises"
+            className="LessonSections"
             title="Секции"
             actions={[{
                 key: 'add',

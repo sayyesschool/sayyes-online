@@ -1,37 +1,41 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 
 import { useFileInput } from 'shared/hooks/file';
-import { Button, Flex, Text } from 'shared/ui-components';
 import AudioPlayer from 'shared/components/audio-player';
 import TextEditor from 'shared/components/text-editor';
+import { Button, Flex, Input, Text } from 'shared/ui-components';
 
-function ExerciseAudioItem({ item }, ref) {
-    const textEditorRef = useRef();
+import './audio.scss';
+
+function AudioItemForm({
+    path,
+    url,
+    script
+}, ref) {
+    const editorRef = useRef();
+    const pathInputRef = useRef();
 
     const { file, pick } = useFileInput({ accept: 'audio/mpeg' });
 
     useImperativeHandle(ref, () => ({
-        get data() {
-            const script = textEditorRef.current?.editor.getData();
-
-            if (file) {
-                file.path = item.audio?.path || `courses/${item.courseId}/audios/`;
-            }
+        get file() {
+            return file;
+        },
+        get props() {
+            const pathValue = pathInputRef.current?.value;
+            const script = editorRef.current?.editor.getData();
 
             return {
-                audio: {
-                    ...item.audio,
-                    script
-                },
-                file
+                path: pathValue === undefined ? path : pathValue,
+                script
             };
         }
-    }), [item, file]);
+    }), [file, path]);
 
     return (
-        <>
+        <Flex padding={1} gap="small" column>
             {file &&
-                <Flex padding="padding.medium" gap="gap.small" column>
+                <Flex padding="medium" gap="small" column>
                     <Text size="small">Выбранный файл:</Text>
 
                     <AudioPlayer
@@ -39,22 +43,29 @@ function ExerciseAudioItem({ item }, ref) {
                     />
 
                     <Text as="p">
-                        Название: <Text temporary>{file.name}</Text>
+                        Название: <b>{file.name}</b>
                         <br />
-                        Размер: <Text temporary>{Math.round(file.size / 1000)} КБ</Text>
+                        Размер: <b>{Math.round(file.size / 1000)} КБ</b>
                     </Text>
                 </Flex>
             }
 
-            {!file && item.audio &&
+            {!file && url &&
                 <>
                     <AudioPlayer
-                        src={item.audio.url}
+                        src={url}
+                    />
+
+                    <Input
+                        inputRef={pathInputRef}
+                        placeholder="Путь"
+                        defaultValue={path}
+                        readOnly={Boolean(path)}
                     />
 
                     <TextEditor
-                        ref={textEditorRef}
-                        value={item.audio.script}
+                        ref={editorRef}
+                        text={script}
                     />
                 </>
             }
@@ -62,12 +73,12 @@ function ExerciseAudioItem({ item }, ref) {
             <Button
                 type="button"
                 content="Выбрать файл"
-                fluid
-                text
+                variant="outlined"
+                size="sm"
                 onClick={pick}
             />
-        </>
+        </Flex>
     );
 }
 
-export default forwardRef(ExerciseAudioItem);
+export default forwardRef(AudioItemForm);

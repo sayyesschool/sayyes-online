@@ -8,13 +8,11 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { Grid } from 'shared/ui-components';
 
-import SectionContent from 'app/components/courses/section-content';
+import SectionDescription from 'app/components/courses/section-description';
 import SectionExercises from 'app/components/courses/section-exercises';
 
 export default function SectionPage({ match, history }) {
     const { course, unit, lesson, section, actions } = useSection(match.params);
-
-    console.log('SectionPage', section);
 
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
@@ -54,7 +52,6 @@ export default function SectionPage({ match, history }) {
                     />
                 }
                 breadcrumbs={[
-                    { key: 'courses', content: 'Курсы', to: '/courses' },
                     { key: 'course', content: course.title, to: course.uri, title: 'Курс' },
                     { key: 'unit', content: unit.title, to: unit.uri, title: 'Юнит' },
                     { key: 'lesson', content: lesson.title, to: lesson.uri, title: 'Урок' }
@@ -63,7 +60,7 @@ export default function SectionPage({ match, history }) {
                     {
                         key: 'delete',
                         icon: 'delete',
-                        title: 'Удалить урок',
+                        title: 'Удалить секцию',
                         onClick: toggleConfirmationDialogOpen
                     }
                 ]}
@@ -71,20 +68,20 @@ export default function SectionPage({ match, history }) {
 
             <Page.Content>
                 <Grid spacing={2}>
-                    <Grid.Item xs={8}>
-                        <SectionContent
-                            section={section}
-                            onUpdate={handleUpdateSection}
-                        />
-                    </Grid.Item>
-
-                    <Grid.Item xs={4}>
+                    <Grid.Item xs={7}>
                         <SectionExercises
                             course={course}
                             section={section}
                             onCreate={handleCreateExercise}
                             onDelete={handleDeleteExercise}
                             onReorder={handleUpdateSection}
+                        />
+                    </Grid.Item>
+
+                    <Grid.Item xs={5}>
+                        <SectionDescription
+                            section={section}
+                            onUpdate={handleUpdateSection}
                         />
                     </Grid.Item>
                 </Grid>

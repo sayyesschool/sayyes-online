@@ -2,10 +2,13 @@ import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 import { IconButton, List, Text } from 'shared/ui-components';
+import { wordEnding } from 'shared/utils/format';
+
+const sectionWordEnding = wordEnding('секци', ['я', 'и', 'й']);
 
 export default function LessonsList({ lessons, onReorder, onDelete }) {
     return (
-        <List className="LessonList NumberedList" navigable>
+        <List className="LessonList NumberedList">
             {lessons.map((lesson, index) =>
                 <ListItem
                     key={lesson.id}
@@ -51,7 +54,7 @@ function ListItem({ index, lesson, first, last, onMove, onDelete }) {
             media={index + 1}
             content={<>
                 <Text>{lesson.title}</Text>
-                <Text type="body2">{lesson.exercises?.length} упражнений</Text>
+                <Text type="body2">{lesson.sections.length} {sectionWordEnding(lesson.sections.length)}</Text>
             </>}
             endAction={<>
                 {!first &&

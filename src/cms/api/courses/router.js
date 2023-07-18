@@ -36,5 +36,10 @@ module.exports = context => {
         .put(controller.updateExercise)
         .delete(controller.deleteExercise);
 
+    router.route('/:course/:exercises/:exercise/items/:item?')
+        .post(controller.createItem)
+        .put(controller.updateItem)
+        .delete(controller.deleteItem);
+
     return router;
 };

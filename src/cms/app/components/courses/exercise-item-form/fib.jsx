@@ -1,29 +1,29 @@
-import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
 
-import Text from 'shared/ui-components/text';
-import TextEditor from 'shared/components/text-editor';
+import ContentEditor from 'shared/components/content-editor';
+import { Text } from 'shared/ui-components';
 
-function ExerciseFIBItem({ item }, ref) {
-    const [text, setText] = useState(item.text || '');
+function FibItemForm({ content }, ref) {
+    const editorRef = useRef();
 
     useImperativeHandle(ref, () => ({
-        get data() { return { text }; }
+        get props() {
+            return {
+                content: editorRef.current.editor.getData()
+            };
+        }
     }));
-
-    const handleChange = useCallback((event, value) => {
-        setText(value);
-    }, [item]);
 
     return (
         <>
-            <TextEditor
-                value={text}
-                onChange={handleChange}
+            <ContentEditor
+                ref={editorRef}
+                content={content}
             />
 
-            <Text px={2} py={1} as="small" type="body2">Для текстового поля используйте <code>{'{ответ 1|ответ 2|ответ 3}'}</code>. Для выбора используйте <code>{'[ответ 1|ответ 2|ответ 3*]'}</code></Text>
+            <Text px={2} py={1} as="small" type="body2">Для текстового поля используйте <code>{'{ответ 1|ответ 2|ответ 3}'}</code>.<br />Для выбора используйте <code>{'[ответ 1|ответ 2|ответ 3*]'}</code> (<sup>*</sup> отмечается правильный вариант).</Text>
         </>
     );
 }
 
-export default forwardRef(ExerciseFIBItem);
+export default forwardRef(FibItemForm);

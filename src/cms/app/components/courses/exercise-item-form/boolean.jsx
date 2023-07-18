@@ -1,20 +1,25 @@
-import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
 import ContentEditor from 'shared/components/content-editor';
 import { Button, Checkbox, IconButton, Input, List } from 'shared/ui-components';
 
-function ExerciseBooleanItem({ item }, ref) {
-    const [text, setText] = useState(item.text || '');
-    const [items, setItems] = useState(item.items || []);
+function BooleanItemForm({
+    content,
+    items: _items = []
+}, ref) {
+    const editorRef = useRef();
+
+    const [items, setItems] = useState(_items);
 
     useImperativeHandle(ref, () => ({
-        get data() { return { text, items }; }
+        get props() {
+            return {
+                content: editorRef.current.editor.getData(),
+                items
+            };
+        }
     }));
-
-    const handleTextChange = useCallback((event, value) => {
-        setText(value);
-    }, []);
 
     const handleAddItem = useCallback(() => {
         setItems(items => items.concat({
@@ -24,11 +29,14 @@ function ExerciseBooleanItem({ item }, ref) {
         }));
     }, []);
 
-    const handleUpdateItem = useCallback((itemId, text) => {
-        setItems(items => items.map(item => item.id !== itemId ? item : { ...item, text }));
+    const handleItemTextChange = useCallback((itemId, text) => {
+        setItems(items => items.map(item => item.id !== itemId ? item : {
+            ...item,
+            text
+        }));
     }, []);
 
-    const handleItemCorrect = useCallback(itemId => {
+    const handleItemCorrectChange = useCallback(itemId => {
         setItems(items => items.map(item => ({
             ...item,
             correct: item.id === itemId ? !item.correct : item.correct
@@ -42,18 +50,18 @@ function ExerciseBooleanItem({ item }, ref) {
     return (
         <>
             <ContentEditor
-                value={item.text}
-                onChange={handleTextChange}
+                ref={editorRef}
+                content={content}
             />
 
             <List>
-                {items?.map(item =>
-                    <List.Item key={item.key}>
+                {items.map(item =>
+                    <List.Item key={item.id}>
                         <Input
                             start={
                                 <Checkbox
                                     checked={item.correct}
-                                    onChange={() => handleItemCorrect(item.id)}
+                                    onChange={() => handleItemCorrectChange(item.id)}
                                 />
                             }
                             value={item.text}
@@ -67,7 +75,7 @@ function ExerciseBooleanItem({ item }, ref) {
                                     onClick={() => handleDeleteItem(item.id)}
                                 />
                             }
-                            onChange={event => handleUpdateItem(item.id, event.target.value)}
+                            onChange={event => handleItemTextChange(item.id, event.target.value)}
                         />
                     </List.Item>
                 )}
@@ -86,4 +94,4 @@ function ExerciseBooleanItem({ item }, ref) {
     );
 }
 
-export default forwardRef(ExerciseBooleanItem);
+export default forwardRef(BooleanItemForm);

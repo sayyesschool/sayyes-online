@@ -1,21 +1,21 @@
 import { useCallback, useRef } from 'react';
 
+import ContentEditor from 'shared/components/content-editor';
 import PageSection from 'shared/components/page-section';
-import TextEditor from 'shared/components/text-editor';
 
-export default function UnitContent({ unit = {}, onUpdate }) {
+export default function SectionDescription({ section = {}, onUpdate }) {
     const editorRef = useRef();
 
     const handleSave = useCallback(() => {
-        const content = editorRef.current.editor.getData();
+        const description = editorRef.current.editor.getData();
 
-        onUpdate({ content });
+        onUpdate({ description });
     }, [onUpdate]);
 
     return (
         <PageSection
-            className="UnitContent"
-            title="Содержание"
+            className="SectionDescription"
+            title="Описание"
             actions={[{
                 key: 'save',
                 icon: 'save',
@@ -24,9 +24,9 @@ export default function UnitContent({ unit = {}, onUpdate }) {
             }]}
             compact
         >
-            <TextEditor
+            <ContentEditor
                 ref={editorRef}
-                defaultValue={unit.description}
+                content={section.description}
             />
         </PageSection>
     );

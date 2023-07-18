@@ -8,7 +8,7 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { Grid } from 'shared/ui-components';
 
-import UnitContent from 'app/components/courses/unit-content';
+import UnitDescription from 'app/components/courses/unit-description';
 import UnitLessons from 'app/components/courses/unit-lessons';
 
 export default function UnitPage({ match, history }) {
@@ -52,7 +52,6 @@ export default function UnitPage({ match, history }) {
                     />
                 }
                 breadcrumbs={[
-                    { key: 'courses', content: 'Курсы', to: '/courses' },
                     { key: 'course', content: course.title, to: course.uri, title: 'Курс' }
                 ]}
                 actions={[
@@ -68,7 +67,7 @@ export default function UnitPage({ match, history }) {
             <Page.Content>
                 <Grid spacing={2}>
                     <Grid.Item xs={8}>
-                        <UnitContent
+                        <UnitDescription
                             unit={unit}
                             onUpdate={handleUpdateUnit}
                         />

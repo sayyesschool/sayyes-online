@@ -8,7 +8,6 @@ import AudioItem from './audio';
 import BooleanItem from './boolean';
 import ChoiceItem from './choice';
 import DividerItem from './divider';
-import DirectionsItem from './directions';
 import EssayItem from './essay';
 import FIBItem from './fib';
 import ImageItem from './image';
@@ -24,7 +23,6 @@ const Components = {
     boolean: BooleanItem,
     choice: ChoiceItem,
     divider: DividerItem,
-    directions: DirectionsItem,
     essay: EssayItem,
     fib: FIBItem,
     image: ImageItem,
@@ -39,7 +37,6 @@ const labelsByType = {
     boolean: 'Да/Нет',
     choice: 'Выбор',
     divider: 'Разделитель',
-    directions: 'Инструкции',
     essay: 'Эссе',
     fib: 'Заполнить пробелы',
     image: 'Изображение',
@@ -51,7 +48,7 @@ const labelsByType = {
 
 const defaultItem = {
     type: '',
-    title: ''
+    props: {}
 };
 
 export default function ExerciseItemForm({
@@ -62,12 +59,27 @@ export default function ExerciseItemForm({
 }) {
     const itemRef = useRef();
 
-    const [isLoading, setLoading] = useState();
+    const [isLoading, setLoading] = useState(false);
 
     const handleSubmit = useCallback(event => {
         event.preventDefault();
 
-        const data = itemRef.current.data;
+        const file = itemRef.current.file;
+        const props = itemRef.current.props || {};
+
+        if (typeof props.content === 'string') {
+            props.content = props.content.trim()
+                .replaceAll('&nbsp;', ' ')
+                .replaceAll('<p> </p>', '<p></p>');
+        }
+
+        if (file) {
+            file.path = props.path || `courses/${item.courseId}/${item.type}s`;
+        }
+
+        console.log(props);
+
+        const data = { file, props };
 
         setLoading(true);
 
@@ -76,9 +88,9 @@ export default function ExerciseItemForm({
         } else {
             onSubmit(data);
         }
-    }, [onSubmit]);
+    }, [item, onSubmit]);
 
-    const classNames = classnames('ExerciseItemForm', `Exercise${capitalize(item.type)}ItemForm`);
+    const classNames = classnames('ExerciseItemForm', `${capitalize(item.type)}ItemForm`);
 
     return (
         <form
@@ -97,7 +109,7 @@ export default function ExerciseItemForm({
                             type: 'submit',
                             icon: 'save',
                             title: 'Сохранить',
-                            loading: isLoading
+                            disabled: isLoading
                         },
                         {
                             key: 'close',
@@ -116,7 +128,7 @@ export default function ExerciseItemForm({
             {createElement(Components[item.type], {
                 key: item.id,
                 ref: itemRef,
-                item
+                ...item.props
             })}
         </form>
     );

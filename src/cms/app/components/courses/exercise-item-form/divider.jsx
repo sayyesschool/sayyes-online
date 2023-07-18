@@ -1,8 +1,8 @@
 import { forwardRef, useImperativeHandle } from 'react';
 
-function ExerciseDividerItem({ item }, ref) {
+function DividerItemForm({ }, ref) {
     useImperativeHandle(ref, () => ({
-        get data() { return {}; }
+        get props() { return {}; }
     }));
 
     return (
@@ -10,4 +10,4 @@ function ExerciseDividerItem({ item }, ref) {
     );
 }
 
-export default forwardRef(ExerciseDividerItem);
+export default forwardRef(DividerItemForm);

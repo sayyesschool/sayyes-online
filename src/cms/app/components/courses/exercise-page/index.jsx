@@ -5,7 +5,7 @@ import { useExercise } from 'shared/hooks/courses';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import { Grid } from 'shared/ui-components';
+import { Flex, Grid } from 'shared/ui-components';
 
 import ExerciseDescription from 'app/components/courses/exercise-description';
 import ExerciseItems from 'app/components/courses/exercise-items';
@@ -55,7 +55,6 @@ export default function ExercisePage({ match, history }) {
                 title="Упражнение"
                 description={`ID: ${exercise.id}`}
                 breadcrumbs={[
-                    { key: 'courses', content: 'Курсы', to: '/courses' },
                     { key: 'course', content: course.title, to: course.uri, title: 'Курс' },
                     { key: 'unit', content: unit.title, to: unit.uri, title: 'Юнит' },
                     { key: 'lesson', content: lesson.title, to: lesson.uri, title: 'Урок' },
@@ -74,18 +73,20 @@ export default function ExercisePage({ match, history }) {
             <Page.Content>
                 <Grid spacing={2}>
                     <Grid.Item xs={8}>
-                        <ExerciseDescription
-                            exercise={exercise}
-                            onUpdate={handleUpdate}
-                        />
+                        <Flex gap="medium" column>
+                            <ExerciseDescription
+                                exercise={exercise}
+                                onUpdate={handleUpdate}
+                            />
 
-                        <ExerciseItems
-                            exercise={exercise}
-                            onCreate={handleCreateItem}
-                            onUpdate={handleUpdateItem}
-                            onDelete={handleDeleteItem}
-                            onReorder={handleUpdate}
-                        />
+                            <ExerciseItems
+                                exercise={exercise}
+                                onCreate={handleCreateItem}
+                                onUpdate={handleUpdateItem}
+                                onDelete={handleDeleteItem}
+                                onReorder={handleUpdate}
+                            />
+                        </Flex>
                     </Grid.Item>
 
                     <Grid.Item xs={4}>

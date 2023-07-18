@@ -1,23 +1,35 @@
 import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Chip, Flex, FormField, Input } from 'shared/ui-components';
+import { Chip, Flex, FormField, Input, Switch, Text } from 'shared/ui-components';
 
-function ExerciseInputItem({ item }, ref) {
-    const [text, setText] = useState(item.text || '');
-    const [items, setItems] = useState(item.items || []);
-    const [isInline, toggleInline] = useBoolean(false);
+import './input.scss';
+
+function InputItemForm({
+    text: _text = '',
+    values: _values = [],
+    inline = false
+}, ref) {
+    const [text, setText] = useState(_text);
+    const [values, setValues] = useState(_values);
+    const [isInline, toggleInline] = useBoolean(inline);
 
     useImperativeHandle(ref, () => ({
-        get data() { return { text, items, inline: isInline }; }
+        get props() {
+            return {
+                text,
+                values,
+                inline: isInline
+            };
+        }
     }));
 
     const handleTextChange = useCallback(event => {
         setText(event.target.value);
     }, []);
 
-    const handleDeleteItem = useCallback(newItem => {
-        setItems(items => items.filter(item => item !== newItem));
+    const handleDeleteValue = useCallback(newValue => {
+        setValues(values => values.filter(v => v !== newValue));
     }, []);
 
     const handleKeyPress = useCallback(event => {
@@ -26,7 +38,9 @@ function ExerciseInputItem({ item }, ref) {
 
             const value = event.target.value;
 
-            setItems(items => items.concat(value));
+            if (!value) return;
+
+            setValues(values => values.concat(value));
 
             event.target.value = '';
 
@@ -43,7 +57,7 @@ function ExerciseInputItem({ item }, ref) {
                 onChange={handleTextChange}
             />
 
-            {/* <Flex>
+            <Flex gap="medium">
                 <Text>В линию</Text>
 
                 <Switch
@@ -51,7 +65,7 @@ function ExerciseInputItem({ item }, ref) {
                     checked={isInline}
                     onChange={toggleInline}
                 />
-            </Flex> */}
+            </Flex>
 
             <FormField label="Ответы">
                 <Input
@@ -59,13 +73,13 @@ function ExerciseInputItem({ item }, ref) {
                     placeholder="Введите ответ и нажмите Enter"
                     startDecorator={
                         <Chip.Group>
-                            {items.map(item =>
+                            {values.map(value =>
                                 <Chip
-                                    key={item}
-                                    content={item}
+                                    key={value}
+                                    content={value}
                                     endDecorator={
                                         <Chip.Delete
-                                            onDelete={() => handleDeleteItem(item)}
+                                            onDelete={() => handleDeleteValue(value)}
                                         />
                                     }
                                     size="sm"
@@ -82,4 +96,4 @@ function ExerciseInputItem({ item }, ref) {
     );
 }
 
-export default forwardRef(ExerciseInputItem);
+export default forwardRef(InputItemForm);

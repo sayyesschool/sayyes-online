@@ -6,9 +6,9 @@ import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import EditableText from 'shared/components/editable-text';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import { Flex, Grid } from 'shared/ui-components';
+import { Grid } from 'shared/ui-components';
 
-import CourseContent from 'app/components/courses/course-content';
+import CourseDescription from 'app/components/courses/course-description';
 import CourseImage from 'app/components/courses/course-image';
 import CourseUnits from 'app/components/courses/course-units';
 
@@ -50,9 +50,6 @@ export default function CoursePage({ match, history }) {
                         onUpdate={handleUpdateCourseTitle}
                     />
                 }
-                breadcrumbs={[
-                    { key: 'courses', content: 'Курсы', to: '/courses' }
-                ]}
                 actions={[
                     {
                         key: 'delete',
@@ -65,7 +62,7 @@ export default function CoursePage({ match, history }) {
             <Page.Content>
                 <Grid spacing={2}>
                     <Grid.Item xs={8}>
-                        <CourseContent
+                        <CourseDescription
                             course={course}
                             onUpdate={handleUpdateCourse}
                         />

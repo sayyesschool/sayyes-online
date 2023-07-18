@@ -10,19 +10,29 @@ import ExercisesList from 'app/components/courses/exercises-list';
 
 export default function SectionExercises({
     section,
-    selectedExercise,
 
     onCreate,
     onDelete,
     onReorder
 }) {
-    const [exercise, setExercise] = useState(selectedExercise);
+    const [exercise, setExercise] = useState();
+
     const [isFormOpen, toggleFormOpen] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
-    const handleCreate = useCallback(data => {
+    const handleCreate = useCallback(() => {
+        const data = {
+            courseId: section.courseId,
+            sectionId: section.id
+        };
+
         return onCreate(data)
-            .finally(() => toggleFormOpen(false));
+            .then(response => {
+                console.log(response.data);
+            })
+            .finally(() => {
+                toggleFormOpen(false);
+            });
     }, []);
 
     const handleDelete = useCallback(() => {
@@ -54,15 +64,14 @@ export default function SectionExercises({
                 key: 'add',
                 icon: 'add',
                 title: 'Добавить упражнение',
-                onClick: toggleFormOpen
+                onClick: handleCreate
             }]}
             compact
+            plain
         >
             {section.exercises?.length > 0 &&
                 <ExercisesList
                     exercises={section.exercises}
-                    selectedExercise={selectedExercise}
-                    onSelect={selectedExercise && setExercise}
                     onReorder={handleReorder}
                     onDelete={handleDeleteRequest}
                 />
@@ -81,7 +90,7 @@ export default function SectionExercises({
 
             <ConfirmationDialog
                 title="Удалить упражнение?"
-                message={exercise && `Упражнение "${exercise.title}" будет удалено без возможности восстановления.`}
+                message={exercise && `Упражнение "${exercise.id}" будет удалено без возможности восстановления.`}
                 open={isConfirmationDialogOpen}
                 onConfirm={handleDelete}
                 onClose={toggleConfirmationDialogOpen}

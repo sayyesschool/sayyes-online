@@ -2,36 +2,50 @@ import { forwardRef, useImperativeHandle, useRef } from 'react';
 
 import TextEditor from 'shared/components/text-editor';
 import VideoPlayer from 'shared/components/video-player';
+import { Flex, Input } from 'shared/ui-components';
 
-function ExerciseVideoItem({ item }, ref) {
-    const textEditorRef = useRef();
+import './video.scss';
+
+function ExerciseVideoItem({
+    path,
+    url,
+    script
+}, ref) {
+    const editorRef = useRef();
+    const pathInputRef = useRef();
 
     useImperativeHandle(ref, () => ({
-        get data() {
-            const script = textEditorRef.current?.editor.getData();
+        get props() {
+            const pathValue = pathInputRef.current?.value;
+            const script = editorRef.current?.editor.getData();
 
             return {
-                video: {
-                    ...item.video,
-                    script
-                }
+                path: pathValue === undefined ? path : pathValue,
+                script
             };
         }
-    }), [item]);
+    }), [path]);
 
     return (
-        <>
-            {item.video?.url &&
+        <Flex padding={1} gap="small" column>
+            {url &&
                 <VideoPlayer
-                    src={item.video?.url}
+                    src={url}
                 />
             }
 
-            <TextEditor
-                ref={textEditorRef}
-                value={item.video?.script}
+            <Input
+                inputRef={pathInputRef}
+                placeholder="Путь"
+                defaultValue={path}
+                readOnly={Boolean(path)}
             />
-        </>
+
+            <TextEditor
+                ref={editorRef}
+                text={script}
+            />
+        </Flex>
     );
 }
 
