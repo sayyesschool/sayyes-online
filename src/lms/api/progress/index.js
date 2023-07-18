@@ -8,7 +8,7 @@ module.exports = context => {
 
     router.route('/:progress?')
         .get(controller.get)
-        .post(controller.update)
+        .post(controller.upsert)
         .delete(controller.delete);
 
     return router;

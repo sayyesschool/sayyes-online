@@ -18,21 +18,21 @@ module.exports = ({
             .catch(next);
     },
 
-    update: (req, res, next) => {
-        (!req.params.progress ?
-            Progress.create(req.body) :
-            Progress.findByIdAndUpdate(req.params.progress, {
+    upsert: async (req, res) => {
+        const progress = req.params.progress ?
+            await Progress.findByIdAndUpdate(req.params.progress, {
                 $set: req.body
             }, {
                 new: true
             })
-        ).then(progress => {
-            res.json({
-                ok: true,
-                message: 'Прогресс сохранен',
-                data: progress
-            });
-        }).catch(next);
+            :
+            await Progress.create(req.body);
+
+        res.json({
+            ok: true,
+            message: 'Прогресс сохранен',
+            data: progress
+        });
     },
 
     delete: (req, res, next) => { },

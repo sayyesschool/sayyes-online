@@ -9,7 +9,7 @@ import { IconButton, MenuButton } from 'shared/ui-components';
 
 import { useActions } from 'app/store/hooks';
 
-export default function EnrollmentCourses({ enrollment, readonly }) {
+export default function EnrollmentAssignments({ enrollment, readonly }) {
     const [courses] = useCourses();
     const enrollmentActions = useActions('enrollments');
 
