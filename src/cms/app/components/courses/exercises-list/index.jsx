@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
-import TextContent from 'shared/components/text-content';
-import { Avatar, Box, Card, Flex, Icon, IconButton, MenuButton } from 'shared/ui-components';
+import Content from 'shared/components/content';
+import { Avatar, Card, Flex, Icon, IconButton, MenuButton } from 'shared/ui-components';
 
 export default function ExercisesList({
     exercises,
@@ -30,19 +30,17 @@ export default function ExercisesList({
                         className="ExerciseCard"
                     >
                         <Flex gap="small" alignItems="flex-start">
-                            <Box flex="1">
-                                <Link to={exercise.url}>
-                                    <Flex gap="medium">
-                                        <Avatar
-                                            text={index + 1}
-                                        />
+                            <Flex
+                                component={Link}
+                                to={exercise.url}
+                                flex="1"
+                                gap="medium"
+                                alignItems="center"
+                            >
+                                <Avatar text={index + 1} />
 
-                                        <TextContent
-                                            content={exercise.description}
-                                        />
-                                    </Flex>
-                                </Link>
-                            </Box>
+                                <Content content={exercise.description} html />
+                            </Flex>
 
                             <MenuButton
                                 trigger={

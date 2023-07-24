@@ -2,7 +2,7 @@ import { forwardRef, useImperativeHandle, useRef } from 'react';
 
 import { useFileInput } from 'shared/hooks/file';
 import AudioPlayer from 'shared/components/audio-player';
-import TextEditor from 'shared/components/text-editor';
+import ContentEditor from 'shared/components/content-editor';
 import { Button, Flex, Input, Text } from 'shared/ui-components';
 
 import './audio.scss';
@@ -64,9 +64,9 @@ function AudioItemForm({
                     readOnly={Boolean(path)}
                 />
 
-                <TextEditor
+                <ContentEditor
                     ref={editorRef}
-                    text={script}
+                    content={script}
                 />
             </>}
 

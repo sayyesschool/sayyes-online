@@ -36,7 +36,7 @@ export default function MaterialForm({ material = {}, onSubmit, ...props }) {
     }, []);
 
     return (
-        <Form className="material-form" onSubmit={handleSubmit} {...props}>
+        <Form className="MaterialForm" onSubmit={handleSubmit} {...props}>
             <Form.Input
                 label="Тема"
                 name="title"

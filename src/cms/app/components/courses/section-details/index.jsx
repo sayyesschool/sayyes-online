@@ -10,8 +10,8 @@ export default function SectionDetails({
 }) {
     return (
         <PageSection
-            title="Детали"
             className="SectionDetails"
+            title="Детали"
             actions={[{
                 key: 'save',
                 icon: 'save',

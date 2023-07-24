@@ -1,6 +1,6 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 
-import TextEditor from 'shared/components/text-editor';
+import ContentEditor from 'shared/components/content-editor';
 import VideoPlayer from 'shared/components/video-player';
 import { Flex, Input } from 'shared/ui-components';
 
@@ -41,9 +41,9 @@ function ExerciseVideoItem({
                 readOnly={Boolean(path)}
             />
 
-            <TextEditor
+            <ContentEditor
                 ref={editorRef}
-                text={script}
+                content={script}
             />
         </Flex>
     );
