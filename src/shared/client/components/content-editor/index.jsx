@@ -2,8 +2,8 @@ import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@sayyes/ckeditor5-classic';
 
-import { UploadAdapterPlugin } from 'shared/libs/text-editor/upload-adapter';
-import ImageRemoveEventPlugin from 'shared/libs/text-editor/image-remove-event';
+import { UploadAdapterPlugin } from 'shared/libs/editor/upload-adapter';
+import ImageRemoveEventPlugin from 'shared/libs/editor/image-remove-event';
 
 import './index.scss';
 
