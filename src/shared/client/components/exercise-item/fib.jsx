@@ -2,9 +2,9 @@ import { useCallback, useMemo } from 'react';
 
 import { parseHTML } from 'shared/libs/eml';
 import { render } from 'shared/libs/jsx';
+import Content from 'shared/components/content';
 import Input from 'shared/components/inline-input';
 import Select from 'shared/components/inline-select';
-import TextContent from 'shared/components/text-content';
 
 import './fib.scss';
 
@@ -54,9 +54,9 @@ export default function FibItem({
 
     return (
         <div className={className}>
-            <TextContent>
+            <Content>
                 {memoedContent}
-            </TextContent>
+            </Content>
         </div>
     );
 }

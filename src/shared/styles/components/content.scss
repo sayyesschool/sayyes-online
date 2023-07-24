@@ -1,18 +1,71 @@
 @use '../variables';
 
-.content,
 .Content,
-.TextContent,
-.ck-content {
-    .exercise-description {
+.ContentEditor {
+    p:last-child {
+        margin-bottom: 0;
+    }
+
+    .directions {
         font-weight: bold;
         margin-bottom: 0;
     }
     
-    .exercise-description-translation {
-        color: variables.$text-muted-color;
+    .dialog {
+        display: table;
+        font-style: normal;
+        border-left: none;
+
+        p {
+            display: table-row;
+            margin-bottom: 0;
+
+            i:first-child {
+                display: table-cell;
+                font-style: normal;
+                padding-right: 1rem;
+                color: variables.$text-muted-color;
+                
+                &::after {
+                    content: ':';
+                }
+            }
+        }
     }
-    
+
+    .callout {
+        padding: 1rem;
+        background-color: var(--joy-palette-primary-50);
+        font-style: normal;
+        border: none;
+        border-radius: 8px;
+    }
+
+    .float-left {
+        float: left;
+    }
+
+    .float-right {
+        float: right;
+    }
+
+    .grid {
+        border: 1px solid #bfbfbf;
+
+        td {
+            border: 1px solid #bfbfbf;
+        }
+    }
+
+    .filled-cell {
+        background-color: var(--joy-palette-primary-500, variables.$primary-color);
+        color: variables.$on-primary-color;
+    }
+
+    .tinted-cell {
+        background-color: var(--joy-palette-primary-50);
+    }
+
     ul.word-choice-list {
         list-style: none;
         display: flex;
@@ -29,24 +82,20 @@
             line-height: 1;
         }
     }
+
+    .primary-color {
+        color: variables.$primary-color;
+    }
     
-    blockquote.dialog {
-        display: table;
-        font-style: normal;
-        border-left: none;
+    .secondary-color {
+        color: variables.$secondary-color;
+    }
 
-        p {
-            display: table-row;
-            margin-bottom: 0;
+    .muted-color {
+        color: variables.$text-muted-color;
+    }
 
-            i:first-child {
-                display: table-cell;
-                padding-right: 1rem;
-                
-                &::after {
-                    content: ':';
-                }
-            }
-        }
+    .text-uppercase {
+        text-transform: uppercase;
     }
 }

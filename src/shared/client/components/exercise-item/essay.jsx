@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
-import TextEditor from 'shared/components/text-editor';
-import TextContent from 'shared/components/text-content';
+import Content from 'shared/components/content';
+import ContentEditor from 'shared/components/content-editor';
 
 import './essay.scss';
 
@@ -18,12 +18,11 @@ export default function EssayItem({
 
     return (
         <div className={className}>
-            <TextContent
-                content={content}
-            />
+            <Content content={content} html />
 
-            <TextEditor
-                text={state}
+            <ContentEditor
+                content={state}
+                simple
                 onChange={handleChange}
             />
         </div>

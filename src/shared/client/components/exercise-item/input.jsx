@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 
+import Content from 'shared/components/content';
 import Input from 'shared/components/inline-input';
 import Textarea from 'shared/components/inline-textarea';
-import TextContent from 'shared/components/text-content';
 import { Flex } from 'shared/ui-components';
 
 import './input.scss';
@@ -27,7 +27,7 @@ export default function InputItem({
         <div className={className}>
             <Flex direction={inline ? 'row' : 'column'} gap="small">
                 {text &&
-                    <TextContent text={text} />
+                    <Content text={text} />
                 }
 
                 <Component

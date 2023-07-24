@@ -1,11 +1,9 @@
-import TextContent from 'shared/components/text-content';
+import Content from 'shared/components/content';
 
 export default function TextItem({ content, className }) {
     return (
         <div className={className}>
-            <TextContent
-                content={content}
-            />
+            <Content content={content} html />
         </div>
     );
 }

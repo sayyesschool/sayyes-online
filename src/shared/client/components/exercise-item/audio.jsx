@@ -1,7 +1,7 @@
 import { useBoolean } from 'shared/hooks/state';
 import AudioPlayer from 'shared/components/audio-player';
-import TextContent from 'shared/components/text-content';
-import { Button, Flex, Icon } from 'shared/ui-components';
+import Content from 'shared/components/content';
+import { Button, Icon } from 'shared/ui-components';
 
 import './audio.scss';
 
@@ -26,7 +26,7 @@ export default function AudioItem({ url, script, className }) {
                     />
 
                     {isScriptOpen &&
-                        <TextContent content={script} />
+                        <Content content={script} html />
                     }
                 </div>
             }

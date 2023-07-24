@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import classnames from 'classnames';
 
-import TextContent from 'shared/components/text-content';
+import Content from 'shared/components/content';
 import { List, Switch } from 'shared/ui-components';
 
 import './boolean.scss';
@@ -25,7 +25,7 @@ export default function BooleanItem({
 
     return (
         <div className={className}>
-            <TextContent content={content} />
+            <Content content={content} html />
 
             <List>
                 {items?.map(item =>

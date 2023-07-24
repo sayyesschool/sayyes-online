@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import classnames from 'classnames';
 
-import TextContent from 'shared/components/text-content';
+import Content from 'shared/components/content';
 import { Checkbox, List, Radio } from 'shared/ui-components';
 
 import './choice.scss';
@@ -38,7 +38,7 @@ export default function ChoiceItem({
 
     return (
         <div className={className}>
-            <TextContent content={content} />
+            <Content content={content} html />
 
             <List>
                 {items?.map(item =>

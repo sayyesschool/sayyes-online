@@ -1,5 +1,5 @@
 import { useBoolean } from 'shared/hooks/state';
-import TextContent from 'shared/components/text-content';
+import Content from 'shared/components/content';
 import VideoPlayer from 'shared/components/video-player';
 import { Button, Icon } from 'shared/ui-components';
 
@@ -38,7 +38,7 @@ export default function VideoItem({
                     />
 
                     {isScriptOpen &&
-                        <TextContent content={script} />
+                        <Content content={script} html />
                     }
                 </div>
             }
