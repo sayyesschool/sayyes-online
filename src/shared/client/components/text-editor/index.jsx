@@ -1,4 +1,4 @@
-import { forwardRef, useCallback } from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@sayyes/ckeditor5-classic';
 
@@ -40,6 +40,15 @@ function TextEditor({
     onChange = Function.prototype,
     ...props
 }, ref) {
+    const editorRef = useRef();
+
+    useImperativeHandle(ref, () => ({
+        getData: () => editorRef.current?.editor.getData()
+            .trim()
+            .replaceAll('&nbsp;', ' ')
+            .replaceAll('<p> </p>', '<p></p>')
+    }));
+
     const handleChange = useCallback((event, editor) => {
         onChange(event, editor.getData());
     }, [onChange]);

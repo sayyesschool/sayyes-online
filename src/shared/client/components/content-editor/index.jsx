@@ -1,4 +1,4 @@
-import { forwardRef, useCallback } from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@sayyes/ckeditor5-classic';
 
@@ -18,49 +18,39 @@ const defaultConfig = {
     style: {
         definitions: [
             {
-                name: 'List',
+                name: 'Задание',
+                element: 'p',
+                classes: ['exercise-description']
+            },
+            {
+                name: 'Перевод задания',
+                element: 'p',
+                classes: ['exercise-description-translation']
+            },
+            {
+                name: 'Список слов для выбора',
                 element: 'ul',
-                classes: ['my-list']
+                classes: ['word-choice-list']
             },
             {
-                name: 'Важный текст',
-                element: 'p',
-                classes: ['primary-text']
-            },
-            {
-                name: 'Вспомогательный текст',
-                element: 'p',
-                classes: ['secondary-text']
-            },
-            {
-                name: 'Декоративный текст',
-                element: 'p',
-                classes: ['decorative-text']
-            },
-            {
-                name: 'Текст диалога',
-                element: 'p',
-                classes: ['dialog-text']
+                name: 'Диалог',
+                element: 'blockquote',
+                classes: ['dialog']
             },
             {
                 name: 'Основной цвет',
                 element: 'span',
-                classes: ['ck-primary-color']
+                classes: ['primary-color']
             },
             {
                 name: 'Второстепенный цвет',
                 element: 'span',
-                classes: ['ck-secondary-color']
+                classes: ['secondary-color']
             },
             {
                 name: 'Приглушенный цвет',
                 element: 'span',
-                classes: ['ck-muted-color']
-            },
-            {
-                name: 'Word Bubble',
-                element: 'span',
-                classes: ['word-bubble']
+                classes: ['muted-color']
             }
         ]
     },
@@ -86,6 +76,15 @@ function ContentEditor({
     onChange = Function.prototype,
     ...props
 }, ref) {
+    const editorRef = useRef();
+
+    useImperativeHandle(ref, () => ({
+        getData: () => editorRef.current?.editor.getData()
+            .trim()
+            .replaceAll('&nbsp;', ' ')
+            .replaceAll('<p> </p>', '<p></p>')
+    }));
+
     const handleChange = useCallback((event, editor) => {
         onChange(event, editor.getData());
     }, [onChange]);
@@ -93,7 +92,7 @@ function ContentEditor({
     return (
         <div className="ContentEditor">
             <CKEditor
-                ref={ref}
+                ref={editorRef}
                 editor={ClassicEditor}
                 data={content}
                 config={config ? {

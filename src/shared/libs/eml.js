@@ -1,5 +1,5 @@
 // const regex = /{}|{[^{][^}]*}|{{}}|{{[^{][^}]*}}|\[\]|\[[^[][^\]]*\]:{([a-zA-Z])}/gm;
-const regex = /(?:(?<type>[{\[])(?<values>[\w\d|*]*)[}\]])(?::{(?<id>[\w\d]+)})?/gm;
+const regex = /(?:(?<type>[{\[])(?<values>[^{}\[\]]*)[}\]])(?::{(?<id>[\w]+)})?/gm;
 
 const ControlTypeBySymbol = {
     '{': 'input',
@@ -137,7 +137,7 @@ function getControlData(symbol, rawValues, id) {
     const values = parseValues(rawValues);
 
     return {
-        id,
+        id, // randomBytes(3).toString('hex')
         type,
         props: {
             values

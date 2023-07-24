@@ -23,7 +23,7 @@ export default function VideoForm({ video = {}, path, onSubmit, ...props }) {
     const handleSubmit = useCallback(() => {
         getData(data => {
             const file = fileInputRef.current.file;
-            const script = textEditorRef.current.editor.getData();
+            const script = textEditorRef.current?.getData();
 
             if (file) {
                 file.path = path;
