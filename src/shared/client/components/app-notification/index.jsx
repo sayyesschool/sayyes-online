@@ -15,7 +15,6 @@ export default function AppNotification() {
     const [notification, actions] = useStore(state => state.notification, { hideNotification });
 
     const handleClose = useCallback((event, reason) => {
-        console.log('Close notification', reason);
         actions.hideNotification();
     }, []);
 

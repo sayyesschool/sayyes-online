@@ -51,7 +51,6 @@ export default function ExerciseItems({
     }, [exercise, activeItemId]);
 
     const handleUpdate = useCallback(data => {
-        console.log('handleUpdate', editingItemId, data);
         return onUpdate(editingItemId, data)
             .then(() => setEditingItemId(undefined));
     }, [editingItemId]);
@@ -124,8 +123,6 @@ export default function ExerciseItems({
 
     const firstItem = exercise.items.at(0);
     const lastItem = exercise.items.at(-1);
-
-    console.log(state);
 
     return (
         <PageSection

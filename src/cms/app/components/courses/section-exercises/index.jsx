@@ -27,9 +27,6 @@ export default function SectionExercises({
         };
 
         return onCreate(data)
-            .then(response => {
-                console.log(response.data);
-            })
             .finally(() => {
                 toggleFormOpen(false);
             });

@@ -13,8 +13,6 @@ module.exports = ({ services: { Storage } }) => {
         const file = req.file;
         const path = getNormalizedPath(req.body.path, file);
 
-        console.log('STORAGE', path);
-
         Storage.put(path, file.buffer)
             .then(response => {
                 res.json({
