@@ -59,6 +59,8 @@ function ExerciseImageItem({ item }, ref) {
                         alt=""
                         fluid
                     />
+
+                    <Text>{item.image.path}</Text>
                 </div>
             }
 
