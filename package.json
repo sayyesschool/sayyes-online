@@ -29,7 +29,7 @@
     "@mui/joy": "^5.0.0-alpha.87",
     "@radix-ui/react-toast": "^1.1.4",
     "@reduxjs/toolkit": "^1.6.2",
-    "@sayyes/ckeditor5-classic": "^3.8.0",
+    "@sayyes/ckeditor5-classic": "^3.9.0",
     "@sentry/react": "^7.50.0",
     "@sentry/webpack-plugin": "^1.20.1",
     "@twilio/conversations": "^2.3.0",
