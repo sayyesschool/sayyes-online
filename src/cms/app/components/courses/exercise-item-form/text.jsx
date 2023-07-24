@@ -8,7 +8,7 @@ function TextItemForm({ content }, ref) {
     useImperativeHandle(ref, () => ({
         get props() {
             return {
-                content: editorRef.current.editor.getData()
+                content: editorRef.current?.getData()
             };
         }
     }));

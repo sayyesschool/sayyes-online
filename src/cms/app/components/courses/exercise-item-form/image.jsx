@@ -37,15 +37,12 @@ function ExerciseImageItem({
             {file && <>
                 <Text type="body2">Выбранное изображение:</Text>
 
-                <div
-                    className="ImageItemForm__image-wrapper"
-                    onClick={pick}
-                >
+                <figure className="ImageItemForm__image">
                     <Image
                         src={file.url}
                         alt=""
                     />
-                </div>
+                </figure>
 
                 <div>
                     <Text type="body2">Название: <b>{file.name}</b></Text>
@@ -53,17 +50,15 @@ function ExerciseImageItem({
                 </div>
             </>}
 
-            {!file && url && <>
-                <div
-                    className="ImageItemForm__image-wrapper"
-                    onClick={pick}
-                >
-                    <Image
-                        src={url}
-                        alt=""
-                        fluid
-                    />
-                </div>
+            {!file && <>
+                {url &&
+                    <figure className="ImageItemForm__image">
+                        <Image
+                            src={url}
+                            alt=""
+                        />
+                    </figure>
+                }
 
                 <Input
                     inputRef={pathInputRef}
@@ -71,23 +66,21 @@ function ExerciseImageItem({
                     defaultValue={path}
                     readOnly={Boolean(path)}
                 />
-            </>}
 
-            {!file && !url ?
-                <Button
-                    type="button"
-                    content="Выбрать файл"
-                    variant="outlined"
-                    size="sm"
-                    onClick={pick}
-                />
-                :
                 <Input
                     inputRef={captionInputRef}
                     placeholder="Описание"
                     defaultValue={caption}
                 />
-            }
+            </>}
+
+            <Button
+                type="button"
+                content={url ? 'Выбрать другое изображение' : 'Выбрать изображение'}
+                variant="outlined"
+                size="sm"
+                onClick={pick}
+            />
         </Flex>
     );
 }

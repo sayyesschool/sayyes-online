@@ -7,7 +7,7 @@ export default function UnitDescription({ unit = {}, onUpdate }) {
     const editorRef = useRef();
 
     const handleSave = useCallback(() => {
-        const description = editorRef.current.editor.getData();
+        const description = editorRef.current?.getData();
 
         onUpdate({ description });
     }, [onUpdate]);

@@ -17,7 +17,7 @@ function ExerciseVideoItem({
     useImperativeHandle(ref, () => ({
         get props() {
             const pathValue = pathInputRef.current?.value;
-            const script = editorRef.current?.editor.getData();
+            const script = editorRef.current?.getData();
 
             return {
                 path: pathValue === undefined ? path : pathValue,

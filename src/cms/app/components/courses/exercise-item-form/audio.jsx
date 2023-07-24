@@ -23,7 +23,7 @@ function AudioItemForm({
         },
         get props() {
             const pathValue = pathInputRef.current?.value;
-            const script = editorRef.current?.editor.getData();
+            const script = editorRef.current?.getData();
 
             return {
                 path: pathValue === undefined ? path : pathValue,
@@ -50,29 +50,29 @@ function AudioItemForm({
                 </Flex>
             }
 
-            {!file && url &&
-                <>
+            {!file && <>
+                {url &&
                     <AudioPlayer
                         src={url}
                     />
+                }
 
-                    <Input
-                        inputRef={pathInputRef}
-                        placeholder="Путь"
-                        defaultValue={path}
-                        readOnly={Boolean(path)}
-                    />
+                <Input
+                    inputRef={pathInputRef}
+                    placeholder="Путь"
+                    defaultValue={path}
+                    readOnly={Boolean(path)}
+                />
 
-                    <TextEditor
-                        ref={editorRef}
-                        text={script}
-                    />
-                </>
-            }
+                <TextEditor
+                    ref={editorRef}
+                    text={script}
+                />
+            </>}
 
             <Button
                 type="button"
-                content="Выбрать файл"
+                content={url ? 'Выбрать другой файл' : 'Выбрать файл'}
                 variant="outlined"
                 size="sm"
                 onClick={pick}

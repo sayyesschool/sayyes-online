@@ -7,7 +7,7 @@ export default function ExerciseNotes({ exercise, onUpdate }) {
     const textEditorRef = useRef();
 
     const handleSave = useCallback(() => {
-        const notes = textEditorRef.current.editor.getData();
+        const notes = textEditorRef.current?.getData();
 
         onUpdate({ notes });
     }, [onUpdate]);

@@ -67,17 +67,9 @@ export default function ExerciseItemForm({
         const file = itemRef.current.file;
         const props = itemRef.current.props || {};
 
-        if (typeof props.content === 'string') {
-            props.content = props.content.trim()
-                .replaceAll('&nbsp;', ' ')
-                .replaceAll('<p> </p>', '<p></p>');
-        }
-
         if (file) {
             file.path = props.path || `courses/${item.courseId}/${item.type}s`;
         }
-
-        console.log(props);
 
         const data = { file, props };
 

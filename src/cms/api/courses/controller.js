@@ -169,7 +169,7 @@ module.exports = ({
         });
     },
     updateExercise: async (req, res) => {
-        const exercise = await Exercise.findByIdAndUpdate(req.params.exercise, req.body);
+        const exercise = await Exercise.findByIdAndUpdate(req.params.exercise, req.body, { new: true });
 
         res.json({
             ok: true,

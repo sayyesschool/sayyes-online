@@ -7,7 +7,7 @@ export default function ExerciseDescription({ exercise, onUpdate }) {
     const editorRef = useRef();
 
     const handleUpdate = useCallback(() => {
-        const description = editorRef.current.editor.getData();
+        const description = editorRef.current?.getData();
 
         onUpdate({ description });
     }, [onUpdate]);
