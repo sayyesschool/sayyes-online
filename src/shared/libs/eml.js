@@ -63,6 +63,7 @@ function transformPlaceholders(string) {
 function elementToObject(element) {
     const type = element.nodeName.toLowerCase();
     const id = element.dataset?.id;
+    const className = element.className || undefined;
     const style = element.style?.length > 0 ?
         Object.entries(element.style).reduce((result, [key, value]) => {
             if (isNaN(key) && value) result[key] = value;
@@ -115,6 +116,7 @@ function elementToObject(element) {
         return {
             type,
             props: {
+                className,
                 style
             },
             children: elementToObject(element.childNodes[0])
@@ -123,6 +125,7 @@ function elementToObject(element) {
         return {
             type,
             props: {
+                className,
                 style
             },
             children: Array.from(element.childNodes)
