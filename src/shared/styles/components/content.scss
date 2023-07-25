@@ -13,12 +13,12 @@
     
     .dialog {
         display: table;
-        font-style: normal;
         border-left: none;
 
         p {
             display: table-row;
             margin-bottom: 0;
+            line-height: 1.5;
 
             i:first-child {
                 display: table-cell;
