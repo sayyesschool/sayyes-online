@@ -1,22 +1,107 @@
 @use '../variables';
 
+@mixin overline($text) {
+    &::before {
+        content: $text;
+        display: block;
+        margin-bottom: .25rem;
+        font-size: 12px;
+        font-weight: normal;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: variables.$text-muted-color;
+    }
+}
+
+@mixin callout-heading($text, $icon, $color) {
+    &::before {
+        content: $text;
+        position: absolute;
+        top: .6rem;
+        left: 2rem;
+        display: block;
+        margin-bottom: .25rem;
+        font-size: 12px;
+        font-weight: normal;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--joy-palette-#{$color}-400);
+    }
+
+    &::after {
+        content: $icon;
+        font-family: 'Material Icons Round';
+        position: absolute;
+        top: .5rem;
+        left: .75rem;
+        color: var(--joy-palette-#{$color}-400);
+    }
+}
+
 .Content,
 .ContentEditor {
     p:last-child {
         margin-bottom: 0;
     }
 
-    .directions {
+    ol, ul {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        padding-left: 2rem;
+    }
+
+    p.directions {
         font-weight: bold;
         margin-bottom: 0;
     }
+
+    p.overline {
+        display: block;
+        margin-bottom: .25rem;
+        font-size: 12px;
+        font-weight: normal;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: variables.$text-muted-color;
+
+        + * {
+            margin-top: 0;
+        }
+    }
+
+    p.caption {
+        font-size: 12px;
+        font-weight: normal;
+        letter-spacing: 0.4px;
+    }
+
+    p.number {
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        background: var(--joy-palette-info-100);
+        position: absolute;
+        margin: 0;
+        text-align: center;
+        line-height: 24px;
+        border-radius: 100%;
+
+        + * {
+            margin-left: 3rem;
+        }
+    }
     
-    .dialog {
+    blockquote.dialog {
         display: table;
         border-left: none;
+        margin: 0;
+        margin-bottom: 1rem;
+        padding-left: 1rem;
 
         p {
             display: table-row;
+            height: 2rem;
             margin-bottom: 0;
             line-height: 1.5;
 
@@ -33,20 +118,39 @@
         }
     }
 
-    .callout {
+    blockquote.example {
+        margin: 0;
+        padding-left: 1rem;
+
+        @include overline('Example');
+    }
+
+    blockquote.callout {
+        position: relative;
+        margin: 0 auto 1rem;
         padding: 1rem;
         background-color: var(--joy-palette-primary-50);
         font-style: normal;
         border: none;
         border-radius: 8px;
-    }
 
-    .float-left {
-        float: left;
-    }
+        &.callout-error {
+            background-color: var(--joy-palette-danger-100);
+            padding-top: 2rem;
+            @include callout-heading('Common Errors', 'warning', 'danger');
+        }
 
-    .float-right {
-        float: right;
+        &.callout-note {
+            background-color: var(--joy-palette-info-100);
+            padding-top: 2rem;
+            @include callout-heading('Note', 'info', 'info');
+        }
+
+        &.callout-tip {
+            background-color: var(--joy-palette-success-100);
+            padding-top: 2rem;
+            @include callout-heading('Tip', 'tips_and_updates', 'success');
+        }
     }
 
     .grid {
@@ -66,10 +170,12 @@
         background-color: var(--joy-palette-primary-50);
     }
 
-    ul.word-choice-list {
+    .word-choice-list {
         list-style: none;
         display: flex;
+        flex-direction: row;
         justify-content: center;
+        flex-wrap: wrap;
         gap: .25rem;
         margin: 0;
         padding: 0;
@@ -83,19 +189,19 @@
         }
     }
 
-    .primary-color {
+    span.primary-color {
         color: variables.$primary-color;
     }
     
-    .secondary-color {
+    span.secondary-color {
         color: variables.$secondary-color;
     }
 
-    .muted-color {
+    span.muted-color {
         color: variables.$text-muted-color;
     }
 
-    .text-uppercase {
-        text-transform: uppercase;
+    .text-center {
+        text-align: center;
     }
 }

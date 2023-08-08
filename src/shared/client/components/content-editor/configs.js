@@ -17,9 +17,29 @@ export const defaultConfig = {
                 classes: ['directions']
             },
             {
+                name: 'Надпись',
+                element: 'p',
+                classes: ['overline']
+            },
+            {
+                name: 'Подпись',
+                element: 'p',
+                classes: ['caption']
+            },
+            {
+                name: 'Номер',
+                element: 'p',
+                classes: ['number']
+            },
+            {
                 name: 'Диалог',
                 element: 'blockquote',
                 classes: ['dialog']
+            },
+            {
+                name: 'Пример',
+                element: 'blockquote',
+                classes: ['example']
             },
             {
                 name: 'Сноска',
@@ -27,14 +47,29 @@ export const defaultConfig = {
                 classes: ['callout']
             },
             {
-                name: 'Блок слева',
+                name: 'Сноска "Error"',
                 element: 'blockquote',
-                classes: ['float-left']
+                classes: ['callout', 'callout-error']
             },
             {
-                name: 'Блок справа',
+                name: 'Сноска "Note"',
                 element: 'blockquote',
-                classes: ['float-right']
+                classes: ['callout', 'callout-note']
+            },
+            {
+                name: 'Сноска "Tip"',
+                element: 'blockquote',
+                classes: ['callout', 'callout-tip']
+            },
+            {
+                name: 'Список слов для выбора',
+                element: 'ul',
+                classes: ['word-choice-list']
+            },
+            {
+                name: 'Горизонтальный список',
+                element: 'ul',
+                classes: ['horizontal-list']
             },
             {
                 name: 'Сетка',
@@ -52,11 +87,6 @@ export const defaultConfig = {
                 classes: ['tinted-cell']
             },
             {
-                name: 'Список слов для выбора',
-                element: 'ul',
-                classes: ['word-choice-list']
-            },
-            {
                 name: 'Основной цвет',
                 element: 'span',
                 classes: ['primary-color']
@@ -70,11 +100,6 @@ export const defaultConfig = {
                 name: 'Приглушенный цвет',
                 element: 'span',
                 classes: ['muted-color']
-            },
-            {
-                name: 'Заглавные буквы',
-                element: 'span',
-                classes: ['text-uppercase']
             }
         ]
     },
