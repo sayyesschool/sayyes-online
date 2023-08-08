@@ -1,5 +1,7 @@
 import ExerciseItem from 'shared/components/exercise-item';
 
+import './index.scss';
+
 export default function ExerciseContent({
     exercise,
     checked,

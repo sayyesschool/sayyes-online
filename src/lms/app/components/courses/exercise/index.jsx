@@ -1,6 +1,7 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
+import Content from 'shared/components/content';
 import { Avatar, Button, Card } from 'shared/ui-components';
 
 import ExerciseContent from 'app/components/courses/exercise-content';
@@ -15,7 +16,6 @@ export default function Exercise({
     onProgressChange,
     onComplete
 }) {
-    //const stateRef = useRef(exercise.state || {});
     const [state, setState] = useState(exercise.state || {});
     const [isChecked, setChecked] = useBoolean(false);
     const [isCollapsed, toggleCollapsed] = useBoolean(true);
@@ -71,8 +71,6 @@ export default function Exercise({
         (item.type === 'input' && item.items?.length > 0)
     );
 
-    console.log('Exercise', exercise);
-
     return (
         <Card className="Exercise">
             <header className="Exercise__header" onClick={toggleCollapsed}>
@@ -82,26 +80,20 @@ export default function Exercise({
                     size="sm"
                 />
 
-                <div
-                    dangerouslySetInnerHTML={{ __html: exercise.description }}
+                <Content
+                    content={exercise.description}
+                    html
                 />
             </header>
 
             {!isCollapsed && <>
                 <ExerciseContent
                     exercise={exercise}
-                    state={stateRef.current}
+                    state={state}
                     checked={isChecked}
                     disabled={user.role === 'teacher'}
                     onUpdateState={handleUpdateState}
                 />
-
-                {/* <ExerciseComments
-                    exercise={exercise}
-                    onCreate={handleCreateComment}
-                    onUpdate={handleUpdateComment}
-                    onDelete={handleDeleteComment}
-                /> */}
 
                 <footer className="Exercise__footer">
                     {hasCheckableItems &&
@@ -140,6 +132,13 @@ export default function Exercise({
                         />
                     }
                 </footer>
+
+                {/* <ExerciseComments
+                    exercise={exercise}
+                    onCreate={handleCreateComment}
+                    onUpdate={handleUpdateComment}
+                    onDelete={handleDeleteComment}
+                /> */}
             </>}
         </Card>
     );
