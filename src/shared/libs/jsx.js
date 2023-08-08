@@ -16,6 +16,16 @@ export function render(element, fn) {
     );
 }
 
+export function traverse(element, fn) {
+    if (!element) return;
+
+    if (Array.isArray(element.children))
+        for (const child of element.children)
+            traverse(child, fn);
+
+    fn?.(element);
+}
+
 function normalizeChildren(children) {
     if (!children) return [];
     if (Array.isArray(children)) return children;
