@@ -1,6 +1,6 @@
 import StatusChip from 'shared/components/status-chip';
 import { Alert, List, Text } from 'shared/ui-components';
-import datetime from 'shared/utils/datetime';
+import datetime from 'shared/libs/datetime';
 
 import './index.scss';
 
