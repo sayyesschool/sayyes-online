@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 
-import { parseHTML } from 'shared/libs/eml';
+import { parseFromHtml } from 'shared/libs/eml';
 import { render } from 'shared/libs/jsx';
 import Content from 'shared/components/content';
 import Input from 'shared/components/inline-input';
@@ -36,7 +36,7 @@ export default function FibItem({
     const memoedContent = useMemo(() => {
         let key = 1;
 
-        return render(parseHTML(content || ''), item => {
+        return render(parseFromHtml(content || ''), item => {
             if (typeof item === 'object')
                 item.key = key++;
 

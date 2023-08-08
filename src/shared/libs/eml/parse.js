@@ -11,7 +11,7 @@ const ControlHtmlByType = {
     select: (values, id) => `<select ${id ? `data-id="${id}"` : ''}>${values.map(value => `<option value="${value}">${value}</option>`).join('')}</select>`
 };
 
-export function parseText(string) {
+export function parseFromText(string) {
     const result = [];
     let lastEndIndex = 0;
 
@@ -33,7 +33,7 @@ export function parseText(string) {
     };
 }
 
-export function parseHTML(string) {
+export function parseFromHtml(string) {
     const parser = new DOMParser();
     const html = transformPlaceholders(string);
     const doc = parser.parseFromString(html, 'text/html');
