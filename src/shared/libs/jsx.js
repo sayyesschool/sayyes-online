@@ -19,9 +19,11 @@ export function render(element, fn) {
 export function traverse(element, fn) {
     if (!element) return;
 
+    if (Array.isArray(element))
+        return element.forEach(element => traverse(element, fn));
+
     if (Array.isArray(element.children))
-        for (const child of element.children)
-            traverse(child, fn);
+        element.children.forEach(element => traverse(element, fn));
 
     fn?.(element);
 }
