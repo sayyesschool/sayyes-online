@@ -38,7 +38,7 @@ export default function FibItem({
 
         return render(parseFromHtml(content || ''), item => {
             if (typeof item === 'object')
-                item.key = key++;
+                item.props.key = key++;
 
             if (item.type in Components) {
                 item.type = Components[item.type];

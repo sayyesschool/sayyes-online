@@ -35,16 +35,18 @@ export function elementToString(element) {
 export function propsToString(props = {}) {
     if (Object.keys(props).length === 0)
         return '';
-    return ' ' + Object.entries(props)
-        .filter(([key]) => key !== 'required')
+
+    return Object.entries(props)
+        .filter(([key, value]) => key !== 'required' && value)
         .map(([key, value]) => {
             if (key === 'className')
                 key = 'class';
             else if (key === 'correctValues')
                 key = 'data-values';
 
-            return typeof value === 'boolean' ? key : `${key}="${value}"`;
-        }).join(' ');
+            return typeof value === 'boolean' ? key : ` ${key}="${value}"`;
+        })
+        .join(' ');
 }
 
 export function isSelfClosingElement(type) {

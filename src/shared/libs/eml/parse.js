@@ -74,9 +74,9 @@ function elementToObject(element) {
         const correctValues = element.dataset.values?.split(',');
 
         return {
+            id,
             type,
             props: {
-                id,
                 correctValues,
                 required: correctValues?.length > 0
             }
@@ -86,9 +86,9 @@ function elementToObject(element) {
         const correctValue = values.find(value => value.includes('*'));
 
         return {
+            id,
             type,
             props: {
-                id,
                 values: values.map(value => value.replace('*', '')),
                 correctValue: correctValue?.slice(0, correctValue.length - 1),
                 required: values?.length > 0

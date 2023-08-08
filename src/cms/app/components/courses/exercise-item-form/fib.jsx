@@ -1,5 +1,8 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
+import { v4 as uuid } from 'uuid';
 
+import { parseFromHtml, renderToString } from 'shared/libs/eml';
+import { traverse } from 'shared/libs/jsx';
 import ContentEditor from 'shared/components/content-editor';
 import { Checkbox, Flex, Text } from 'shared/ui-components';
 
@@ -10,8 +13,17 @@ function FibItemForm({ content, required = false }, ref) {
 
     useImperativeHandle(ref, () => ({
         get props() {
+            const content = parseFromHtml(editorRef.current?.getData());
+
+            traverse(content, item => {
+                if (!item.id && (item.type === 'input' || item.type === 'select')) {
+                    const [id] = uuid().split('-');
+                    item.id = id;
+                }
+            });
+
             return {
-                content: editorRef.current?.getData(),
+                content: renderToString(content),
                 required: isRequired
             };
         }
