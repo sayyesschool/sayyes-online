@@ -26,6 +26,8 @@ export function elementToString(element) {
     else if (Array.isArray(element.children))
         for (const child of element.children)
             result += elementToString(child);
+    else if (typeof element.children === 'object')
+        result += elementToString(element.children);
 
     result += `</${element.type}>`;
 
@@ -41,6 +43,8 @@ export function propsToString(props = {}) {
         .map(([key, value]) => {
             if (key === 'className')
                 key = 'class';
+            else if (key === 'style' && typeof value === 'object')
+                value = Object.entries(value).map(([key, value]) => `${key}: ${value}`).join('; ');
             else if (key === 'correctValues')
                 key = 'data-values';
 
@@ -50,5 +54,5 @@ export function propsToString(props = {}) {
 }
 
 export function isSelfClosingElement(type) {
-    return /input|img/.test(type);
+    return /^input$|^col$|^br$|^hr$|^img$/.test(type);
 }
