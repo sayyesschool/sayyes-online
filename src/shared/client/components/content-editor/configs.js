@@ -21,11 +21,11 @@ export const defaultConfig = {
                 element: 'p',
                 classes: ['overline']
             },
-            {
-                name: 'Подпись',
-                element: 'p',
-                classes: ['caption']
-            },
+            // {
+            //     name: 'Подпись',
+            //     element: 'p',
+            //     classes: ['caption']
+            // },
             {
                 name: 'Номер',
                 element: 'p',
@@ -62,14 +62,14 @@ export const defaultConfig = {
                 classes: ['callout', 'callout-tip']
             },
             {
-                name: 'Список слов для выбора',
+                name: 'Список выбора слов',
                 element: 'ul',
                 classes: ['word-choice-list']
             },
             {
-                name: 'Горизонтальный список',
-                element: 'ul',
-                classes: ['horizontal-list']
+                name: 'Список сопоставления',
+                element: 'ol',
+                classes: ['match-list']
             },
             {
                 name: 'Сетка',
