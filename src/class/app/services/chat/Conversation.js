@@ -5,6 +5,7 @@ export default class Conversation extends EventEmitter {
     _userId = undefined;
     _participants = new Set();
     _messages = [];
+    _typing = false;
 
     get messages() {
         return this._messages.map(message => ({
@@ -29,6 +30,7 @@ export default class Conversation extends EventEmitter {
         this._handleParticipantJoined = this._handleParticipantJoined.bind(this);
         this._handleParticipantLeft = this._handleParticipantLeft.bind(this);
         this._handleMessageAdded = this._handleMessageAdded.bind(this);
+        this._handleMessageUpdated = this._handleMessageUpdated.bind(this);
         this._handleMessageRemoved = this._handleMessageRemoved.bind(this);
         this._handleTypingStarted = this._handleTypingStarted.bind(this);
         this._handleTypingEnded = this._handleTypingEnded.bind(this);
@@ -40,6 +42,7 @@ export default class Conversation extends EventEmitter {
         client.on('participantJoined', this._handleParticipantJoined);
         client.on('participantLeft', this._handleParticipantLeft);
         client.on('messageAdded', this._handleMessageAdded);
+        client.on('messageUpdated', this._handleMessageUpdated);
         client.on('messageRemoved', this._handleMessageRemoved);
         client.on('typingStarted', this._handleTypingStarted);
         client.on('typingEnded', this._handleTypingEnded);
@@ -69,12 +72,13 @@ export default class Conversation extends EventEmitter {
     destroy() {
         const client = this.current;
 
-        client?.off('participantJoined', handleParticipantJoined);
-        client?.off('participantLeft', handleParticipantLeft);
-        client?.off('messageAdded', handleMessageAdded);
-        client?.off('messageRemoved', handleMessageRemoved);
-        client?.off('typingStarted', handleTypingStarted);
-        client?.off('typingEnded', handleTypingEnded);
+        client?.off('participantJoined', this._handleParticipantJoined);
+        client?.off('participantLeft', this._handleParticipantLeft);
+        client?.off('messageAdded', this._handleMessageAdded);
+        client?.off('messageUpdated', this._handleMessageUpdated);
+        client?.off('messageRemoved', this._handleMessageRemoved);
+        client?.off('typingStarted', this._handleTypingStarted);
+        client?.off('typingEnded', this._handleTypingEnded);
     }
 
     async join() {
@@ -92,16 +96,23 @@ export default class Conversation extends EventEmitter {
             });
     }
 
-    async sendMessage(message) {
-        return this._client.sendMessage(message)
+    async sendMessage(content) {
+        return this._client.sendMessage(content)
             .catch(error => {
                 this.emit('error', error);
                 throw error;
             });;
     }
 
+    async updateMessage(id, content) {
+        await this._messages.find(m => m.sid === id)?.updateBody(content)
+            .catch(error => {
+                this.emit('error', error);
+                throw error;
+            });
+    }
+
     async deleteMessage(message) {
-        console.log('deleteMessage', message, this._messages.find(m => m.sid === message.id));
         return this._messages.find(m => m.sid === message.id)?.remove()
             .catch(error => {
                 this.emit('error', error);
@@ -131,17 +142,23 @@ export default class Conversation extends EventEmitter {
         this.emit('messageAdded', message);
     }
 
-    _handleMessageRemoved(message) {
-        console.log('_handleMessageRemoved', message, message.index);
-        this._messages.splice(message.index, 1);
-        this.emit('messageRemoved', message);
+    _handleMessageUpdated({ message: updatedMessage, updateReasons } = {}) {
+        this._messages = this._messages.map(message =>
+            message.sid === updatedMessage.sid ? updatedMessage : message
+        );
+        this.emit('messageUpdated', updatedMessage);
+    }
+
+    _handleMessageRemoved(deletedMessage) {
+        this._messages = this._messages.filter(message => message.sid !== deletedMessage.sid);
+        this.emit('messageRemoved', deletedMessage);
     }
 
     _handleTypingStarted(member) {
-        //setTyping(true);
+        this._typing = true;
     }
 
     _handleTypingEnded(member) {
-        //setTyping(false);
+        this._typing = false;
     }
 }

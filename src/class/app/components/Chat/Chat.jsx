@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 import LoadingIndicator from 'shared/components/loading-indicator';
 
@@ -21,28 +21,39 @@ export default function Chat({
         participantsById
     });
 
+    const [editingMessage, setEditingMessage] = useState();
+
     const handleTyping = useCallback(event => {
         //onTyping();
     }, []);
 
-    const handleSendMessage = useCallback(message => {
-        return chat.sendMessage(message);
+    const handleSubmitMessage = useCallback(content => {
+        if (editingMessage) {
+            setEditingMessage();
+            return chat.updateMessage(editingMessage.id, content);
+        } else {
+            return chat.sendMessage(content);
+        }
+    }, [chat, editingMessage]);
+
+    const handleDeleteMessage = useCallback(message => {
+        return chat.deleteMessage(message);
     }, [chat]);
 
     const handleSendFile = useCallback(file => {
         return chat.sendMessage(file);
     }, [chat]);
 
-    const handleEditMessage = useCallback(message => {
-        console.log('handleEditMessage', message);
-    }, [chat]);
-
-    const handleDeleteMessage = useCallback(message => {
-        return chat.deleteMessage(message);
-    }, [chat]);
-
     const handleSeenLastMessage = useCallback(() => {
         return chat.setAllMessagesRead();
+    }, []);
+
+    const handleEditMessage = useCallback(message => {
+        setEditingMessage(message);
+    }, []);
+
+    const handleCancelEditingMessage = useCallback(() => {
+        setEditingMessage();
     }, []);
 
     if (!chat.messages) return <LoadingIndicator />;
@@ -57,9 +68,11 @@ export default function Chat({
             />
 
             <ChatInput
-                onSendMessage={handleSendMessage}
+                editingMessage={editingMessage}
+                onSubmitMessage={handleSubmitMessage}
                 onSendFile={handleSendFile}
                 onTyping={handleTyping}
+                onCancelEditing={handleCancelEditingMessage}
             />
         </div>
     );

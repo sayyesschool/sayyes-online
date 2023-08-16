@@ -1,30 +1,34 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { IconButton, Textarea } from 'shared/ui-components';
+import { ButtonGroup, IconButton, Textarea } from 'shared/ui-components';
 
 const ALLOWED_FILE_TYPES =
     'audio/*, image/*, text/*, video/*, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document .xslx, .ppt, .pdf, .key, .svg, .csv';
 
 export default function ChatInput({
-    onSendMessage,
+    editingMessage,
+    onSubmitMessage,
     onSendFile,
-    onTyping
+    onTyping,
+    onCancelEditing
 }) {
     const textareaRef = useRef(null);
     const fileInputRef = useRef(null);
-    const sendButtonRef = useRef();
+    const submitButtonRef = useRef();
 
     const [isSendingFile, setIsSendingFile] = useState(false);
     const [fileSendError, setFileSendError] = useState(null);
 
-    // useEffect(() => {
-    //     if (isChatWindowOpen) {
-    //         textareaRef.current?.focus();
-    //     }
-    // }, [isChatWindowOpen]);
+    useEffect(() => {
+        if (editingMessage) {
+            const textarea = textareaRef.current;
+            textarea.value = editingMessage.body;
+            textarea?.focus();
+        }
+    }, [editingMessage]);
 
     const handleKeyPress = useCallback(event => {
-        //onTyping();
+        onTyping?.();
 
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault();
@@ -35,9 +39,9 @@ export default function ChatInput({
 
             event.target.value = '';
             event.target.focus();
-            onSendMessage(value);
+            onSubmitMessage(value);
         }
-    }, [onSendMessage]);
+    }, [onSubmitMessage]);
 
     const handleSendFile = useCallback(event => {
         const file = event.target.files?.[0];
@@ -64,6 +68,24 @@ export default function ChatInput({
             });
     }, [onSendFile]);
 
+    const handleSubmitButtonClick = useCallback(() => {
+        const value = textareaRef.current.value;
+
+        if (!value) return;
+
+        textareaRef.current.value = '';
+        onSubmitMessage(value);
+    }, [onSubmitMessage]);
+
+    const handleCancelButtonClick = useCallback(() => {
+        if (textareaRef.current) {
+            textareaRef.current.value = '';
+        }
+        onCancelEditing();
+    }, [onCancelEditing]);
+
+    console.log('ChatInput editingMessage', editingMessage);
+
     return (
         <div className="ChatInput">
             {/* Since the file input element is invisible, we can hardcode an empty string as its value. This allows users to upload the same file multiple times. */}
@@ -77,19 +99,45 @@ export default function ChatInput({
             /> */}
 
             <Textarea
-                ref={textareaRef}
-                defaultValue=""
                 placeholder="Сообщение"
+                slotProps={{
+                    textarea: {
+                        ref: textareaRef
+                    }
+                }}
+                startDecorator={editingMessage && 'Редактирование сообщения'}
                 endDecorator={<>
-                    {/* <IconButton disabled={isSendingFile} /> */}
+                    {!editingMessage ?
+                        <ButtonGroup sx={{ marginLeft: 'auto' }}>
+                            {/* <IconButton disabled={isSendingFile} /> */}
+                            <IconButton
+                                ref={submitButtonRef}
+                                type="submit"
+                                icon="send"
+                                title="Отправить"
+                                onClick={handleSubmitButtonClick}
+                            />
+                        </ButtonGroup>
+                        :
+                        <ButtonGroup sx={{ marginLeft: 'auto' }}>
+                            <IconButton
+                                type="reset"
+                                icon="close"
+                                color="danger"
+                                title="Отменить"
+                                sx={{ marginLeft: 'auto' }}
+                                onClick={handleCancelButtonClick}
+                            />
 
-                    <IconButton
-                        ref={sendButtonRef}
-                        type="submit"
-                        icon="send"
-                        title="Отправить"
-                        sx={{ marginLeft: 'auto' }}
-                    />
+                            <IconButton
+                                type="submit"
+                                icon="check"
+                                color="success"
+                                title="Принять"
+                                onClick={handleSubmitButtonClick}
+                            />
+                        </ButtonGroup>
+                    }
                 </>}
                 onKeyPress={handleKeyPress}
             />

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-import Whiteboard from 'app/lib/Whiteboard';
+import Whiteboard from 'app/lib/whiteboard';
 import useDataTrack from 'app/hooks/useDataTrack';
 
 import './index.scss';

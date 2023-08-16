@@ -15,16 +15,23 @@ export default function useChat({ token, conversationId, userId }) {
         const chat = new Chat({ token, conversationId, userId });
 
         chat.init();
+
         chat.once('joined', () => {
             setJoined(true);
             setMessages(chat.messages);
         });
+
         chat.on('messageAdded', () => {
             audioRef.current?.play();
             setMessages(chat.messages);
         });
+
+        chat.on('messageUpdated', () => {
+            console.log('useChat messageUpdated', chat.messages);
+            setMessages(chat.messages);
+        });
+
         chat.on('messageRemoved', () => {
-            console.log('messageRemoved', chat.messages);
             setMessages(chat.messages);
         });
 
@@ -33,10 +40,14 @@ export default function useChat({ token, conversationId, userId }) {
         return () => {
             chat?.destroy();
         };
-    }, []);
+    }, [token]);
 
     const sendMessage = useCallback((message) => {
         return chatRef.current.sendMessage(message);
+    }, []);
+
+    const updateMessage = useCallback((id, content) => {
+        return chatRef.current.updateMessage(id, content);
     }, []);
 
     const deleteMessage = useCallback((message) => {
@@ -47,12 +58,11 @@ export default function useChat({ token, conversationId, userId }) {
         return chatRef.current.setAllMessagesRead();
     }, []);
 
-    console.log(messages);
-
     return useMemo(() => ({
         isJoined,
         messages,
         sendMessage,
+        updateMessage,
         deleteMessage,
         setAllMessagesRead
     }), [isJoined, messages]);

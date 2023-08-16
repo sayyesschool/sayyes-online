@@ -6,12 +6,13 @@ import { IconButton } from 'shared/ui-components';
 import ChatMessage from './ChatMessage';
 
 export default function ChatMessages({
-    messages,
+    messages = [],
     onEdit,
     onDelete,
     onSeenLastMessage
 }) {
     const listRef = useRef();
+    const lastMessageCount = useRef(messages.length);
 
     const { isScrolledToBottom, scrollToBottom } = useScroll(listRef, {
         onScrolledToBottom: () => {
@@ -20,7 +21,10 @@ export default function ChatMessages({
     });
 
     useEffect(() => {
-        scrollToBottom();
+        if (messages.length > lastMessageCount.current) {
+            scrollToBottom();
+            lastMessageCount.current = messages.length;
+        }
     }, [messages]);
 
     const handleScrollButtonClick = useCallback(() => {

@@ -12,6 +12,7 @@ const ButtonGroup = forwardRef(({
     variant,
     align,
 
+    children,
     className,
     ...props
 }, ref) => {
@@ -26,9 +27,11 @@ const ButtonGroup = forwardRef(({
             justifyContent={align}
             {...props}
         >
-            {buttons.map(button =>
+            {buttons?.map(button =>
                 <Button {...button} />
             )}
+
+            {children}
         </Box>
     );
 });
