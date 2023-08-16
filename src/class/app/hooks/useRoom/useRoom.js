@@ -1,10 +1,16 @@
 import EventEmitter from 'events';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import Video from 'twilio-video';
 
+import {
+    DEFAULT_VIDEO_CONSTRAINTS,
+    SELECTED_AUDIO_INPUT_KEY,
+    SELECTED_VIDEO_INPUT_KEY
+} from 'app/constants';
+import Room from 'app/lib/room';
 import { isMobile } from 'app/utils';
 
 export default function useRoom(localTracks, options, onError) {
+    const roomRef = useRef(new Room());
     const optionsRef = useRef(options);
     const [room, setRoom] = useState(new EventEmitter());
     const [isConnecting, setIsConnecting] = useState(false);
@@ -13,37 +19,32 @@ export default function useRoom(localTracks, options, onError) {
     // reliably use the connect function at any time.
     useEffect(() => {
         optionsRef.current = options;
+
+        const room = roomRef.current;
+        const selectedVideoDeviceId = window.localStorage.getItem(SELECTED_VIDEO_INPUT_KEY);
+        const selectedAudioDeviceId = window.localStorage.getItem(SELECTED_AUDIO_INPUT_KEY);
+
+        room.init({
+            video: {
+                ...DEFAULT_VIDEO_CONSTRAINTS,
+                deviceId: selectedVideoDeviceId
+            },
+            audio: {
+                deviceId: selectedAudioDeviceId
+            }
+        });
+
+        console.log('Room ref', room);
     }, [options]);
 
     const connect = useCallback(token => {
         setIsConnecting(true);
 
-        return Video.connect(token, { ...optionsRef.current, tracks: localTracks })
+        roomRef.current?.connect(token, optionsRef.current)
             .then(room => {
                 function disconnect() {
                     room.disconnect();
                 }
-
-                // This app can add up to 16 'participantDisconnected' listeners to the room object, which can trigger
-                // a warning from the EventEmitter object. Here we increase the max listeners to suppress the warning.
-                room.setMaxListeners(16);
-
-                // All video tracks are published with 'low' priority because the video track
-                // that is displayed in the 'MainParticipant' component will have it's priority
-                // set to 'high' via track.setPriority()
-                room.localParticipant.videoTracks.forEach(publication => publication.setPriority('low'));
-
-                room.once('disconnected', () => {
-                    // Reset the room only after all other `disconnected` listeners have been called.
-                    setTimeout(() => setRoom(new EventEmitter()));
-
-                    window.removeEventListener('beforeunload', disconnect);
-
-                    if (isMobile) {
-                        window.removeEventListener('pagehide', disconnect);
-                    }
-                });
-
 
                 // Add a listener to disconnect from the room when a user closes their browser
                 window.addEventListener('beforeunload', disconnect);
@@ -53,18 +54,32 @@ export default function useRoom(localTracks, options, onError) {
                     window.addEventListener('pagehide', disconnect);
                 }
 
-                setRoom(room);
-                setIsConnecting(false);
+                room.once('disconnected', () => {
+                    window.removeEventListener('beforeunload', disconnect);
+
+                    if (isMobile) {
+                        window.removeEventListener('pagehide', disconnect);
+                    }
+                });
+
+                setRoom(room.room);
             })
             .catch(error => {
-                setIsConnecting(false);
                 onError(error);
+            })
+            .finally(() => {
+                setIsConnecting(false);
             });
-    }, [localTracks, onError]);
+    }, [onError]);
 
     const disconnect = useCallback(() => {
         room?.disconnect();
     }, [room]);
 
-    return { room, connect, disconnect, isConnecting };
+    return {
+        room,
+        connect,
+        disconnect,
+        isConnecting
+    };
 }

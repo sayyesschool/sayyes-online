@@ -1,25 +1,26 @@
 import { createLocalAudioTrack } from 'twilio-video';
 
-import { isPermissionDenied } from 'app/utils';
+import { isPermissionDenied } from './utils';
 
 export default class Microphone {
-    devices = [];
-    audioTrack = null;
+    _audioTrack = null;
+    _inputDevices = [];
+    _outputDevices = [];
 
-    constructor() {
-        this._handleDeviceChange = this.#handleDeviceChange.bind(this);
-    }
-
-    get inputDevices() {
-        return this.devices.filter(device => device.kind === 'audioinput');
-    }
-
-    get outputDevices() {
-        return this.devices.filter(device => device.kind === 'audiooutput');
+    get audioTrack() {
+        return this._audioTrack;
     }
 
     get hasInputDevices() {
-        return this.inputDevices.length > 0;
+        return this._inputDevices.length > 0;
+    }
+
+    get hasOutputDevices() {
+        return this._outputDevices.length > 0;
+    }
+
+    constructor() {
+        this._handleDeviceChange = this._handleDeviceChange.bind(this);
     }
 
     async init(options) {
@@ -29,32 +30,34 @@ export default class Microphone {
     }
 
     stop() {
-        this.audioTrack?.stop();
+        this._audioTrack?.stop();
     }
 
     destroy() {
         navigator.mediaDevices.removeEventListener('devicechange', this.handleDeviceChange);
     }
 
-    _setupDevices() {
-        navigator.mediaDevices.enumerateDevices().then(devices => {
-            this.devices = devices;
-        });
+    async _setupDevices() {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        this._inputDevices = devices.filter(device => device.kind === 'audioinput');
+        this._outputDevices = devices.filter(device => device.kind === 'audiooutput');
     }
 
     async _setupAudioTrack({ deviceId } = {}) {
-        const options = {};
+        const hasSelectedAudioDevice = this._inputDevices.some(device => device.deviceId === deviceId);
         const isMicrophonePermissionDenied = await isPermissionDenied('microphone');
         const shouldAcquireAudio = this.hasInputDevices && !isMicrophonePermissionDenied;
 
-        if (deviceId) {
-            options.deviceId = { exact: deviceId };
-        }
+        const options = shouldAcquireAudio ? {
+            // noiseCancellationOptions,
+            name: `microphone-${Date.now()}`,
+            ...(hasSelectedAudioDevice && {
+                deviceId: { exact: deviceId }
+            })
+        } : undefined;
 
-        createLocalAudioTrack(options)
-            .then(audioTrack => {
-                this.audioTrack = audioTrack;
-            });
+        this._audioTrack = await createLocalAudioTrack(options);
+        console.log('Audio track', this._audioTrack);
     }
 
     async _handleDeviceChange() {

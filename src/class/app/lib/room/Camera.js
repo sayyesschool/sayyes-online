@@ -1,61 +1,57 @@
 import { createLocalVideoTrack } from 'twilio-video';
 
-import { isPermissionDenied } from 'app/utils';
+import { isPermissionDenied } from './utils';
 
 export default class Camera {
-    devices = [];
-    videoTrack = null;
+    _videoTrack = null;
+    _inputDevices = [];
 
-    constructor() {
-        this._handleDeviceChange = this.#handleDeviceChange.bind(this);
-    }
-
-    get inputDevices() {
-        return this.devices.filter(device => device.kind === 'videoinput');
+    get videoTrack() {
+        return this._videoTrack;
     }
 
     get hasInputDevices() {
-        return this.inputDevices.length > 0;
+        return this._inputDevices.length > 0;
     }
 
-    async init() {
+    constructor() {
+        this._handleDeviceChange = this._handleDeviceChange.bind(this);
+    }
+
+    async init(options) {
         await this._setupDevices();
-        await this._setupVideoTrack();
+        await this._setupVideoTrack(options);
         navigator.mediaDevices.addEventListener('devicechange', this.handleDeviceChange);
     }
 
     stop() {
-        this.videoTrack?.stop();
+        this._videoTrack?.stop();
     }
 
     destroy() {
         navigator.mediaDevices.removeEventListener('devicechange', this.handleDeviceChange);
     }
 
-    _setupDevices() {
-        navigator.mediaDevices.enumerateDevices().then(devices => {
-            this.devices = devices;
-        });
+    async _setupDevices() {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        this._inputDevices = devices.filter(device => device.kind === 'videoinput');
     }
 
-    async _setupVideoTrack({ deviceId } = {}) {
-        const hasSelectedVideoDevice = this.videoInputDevices.some(
-            device => selectedVideoDeviceId && device.deviceId === deviceId
-        );
-
+    async _setupVideoTrack({ deviceId, ...otherOptions } = {}) {
+        const hasSelectedVideoDevice = this._inputDevices.some(device => device.deviceId === deviceId);
         const isCameraPermissionDenied = await isPermissionDenied('camera');
-        const shouldAcquireVideo = hasVideoInputDevices && !isCameraPermissionDenied;
+        const shouldAcquireVideo = this.hasInputDevices && !isCameraPermissionDenied;
 
-        const options = {
-            ...DEFAULT_VIDEO_CONSTRAINTS,
+        const options = shouldAcquireVideo ? {
             name: `camera-${Date.now()}`,
-            ...(hasSelectedVideoDevice && { deviceId: { exact: deviceId } })
-        };
+            ...otherOptions,
+            ...(hasSelectedVideoDevice && {
+                deviceId: { exact: deviceId }
+            })
+        } : undefined;
 
-        createLocalVideoTrack(options)
-            .then(videoTrack => {
-                this.videoTrack = videoTrack;
-            });
+        this._videoTrack = await createLocalVideoTrack(options);
+        console.log('Video track', this._videoTrack);
     }
 
     async _handleDeviceChange() {
