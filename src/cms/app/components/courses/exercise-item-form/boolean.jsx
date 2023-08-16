@@ -42,7 +42,7 @@ function ExerciseBooleanItem({ item }, ref) {
     return (
         <>
             <ContentEditor
-                value={item.text}
+                content={item.text}
                 onChange={handleTextChange}
             />
 

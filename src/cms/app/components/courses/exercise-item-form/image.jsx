@@ -50,16 +50,15 @@ function ExerciseImageItem({ item }, ref) {
             }
 
             {!file && item.image &&
-                <div
-                    className="exercise-item-form__image-wrapper"
-                    onClick={pick}
-                >
+                <>
                     <Image
-                        src={item.image?.url}
+                        src={item.image.url}
                         alt=""
                         fluid
                     />
-                </div>
+
+                    <Text>{item.image.path}</Text>
+                </>
             }
 
             {!file && !item.image ?

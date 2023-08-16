@@ -42,7 +42,7 @@ function ExerciseChoiceItem({ item }, ref) {
     return (
         <>
             <ContentEditor
-                value={text}
+                content={text}
                 onChange={handleTextChange}
             />
 

@@ -52,6 +52,8 @@ function ExerciseAudioItem({ item }, ref) {
                         src={item.audio.url}
                     />
 
+                    <Text>{item.audio.path}</Text>
+
                     <TextEditor
                         ref={textEditorRef}
                         value={item.audio.script}
