@@ -1,19 +1,29 @@
 import { useCallback, useState } from 'react';
-
 import classnames from 'classnames';
+
+import { Menu, Surface } from 'shared/ui-components';
 
 import ChatMessageMedia from './ChatMessageMedia';
 import ChatMessageText from './ChatMessageText';
-import { Menu, Surface } from 'shared/ui-components';
 
 export default function ChatMessage({
     message,
     time,
     attached,
-    showInfo
+    showInfo,
+    onEdit,
+    onDelete
 }) {
     const [anchorElement, setAnchorElement] = useState();
     const [menuOpen, setMenuOpen] = useState(false);
+
+    const handleEditClick = useCallback(() => {
+        onEdit?.(message);
+    }, [message, onEdit]);
+
+    const handleDeleteClick = useCallback(() => {
+        onDelete?.(message);
+    }, [message, onDelete]);
 
     const handleRootRightClick = useCallback(event => {
         event.preventDefault();
@@ -66,11 +76,13 @@ export default function ChatMessage({
                     items={[
                         {
                             key: 'edit',
-                            content: 'Изменить'
+                            content: 'Изменить',
+                            onClick: handleEditClick
                         },
                         {
                             key: 'delete',
-                            content: 'Удалить'
+                            content: 'Удалить',
+                            onClick: handleDeleteClick
                         }
                     ]}
                     onClose={handleMenuClose}

@@ -1,27 +1,27 @@
-import { Alert, Icon } from 'shared/ui-components';
+import { Alert, Button, Icon } from 'shared/ui-components';
 
 import './index.scss';
 
 export default function ScreenShareAlert({
+    start,
     onDisableSharing,
     ...props
 }) {
     return (
         <Alert
-            className="screen-share-alert"
-            icon={<Icon>screen_share</Icon>}
-            header="Вы делитесь своим экраном"
-            actions={[
-                {
-                    key: 'stop',
-                    content: 'Остановить',
-                    primary: true,
-                    flat: true,
-                    onClick: onDisableSharing
-                }
-            ]}
-            info
-            fitted
+            className="ScreenShareAlert"
+            start={<Icon name="screen_share" />}
+            content="Вы делитесь своим экраном"
+            end={
+                <Button
+                    content="Остановить"
+                    variant="soft"
+                    size="sm"
+                    onClick={onDisableSharing}
+                />
+            }
+            variant="soft"
+            color="primary"
             {...props}
         />
     );

@@ -11,7 +11,7 @@ export default function ExercisesList({
     onDelete
 }) {
     return (
-        <List className="exercises-list numbered-list" selectable>
+        <List className="exercises-list numbered-list">
             {exercises.map((exercise, index) =>
                 <ListItem
                     key={exercise.id}

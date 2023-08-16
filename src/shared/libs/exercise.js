@@ -73,7 +73,8 @@ function elementToObject(element) {
     if (type === '#text') {
         return element.textContent === '\n' ? undefined : element.textContent;
     } else if (type === 'input' && element.type === 'text') {
-        const correctValues = element.dataset.values.split(',').filter(value => !!value).map(value => value.trim().toLowerCase());
+        // TODO: remove two+ spaces
+        const correctValues = element.dataset.values?.split(',').filter(value => !!value).map(value => value.trim().toLowerCase());
 
         return {
             type: 'input',
@@ -100,7 +101,7 @@ function elementToObject(element) {
             type: 'select',
             props: {
                 values: values.map(value => value.replace('*', '')),
-                correctValue: correctValue.slice(0, correctValue.length - 1),
+                correctValue: correctValue?.slice(0, correctValue.length - 1),
                 required: values?.length > 0
             }
         };

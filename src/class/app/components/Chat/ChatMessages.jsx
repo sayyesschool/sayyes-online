@@ -1,36 +1,69 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
-// import MessageListScrollContainer from './MessageListScrollContainer';
+import { useScroll } from 'shared/hooks/scroll';
+import { IconButton } from 'shared/ui-components';
+
 import ChatMessage from './ChatMessage';
 
-export default function ChatMessages({ messages }) {
-    const rootRef = useRef();
+export default function ChatMessages({
+    messages = [],
+    onEdit,
+    onDelete,
+    onSeenLastMessage
+}) {
+    const listRef = useRef();
+    const lastMessageCount = useRef(messages.length);
+
+    const { isScrolledToBottom, scrollToBottom } = useScroll(listRef, {
+        onScrolledToBottom: () => {
+            onSeenLastMessage?.();
+        }
+    });
 
     useEffect(() => {
-        rootRef.current?.scrollTo(0, rootRef.current?.scrollHeight);
+        if (messages.length > lastMessageCount.current) {
+            scrollToBottom();
+            lastMessageCount.current = messages.length;
+        }
     }, [messages]);
 
+    const handleScrollButtonClick = useCallback(() => {
+        scrollToBottom();
+    }, []);
+
     return (
-        <div ref={rootRef} className="ChatMessages">
-            {/* <MessageListScrollContainer messages={messages}> */}
-            {messages.map((message, i) => {
-                const time = getFormattedTime(message.createdAt);
-                const previousTime = getFormattedTime(messages[i - 1]?.createdAt);
+        <div className="ChatMessages">
+            <div ref={listRef} className="ChatMessages__list">
+                {messages.map((message, i) => {
+                    const time = getFormattedTime(message.createdAt);
+                    const previousTime = getFormattedTime(messages[i - 1]?.createdAt);
 
-                // Display the MessageInfo component when the author or formatted timestamp differs from the previous message
-                const shouldDisplayMessageInfo = time !== previousTime || message.author !== messages[i - 1]?.author;
+                    // Display the MessageInfo component when the author or formatted timestamp differs from the previous message
+                    const shouldDisplayMessageInfo = time !== previousTime || message.author !== messages[i - 1]?.author;
 
-                return (
-                    <ChatMessage
-                        key={message.id}
-                        message={message}
-                        time={time}
-                        showInfo={shouldDisplayMessageInfo}
-                        attached={getAttachedValue(message, messages[i - 1], messages[i + 1])}
-                    />
-                );
-            })}
-            {/* </MessageListScrollContainer> */}
+                    return (
+                        <ChatMessage
+                            key={message.id}
+                            message={message}
+                            time={time}
+                            showInfo={shouldDisplayMessageInfo}
+                            attached={getAttachedValue(message, messages[i - 1], messages[i + 1])}
+                            onDelete={onDelete}
+                            onEdit={onEdit}
+                        />
+                    );
+                })}
+            </div>
+
+            {!isScrolledToBottom &&
+                <IconButton
+                    className="ChatMessages__scroll-button"
+                    icon="arrow_downward"
+                    title="Пролистать вниз"
+                    variant="soft"
+                    onClick={handleScrollButtonClick}
+                />
+            }
         </div>
     );
 }
