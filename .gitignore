@@ -12,4 +12,5 @@ node_modules
 .vscode
 .env
 cert/
+backups/
 public/
