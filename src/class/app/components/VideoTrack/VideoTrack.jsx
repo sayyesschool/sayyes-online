@@ -5,27 +5,28 @@ import useVideoTrackDimensions from 'app/hooks/useVideoTrackDimensions';
 import usePictureInPicture from 'app/hooks/usePictureInPicture';
 
 export default function VideoTrack({ track, local: isLocal, priority }) {
-    const elementRef = useRef(null);
+    const videoElementRef = useRef(null);
 
     const mediaStreamTrack = useMediaStreamTrack(track);
     const dimensions = useVideoTrackDimensions(track);
-    const [isPictureInPicture] = usePictureInPicture(elementRef);
+    //const [isPictureInPicture] = usePictureInPicture(elementRef);
+    const isPictureInPicture = false;
 
     useEffect(() => {
-        const element = elementRef.current;
+        const videoElement = videoElementRef.current;
 
-        element.muted = true;
+        videoElement.muted = true;
 
         if (track.setPriority && priority) {
             track.setPriority(priority);
         }
 
-        track.attach(element);
+        track.attach(videoElement);
 
         return () => {
-            track.detach(element);
+            track.detach(videoElement);
 
-            element.srcObject = null;
+            videoElement.srcObject = null;
 
             if (track.setPriority && priority) {
                 // Passing `null` to setPriority will set the track's priority to that which it was published with.
@@ -43,6 +44,6 @@ export default function VideoTrack({ track, local: isLocal, priority }) {
     };
 
     return (
-        <video ref={elementRef} className="video" style={style} />
+        <video ref={videoElementRef} className="video" style={style} />
     );
 }

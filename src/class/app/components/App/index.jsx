@@ -3,8 +3,7 @@ import { useEnrollment } from 'shared/hooks/enrollments';
 import LoadingIndicator from 'shared/components/loading-indicator';
 
 import { SharedStateProvider } from 'app/contexts/SharedStateContext';
-import useRoomState from 'app/hooks/useRoomState';
-import useVisibilityHandler from 'app/hooks/useVisibilityHandler';
+import useRoomContext from 'app/hooks/useRoomContext';
 import Lobby from 'app/components/Lobby';
 import Room from 'app/components/Room';
 import ReconnectingAlert from 'app/components/ReconnectingAlert';
@@ -14,15 +13,13 @@ import './index.scss';
 export default function App() {
     const [user] = useUser();
     const [enrollment] = useEnrollment(ENROLLMENT_ID);
-    const roomState = useRoomState();
+    const { isInitialized, isConnected, isReconnecting } = useRoomContext();
 
-    useVisibilityHandler();
-
-    if (!user || !enrollment) return <LoadingIndicator fluid />;
+    if (!user || !enrollment || !isInitialized) return <LoadingIndicator fluid />;
 
     return (
         <div className="App">
-            {roomState === 'disconnected' ?
+            {!isConnected ?
                 <Lobby
                     user={user}
                 />
@@ -35,7 +32,7 @@ export default function App() {
                 </SharedStateProvider>
             }
 
-            {roomState === 'reconnecting' &&
+            {isReconnecting &&
                 <ReconnectingAlert />
             }
         </div>

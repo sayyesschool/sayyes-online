@@ -2,21 +2,21 @@ import { useCallback, useRef } from 'react';
 
 import { IconButton, Tooltip } from 'shared/ui-components';
 
-import { useHasVideoInputDevices } from 'app/hooks/useDevices';
-import useLocalVideoToggle from 'app/hooks/useLocalVideoToggle';
+import useRoomContext from 'app/hooks/useRoomContext';
 
 export default function ToggleVideoButton({ disabled }) {
-    const [isVideoEnabled, toggleVideoEnabled] = useLocalVideoToggle();
-    const hasVideoDevices = useHasVideoInputDevices();
+    const { room, isVideoEnabled } = useRoomContext();
 
     const lastClickTimeRef = useRef(0);
 
-    const toggleVideo = useCallback(() => {
+    const handleClick = useCallback(() => {
         if (Date.now() - lastClickTimeRef.current > 500) {
             lastClickTimeRef.current = Date.now();
-            toggleVideoEnabled();
+            room.toggleVideo();
         }
-    }, [toggleVideoEnabled]);
+    }, [room]);
+
+    const hasVideoDevices = room?.video.hasInputDevices;
 
     return (
         <Tooltip
@@ -29,7 +29,7 @@ export default function ToggleVideoButton({ disabled }) {
                 variant={isVideoEnabled ? 'soft' : 'plain'}
                 size="sm"
                 disabled={!hasVideoDevices || disabled}
-                onClick={toggleVideo}
+                onClick={handleClick}
             />
         </Tooltip>
     );

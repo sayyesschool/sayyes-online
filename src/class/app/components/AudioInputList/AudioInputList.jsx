@@ -4,29 +4,32 @@ import { FormSelect, Text } from 'shared/ui-components';
 
 import { SELECTED_AUDIO_INPUT_KEY } from 'app/constants';
 // import useAppState from 'app/hooks/useAppState';
-import { useAudioInputDevices } from 'app/hooks/useDevices';
 import useRoomContext from 'app/hooks/useRoomContext';
 import useMediaStreamTrack from 'app/hooks/useMediaStreamTrack';
 import AudioLevelIndicator from 'app/components/AudioLevelIndicator';
 
 export default function AudioInputList() {
     // const { isKrispEnabled, isKrispInstalled } = useAppState();
-    const { localTracks } = useRoomContext();
-    const audioInputDevices = useAudioInputDevices();
+    const { room } = useRoomContext();
     // const { toggleKrisp } = useKrispToggle();
 
-    const localAudioTrack = localTracks.find(track => track.kind === 'audio');
-    const srcMediaStreamTrack = localAudioTrack?.noiseCancellation?.sourceTrack;
-    const mediaStreamTrack = useMediaStreamTrack(localAudioTrack);
+    const audioTrack = room.audio.track;
+    const srcMediaStreamTrack = audioTrack?.noiseCancellation?.sourceTrack;
+    const audioInputDevices = room.audio.inputDevices;
+
+    const mediaStreamTrack = useMediaStreamTrack(audioTrack);
+
     const localAudioInputDeviceId = srcMediaStreamTrack?.getSettings().deviceId || mediaStreamTrack?.getSettings().deviceId;
 
     const handleDeviceChange = useCallback((_, newDeviceId) => {
         window.localStorage.setItem(SELECTED_AUDIO_INPUT_KEY, newDeviceId);
 
-        if (localAudioTrack) {
-            localAudioTrack.restart({ deviceId: { exact: newDeviceId } });
+        if (audioTrack) {
+            audioTrack.restart({ deviceId: { exact: newDeviceId } });
         }
-    }, [localAudioTrack]);
+    }, [audioTrack]);
+
+    console.log('AudioInputList', audioTrack, audioInputDevices);
 
     return (
         <div className="AudioInputList">
@@ -42,14 +45,14 @@ export default function AudioInputList() {
                     }))}
                     endDecorator={
                         <AudioLevelIndicator
-                            audioTrack={localAudioTrack}
+                            audioTrack={audioTrack}
                             color="black"
                         />
                     }
                     onChange={handleDeviceChange}
                 />
                 :
-                <Text>{localAudioTrack?.mediaStreamTrack.label || 'No Local Audio'}</Text>
+                <Text>{audioTrack?.mediaStreamTrack.label || 'No Local Audio'}</Text>
             }
 
             {/* {isKrispInstalled &&

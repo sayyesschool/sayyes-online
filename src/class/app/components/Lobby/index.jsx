@@ -1,28 +1,33 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { testPreflight } from 'twilio-video';
 
-import { Heading, Icon, Link } from 'shared/ui-components';
+import { useBoolean } from 'shared/hooks/state';
+import { Button, IconButton, Flex, Heading, Link } from 'shared/ui-components';
 
 import useRoomContext from 'app/hooks/useRoomContext';
-import DeviceSelectionScreen from 'app/components/DeviceSelectionScreen';
+import DeviceSelectionDialog from 'app/components/DeviceSelectionDialog';
+import LocalVideoPreview from 'app/components/LocalVideoPreview';
 import MediaErrorDialog from 'app/components/MediaErrorDialog';
+import ToggleAudioButton from 'app/components/ToggleAudioButton';
+import ToggleVideoButton from 'app/components/ToggleVideoButton';
 
 import './index.scss';
 
 export default function Lobby({ user }) {
-    const { getAudioAndVideoTracks } = useRoomContext();
+    const { room, connect, isInitialized, isConnecting } = useRoomContext();
 
+    const [deviceSettingsOpen, toggleDeviceSettingsOpen] = useBoolean(false);
+    const [isDialogDismissed, setIsDialogDismissed] = useState(false);
     const [mediaError, setMediaError] = useState();
 
-    useEffect(() => {
-        if (!mediaError) {
-            getAudioAndVideoTracks().catch(error => {
-                console.log('Error acquiring local media:');
-                console.dir(error);
-                setMediaError(error);
-            });
-        }
-    }, [mediaError, getAudioAndVideoTracks]);
+    const handleConnect = useCallback(() => {
+        connect(window.TWILIO_VIDEO_TOKEN);
+    }, [connect]);
+
+    const hasAudio = room.audio.hasInputDevices;
+    const hasVideo = room.video.hasInputDevices;
+    const disableButtons = !isInitialized || isConnecting;
+    const isErrorDialogOpen = !isDialogDismissed && !isInitialized && (Boolean(mediaError) || !hasAudio || !hasVideo);
 
     return (
         <div className="Lobby">
@@ -42,12 +47,42 @@ export default function Lobby({ user }) {
                 mb={2}
             />
 
-            <DeviceSelectionScreen
-                name={user.fullname}
+            <LocalVideoPreview identity={user.fullname} />
+
+            <Flex alignItems="center" justifyContent="space-between">
+                <IconButton.Group>
+                    <ToggleAudioButton disabled={disableButtons} />
+
+                    <ToggleVideoButton disabled={disableButtons} />
+
+                    <IconButton
+                        icon="settings"
+                        title="Настройки"
+                        size="small"
+                        disabled={disableButtons}
+                        onClick={toggleDeviceSettingsOpen}
+                    />
+                </IconButton.Group>
+
+                <Button
+                    content="Присоединиться"
+                    loading={isConnecting}
+                    disabled={disableButtons}
+                    onClick={handleConnect}
+                />
+            </Flex>
+
+            <DeviceSelectionDialog
+                open={deviceSettingsOpen}
+                onClose={() => toggleDeviceSettingsOpen(false)}
             />
 
             <MediaErrorDialog
                 error={mediaError}
+                hasAudio={hasAudio}
+                hasVideo={hasVideo}
+                open={isErrorDialogOpen}
+                onClose={() => setIsDialogDismissed(true)}
             />
         </div>
     );

@@ -5,9 +5,9 @@ import VideoTrack from 'app/components/VideoTrack';
 import LocalAudioLevelIndicator from 'app/components/LocalAudioLevelIndicator';
 
 export default function LocalVideoPreview({ identity }) {
-    const { localTracks } = useRoomContext();
+    const { room } = useRoomContext();
 
-    const videoTrack = localTracks.find(track => track.name.includes('camera'));
+    const videoTrack = room?.video.track;
 
     return (
         <div className="LocalVideoPreview">

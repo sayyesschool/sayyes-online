@@ -1,13 +1,17 @@
+import { useCallback } from 'react';
+
 import { IconButton, Tooltip } from 'shared/ui-components';
 
 import useRoomContext from 'app/hooks/useRoomContext';
-import useLocalAudioToggle from 'app/hooks/useLocalAudioToggle';
 
 export default function ToggleAudioButton({ disabled }) {
-    const { localTracks } = useRoomContext();
-    const [isAudioEnabled, toggleAudioEnabled] = useLocalAudioToggle();
+    const { room, isAudioEnabled } = useRoomContext();
 
-    const hasAudioTrack = localTracks.some(track => track.kind === 'audio');
+    const hasAudioTrack = room?.audio.track;
+
+    const handleClick = useCallback(() => {
+        room.toggleAudio();
+    }, [room]);
 
     return (
         <Tooltip
@@ -20,7 +24,7 @@ export default function ToggleAudioButton({ disabled }) {
                 variant={isAudioEnabled ? 'soft' : 'plain'}
                 size="sm"
                 disabled={!hasAudioTrack || disabled}
-                onClick={toggleAudioEnabled}
+                onClick={handleClick}
             />
         </Tooltip>
     );
