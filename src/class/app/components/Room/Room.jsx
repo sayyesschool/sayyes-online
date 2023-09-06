@@ -9,7 +9,7 @@ import useRoomContext from 'app/hooks/useRoomContext';
 import useSharedState from 'app/hooks/useSharedState';
 
 import Chat from 'app/components/Chat';
-import Courses from 'app/components/Courses';
+// import Courses from 'app/components/Courses';
 import MainParticipant from 'app/components/MainParticipant';
 import ParticipantAudioTracks from 'app/components/ParticipantAudioTracks';
 import ParticipantList from 'app/components/ParticipantList';
@@ -123,12 +123,12 @@ export default function Room({ user, enrollment }) {
                 <ParticipantList />
 
                 <Switch>
-                    <Route path="/courses">
+                    {/* <Route path="/courses">
                         <Courses
                             user={user}
                             enrollment={enrollment}
                         />
-                    </Route>
+                    </Route> */}
 
                     <Route path="/whiteboard">
                         <MiroWhiteboard />
