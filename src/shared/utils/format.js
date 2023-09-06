@@ -10,6 +10,8 @@ module.exports = {
     formatTime,
     formatDuration,
     pluralize,
+    getWordEnding,
+    wordEnding,
     timeToSeconds
 };
 
@@ -91,6 +93,24 @@ function pluralize(word, count) {
     } else {
         return word + 'ов';
     }
+}
+
+function getWordEnding(root, quantity, endings) {
+    if (quantity === 1)
+        return root + endings[0];
+    if (quantity < 5)
+        return root + endings[1];
+    return root + endings[2];
+}
+
+function wordEnding(root, endings) {
+    return quantity => {
+        if (quantity === 1)
+            return root + endings[0];
+        if (quantity > 1 && quantity < 5)
+            return root + endings[1];
+        return root + endings[2];
+    };
 }
 
 function timeToSeconds(value) {

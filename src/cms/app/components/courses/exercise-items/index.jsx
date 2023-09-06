@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
-import { Button, Icon, IconButton, MenuButton } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import ExerciseItem from 'shared/components/exercise-item';
 import PageSection from 'shared/components/page-section';
+import { Button, Flex, Icon, IconButton, MenuButton } from 'shared/ui-components';
 
 import ExerciseItemForm from 'app/components/courses/exercise-item-form';
 
@@ -25,24 +25,29 @@ export default function ExerciseItems({
     const [editingItemId, setEditingItemId] = useState();
     const [state, setState] = useState(exercise.state || {});
 
+    const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
+
     useEffect(() => {
         if (editingItemId) {
-            document.getElementById(editingItemId)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            document.getElementById(editingItemId)?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
         }
     }, [editingItemId]);
 
-    const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
-
     const handleCreate = useCallback((_, { value }) => {
-        return onCreate({ item: { type: value } })
+        return onCreate({ data: { type: value } })
             .then(response => setEditingItemId(response.data.item.id));
     }, []);
 
     const handleAdd = useCallback((type, dir) => {
         const activeItemIndex = exercise.items.findIndex(item => item.id === activeItemId);
 
-        return onCreate({ item: { type }, position: activeItemIndex + dir })
-            .then(response => setEditingItemId(response.data.item.id));
+        return onCreate({
+            data: { type },
+            position: activeItemIndex + dir
+        }).then(response => setEditingItemId(response.data.item.id));
     }, [exercise, activeItemId]);
 
     const handleUpdate = useCallback(data => {
@@ -101,13 +106,8 @@ export default function ExerciseItems({
     const handleUpdateItemState = useCallback((itemId, state) => {
         setState(oldState => ({
             ...oldState,
-            [itemId]: state
+            [itemId]: typeof state === 'function' ? state(oldState[itemId]) : state
         }));
-    }, []);
-
-    const handleRootMouseLeave = useCallback(() => {
-        setActiveItemId(undefined);
-        itemMenuButtonRef.current.style.top = '-10000px';
     }, []);
 
     const handleItemMouseOver = useCallback(event => {
@@ -115,7 +115,11 @@ export default function ExerciseItems({
         setActiveItemId(element.id);
 
         itemMenuButtonRef.current.style.top = `${element.offsetTop}px`;
-    }, [editingItemId]);
+    }, []);
+
+    const handleItemFormMouseOver = useCallback(() => {
+        itemMenuButtonRef.current.style.top = '-10000px';
+    }, []);
 
     const firstItem = exercise.items.at(0);
     const lastItem = exercise.items.at(-1);
@@ -123,28 +127,43 @@ export default function ExerciseItems({
     return (
         <PageSection
             className="ExerciseItems"
-            title="Элементы"
         // onMouseLeave={handleRootMouseLeave}
         >
-            {exercise.items.map(item =>
-                editingItemId === item.id ?
-                    <ExerciseItemForm
-                        key={item.id}
-                        id={item.id}
-                        item={item}
-                        onSubmit={handleUpdate}
-                        onCancel={handleCancelEdit}
-                    />
-                    :
-                    <ExerciseItem
-                        key={item.id}
-                        id={item.id}
-                        item={item}
-                        state={state[item.id]}
-                        onMouseOver={handleItemMouseOver}
-                        onUpdateState={handleUpdateItemState}
-                    />
-            )}
+            <Flex gap="medium" column>
+                {exercise.items.map(item =>
+                    editingItemId === item.id ?
+                        <ExerciseItemForm
+                            key={item.id}
+                            id={item.id}
+                            item={item}
+                            onMouseOver={handleItemFormMouseOver}
+                            onSubmit={handleUpdate}
+                            onCancel={handleCancelEdit}
+                        />
+                        :
+                        <div key={item.id} id={item.id} onMouseOver={handleItemMouseOver}>
+                            <ExerciseItem
+                                item={item}
+                                state={state[item.id]}
+                                onUpdateState={handleUpdateItemState}
+                            />
+                        </div>
+                )}
+
+                <MenuButton
+                    trigger={
+                        <Button
+                            className="ExerciseItems__add-button"
+                            icon="add"
+                            content="Добавить элемент"
+                            size="sm"
+                            variant="outlined"
+                        />
+                    }
+                    items={exerciseTypeMenuItems}
+                    onMenuItemClick={handleCreate}
+                />
+            </Flex>
 
             {exercise.items &&
                 <MenuButton
@@ -211,20 +230,6 @@ export default function ExerciseItems({
                     ]}
                 />
             }
-
-            <MenuButton
-                trigger={
-                    <Button
-                        className="ExerciseItems__add-button"
-                        icon="add"
-                        content="Добавить элемент"
-                        size="sm"
-                        variant="outlined"
-                    />
-                }
-                items={exerciseTypeMenuItems}
-                onMenuItemClick={handleCreate}
-            />
 
             <ConfirmationDialog
                 title="Удалить элемент?"

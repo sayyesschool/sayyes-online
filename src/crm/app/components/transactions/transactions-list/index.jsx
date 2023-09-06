@@ -20,7 +20,6 @@ export default function TransactionsList({ transactions, onClick, onDelete }) {
                             onClick={event => onDelete(event, transaction)}
                         />
                     }
-                    navigable
                     onClick={() => onClick(transaction)}
                 />
             )}

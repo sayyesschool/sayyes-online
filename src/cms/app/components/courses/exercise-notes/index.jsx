@@ -1,20 +1,20 @@
 import { useCallback, useRef } from 'react';
 
+import ContentEditor from 'shared/components/content-editor';
 import PageSection from 'shared/components/page-section';
-import TextEditor from 'shared/components/text-editor';
 
 export default function ExerciseNotes({ exercise, onUpdate }) {
-    const textEditorRef = useRef();
+    const editorRef = useRef();
 
     const handleSave = useCallback(() => {
-        const notes = textEditorRef.current.editor.getData();
+        const notes = editorRef.current?.getData();
 
         onUpdate({ notes });
     }, [onUpdate]);
 
     return (
         <PageSection
-            className="exercise-notes"
+            className="ExerciseNotes"
             title="Заметки"
             actions={[{
                 key: 'save',
@@ -24,9 +24,10 @@ export default function ExerciseNotes({ exercise, onUpdate }) {
             }]}
             compact
         >
-            <TextEditor
-                ref={textEditorRef}
-                value={exercise.notes}
+            <ContentEditor
+                ref={editorRef}
+                content={exercise.notes}
+                simple
             />
         </PageSection>
     );

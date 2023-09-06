@@ -8,8 +8,8 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { Grid } from 'shared/ui-components';
 
-import LessonContent from 'app/components/courses/lesson-content';
-import LessonExercises from 'app/components/courses/lesson-exercises';
+import LessonDescription from 'app/components/courses/lesson-description';
+import LessonSections from 'app/components/courses/lesson-sections';
 
 export default function LessonPage({ match, history }) {
     const { course, unit, lesson, actions } = useLesson(match.params);
@@ -40,6 +40,17 @@ export default function LessonPage({ match, history }) {
         return actions.deleteExercise(course.id, exercise.id);
     }, [course]);
 
+    const handleCreateSection = useCallback(data => {
+        data.unitId = unit.id;
+        data.lessonId = lesson.id;
+
+        return actions.createSection(course.id, data);
+    }, [course, unit, lesson]);
+
+    const handleDeleteSection = useCallback(section => {
+        return actions.deleteSection(course.id, section.id);
+    }, [course]);
+
     if (!lesson) return <LoadingIndicator fluid />;
 
     return (
@@ -53,7 +64,6 @@ export default function LessonPage({ match, history }) {
                     />
                 }
                 breadcrumbs={[
-                    { key: 'courses', content: 'Курсы', to: '/courses' },
                     { key: 'course', content: course.title, to: course.uri, title: 'Курс' },
                     { key: 'unit', content: unit.title, to: unit.uri, title: 'Юнит' }
                 ]}
@@ -70,18 +80,17 @@ export default function LessonPage({ match, history }) {
             <Page.Content>
                 <Grid spacing={2}>
                     <Grid.Item xs={8}>
-                        <LessonContent
+                        <LessonDescription
                             lesson={lesson}
                             onUpdate={handleUpdateLesson}
                         />
                     </Grid.Item>
 
                     <Grid.Item xs={4}>
-                        <LessonExercises
-                            course={course}
+                        <LessonSections
                             lesson={lesson}
-                            onCreate={handleCreateExercise}
-                            onDelete={handleDeleteExercise}
+                            onCreate={handleCreateSection}
+                            onDelete={handleDeleteSection}
                             onReorder={handleUpdateLesson}
                         />
                     </Grid.Item>

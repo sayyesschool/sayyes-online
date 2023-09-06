@@ -3,6 +3,7 @@ const { model } = require('mongoose');
 const Comment = require('./comment');
 const Course = require('./course');
 const Enrollment = require('./enrollment');
+const Exercise = require('./exercise');
 const Lesson = require('./lesson');
 const Material = require('./material');
 const Meeting = require('./meeting');
@@ -27,6 +28,7 @@ module.exports = () => ({
     Comment: model('Comment', Comment),
     Course: model('Course', Course),
     Enrollment: model('Enrollment', Enrollment),
+    Exercise: model('Exercise', Exercise),
     Lesson: model('Lesson', Lesson),
     Material: model('Material', Material),
     Meeting: model('Meeting', Meeting),

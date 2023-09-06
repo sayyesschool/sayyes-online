@@ -102,7 +102,6 @@ User.methods.isResetPasswordTokenValid = function(token) {
 
 // Generate password
 User.pre('save', function(next) {
-    console.log('PRE SAVE', this.password);
     if (!this.isModified('password')) return next();
 
     this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync());

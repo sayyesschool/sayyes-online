@@ -19,7 +19,7 @@ export default function PostForm({
     });
 
     const handleSubmit = useCallback(() => {
-        const content = editorRef.current.editor.getData();
+        const content = editorRef.current?.getData();
 
         data.content = content;
 

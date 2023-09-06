@@ -1,17 +1,31 @@
 import { createElement } from 'react';
 
-export function render(element, map) {
-    if (typeof element !== 'object') return element;
+export function render(element, fn) {
+    if (typeof element !== 'object')
+        return element;
 
-    if (Array.isArray(element)) return element.map(element => render(element, map));
+    if (Array.isArray(element))
+        return element.map(element => render(element, fn));
 
-    const { type, props, children } = typeof map === 'function' ? map(element) : element;
+    const { type, props, children } = fn?.(element) ?? element;
 
     return createElement(
         type,
         props,
-        ...normalizeChildren(children).map(child => render(child, map))
+        ...normalizeChildren(children).map(child => render(child, fn))
     );
+}
+
+export function traverse(element, fn) {
+    if (!element) return;
+
+    if (Array.isArray(element))
+        return element.forEach(element => traverse(element, fn));
+
+    if (Array.isArray(element.children))
+        element.children.forEach(element => traverse(element, fn));
+
+    fn?.(element);
 }
 
 function normalizeChildren(children) {

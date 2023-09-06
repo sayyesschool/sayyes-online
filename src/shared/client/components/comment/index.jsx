@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
 import CommentForm from 'shared/components/comment-form';
-import TextContent from 'shared/components/text-content';
+import Content from 'shared/components/content';
 import { Avatar, Box, Button, Flex, Icon, IconButton, MenuButton, Text } from 'shared/ui-components';
 
 import './index.scss';
@@ -74,9 +74,7 @@ export default function Comment({
                     content={comment.datetimeLabel}
                 />
 
-                <TextContent
-                    content={comment.content}
-                />
+                <Content content={comment.content} html />
             </Box>
 
             {user?.id === author?.id &&

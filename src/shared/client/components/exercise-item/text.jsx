@@ -1,9 +1,9 @@
-import TextContent from 'shared/components/text-content';
+import Content from 'shared/components/content';
 
-export default function ExerciseTextItem({ item }) {
+export default function TextItem({ content, className }) {
     return (
-        <TextContent
-            content={item.text}
-        />
+        <div className={className}>
+            <Content content={content} html />
+        </div>
     );
 }

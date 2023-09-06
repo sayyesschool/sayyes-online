@@ -1,27 +1,30 @@
 import { useCallback } from 'react';
 
+import Content from 'shared/components/content';
 import ContentEditor from 'shared/components/content-editor';
-import TextContent from 'shared/components/text-content';
 
-export default function EssayExerciseContent({
-    item,
+import './essay.scss';
+
+export default function EssayItem({
+    id,
+    content,
     state,
-    onUpdateState
+    onUpdateState,
+    className
 }) {
     const handleChange = useCallback((event, value) => {
-        onUpdateState(item.id, value);
-    }, [item, onUpdateState]);
+        onUpdateState(id, value);
+    }, [id, onUpdateState]);
 
     return (
-        <>
-            <TextContent
-                content={item.text}
-            />
+        <div className={className}>
+            <Content content={content} html />
 
             <ContentEditor
                 content={state}
+                simple
                 onChange={handleChange}
             />
-        </>
+        </div>
     );
 }

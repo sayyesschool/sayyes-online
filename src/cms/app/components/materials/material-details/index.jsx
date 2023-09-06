@@ -6,7 +6,7 @@ import MaterialForm from 'app/components/materials/material-form';
 export default function MaterialDetails({ material, onUpdate }) {
     return (
         <PageSection
-            className="material-details"
+            className="MaterialDetails"
             title="Детали"
         >
             <MaterialForm

@@ -1,34 +1,39 @@
 import { useCallback } from 'react';
 import classnames from 'classnames';
 
-import TextContent from 'shared/components/text-content';
+import Content from 'shared/components/content';
 import { List, Switch } from 'shared/ui-components';
 
-export default function ExerciseBooleanItem({
-    item,
+import './boolean.scss';
+
+export default function BooleanItem({
+    id,
+    content,
+    items,
     checked,
     selected,
     state,
-    onUpdateState
+    onUpdateState,
+    className
 }) {
     const handleChange = useCallback(itemId => {
         onUpdateState(item.id, {
             ...state,
             [itemId]: state ? !state[itemId] : true
         });
-    }, [item, state, onUpdateState]);
+    }, [id, state, onUpdateState]);
 
     return (
-        <>
-            <TextContent>{item.text}</TextContent>
+        <div className={className}>
+            <Content content={content} html />
 
             <List>
-                {item.items?.map(item =>
+                {items?.map(item =>
                     <List.Item
                         key={item.id}
-                        className={classnames('ExerciseBooleanListItem', checked && {
-                            'ExerciseBooleanListItem--correct': state[item.id] === selected,
-                            'ExerciseBooleanListItem--incorrect': state[item.id] !== selected,
+                        className={classnames('BooleanListItem', checked && {
+                            'BooleanListItem--correct': state[item.id] === selected,
+                            'BooleanListItem--incorrect': state[item.id] !== selected,
                         })}
                         content={item.text}
                         endAction={
@@ -43,6 +48,6 @@ export default function ExerciseBooleanItem({
                     />
                 )}
             </List>
-        </>
+        </div>
     );
 }

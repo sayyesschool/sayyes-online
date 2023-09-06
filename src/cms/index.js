@@ -14,10 +14,10 @@ module.exports = core => {
         Object.assign(app.locals, parent.locals);
     });
 
+    app.use('/api', api(core));
     app.use((req, res, next) => {
         ALLOWED_ROLES.includes(req.user?.role) ? next() : next('router');
     });
-    app.use('/api', api(core));
     app.use((req, res) => res.render('index'));
 
     return app;

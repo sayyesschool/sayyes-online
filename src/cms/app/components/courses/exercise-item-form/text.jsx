@@ -1,24 +1,24 @@
-import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
 
-import TextEditor from 'shared/components/text-editor';
+import ContentEditor from 'shared/components/content-editor';
 
-function ExerciseTextItem({ item }, ref) {
-    const [text, setText] = useState(item.text || '');
+function TextItemForm({ content }, ref) {
+    const editorRef = useRef();
 
     useImperativeHandle(ref, () => ({
-        get data() { return { text }; }
+        get props() {
+            return {
+                content: editorRef.current?.getData()
+            };
+        }
     }));
 
-    const handleChange = useCallback((event, value) => {
-        setText(value);
-    }, []);
-
     return (
-        <TextEditor
-            value={item.text}
-            onChange={handleChange}
+        <ContentEditor
+            ref={editorRef}
+            content={content}
         />
     );
 }
 
-export default forwardRef(ExerciseTextItem);
+export default forwardRef(TextItemForm);

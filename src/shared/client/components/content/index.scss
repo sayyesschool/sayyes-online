@@ -1,0 +1,21 @@
+.Content {
+    display: block;
+    margin: var(--Typography-margin, 0px);
+    font-family: var(--joy-fontFamily-body, Nunito, Arial, Helvetica, Segoe UI, sans-serif);
+    font-size: var(--Typography-fontSize, var(--joy-fontSize-md, 1rem));
+    line-height: var(--joy-lineHeight-md, 1.4);
+    color: var(--joy-palette-text-primary, var(--joy-palette-neutral-800, #25252D));
+
+    img {
+        width: auto;
+        max-width: 100%;
+    }
+
+    p:empty {
+        height: 1px;
+    }
+
+    :last-child {
+        margin-bottom: 0;
+    }
+}

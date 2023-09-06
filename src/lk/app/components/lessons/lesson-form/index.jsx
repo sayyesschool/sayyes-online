@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import { useFormData } from 'shared/hooks/form';
 import Form from 'shared/ui-components/form';
-import datetime from 'shared/utils/datetime';
+import datetime from 'shared/libs/datetime';
 
 import './index.scss';
 

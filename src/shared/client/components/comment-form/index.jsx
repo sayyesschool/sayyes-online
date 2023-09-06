@@ -9,7 +9,7 @@ export default function CommentForm({ comment = {}, onSubmit, ...props }) {
     const editorRef = useRef();
 
     const handleSubmit = useCallback(() => {
-        const content = editorRef.current.editor.getData();
+        const content = editorRef.current?.getData();
 
         onSubmit({ content });
     }, []);

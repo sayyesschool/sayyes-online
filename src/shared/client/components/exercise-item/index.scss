@@ -1,0 +1,71 @@
+.ExerciseItem {
+    &__item + &__item {
+        margin-top: .5rem;
+    }
+
+    .ContentEditor {
+        line-height: 1.5;
+
+        p {
+            margin-bottom: 0.75rem;
+        }
+        
+        &:not(:last-child) {
+            margin-bottom: 1rem;
+        }
+
+        .image,
+        .image-inline {
+            position: relative;
+            display: block;
+            clear: both;
+            text-align: center;
+            margin: 1rem auto;
+            min-width: 50px;
+        }
+
+        .image.image_resized {
+            max-width: 100%;
+            display: block;
+            box-sizing: border-box;
+        }
+
+        .image-style-align-left,
+        .image-style-align-right {
+            clear: none;
+        }
+
+        .image-style-align-right {
+            float: right;
+            margin-left: 1rem;
+        }
+
+        .image-style-align-left {
+            float: left;
+            margin-right: 1rem;
+        }
+    }
+
+    figure {
+        margin: 0;
+    }
+
+    table {
+        margin: auto;
+        border-collapse: collapse;
+
+        td, th {
+            min-width: 2em;
+            padding: .4em;
+        }
+
+        figure {
+            margin: 0;
+            clear: both;
+            display: table;
+            margin: .9em auto;
+            min-width: 50px;
+            text-align: center;
+        }
+    }
+}

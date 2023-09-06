@@ -29,7 +29,7 @@ export default function PageHeader({
                         >
                             {breadcrumbs.map(props =>
                                 props.to ?
-                                    <Link component={RouterLink} {...props} /> :
+                                    <Link key={props.to} component={RouterLink} {...props} /> :
                                     <Text {...props} />
                             )}
                         </Breadcrumbs>

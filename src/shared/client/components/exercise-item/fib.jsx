@@ -1,41 +1,62 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
-import { parseHTML } from 'shared/libs/exercise';
+import { parseFromHtml } from 'shared/libs/eml';
 import { render } from 'shared/libs/jsx';
+import Content from 'shared/components/content';
 import Input from 'shared/components/inline-input';
 import Select from 'shared/components/inline-select';
-import Textarea from 'shared/components/inline-textarea';
+
+import './fib.scss';
 
 const Components = {
     input: Input,
-    select: Select,
-    textarea: Textarea
+    select: Select
 };
 
-export default function ExerciseFIBItem({
-    item,
+export default function FibItem({
+    id,
+    content,
     checked,
     completed,
     state = {},
-    onUpdateState
+    onUpdateState,
+    className
 }) {
-    const content = useMemo(() => {
+    const handleChange = useCallback((value, element) => {
+        const { id: itemId } = element.dataset;
+
+        if (!itemId) return;
+
+        onUpdateState(id, state => ({
+            ...state,
+            [itemId]: value
+        }));
+    }, [id, onUpdateState]);
+
+    const memoedContent = useMemo(() => {
         let key = 1;
 
-        return render(parseHTML(item.text || ''), item => {
-            if (typeof item?.props === 'object') {
+        return render(parseFromHtml(content || ''), item => {
+            if (typeof item === 'object')
                 item.props.key = key++;
-            }
 
             if (item.type in Components) {
                 item.type = Components[item.type];
-                item.props.checked = checked;
+                item.props.value = state[item.props.id];
                 item.props.completed = completed;
+                item.props.checked = checked;
+                item.props.onChange = handleChange;
             }
 
             return item;
         });
     }, [checked]);
 
-    return content;
+    return (
+        <div className={className}>
+            <Content>
+                {memoedContent}
+            </Content>
+        </div>
+    );
 }

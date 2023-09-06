@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import './index.scss';
 
 function InlineTextarea({
+    id,
     value: _value = '',
     correctValues,
     checked,
@@ -38,7 +39,7 @@ function InlineTextarea({
     const handleChange = useCallback(event => {
         const value = event.target.value;
         setValue(value);
-        onChange(value);
+        onChange(value, event.target, event);
     }, [onChange]);
 
     const isCorrect = (checked && required) ? (
@@ -47,9 +48,9 @@ function InlineTextarea({
             value !== ''
     ) : undefined;
 
-    const classNames = classnames('inline-textarea', {
-        'inline-textarea--correct': isCorrect === true,
-        'inline-textarea--incorrect': isCorrect === false
+    const classNames = classnames('InlineTextarea', {
+        'InlineTextarea--correct': isCorrect === true,
+        'InlineTextarea--incorrect': isCorrect === false
     });
 
     return (
@@ -58,6 +59,7 @@ function InlineTextarea({
             className={classNames}
             value={value}
             required={required}
+            data-id={id}
             onChange={handleChange}
             {...props}
         />

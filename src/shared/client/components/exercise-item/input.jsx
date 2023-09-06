@@ -1,32 +1,43 @@
 import { useCallback } from 'react';
 
+import Content from 'shared/components/content';
 import Input from 'shared/components/inline-input';
 import Textarea from 'shared/components/inline-textarea';
-import TextContent from 'shared/components/text-content';
+import { Flex } from 'shared/ui-components';
 
-export default function ExerciseInputItem({
-    item,
+import './input.scss';
+
+export default function InputItem({
+    id,
+    text,
+    values,
+    inline,
     checked,
-    state: value = '',
-    onUpdateState
+    state = '',
+    onUpdateState,
+    className
 }) {
     const handleChange = useCallback(value => {
-        onUpdateState(item.id, value);
-    }, [item, onUpdateState]);
+        onUpdateState(id, value);
+    }, [id, onUpdateState]);
 
-    const Component = item.inline ? Input : Textarea;
+    const Component = inline ? Input : Textarea;
 
-    return (<>
-        {item.text &&
-            <TextContent>{item.text}</TextContent>
-        }
+    return (
+        <div className={className}>
+            <Flex direction={inline ? 'row' : 'column'} gap="small">
+                {text &&
+                    <Content text={text} />
+                }
 
-        <Component
-            value={value}
-            correctValues={item.items}
-            checked={checked}
-            required
-            onChange={handleChange}
-        />
-    </>);
+                <Component
+                    value={state}
+                    correctValues={values}
+                    checked={checked}
+                    required
+                    onChange={handleChange}
+                />
+            </Flex>
+        </div>
+    );
 }

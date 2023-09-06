@@ -2,7 +2,7 @@
 @use 'shared/styles/variables';
 
 .AppContent {
-    max-height: calc(100vh - 56px);
+    min-height: calc(100vh - 56px);
     overflow-x: hidden;
     overflow-y: auto;
 }

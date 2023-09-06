@@ -27,7 +27,6 @@ module.exports = ({
     },
 
     authenticatedRoute: (req, res, next) => {
-        console.log('authenticatedRoute', req.user);
         req.user ? next() : next('route');
     },
 

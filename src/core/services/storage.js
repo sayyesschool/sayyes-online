@@ -1,15 +1,15 @@
 const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 
 class Storage {
-    constructor({ endpoint, region, bucket }) {
+    constructor({ accessKeyId, secretAccessKey, endpoint, region, bucket }) {
         this.endpoint = endpoint;
         this.bucket = bucket;
         this.storage = new S3Client({
             endpoint,
             region,
             credentials: {
-                accessKeyId: process.env.YANDEX_CLOUD_ACCESS_KEY_ID,
-                secretAccessKey: process.env.YANDEX_CLOUD_SECRET_ACCESS_KEY,
+                accessKeyId,
+                secretAccessKey
             }
         });
     }

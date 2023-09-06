@@ -6,7 +6,7 @@ const notificationMiddleware = store => next => action => {
             type: 'SHOW_NOTIFICATION',
             notification: {
                 active: true,
-                type: action.type || 'success',
+                type: 'success',
                 text: action.message
             }
         });

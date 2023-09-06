@@ -106,8 +106,6 @@ export function useFormData(initialData, deps = []) {
     const handleChange = useCallback(({ target } = {}) => {
         const { name, value, checked } = target;
 
-        console.log(name, value, checked);
-
         setData(data => {
             const [name1, name2] = name.split('.');
 

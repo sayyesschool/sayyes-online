@@ -2,12 +2,36 @@
 @use '../variables';
 
 .ck-editor {
-    .ck-primary-color {
-        color: variables.$primary-color;
+    --ck-color-base-background: transparent;
+    --ck-color-toolbar-background: transparent;
+    --ck-border-radius: 4px;
+
+    .ck-toolbar {
+        border: none;
+        border-radius: 10px 10px 0 0;
+        border-bottom: 1px solid rgba(0,0,0,.12) !important;
     }
 
-    .ck-secondary-color {
-        color: variables.$secondary-color;
+    .ck-content {
+        padding: 0 1rem;
+        border: none !important;
+        box-shadow: none !important;
+        line-height: 1.5;
+
+        blockquote {
+            font-style: normal;
+        }
+
+        .ck-list-bogus-paragraph {
+            display: inline-block;
+        }
+    }
+
+    .ck-sticky-panel {
+        &__content_sticky {
+            background-color: white;
+            top: 64px;
+        }
     }
 }
 

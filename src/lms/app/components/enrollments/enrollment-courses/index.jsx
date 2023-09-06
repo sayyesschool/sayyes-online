@@ -35,7 +35,13 @@ export default function EnrollmentCourses({ enrollment, readonly }) {
     }, [enrollment]);
 
     const enrollmentCourses = courses
-        ?.filter(course => enrollment.courses.includes(course.id));
+        ?.filter(course => enrollment.courses.includes(course.id))
+        .map(course => {
+            return {
+                ...course,
+                url: course.url + `?enrollmentId=${enrollment.id}`
+            };
+        });
 
     const items = courses
         ?.filter(course => !enrollment.courses.includes(course.id))

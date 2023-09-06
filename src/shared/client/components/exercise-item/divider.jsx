@@ -1,9 +1,13 @@
 import { Divider } from 'shared/ui-components';
 
-export default function ExerciseDividerItem({ item }) {
+import './divider.scss';
+
+export default function DividerItem({ content, className }) {
     return (
-        <Divider
-            content={item.text}
-        />
+        <div className={className}>
+            <Divider
+                content={content}
+            />
+        </div>
     );
 }

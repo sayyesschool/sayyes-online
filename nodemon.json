@@ -6,6 +6,6 @@
         "src/crm/app",
         "src/lk/app",
         "src/lms/app",
-        "shared"
+        "src/shared"
     ]
 }
