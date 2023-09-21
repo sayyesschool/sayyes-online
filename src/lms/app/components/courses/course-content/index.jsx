@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import { Grid } from 'shared/ui-components';
 
-import UnitCard from 'app/components/courses/unit-card';
+import UnitCard from 'lms/components/courses/unit-card';
 
 export default function CourseContent({ course, onSelectUnit }) {
     return (

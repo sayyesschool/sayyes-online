@@ -22,9 +22,12 @@ export default function ParticipantAudioTracks() {
 
 const Participant = memo(function({ participant }) {
     const tracks = useTracks(participant);
-    const audioTrack = tracks.find(track => track.kind === 'audio');
+    const audioTracks = tracks.filter(track => track.kind === 'audio');
 
-    if (audioTrack?.kind === 'audio') return <AudioTrack track={audioTrack} />;
-
-    return null;
+    return audioTracks.map(track =>
+        <AudioTrack
+            key={track.name}
+            track={track}
+        />
+    );
 });

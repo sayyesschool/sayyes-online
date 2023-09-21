@@ -12,7 +12,7 @@ const Heading = forwardRef(({
     children = content,
     ...props
 }, ref) => {
-    const classNames = classnames('ui-Heading', className);
+    const classNames = classnames(className, 'ui-Heading');
 
     return (
         <JoyTypography

@@ -85,7 +85,13 @@ function VideoPlayer({
                 <video ref={videoRef} src={src} {...props} />
                 :
                 <div className="plyr__video-embed">
-                    <iframe ref={videoRef} src={src} allowFullScreen allowTransparency allow="autoplay" />
+                    <iframe
+                        ref={videoRef}
+                        src={src}
+                        allow="autoplay"
+                        allowFullScreen
+                        allowTransparency
+                    />
                 </div>
             }
         </div>

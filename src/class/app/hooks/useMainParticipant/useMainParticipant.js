@@ -15,7 +15,12 @@ export default function useMainParticipant() {
     const remoteScreenShareParticipant = screenShareParticipant !== localParticipant ? screenShareParticipant : null;
 
     // Changing the order of the following variables will change the how the main speaker is determined.
-    const mainParticipant = selectedParticipant || remoteScreenShareParticipant || dominantSpeaker || participants[0] || localParticipant;
+    const mainParticipant =
+        selectedParticipant ||
+        remoteScreenShareParticipant ||
+        dominantSpeaker ||
+        participants[0] ||
+        localParticipant;
 
     return mainParticipant;
 }

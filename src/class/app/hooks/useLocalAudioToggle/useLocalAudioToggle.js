@@ -4,8 +4,7 @@ import useRoomContext from 'app/hooks/useRoomContext';
 import useIsTrackEnabled from 'app/hooks/useIsTrackEnabled';
 
 export default function useLocalAudioToggle() {
-    const { localTracks } = useRoomContext();
-    const audioTrack = localTracks.find(track => track.kind === 'audio');
+    const { audioTrack } = useRoomContext();
     const isEnabled = useIsTrackEnabled(audioTrack);
 
     const toggleAudioEnabled = useCallback(() => {

@@ -2,7 +2,7 @@ import { useCourse } from 'shared/hooks/courses';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 
-import CourseContent from 'app/components/courses/course-content';
+import CourseContent from 'lms/components/courses/course-content';
 
 export default function CoursePage({ match, location }) {
     const [course] = useCourse(match.params.course, location.search);

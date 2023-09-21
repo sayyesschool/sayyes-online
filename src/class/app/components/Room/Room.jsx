@@ -9,7 +9,7 @@ import useRoomContext from 'app/hooks/useRoomContext';
 import useSharedState from 'app/hooks/useSharedState';
 
 import Chat from 'app/components/Chat';
-// import Courses from 'app/components/Courses';
+import Content from 'app/components/Content';
 import MainParticipant from 'app/components/MainParticipant';
 import ParticipantAudioTracks from 'app/components/ParticipantAudioTracks';
 import ParticipantList from 'app/components/ParticipantList';
@@ -20,7 +20,13 @@ import ScreenShareAlert from 'app/components/ScreenShareAlert';
 import MiroWhiteboard from 'app/components/MiroWhiteboard';
 
 export default function Room({ user, enrollment }) {
-    const { room, participants, isSharingScreen, toggleScreenShare } = useRoomContext();
+    const {
+        room,
+        localParticipant,
+        participants,
+        isSharingScreen,
+        toggleScreenShare
+    } = useRoomContext();
     const sharedState = useSharedState();
     const location = useLocation();
     const history = useHistory();
@@ -63,12 +69,6 @@ export default function Room({ user, enrollment }) {
         history.push(sharedState.data.path);
     }, [sharedState.data?.path]);
 
-    const handleSync = useCallback(() => {
-        sharedState.updateDoc({
-            path: location.pathname + location.search
-        });
-    }, [location]);
-
     const handleChatConnected = useCallback(channel => {
         channel.getUnconsumedMessagesCount()
             .then(unconsumedMessagesCount => {
@@ -76,6 +76,24 @@ export default function Room({ user, enrollment }) {
                 channel.setAllMessagesConsumed();
             });
     }, []);
+
+    const handleSync = useCallback(() => {
+        sharedState.updateDoc({
+            path: location.pathname + location.search
+        });
+    }, [location]);
+
+    const handleMediaStart = useCallback((track) => {
+        if (!track) return;
+
+        return localParticipant.publishTrack(track);
+    }, [localParticipant]);
+
+    const handleMediaStop = useCallback((track) => {
+        if (!track) return;
+
+        return localParticipant.unpublishTrack(track);
+    }, [localParticipant]);
 
     const handleDisconnect = useCallback(() => {
         room.disconnect();
@@ -123,12 +141,15 @@ export default function Room({ user, enrollment }) {
                 <ParticipantList />
 
                 <Switch>
-                    {/* <Route path="/courses">
-                        <Courses
+                    <Route path="/content">
+                        <Content
                             user={user}
                             enrollment={enrollment}
+                            room={room}
+                            onMediaStart={handleMediaStart}
+                            onMediaStop={handleMediaStop}
                         />
-                    </Route> */}
+                    </Route>
 
                     <Route path="/whiteboard">
                         <MiroWhiteboard />

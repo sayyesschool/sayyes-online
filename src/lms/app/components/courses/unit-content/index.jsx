@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import { Flex, Text } from 'shared/ui-components';
 
-import LessonCard from 'app/components/courses/lesson-card';
+import LessonCard from 'lms/components/courses/lesson-card';
 
 export default function UnitContent({ course, unit }) {
     return (

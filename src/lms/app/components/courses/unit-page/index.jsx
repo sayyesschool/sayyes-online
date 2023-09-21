@@ -2,7 +2,7 @@ import { useCourse } from 'shared/hooks/courses';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 
-import UnitContent from 'app/components/courses/unit-content';
+import UnitContent from 'lms/components/courses/unit-content';
 
 export default function UnitPage({ match, location }) {
     const [course] = useCourse(match.params.course, location.search);

@@ -4,8 +4,8 @@ import { useBoolean } from 'shared/hooks/state';
 import Content from 'shared/components/content';
 import { Avatar, Button, Card } from 'shared/ui-components';
 
-import ExerciseContent from 'app/components/courses/exercise-content';
-import ExerciseComments from 'app/components/courses/exercise-comments';
+import ExerciseContent from 'lms/components/courses/exercise-content';
+// import ExerciseComments from 'app/components/courses/exercise-comments';
 
 import './index.scss';
 

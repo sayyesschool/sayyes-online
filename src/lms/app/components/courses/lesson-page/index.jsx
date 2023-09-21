@@ -4,7 +4,7 @@ import { useCourse } from 'shared/hooks/courses';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 
-import LessonContent from 'app/components/courses/lesson-content';
+import LessonContent from 'lms/components/courses/lesson-content';
 
 import './index.scss';
 

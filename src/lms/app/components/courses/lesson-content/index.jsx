@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { useUser } from 'shared/hooks/user';
 import { Flex, Tabs } from 'shared/ui-components';
 
-import Exercise from 'app/components/courses/exercise';
+import Exercise from 'lms/components/courses/exercise';
 
 export default function LessonContent({ lesson, onExerciseProgressChange }) {
     const [user] = useUser();

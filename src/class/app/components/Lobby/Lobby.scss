@@ -1,13 +1,13 @@
 @use 'shared/styles/mixins' as *;
 
-.DeviceSelectionScreen {
+.Lobby {
     min-width: 640px;
 
     @include breakpoint('sm') {
         min-width: 360px;
         width: 100%;
     }
-
+    
     .LocalVideoPreview {
         margin-bottom: 1rem;
     }

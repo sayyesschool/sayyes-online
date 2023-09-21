@@ -18,16 +18,16 @@ export function RoomProvider({
     onDisconnect = Function.prototype,
     children
 }) {
-    const connectionOptions = useConnectionOptions();
-
     const {
         localTracks,
+        isAcquiringLocalTracks,
         getLocalVideoTrack,
         getLocalAudioTrack,
         getAudioAndVideoTracks,
-        isAcquiringLocalTracks,
         removeLocalVideoTrack
     } = useLocalTracks();
+
+    const connectionOptions = useConnectionOptions();
 
     const { room, connect, isConnecting } = useRoom(localTracks, connectionOptions, onError);
     const dominantSpeaker = useDominantSpeaker(room);
@@ -42,14 +42,18 @@ export function RoomProvider({
     const remoteScreenShareParticipant = screenShareParticipant !== localParticipant ? screenShareParticipant : null;
     // Changing the order of the following variables will change the how the main speaker is determined.
     const mainParticipant = selectedParticipant || remoteScreenShareParticipant || dominantSpeaker || participants[0] || localParticipant;
+    const audioTrack = localTracks.find(track => track.kind === 'audio');
+    const videoTrack = localTracks.find(track => track.name.includes('camera'));
 
     return (
         <RoomContext.Provider
             value={{
-                localTracks,
                 room,
                 connect,
                 isConnecting,
+                localTracks,
+                audioTrack,
+                videoTrack,
                 getLocalVideoTrack,
                 getLocalAudioTrack,
                 getAudioAndVideoTracks,
