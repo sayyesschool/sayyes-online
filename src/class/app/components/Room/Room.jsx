@@ -4,10 +4,10 @@ import classnames from 'classnames';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useFullScreen, useScrollClassName } from 'shared/hooks/screen';
+import { Alert, Icon } from 'shared/ui-components';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import useSharedState from 'app/hooks/useSharedState';
-
 import Chat from 'app/components/Chat';
 import Content from 'app/components/Content';
 import MainParticipant from 'app/components/MainParticipant';
@@ -40,6 +40,7 @@ export default function Room({ user, enrollment }) {
 
     const [isFullscreen, toggleFullscreen] = useFullScreen(rootRef);
     const [isChatOpen, toggleChatOpen] = useBoolean(false);
+    const [isBroadcastingMedia, toggleBroadcastingMedia] = useBoolean(false);
     const [numberOfUnreadMessages, setNumberOfUnreadMessages] = useState(0);
 
     useScrollClassName(contentRef, 'RoomContent--scrolling', []);
@@ -86,13 +87,19 @@ export default function Room({ user, enrollment }) {
     const handleMediaStart = useCallback((track) => {
         if (!track) return;
 
-        return localParticipant.publishTrack(track);
+        console.log('publishing track', track);
+
+        return localParticipant.publishTrack(track)
+            .then(() => {
+                toggleBroadcastingMedia(true);
+            });
     }, [localParticipant]);
 
     const handleMediaStop = useCallback((track) => {
         if (!track) return;
 
-        return localParticipant.unpublishTrack(track);
+        localParticipant.unpublishTrack(track);
+        toggleBroadcastingMedia(false);
     }, [localParticipant]);
 
     const handleDisconnect = useCallback(() => {
@@ -141,7 +148,7 @@ export default function Room({ user, enrollment }) {
                 <ParticipantList />
 
                 <Switch>
-                    <Route path="/content">
+                    <Route path="/courses">
                         <Content
                             user={user}
                             enrollment={enrollment}
@@ -160,6 +167,22 @@ export default function Room({ user, enrollment }) {
             {isSharingScreen &&
                 <ScreenShareAlert
                     onDisableSharing={toggleScreenShare}
+                />
+            }
+
+            {isBroadcastingMedia &&
+                <Alert
+                    start={<Icon name="cast" />}
+                    color="warning"
+                    content="Вы транслируете медиа для всех участников"
+                    sx={{
+                        position: 'fixed',
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        zIndex: 1000,
+                        borderRadius: 0
+                    }}
                 />
             }
         </div>

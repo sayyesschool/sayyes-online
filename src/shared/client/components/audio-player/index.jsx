@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useEffect, useRef } from 'react';
+import { forwardRef, useImperativeHandle, useEffect, useRef, useState } from 'react';
 import Plyr from 'plyr';
 import classnames from 'classnames';
 
@@ -14,7 +14,9 @@ const AudioPlayer = forwardRef(function AudioPlayer({
     const audioRef = useRef();
     const playerRef = useRef();
 
-    useImperativeHandle(ref, () => playerRef.current);
+    const [ready, setReady] = useState(false);
+
+    useImperativeHandle(ref, () => playerRef.current, [ready]);
 
     useEffect(() => {
         const player = new Plyr(audioRef.current, {
@@ -23,8 +25,12 @@ const AudioPlayer = forwardRef(function AudioPlayer({
         });
 
         playerRef.current = player;
+        setReady(true);
 
-        return () => player.destroy();
+        return () => {
+            player.destroy();
+            setReady(false);
+        };
     }, []);
 
     const classNames = classnames(className, 'AudioPlayer');

@@ -59,14 +59,14 @@ export default function RoomHeader({
                             variant: match.url === '/' ? 'soft' : 'plain'
                         },
                         {
-                            key: 'content',
+                            key: 'courses',
                             as: NavLink,
-                            to: '/content',
-                            value: '/content',
+                            to: '/courses',
+                            value: '/courses',
                             icon: 'book',
                             content: 'Обучающие материалы',
-                            color: match.url === '/content' ? 'primary' : 'neutral',
-                            variant: match.url === '/content' ? 'soft' : 'plain'
+                            color: match.url === '/courses' ? 'primary' : 'neutral',
+                            variant: match.url === '/courses' ? 'soft' : 'plain'
                         },
                         {
                             key: 'whiteboard',

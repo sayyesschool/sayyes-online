@@ -20,7 +20,20 @@ module.exports = context => {
     //     ALLOWED_ROLES.includes(req.user?.role) ? next() : next('router');
     // });
     app.use('/api', api(context));
-    app.use((req, res) => res.render('index'));
+    app.use((req, res, next) => {
+        const twilio = context.libs.twilio;
+        const options = {
+            identity: req.user.id,
+            friendlyName: req.user.fullname,
+            room: req.params.id
+        };
+
+        res.locals.TWILIO_CHAT_TOKEN = twilio.generateChatToken(options);
+
+        next();
+    }, (req, res) => {
+        res.render('index');
+    });
 
     return app;
 };

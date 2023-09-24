@@ -1,19 +1,22 @@
-import { useCallback, useRef, useState } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { createContext, useCallback, useRef, useState } from 'react';
+import { Link, Route, Switch } from 'react-router-dom';
 import { LocalAudioTrack, LocalVideoTrack } from 'twilio-video';
 
-import CoursesGrid from 'lms/components/courses/courses-grid';
 import Course from 'lms/components/courses/course-page';
 import Unit from 'lms/components/courses/unit-page';
 import Lesson from 'lms/components/courses/lesson-page';
-import Exercise from 'lms/components/courses/exercise-page';
 
+import MediaContext from 'shared/contexts/media';
 import AudioPlayer from 'shared/components/audio-player';
-import VideoPlayer from 'shared/components/video-player';
 import BottomSheet from 'shared/components/bottom-sheet';
+import CoursesGrid from 'shared/components/courses-grid';
+import VideoPlayer from 'shared/components/video-player';
 import { Button, Dialog } from 'shared/ui-components';
 
+const Context = createContext();
+
 import './index.scss';
+import { useMemo } from 'react';
 
 export default function ContentRouter({
     room,
@@ -24,35 +27,38 @@ export default function ContentRouter({
     onMediaStart,
     onMediaStop
 }) {
-    const audioPlayerRef = useRef();
     const videoPlayerRef = useRef();
 
     const [audio, setAudio] = useState(null);
     const [video, setVideo] = useState(null);
 
-    const handleAudio = useCallback(() => {
-        const player = audioPlayerRef.current;
-        const audio = player.media;
+    const handleAudioRef = useCallback((player) => {
+        if (!player) return;
 
+        const audio = player.media;
         let audioTrack;
 
-        const stream = audio.captureStream();
-        const audioStream = stream.getAudioTracks()?.at(0);
+        player?.once('play', () => {
+            player.stop();
 
-        if (audioStream) {
-            audioTrack = new LocalAudioTrack(audioStream);
-            onMediaStart(audioTrack)
-                .then(() => {
-                    player.play();
-                });
-        }
+            const stream = audio.captureStream();
+            const audioStream = stream.getAudioTracks()?.at(0);
 
-        audio.onended = () => {
+            if (audioStream) {
+                audioTrack = new LocalAudioTrack(audioStream);
+                onMediaStart(audioTrack)
+                    .then(() => {
+                        player.play();
+                    });
+            }
+        });
+
+        player?.once('ended', () => {
             onMediaStop(audioTrack)
                 .then(() => {
                     audioTrack = null;
                 });
-        };
+        });
     }, [onMediaStart, onMediaStop]);
 
     const handleVideo = useCallback(() => {
@@ -82,73 +88,39 @@ export default function ContentRouter({
             });
 
         video.onended = async () => {
-            if (videoTrack) {
-                onMediaStop(videoTrack)
-                    .then(() => {
-                        videoTrack = null;
-                    });
-            }
+            if (videoTrack)
+                onMediaStop(videoTrack);
 
-            if (audioTrack) {
-                onMediaStop(audioTrack)
-                    .then(() => {
-                        audioTrack = null;
-                    });
-            }
+            if (audioTrack)
+                onMediaStop(audioTrack);
+
+            videoTrack = null;
+            audioTrack = null;
         };
     }, [onMediaStart, onMediaStop]);
 
+    const contextValue = useMemo(() => ({
+        audioPlayerRef: handleAudioRef,
+        videoPlayerRef,
+        handleVideo
+    }), [
+        videoPlayerRef,
+        handleAudioRef,
+        handleVideo
+    ]);
+
     return (
-        <>
+        <MediaContext.Provider value={contextValue}>
             <Switch>
-                <Route exact path="/content/courses">
+                <Route exact path="/courses">
                     <div className="page">
                         <CoursesGrid courses={enrollment.courses} />
                     </div>
                 </Route>
-                <Route exact path="/content/courses/:course" component={Course} />
-                <Route exact path="/content/courses/:course/units/:unit" component={Unit} />
-                <Route exact path="/content/courses/:course/lessons/:lesson" component={Lesson} />
-                <Route
-                    exact
-                    path="/content/courses/:course/exercises/:exercise"
-                    render={props => (
-                        <Exercise
-                            {...props}
-                            user={user}
-                            enrollment={enrollment}
-                            sharedState={sharedState}
-                            updateSharedState={updateSharedState}
-                        />
-                    )}
-                />
+                <Route exact path="/courses/:course" component={Course} />
+                <Route exact path="/courses/:course/units/:unit" component={Unit} />
+                <Route exact path="/courses/:course/lessons/:lesson" component={Lesson} />
             </Switch>
-
-            <div>
-                <div>
-                    <AudioPlayer
-                        ref={audioPlayerRef}
-                        src="https://storage.yandexcloud.net/sayyesonline/courses/625eaaa5f3af9753742e89a8/audios/b7a1478a-ec6b-41e9-818f-f200eff2fa5f.mp3"
-                        crossOrigin="anonymous"
-                    />
-                    <Button
-                        content="Play audio for everyone"
-                        onClick={handleAudio}
-                    />
-                </div>
-
-                <div>
-                    <VideoPlayer
-                        ref={videoPlayerRef}
-                        src="https://storage.yandexcloud.net/sayyesonline/courses/625eaaa5f3af9753742e89a8/videos/ts1e1a1.mp4"
-                        crossOrigin="anonymous"
-                    />
-                    <Button
-                        content="Play video for everyone"
-                        onClick={handleVideo}
-                    />
-                </div>
-            </div>
 
             <BottomSheet
                 open={!!audio}
@@ -178,6 +150,6 @@ export default function ContentRouter({
                 }
                 onClose={() => setVideo(null)}
             />
-        </>
+        </MediaContext.Provider>
     );
 }
