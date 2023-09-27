@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { useUser } from 'shared/hooks/user';
 import AppHeader from 'shared/components/app-header';
 import AppContent from 'shared/components/app-content';
-import AppAlert from 'shared/components/app-alert';
+import AppNotification from 'shared/components/app-notification';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import NavBar from 'shared/components/nav-bar';
 
@@ -43,7 +43,7 @@ export default function App() {
                 </Switch>
             </AppContent>
 
-            {/* <AppAlert /> */}
+            <AppNotification />
         </div>
     );
 }
