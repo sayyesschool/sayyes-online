@@ -1,11 +1,11 @@
 import Input from '../input/Input';
 
-import FromField from './FormField';
+import FormField from './FormField';
 
-export default function FormInput({ label, ...props }) {
+export default function FormInput({ label, message, ...props }) {
     return (
-        <FromField label={label}>
+        <FormField label={label} message={message}>
             <Input {...props} />
-        </FromField>
+        </FormField>
     );
 }
