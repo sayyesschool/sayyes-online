@@ -21,6 +21,7 @@ module.exports = [
     env => config({ name: 'class', env }),
     env => config({ name: 'cms', env }),
     env => config({ name: 'crm', env }),
+    env => config({ name: 'front', env, override: { entry: './src/front/index.js' } }),
     env => config({ name: 'lms', env })
 ];
 
@@ -155,6 +156,7 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
                 'shared/data': path.resolve(__dirname, 'src', 'shared', 'data'),
                 'shared/libs': path.resolve(__dirname, 'src', 'shared', 'libs'),
                 'shared/utils': path.resolve(__dirname, 'src', 'shared', 'utils'),
+                'shared/styles': path.resolve(__dirname, 'src', 'shared', 'styles'),
                 'shared': path.resolve(__dirname, 'src', 'shared', 'client'),
                 'lms': path.resolve(__dirname, 'src', 'lms', 'app')
             },
