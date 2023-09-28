@@ -32,6 +32,9 @@ export default function LessonDetails({ lesson }) {
                         <Text type="body2">Дата и время</Text>
                         <Text type="body1">{datetime(lesson.date).format('DD.MM.YYYY, HH:mm')}</Text>
                     </>}
+                    end={
+                        <Text type="body3">{`Московское время: ${datetime(lesson.date).utc().add(3, 'hours').format('HH:mm')}`}</Text>
+                    }
                 />
 
                 <List.Item
