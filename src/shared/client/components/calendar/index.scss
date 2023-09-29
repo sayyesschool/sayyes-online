@@ -49,34 +49,29 @@
             }
         }
     }
+}
 
-    .CalendarEvent {
-        --Chip-radius: 0px;
+.CalendarEvent {
+    --Chip-radius: 0px;
 
-        position: absolute;
-        top: 0;
-        width: 100%;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    min-height: auto;
+    padding: 0 8px;
+    z-index: 1;
+    cursor: pointer;
+
+    .ui-Chip-label {
         height: 100%;
-        max-width: 100%;
-        min-height: auto;
-        padding: 0 8px;
-        z-index: 1;
-        cursor: pointer;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        align-content: center;
 
-        .ui-Chip-label {
-            height: 100%;
-        }
-
-        &__content {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        &__title {
-            margin-right: 8px;
+        .ui-Text {
+            line-height: 1;
         }
     }
 }
