@@ -5,10 +5,10 @@ import ErrorBoundary from 'shared/components/error-boundary';
 import { StoreProvider } from 'shared/store';
 import { ThemeProvider, theme } from 'shared/theme';
 
+import './index.scss';
+
 import store from './store';
 import App from './components';
-
-import './index.scss';
 
 render(
     <ErrorBoundary>
