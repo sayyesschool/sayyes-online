@@ -1,5 +1,6 @@
 const { Router } = require('express');
 
+const assignments = require('./assignments');
 const courses = require('./courses');
 const enrollments = require('./enrollments');
 const lessons = require('./lessons');
@@ -10,8 +11,9 @@ const progress = require('./progress');
 module.exports = context => {
     const router = Router();
 
-    router.use('/enrollments', enrollments(context));
+    router.use('/assignments', assignments(context));
     router.use('/courses', courses(context));
+    router.use('/enrollments', enrollments(context));
     router.use('/lessons', lessons(context));
     router.use('/materials', materials(context));
     router.use('/posts', posts(context));

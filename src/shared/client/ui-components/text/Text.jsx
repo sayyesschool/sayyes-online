@@ -6,6 +6,8 @@ import JoyTypography from '@mui/joy/Typography';
 const Text = forwardRef(({
     content,
     type,
+    start,
+    end,
 
     as,
     className,
@@ -20,6 +22,8 @@ const Text = forwardRef(({
             component={as}
             className={classNames}
             level={type}
+            startDecorator={start}
+            endDecorator={end}
             {...props}
         >
             {children}

@@ -28,6 +28,7 @@ module.exports = ({
             .populate('teachers', 'firstname lastname imageUrl zoomUrl')
             .populate('managers', 'firstname lastname imageUrl email phone')
             .populate('lessons', 'title status date duration')
+            .populate('assignments')
             .then(enrollment => {
                 if (!enrollment) {
                     const error = new Error('Обучение не найдено');

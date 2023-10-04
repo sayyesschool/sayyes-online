@@ -1,7 +1,7 @@
 import { forwardRef, useCallback, useRef, useState } from 'react';
 import classnames from 'classnames';
 
-import MuiSnackbar from '@mui/base/Snackbar';
+import { Snackbar as MuiSnackbar } from '@mui/base/Snackbar';
 import Alert from '../alert';
 
 const Snackbar = forwardRef(({

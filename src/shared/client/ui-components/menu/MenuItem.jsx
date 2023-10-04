@@ -1,11 +1,11 @@
 import { forwardRef, useCallback, useState } from 'react';
 import classnames from 'classnames';
 
-import Popup from '@mui/base/Popper';
-import ListDivider from '@mui/joy/ListDivider';
-import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import JoyMenuItem from '@mui/joy/MenuItem';
 import MenuList from '@mui/joy/MenuList';
+
+import { ListDivider, ListItemDecorator } from '../list';
+import Popover from '../popover';
 
 const MenuItem = forwardRef(({
     value,
@@ -65,7 +65,7 @@ const MenuItem = forwardRef(({
             {children}
 
             {items &&
-                <Popup
+                <Popover
                     key="popup"
                     open={open}
                     anchorEl={anchorElement}
@@ -91,7 +91,7 @@ const MenuItem = forwardRef(({
                                 />
                         )}
                     </MenuList>
-                </Popup>
+                </Popover>
             }
         </JoyMenuItem>
     );

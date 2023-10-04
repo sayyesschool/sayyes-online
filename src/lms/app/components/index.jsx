@@ -7,10 +7,11 @@ import AppNotification from 'shared/components/app-notification';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import NavBar from 'shared/components/nav-bar';
 
+import Assignments from 'app/components/assignments';
+import Courses from 'app/components/courses';
+import Enrollments from 'app/components/enrollments';
 import LearnerHome from 'app/components/home/learner';
 import TeacherHome from 'app/components/home/teacher';
-import Enrollments from 'app/components/enrollments';
-import Courses from 'app/components/courses';
 import Materials from 'app/components/materials';
 import navItems from 'app/data/nav';
 
@@ -37,6 +38,7 @@ export default function App() {
             <AppContent>
                 <Switch>
                     <Route exact path="/" component={PageHomeByRole[user.role]} />
+                    <Route path="/assignments" component={Assignments} />
                     <Route path="/courses" component={Courses} />
                     <Route path="/enrollments" component={Enrollments} />
                     {/* <Route path="/materials" component={Materials} /> */}

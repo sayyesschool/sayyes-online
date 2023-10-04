@@ -7,6 +7,7 @@ const Assignment = new Schema({
     learnerId: { type: Schema.Types.ObjectId, required: true },
     exercises: { type: [Schema.Types.ObjectId], ref: 'Exercise' },
     status: { type: String, enum: ['assigned', 'submitted', 'completed'] },
+    title: { type: String },
     content: { type: String },
     dueAt: { type: Date }
 }, {

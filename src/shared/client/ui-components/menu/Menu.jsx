@@ -1,10 +1,11 @@
 import { forwardRef, useCallback } from 'react';
 import classnames from 'classnames';
 
-import ClickAwayListener from '@mui/base/ClickAwayListener';
-import Popup from '@mui/base/Popper';
+import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 import MenuList from '@mui/joy/MenuList';
-import ListDivider from '@mui/joy/ListDivider';
+
+import { ListDivider } from '../list';
+import Popover from '../popover';
 
 import MenuItem from './MenuItem';
 
@@ -31,7 +32,7 @@ const Menu = forwardRef(({
     const classNames = classnames('ui-Menu');
 
     return (
-        <Popup
+        <Popover
             anchorEl={anchorElement}
             open={open}
             modifiers={[
@@ -63,7 +64,7 @@ const Menu = forwardRef(({
                     )}
                 </MenuList>
             </ClickAwayListener>
-        </Popup>
+        </Popover>
     );
 });
 

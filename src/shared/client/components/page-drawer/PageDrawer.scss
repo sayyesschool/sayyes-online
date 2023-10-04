@@ -1,6 +1,10 @@
-.PageDrawer {
-    position: fixed;
-    top: 64px;
-    height: calc(100% - 64px);
-    z-index: 3;
+.PageDrawer.ui-Drawer {
+    left: unset;
+
+    .ui-Drawer-content {
+        --Drawer-horizontalSize: 420px;
+
+        top: 56px;
+        height: calc(100% - 56px);
+    }
 }

@@ -121,10 +121,10 @@ Enrollment.virtual('lessons', {
     }
 });
 
-Enrollment.virtual('posts', {
-    ref: 'Post',
+Enrollment.virtual('assignments', {
+    ref: 'Assignment',
     localField: '_id',
-    foreignField: 'enrollment',
+    foreignField: 'enrollmentId',
     options: {
         sort: { date: -1 }
     }

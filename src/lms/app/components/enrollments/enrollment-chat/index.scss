@@ -1,0 +1,13 @@
+.EnrollmentChat {
+    height: 100%;
+
+    .PageSection {
+        &__header {
+
+        }
+
+        &__content {
+            height: calc(100% - 48px);
+        }
+    }
+}

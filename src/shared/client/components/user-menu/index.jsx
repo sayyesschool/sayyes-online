@@ -1,5 +1,4 @@
-import Avatar from 'shared/ui-components/avatar';
-import MenuButton from 'shared/ui-components/menu-button';
+import { Avatar, MenuButton } from 'shared/ui-components';
 
 import './index.scss';
 

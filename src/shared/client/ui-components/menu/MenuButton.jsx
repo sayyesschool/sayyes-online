@@ -1,6 +1,6 @@
 import { cloneElement, forwardRef, isValidElement, useCallback, useState } from 'react';
 
-import Menu from '../menu';
+import Menu from './Menu';
 
 const MenuButton = forwardRef(({
     trigger,
@@ -19,7 +19,8 @@ const MenuButton = forwardRef(({
 
         setOpen(open => !open);
         setAnchorElement(event.currentTarget);
-    }, [disabled]);
+        trigger?.props?.onClick?.(event);
+    }, [disabled, trigger]);
 
     const handleClose = useCallback(() => {
         setOpen(false);

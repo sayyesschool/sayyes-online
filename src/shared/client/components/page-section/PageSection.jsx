@@ -16,10 +16,10 @@ export default function PageSection({
     className,
     ...props
 }) {
-    const classNames = classnames('PageSection', {
+    const classNames = classnames(className, 'PageSection', {
         'PageSection--compact': compact,
         'PageSection--plain': plain
-    }, className);
+    });
 
     return (
         <Surface

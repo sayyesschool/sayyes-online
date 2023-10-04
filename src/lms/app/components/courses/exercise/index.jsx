@@ -1,8 +1,9 @@
 import { useCallback, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { useBoolean } from 'shared/hooks/state';
 import Content from 'shared/components/content';
-import { Avatar, Button, Card } from 'shared/ui-components';
+import { Avatar, Button, Card, Chip, IconButton, Flex, MenuButton } from 'shared/ui-components';
 
 import ExerciseContent from 'lms/components/courses/exercise-content';
 // import ExerciseComments from 'app/components/courses/exercise-comments';
@@ -13,14 +14,21 @@ export default function Exercise({
     index,
     user,
     exercise,
+    assignments,
+    showMenu,
+    showRemoveFromAssignment,
     onProgressChange,
+    onAddToAssignment,
+    onRemoveFromAssignment,
     onComplete
 }) {
     const [state, setState] = useState(exercise.state || {});
-    const [isChecked, setChecked] = useBoolean(false);
     const [isCollapsed, toggleCollapsed] = useBoolean(true);
     const [isCommenting, toggleCommenting] = useBoolean(false);
+    const [isChecked, setChecked] = useBoolean(false);
     const [isSaving, setSaving] = useBoolean(false);
+
+    console.log('Exercise assignments', assignments);
 
     const handleSave = useCallback(() => {
         setSaving(true);
@@ -46,6 +54,16 @@ export default function Exercise({
             [itemId]: typeof state === 'function' ? state(oldState[itemId]) : state
         }));
     }, []);
+
+    const handleAddToAssignment = useCallback((event, assignment) => {
+        event.stopPropagation();
+        onAddToAssignment(exercise, assignment);
+    }, [exercise, onAddToAssignment]);
+
+    const handleRemoveFromAssignment = useCallback((event, assignment) => {
+        event.stopPropagation();
+        onRemoveFromAssignment(exercise, assignment);
+    }, [exercise, onRemoveFromAssignment]);
 
     const handleCreateComment = useCallback((_, data) => {
         return onCreateComment(exercise.id, data)
@@ -84,6 +102,56 @@ export default function Exercise({
                     content={exercise.description}
                     html
                 />
+
+                {assignments?.length > 0 && (
+                    <Flex alignItems="center">
+                        {assignments
+                            .filter(assignment => assignment.exercises.includes(exercise.id))
+                            .map(assignment =>
+                                <Chip
+                                    key={assignment.id}
+                                    as={Link}
+                                    to={assignment.uri}
+                                    content={assignment.title}
+                                    color="primary"
+                                    size="sm"
+                                />
+                            )
+                        }
+                    </Flex>
+                )}
+
+                {showMenu &&
+                    <MenuButton
+                        trigger={
+                            <IconButton
+                                icon="assignment_add"
+                                title="Добавить в задание"
+                                onClick={event => event.stopPropagation()}
+                            />
+                        }
+                        items={(assignments || [])
+                            .map(assignment => ({
+                                key: assignment.id,
+                                content: assignment.title,
+                                onClick: event => handleAddToAssignment(event, assignment)
+                            }))
+                            .concat({
+                                key: 'new',
+                                content: 'Новое задание',
+                                onClick: event => handleAddToAssignment(event)
+                            })
+                        }
+                    />
+                }
+
+                {showRemoveFromAssignment &&
+                    <IconButton
+                        icon="remove"
+                        title="Удалить из задания"
+                        onClick={handleRemoveFromAssignment}
+                    />
+                }
             </header>
 
             {!isCollapsed && <>

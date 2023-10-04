@@ -1,9 +1,11 @@
+import { useBoolean } from 'shared/hooks/state';
 import { useEnrollment } from 'shared/hooks/enrollments';
 import { useUser } from 'shared/hooks/user';
-import { Button, Flex, Grid, MenuButton } from 'shared/ui-components';
+import { Button, Flex, IconButton, Grid, MenuButton } from 'shared/ui-components';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 
+import EnrollmentAssignments from 'app/components/enrollments/enrollment-assignments';
 import EnrollmentClient from 'app/components/enrollments/enrollment-client';
 import EnrollmentChat from 'app/components/enrollments/enrollment-chat';
 import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';
@@ -20,6 +22,8 @@ export default function EnrollmentPage({ match }) {
     const [enrollment] = useEnrollment(match.params.id);
     const [user] = useUser();
 
+    const [isDrawerOpen, toggleDrawerOpen] = useBoolean(false);
+
     if (!enrollment) return <LoadingIndicator fullscreen />;
 
     const isLearner = user.role === 'client';
@@ -27,6 +31,14 @@ export default function EnrollmentPage({ match }) {
 
     return (
         <Page className="EnrollmentPage">
+            <Page.Drawer open={isDrawerOpen}>
+                <EnrollmentChat
+                    enrollment={enrollment}
+                    user={user}
+                    onClose={toggleDrawerOpen}
+                />
+            </Page.Drawer>
+
             <Page.Header
                 title={enrollment.domainLabel}
                 actions={[
@@ -36,6 +48,14 @@ export default function EnrollmentPage({ match }) {
                         href={enrollment.classUrl}
                         icon="video_call"
                         content="Перейти в класс"
+                        variant="soft"
+                    />,
+                    <IconButton
+                        key="chat"
+                        icon="chat"
+                        title="Чат"
+                        variant="soft"
+                        onClick={toggleDrawerOpen}
                     />,
                     (enrollment.teachers[0]?.zoomUrl &&
                         <MenuButton
@@ -64,9 +84,9 @@ export default function EnrollmentPage({ match }) {
             <Page.Content>
                 <Grid spacing={2}>
                     <Grid.Item lg={8}>
-                        <EnrollmentChat
+                        <EnrollmentAssignments
                             enrollment={enrollment}
-                            user={user}
+                            readonly={isLearner}
                         />
                     </Grid.Item>
 

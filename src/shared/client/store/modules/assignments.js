@@ -1,9 +1,10 @@
 import { createAction, createReducer, combineReducers } from 'shared/store/helpers';
 
-export const getAssignments = createAction('GET_ASSIGNMENTS', () => ({
+export const getAssignments = createAction('GET_ASSIGNMENTS', query => ({
     request: {
         method: 'get',
-        path: 'assignments'
+        path: 'assignments',
+        query
     }
 }));
 
@@ -77,9 +78,12 @@ export const actions = {
 export const assignmentsReducer = createReducer(null, {
     [getAssignments]: (state, action) => action.data,
     [createAssignment]: (state, action) => state?.concat(action.data) || [action.data],
+    [updateAssignment]: (state, action) => state?.map(assignment =>
+        assignment.id !== action.data.id ? assignment :
+            { ...assignment, ...action.data }
+    ),
     [deleteAssignment]: (state, action) => state?.map(assignment =>
-        assignment.id !== action.data.id ?
-            assignment :
+        assignment.id !== action.data.id ? assignment :
             { ...assignment, ...action.data }
     )
 });
