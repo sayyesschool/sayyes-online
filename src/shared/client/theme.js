@@ -37,6 +37,7 @@ const theme = extendTheme({
         JoyListItemButton: {
             styleOverrides: {
                 root: {
+                    flex: 1,
                     gap: '.5rem'
                 }
             }

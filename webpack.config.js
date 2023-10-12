@@ -5,7 +5,7 @@ const autoprefixer = require('autoprefixer');
 const CssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const SentryWebpackPlugin = require('@sentry/webpack-plugin');
+//const SentryWebpackPlugin = require('@sentry/webpack-plugin');
 
 dotenv.config();
 
@@ -110,12 +110,12 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
             new CssExtractPlugin({
                 filename: `css/${name}.[name].css`
             }),
-            env.production ? new SentryWebpackPlugin({
-                org: 'say-yes',
-                project: 'app',
-                include: './public/js',
-                authToken: SENTRY_AUTH_TOKEN
-            }) : undefined,
+            // env.production ? new SentryWebpackPlugin({
+            //     org: 'say-yes',
+            //     project: 'app',
+            //     include: './public/js',
+            //     authToken: SENTRY_AUTH_TOKEN
+            // }) : undefined,
             ...plugins
         ].filter(Boolean),
 

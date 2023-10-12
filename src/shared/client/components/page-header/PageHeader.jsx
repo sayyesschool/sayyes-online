@@ -85,7 +85,12 @@ export default function PageHeader({
                 {actions &&
                     <div className="PageHeader__actions">
                         {actions?.filter(a => !!a).map(action => isValidElement(action) ? action : ((action.icon && !action.content) ?
-                            <IconButton color="neutral" size="sm" variant="soft" {...action} /> :
+                            <IconButton
+                                color="neutral"
+                                size="sm"
+                                variant="soft"
+                                {...action}
+                            /> :
                             <Button {...action} />
                         ))}
                     </div>

@@ -1,3 +1,5 @@
+@use 'sass:selector';
+
 .PageSection {
     border-radius: 8px;
 
@@ -49,5 +51,9 @@
     &--plain {
         background-color: transparent !important;
         overflow: visible;
+    }
+
+    &#{selector.unify('#{&}--compact', '#{&}--plain')} &__header {
+        padding: 8px 0;
     }
 }

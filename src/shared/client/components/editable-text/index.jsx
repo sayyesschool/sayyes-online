@@ -1,15 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import classnames from 'classnames';
 
 import { useBoolean } from 'shared/hooks/state';
-import { IconButton } from 'shared/ui-components';
+import { ButtonGroup, IconButton, Text } from 'shared/ui-components';
 
 import './index.scss';
 
 export default function EditableText({
     content,
-    required,
     onChange = Function.prototype,
-    onUpdate = Function.prototype
+    onUpdate = Function.prototype,
+
+    className,
+    ...props
 }) {
     const inputRef = useRef();
 
@@ -35,46 +38,53 @@ export default function EditableText({
         if (isEditing) inputRef.current?.focus();
     }, [isEditing]);
 
-    return isEditing ? (
-        <span className="EditableText">
-            <span className="EditableText__input">
-                <span>{value}</span>
+    const classNames = classnames(className, 'EditableText', {
+        'EditableText--editing': isEditing
+    });
 
-                <input
-                    ref={inputRef}
-                    value={value}
-                    required={required}
-                    onChange={handleChange}
+    return (
+        <Text
+            className={classNames}
+            content={!isEditing ? value :
+                <span className="EditableText__input">
+                    <span>{value}</span>
+
+                    <input
+                        ref={inputRef}
+                        value={value}
+                        required
+                        onChange={handleChange}
+                    />
+                </span>
+            }
+            end={isEditing ?
+                <ButtonGroup variant="plain" spacing={1}>
+                    <IconButton
+                        icon="close"
+                        color="neutral"
+                        size="small"
+                        variant="plain"
+                        onClick={toggleEditing}
+                    />
+
+                    <IconButton
+                        icon="check"
+                        color="neutral"
+                        size="small"
+                        variant="plain"
+                        onClick={handleUpdate}
+                    />
+                </ButtonGroup>
+                :
+                <IconButton
+                    icon="edit"
+                    color="neutral"
+                    size="small"
+                    variant="plain"
+                    onClick={toggleEditing}
                 />
-            </span>
-
-            <IconButton
-                icon="close"
-                color="neutral"
-                size="small"
-                variant="plain"
-                onClick={toggleEditing}
-            />
-
-            <IconButton
-                icon="check"
-                color="neutral"
-                size="small"
-                variant="plain"
-                onClick={handleUpdate}
-            />
-        </span>
-    ) : (
-        <span className="EditableText">
-            <span>{value}</span>
-
-            <IconButton
-                icon="edit"
-                color="neutral"
-                size="small"
-                variant="plain"
-                onClick={toggleEditing}
-            />
-        </span>
+            }
+            {...props}
+        />
     );
 }

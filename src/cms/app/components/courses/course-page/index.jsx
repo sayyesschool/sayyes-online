@@ -6,7 +6,7 @@ import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import EditableText from 'shared/components/editable-text';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import { Grid } from 'shared/ui-components';
+import { Heading, Grid } from 'shared/ui-components';
 
 import CourseDescription from 'app/components/courses/course-description';
 import CourseImage from 'app/components/courses/course-image';
@@ -45,6 +45,8 @@ export default function CoursePage({ match, history }) {
             <Page.Header
                 title={
                     <EditableText
+                        as={Heading}
+                        type="h2"
                         content={course.title}
                         required
                         onUpdate={handleUpdateCourseTitle}
