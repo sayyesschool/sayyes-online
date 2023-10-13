@@ -8,10 +8,10 @@ import './index.scss';
 
 export default function EnrollmentChat({ enrollment, user, onClose }) {
     const participantsById = useMemo(() => {
-        const { client, teachers: [teacher] } = enrollment;
+        const { learner, teacher } = enrollment;
 
         return {
-            [client.id]: client.fullname,
+            [learner.id]: learner.fullname,
             [teacher.id]: teacher.fullname
         };
     });

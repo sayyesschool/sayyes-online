@@ -34,17 +34,13 @@ export default function EnrollmentCourses({ enrollment, readonly }) {
         toggleConfirmationDialogOpen(true);
     }, [enrollment]);
 
-    const enrollmentCourses = courses
-        ?.filter(course => enrollment.courses.includes(course.id))
-        .map(course => {
-            return {
-                ...course,
-                url: course.url + `?enrollmentId=${enrollment.id}`
-            };
-        });
+    const enrollmentCourses = enrollment.courses.map(course => ({
+        ...course,
+        url: course.url + `?enrollmentId=${enrollment.id}`
+    }));
 
     const items = courses
-        ?.filter(course => !enrollment.courses.includes(course.id))
+        ?.filter(course => !enrollment.courseIds.includes(course.id))
         .map(course => ({
             key: course.id,
             media: <img src={course.imageUrl} />,

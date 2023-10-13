@@ -21,7 +21,7 @@ const UserSchema = require('./user');
 const User = model('User', UserSchema);
 const Admin = User.discriminator('Admin', UserSchema.Admin, 'admin');
 const Client = User.discriminator('Client', UserSchema.Client, 'client');
-const Learner = User.discriminator('Learner', UserSchema.Learner, 'student');
+const Learner = User.discriminator('Learner', UserSchema.Learner, 'learner');
 const Manager = User.discriminator('Manager', UserSchema.Manager, 'manager');
 const Teacher = User.discriminator('Teacher', UserSchema.Teacher, 'teacher');
 

@@ -1,17 +1,16 @@
-const mongoose = require('mongoose');
-
-const { Schema } = mongoose;
+const { Schema } = require('mongoose');
 
 const labels = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
-const WeekSchedule = new Schema({
+const Schedule = new Schema({
+    date: { type: String },
     day: { type: Number, min: 0, max: 6 },
     from: { type: String },
     to: { type: String }
 });
 
-WeekSchedule.virtual('label').get(function() {
-    let result = labels[this.day];
+Schedule.virtual('label').get(function() {
+    let result = this.date || labels[this.day];
 
     if (this.from) result += ` ${this.from}`;
     if (this.to) result += `-${this.to}`;
@@ -19,4 +18,4 @@ WeekSchedule.virtual('label').get(function() {
     return result;
 });
 
-module.exports = WeekSchedule;
+module.exports = Schedule;

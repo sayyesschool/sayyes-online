@@ -1,36 +1,45 @@
 import { useCallback, useState } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
+import { useAssignmentActions } from 'shared/hooks/assignments';
 import AssignmentsList from 'shared/components/assignments-list';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
+import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
 import { IconButton } from 'shared/ui-components';
 
-import { useActions } from 'app/store/hooks';
+import AssignmentForm from 'app/components/assignments/assignment-form';
 
-export default function EnrollmentAssignments({ enrollment, readonly }) {
-    const enrollmentActions = useActions('enrollments');
+export default function EnrollmentAssignments({
+    enrollment,
+    readonly
+}) {
+    const actions = useAssignmentActions();
 
     const [assignmentId, setAssignmentId] = useState();
+    const [isCreateFormOpen, toggleCreateFormOpen] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
-    const handleCreateAssignment = useCallback(assignmentId => {
-        const courses = enrollment.courses.concat(assignmentId);
+    const handleCreateAssignment = useCallback(data => {
+        data.enrollmentId = enrollment.id;
+        data.teacherId = enrollment.teacherId;
+        data.learnerId = enrollment.learnerId;
 
-        return enrollmentActions.updateEnrollment(enrollment.id, { courses });
+        console.log('createAssignment', enrollment, data);
+
+        return actions.createAssignment(data)
+            .then(() => toggleCreateFormOpen(false));
     }, [enrollment]);
 
     const handleDeleteAssignment = useCallback(() => {
-        const courses = enrollment.courses.filter(id => id !== assignmentId);
-
-        return enrollmentActions.updateEnrollment(enrollment.id, { courses })
+        return actions.deleteAssignment(assignmentId)
             .then(() => toggleConfirmationDialogOpen(false));
-    }, [enrollment, assignmentId]);
+    }, [assignmentId]);
 
     const handleDeleteAssignmentRequest = useCallback(assignmentId => {
         setAssignmentId(assignmentId);
         toggleConfirmationDialogOpen(true);
-    }, [enrollment]);
+    }, []);
 
     return (
         <PageSection
@@ -41,10 +50,10 @@ export default function EnrollmentAssignments({ enrollment, readonly }) {
                     icon="add"
                     title="Создать задание"
                     size="sm"
+                    onClick={toggleCreateFormOpen}
                 />
             }
             compact
-            plain
         >
             {enrollment.assignments?.length > 0 &&
                 <AssignmentsList
@@ -52,6 +61,18 @@ export default function EnrollmentAssignments({ enrollment, readonly }) {
                     onRemove={!readonly && handleDeleteAssignmentRequest}
                 />
             }
+
+            <FormDialog
+                form="new-assignment-form"
+                title="Новое задание"
+                open={isCreateFormOpen}
+                onClose={toggleCreateFormOpen}
+            >
+                <AssignmentForm
+                    id="new-assignment-form"
+                    onSubmit={handleCreateAssignment}
+                />
+            </FormDialog>
 
             <ConfirmationDialog
                 title="Подтвердите действие"

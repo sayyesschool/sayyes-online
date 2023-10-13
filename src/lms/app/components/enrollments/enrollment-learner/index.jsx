@@ -6,14 +6,14 @@ import DetailsList from 'shared/components/details-list';
 import PageSection from 'shared/components/page-section';
 import { Avatar, IconButton, List, MenuButton, } from 'shared/ui-components';
 
-export default function EnrollmentClient({ enrollment: { client } }) {
+export default function EnrollmentClient({ enrollment: { learner } }) {
     const data = useContext(DataContext);
 
     const [isOpen, toggleOpen] = useBoolean(false);
 
     return (
         <PageSection
-            className="EnrollmentClient"
+            className="EnrollmentLearner"
             title="Ученик"
             actions={
                 <IconButton
@@ -30,11 +30,11 @@ export default function EnrollmentClient({ enrollment: { client } }) {
                 <List.Item
                     decorator={
                         <Avatar
-                            imageUrl={client.imageUrl}
-                            text={client.initials}
+                            imageUrl={learner.imageUrl}
+                            text={learner.initials}
                         />
                     }
-                    content={client.fullname}
+                    content={learner.fullname}
                     endAction={
                         <MenuButton
                             trigger={
@@ -49,20 +49,20 @@ export default function EnrollmentClient({ enrollment: { client } }) {
                                 {
                                     key: 'whatsapp',
                                     element: 'a',
-                                    href: `https://wa.me/${client.phone}`, target: '_blank',
+                                    href: `https://wa.me/${learner.phone}`, target: '_blank',
                                     content: 'Написать в What\'s App'
                                 },
                                 {
                                     key: 'email',
                                     element: 'a',
-                                    href: `mailto:${client.email}`,
+                                    href: `mailto:${learner.email}`,
                                     target: '_blank',
                                     content: 'Написать письмо'
                                 },
                                 {
                                     key: 'email',
                                     element: 'a',
-                                    href: `tel:${client.phone}`,
+                                    href: `tel:${learner.phone}`,
                                     target: '_blank',
                                     content: 'Позвонить'
                                 }
@@ -80,48 +80,48 @@ export default function EnrollmentClient({ enrollment: { client } }) {
                                 key: 'phone',
                                 icon: 'phone',
                                 header: 'Телефон',
-                                content: client.phone || '[Не указан]'
+                                content: learner.phone || '[Не указан]'
                             },
                             {
                                 key: 'email',
                                 icon: 'email',
                                 header: 'Электронная почта',
-                                content: client.email || '[Не указан]'
+                                content: learner.email || '[Не указан]'
                             },
                             {
                                 key: 'dob',
                                 icon: 'cake',
                                 header: 'Дата рождения',
-                                content: client.dob ? moment(client.dob).format('DD.MM.YYYY') : '[Не указана]'
+                                content: learner.dob ? moment(learner.dob).format('DD.MM.YYYY') : '[Не указана]'
                             },
                             {
                                 key: 'timezone',
                                 icon: 'public',
                                 header: 'Часовой пояс',
-                                content: client.timezone ? data.timezones.get(client.timezone) : '[Не указан]'
+                                content: learner.timezone ? data.timezones.get(learner.timezone) : '[Не указан]'
                             },
                             {
                                 key: 'address',
                                 icon: 'location_city',
                                 header: 'Адрес',
-                                content: client.address || '[Не указан]'
+                                content: learner.address || '[Не указан]'
                             },
                             {
                                 key: 'occupation',
                                 icon: 'work',
                                 header: 'Род деятельности',
-                                content: client.occupation || '[Не указана]'
+                                content: learner.occupation || '[Не указана]'
                             },
                             {
                                 key: 'interests',
                                 icon: 'golf_course',
                                 header: 'Интересы',
-                                content: client.interests || '[Не указаны]'
+                                content: learner.interests || '[Не указаны]'
                             }
                         ]}
                     />
 
-                    {client.note}
+                    {learner.note}
                 </>
             }
         </PageSection>

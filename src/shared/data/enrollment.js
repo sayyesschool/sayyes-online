@@ -1,22 +1,28 @@
-const constants = require('../../core/models/enrollment/constants');
+const { Status, Type } = require('../../core/models/enrollment/constants');
 
-const defaultEnrollment = {
-    status: 'processing',
-    domain: 'general',
-    type: '',
-    format: '',
-    age: '',
-    teacherType: '',
-    level: '',
-    purpose: '',
-    experience: '',
-    preferences: '',
-    lessonDuration: 50,
-    trialLessonSchedule: [],
-    schedule: [],
-    note: '',
-    teachers: [],
-    managers: []
+const StatusIcon = {
+    [Status.Active]: 'school',
+    [Status.Canceled]: 'cancel',
+    [Status.Completed]: 'check_circle',
+    [Status.Payment]: 'payment',
+    [Status.Postponed]: 'next_plan',
+    [Status.Processing]: 'pending',
+    [Status.Trial]: 'event_available'
+};
+
+const StatusLabel = {
+    [Status.Active]: 'Активное',
+    [Status.Canceled]: 'Отменено',
+    [Status.Completed]: 'Завершено',
+    [Status.Payment]: 'Оплата',
+    [Status.Postponed]: 'Отложено',
+    [Status.Processing]: 'В обработке',
+    [Status.Trial]: 'Пробный урок'
+};
+
+const TypeLabel = {
+    [Type.Individual]: 'Индивидуально',
+    [Type.Group]: 'В группе'
 };
 
 const statusOptions = Object.entries(constants.StatusLabel).map(([key, value]) => ({
@@ -25,16 +31,6 @@ const statusOptions = Object.entries(constants.StatusLabel).map(([key, value]) =
     label: value,
     content: value
 }));
-
-const domainOptions = [
-    { key: 'null', value: '', label: '', content: '' },
-    ...Object.entries(constants.DomainLabel).map(([key, value]) => ({
-        key,
-        value: key,
-        label: value,
-        content: value
-    }))
-];
 
 const typeOptions = [
     { key: 'null', value: '', label: '', content: '' },
@@ -46,65 +42,12 @@ const typeOptions = [
     }))
 ];
 
-const formatOptions = [
-    { key: 'null', value: '', label: '', content: '' },
-    ...Object.entries(constants.FormatLabel).map(([key, value]) => ({
-        key,
-        value: key,
-        label: value,
-        content: value
-    }))
-];
-
-const ageOptions = [
-    { key: 'null', value: '', label: '', content: '' },
-    ...Object.entries(constants.AgeLabel).map(([key, value]) => ({
-        key,
-        value: key,
-        label: value,
-        content: value
-    }))
-];
-
-const levelOptions = [
-    { key: 'null', value: '', label: '', content: '' },
-    ...Object.entries(constants.LevelLabel).map(([key, value]) => ({
-        key,
-        value: key,
-        label: value,
-        content: value
-    }))
-];
-
-const purposeOptions = [
-    { key: 'null', value: '', label: '', content: '' },
-    ...Object.entries(constants.PurposeLabel).map(([key, value]) => ({
-        key,
-        value: key,
-        label: value,
-        content: value
-    }))
-];
-
-const teacherTypeOptions = [
-    { key: 'null', value: '', label: '', content: '' },
-    ...Object.entries(constants.TeacherTypeLabel).map(([key, value]) => ({
-        key,
-        value: key,
-        label: value,
-        content: value
-    }))
-];
-
 module.exports = {
     ...constants,
+    StatusIcon,
+    StatusLabel,
+    TypeLabel,
     defaultEnrollment,
     statusOptions,
-    domainOptions,
     typeOptions,
-    formatOptions,
-    ageOptions,
-    levelOptions,
-    purposeOptions,
-    teacherTypeOptions
 };

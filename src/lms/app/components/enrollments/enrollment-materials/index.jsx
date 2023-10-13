@@ -12,7 +12,7 @@ export default function EnrollmentMaterials({ enrollment, readonly }) {
     const enrollmentActions = useActions('enrollments');
 
     const handleAddMaterial = useCallback(materialId => {
-        const materials = enrollment.materials.concat(materialId);
+        const materials = enrollment.materialIds.concat(materialId);
 
         return enrollmentActions.updateEnrollment(enrollment.id, { materials });
     }, [enrollment]);
@@ -26,11 +26,8 @@ export default function EnrollmentMaterials({ enrollment, readonly }) {
         return enrollmentActions.updateEnrollment(enrollment.id, { materials });
     }, [enrollment]);
 
-    const enrollmentMaterials = materials
-        ?.filter(material => enrollment.materials.includes(material.id));
-
     const items = materials
-        ?.filter(material => !enrollment.materials.includes(material.id))
+        ?.filter(material => !enrollment.materialIds.includes(material.id))
         .map(material => ({
             key: material.id,
             media: <img src={material.imageUrl} />,
@@ -56,9 +53,9 @@ export default function EnrollmentMaterials({ enrollment, readonly }) {
             }
             compact
         >
-            {enrollmentMaterials?.length > 0 &&
+            {enrollment.materials?.length > 0 &&
                 <MaterialsList
-                    materials={enrollmentMaterials}
+                    materials={enrollment.materials}
                     onRemove={!readonly && handleRemoveMaterial}
                 />
             }

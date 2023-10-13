@@ -2,6 +2,38 @@ const moment = require('moment');
 
 moment.locale('ru');
 
+describe('Enrollment', () => {
+    describe('createLessons', () => {
+        const enrollment = {
+            schedule: [{ day: 0, from: '18:00' }, { day: 1, from: '16:00' }],
+            createLessons
+        };
+
+        xit('should return an array', () => {
+            const lessons = enrollment.createLessons(5);
+
+            expect(Array.isArray(lessons)).toBe(true);
+        });
+
+        it('should create correct number of lessons', () => {
+            const lessons = enrollment.createLessons(5);
+
+            expect(lessons.length).toBe(5);
+        });
+    });
+
+    xdescribe('getStartDateForSchedule', () => {
+        const schedule = [{ day: 3 }];
+
+        it('should return the correct date', () => {
+            const today = moment();
+            const date = getStartDateForSchedule(today, schedule);
+
+            expect(date.date()).toBe(18);
+        });
+    });
+});
+
 function createLessons(quantity) {
     const lessons = [];
     const date = moment();
@@ -36,35 +68,3 @@ function getStartDateForSchedule(from, schedule) {
 
     return getStartDateForSchedule(from.add(7, 'days'), schedule);
 }
-
-describe('Enrollment', () => {
-    describe('createLessons', () => {
-        const enrollment = {
-            schedule: [{ day: 0, from: '18:00' }, { day: 1, from: '16:00' }],
-            createLessons
-        };
-
-        xit('should return an array', () => {
-            const lessons = enrollment.createLessons(5);
-
-            expect(Array.isArray(lessons)).toBe(true);
-        });
-
-        it('should create correct number of lessons', () => {
-            const lessons = enrollment.createLessons(5);
-
-            expect(lessons.length).toBe(5);
-        });
-    });
-
-    xdescribe('getStartDateForSchedule', () => {
-        const schedule = [{ day: 3 }];
-
-        it('should return the correct date', () => {
-            const today = moment();
-            const date = getStartDateForSchedule(today, schedule);
-
-            expect(date.date()).toBe(18);
-        });
-    });
-});

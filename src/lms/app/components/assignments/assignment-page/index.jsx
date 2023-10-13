@@ -1,32 +1,26 @@
 import { useCallback } from 'react';
 
+import { useBoolean } from 'shared/hooks/state';
 import { useAssignment } from 'shared/hooks/assignments';
 import { useUser } from 'shared/hooks/user';
+import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import Content from 'shared/components/content';
 import ContentEditor from 'shared/components/content-editor';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { Heading, Surface, Text } from 'shared/ui-components';
+import datetime from 'shared/libs/datetime';
+import { StatusColor, StatusLabel } from 'shared/data/assignment';
 
 import Exercise from 'lms/components/courses/exercise';
 
 import './index.scss';
 
-const StatusLabel = {
-    assigned: 'Задано',
-    submitted: 'Сдано',
-    completed: 'Завершено'
-};
-
-const StatusColor = {
-    assigned: 'primary',
-    submitted: 'warning',
-    completed: 'success'
-};
-
 export default function AssignmentPage({ match, location }) {
-    const [assignment] = useAssignment(match.params.id, location.search);
+    const [assignment, actions] = useAssignment(match.params.id, location.search);
     const [user] = useUser();
+
+    const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     const handleExerciseProgressChange = useCallback((exercise, data) => {
         return actions.updateExerciseProgress(exercise.progressId, {
@@ -37,15 +31,28 @@ export default function AssignmentPage({ match, location }) {
         });
     }, []);
 
+    const updateAssignmentStatus = useCallback((status) => {
+        return actions.updateAssignment(assignment.id, { status });
+    }, [assignment]);
+
+    const handleDelete = useCallback(() => {
+        return actions.deleteAssignment(assignment.id);
+    }, [assignment]);
+
     if (!assignment) return <LoadingIndicator />;
 
     const isTeacher = user.role === 'teacher';
-    const isLearner = user.role === 'learner';
+    const isLearner = user.role === 'client';
 
     return (
         <Page className="AssignmentPage">
             <Page.Header
-                breadcrumbs={[{ content: 'Задание' }]}
+                breadcrumbs={[
+                    {
+                        content: assignment.enrollment.domainLabel,
+                        to: `/enrollments/${assignment.enrollmentId}`
+                    }
+                ]}
                 title={
                     <Heading
                         content={assignment.title}
@@ -64,11 +71,25 @@ export default function AssignmentPage({ match, location }) {
                         content="Дата выполнения:"
                         end={
                             <Text
-                                content={assignment.dueAt}
+                                content={datetime(assignment.dueAt).calendar()}
                                 variant="soft"
+                                type="body-sm"
+                                fontWeight="lg"
                             />
                         }
                     />
+                }
+                actions={
+                    (isTeacher && [
+                        {
+                            key: 'delete',
+                            icon: 'delete',
+                            title: 'Удалить задание',
+                            onClick: toggleConfirmationDialogOpen
+                        }
+                    ])
+                    ||
+                    (isLearner && getLearnerAssignmentActions(assignment.status, updateAssignmentStatus))
                 }
             />
 
@@ -101,6 +122,35 @@ export default function AssignmentPage({ match, location }) {
                     />
                 )}
             </Page.Content>
+
+            <ConfirmationDialog
+                title="Удалить упражнение?"
+                message="Упражнение будет удален без возможности восстановления."
+                open={isConfirmationDialogOpen}
+                onClose={toggleConfirmationDialogOpen}
+                onConfirm={handleDelete}
+            />
         </Page>
     );
+}
+
+function getLearnerAssignmentActions(status, onClick) {
+    switch (status) {
+        case 'assigned': return [{
+            key: 'turn-in',
+            icon: 'assignment_return',
+            content: 'Сдать на проверку',
+            color: 'primary',
+            onClick: () => onClick('submitted')
+        }];
+        case 'submitted': return [{
+            key: 'turn-in',
+            icon: 'assignment_return',
+            content: 'Отменить сдачу',
+            variant: 'soft',
+            color: 'primary',
+            onClick: () => onClick('assigned')
+        }];
+        case 'completed': return [];
+    }
 }

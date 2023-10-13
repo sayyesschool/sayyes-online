@@ -1,10 +1,10 @@
 const { Schema } = require('mongoose');
 
 const Teacher = new Schema({
-    languages: { type: [String] },
+    type: { type: String },
     levels: { type: [String] },
     formats: { type: [String] },
-    ages: { type: [String] },
+    ageGroups: { type: [String] },
     zoomUrl: { type: String }
 });
 

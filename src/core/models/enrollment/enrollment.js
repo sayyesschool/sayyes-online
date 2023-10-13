@@ -1,78 +1,41 @@
 const { Schema } = require('mongoose');
 const moment = require('moment');
 
-const constants = require('./constants');
-const DateSchedule = require('./date-schedule');
-const WeekSchedule = require('./week-schedule');
+const { AgeGroup, Domain, Format, Level, TeacherType } = require('../common/constants');
+const Schedule = require('../schedule');
+
+const { Status, Type } = require('./constants');
 
 const Enrollment = new Schema({
     hhid: { type: String },
-    status: { type: String, enum: Object.keys(constants.Status), default: constants.Status.processing },
-    domain: { type: String, enum: Object.keys(constants.Domain), default: constants.Domain.general },
-    type: { type: String, enum: Object.keys(constants.Type), default: constants.Type.individual },
-    format: { type: String, default: constants.Format.online },
-    ageGroup: { type: String, default: constants.Age.adults },
-    teacherType: { type: String, default: constants.TeacherType.russian },
-    level: { type: String, default: '' },
-    purpose: { type: String, default: '' },
-    experience: { type: String, default: '' },
-    preferences: { type: String, default: '' },
+    ageGroup: { type: String, default: AgeGroup.Adults },
+    domain: { type: String, enum: Object.keys(Domain), default: Domain.general },
+    format: { type: String, default: Format.online },
+    type: { type: String, enum: Object.keys(Type), default: Type.Individual },
+    teacherType: { type: String, default: TeacherType.Russian },
+    status: { type: String, enum: Object.keys(Status), default: Status.Processing },
+    level: { type: String, enum: Object.keys(Level) },
     lessonDuration: { type: Number, default: 50 },
     lessonPrice: { type: Number, default: 0 },
-    trialLessonSchedule: [DateSchedule],
-    schedule: [WeekSchedule],
-    note: { type: String },
-    client: { type: Schema.Types.ObjectId, ref: 'Client' },
-    teachers: [{ type: Schema.Types.ObjectId, ref: 'Teacher' }],
-    managers: [{ type: Schema.Types.ObjectId, ref: 'Manager' }],
-    courses: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
-    materials: [{ type: Schema.Types.ObjectId, ref: 'Material' }]
+    schedule: [Schedule],
+    trialLessonSchedule: [Schedule],
+    info: {
+        purpose: { type: String, default: '' },
+        experience: { type: String, default: '' },
+        preferences: { type: String, default: '' },
+        note: { type: String, default: '' }
+    },
+    learnerId: { type: Schema.Types.ObjectId, required: true },
+    teacherId: { type: Schema.Types.ObjectId, },
+    managerId: { type: Schema.Types.ObjectId, },
+    courseIds: [{ type: Schema.Types.ObjectId, }],
+    materialIds: [{ type: Schema.Types.ObjectId, }]
 }, {
     timestamps: true
 });
 
-Enrollment.virtual('url').get(function() {
+Enrollment.virtual('uri').get(function() {
     return `/enrollments/${this.id}`;
-});
-
-Enrollment.virtual('classUrl').get(function() {
-    return `/class/${this.id}`;
-});
-
-Enrollment.virtual('statusLabel').get(function() {
-    return constants.StatusLabel[this.status];
-});
-
-Enrollment.virtual('statusIcon').get(function() {
-    return constants.StatusIcon[this.status];
-});
-
-Enrollment.virtual('domainLabel').get(function() {
-    return constants.DomainLabel[this.domain];
-});
-
-Enrollment.virtual('levelLabel').get(function() {
-    return constants.LevelLabel[this.level];
-});
-
-Enrollment.virtual('typeLabel').get(function() {
-    return constants.TypeLabel[this.type];
-});
-
-Enrollment.virtual('formatLabel').get(function() {
-    return constants.FormatLabel[this.format];
-});
-
-Enrollment.virtual('purposeLabel').get(function() {
-    return constants.PurposeLabel[this.purpose];
-});
-
-Enrollment.virtual('ageLabel').get(function() {
-    return constants.AgeLabel[this.age];
-});
-
-Enrollment.virtual('teacherTypeLabel').get(function() {
-    return constants.TeacherTypeLabel[this.teacherType];
 });
 
 Enrollment.virtual('scheduleLabel').get(function() {
@@ -80,15 +43,56 @@ Enrollment.virtual('scheduleLabel').get(function() {
 });
 
 Enrollment.virtual('hasLessons').get(function() {
-    return this.lessons?.length > 0;
+    return this.lessons && this.lessons.length > 0;
+});
+
+Enrollment.virtual('hasCourses').get(function() {
+    return this._courses && this._courses.length > 0;
+});
+
+Enrollment.virtual('hasMaterials').get(function() {
+    return this._materials && this._materials.length > 0;
 });
 
 Enrollment.virtual('imageUrl').get(function() {
     if (this.domain === 'general') {
-        return `${process.env.STORAGE_URL}/assets/images/enrollments/${this.domain}-${this.ageGroup}.png`;
+        return this.ageGroup && `${process.env.STORAGE_URL}/assets/images/enrollments/${this.domain}-${this.ageGroup}.png`;
     } else {
-        return `${process.env.STORAGE_URL}/assets/images/enrollments/${this.domain}.png`;
+        return this.domain && `${process.env.STORAGE_URL}/assets/images/enrollments/${this.domain}.png`;
     }
+});
+
+Enrollment.virtual('learner', {
+    ref: 'Learner',
+    localField: 'learnerId',
+    foreignField: '_id',
+    justOne: true
+});
+
+Enrollment.virtual('teacher', {
+    ref: 'Teacher',
+    localField: 'teacherId',
+    foreignField: '_id',
+    justOne: true
+});
+
+Enrollment.virtual('manager', {
+    ref: 'Manager',
+    localField: 'managerId',
+    foreignField: '_id',
+    justOne: true
+});
+
+Enrollment.virtual('courses', {
+    ref: 'Course',
+    localField: 'courseIds',
+    foreignField: '_id'
+});
+
+Enrollment.virtual('materials', {
+    ref: 'Material',
+    localField: 'materialIds',
+    foreignField: '_id'
 });
 
 Enrollment.virtual('payments', {
@@ -137,20 +141,6 @@ Enrollment.virtual('comments', {
     options: {
         sort: { createdAt: -1 }
     }
-});
-
-Enrollment.virtual('teacher', {
-    ref: 'Teacher',
-    localField: 'teachers',
-    foreignField: '_id',
-    justOne: true
-});
-
-Enrollment.virtual('manager', {
-    ref: 'Manager',
-    localField: 'managers',
-    foreignField: '_id',
-    justOne: true
 });
 
 Enrollment.methods.scheduleLessons = function(numberOfLessons, startDate = new Date()) {

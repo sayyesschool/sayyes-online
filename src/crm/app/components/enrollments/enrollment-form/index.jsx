@@ -6,11 +6,35 @@ import { useFormData } from 'shared/hooks/form';
 import UserSelect from 'shared/components/user-select';
 import { Form } from 'shared/ui-components';
 import {
-    defaultEnrollment, domainOptions, typeOptions, formatOptions,
-    ageOptions, teacherTypeOptions, levelOptions, purposeOptions
-} from 'shared/data/enrollment';
+    domainOptions,
+    formatOptions,
+    ageOptions,
+    teacherTypeOptions,
+    levelOptions,
+    purposeOptions
+} from 'shared/data/common';
+import { typeOptions } from 'shared/data/enrollment';
 
 import { useStore } from 'app/store';
+
+const defaultEnrollment = {
+    status: 'processing',
+    domain: 'general',
+    type: '',
+    format: '',
+    age: '',
+    teacherType: '',
+    level: '',
+    purpose: '',
+    experience: '',
+    preferences: '',
+    lessonDuration: 50,
+    trialLessonSchedule: [],
+    schedule: [],
+    note: '',
+    teachers: [],
+    managers: []
+};
 
 function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
     const formRef = useRef();

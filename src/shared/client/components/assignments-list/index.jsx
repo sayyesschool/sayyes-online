@@ -1,7 +1,8 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
-import { IconButton, List } from 'shared/ui-components';
+import { IconButton, List, Text } from 'shared/ui-components';
+import { StatusColor, StatusLabel } from 'shared/data/assignment';
 
 export default function AssignmentsList({ assignments, onRemove }) {
     const handleRemove = useCallback((event, assignmentId) => {
@@ -21,7 +22,28 @@ export default function AssignmentsList({ assignments, onRemove }) {
                     // decorator={course.imageUrl &&
                     //     <Image imageUrl={course.imageUrl} alt="" />
                     // }
-                    content={assignment.title}
+                    content={
+                        <Text
+                            content={assignment.title}
+                            end={
+                                <Text
+                                    content={StatusLabel[assignment.status]}
+                                    color={StatusColor[assignment.status]}
+                                    variant="soft"
+                                    type="body-sm"
+                                />
+                            }
+                            type="body-lg"
+                        />
+                    }
+                    end={
+                        <Text
+                            content={StatusLabel[assignment.status]}
+                            color={StatusColor[assignment.status]}
+                            variant="soft"
+                            type="body-sm"
+                        />
+                    }
                     endAction={onRemove &&
                         <IconButton
                             icon="remove"

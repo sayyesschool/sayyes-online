@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useStore } from 'shared/hooks/store';
+import { useStore, useActions } from 'shared/hooks/store';
 import { actions as assignmentActions } from 'shared/store/modules/assignments';
 
 export function useAssignments() {
@@ -29,4 +29,8 @@ export function useAssignment(id) {
     }, [id]);
 
     return [assignment, actions];
+}
+
+export function useAssignmentActions() {
+    return useActions(assignmentActions);
 }

@@ -14,6 +14,7 @@ module.exports = ({
 
     getOne: (req, res, next) => {
         Assignment.findById(req.params.id)
+            .populate('enrollment', 'domain')
             .populate('exercises')
             .then(assignment => {
                 if (!assignment) {

@@ -77,26 +77,38 @@ export const actions = {
 
 export const assignmentsReducer = createReducer(null, {
     [getAssignments]: (state, action) => action.data,
+
     [createAssignment]: (state, action) => state?.concat(action.data) || [action.data],
-    [updateAssignment]: (state, action) => state?.map(assignment =>
-        assignment.id !== action.data.id ? assignment :
-            { ...assignment, ...action.data }
+
+    [updateAssignment]: (state, action) => state && state.map(assignment =>
+        assignment.id !== action.data.id ? assignment : {
+            ...assignment,
+            ...action.data
+        }
     ),
+
     [deleteAssignment]: (state, action) => state?.map(assignment =>
-        assignment.id !== action.data.id ? assignment :
-            { ...assignment, ...action.data }
+        assignment.id !== action.data.id ? assignment : {
+            ...assignment,
+            ...action.data
+        }
     )
 });
 
 export const assignmentReducer = createReducer(null, {
     [getAssignment]: (state, action) => action.data,
+
     [unsetAssignment]: () => null,
+
     [updateAssignment]: (state, action) => ({ ...state, ...action.data }),
+
     [deleteAssignment]: () => null,
+
     [createComment]: (state, action) => ({
         ...state,
         comments: state.comments.concat(action.data)
     }),
+
     [updateComment]: (state, action) => ({
         ...state,
         comments: state.comments.map(comment => comment.id !== action.data.id ?
@@ -104,6 +116,7 @@ export const assignmentReducer = createReducer(null, {
             action.data
         )
     }),
+
     [deleteComment]: (state, action) => ({
         ...state,
         comments: state.comments.filter(comment => comment.id !== action.data.id)

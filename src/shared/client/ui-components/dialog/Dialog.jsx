@@ -51,7 +51,7 @@ export default function Dialog({
                 }
 
                 {title &&
-                    <Heading className="ui-Dialog__title" type="h5" content={title} />
+                    <Heading className="ui-Dialog__title" type="title-lg" content={title} />
                 }
 
                 <div className="ui-Dialog__content">

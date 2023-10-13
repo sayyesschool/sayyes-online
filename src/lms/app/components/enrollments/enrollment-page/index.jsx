@@ -4,17 +4,18 @@ import { useUser } from 'shared/hooks/user';
 import { Button, Flex, IconButton, Grid, MenuButton } from 'shared/ui-components';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { DomainLabel } from 'shared/data/common';
 
 import EnrollmentAssignments from 'app/components/enrollments/enrollment-assignments';
-import EnrollmentClient from 'app/components/enrollments/enrollment-client';
 import EnrollmentChat from 'app/components/enrollments/enrollment-chat';
 import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';
 import EnrollmentDetails from 'app/components/enrollments/enrollment-details';
 import EnrollmentLessons from 'app/components/enrollments/enrollment-lessons';
-import EnrollmentManagers from 'app/components/enrollments/enrollment-managers';
+import EnrollmentLearner from 'app/components/enrollments/enrollment-learner';
+import EnrollmentManager from 'app/components/enrollments/enrollment-manager';
 import EnrollmentMaterials from 'app/components/enrollments/enrollment-materials';
 import EnrollmentSchedule from 'app/components/enrollments/enrollment-schedule';
-import EnrollmentTeachers from 'app/components/enrollments/enrollment-teachers';
+import EnrollmentTeacher from 'app/components/enrollments/enrollment-teacher';
 
 import './index.scss';
 
@@ -26,7 +27,7 @@ export default function EnrollmentPage({ match }) {
 
     if (!enrollment) return <LoadingIndicator fullscreen />;
 
-    const isLearner = user.role === 'client';
+    const isLearner = user.role === 'learner';
     const isTeacher = user.role === 'teacher';
 
     return (
@@ -40,7 +41,7 @@ export default function EnrollmentPage({ match }) {
             </Page.Drawer>
 
             <Page.Header
-                title={enrollment.domainLabel}
+                title={DomainLabel[enrollment.domain]}
                 actions={[
                     <Button
                         key="class"
@@ -57,7 +58,7 @@ export default function EnrollmentPage({ match }) {
                         variant="soft"
                         onClick={toggleDrawerOpen}
                     />,
-                    (enrollment.teachers[0]?.zoomUrl &&
+                    (enrollment.teacher?.zoomUrl &&
                         <MenuButton
                             key="menu"
                             trigger={
@@ -84,45 +85,21 @@ export default function EnrollmentPage({ match }) {
             <Page.Content>
                 <Grid spacing={2}>
                     <Grid.Item lg={8}>
-                        <EnrollmentAssignments
-                            enrollment={enrollment}
-                            readonly={isLearner}
-                        />
-                    </Grid.Item>
-
-                    <Grid.Item lg={4}>
                         <Flex gap="medium" column>
                             <EnrollmentLessons
                                 enrollment={enrollment}
                                 readonly={isLearner}
                             />
 
-                            <EnrollmentSchedule
+                            <EnrollmentAssignments
                                 enrollment={enrollment}
+                                readonly={isLearner}
                             />
+                        </Flex>
+                    </Grid.Item>
 
-                            {isLearner &&
-                                <EnrollmentTeachers
-                                    enrollment={enrollment}
-                                />
-                            }
-
-                            {isTeacher &&
-                                <EnrollmentDetails
-                                    enrollment={enrollment}
-                                />
-                            }
-
-                            {isTeacher &&
-                                <EnrollmentClient
-                                    enrollment={enrollment}
-                                />
-                            }
-
-                            <EnrollmentManagers
-                                enrollment={enrollment}
-                            />
-
+                    <Grid.Item lg={4}>
+                        <Flex gap="medium" column>
                             {(isTeacher || enrollment.courses?.length > 0) &&
                                 <EnrollmentCourses
                                     enrollment={enrollment}
@@ -136,6 +113,32 @@ export default function EnrollmentPage({ match }) {
                                     readonly={isLearner}
                                 />
                             }
+
+                            <EnrollmentSchedule
+                                enrollment={enrollment}
+                            />
+
+                            {isLearner &&
+                                <EnrollmentTeacher
+                                    enrollment={enrollment}
+                                />
+                            }
+
+                            {isTeacher &&
+                                <EnrollmentDetails
+                                    enrollment={enrollment}
+                                />
+                            }
+
+                            {isTeacher &&
+                                <EnrollmentLearner
+                                    enrollment={enrollment}
+                                />
+                            }
+
+                            <EnrollmentManager
+                                enrollment={enrollment}
+                            />
                         </Flex>
                     </Grid.Item>
                 </Grid>
