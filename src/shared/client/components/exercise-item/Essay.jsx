@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import Content from 'shared/components/content';
 import ContentEditor from 'shared/components/content-editor';
 
-import './essay.scss';
+import './Essay.scss';
 
 export default function EssayItem({
     id,

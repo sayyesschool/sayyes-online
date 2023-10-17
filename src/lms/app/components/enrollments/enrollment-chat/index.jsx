@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import Chat from 'shared/components/Chat';
+import Chat from 'shared/components/chat';
 import PageSection from 'shared/components/page-section';
 import { IconButton } from 'shared/ui-components';
 

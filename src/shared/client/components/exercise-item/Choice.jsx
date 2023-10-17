@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import Content from 'shared/components/content';
 import { Checkbox, List, Radio } from 'shared/ui-components';
 
-import './choice.scss';
+import './Choice.scss';
 
 export default function ChoiceItem({
     id,

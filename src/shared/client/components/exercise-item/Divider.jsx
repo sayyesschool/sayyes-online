@@ -1,6 +1,6 @@
 import { Divider } from 'shared/ui-components';
 
-import './divider.scss';
+import './Divider.scss';
 
 export default function DividerItem({ content, className }) {
     return (

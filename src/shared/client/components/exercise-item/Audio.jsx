@@ -6,7 +6,7 @@ import AudioPlayer from 'shared/components/audio-player';
 import Content from 'shared/components/content';
 import { Button, Icon } from 'shared/ui-components';
 
-import './audio.scss';
+import './Audio.scss';
 
 export default function AudioItem({ url, script, className }) {
     const context = useContext(MediaContext);

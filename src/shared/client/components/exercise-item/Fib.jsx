@@ -6,7 +6,7 @@ import Content from 'shared/components/content';
 import Input from 'shared/components/inline-input';
 import Select from 'shared/components/inline-select';
 
-import './fib.scss';
+import './Fib.scss';
 
 const Components = {
     input: Input,

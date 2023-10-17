@@ -5,7 +5,7 @@ import Input from 'shared/components/inline-input';
 import Textarea from 'shared/components/inline-textarea';
 import { Flex } from 'shared/ui-components';
 
-import './input.scss';
+import './Input.scss';
 
 export default function InputItem({
     id,

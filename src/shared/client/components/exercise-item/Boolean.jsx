@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import Content from 'shared/components/content';
 import { List, Switch } from 'shared/ui-components';
 
-import './boolean.scss';
+import './Boolean.scss';
 
 export default function BooleanItem({
     id,

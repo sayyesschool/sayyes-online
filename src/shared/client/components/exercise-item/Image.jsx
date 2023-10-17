@@ -1,6 +1,6 @@
 import { Image, Text } from 'shared/ui-components';
 
-import './image.scss';
+import './Image.scss';
 
 export default function ImageItem({
     url,

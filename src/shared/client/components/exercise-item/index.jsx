@@ -3,16 +3,16 @@ import classnames from 'classnames';
 
 import { capitalize } from 'shared/utils/string';
 
-import AudioItem from './audio';
-import BooleanItem from './boolean';
-import ChoiceItem from './choice';
-import DividerItem from './divider';
-import EssayItem from './essay';
-import FIBItem from './fib';
-import ImageItem from './image';
-import InputItem from './input';
-import TextItem from './text';
-import VideoItem from './video';
+import AudioItem from './Audio';
+import BooleanItem from './Boolean';
+import ChoiceItem from './Choice';
+import DividerItem from './Divider';
+import EssayItem from './Essay';
+import FIBItem from './Fib';
+import ImageItem from './Image';
+import InputItem from './Input';
+import TextItem from './Text';
+import VideoItem from './Video';
 
 import './index.scss';
 
