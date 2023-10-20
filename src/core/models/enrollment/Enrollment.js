@@ -34,7 +34,7 @@ const Enrollment = new Schema({
     timestamps: true
 });
 
-Enrollment.virtual('uri').get(function() {
+Enrollment.virtual('url').get(function() {
     return `/enrollments/${this.id}`;
 });
 

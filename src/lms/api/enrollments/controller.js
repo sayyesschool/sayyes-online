@@ -4,10 +4,10 @@ module.exports = ({
     getMany: (req, res, next) => {
         const query = { ...req.query };
 
-        if (req.user.role === 'client') {
-            query.client = req.user.id;
+        if (req.user.role === 'learner') {
+            query.learnerId = req.user.id;
         } else {
-            query.teachers = req.user.id;
+            query.teacherId = req.user.id;
         }
 
         Enrollment.find(query)

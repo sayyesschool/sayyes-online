@@ -12,12 +12,12 @@ export default function EnrollmentsList({ enrollments }) {
                     to={enrollment.url}
                     decorator={
                         <Avatar
-                            imageUrl={enrollment.client.imageUrl}
-                            name={enrollment.client.initials}
+                            imageUrl={enrollment.learner.imageUrl}
+                            name={enrollment.learner.initials}
                         />
                     }
                     content={<>
-                        <Text type="body1">{enrollment.client.fullname}</Text>
+                        <Text type="body1">{enrollment.learner.fullname}</Text>
                         <Text type="body2">{enrollment.domainLabel}</Text>
                     </>}
                 />

@@ -31,13 +31,13 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 mongoose.connection.once('open', () => console.log('Connected to MongoDB'));
 mongoose.connection.on('disconnected', () => console.log('Disconnected from MongoDB'));
 
-process.on('SIGINT', () => {
+process.on('SIGINT', async () => {
     console.info('SIGINT signal received');
 
-    mongoose.connection.close(() => {
-        console.log('Mongoose disconnected through app termination');
-        process.exit(0);
-    });
+    await mongoose.connection.close();
+
+    console.log('Mongoose disconnected through app termination');
+    process.exit(0);
 });
 
 module.exports = {
