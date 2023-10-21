@@ -3,12 +3,18 @@ import { Link } from 'react-router-dom';
 
 import { useBoolean } from 'shared/hooks/state';
 import Content from 'shared/components/content';
-import { Avatar, Button, Card, Chip, IconButton, Flex, MenuButton } from 'shared/ui-components';
+import {
+    Avatar,
+    Button,
+    Card,
+    Chip,
+    IconButton,
+    Flex,
+    MenuButton
+} from 'shared/ui-components';
 
 import ExerciseContent from 'lms/components/courses/exercise-content';
 // import ExerciseComments from 'app/components/courses/exercise-comments';
-
-import './index.scss';
 
 export default function Exercise({
     index,
@@ -19,6 +25,7 @@ export default function Exercise({
     showRemoveFromAssignment,
     onProgressChange,
     onAddToAssignment,
+    onAddToNewAssignment,
     onRemoveFromAssignment,
     onComplete
 }) {
@@ -59,6 +66,11 @@ export default function Exercise({
         event.stopPropagation();
         onAddToAssignment(exercise, assignment);
     }, [exercise, onAddToAssignment]);
+
+    const handleAddToNewAssignment = useCallback((event) => {
+        event.stopPropagation();
+        onAddToNewAssignment(exercise);
+    }, [exercise, onAddToNewAssignment]);
 
     const handleRemoveFromAssignment = useCallback((event, assignment) => {
         event.stopPropagation();
@@ -103,55 +115,61 @@ export default function Exercise({
                     html
                 />
 
-                {assignments?.length > 0 && (
-                    <Flex alignItems="center">
-                        {assignments
-                            .filter(assignment => assignment.exercises.includes(exercise.id))
-                            .map(assignment =>
-                                <Chip
-                                    key={assignment.id}
-                                    as={Link}
-                                    to={assignment.uri}
-                                    content={assignment.title}
-                                    color="primary"
-                                    size="sm"
+                <Flex alignItems="center" gap="small">
+                    {assignments?.length > 0 && (
+                        <Flex alignItems="center" gap="smaller">
+                            {assignments
+                                .filter(assignment => assignment.exerciseIds.includes(exercise.id))
+                                .map(assignment =>
+                                    <Chip
+                                        key={assignment.id}
+                                        content={assignment.title}
+                                        color="primary"
+                                        size="sm"
+                                        slotProps={{
+                                            action: {
+                                                component: Link,
+                                                to: assignment.url
+                                            }
+                                        }}
+                                    />
+                                )
+                            }
+                        </Flex>
+                    )}
+
+                    {showMenu &&
+                        <MenuButton
+                            trigger={
+                                <IconButton
+                                    icon="assignment_add"
+                                    title="Добавить в задание"
+                                    onClick={event => event.stopPropagation()}
                                 />
-                            )
-                        }
-                    </Flex>
-                )}
+                            }
+                            items={(assignments || [])
+                                .map(assignment => ({
+                                    key: assignment.id,
+                                    content: assignment.title,
+                                    onClick: event => handleAddToAssignment(event, assignment)
+                                }))
+                                .concat({
+                                    key: 'new',
+                                    content: 'Новое задание',
+                                    onClick: event => handleAddToNewAssignment(event)
+                                })
+                            }
+                        />
+                    }
 
-                {showMenu &&
-                    <MenuButton
-                        trigger={
-                            <IconButton
-                                icon="assignment_add"
-                                title="Добавить в задание"
-                                onClick={event => event.stopPropagation()}
-                            />
-                        }
-                        items={(assignments || [])
-                            .map(assignment => ({
-                                key: assignment.id,
-                                content: assignment.title,
-                                onClick: event => handleAddToAssignment(event, assignment)
-                            }))
-                            .concat({
-                                key: 'new',
-                                content: 'Новое задание',
-                                onClick: event => handleAddToAssignment(event)
-                            })
-                        }
-                    />
-                }
-
-                {showRemoveFromAssignment &&
-                    <IconButton
-                        icon="remove"
-                        title="Удалить из задания"
-                        onClick={handleRemoveFromAssignment}
-                    />
-                }
+                    {showRemoveFromAssignment &&
+                        <IconButton
+                            icon="remove"
+                            title="Удалить из задания"
+                            onClick={handleRemoveFromAssignment}
+                        />
+                    }
+                </Flex>
             </header>
 
             {!isCollapsed && <>

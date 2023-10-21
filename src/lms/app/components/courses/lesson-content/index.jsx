@@ -10,6 +10,7 @@ export default function LessonContent({
     user,
     onExerciseProgressChange,
     onAddExerciseToAssignment,
+    onAddExerciseToNewAssignment,
     onRemoveExerciseFromAssignment
 }) {
     const [sectionIndex, setSectionIndex] = useState(0);
@@ -46,6 +47,7 @@ export default function LessonContent({
                             showMenu={user.role === 'teacher'}
                             onProgressChange={onExerciseProgressChange}
                             onAddToAssignment={onAddExerciseToAssignment}
+                            onAddToNewAssignment={onAddExerciseToNewAssignment}
                             onRemoveFromAssignment={onRemoveExerciseFromAssignment}
                         />
                     )}

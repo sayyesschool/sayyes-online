@@ -14,8 +14,6 @@ import { StatusColor, StatusLabel } from 'shared/data/assignment';
 
 import Exercise from 'lms/components/courses/exercise';
 
-import './index.scss';
-
 export default function AssignmentPage({ match, location }) {
     const [assignment, actions] = useAssignment(match.params.id, location.search);
     const [user] = useUser();

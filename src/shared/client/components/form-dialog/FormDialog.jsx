@@ -3,8 +3,6 @@ import { cloneElement, useCallback, useEffect, useRef } from 'react';
 import { useBoolean } from 'shared/hooks/state';
 import { Button, Dialog } from 'shared/ui-components';
 
-import './index.scss';
-
 export default function FormDialog({
     open,
     title,

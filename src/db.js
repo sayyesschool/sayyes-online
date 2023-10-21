@@ -13,11 +13,11 @@ mongoose.set('toJSON', {
     transform: (document, object, options) => {
         delete object._id;
 
-        for (const key in object) {
-            if (key.startsWith('_')) {
-                delete object[key];
-            }
-        }
+        // for (const key in object) {
+        //     if (key.startsWith('_')) {
+        //         delete object[key];
+        //     }
+        // }
 
         if (options.hide) {
             options.hide.split(' ').forEach(prop => delete object[prop]);

@@ -7,8 +7,8 @@ import { statusOptions } from 'shared/data/assignment';
 
 const getDefaultData = data => ({
     title: '',
-    status: 'scheduled',
-    dueAt: datetime().format('YYYY-MM-DDTHH:mm'),
+    status: 'assigned',
+    dueDate: datetime().format('YYYY-MM-DDTHH:mm'),
     ...data
 });
 
@@ -23,7 +23,7 @@ export default function AssignmentForm({
         getData(data => {
             onSubmit({
                 ...data,
-                date: new Date(data.dueAt).toISOString()
+                date: new Date(data.dueDate).toISOString()
             });
         });
     }, [onSubmit]);

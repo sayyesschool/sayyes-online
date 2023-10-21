@@ -1,19 +1,38 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
+import { useBoolean } from 'shared/hooks/state';
 import { useAssignments } from 'shared/hooks/assignments';
 import { useCourse } from 'shared/hooks/courses';
+import { useEnrollment } from 'shared/hooks/enrollments';
 import { useUser } from 'shared/hooks/user';
+import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 
+import AssignmentForm from 'lms/components/assignments/assignment-form';
 import LessonContent from 'lms/components/courses/lesson-content';
-
-import './index.scss';
 
 export default function LessonPage({ match, location }) {
     const [course, actions] = useCourse(match.params.course, location.search);
+    const [enrollment] = useEnrollment(course?.enrollmentId);
     const [assignments, assignmentActions] = useAssignments({ enrollmentId: course?.enrollmentId });
     const [user] = useUser();
+
+    const [exerciseIdForNewAssignment, setExerciseIdForNewAssignment] = useState();
+    const [isFormDialogOpen, toggleFormDialogOpen] = useBoolean(false);
+
+    const handleSubmitAssignment = useCallback((data) => {
+        return assignmentActions.createAssignment({
+            ...data,
+            enrollmentId: enrollment.id,
+            learnerId: enrollment.learnerId,
+            teacherId: enrollment.teacherId,
+            exerciseIds: [exerciseIdForNewAssignment]
+        }).finally(() => {
+            toggleFormDialogOpen(false);
+            setExerciseIdForNewAssignment(undefined);
+        });
+    }, [enrollment, exerciseIdForNewAssignment]);
 
     const handleExerciseProgressChange = useCallback((exercise, data) => {
         return actions.updateExerciseProgress(exercise.progressId, {
@@ -26,8 +45,13 @@ export default function LessonPage({ match, location }) {
 
     const handleAddExerciseToAssignment = useCallback((exercise, assignment) => {
         return assignmentActions.updateAssignment(assignment.id, {
-            exercises: [...assignment.exercises, exercise.id]
+            exerciseIds: [...assignment.exerciseIds, exercise.id]
         });
+    }, []);
+
+    const handleAddExerciseToNewAssignment = useCallback((exercise) => {
+        setExerciseIdForNewAssignment(exercise.id);
+        toggleFormDialogOpen(true);
     }, []);
 
     const handleRemoveExerciseFromAssignment = useCallback((exercise, assignment) => {
@@ -58,9 +82,21 @@ export default function LessonPage({ match, location }) {
                     user={user}
                     onExerciseProgressChange={handleExerciseProgressChange}
                     onAddExerciseToAssignment={handleAddExerciseToAssignment}
+                    onAddExerciseToNewAssignment={handleAddExerciseToNewAssignment}
                     onRemoveExerciseFromAssignment={handleRemoveExerciseFromAssignment}
                 />
             </Page.Content>
+
+            <FormDialog
+                title="Новое задание"
+                open={isFormDialogOpen}
+                onClose={toggleFormDialogOpen}
+            >
+                <AssignmentForm
+                    id="new-assignment-form"
+                    onSubmit={handleSubmitAssignment}
+                />
+            </FormDialog>
         </Page>
     );
 }

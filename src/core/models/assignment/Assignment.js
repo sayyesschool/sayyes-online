@@ -19,12 +19,8 @@ const Assignment = new Schema({
     timestamps: false
 });
 
-Assignment.virtual('uri').get(function() {
-    return `/assignments/${this.id}`;
-});
-
 Assignment.virtual('url').get(function() {
-    return this.uri;
+    return `/assignments/${this.id}`;
 });
 
 Assignment.virtual('enrollment', {
