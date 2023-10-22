@@ -22,7 +22,7 @@ if (APP_ENV === 'production') {
 export default function ErrorBoundary({ children }) {
     return (
         <SentryErrorBoundary
-            fallback={ErrorPage}
+            fallback={ErrorState}
         >
             {children}
         </SentryErrorBoundary>
