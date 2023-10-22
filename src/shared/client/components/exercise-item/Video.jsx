@@ -3,7 +3,7 @@ import Content from 'shared/components/content';
 import VideoPlayer from 'shared/components/video-player';
 import { Button, Icon } from 'shared/ui-components';
 
-import './video.scss';
+import './Video.scss';
 
 export default function VideoItem({
     id,
