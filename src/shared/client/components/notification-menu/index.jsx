@@ -7,7 +7,7 @@ import {
     IconButton,
     MenuSurface,
     Typography
-} from 'mdc-react';
+} from 'shared/ui-components';
 
 import NotificationList from 'shared/components/notification-list';
 

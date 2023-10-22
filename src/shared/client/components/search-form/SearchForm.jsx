@@ -4,9 +4,7 @@ import { Link } from 'react-router-dom';
 import { Form, Icon, List, Popover } from 'shared/ui-components/form';
 import { throttle } from 'shared/utils/fn';
 
-import './index.scss';
-
-export default function Search() {
+export default function SearchForm() {
     const anchorRef = useRef();
 
     const [query, setQuery] = useState('');

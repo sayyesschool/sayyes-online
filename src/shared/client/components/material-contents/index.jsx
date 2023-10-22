@@ -1,6 +1,4 @@
-import {
-    List
-} from 'mdc-react';
+import { List } from 'shared/ui-components';
 
 export default function MaterialContents({ material, item: selectedItem, onSelect, props }) {
     return (

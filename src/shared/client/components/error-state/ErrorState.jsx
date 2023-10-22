@@ -1,7 +1,5 @@
 import { Alert, Text } from 'shared/ui-components';
 
-import './index.scss';
-
 export default function ErrorState({ error, componentStack, resetError }) {
     return (
         <div className="ErrorState">

@@ -11,7 +11,7 @@
     "dev-crm": "webpack --watch --env=development --mode=development --config-name=crm",
     "dev-front": "webpack --watch --env=development --mode=development --config-name=front",
     "dev-lms": "webpack --watch --env=development --mode=development --config-name=lms",
-    "build": "npm run build-class && npm run build-cms && npm run build-crm && npm run build-lms ",
+    "build": "npm run build-class && npm run build-cms && npm run build-crm && npm run build-front && npm run build-lms",
     "build-class": "webpack --env=production --mode=production --config-name=class",
     "build-cms": "webpack --env=production --mode=production --config-name=cms",
     "build-crm": "webpack --env=production --mode=production --config-name=crm",

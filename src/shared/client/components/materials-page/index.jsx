@@ -1,9 +1,7 @@
 import { useMaterials } from 'shared/hooks/materials';
 import LoadingIndicator from 'shared/components/loading-indicator';
-import Page from 'shared/components/page';
-import PageTopBar from 'shared/components/page-top-bar';
-import PageContent from 'shared/components/page-content';
 import MaterialsGrid from 'shared/components/materials-grid';
+import Page from 'shared/components/page';
 
 export default function MaterialsPage() {
     const [materials] = useMaterials();
@@ -11,16 +9,16 @@ export default function MaterialsPage() {
     if (!materials) return <LoadingIndicator />;
 
     return (
-        <Page id="materials-page">
-            <PageTopBar
+        <Page className="MaterialsPage">
+            <Page.Header
                 title="Материалы"
             />
 
-            <PageContent>
+            <Page.Content>
                 <MaterialsGrid
                     materials={materials}
                 />
-            </PageContent>
+            </Page.Content>
         </Page>
     );
 }
