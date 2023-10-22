@@ -1,7 +1,5 @@
 import classnames from 'classnames';
 
-import './index.scss';
-
 export default function Content({
     text,
     content = text,
