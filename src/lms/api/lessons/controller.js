@@ -1,76 +1,66 @@
 module.exports = ({
     models: { Lesson }
 }) => ({
-    get: (req, res, next) => {
-        Lesson.find({ teacher: req.user.id, ...req.query })
+    async get(req, res) {
+        const lessons = await Lesson.find({ teacher: req.user.id, ...req.query })
             .sort({ date: 1 })
             .populate('client', 'firstname lastname email')
-            .populate('room', 'title login password')
-            .then(lessons => {
-                res.json({
-                    ok: true,
-                    data: lessons
-                });
-            })
-            .catch(next);
+            .populate('room', 'title login password');
+
+        res.json({
+            ok: true,
+            data: lessons
+        });
     },
 
-    getOne: (req, res, next) => {
-        Lesson.findById(req.params.lessonId)
+    async getOne(req, res) {
+        const lesson = await Lesson.findById(req.params.lessonId)
             .populate('client', 'firstname lastname email')
-            .populate('room', 'title login password')
-            .then(lesson => {
-                res.json({
-                    ok: true,
-                    data: lesson
-                });
-            })
-            .catch(next);
+            .populate('room', 'title login password');
+
+        res.json({
+            ok: true,
+            data: lesson
+        });
     },
 
-    create: (req, res, next) => {
+    async create(req, res) {
         req.body.teacher = req.user.id;
 
-        Lesson.create(req.body)
-            .then(lesson => {
-                lesson.room = req.room;
+        const lesson = await Lesson.create(req.body);
 
-                res.json({
-                    ok: true,
-                    message: 'Урок создан',
-                    data: lesson
-                });
-            })
-            .catch(next);
+        lesson.room = req.room;
+
+        res.json({
+            ok: true,
+            message: 'Урок создан',
+            data: lesson
+        });
     },
 
-    update: async (req, res, next) => {
-        Lesson.findByIdAndUpdate(req.params.lessonId, req.body, {
+    async update(req, res) {
+        const lesson = await Lesson.findByIdAndUpdate(req.params.lessonId, req.body, {
             new: true,
             select: Object.keys(req.body).join(' ')
-        })
-            .then(lesson => {
-                res.json({
-                    ok: true,
-                    message: 'Урок изменен',
-                    data: lesson
-                });
-            })
-            .catch(next);
+        });
+
+        res.json({
+            ok: true,
+            message: 'Урок изменен',
+            data: lesson
+        });
     },
 
-    delete: (req, res, next) => {
-        Lesson.findByIdAndDelete(req.params.lessonId)
-            .then(lesson => {
-                res.json({
-                    ok: true,
-                    message: 'Урок удален',
-                    data: {
-                        id: lesson.id,
-                        enrollment: lesson.enrollment
-                    }
-                });
-            })
-            .catch(next);
+    async delete(req, res) {
+        const lesson = await Lesson.findByIdAndDelete(req.params.lessonId);
+
+        res.json({
+            ok: true,
+            message: 'Урок удален',
+            data: {
+                id: lesson.id,
+                enrollment: lesson.enrollment
+            }
+        });
     }
 });

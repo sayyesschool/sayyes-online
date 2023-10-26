@@ -1,7 +1,7 @@
 module.exports = ({
     models: { Course, Exercise }
 }) => ({
-    getCourses: async (req, res) => {
+    async getCourses(req, res) {
         const courses = await Course.find(req.query)
             .select('slug title image');
 
@@ -11,7 +11,7 @@ module.exports = ({
         });
     },
 
-    getCourse: async (req, res) => {
+    async getCourse(req, res) {
         const course = await Course.findById(req.params.course)
             .populate('exercises');
 
@@ -25,7 +25,7 @@ module.exports = ({
         });
     },
 
-    getExercise: async (req, res) => {
+    async getExercise(req, res) {
         const exercise = await Exercise.findById(req.params.exercise);
 
         res.json({

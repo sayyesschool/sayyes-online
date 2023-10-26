@@ -1,78 +1,68 @@
 module.exports = ({
     models: { Assignment }
 }) => ({
-    getMany: (req, res, next) => {
-        Assignment.find({ ...req.query })
-            .then(assignments => {
-                res.json({
-                    ok: true,
-                    data: assignments
-                });
-            })
-            .catch(next);
+    async getMany(req, res) {
+        const assignments = await Assignment.find({ ...req.query });
+
+        res.json({
+            ok: true,
+            data: assignments
+        });
     },
 
-    getOne: (req, res, next) => {
-        Assignment.findById(req.params.id)
+    async getOne(req, res, next) {
+        const assignment = await Assignment.findById(req.params.id)
             .populate('enrollment', 'domain')
-            .populate('exercises')
-            .then(assignment => {
-                if (!assignment) {
-                    const error = new Error('Задание не найдена');
-                    error.status = 404;
-                    return next(error);
-                }
+            .populate('exercises');
 
-                res.json({
-                    ok: true,
-                    data: assignment
-                });
-            })
-            .catch(next);
+        if (!assignment) {
+            const error = new Error('Задание не найдена');
+            error.status = 404;
+            return next(error);
+        }
+
+        res.json({
+            ok: true,
+            data: assignment
+        });
     },
 
-    create: (req, res, next) => {
-        Assignment.create(req.body)
-            .then(assignment => {
-                res.json({
-                    ok: true,
-                    message: 'Задание создано',
-                    data: assignment
-                });
-            })
-            .catch(next);
+    async create(req, res) {
+        const assignment = await Assignment.create(req.body);
+
+        res.json({
+            ok: true,
+            message: 'Задание создано',
+            data: assignment
+        });
     },
 
-    update: (req, res, next) => {
-        Assignment.findOneAndUpdate({
+    async update(req, res) {
+        const assignment = await Assignment.findOneAndUpdate({
             _id: req.params.id
         }, req.body, {
             new: true,
             projection: Object.keys(req.body)
-        })
-            .then(assignment => {
-                res.json({
-                    ok: true,
-                    message: 'Задание обновлено',
-                    data: assignment
-                });
-            })
-            .catch(next);
+        });
+
+        res.json({
+            ok: true,
+            message: 'Задание обновлено',
+            data: assignment
+        });
     },
 
-    delete: (req, res, next) => {
-        Assignment.findOneAndDelete({
+    async delete(req, res) {
+        const assignment = await Assignment.findOneAndDelete({
             _id: req.params.id
-        })
-            .then(assignment => {
-                res.json({
-                    ok: true,
-                    message: 'Задание удалено',
-                    data: {
-                        id: assignment.id
-                    }
-                });
-            })
-            .catch(next);
+        });
+
+        res.json({
+            ok: true,
+            message: 'Задание удалено',
+            data: {
+                id: assignment.id
+            }
+        });
     }
 });

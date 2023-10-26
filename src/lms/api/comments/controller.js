@@ -1,43 +1,21 @@
 module.exports = ({
     models: { Comment }
 }) => ({
-    getMany: (req, res, next) => {
-        Comment.find({ ...req.query })
+    async get(req, res) {
+        const comments = await Comment.find({ ...req.query })
             .populate('author', 'firstname lastname email imageUrl')
-            .populate('comments.author', 'firstname lastname email imageUrl')
-            .sort({ createdAt: -1 })
-            .then(posts => {
-                res.json({
-                    ok: true,
-                    data: posts
-                });
-            })
-            .catch(next);
+            .sort({ createdAt: -1 });
+
+        res.json({
+            ok: true,
+            data: comments
+        });
     },
 
-    getOne: (req, res, next) => {
-        Comment.findById(req.params.id)
-            .populate('user', 'firstname lastname email imageUrl')
-            .populate('comments.user', 'firstname lastname email imageUrl')
-            .then(post => {
-                if (!post) {
-                    const error = new Error('Запись не найдена');
-                    error.status = 404;
-                    return next(error);
-                }
-
-                res.json({
-                    ok: true,
-                    data: post
-                });
-            })
-            .catch(next);
-    },
-
-    create: (req, res, next) => {
+    async create(req, res) {
         req.body.user = req.user.id;
 
-        Comment.findByIdAndUpdate(req.params.id, {
+        const comment = await Comment.findByIdAndUpdate(req.params.id, {
             $push: { comments: req.body }
         }, {
             new: true,
@@ -46,28 +24,26 @@ module.exports = ({
                 slug: true,
                 comments: { $slice: -1 }
             }
-        })
-            .populate('comments.user', 'firstname lastname email')
-            .then(post => {
-                const data = post.comments[0].toObject();
+        }).populate('comments.user', 'firstname lastname email');
 
-                data.postId = post.id;
+        const data = post.comments[0].toObject();
 
-                res.json({
-                    ok: true,
-                    data
-                });
-            }).catch(next);
+        data.postId = post.id;
+
+        res.json({
+            ok: true,
+            data
+        });
     },
 
-    update: (req, res, next) => {
+    async update(req, res) {
         const data = Array.from(Object.entries(req.body))
             .reduce((data, [key, value]) => {
                 data[`comments.$[c].${key}`] = value;
                 return data;
             }, {});
 
-        Comment.findByIdAndUpdate(req.params.postId, {
+        const comment = await Comment.findByIdAndUpdate(req.params.postId, {
             $set: data
         }, {
             new: true,
@@ -77,19 +53,17 @@ module.exports = ({
                 slug: true,
                 comments: { $elemMatch: { _id: req.params.commentId } }
             }
-        })
-            .populate('comments.user', 'firstname lastname email')
-            .then(({ comments: [comment] }) => {
-                res.json({
-                    ok: true,
-                    message: 'Комментарий изменен',
-                    data: comment
-                });
-            }).catch(next);
+        }).populate('comments.user', 'firstname lastname email');
+
+        res.json({
+            ok: true,
+            message: 'Комментарий изменен',
+            data: comment
+        });
     },
 
-    delete: (req, res, next) => {
-        Comment.findByIdAndUpdate(req.params.postId, {
+    async delete(req, res) {
+        const comment = await Comment.findByIdAndUpdate(req.params.postId, {
             $pull: {
                 comments: { _id: req.params.commentId }
             }
@@ -97,16 +71,16 @@ module.exports = ({
             projection: {
                 comments: { $elemMatch: { _id: req.params.commentId } },
             }
-        }).then(post => {
-            const data = post.comments[0].toObject();
+        });
 
-            data.postId = post.id;
+        const data = post.comments[0].toObject();
 
-            res.json({
-                ok: true,
-                message: 'Комментарий удален',
-                data
-            });
-        }).catch(next);
+        data.postId = post.id;
+
+        res.json({
+            ok: true,
+            message: 'Комментарий удален',
+            data
+        });
     },
 });

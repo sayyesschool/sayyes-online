@@ -1,7 +1,7 @@
 module.exports = ({
     models: { Enrollment },
 }) => ({
-    getMany: (req, res, next) => {
+    async getMany(req, res) {
         const query = { ...req.query };
 
         if (req.user.role === 'learner') {
@@ -10,54 +10,50 @@ module.exports = ({
             query.teacherId = req.user.id;
         }
 
-        Enrollment.find(query)
+        const enrollments = await Enrollment.find(query)
             .populate('learner', 'firstname lastname email imageUrl')
-            .populate('teacher', 'firstname lastname email imageUrl')
-            .then(enrollments => {
-                res.json({
-                    ok: true,
-                    data: enrollments
-                });
-            })
-            .catch(next);
+            .populate('teacher', 'firstname lastname email imageUrl');
+
+        res.json({
+            ok: true,
+            data: enrollments
+        });
     },
 
-    getOne: (req, res, next) => {
-        Enrollment.findById(req.params.id)
+    async getOne(req, res, next) {
+        const enrollment = await Enrollment.findById(req.params.id)
             .populate('learner', 'firstname lastname email imageUrl')
             .populate('teacher', 'firstname lastname imageUrl zoomUrl')
             .populate('manager', 'firstname lastname imageUrl email phone')
             .populate('lessons', 'title status date duration')
             .populate('assignments', 'title status dueAt')
             .populate('courses', 'title')
-            .populate('materials', 'title')
-            .then(enrollment => {
-                if (!enrollment) {
-                    const error = new Error('Обучение не найдено');
-                    error.status = 404;
-                    return next(error);
-                }
+            .populate('materials', 'title');
 
-                res.json({
-                    ok: true,
-                    data: enrollment
-                });
-            })
-            .catch(next);
+        if (!enrollment) {
+            const error = new Error('Обучение не найдено');
+            error.status = 404;
+            return next(error);
+        }
+
+        res.json({
+            ok: true,
+            data: enrollment
+        });
     },
 
-    update: (req, res, next) => {
+    async update(req, res) {
         const keys = Object.keys(req.body);
 
-        Enrollment.findByIdAndUpdate(req.params.id, req.body, {
+        const enrollment = await Enrollment.findByIdAndUpdate(req.params.id, req.body, {
             projection: keys.join(' '),
             new: true
-        }).then(enrollment => {
-            res.json({
-                ok: true,
-                message: 'Обучение изменено',
-                data: enrollment
-            });
-        }).catch(next);
+        });
+
+        res.json({
+            ok: true,
+            message: 'Обучение изменено',
+            data: enrollment
+        });
     }
 });
