@@ -17,6 +17,7 @@ export default function useChat({ token, conversationId, userId }) {
         chat.init();
 
         chat.once('joined', () => {
+            console.log('JOINED');
             setJoined(true);
             setMessages(chat.messages);
         });

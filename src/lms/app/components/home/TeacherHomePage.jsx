@@ -14,7 +14,7 @@ import EnrollmentsList from 'app/components/enrollments/enrollments-list';
 import LessonDetails from 'app/components/lessons/lesson-details';
 import LessonForm from 'app/components/lessons/lesson-form';
 
-export default function HomePage() {
+export default function TeacherHomePage() {
     const [lessons, actions] = useLessons();
     const [enrollments] = useEnrollments();
 

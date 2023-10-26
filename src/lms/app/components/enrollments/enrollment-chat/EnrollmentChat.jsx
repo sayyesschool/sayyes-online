@@ -4,8 +4,6 @@ import Chat from 'shared/components/chat';
 import PageSection from 'shared/components/page-section';
 import { IconButton } from 'shared/ui-components';
 
-import './index.scss';
-
 export default function EnrollmentChat({ enrollment, user, onClose }) {
     const participantsById = useMemo(() => {
         const { learner, teacher } = enrollment;

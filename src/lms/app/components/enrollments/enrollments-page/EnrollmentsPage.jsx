@@ -3,10 +3,6 @@ import { Redirect } from 'react-router-dom';
 import { useEnrollments } from 'shared/hooks/enrollments';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
-
-import './index.scss';
 
 export default function EnrollmentsPage() {
     const [enrollments] = useEnrollments();
@@ -19,11 +15,11 @@ export default function EnrollmentsPage() {
 
     // return (
     //     <Page id="enrollments-page">
-    //         <PageHeader
+    //         <Page.Header
     //             title="Занятия"
     //         />
 
-    //         <PageContent>
+    //         <Page.Content>
     //             <LayoutGrid>
     //                 {enrollments.map(enrollment =>
     //                     <LayoutGrid.Cell key={enrollment.id} span="4">
@@ -33,7 +29,7 @@ export default function EnrollmentsPage() {
     //                     </LayoutGrid.Cell>
     //                 )}
     //             </LayoutGrid>
-    //         </PageContent>
+    //         </Page.Content>
     //     </Page>
     // );
 }

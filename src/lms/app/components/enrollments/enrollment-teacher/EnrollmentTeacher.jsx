@@ -1,5 +1,5 @@
 import PageSection from 'shared/components/page-section';
-import { Avatar, List, Text } from 'shared/ui-components';
+import { Avatar, List } from 'shared/ui-components';
 
 export default function EnrollmentTeacher({ enrollment }) {
     const { teacher } = enrollment;

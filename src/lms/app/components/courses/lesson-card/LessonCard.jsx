@@ -1,7 +1,5 @@
 import { Card, Heading, Image, Text } from 'shared/ui-components';
 
-import './index.scss';
-
 export default function LessonCard({ lesson, onSelect, ...props }) {
     return (
         <Card

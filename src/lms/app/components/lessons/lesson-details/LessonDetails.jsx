@@ -2,8 +2,6 @@ import StatusChip from 'shared/components/status-chip';
 import { Alert, List, Text } from 'shared/ui-components';
 import datetime from 'shared/libs/datetime';
 
-import './index.scss';
-
 export default function LessonDetails({ lesson }) {
     const nowMoment = datetime();
     const startMoment = datetime(lesson.startAt);

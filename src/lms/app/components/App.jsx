@@ -10,16 +10,13 @@ import NavBar from 'shared/components/nav-bar';
 import Assignments from 'app/components/assignments';
 import Courses from 'app/components/courses';
 import Enrollments from 'app/components/enrollments';
-import LearnerHome from 'app/components/home/learner';
-import TeacherHome from 'app/components/home/teacher';
+import { LearnerHomePage, TeacherHomePage } from 'app/components/home';
 import Materials from 'app/components/materials';
 import navItems from 'app/data/nav';
 
-import './index.scss';
-
 const PageHomeByRole = {
-    client: LearnerHome,
-    teacher: TeacherHome
+    learner: LearnerHomePage,
+    teacher: TeacherHomePage
 };
 
 export default function App() {

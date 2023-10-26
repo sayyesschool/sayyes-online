@@ -5,9 +5,7 @@ import Page from 'shared/components/page';
 
 import EnrollmentDetailsCard from 'app/components/enrollments/enrollment-details-card';
 
-import './index.scss';
-
-export default function HomePage() {
+export default function LearnerHomePage() {
     const [user] = useUser();
     const [enrollments] = useEnrollments();
 

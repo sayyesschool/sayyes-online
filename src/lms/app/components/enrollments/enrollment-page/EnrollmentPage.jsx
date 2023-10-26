@@ -17,8 +17,6 @@ import EnrollmentMaterials from 'app/components/enrollments/enrollment-materials
 import EnrollmentSchedule from 'app/components/enrollments/enrollment-schedule';
 import EnrollmentTeacher from 'app/components/enrollments/enrollment-teacher';
 
-import './index.scss';
-
 export default function EnrollmentPage({ match }) {
     const [enrollment] = useEnrollment(match.params.id);
     const [user] = useUser();

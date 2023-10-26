@@ -2,7 +2,7 @@ const express = require('express');
 
 const api = require('./api');
 
-const ALLOWED_ROLES = ['client', 'teacher'];
+const ALLOWED_ROLES = ['learner', 'teacher'];
 
 module.exports = context => {
     const app = express();

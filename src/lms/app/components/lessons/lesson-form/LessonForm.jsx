@@ -4,8 +4,6 @@ import { useFormData } from 'shared/hooks/form';
 import Form from 'shared/ui-components/form';
 import datetime from 'shared/libs/datetime';
 
-import './index.scss';
-
 const statusOptions = [
     { key: 'scheduled', value: 'scheduled', content: 'Запланирован' },
     { key: 'ended', value: 'ended', content: 'Завершился' },

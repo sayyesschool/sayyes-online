@@ -8,7 +8,7 @@ import { ThemeProvider, theme } from 'shared/theme';
 import './index.scss';
 
 import store from './store';
-import App from './components';
+import { App } from './components';
 
 render(
     <ErrorBoundary>
