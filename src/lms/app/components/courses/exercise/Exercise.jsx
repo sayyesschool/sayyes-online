@@ -35,8 +35,6 @@ export default function Exercise({
     const [isChecked, setChecked] = useBoolean(false);
     const [isSaving, setSaving] = useBoolean(false);
 
-    console.log('Exercise assignments', assignments);
-
     const handleSave = useCallback(() => {
         setSaving(true);
 

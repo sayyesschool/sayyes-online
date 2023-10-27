@@ -5,7 +5,12 @@ import { useBoolean } from 'shared/hooks/state';
 import Comment from 'shared/components/comment';
 import { Button } from 'shared/ui-components';
 
-export default function ExerciseComments({ exercise, onCreate, onUpdate, onDelete }) {
+export default function ExerciseComments({
+    exercise,
+    onCreate,
+    onUpdate,
+    onDelete
+}) {
     const [user] = useUser();
 
     const [isCommenting, toggleCommenting] = useBoolean(false);
