@@ -4,22 +4,26 @@ const moment = require('moment');
 const ObjectId = Schema.Types.ObjectId;
 
 const Comment = new Schema({
-    author: { type: ObjectId, ref: 'User' },
     content: { type: String, required: true },
+    authorId: { type: ObjectId, required: true },
     ref: {
         type: Schema.Types.ObjectId,
-        refPath: 'refModel'
+        refPath: 'refModel',
+        required: true
     },
     refModel: {
         type: String,
-        enum: ['Client', 'Enrollment', 'Post']
+        enum: ['Enrollment', 'Exercise', 'User']
     }
 }, {
     timestamps: true
 });
 
-Comment.virtual('postId').get(function() {
-    return this.parent()?.id;
+Comment.virtual('author', {
+    ref: 'User',
+    localField: 'authorId',
+    foreignField: '_id',
+    justOne: true,
 });
 
 Comment.virtual('datetimeLabel').get(function() {

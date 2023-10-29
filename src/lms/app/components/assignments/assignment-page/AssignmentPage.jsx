@@ -11,10 +11,11 @@ import Page from 'shared/components/page';
 import { Heading, Surface, Text } from 'shared/ui-components';
 import datetime from 'shared/libs/datetime';
 import { StatusColor, StatusLabel } from 'shared/data/assignment';
+import { DomainLabel } from 'shared/data/common';
 
 import Exercise from 'lms/components/courses/exercise';
 
-export default function AssignmentPage({ match, location }) {
+export default function AssignmentPage({ match, location, history }) {
     const [assignment, actions] = useAssignment(match.params.id, location.search);
     const [user] = useUser();
 
@@ -29,25 +30,35 @@ export default function AssignmentPage({ match, location }) {
         });
     }, []);
 
-    const updateAssignmentStatus = useCallback((status) => {
+    const updateAssignmentStatus = useCallback(status => {
         return actions.updateAssignment(assignment.id, { status });
     }, [assignment]);
 
+    const handleRemoveExercise = useCallback(exercise => {
+        return actions.updateAssignment(assignment.id, {
+            exerciseIds: assignment.exerciseIds.filter(id => id !== exercise.id)
+        });
+    }, []);
+
     const handleDelete = useCallback(() => {
-        return actions.deleteAssignment(assignment.id);
+        return actions.deleteAssignment(assignment.id)
+            .then(() => {
+                toggleConfirmationDialogOpen();
+                history.push(`/enrollments/${assignment.enrollmentId}`);
+            });
     }, [assignment]);
 
     if (!assignment) return <LoadingIndicator />;
 
     const isTeacher = user.role === 'teacher';
-    const isLearner = user.role === 'client';
+    const isLearner = user.role === 'learner';
 
     return (
         <Page className="AssignmentPage">
             <Page.Header
                 breadcrumbs={[
                     {
-                        content: assignment.enrollment.domainLabel,
+                        content: DomainLabel[assignment.enrollment.domain],
                         to: `/enrollments/${assignment.enrollmentId}`
                     }
                 ]}
@@ -78,22 +89,22 @@ export default function AssignmentPage({ match, location }) {
                     />
                 }
                 actions={
-                    (isTeacher && [
+                    isTeacher && [
                         {
                             key: 'delete',
                             icon: 'delete',
                             title: 'Удалить задание',
                             onClick: toggleConfirmationDialogOpen
                         }
-                    ])
+                    ]
                     ||
-                    (isLearner && getLearnerAssignmentActions(assignment.status, updateAssignmentStatus))
+                    isLearner && getLearnerAssignmentActions(assignment.status, updateAssignmentStatus)
                 }
             />
 
             <Page.Content>
-                {assignment.content &&
-                    (isTeacher &&
+                {
+                    isTeacher && (
                         <Surface variant="outlined">
                             <ContentEditor
                                 content={assignment.content}
@@ -101,7 +112,7 @@ export default function AssignmentPage({ match, location }) {
                         </Surface>
                     )
                     ||
-                    (isLearner &&
+                    isLearner && assignment.content && (
                         <Content
                             content={assignment.content}
                             html
@@ -109,15 +120,26 @@ export default function AssignmentPage({ match, location }) {
                     )
                 }
 
-                {assignment.exercises.map((exercise, index) =>
+                {assignment.exercises.length > 0 ? assignment.exercises.map((exercise, index) =>
                     <Exercise
                         key={exercise.id}
                         index={index}
                         user={user}
                         exercise={exercise}
                         showRemoveFromAssignment={user.role === 'teacher'}
+                        onRemoveFromAssignment={handleRemoveExercise}
                         onProgressChange={handleExerciseProgressChange}
                     />
+                ) : (
+                    <>
+                        <Text
+                            content="Нет упражнений"
+                        />
+                        <Text
+                            content="Добавьте упражнения в задание на странице курса"
+                            type="body-sm"
+                        />
+                    </>
                 )}
             </Page.Content>
 

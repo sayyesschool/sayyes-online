@@ -128,7 +128,12 @@ describe('Assignment controller', () => {
 
     describe('delete', () => {
         it('should delete assignment', async () => {
-            const assignment = { _id: 1, id: 1, title: 'Assignment 1' };
+            const assignment = {
+                _id: 1,
+                id: 1,
+                title: 'Assignment 1',
+                enrollmentId: 1
+            };
             Assignment.findOneAndDelete.resolves(assignment);
 
             const req = { params: { id: 1 } };
@@ -143,7 +148,8 @@ describe('Assignment controller', () => {
                 ok: true,
                 message: 'Задание удалено',
                 data: {
-                    id: assignment._id
+                    id: assignment._id,
+                    enrollmentId: assignment.enrollmentId
                 }
             })).toBe(true);
         });

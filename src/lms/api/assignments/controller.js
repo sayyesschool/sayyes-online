@@ -61,7 +61,8 @@ module.exports = ({
             ok: true,
             message: 'Задание удалено',
             data: {
-                id: assignment.id
+                id: assignment.id,
+                enrollmentId: assignment.enrollmentId
             }
         });
     }

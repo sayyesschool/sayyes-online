@@ -2,10 +2,10 @@ const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const { Schema, models } = require('mongoose');
 
-const Person = require('./person');
+const Person = require('./Person');
 
 const UserRole = {
-    Administrator: 'administrator',
+    Admin: 'admin',
     Customer: 'customer',
     Editor: 'editor',
     Learner: 'learner',

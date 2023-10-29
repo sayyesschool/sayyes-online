@@ -1,6 +1,6 @@
 const { Schema } = require('mongoose');
 
-const Person = require('./person');
+const Person = require('./Person');
 
 const Contact = new Schema([Person, {
     relation: { type: String },

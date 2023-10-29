@@ -1,8 +1,8 @@
 const { Schema } = require('mongoose');
 
-const Contact = require('./contact');
+const Contact = require('./Contact');
 
-const Client = new Schema({
+const Customer = new Schema({
     balance: { type: Number, default: 0 },
     altPhone: {
         type: String,
@@ -17,26 +17,26 @@ const Client = new Schema({
     teacherNote: { type: String }
 });
 
-Client.virtual('status').get(function() {
+Customer.virtual('status').get(function() {
     return this.enrollments?.some(enrollment => enrollment.isActive)?.status;
 });
 
-Client.virtual('requests', {
+Customer.virtual('requests', {
     ref: 'Request',
     localField: '_id',
     foreignField: 'client'
 });
 
-Client.virtual('lessons', {
+Customer.virtual('lessons', {
     ref: 'Lesson',
     localField: '_id',
     foreignField: 'client'
 });
 
-Client.virtual('enrollments', {
+Customer.virtual('enrollments', {
     ref: 'Enrollment',
     localField: '_id',
     foreignField: 'client'
 });
 
-module.exports = Client;
+module.exports = Customer;

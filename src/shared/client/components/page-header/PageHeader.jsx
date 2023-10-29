@@ -31,7 +31,12 @@ export default function PageHeader({
                         >
                             {breadcrumbs.map(props =>
                                 props.to ?
-                                    <Link key={props.to} component={RouterLink} {...props} /> :
+                                    <Link
+                                        key={props.to}
+                                        component={RouterLink}
+                                        {...props}
+                                    />
+                                    :
                                     <Text {...props} />
                             )}
                         </Breadcrumbs>
@@ -40,6 +45,7 @@ export default function PageHeader({
                     {overline &&
                         <Text
                             className="PageHeader__overline"
+                            type="title-sm"
                             content={overline}
                         />
                     }

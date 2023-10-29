@@ -1,5 +1,6 @@
 import { createAction, createReducer, combineReducers } from 'shared/store/helpers';
 
+import { createAssignment, updateAssignment, deleteAssignment } from './assignments';
 import { createComment, updateComment, deleteComment } from './comments';
 import { createLesson, createLessons, updateLesson, deleteLesson } from './lessons';
 import { createPayment, updatePayment, deletePayment } from './payments';
@@ -79,7 +80,11 @@ export const enrollmentReducer = createReducer(null, {
     [updateEnrollment]: (state, action) => ({ ...state, ...action.data }),
     [deleteEnrollment]: (state, action) => null,
 
+    // Schedule
+
     [updateSchedule]: (state, action) => ({ ...state, schedule: action.data.schedule }),
+
+    // Lessons
 
     [createLessons]: (state, action) => ({
         ...state,
@@ -101,6 +106,8 @@ export const enrollmentReducer = createReducer(null, {
         lessons: state.lessons.filter(lesson => lesson.id !== action.data.id)
     },
 
+    // Comment
+
     [createComment]: (state, action) => state.id !== action.data.ref ? state : {
         ...state,
         comments: [action.data, ...state.comments]
@@ -117,6 +124,8 @@ export const enrollmentReducer = createReducer(null, {
         comments: state.comments.filter(comment => comment.id !== action.data.id)
     },
 
+    // Payments
+
     [createPayment]: (state, action) => state.id !== action.data.enrollment ? state : {
         ...state,
         payments: [action.data, ...state.payments]
@@ -131,7 +140,25 @@ export const enrollmentReducer = createReducer(null, {
     [deletePayment]: (state, action) => state.id !== action.data.enrollment ? state : {
         ...state,
         payments: state.payments.filter(payment => payment.id !== action.data.id)
-    }
+    },
+
+    // Assignments
+
+    [createAssignment]: (state, action) => state?.id !== action.data.enrollmentId ? state : {
+        ...state,
+        assignments: state.assignments.concat(action.data)
+    },
+    [updateAssignment]: (state, action) => state?.id !== action.data.enrollmentId ? state : {
+        ...state,
+        assignments: state.assignments.map(assignment => assignment.id !== action.data.id ? assignment : {
+            ...assignment,
+            ...action.data
+        })
+    },
+    [deleteAssignment]: (state, action) => state?.id !== action.data.enrollmentId ? state : {
+        ...state,
+        assignments: state.assignments.filter(assignment => assignment.id !== action.data.id)
+    },
 });
 
 export default combineReducers({

@@ -8,6 +8,7 @@ import {
     Button,
     Card,
     Chip,
+    Icon,
     IconButton,
     Flex,
     MenuButton
@@ -130,6 +131,15 @@ export default function Exercise({
                                                 to: assignment.url
                                             }
                                         }}
+                                        end={showMenu &&
+                                            <Chip.Delete
+                                                variant="plain"
+                                                title="Убрать из задания"
+                                                onClick={event => handleRemoveFromAssignment(event, assignment)}
+                                            >
+                                                <Icon name="remove" size="small" />
+                                            </Chip.Delete>
+                                        }
                                     />
                                 )
                             }
@@ -146,6 +156,7 @@ export default function Exercise({
                                 />
                             }
                             items={(assignments || [])
+                                .filter(assignment => !assignment.exerciseIds.includes(exercise.id))
                                 .map(assignment => ({
                                     key: assignment.id,
                                     content: assignment.title,

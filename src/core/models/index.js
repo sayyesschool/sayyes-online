@@ -10,7 +10,6 @@ const Material = require('./material');
 const Meeting = require('./meeting');
 const Pack = require('./pack');
 const Payment = require('./payment');
-const Post = require('./post');
 const Progress = require('./progress');
 const Request = require('./request');
 const Room = require('./room');
@@ -20,7 +19,8 @@ const UserSchema = require('./user');
 
 const User = model('User', UserSchema);
 const Admin = User.discriminator('Admin', UserSchema.Admin, 'admin');
-const Client = User.discriminator('Client', UserSchema.Client, 'client');
+const Customer = User.discriminator('Customer', UserSchema.Customer, 'customer');
+const Editor = User.discriminator('Editor', UserSchema.Editor, 'editor');
 const Learner = User.discriminator('Learner', UserSchema.Learner, 'learner');
 const Manager = User.discriminator('Manager', UserSchema.Manager, 'manager');
 const Teacher = User.discriminator('Teacher', UserSchema.Teacher, 'teacher');
@@ -36,7 +36,6 @@ module.exports = () => ({
     Meeting: model('Meeting', Meeting),
     Pack: model('Pack', Pack),
     Payment: model('Payment', Payment),
-    Post: model('Post', Post),
     Progress: model('Progress', Progress, 'progress'),
     Request: model('Request', Request),
     Room: model('Room', Room),
@@ -44,7 +43,8 @@ module.exports = () => ({
     Transaction: model('Transaction', Transaction),
     User,
     Admin,
-    Client,
+    Customer,
+    Editor,
     Learner,
     Manager,
     Teacher

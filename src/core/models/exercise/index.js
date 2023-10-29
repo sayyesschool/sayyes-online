@@ -1,1 +1,1 @@
-module.exports = require('./exercise');
+module.exports = require('./Exercise');

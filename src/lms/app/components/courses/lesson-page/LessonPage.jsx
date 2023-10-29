@@ -56,7 +56,7 @@ export default function LessonPage({ match, location }) {
 
     const handleRemoveExerciseFromAssignment = useCallback((exercise, assignment) => {
         return assignmentActions.updateAssignment(assignment.id, {
-            exercises: assignment.exercises.filter(id => id !== exercise.id)
+            exerciseIds: assignment.exerciseIds.filter(id => id !== exercise.id)
         });
     }, []);
 

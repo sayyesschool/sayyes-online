@@ -1,9 +1,9 @@
 const { Schema } = require('mongoose');
 
 const Image = require('../image');
-const Lesson = require('./lesson');
-const Section = require('./section');
-const Unit = require('./unit');
+const Lesson = require('./Lesson');
+const Section = require('./Section');
+const Unit = require('./Unit');
 
 const Course = new Schema({
     slug: { type: String, required: true, unique: true },
