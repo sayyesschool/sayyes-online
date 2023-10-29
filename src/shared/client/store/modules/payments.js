@@ -3,21 +3,21 @@ import { createAction, createReducer, combineReducers } from 'shared/store/helpe
 export const getPayments = createAction('GET_PAYMENTS', () => ({
     request: {
         method: 'get',
-        url: '/payments'
+        path: 'payments'
     }
 }));
 
 export const getPayment = createAction('GET_PAYMENT', id => ({
     request: {
         method: 'get',
-        url: `/payments/${id}`
+        path: `payments/${id}`
     }
 }));
 
 export const createPayment = createAction('CREATE_PAYMENT', data => ({
     request: {
         method: 'post',
-        url: '/payments',
+        path: 'payments',
         body: data
     }
 }));
@@ -25,7 +25,7 @@ export const createPayment = createAction('CREATE_PAYMENT', data => ({
 export const updatePayment = createAction('UPDATE_PAYMENT', (id, data) => ({
     request: {
         method: 'put',
-        url: `/payments/${id}`,
+        path: `payments/${id}`,
         body: data
     }
 }));
@@ -33,7 +33,7 @@ export const updatePayment = createAction('UPDATE_PAYMENT', (id, data) => ({
 export const deletePayment = createAction('DELETE_PAYMENT', id => ({
     request: {
         method: 'delete',
-        url: `/payments/${id}`
+        path: `payments/${id}`
     }
 }));
 

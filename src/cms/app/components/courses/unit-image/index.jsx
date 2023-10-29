@@ -9,7 +9,7 @@ export default function UnitImage({ unit, onUpdate }) {
 
     return (
         <ImageSection
-            className="unit-image"
+            className="UnitImage"
             image={unit.image}
             uploadPath={`courses/${unit.courseId}/images/`}
             onUpdate={handleUpdate}

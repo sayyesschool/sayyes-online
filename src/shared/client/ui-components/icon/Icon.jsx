@@ -2,7 +2,7 @@ import classnames from 'classnames';
 
 export default function Icon({
     name,
-    size = 'small',
+    size = 'medium',
 
     children = name,
     className,

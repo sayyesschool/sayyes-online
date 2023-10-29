@@ -1,0 +1,14 @@
+@use 'shared/styles/mixins' as *;
+
+.Lobby {
+    min-width: 640px;
+
+    @include breakpoint('sm') {
+        min-width: 360px;
+        width: 100%;
+    }
+    
+    .LocalVideoPreview {
+        margin-bottom: 1rem;
+    }
+}

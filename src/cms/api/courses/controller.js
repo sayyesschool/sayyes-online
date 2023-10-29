@@ -1,411 +1,231 @@
 module.exports = ({
-    models: { Course }
+    models: { Course, Exercise }
 }) => ({
-    courses: {
-        get: (req, res, next) => {
-            Course.find(req.query)
-                .select('slug title image')
-                .then(courses => {
-                    res.json({
-                        ok: true,
-                        data: courses
-                    });
-                })
-                .catch(next);
-        },
+    // Courses
+    getCourses: async (req, res) => {
+        const courses = await Course.find(req.query)
+            .select('slug title image');
 
-        getOne: (req, res, next) => {
-            Course.findById(req.params.course, 'slug title image units lessons exercises._id exercises.title')
-                .then(course => {
-                    res.json({
-                        ok: true,
-                        data: course
-                    });
-                })
-                .catch(next);
-        },
+        res.json({
+            ok: true,
+            data: courses
+        });
+    },
+    getCourse: async (req, res) => {
+        const course = await Course.findById(req.params.course)
+            .select('slug title description image units lessons sections')
+            .populate('exercises', '_id courseId sectionId description');
 
-        create: (req, res, next) => {
-            Course.create(req.body)
-                .then(course => {
-                    res.json({
-                        ok: true,
-                        message: 'Курс создан',
-                        data: course
-                    });
-                })
-                .catch(next);
-        },
+        res.json({
+            ok: true,
+            data: course
+        });
+    },
+    createCourse: async (req, res) => {
+        const course = await Course.create(req.body);
 
-        update: (req, res, next) => {
-            Course.findByIdAndUpdate(req.params.course, req.body)
-                .select('-audios -videos -units -lessons -exercises')
-                .then(course => {
-                    res.json({
-                        ok: true,
-                        message: 'Курс изменен',
-                        data: course
-                    });
-                })
-                .catch(next);
-        },
+        res.json({
+            ok: true,
+            message: 'Курс создан',
+            data: course
+        });
+    },
+    updateCourse: async (req, res) => {
+        const course = await Course.findByIdAndUpdate(req.params.course, req.body, { new: true })
+            .select('-units -lessons -sections -exercises');
 
-        delete: (req, res, next) => {
-            Course.findByIdAndDelete(req.params.course)
-                .select('id')
-                .then(course => {
-                    res.json({
-                        ok: true,
-                        message: 'Курс удален',
-                        data: {
-                            id: course.id
-                        }
-                    });
-                })
-                .catch(next);
-        }
+        res.json({
+            ok: true,
+            message: 'Курс изменен',
+            data: course
+        });
+    },
+    deleteCourse: async (req, res) => {
+        const course = await Course.findByIdAndDelete(req.params.course)
+            .select('id');
+
+        res.json({
+            ok: true,
+            message: 'Курс удален',
+            data: {
+                id: course.id
+            }
+        });
     },
 
-    units: {
-        create: (req, res, next) => {
-            Course.findByIdAndUpdate({
-                _id: req.params.course
-            }, {
-                $push: { units: req.body }
-            }, {
-                new: true,
-                projection: {
-                    id: true,
-                    slug: true,
-                    units: { $slice: -1 }
-                }
-            }).then(({ units: [unit] }) => {
-                res.json({
-                    ok: true,
-                    message: 'Юнит создан',
-                    data: unit
-                });
-            }).catch(next);
-        },
+    // Units
+    createUnit: async (req, res) => {
+        const unit = await Course.createUnit(req.params.course, req.body);
 
-        update: (req, res, next) => {
-            const data = Array.from(Object.entries(req.body))
-                .reduce((data, [key, value]) => {
-                    data[`units.$[u].${key}`] = value;
-                    return data;
-                }, {});
+        res.json({
+            ok: true,
+            message: 'Юнит создан',
+            data: unit
+        });
+    },
+    updateUnit: async (req, res) => {
+        const unit = await Course.updateUnit(req.params.course, req.params.unit, req.body);
 
-            Course.findByIdAndUpdate({
-                _id: req.params.course
-            }, {
-                $set: data
-            }, {
-                new: true,
-                arrayFilters: [{ 'u._id': req.params.unit }],
-                projection: {
-                    id: true,
-                    slug: true,
-                    units: { $elemMatch: { _id: req.params.unit } }
-                }
-            }).then(({ units: [unit] }) => {
-                res.json({
-                    ok: true,
-                    message: 'Юнит изменен',
-                    data: unit
-                });
-            }).catch(next);
-        },
+        res.json({
+            ok: true,
+            message: 'Юнит изменен',
+            data: unit
+        });
+    },
+    deleteUnit: async (req, res) => {
+        const unit = await Course.deleteUnit(req.params.course, req.params.unit);
 
-        delete: (req, res, next) => {
-            Course.findByIdAndUpdate(req.params.course, {
-                $pull: {
-                    units: { _id: req.params.unit },
-                    lessons: { _unit: req.params.unit },
-                    exercises: { _unit: req.params.unit }
-                }
-            }, {
-                new: false,
-                projection: {
-                    id: true,
-                    slug: true,
-                    units: { $elemMatch: { _id: req.params.unit } }
-                }
-            }).then(({ units: [unit] }) => {
-                res.json({
-                    ok: true,
-                    message: 'Юнит удален',
-                    data: {
-                        id: unit.id
-                    }
-                });
-            }).catch(next);
-        }
+        res.json({
+            ok: true,
+            message: 'Юнит удален',
+            data: {
+                id: unit.id
+            }
+        });
     },
 
-    lessons: {
-        create: (req, res, next) => {
-            const lesson = new Course().lessons.create(req.body);
+    // Lessons
+    createLesson: async (req, res) => {
+        const lesson = await Course.createLesson(req.params.course, req.body);
 
-            Course.findByIdAndUpdate(req.params.course, {
-                $push: {
-                    lessons: lesson,
-                    'units.$[u]._lessons': lesson.id
-                }
-            }, {
-                new: true,
-                arrayFilters: [{ 'u._id': lesson.unitId }],
-                projection: {
-                    id: true,
-                    slug: true,
-                    lessons: { $slice: -1 }
-                }
-            }).then(course => {
-                res.json({
-                    ok: true,
-                    message: 'Урок создан',
-                    data: course.lessons[0]
-                });
-            }).catch(next);
-        },
+        res.json({
+            ok: true,
+            message: 'Урок создан',
+            data: lesson
+        });
+    },
+    updateLesson: async (req, res) => {
+        const lesson = await Course.updateLesson(req.params.course, req.params.lesson, req.body);
 
-        update: (req, res, next) => {
-            const data = Array.from(Object.entries(req.body))
-                .reduce((data, [key, value]) => {
-                    data[`lessons.$[l].${key}`] = value;
-                    return data;
-                }, {});
-
-            Course.findByIdAndUpdate(req.params.course, {
-                $set: data
-            }, {
-                new: true,
-                arrayFilters: [{ 'l._id': req.params.lesson }],
-                projection: {
-                    id: true,
-                    slug: true,
-                    lessons: { $elemMatch: { _id: req.params.lesson } }
-                }
-            }).then(({ lessons: [lesson] }) => {
-                res.json({
-                    ok: true,
-                    message: 'Урок изменен',
-                    data: lesson
-                });
-            }).catch(next);
-        },
-
-        delete: (req, res, next) => {
-            Course.findByIdAndUpdate(req.params.course, {
-                $pull: {
-                    lessons: { _id: req.params.lesson },
-                    'units.$[u]._lessons': req.params.lesson,
-                    exercises: { _lesson: req.params.lesson }
-                }
-            }, {
-                arrayFilters: [{ 'u._lessons': req.params.lesson }],
-                projection: {
-                    lessons: { $elemMatch: { _id: req.params.lesson } },
-                    units: { $elemMatch: { _lessons: req.params.lesson } }
-                }
-            }).then(({ lessons: [lesson], units: [unit] }) => {
-                const data = lesson.toObject();
-
-                data.unitId = unit.id;
-
-                res.json({
-                    ok: true,
-                    message: 'Урок удален',
-                    data
-                });
-            }).catch(next);
-        }
+        res.json({
+            ok: true,
+            message: 'Урок изменен',
+            data: lesson
+        });
     },
 
-    exercises: {
-        getOne: (req, res, next) => {
-            Course.findOne({
-                _id: req.params.course,
-                'exercises._id': req.params.exercise
-            }, {
-                'exercises.$': true
-            }).then(({ exercises: [exercise] }) => {
-                const data = exercise.toJSON();
+    deleteLesson: async (req, res) => {
+        const lesson = await Course.deleteLesson(req.params.course, req.params.lesson);
 
-                res.json({
-                    ok: true,
-                    data
-                });
-            }).catch(next);
-        },
-
-        create: (req, res, next) => {
-            const exercise = new Course().exercises.create(req.body);
-
-            Course.findByIdAndUpdate(req.params.course, {
-                $push: {
-                    exercises: exercise,
-                    'lessons.$[l]._exercises': exercise.id
-                }
-            }, {
-                new: true,
-                arrayFilters: [{ 'l._id': exercise.lessonId }],
-                projection: {
-                    id: true,
-                    slug: true,
-                    exercises: { $slice: -1 }
-                }
-            }).then(({ exercises: [exercise] }) => {
-                const data = exercise.toObject();
-
-                data.lessonId = req.body.lessonId;
-
-                res.json({
-                    ok: true,
-                    message: 'Упражнение создано',
-                    data
-                });
-            }).catch(next);
-        },
-
-        update: (req, res, next) => {
-            const data = Array.from(Object.entries(req.body))
-                .reduce((data, [key, value]) => {
-                    data[`exercises.$[e].${key}`] = value;
-                    return data;
-                }, {});
-
-            Course.findByIdAndUpdate(req.params.course, {
-                $set: data
-            }, {
-                new: true,
-                arrayFilters: [{ 'e._id': req.params.exercise }],
-                projection: {
-                    id: true,
-                    slug: true,
-                    exercises: { $elemMatch: { _id: req.params.exercise } }
-                }
-            }).then(({ exercises: [exercise] }) => {
-                res.json({
-                    ok: true,
-                    message: 'Упражнение изменено',
-                    data: exercise
-                });
-            }).catch(next);
-        },
-
-        delete: (req, res, next) => {
-            Course.findByIdAndUpdate(req.params.course, {
-                $pull: {
-                    exercises: { _id: req.params.exercise },
-                    'lessons.$[l]._exercises': req.params.exercise
-                }
-            }, {
-                arrayFilters: [{ 'l._exercises': req.params.exercise }],
-                projection: {
-                    exercises: { $elemMatch: { _id: req.params.exercise } }
-                }
-            }).then(({ exercises: [exercise] }) => {
-                res.json({
-                    ok: true,
-                    message: 'Упражнение удалено',
-                    data: exercise
-                });
-            }).catch(next);
-        }
+        res.json({
+            ok: true,
+            message: 'Урок удален',
+            data: lesson
+        });
     },
 
-    items: {
-        create: (req, res, next) => {
-            const { item, position } = req.body;
+    // Sections
+    createSection: async (req, res) => {
+        const section = await Course.createSection(req.params.course, req.body);
 
-            Course.findByIdAndUpdate(req.params.course, {
-                $push: {
-                    'exercises.$[e].items': position !== undefined ? {
-                        $each: [item],
-                        $position: position
-                    } : item
-                }
-            }, {
-                new: true,
-                arrayFilters: [{ 'e._id': req.params.exercise }],
-                projection: {
-                    id: true,
-                    slug: true,
-                    exercises: { $elemMatch: { _id: req.params.exercise } }
-                }
-            }).then(({ exercises: [exercise] }) => {
-                const item = exercise.items.at(position !== undefined ? position : -1).toObject();
+        res.json({
+            ok: true,
+            message: 'Секция создана',
+            data: section
+        });
+    },
+    updateSection: async (req, res) => {
+        const section = await Course.updateSection(req.params.course, req.params.section, req.body);
 
-                res.json({
-                    ok: true,
-                    message: 'Элемент создан',
-                    data: {
-                        item,
-                        position
-                    }
-                });
-            }).catch(next);
-        },
+        res.json({
+            ok: true,
+            message: 'Секция изменена',
+            data: section
+        });
+    },
+    deleteSection: async (req, res) => {
+        const section = await Course.deleteSection(req.params.course, req.params.section);
 
-        update: (req, res, next) => {
-            delete req.body.id;
-            delete req.body.type;
-            delete req.body.courseId;
-            delete req.body.exerciseId;
+        res.json({
+            ok: true,
+            message: 'Секция удалена',
+            data: section
+        });
+    },
 
-            const data = Array.from(Object.entries(req.body))
-                .reduce((data, [key, value]) => {
-                    data[`exercises.$[e].items.$[i].${key}`] = value;
-                    return data;
-                }, {});
+    // Exercises
+    getExercise: async (req, res) => {
+        const exercise = await Exercise.findById(req.params.exercise);
 
-            Course.findByIdAndUpdate(req.params.course, {
-                $set: data
-            }, {
-                new: true,
-                arrayFilters: [
-                    { 'e._id': req.params.exercise },
-                    { 'i._id': req.params.item }
-                ],
-                projection: {
-                    id: true,
-                    slug: true,
-                    exercises: { $elemMatch: { _id: req.params.exercise } }
-                }
-            }).then(({ exercises: [exercise] }) => {
-                const item = exercise.items.find(item => item.id == req.params.item);
+        if (!exercise) throw {
+            code: 404,
+            message: 'Упражнение не найдено'
+        };
 
-                res.json({
-                    ok: true,
-                    message: 'Элемент изменен',
-                    data: item
-                });
-            }).catch(next);
-        },
+        res.json({
+            ok: true,
+            data: exercise
+        });
+    },
+    createExercise: async (req, res) => {
+        const exercise = await Exercise.create(req.body);
 
-        delete: (req, res, next) => {
-            Course.findByIdAndUpdate(req.params.course, {
-                $pull: {
-                    'exercises.$[e].items': {
-                        _id: req.params.item
-                    }
-                }
-            }, {
-                arrayFilters: [
-                    { 'e._id': req.params.exercise }
-                ],
-                projection: {
-                    exercises: { $elemMatch: { _id: req.params.exercise } }
-                }
-            }).then(({ exercises: [exercise] }) => {
-                const item = exercise.items.find(item => item.id == req.params.item);
+        await Course.addExercise(req.params.course, exercise.sectionId, exercise.id);
 
-                res.json({
-                    ok: true,
-                    message: 'Элемент удален',
-                    data: item
-                });
-            }).catch(next);
-        }
+        res.json({
+            ok: true,
+            message: 'Упражнение создано',
+            data: exercise
+        });
+    },
+    updateExercise: async (req, res) => {
+        const exercise = await Exercise.findByIdAndUpdate(req.params.exercise, req.body, { new: true });
+
+        res.json({
+            ok: true,
+            message: 'Упражнение изменено',
+            data: exercise.toJSON()
+        });
+    },
+    deleteExercise: async (req, res) => {
+        const exercise = await Exercise.findByIdAndDelete(req.params.exercise);
+
+        await Course.updateOne({
+            _id: req.params.course
+        }, {
+            $pull: {
+                'sections.$[s]._exercises': exercise.id
+            }
+        }, {
+            arrayFilters: [{ 's._id': exercise.sectionId }]
+        });
+
+        res.json({
+            ok: true,
+            message: 'Упражнение удалено',
+            data: exercise
+        });
+    },
+
+    // Items
+    createItem: async (req, res) => {
+        const item = await Exercise.addItem(req.params.exercise, req.body);
+
+        res.json({
+            ok: true,
+            message: 'Элемент создан',
+            data: {
+                item,
+                position: req.body.position
+            }
+        });
+    },
+    updateItem: async (req, res) => {
+        const item = await Exercise.updateItem(req.params.exercise, req.params.item, req.body);
+
+        res.json({
+            ok: true,
+            message: 'Элемент изменен',
+            data: item
+        });
+    },
+    deleteItem: async (req, res) => {
+        const item = await Exercise.removeItem(req.params.exercise, req.params.item);
+
+        res.json({
+            ok: true,
+            message: 'Элемент удален',
+            data: item
+        });
     }
 });

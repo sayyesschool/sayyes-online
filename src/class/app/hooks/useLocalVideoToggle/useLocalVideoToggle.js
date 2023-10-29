@@ -5,7 +5,7 @@ import useRoomContext from 'app/hooks/useRoomContext';
 export default function useLocalVideoToggle() {
     const {
         room: { localParticipant },
-        localTracks,
+        videoTrack,
         getLocalVideoTrack,
         removeLocalVideoTrack,
         onError,
@@ -13,25 +13,30 @@ export default function useLocalVideoToggle() {
 
     const [isPublishing, setIsPublishing] = useState(false);
 
-    const videoTrack = localTracks.find(track => track.name.includes('camera'));
-
     const toggleVideoEnabled = useCallback(() => {
-        if (!isPublishing) {
-            if (videoTrack) {
-                const localTrackPublication = localParticipant?.unpublishTrack(videoTrack);
-                // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
-                localParticipant?.emit('trackUnpublished', localTrackPublication);
-                removeLocalVideoTrack();
-            } else {
-                setIsPublishing(true);
+        if (isPublishing) return;
 
-                getLocalVideoTrack()
-                    .then(track => localParticipant?.publishTrack(track, { priority: 'low' }))
-                    .catch(onError)
-                    .finally(() => setIsPublishing(false));
-            }
+        if (videoTrack) {
+            const localTrackPublication = localParticipant?.unpublishTrack(videoTrack);
+            // TODO: remove when SDK implements this event. See: https://issues.corp.twilio.com/browse/JSDK-2592
+            localParticipant?.emit('trackUnpublished', localTrackPublication);
+            removeLocalVideoTrack();
+        } else {
+            setIsPublishing(true);
+
+            getLocalVideoTrack()
+                .then(track => localParticipant?.publishTrack(track, { priority: 'low' }))
+                .catch(onError)
+                .finally(() => setIsPublishing(false));
         }
-    }, [videoTrack, localParticipant, getLocalVideoTrack, isPublishing, onError, removeLocalVideoTrack]);
+    }, [
+        isPublishing,
+        videoTrack,
+        localParticipant,
+        getLocalVideoTrack,
+        removeLocalVideoTrack,
+        onError
+    ]);
 
     return [!!videoTrack, toggleVideoEnabled];
 }

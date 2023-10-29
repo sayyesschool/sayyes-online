@@ -1,4 +1,5 @@
 import { isValidElement } from 'react';
+import classnames from 'classnames';
 
 import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
@@ -18,16 +19,22 @@ export default function Dialog({
     layout,
     size,
     variant,
-    withCloseButton = true,
+    scrollableContent = true,
+    closable = true,
     sx,
     onClose,
 
     children = content,
+    className,
     ...props
 }) {
+    const classNames = classnames(className, 'ui-Dialog', {
+        'ui-Dialog--scrollable': scrollableContent
+    });
+
     return (
         <Modal
-            className="ui-Dialog"
+            className={classNames}
             open={open}
             onClose={onClose}
             {...props}
@@ -39,24 +46,17 @@ export default function Dialog({
                 variant={variant}
                 sx={sx}
             >
-                {withCloseButton &&
+                {closable &&
                     <ModalClose size="sm" />
                 }
 
                 {title &&
-                    <Heading type="h5" content={title} />
+                    <Heading className="ui-Dialog__title" type="title-lg" content={title} />
                 }
 
-                <Box sx={{
-                    overflowY: 'auto',
-                    overflowX: 'hidden',
-                    margin: '.75rem 0',
-                    '&:last-child': {
-                        marginBottom: 0
-                    }
-                }}>
+                <div className="ui-Dialog__content">
                     {children}
-                </Box>
+                </div>
 
                 {isValidElement(actions) ? actions : (Array.isArray(actions) &&
                     <Flex gap="smaller" justifyContent="flex-end">

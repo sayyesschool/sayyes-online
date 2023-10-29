@@ -1,0 +1,97 @@
+@use 'shared/styles/variables';
+
+.page-header {
+    align-items: center;
+
+    .navbar-brand {
+        width: unset;
+        height: 100%;
+        margin-left: 1rem;
+
+        img {
+            height: 48px;
+            width: auto;
+        }
+    }
+
+    + * {
+        margin-top: 64px;
+
+        @media #{variables.$lt-md} {
+            margin-top: 56px;
+        }
+    }
+}
+
+.page-content {
+    width: 100%;
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2rem;
+
+    @media #{variables.$lt-lg} {
+        padding: 1rem;
+    }
+}
+
+.page-footer {
+    background-color: #23252c;
+    color: #9a9a9a;
+    text-align: center;
+    margin-top: auto;
+
+    .logo {
+        width: 192px;
+    }
+
+    .legal {
+        a {
+            display: inline-block;
+            margin: 0 .5rem;
+
+            @media #{variables.$sm} {
+                display: block;
+                margin: 0;
+            }
+
+            &:hover {
+                color: white;
+            }
+        }
+
+        .links {
+            margin-bottom: 1rem;
+        }
+    }
+
+    .icons {
+        a {
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            margin: 0 4px;
+            background-size: contain;
+        }
+
+        a.instagram {
+            background-image: url('https://static.sayes.ru/images/icons/social/instagram.png');
+        }
+
+        a.facebook {
+            background-image: url('https://static.sayes.ru/images/icons/social/facebook.png');
+        }
+
+        a.vkontakte {
+            background-image: url('https://static.sayes.ru/images/icons/social/vkontakte.png');
+        }
+
+        a.whatsapp {
+            background-image: url('https://static.sayes.ru/images/icons/social/whatsapp.png');
+        }
+
+        a.email {
+            background-image: url('https://static.sayes.ru/images/icons/social/email.png');
+        }
+    }
+}

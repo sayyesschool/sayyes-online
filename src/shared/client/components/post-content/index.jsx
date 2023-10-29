@@ -1,4 +1,4 @@
-import TextContent from 'shared/components/text-content';
+import Content from 'shared/components/content';
 import { Heading } from 'shared/ui-components';
 
 import './index.scss';
@@ -13,9 +13,7 @@ export default function PostContent({ post }) {
                 />
             }
 
-            <TextContent
-                content={post.content}
-            />
+            <Content content={post.content} html />
         </article>
     );
 }

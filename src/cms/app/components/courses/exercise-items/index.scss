@@ -1,16 +1,10 @@
 .ExerciseItems {
     position: relative;
-    counter-reset: number;
 
     .ExerciseItem {
         width: 100%;
         min-height: 1rem;
-        padding-right: 3rem;
-    }
-
-    .ExerciseItem ~ &__add-button,
-    .ExerciseItemForm ~ &__add-button {
-        margin-top: 1rem;
+        padding-right: 2rem;
     }
 
     & &__item-menu-button {

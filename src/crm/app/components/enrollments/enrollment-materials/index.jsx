@@ -10,9 +10,10 @@ export default function EnrollmentMaterials({ enrollment }) {
     const [materials = []] = useStore('materials.list');
     const enrollmentActions = useActions('enrollments');
 
-    const handleAddMaterial = useCallback((event, component) => {
-        const materialId = component.value;
-        const materials = enrollment.materials.concat(materialId);
+    const handleAddMaterial = useCallback((event, { value }) => {
+        if (!value) return;
+
+        const materials = enrollment.materials.concat(value);
 
         return enrollmentActions.updateEnrollment(enrollment.id, { materials });
     }, [enrollment]);

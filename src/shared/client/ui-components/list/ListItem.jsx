@@ -22,7 +22,7 @@ const ListItem = forwardRef(({
     className,
     ...props
 }, ref) => {
-    const classNames = classnames('ui-ListItem', className);
+    const classNames = classnames(className, 'ui-ListItem');
 
     const listItemContent = (<>
         {decorator &&

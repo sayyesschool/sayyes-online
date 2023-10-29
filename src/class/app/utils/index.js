@@ -49,7 +49,10 @@ export async function isPermissionDenied(name) {
 
     if (navigator.permissions) {
         try {
-            const result = await navigator.permissions.query({ name: permissionName });
+            const result = await navigator.permissions.query({
+                name: permissionName
+            });
+            console.log('PERMISSION', result);
             return result.state === 'denied';
         } catch {
             return false;

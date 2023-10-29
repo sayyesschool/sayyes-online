@@ -4,8 +4,8 @@ import { Switch, Route } from 'react-router-dom';
 import AppHeader from 'shared/components/app-header';
 import AppBar from 'shared/components/app-bar';
 import AppContent from 'shared/components/app-content';
+import AppNotification from 'shared/components/app-notification';
 import LoadingIndicator from 'shared/components/loading-indicator';
-import NotificationAlert from 'shared/components/notification-alert';
 // import SearchForm from 'shared/components/search-form';
 
 import UI from 'app/contexts/ui';
@@ -65,7 +65,7 @@ export default function App({ routes }) {
                     </Switch>
                 </AppContent>
 
-                <NotificationAlert
+                <AppNotification
                     type={notification.type}
                     open={notification.active}
                     content={notification.text}

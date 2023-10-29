@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
-import { IconButton, Image, List } from 'shared/ui-components';
+import { IconButton, Image, List, Text } from 'shared/ui-components';
 
 export default function MaterialsList({ materials, onRemove }) {
     const handleRemove = useCallback((event, materialId) => {
@@ -24,7 +24,7 @@ export default function MaterialsList({ materials, onRemove }) {
                         <Text type="body1">{material.subtitle}</Text>
                         <Text type="body2">{material.title}</Text>
                     </>}
-                    endMedia={onRemove &&
+                    endAction={onRemove &&
                         <IconButton
                             icon="remove"
                             title="Убрать курс"

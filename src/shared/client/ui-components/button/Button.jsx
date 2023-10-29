@@ -10,6 +10,7 @@ const Button = forwardRef(({
     start,
     content,
     end,
+    size,
 
     as,
     className,
@@ -24,10 +25,11 @@ const Button = forwardRef(({
             component={as}
             className={classNames}
             startDecorator={icon ?
-                <Icon>{icon}</Icon> :
+                <Icon size={size}>{icon}</Icon> :
                 start
             }
             endDecorator={end}
+            size={size}
             {...props}
         >
             {children}

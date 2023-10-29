@@ -7,18 +7,13 @@ const storageMiddleware = store => next => action => {
 
     if (method === 'post' || method === 'put') {
         const file = body.file;
-        const [type] = file.type.split('/');
 
         return Storage.upload(file, {
             name: file.name,
             path: file.path
         }).then(response => {
-            if (typeof body[type] === 'object') {
-                body[type].path = response.data.path;
-            } else {
-                body[type] = {
-                    path: response.data.path
-                };
+            if (typeof body.props === 'object') {
+                body.props.path = response.data.path;
             }
 
             delete body.file;

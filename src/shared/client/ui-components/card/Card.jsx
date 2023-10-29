@@ -7,6 +7,7 @@ import CardContent from '@mui/joy/CardContent';
 import CardOverflow from '@mui/joy/CardOverflow';
 
 const Card = forwardRef(({
+    as,
     className,
     ...props
 }, ref) => {
@@ -14,6 +15,7 @@ const Card = forwardRef(({
 
     return (
         <JoyCard
+            component={as}
             ref={ref}
             className={classNames}
             {...props}

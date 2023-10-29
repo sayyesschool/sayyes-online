@@ -1,8 +1,14 @@
 import classnames from 'classnames';
 
+import './index.scss';
+
 export default function TabPanel({ active, children }) {
+    const classNames = classnames('TabPanel', {
+        'TabPanel--active': active
+    });
+
     return (
-        <div className={classnames('tab-panel', { 'tab-panel--active': active })}>
+        <div className={classNames}>
             {children}
         </div>
     );

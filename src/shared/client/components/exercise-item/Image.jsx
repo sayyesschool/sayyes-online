@@ -1,14 +1,24 @@
 import { Image, Text } from 'shared/ui-components';
 
-export default function ExerciseImageItem({ item = {} }) {
-    return (
-        item.image?.caption ?
-            <figure>
-                <Image src={item.image?.url} alt={item.image?.alt || 'Изображение'} />
+import './Image.scss';
 
-                <Text as="figcaption" align="center" size="small">{item.image?.caption}</Text>
-            </figure>
-            :
-            <Image src={item.image?.url} alt={item.image?.alt || 'Изображение'} />
+export default function ImageItem({
+    url,
+    alt = '',
+    caption,
+    className
+}) {
+    return (
+        <div className={className}>
+            {caption ?
+                <figure>
+                    <Image src={url} alt={alt} />
+
+                    <Text as="figcaption" align="center" size="small">{caption}</Text>
+                </figure>
+                :
+                <Image src={url} alt={alt} />
+            }
+        </div>
     );
 }

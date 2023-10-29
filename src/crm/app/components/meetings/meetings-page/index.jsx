@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import Page from 'shared/components/page';
-import PageTopBar from 'shared/components/page-top-bar';
-import PageContent from 'shared/components/page-content';
 
 import { useStore } from 'app/hooks/store';
 import FormPanel from 'app/components/shared/form-panel';
@@ -25,7 +23,7 @@ export default function MeetingsPage() {
 
     return (
         <Page id="meetings-page" loading={!meetings}>
-            <PageTopBar
+            <Page.Header
                 title="Встречи"
                 toolbar={[
                     {
@@ -37,11 +35,11 @@ export default function MeetingsPage() {
                 ]}
             />
 
-            <PageContent>
+            <Page.Content>
                 <MeetingsTable
                     meetings={meetings}
                 />
-            </PageContent>
+            </Page.Content>
 
             <FormPanel
                 form="meeting-form"

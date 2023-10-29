@@ -4,12 +4,12 @@ import classnames from 'classnames';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useFullScreen, useScrollClassName } from 'shared/hooks/screen';
+import { Alert, Icon } from 'shared/ui-components';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import useSharedState from 'app/hooks/useSharedState';
-
 import Chat from 'app/components/Chat';
-import Courses from 'app/components/Courses';
+import Content from 'app/components/Content';
 import MainParticipant from 'app/components/MainParticipant';
 import ParticipantAudioTracks from 'app/components/ParticipantAudioTracks';
 import ParticipantList from 'app/components/ParticipantList';
@@ -20,7 +20,13 @@ import ScreenShareAlert from 'app/components/ScreenShareAlert';
 import MiroWhiteboard from 'app/components/MiroWhiteboard';
 
 export default function Room({ user, enrollment }) {
-    const { room, participants, isSharingScreen, toggleScreenShare } = useRoomContext();
+    const {
+        room,
+        localParticipant,
+        participants,
+        isSharingScreen,
+        toggleScreenShare
+    } = useRoomContext();
     const sharedState = useSharedState();
     const location = useLocation();
     const history = useHistory();
@@ -34,7 +40,8 @@ export default function Room({ user, enrollment }) {
 
     const [isFullscreen, toggleFullscreen] = useFullScreen(rootRef);
     const [isChatOpen, toggleChatOpen] = useBoolean(false);
-    const [numberOfUnreadMessages, setNumberOfUnreadMessages] = useState();
+    const [isBroadcastingMedia, toggleBroadcastingMedia] = useBoolean(false);
+    const [numberOfUnreadMessages, setNumberOfUnreadMessages] = useState(0);
 
     useScrollClassName(contentRef, 'RoomContent--scrolling', []);
 
@@ -63,12 +70,6 @@ export default function Room({ user, enrollment }) {
         history.push(sharedState.data.path);
     }, [sharedState.data?.path]);
 
-    const handleSync = useCallback(() => {
-        sharedState.updateDoc({
-            path: location.pathname + location.search
-        });
-    }, [location]);
-
     const handleChatConnected = useCallback(channel => {
         channel.getUnconsumedMessagesCount()
             .then(unconsumedMessagesCount => {
@@ -76,6 +77,30 @@ export default function Room({ user, enrollment }) {
                 channel.setAllMessagesConsumed();
             });
     }, []);
+
+    const handleSync = useCallback(() => {
+        sharedState.updateDoc({
+            path: location.pathname + location.search
+        });
+    }, [location]);
+
+    const handleMediaStart = useCallback((track) => {
+        if (!track) return;
+
+        console.log('publishing track', track);
+
+        return localParticipant.publishTrack(track)
+            .then(() => {
+                toggleBroadcastingMedia(true);
+            });
+    }, [localParticipant]);
+
+    const handleMediaStop = useCallback((track) => {
+        if (!track) return;
+
+        localParticipant.unpublishTrack(track);
+        toggleBroadcastingMedia(false);
+    }, [localParticipant]);
 
     const handleDisconnect = useCallback(() => {
         room.disconnect();
@@ -124,9 +149,12 @@ export default function Room({ user, enrollment }) {
 
                 <Switch>
                     <Route path="/courses">
-                        <Courses
+                        <Content
                             user={user}
                             enrollment={enrollment}
+                            room={room}
+                            onMediaStart={handleMediaStart}
+                            onMediaStop={handleMediaStop}
                         />
                     </Route>
 
@@ -139,6 +167,22 @@ export default function Room({ user, enrollment }) {
             {isSharingScreen &&
                 <ScreenShareAlert
                     onDisableSharing={toggleScreenShare}
+                />
+            }
+
+            {isBroadcastingMedia &&
+                <Alert
+                    start={<Icon name="cast" />}
+                    color="warning"
+                    content="Вы транслируете медиа для всех участников"
+                    sx={{
+                        position: 'fixed',
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        zIndex: 1000,
+                        borderRadius: 0
+                    }}
                 />
             }
         </div>

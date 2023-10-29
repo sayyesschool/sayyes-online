@@ -1,0 +1,17 @@
+.InputItemForm {
+    .ui-Input {
+        margin-bottom: 8px;
+    }
+
+    .ui-Label {
+        + .ui-Label {
+            margin-left: 4px;
+        }
+    }
+
+    .ui-Text ~ input {
+        flex: 1;
+        border: none;
+        outline: none;
+    }
+}

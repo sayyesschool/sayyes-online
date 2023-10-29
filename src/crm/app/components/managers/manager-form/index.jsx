@@ -47,14 +47,8 @@ function ManagerForm({
 
     const { data, getData, handleChange } = useFormData(getDefaultData(manager));
 
-    const [password, setPassword] = useState(!manager.id && generatePassword());
-
     const handleSubmit = useCallback(() => {
         getData(data => {
-            if (!manager.id) {
-                data.password = password;
-            }
-
             onSubmit(data);
         });
     }, [manager]);
@@ -106,25 +100,6 @@ function ManagerForm({
                 required
                 onChange={handleChange}
             />
-
-            {!manager.id &&
-                <Form.Input
-                    label="Пароль"
-                    type="text"
-                    name="password"
-                    value={password}
-                    autoComplete="off"
-                    endDecorator={
-                        <IconButton
-                            icon="sync_lock"
-                            color="neutral"
-                            size="sm"
-                            variant="plain"
-                            onClick={() => setPassword(generatePassword())}
-                        />
-                    }
-                />
-            }
 
             <Form.Input
                 label="Дата рождения"

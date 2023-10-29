@@ -7,6 +7,7 @@ import Icon from '../icon/Icon';
 
 const IconButton = forwardRef(({
     icon,
+    size,
 
     as,
     className,
@@ -19,11 +20,14 @@ const IconButton = forwardRef(({
             ref={ref}
             component={as}
             className={classNames}
+            size={size}
             color="neutral"
             variant="plain"
             {...props}
         >
-            {isValidElement(icon) ? icon : <Icon name={icon} />}
+            {isValidElement(icon) ? icon :
+                <Icon name={icon} size={size} />
+            }
         </JoyIconButton>
     );
 });

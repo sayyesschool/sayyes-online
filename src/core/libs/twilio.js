@@ -1,7 +1,8 @@
-const twilio = require('twilio');
+const { jwt } = require('twilio');
 
 const MAX_ALLOWED_SESSION_DURATION = 14400;
-const AccessToken = twilio.jwt.AccessToken;
+
+const AccessToken = jwt.AccessToken;
 const VideoGrant = AccessToken.VideoGrant;
 const ChatGrant = AccessToken.ChatGrant;
 const SyncGrant = AccessToken.SyncGrant;

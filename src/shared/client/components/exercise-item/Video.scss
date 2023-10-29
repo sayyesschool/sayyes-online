@@ -1,0 +1,18 @@
+.VideoItem {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+    &__player {
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    &__script {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        max-height: 480px;
+        overflow: auto;
+    }
+}

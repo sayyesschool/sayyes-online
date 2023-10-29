@@ -15,7 +15,7 @@ module.exports = context => {
 
     app.locals.basedir = context.config.APP_PATH;
 
-    app.use('/api', api);
+    app.use('/api', api(context));
 
     app.get('/', (req, res) => {
         res.render('login');

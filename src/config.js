@@ -9,7 +9,7 @@ moment.locale('ru');
 module.exports = {
     APP_VERSION: project.version,
     APP_IP: process.env.APP_IP || '127.0.0.1',
-    APP_PORT: process.env.APP_PORT || process.env.PORT || 80,
+    APP_PORT: process.env.APP_PORT || process.env.PORT || 3000,
     APP_ENV: process.env.NODE_ENV,
     APP_DOMAIN: process.env.APP_DOMAIN,
     APP_URL: process.env.APP_URL,
@@ -37,9 +37,11 @@ module.exports = {
     TWILIO_CHAT_SERVICE_ID: process.env.TWILIO_CHAT_SERVICE_ID,
     TWILIO_SYNC_SERVICE_ID: process.env.TWILIO_SYNC_SERVICE_ID,
 
-    YANDEX_CLOUD_STORAGE_ENDPOINT: process.env.YANDEX_CLOUD_STORAGE_ENDPOINT,
     YANDEX_CLOUD_ACCESS_KEY_ID: process.env.YANDEX_CLOUD_ACCESS_KEY_ID,
     YANDEX_CLOUD_SECRET_ACCESS_KEY: process.env.YANDEX_CLOUD_SECRET_ACCESS_KEY,
+    YANDEX_CLOUD_STORAGE_ENDPOINT: process.env.YANDEX_CLOUD_STORAGE_ENDPOINT,
+    YANDEX_CLOUD_STORAGE_REGION: process.env.YANDEX_CLOUD_STORAGE_REGION,
+    YANDEX_CLOUD_STORAGE_BUCKET: process.env.YANDEX_CLOUD_STORAGE_BUCKET,
 
     YANDEX_METRIKA_ID: '61110085',
 

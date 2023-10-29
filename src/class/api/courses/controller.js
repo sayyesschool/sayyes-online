@@ -3,12 +3,13 @@ module.exports = ({
 }) => ({
     getOne: (req, res, next) => {
         Course.findById(req.params.courseId)
-            .populate({
-                path: 'progress',
-                match: {
-                    enrollment: req.params.enrollmentId
-                }
-            })
+            .populate('exercises')
+            // .populate({
+            //     path: 'progress',
+            //     match: {
+            //         enrollment: req.params.enrollmentId || req.query.enrollmentId
+            //     }
+            // })
             .then(course => {
                 if (!course) {
                     const error = new Error('Курс не найден');

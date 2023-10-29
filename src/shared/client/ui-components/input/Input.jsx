@@ -6,6 +6,7 @@ import JoyInput from '@mui/joy/Input';
 const Input = forwardRef(({
     start,
     end,
+    inputRef,
 
     className,
     ...props
@@ -15,6 +16,11 @@ const Input = forwardRef(({
     return (
         <JoyInput
             ref={ref}
+            slotProps={{
+                input: {
+                    ref: inputRef
+                }
+            }}
             className={classNames}
             startDecorator={start}
             endDecorator={end}

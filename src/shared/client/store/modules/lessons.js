@@ -4,7 +4,7 @@ export const getLessons = createAction('GET_LESSONS', query => {
     return {
         request: {
             method: 'get',
-            url: '/lessons',
+            path: 'lessons',
             query
         }
     };
@@ -14,7 +14,7 @@ export const getTodaysLessons = createAction('GET_LESSONS', () => {
     return {
         request: {
             method: 'get',
-            url: '/lessons/today'
+            path: 'lessons/today'
         }
     };
 });
@@ -22,7 +22,7 @@ export const getTodaysLessons = createAction('GET_LESSONS', () => {
 export const getLesson = createAction('GET_LESSON', lessonId => ({
     request: {
         method: 'get',
-        url: `/lessons/${lessonId}`
+        path: `lessons/${lessonId}`
     }
 }));
 
@@ -35,7 +35,7 @@ export const unsetLesson = createAction('UNSET_LESSON');
 export const createLesson = createAction('CREATE_LESSON', data => ({
     request: {
         method: 'post',
-        url: '/lessons',
+        path: 'lessons',
         body: data
     }
 }));
@@ -43,7 +43,7 @@ export const createLesson = createAction('CREATE_LESSON', data => ({
 export const createLessons = createAction('CREATE_LESSONS', data => ({
     request: {
         method: 'post',
-        url: '/lessons',
+        path: 'lessons',
         body: data
     }
 }));
@@ -51,7 +51,7 @@ export const createLessons = createAction('CREATE_LESSONS', data => ({
 export const updateLesson = createAction('UPDATE_LESSON', (lessonId, data) => ({
     request: {
         method: 'put',
-        url: `/lessons/${lessonId}`,
+        path: `lessons/${lessonId}`,
         body: data
     }
 }));
@@ -59,7 +59,7 @@ export const updateLesson = createAction('UPDATE_LESSON', (lessonId, data) => ({
 export const deleteLesson = createAction('DELETE_LESSON', lessonId => ({
     request: {
         method: 'delete',
-        url: `/lessons/${lessonId}`
+        path: `lessons/${lessonId}`
     }
 }));
 
@@ -78,8 +78,8 @@ export const lessonsReducer = createReducer(null, {
     [getLessons]: (state, action) => action.data,
     [createLesson]: (state, action) => state ? [...state, action.data] : [action.data],
     // [createLessons]: (state, action) => state ? [...state, ...action.data] : action.data,
-    [updateLesson]: (state, action) => state.map(lesson => lesson.id === action.data.id ? ({ ...lesson, ...action.data }) : lesson),
-    [deleteLesson]: (state, action) => state.filter(lesson => lesson.id !== action.data.id)
+    [updateLesson]: (state, action) => state?.map(lesson => lesson.id === action.data.id ? ({ ...lesson, ...action.data }) : lesson),
+    [deleteLesson]: (state, action) => state?.filter(lesson => lesson.id !== action.data.id)
 });
 
 export const lessonReducer = createReducer(null, {

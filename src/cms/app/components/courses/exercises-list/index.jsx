@@ -1,96 +1,84 @@
 import { useCallback } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import { IconButton, List, Text } from 'shared/ui-components';
+import Content from 'shared/components/content';
+import { Avatar, Card, Flex, Icon, IconButton, MenuButton } from 'shared/ui-components';
 
 export default function ExercisesList({
     exercises,
-    selectedExercise,
-    onSelect,
     onReorder,
     onDelete
 }) {
-    return (
-        <List className="exercises-list numbered-list" selectable>
-            {exercises.map((exercise, index) =>
-                <ListItem
-                    key={exercise.id}
-                    index={index}
-                    exercise={exercise}
-                    selected={exercise.id === selectedExercise?.id}
-                    first={index === 0}
-                    last={index === exercises.length - 1}
-                    onMove={onReorder}
-                    onDelete={onDelete}
-                />
-            )}
-        </List>
-    );
-}
+    const handleMoveUp = useCallback(index => {
+        onReorder(index, -1);
+    }, [onReorder]);
 
-function ListItem({ index, exercise, selected, first, last, onMove, onDelete }) {
-    const handleMoveUp = useCallback(event => {
-        event.preventDefault();
-        event.stopPropagation();
+    const handleMoveDown = useCallback(index => {
+        onReorder(index, 1);
+    }, [onReorder]);
 
-        onMove(index, -1);
-    }, [index, onMove]);
-
-    const handleMoveDown = useCallback(event => {
-        event.preventDefault();
-        event.stopPropagation();
-
-        onMove(index, 1);
-    }, [index, onMove]);
-
-    const handleDelete = useCallback(event => {
-        event.preventDefault();
-        event.stopPropagation();
-
+    const handleDelete = useCallback(exercise => {
         onDelete(exercise);
-    }, [exercise, onDelete]);
+    }, [onDelete]);
 
     return (
-        <List.Item
-            key={exercise.id}
-            as={NavLink}
-            to={exercise.uri}
-            content={<>
-                <Text>{exercise.title}</Text>
-                <Text type="body2">{exercise.items?.length} элементов</Text>
-            </>}
-            endAction={<>
-                {!first &&
-                    <IconButton
-                        icon="arrow_upward"
-                        color="neutral"
-                        size="sm"
-                        variant="plain"
-                        onClick={handleMoveUp}
-                    />
-                }
+        <div className="ExercisesList">
+            <Flex gap="medium" column>
+                {exercises.map((exercise, index) =>
+                    <Card
+                        key={exercise.id}
+                        className="ExerciseCard"
+                    >
+                        <Flex gap="small" alignItems="flex-start">
+                            <Flex
+                                component={Link}
+                                to={exercise.url}
+                                flex="1"
+                                gap="medium"
+                                alignItems="center"
+                            >
+                                <Avatar text={index + 1} />
 
-                {!last &&
-                    <IconButton
-                        icon="arrow_downward"
-                        color="neutral"
-                        size="sm"
-                        variant="plain"
-                        onClick={handleMoveDown}
-                    />
-                }
+                                <Content content={exercise.description} html />
+                            </Flex>
 
-                {onDelete &&
-                    <IconButton
-                        icon="delete"
-                        color="neutral"
-                        size="sm"
-                        variant="plain"
-                        onClick={event => handleDelete(event, exercise)}
-                    />
-                }
-            </>}
-            selected={selected}
-        />
+                            <MenuButton
+                                trigger={
+                                    <IconButton
+                                        icon="more_vert"
+                                        color="neutral"
+                                        size="sm"
+                                        variant="plain"
+                                    />
+                                }
+                                items={[
+                                    {
+                                        key: 'move-up',
+                                        decorator: <Icon name="arrow_upward" />,
+                                        content: 'Поднять',
+                                        disabled: index === 0,
+                                        onClick: () => handleMoveUp(index)
+                                    },
+                                    {
+                                        key: 'move-down',
+                                        decorator: <Icon name="arrow_downward" />,
+                                        content: 'Опустить',
+                                        disabled: index === exercises.length - 1,
+                                        onClick: () => handleMoveDown(index)
+                                    },
+                                    {
+                                        key: 'delete',
+                                        decorator: <Icon name="delete" />,
+                                        content: 'Удалить',
+                                        color: 'danger',
+                                        onClick: () => handleDelete(exercise)
+                                    }
+                                ]}
+                            />
+                        </Flex>
+                    </Card>
+                )}
+            </Flex>
+        </div>
     );
 }

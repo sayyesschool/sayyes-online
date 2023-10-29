@@ -1,48 +1,9 @@
-form {
-    &.ui-form {
-        display: block;
+.ui-Form {
+    display: block;
 
-        .text-editor {
-            border: 1px solid rgba(0,0,0,.12);
-            border-radius: 4px;
-        }
-    }
-
-    .mdc-layout-grid {
-        padding: 0;
-    }
-
-    .mdc-text-field
-
-    .mdc-text-field,
-    .mdc-select {
-        width: 100%;
-    }
-
-    .mdc-text-field:not(:only-child):not(:first-child),
-    .mdc-select:not(:only-child):not(:first-child) {
-        margin-top: 1rem;
-    }
-
-    .mdc-form-field {
-        width: 100%;
-        margin-top: 1rem;
-
-        &:not(:last-child) {
-            margin-bottom: 1rem;
-        }
-
-        .mdc-switch {
-            margin-right: .5rem;
-        }
-    }
-
-    .radio-group {
-        margin-top: 1rem;
-
-        .mdc-form-field {
-            margin: 0;
-        }
+    .TextEditor {
+        border: 1px solid rgba(0,0,0,.12);
+        border-radius: 4px;
     }
 
     fieldset {

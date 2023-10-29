@@ -1,11 +1,11 @@
 import { createAction, createReducer, combineReducers } from 'shared/store/helpers';
 
-const path = '/comments';
+const PATH = 'comments';
 
 export const getComments = createAction('GET_COMMENTS', query => ({
     request: {
         method: 'get',
-        url: path,
+        path: PATH,
         query
     }
 }));
@@ -13,14 +13,14 @@ export const getComments = createAction('GET_COMMENTS', query => ({
 export const getComment = createAction('GET_COMMENT', id => ({
     request: {
         method: 'get',
-        url: `${path}/${id}`
+        path: `${PATH}/${id}`
     }
 }));
 
 export const createComment = createAction('CREATE_COMMENT', data => ({
     request: {
         method: 'post',
-        url: path,
+        path: PATH,
         body: data
     }
 }));
@@ -28,7 +28,7 @@ export const createComment = createAction('CREATE_COMMENT', data => ({
 export const updateComment = createAction('UPDATE_COMMENT', (id, data) => ({
     request: {
         method: 'put',
-        url: `${path}/${id}`,
+        path: `${PATH}/${id}`,
         body: data
     }
 }));
@@ -36,7 +36,7 @@ export const updateComment = createAction('UPDATE_COMMENT', (id, data) => ({
 export const deleteComment = createAction('DELETE_COMMENT', (id, data) => ({
     request: {
         method: 'delete',
-        url: `${path}/${id}`,
+        path: `${PATH}/${id}`,
         body: data
     }
 }));

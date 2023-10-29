@@ -1,7 +1,6 @@
 const strategies = require('./strategies');
 
 module.exports = ({
-    models: { User },
     services: { Auth }
 }) => ({
     register: (req, res) => {
@@ -12,22 +11,23 @@ module.exports = ({
         })
             .then(user => {
                 req.session.userId = user.id;
+                res.redirect('/');
             })
             .catch(error => {
                 req.flash('error', error.message || error);
-            })
-            .finally(() => res.redirect('back'));
+                res.redirect('back');
+            });
     },
 
     login: (req, res) => {
         Auth.login(req.body.email, req.body.password)
             .then(user => {
                 req.session.userId = user.id;
+                res.redirect('/');
             })
             .catch(error => {
                 req.flash('error', error.message || error);
-            }).finally(() => {
-                res.redirect('/');
+                res.redirect('back');
             });
     },
 
@@ -45,17 +45,6 @@ module.exports = ({
 
         provider.auth(req, res, next);
     },
-
-    // authenticate: (req, res, next) => {
-    //     if (!req.session.userId) return next();
-
-    //     User.getById(req.session.userId).then(user => {
-    //         req.user = user;
-    //         res.locals.user = user;
-
-    //         next();
-    //     });
-    // },
 
     callback: (req, res, next) => req.provider.callback(req, res, next),
 

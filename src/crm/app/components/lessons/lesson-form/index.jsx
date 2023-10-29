@@ -7,10 +7,10 @@ import { Checkbox, Form } from 'shared/ui-components';
 import { useStore } from 'app/hooks/store';
 
 const statuses = [
-    { key: 'scheduled', value: 'scheduled', header: 'Запланировано' },
-    { key: 'started', value: 'started', header: 'Началось' },
-    { key: 'ended', value: 'ended', header: 'Завершилось' },
-    { key: 'canceled', value: 'canceled', header: 'Отменено' },
+    { key: 'scheduled', value: 'scheduled', content: 'Запланировано' },
+    { key: 'started', value: 'started', content: 'Началось' },
+    { key: 'ended', value: 'ended', content: 'Завершилось' },
+    { key: 'canceled', value: 'canceled', content: 'Отменено' },
 ];
 
 const getFormData = ({
@@ -20,15 +20,15 @@ const getFormData = ({
     trial = false,
     free = false,
     note = '',
-    teacher = {}
+    teacher = ''
 }) => ({
     status,
     duration,
-    date,
+    date: moment(date).format('YYYY-MM-DDTHH:mm'),
     trial,
     free,
     note,
-    teacher: teacher?.id || teacher || ''
+    teacher: teacher?.id || teacher
 });
 
 export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
@@ -58,7 +58,7 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                 label="Дата и время"
                 type="datetime-local"
                 name="date"
-                value={moment(data.date).format('YYYY-MM-DDTHH:mm')}
+                value={data.date}
                 onChange={handleChange}
             />
 
@@ -78,10 +78,8 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                 options={teachers?.map(teacher => ({
                     key: teacher.id,
                     value: teacher.id,
-                    header: teacher.fullname,
-                    image: teacher.imageUrl
+                    content: teacher.fullname
                 }))}
-                search
                 onChange={handleChange}
             />
 
@@ -89,7 +87,6 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                 label="Пробное"
                 name="trial"
                 checked={data.trial}
-                toggle
                 onChange={handleChange}
             />
 
@@ -97,7 +94,6 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                 label="Бесплатное"
                 name="free"
                 checked={data.free}
-                toggle
                 onChange={handleChange}
             />
 
@@ -105,7 +101,6 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
                 label="Подтвержденное"
                 name="confirmed"
                 checked={data.confirmed}
-                toggle
                 onChange={handleChange}
             />
 

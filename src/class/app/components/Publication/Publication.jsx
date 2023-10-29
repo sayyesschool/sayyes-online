@@ -1,7 +1,12 @@
 import useTrack from 'app/hooks/useTrack';
 import VideoTrack from 'app/components/VideoTrack';
 
-export default function Publication({ publication, local, videoOnly, videoPriority }) {
+export default function Publication({
+    publication,
+    local,
+    videoOnly,
+    videoPriority
+}) {
     const track = useTrack(publication);
 
     if (!track) return null;

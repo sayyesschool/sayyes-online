@@ -1,0 +1,8 @@
+.App {
+    height: 100vh;
+
+    .AppContent {
+        height: calc(100% - 56px);
+        overflow: hidden;
+    }
+}

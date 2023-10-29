@@ -33,13 +33,13 @@ export default function PostCard({
             <Box className="PostCard__header">
                 <Flex gap="medium" alignItems="center">
                     <Avatar
-                        imageSrc={post.author.imageUrl}
+                        imageSrc={post.author?.imageUrl}
                         text={post.author?.initials}
                         size="lg"
                     />
 
                     <Flex column>
-                        <Text type="body1">{post.author.fullname}</Text>
+                        <Text type="body1">{post.author?.fullname}</Text>
                         <Text type="body2">{post.formattedDateTime}</Text>
                     </Flex>
                 </Flex>

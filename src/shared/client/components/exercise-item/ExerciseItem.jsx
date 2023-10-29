@@ -1,4 +1,4 @@
-import { createElement, memo } from 'react';
+import { memo } from 'react';
 import classnames from 'classnames';
 
 import { capitalize } from 'shared/utils/string';
@@ -6,10 +6,9 @@ import { capitalize } from 'shared/utils/string';
 import AudioItem from './Audio';
 import BooleanItem from './Boolean';
 import ChoiceItem from './Choice';
-import DirectionsItem from './Directions';
 import DividerItem from './Divider';
 import EssayItem from './Essay';
-import FIBItem from './FIB';
+import FIBItem from './Fib';
 import ImageItem from './Image';
 import InputItem from './Input';
 import TextItem from './Text';
@@ -19,7 +18,6 @@ const Components = {
     audio: AudioItem,
     boolean: BooleanItem,
     choice: ChoiceItem,
-    directions: DirectionsItem,
     divider: DividerItem,
     essay: EssayItem,
     fib: FIBItem,
@@ -29,27 +27,28 @@ const Components = {
     video: VideoItem
 };
 
-export default memo(function ExerciseItem({
+function ExerciseItem({
     item,
     checked,
     completed,
     state,
-    onUpdateState,
-    ...props
+    onUpdateState
 }) {
-    const classNames = classnames('ExerciseItem', `Exercise${capitalize(item.type)}Item`);
+    const Component = Components[item?.type];
 
-    return (
-        <div id={item.id} className={classNames} {...props}>
-            {item.type && Components[item.type] &&
-                createElement(Components[item.type], {
-                    item,
-                    checked,
-                    completed,
-                    state,
-                    onUpdateState
-                })
-            }
-        </div>
-    );
-});
+    const classNames = classnames('ExerciseItem', `${capitalize(item.type)}Item`);
+
+    return Component ? (
+        <Component
+            id={item.id}
+            className={classNames}
+            {...item.props}
+            checked={checked}
+            completed={completed}
+            state={state}
+            onUpdateState={onUpdateState}
+        />
+    ) : null;
+}
+
+export default memo(ExerciseItem);

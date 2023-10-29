@@ -1,20 +1,21 @@
-import { Drawer } from 'mdc-react';
 import classnames from 'classnames';
 
+import { Drawer } from 'shared/ui-components';
+
 export default function PageDrawer({ className, children, ...props }) {
-    const classNames = classnames('PageDrawer', className);
+    const classNames = classnames(className, 'PageDrawer');
 
     return (
         <Drawer
             className={classNames}
+            anchor="right"
             open
-            appear
-            dismissible
+            disablePortal
+            disableScrollLock
+            hideBackdrop
             {...props}
         >
-            <Drawer.Content>
-                {children}
-            </Drawer.Content>
+            {children}
         </Drawer>
     );
 }

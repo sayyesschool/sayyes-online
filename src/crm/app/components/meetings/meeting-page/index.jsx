@@ -1,14 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import {
-    LayoutGrid, LayoutGridCell
-} from 'mdc-react';
+import { Grid } from 'shared/ui-components';
 
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
-import PageTopBar from 'shared/components/page-top-bar';
-import PageContent from 'shared/components/page-content';
 
 import { useStore } from 'app/hooks/store';
 import MeetingForm from 'app/components/meetings/meeting-form';
@@ -63,7 +59,7 @@ export default function Meeting({ match, history }) {
 
     return (
         <Page id="meeting-page" loading={!meeting}>
-            <PageTopBar
+            <Page.Header
                 title={meeting.title}
                 toolbar={[
                     {
@@ -81,30 +77,30 @@ export default function Meeting({ match, history }) {
                 ]}
             />
 
-            <PageContent>
-                <LayoutGrid>
-                    <LayoutGridCell span="4">
+            <Page.Content>
+                <Grid>
+                    <Grid.Item span="4">
                         <MeetingDetails
                             meeting={meeting}
                         />
-                    </LayoutGridCell>
+                    </Grid.Item>
 
-                    <LayoutGridCell span="4">
+                    <Grid.Item span="4">
                         <MeetingRegistrations
                             registrations={meeting.registrations}
                             onAdd={toggleRegistrationForm}
                             onUpdate={handleUpdateRegistration}
                             onRemove={handleRemoveRegistration}
                         />
-                    </LayoutGridCell>
+                    </Grid.Item>
 
-                    <LayoutGridCell span="4">
+                    <Grid.Item span="4">
                         <MeetingParticipants
                             participants={meeting.participants}
                         />
-                    </LayoutGridCell>
-                </LayoutGrid>
-            </PageContent>
+                    </Grid.Item>
+                </Grid>
+            </Page.Content>
 
             <FormDialog
                 title="Редактирование встречи"

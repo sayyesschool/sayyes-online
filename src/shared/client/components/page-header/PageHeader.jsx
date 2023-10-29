@@ -1,6 +1,6 @@
-import classnames from 'classnames';
-import { isValidElement } from 'react';
+import { cloneElement, isValidElement } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import classnames from 'classnames';
 
 import { Breadcrumbs, Button, Heading, IconButton, Link, Tabs, Text } from 'shared/ui-components';
 
@@ -11,6 +11,8 @@ export default function PageHeader({
     breadcrumbs,
     tabs,
     actions,
+    start,
+    end,
     className,
     children
 }) {
@@ -29,28 +31,50 @@ export default function PageHeader({
                         >
                             {breadcrumbs.map(props =>
                                 props.to ?
-                                    <Link component={RouterLink} {...props} /> :
+                                    <Link
+                                        key={props.to}
+                                        component={RouterLink}
+                                        {...props}
+                                    />
+                                    :
                                     <Text {...props} />
                             )}
                         </Breadcrumbs>
                     }
 
                     {overline &&
-                        <Text className="PageHeader__overline">{overline}</Text>
+                        <Text
+                            className="PageHeader__overline"
+                            type="title-sm"
+                            content={overline}
+                        />
                     }
 
-                    {title &&
+                    {title && (isValidElement(title) ?
+                        cloneElement(title, {
+                            as: 'h1',
+                            className: classnames('PageHeader__title', title.props.className),
+                            type: 'h2'
+                        })
+                        :
                         <Heading
                             as="h1"
                             className="PageHeader__title"
                             type="h2"
                             content={title}
                         />
-                    }
+                    )}
 
-                    {description &&
-                        <Text className="PageHeader__description" content={description} />
-                    }
+                    {description && (isValidElement(description) ?
+                        cloneElement(description, {
+                            className: classnames('PageHeader__description', description.props.className)
+                        })
+                        :
+                        <Text
+                            className="PageHeader__description"
+                            content={description}
+                        />
+                    )}
                 </div>
 
                 {tabs &&
@@ -67,18 +91,23 @@ export default function PageHeader({
                 {actions &&
                     <div className="PageHeader__actions">
                         {actions?.filter(a => !!a).map(action => isValidElement(action) ? action : ((action.icon && !action.content) ?
-                            <IconButton color="neutral" size="sm" variant="soft" {...action} /> :
+                            <IconButton
+                                color="neutral"
+                                size="sm"
+                                variant="soft"
+                                {...action}
+                            /> :
                             <Button {...action} />
                         ))}
                     </div>
                 }
-            </div>
 
-            {children &&
-                <div className="PageHeader__row">
-                    {children}
-                </div>
-            }
+                {end &&
+                    <div className="PageHeader__end">
+                        {end}
+                    </div>
+                }
+            </div>
         </header>
     );
 }

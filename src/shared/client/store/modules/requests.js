@@ -3,21 +3,21 @@ import { createAction, createReducer, combineReducers } from 'shared/store/helpe
 export const getRequests = createAction('GET_REQUESTS', () => ({
     request: {
         method: 'get',
-        url: '/requests'
+        path: 'requests'
     }
 }));
 
 export const getNewRequests = createAction('GET_NEW_REQUESTS', () => ({
     request: {
         method: 'get',
-        url: '/requests/new'
+        path: 'requests/new'
     }
 }));
 
 export const getRequest = createAction('GET_REQUEST', id => ({
     request: {
         method: 'get',
-        url: `/requests/${id}`
+        path: `requests/${id}`
     }
 }));
 
@@ -30,7 +30,7 @@ export const unsetRequest = createAction('UNSET_REQUEST');
 export const createRequest = createAction('CREATE_REQUEST', data => ({
     request: {
         method: 'post',
-        url: '/requests',
+        path: 'requests',
         body: data
     }
 }));
@@ -38,7 +38,7 @@ export const createRequest = createAction('CREATE_REQUEST', data => ({
 export const updateRequest = createAction('UPDATE_REQUEST', (requestId, data) => ({
     request: {
         method: 'put',
-        url: `/requests/${requestId}`,
+        path: `requests/${requestId}`,
         body: data
     }
 }));
@@ -46,7 +46,7 @@ export const updateRequest = createAction('UPDATE_REQUEST', (requestId, data) =>
 export const deleteRequest = createAction('DELETE_REQUEST', requestId => ({
     request: {
         method: 'delete',
-        url: `/requests/${requestId}`
+        path: `requests/${requestId}`
     }
 }));
 

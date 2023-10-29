@@ -48,10 +48,6 @@ function TeacherForm({
 
     const handleSubmit = useCallback(() => {
         getData(data => {
-            if (!teacher.id) {
-                data.password = password;
-            }
-
             onSubmit(data);
         });
     }, [teacher]);

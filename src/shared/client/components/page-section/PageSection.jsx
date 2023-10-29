@@ -16,10 +16,10 @@ export default function PageSection({
     className,
     ...props
 }) {
-    const classNames = classnames('PageSection', {
+    const classNames = classnames(className, 'PageSection', {
         'PageSection--compact': compact,
         'PageSection--plain': plain
-    }, className);
+    });
 
     return (
         <Surface
@@ -35,8 +35,9 @@ export default function PageSection({
                 {(title || description) &&
                     <div className="PageSection__header-text">
                         <Heading as="h3" content={title} />
+
                         {description &&
-                            <Text content={description} />
+                            <Text type="body2" content={description} />
                         }
                     </div>
                 }

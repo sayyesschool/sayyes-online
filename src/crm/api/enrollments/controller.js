@@ -160,13 +160,15 @@ module.exports = ({
     },
 
     getRefundLessons: (req, res, next) => {
-        Lesson.find({ status: 'scheduled', enrollment: req.params.id })
-            .then(lessons => {
-                res.json({
-                    ok: true,
-                    data: lessons
-                });
+        Lesson.find({
+            status: 'scheduled',
+            enrollment: req.params.id
+        }).then(lessons => {
+            res.json({
+                ok: true,
+                data: lessons
             });
+        }).catch(next);
     },
 
     refundLessons: (req, res, next) => {

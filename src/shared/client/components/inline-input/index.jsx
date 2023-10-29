@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import './index.scss';
 
 export default function InlineInput({
+    id,
     value: _value = '',
     correctValues,
     checked,
@@ -17,7 +18,7 @@ export default function InlineInput({
     const handleChange = useCallback(event => {
         const value = event.target.value;
         setValue(value);
-        onChange(value);
+        onChange(value, event.target, event);
     }, [onChange]);
 
     const isCorrect = (checked && required) ? (
@@ -26,9 +27,9 @@ export default function InlineInput({
             value !== ''
     ) : undefined;
 
-    const classNames = classnames('inline-input', {
-        'inline-input--correct': isCorrect === true,
-        'inline-input--incorrect': isCorrect === false
+    const classNames = classnames('InlineInput', {
+        'InlineInput--correct': isCorrect === true,
+        'InlineInput--incorrect': isCorrect === false
     });
 
     return (
@@ -38,6 +39,7 @@ export default function InlineInput({
             <input
                 value={value}
                 required={required}
+                data-id={id}
                 onChange={handleChange}
                 {...props}
             />

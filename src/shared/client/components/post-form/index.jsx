@@ -19,7 +19,7 @@ export default function PostForm({
     });
 
     const handleSubmit = useCallback(() => {
-        const content = editorRef.current.editor.getData();
+        const content = editorRef.current?.getData();
 
         data.content = content;
 
@@ -32,7 +32,6 @@ export default function PostForm({
                 name="title"
                 value={data.title}
                 placeholder="Название"
-                inverted
                 onChange={handleChange}
             />
 

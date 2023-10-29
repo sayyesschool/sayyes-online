@@ -1,20 +1,25 @@
-import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
 import ContentEditor from 'shared/components/content-editor';
 import { Button, Checkbox, IconButton, Input, List } from 'shared/ui-components';
 
-function ExerciseChoiceItem({ item }, ref) {
-    const [text, setText] = useState(item.text || '');
-    const [items, setItems] = useState(item.items || []);
+function ChoiceItemForm({
+    content,
+    items: _items = []
+}, ref) {
+    const editorRef = useRef();
+
+    const [items, setItems] = useState(_items);
 
     useImperativeHandle(ref, () => ({
-        get data() { return { text, items }; }
+        get props() {
+            return {
+                content: editorRef.current?.getData(),
+                items
+            };
+        }
     }));
-
-    const handleTextChange = useCallback((event, value) => {
-        setText(value);
-    }, []);
 
     const handleAddItem = useCallback(() => {
         setItems(items => items.concat({
@@ -24,11 +29,14 @@ function ExerciseChoiceItem({ item }, ref) {
         }));
     }, []);
 
-    const handleUpdateItem = useCallback((itemId, text) => {
-        setItems(items => items.map(item => item.id !== itemId ? item : { ...item, text }));
+    const handleItemTextChange = useCallback((itemId, text) => {
+        setItems(items => items.map(item => item.id !== itemId ? item : {
+            ...item,
+            text
+        }));
     }, []);
 
-    const handleItemCorrect = useCallback(itemId => {
+    const handleItemCorrectChange = useCallback(itemId => {
         setItems(items => items.map(item => ({
             ...item,
             correct: item.id === itemId ? !item.correct : item.correct
@@ -42,18 +50,18 @@ function ExerciseChoiceItem({ item }, ref) {
     return (
         <>
             <ContentEditor
-                value={text}
-                onChange={handleTextChange}
+                ref={editorRef}
+                content={content}
             />
 
             <List>
-                {items?.map(item =>
+                {items.map(item =>
                     <List.Item key={item.id}>
                         <Input
                             start={
                                 <Checkbox
                                     checked={item.correct}
-                                    onChange={() => handleItemCorrect(item.id)}
+                                    onChange={() => handleItemCorrectChange(item.id)}
                                 />
                             }
                             value={item.text}
@@ -68,7 +76,7 @@ function ExerciseChoiceItem({ item }, ref) {
                                 />
                             }
                             variant="plain"
-                            onChange={event => handleUpdateItem(item.id, event.target.value)}
+                            onChange={event => handleItemTextChange(item.id, event.target.value)}
                         />
                     </List.Item>
                 )}
@@ -87,4 +95,4 @@ function ExerciseChoiceItem({ item }, ref) {
     );
 }
 
-export default forwardRef(ExerciseChoiceItem);
+export default forwardRef(ChoiceItemForm);

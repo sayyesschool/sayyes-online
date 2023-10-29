@@ -7,11 +7,13 @@ import { IconButton, MenuButton } from 'shared/ui-components';
 import { useStore, useActions } from 'app/store';
 
 export default function EnrollmentCourses({ enrollment }) {
-    const [courses] = useStore('courses.list');
+    const [courses = []] = useStore('courses.list');
     const actions = useActions('enrollments');
 
-    const handleAddCourse = useCallback((item) => {
-        const courses = enrollment.courses.concat(item.value);
+    const handleAddCourse = useCallback((event, { value }) => {
+        if (!value) return;
+
+        const courses = enrollment.courses.concat(value);
 
         return actions.updateEnrollment(enrollment.id, { courses });
     }, [enrollment]);
@@ -23,11 +25,7 @@ export default function EnrollmentCourses({ enrollment }) {
     }, [enrollment]);
 
     const enrollmentCourses = courses
-        .filter(course => enrollment.courses.includes(course.id))
-        .map(course => ({
-            ...course,
-            uri: course.uri + `?enrollmentId=${enrollment.id}`
-        }));
+        .filter(course => enrollment.courses.includes(course.id));
 
     const items = courses
         .filter(course => !enrollment.courses.includes(course.id))
@@ -51,7 +49,6 @@ export default function EnrollmentCourses({ enrollment }) {
                             variant="plain"
                         />
                     }
-                    align="end"
                     items={items}
                     onMenuItemClick={handleAddCourse}
                 />
@@ -61,7 +58,7 @@ export default function EnrollmentCourses({ enrollment }) {
             {enrollmentCourses.length > 0 &&
                 <CoursesList
                     courses={enrollmentCourses}
-                    onDelete={handleRemoveCourse}
+                    onRemove={handleRemoveCourse}
                 />
             }
         </PageSection>

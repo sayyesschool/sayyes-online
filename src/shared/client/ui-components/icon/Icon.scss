@@ -1,16 +1,15 @@
 .ui-Icon {
-    font-family: 'Material Icons Round';
+    font-family: 'Material Symbols Rounded';
     font-weight: normal;
     font-style: normal;
-    font-size: 24px;
-    line-height: 1;
-    letter-spacing: normal;
-    text-transform: none;
+    font-size: 24px;  /* Preferred icon size */
     display: inline-block;
-    white-space: nowrap;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
     word-wrap: normal;
+    white-space: nowrap;
     direction: ltr;
-    -webkit-font-smoothing: antialiased;
 
     &--smallest {
         font-size: 14px;
@@ -20,23 +19,26 @@
         font-size: 16px;
     }
     
+    &--sm,
     &--small {
         font-size: 18px;
     }
     
+    &--md,
     &--medium {
+        font-size: 20px;
+    }
+    
+    &--lg,
+    &--large {
         font-size: 24px;
     }
     
-    &--large {
+    &--larger {
         font-size: 36px;
     }
     
-    &--larger {
-        font-size: 48px;
-    }
-    
     &--largest {
-        font-size: 64px;
+        font-size: 48px;
     }
 }

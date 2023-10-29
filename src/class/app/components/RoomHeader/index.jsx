@@ -64,7 +64,7 @@ export default function RoomHeader({
                             to: '/courses',
                             value: '/courses',
                             icon: 'book',
-                            content: 'Курс',
+                            content: 'Обучающие материалы',
                             color: match.url === '/courses' ? 'primary' : 'neutral',
                             variant: match.url === '/courses' ? 'soft' : 'plain'
                         },
@@ -95,7 +95,7 @@ export default function RoomHeader({
 
                 <ToggleChatButton
                     active={isChatOpen}
-                    numberOfUnreadMessages={numberOfUnreadMessages}
+                    badgeCount={numberOfUnreadMessages}
                     onClick={onChatToggle}
                 />
 
@@ -103,9 +103,7 @@ export default function RoomHeader({
 
                 <ToggleVideoButton disabled={isReconnecting} />
 
-                {!isSharingScreen &&
-                    <ToggleScreenShareButton disabled={isReconnecting} />
-                }
+                <ToggleScreenShareButton disabled={isReconnecting} />
 
                 <ToggleFullscreenButton
                     active={isFullscreen}

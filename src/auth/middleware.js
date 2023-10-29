@@ -27,7 +27,6 @@ module.exports = ({
     },
 
     authenticatedRoute: (req, res, next) => {
-        console.log('authenticatedRoute', req.user);
         req.user ? next() : next('route');
     },
 
@@ -42,10 +41,8 @@ module.exports = ({
             res.redirect('/cms');
         else if (req.user.role === 'manager')
             res.redirect('/crm');
-        else if (req.user.role === 'client')
-            res.redirect('/client');
-        else if (req.user.role === 'teacher')
-            res.redirect('/teacher');
+        else if (req.user.role === 'client' || req.user.role === 'teacher')
+            res.redirect('/lms');
         else
             next();
     }

@@ -3,7 +3,7 @@ import { createAction, createReducer, combineReducers } from 'shared/store/helpe
 export const getPosts = createAction('GET_POSTS', query => ({
     request: {
         method: 'get',
-        url: '/posts',
+        path: 'posts',
         query
     }
 }));
@@ -11,7 +11,7 @@ export const getPosts = createAction('GET_POSTS', query => ({
 export const getPost = createAction('GET_POST', id => ({
     request: {
         method: 'get',
-        url: `/posts/${id}`
+        path: `posts/${id}`
     }
 }));
 
@@ -20,7 +20,7 @@ export const unsetPost = createAction('UNSET_POST');
 export const createPost = createAction('CREATE_POST', data => ({
     request: {
         method: 'post',
-        url: '/posts',
+        path: 'posts',
         body: data
     }
 }));
@@ -28,7 +28,7 @@ export const createPost = createAction('CREATE_POST', data => ({
 export const updatePost = createAction('UPDATE_POST', (id, data) => ({
     request: {
         method: 'put',
-        url: `/posts/${id}`,
+        path: `posts/${id}`,
         body: data
     }
 }));
@@ -36,14 +36,14 @@ export const updatePost = createAction('UPDATE_POST', (id, data) => ({
 export const deletePost = createAction('DELETE_POST', id => ({
     request: {
         method: 'delete',
-        url: `/posts/${id}`
+        path: `posts/${id}`
     }
 }));
 
 export const createComment = createAction('CREATE_POST_COMMENT', (id, data) => ({
     request: {
         method: 'post',
-        url: `/posts/${id}/comments`,
+        path: `posts/${id}/comments`,
         body: data
     }
 }));
@@ -51,7 +51,7 @@ export const createComment = createAction('CREATE_POST_COMMENT', (id, data) => (
 export const updateComment = createAction('UPDATE_POST_COMMENT', (postId, commentId, data) => ({
     request: {
         method: 'put',
-        url: `/posts/${postId}/comments/${commentId}`,
+        path: `posts/${postId}/comments/${commentId}`,
         body: data
     }
 }));
@@ -59,7 +59,7 @@ export const updateComment = createAction('UPDATE_POST_COMMENT', (postId, commen
 export const deleteComment = createAction('DELETE_POST_COMMENT', (postId, commentId) => ({
     request: {
         method: 'delete',
-        url: `/posts/${postId}/comments/${commentId}`
+        path: `posts/${postId}/comments/${commentId}`
     }
 }));
 

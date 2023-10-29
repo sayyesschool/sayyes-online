@@ -4,7 +4,7 @@ export const getMeetings = createAction('GET_MEETINGS', query => {
     return {
         request: {
             method: 'get',
-            url: '/meetings',
+            path: 'meetings',
             query
         }
     };
@@ -13,14 +13,14 @@ export const getMeetings = createAction('GET_MEETINGS', query => {
 export const getMeeting = createAction('GET_MEETING', id => ({
     request: {
         method: 'get',
-        url: `/meetings/${id}`
+        path: `meetings/${id}`
     }
 }));
 
 export const createMeeting = createAction('CREATE_MEETING', data => ({
     request: {
         method: 'post',
-        url: '/meetings',
+        path: 'meetings',
         body: data
     }
 }));
@@ -28,7 +28,7 @@ export const createMeeting = createAction('CREATE_MEETING', data => ({
 export const updateMeeting = createAction('UPDATE_MEETING', (id, data) => ({
     request: {
         method: 'put',
-        url: `/meetings/${id}`,
+        path: `meetings/${id}`,
         body: data
     }
 }));
@@ -36,7 +36,7 @@ export const updateMeeting = createAction('UPDATE_MEETING', (id, data) => ({
 export const deleteMeeting = createAction('DELETE_MEETING', id => ({
     request: {
         method: 'delete',
-        url: `/meetings/${id}`
+        path: `meetings/${id}`
     }
 }));
 
@@ -49,7 +49,7 @@ export const unsetMeeting = createAction('UNSET_MEETING');
 export const addRegistration = createAction('ADD_MEETING_REGISTRATION', (id, data) => ({
     request: {
         method: 'post',
-        url: `/meetings/${id}/registrations`,
+        path: `meetings/${id}/registrations`,
         body: data
     }
 }));
@@ -57,7 +57,7 @@ export const addRegistration = createAction('ADD_MEETING_REGISTRATION', (id, dat
 export const updateRegistration = createAction('UPDATE_MEETING_REGISTRATION', (meetingId, registrationId, action) => ({
     request: {
         method: 'put',
-        url: `/meetings/${meetingId}/registrations/${registrationId}`,
+        path: `meetings/${meetingId}/registrations/${registrationId}`,
         body: { action }
     }
 }));
@@ -65,7 +65,7 @@ export const updateRegistration = createAction('UPDATE_MEETING_REGISTRATION', (m
 export const removeRegistration = createAction('REMOVE_MEETING_REGISTRATION', (meetingId, registrationId) => ({
     request: {
         method: 'delete',
-        url: `/meetings/${meetingId}/registrations/${registrationId}`
+        path: `meetings/${meetingId}/registrations/${registrationId}`
     }
 }));
 

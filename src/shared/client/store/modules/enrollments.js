@@ -1,5 +1,6 @@
 import { createAction, createReducer, combineReducers } from 'shared/store/helpers';
 
+import { createAssignment, updateAssignment, deleteAssignment } from './assignments';
 import { createComment, updateComment, deleteComment } from './comments';
 import { createLesson, createLessons, updateLesson, deleteLesson } from './lessons';
 import { createPayment, updatePayment, deletePayment } from './payments';
@@ -7,21 +8,21 @@ import { createPayment, updatePayment, deletePayment } from './payments';
 export const getEnrollments = createAction('GET_ENROLLMENTS', () => ({
     request: {
         method: 'get',
-        url: '/enrollments'
+        path: 'enrollments'
     }
 }));
 
 export const getEnrollment = createAction('GET_ENROLLMENT', id => ({
     request: {
         method: 'get',
-        url: `/enrollments/${id}`
+        path: `enrollments/${id}`
     }
 }));
 
 export const createEnrollment = createAction('CREATE_ENROLLMENT', data => ({
     request: {
         method: 'post',
-        url: '/enrollments',
+        path: 'enrollments',
         body: data
     }
 }));
@@ -29,7 +30,7 @@ export const createEnrollment = createAction('CREATE_ENROLLMENT', data => ({
 export const updateEnrollment = createAction('UPDATE_ENROLLMENT', (id, data) => ({
     request: {
         method: 'put',
-        url: `/enrollments/${id}`,
+        path: `enrollments/${id}`,
         body: data
     }
 }));
@@ -37,14 +38,14 @@ export const updateEnrollment = createAction('UPDATE_ENROLLMENT', (id, data) => 
 export const deleteEnrollment = createAction('DELETE_ENROLLMENT', id => ({
     request: {
         method: 'delete',
-        url: `/enrollments/${id}`
+        path: `enrollments/${id}`
     }
 }));
 
 export const payEnrollment = createAction('PAY_ENROLLMENT', (id, data) => ({
     request: {
         method: 'post',
-        url: `/enrollments/${id}/pay`,
+        path: `enrollments/${id}/pay`,
         body: data
     }
 }));
@@ -52,7 +53,7 @@ export const payEnrollment = createAction('PAY_ENROLLMENT', (id, data) => ({
 export const updateSchedule = createAction('UPDATE_ENROLLMENT_SCHEDULE', (id, data) => ({
     request: {
         method: 'put',
-        url: `/enrollments/${id}/schedule`,
+        path: `enrollments/${id}/schedule`,
         body: data
     }
 }));
@@ -79,6 +80,12 @@ export const enrollmentReducer = createReducer(null, {
     [updateEnrollment]: (state, action) => ({ ...state, ...action.data }),
     [deleteEnrollment]: (state, action) => null,
 
+    // Schedule
+
+    [updateSchedule]: (state, action) => ({ ...state, schedule: action.data.schedule }),
+
+    // Lessons
+
     [createLessons]: (state, action) => ({
         ...state,
         lessons: state.lessons.concat(...action.data.filter(lesson => lesson.enrollment === state.id))
@@ -99,6 +106,8 @@ export const enrollmentReducer = createReducer(null, {
         lessons: state.lessons.filter(lesson => lesson.id !== action.data.id)
     },
 
+    // Comment
+
     [createComment]: (state, action) => state.id !== action.data.ref ? state : {
         ...state,
         comments: [action.data, ...state.comments]
@@ -115,6 +124,8 @@ export const enrollmentReducer = createReducer(null, {
         comments: state.comments.filter(comment => comment.id !== action.data.id)
     },
 
+    // Payments
+
     [createPayment]: (state, action) => state.id !== action.data.enrollment ? state : {
         ...state,
         payments: [action.data, ...state.payments]
@@ -129,7 +140,25 @@ export const enrollmentReducer = createReducer(null, {
     [deletePayment]: (state, action) => state.id !== action.data.enrollment ? state : {
         ...state,
         payments: state.payments.filter(payment => payment.id !== action.data.id)
-    }
+    },
+
+    // Assignments
+
+    [createAssignment]: (state, action) => state?.id !== action.data.enrollmentId ? state : {
+        ...state,
+        assignments: state.assignments.concat(action.data)
+    },
+    [updateAssignment]: (state, action) => state?.id !== action.data.enrollmentId ? state : {
+        ...state,
+        assignments: state.assignments.map(assignment => assignment.id !== action.data.id ? assignment : {
+            ...assignment,
+            ...action.data
+        })
+    },
+    [deleteAssignment]: (state, action) => state?.id !== action.data.enrollmentId ? state : {
+        ...state,
+        assignments: state.assignments.filter(assignment => assignment.id !== action.data.id)
+    },
 });
 
 export default combineReducers({

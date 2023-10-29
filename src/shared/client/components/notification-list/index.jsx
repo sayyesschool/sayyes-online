@@ -1,13 +1,10 @@
-import {
-    IconButton,
-    List
-} from 'mdc-react';
+import { IconButton, List } from 'shared/ui-components';
 
 import './index.scss';
 
-export default function NotificationList({ notifications, onClick, onDelete }) {
+export default function NotificationsList({ notifications, onClick, onDelete }) {
     return (
-        <List className="notification-list">
+        <List className="NotificationsList">
             {notifications.map(notification =>
                 <List.Item
                     key={notification.id}

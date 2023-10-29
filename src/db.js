@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 
-mongoose.Promise = global.Promise;
-
 mongoose.set('toObject', {
     virtuals: true,
     getters: true,
@@ -15,6 +13,12 @@ mongoose.set('toJSON', {
     transform: (document, object, options) => {
         delete object._id;
 
+        // for (const key in object) {
+        //     if (key.startsWith('_')) {
+        //         delete object[key];
+        //     }
+        // }
+
         if (options.hide) {
             options.hide.split(' ').forEach(prop => delete object[prop]);
         }
@@ -27,21 +31,19 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 mongoose.connection.once('open', () => console.log('Connected to MongoDB'));
 mongoose.connection.on('disconnected', () => console.log('Disconnected from MongoDB'));
 
-process.on('SIGINT', () => {
+process.on('SIGINT', async () => {
     console.info('SIGINT signal received');
 
-    mongoose.connection.close(() => {
-        console.log('Mongoose disconnected through app termination');
-        process.exit(0);
-    });
+    await mongoose.connection.close();
+
+    console.log('Mongoose disconnected through app termination');
+    process.exit(0);
 });
 
 module.exports = {
     connection: mongoose.connection,
-    connect: (url, cb) => mongoose.connect(url, {
-        autoIndex: false,
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false
-    }, cb)
+    connect: uri => mongoose.connect(uri, {
+        autoIndex: false
+    }),
+    disconnect: () => mongoose.disconnect()
 };

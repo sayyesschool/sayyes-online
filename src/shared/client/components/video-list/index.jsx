@@ -3,7 +3,7 @@ import List from 'shared/ui-components/list';
 
 export default function VideoList({ videos, selectedVideo, onClick, onDelete }) {
     return (
-        <List className="video-list">
+        <List className="VideoList">
             {videos.map(video =>
                 <List.Item
                     key={video.id}

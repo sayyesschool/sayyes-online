@@ -1,11 +1,11 @@
 import { forwardRef, useCallback, useState } from 'react';
 import classnames from 'classnames';
 
-import Popup from '@mui/base/PopperUnstyled';
-import ListDivider from '@mui/joy/ListDivider';
-import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import JoyMenuItem from '@mui/joy/MenuItem';
 import MenuList from '@mui/joy/MenuList';
+
+import { ListDivider, ListItemDecorator } from '../list';
+import Popover from '../popover';
 
 const MenuItem = forwardRef(({
     value,
@@ -18,6 +18,7 @@ const MenuItem = forwardRef(({
     onItemClick = Function.prototype,
     onMenuClose = Function.prototype,
 
+    as,
     children = content,
     ...props
 }, ref) => {
@@ -48,6 +49,7 @@ const MenuItem = forwardRef(({
 
     return (
         <JoyMenuItem
+            component={as}
             ref={ref}
             className={classNames}
             color={color}
@@ -55,7 +57,7 @@ const MenuItem = forwardRef(({
             {...props}
         >
             {decorator &&
-                <ListItemDecorator sx={color ? { color: 'inherit' } : undefined}>
+                <ListItemDecorator key="decorator" sx={color ? { color: 'inherit' } : undefined}>
                     {decorator}
                 </ListItemDecorator>
             }
@@ -63,7 +65,8 @@ const MenuItem = forwardRef(({
             {children}
 
             {items &&
-                <Popup
+                <Popover
+                    key="popup"
                     open={open}
                     anchorEl={anchorElement}
                     placement="right-start"
@@ -88,7 +91,7 @@ const MenuItem = forwardRef(({
                                 />
                         )}
                     </MenuList>
-                </Popup>
+                </Popover>
             }
         </JoyMenuItem>
     );
