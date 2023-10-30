@@ -19,7 +19,6 @@ const UserSchema = require('./user');
 
 const User = model('User', UserSchema);
 const Admin = User.discriminator('Admin', UserSchema.Admin, 'admin');
-const Customer = User.discriminator('Customer', UserSchema.Customer, 'customer');
 const Editor = User.discriminator('Editor', UserSchema.Editor, 'editor');
 const Learner = User.discriminator('Learner', UserSchema.Learner, 'learner');
 const Manager = User.discriminator('Manager', UserSchema.Manager, 'manager');
@@ -43,7 +42,6 @@ module.exports = () => ({
     Transaction: model('Transaction', Transaction),
     User,
     Admin,
-    Customer,
     Editor,
     Learner,
     Manager,

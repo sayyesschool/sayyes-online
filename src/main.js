@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const config = require('./config');
 const db = require('./db');
 const core = require('./core');
@@ -12,13 +14,18 @@ const server = require('./server');
 
 const context = core(config);
 
+const options = config.APP_ENV === 'production' ? null : {
+    key: fs.readFileSync('./ssl/dev.key'),
+    cert: fs.readFileSync('./ssl/dev.crt')
+};
+
 context.middleware = {
     auth: authMiddleware(context)
 };
 
 db.connect(config.MONGODB_URI);
 
-server(config, db)
+server(config, db, options)
     .use('/api', api(context))
     .use(context.middleware.auth.authenticate)
     .use('/auth', auth(context))

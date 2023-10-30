@@ -4,7 +4,7 @@ module.exports = ({
     async get(req, res) {
         const lessons = await Lesson.find({ teacher: req.user.id, ...req.query })
             .sort({ date: 1 })
-            .populate('client', 'firstname lastname email')
+            .populate('learner', 'firstname lastname email')
             .populate('room', 'title login password');
 
         res.json({
@@ -15,7 +15,7 @@ module.exports = ({
 
     async getOne(req, res) {
         const lesson = await Lesson.findById(req.params.lessonId)
-            .populate('client', 'firstname lastname email')
+            .populate('learner', 'firstname lastname email')
             .populate('room', 'title login password');
 
         res.json({

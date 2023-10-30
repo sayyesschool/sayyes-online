@@ -8,7 +8,7 @@ export default function FormInput({ label, message, className, ...props }) {
     const classNames = cn('ui-FormSelect', className);
 
     return (
-        <FromField className={classNames} label={label} message={message}>
+        <FormField className={classNames} label={label} message={message}>
             <Input {...props} />
         </FormField>
     );

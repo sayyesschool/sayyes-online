@@ -11,7 +11,7 @@ const columns = [
     { key: 'status', text: 'Статус' },
     { key: 'datetime', text: 'Дата и время' },
     { key: 'contact', text: 'Контакт' },
-    { key: 'client', text: 'Клиент' },
+    { key: 'learner', text: 'Ученик' },
     { key: 'manager', text: 'Менеджер' },
     { key: 'actions' }
 ];

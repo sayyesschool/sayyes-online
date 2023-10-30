@@ -3,7 +3,7 @@ import { Avatar, Button, Card, Flex, Text } from 'shared/ui-components';
 export default function TrialContent({ enrollment }) {
     return (
         <div className="trial-content">
-            <Text as="p" size="large">{enrollment.client.firstname}, мы подобрали Вам подходящего преподавателя!</Text>
+            <Text as="p" size="large">{enrollment.learner.firstname}, мы подобрали Вам подходящего преподавателя!</Text>
 
             <Text as="p">При подборе мы постарались учесть все Ваши предпочтения, но окончательный выбор за Вами, поэтому ждем Вас на бесплатном вводном уроке:</Text>
 

@@ -69,10 +69,10 @@ export default function RequestsPage({ history }) {
             .then(({ data: enrollment }) => requestActions.updateRequest(request.id, {
                 ...data.request,
                 status: 'completed',
-                client: enrollment.client,
-                enrollment: enrollment.enrollment
+                enrollmentId: enrollment.enrollment,
+                learnerId: enrollment.learnerId
             }))
-            .then(({ data }) => history.push(`/clients/${data.client.id}`));
+            .then(({ data }) => history.push(`/learners/${data.client.id}`));
     }, [request]);
 
     const handleExistingClient = useCallback(() => {

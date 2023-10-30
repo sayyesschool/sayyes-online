@@ -27,7 +27,7 @@ module.exports = ({
         }
 
         Lesson.find(query)
-            .populate('client', 'firstname lastname email')
+            .populate('learner', 'firstname lastname email')
             .populate('teacher', 'firstname lastname email')
             .sort({ date: -1 })
             .limit(100)
@@ -52,7 +52,7 @@ module.exports = ({
 
     getTodays: (req, res, next) => {
         Lesson.findTodays()
-            .populate('client', 'firstname lastname email')
+            .populate('learner', 'firstname lastname email')
             .populate('teacher', 'firstname lastname email')
             .populate('room', 'title')
             .then(lessons => {
@@ -66,7 +66,7 @@ module.exports = ({
 
     getOne: (req, res, next) => {
         Lesson.findById(req.params.lessonId)
-            .populate('client')
+            .populate('learner')
             .populate('teacher')
             .then(lesson => {
                 res.json({

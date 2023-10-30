@@ -34,5 +34,5 @@ module.exports = context => {
 };
 
 function redirectToCMS(req, res) {
-    res.redirect(req.originalUrl.replace('client', 'cms'));
+    res.redirect(req.originalUrl.replace('learner', 'cms'));
 }

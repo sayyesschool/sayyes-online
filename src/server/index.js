@@ -44,20 +44,18 @@ module.exports = (config, db, options) => {
         });
     });
 
-    return server;
-
-    // return {
-    //     use(...args) {
-    //         server.use(...args);
-    //         return this;
-    //     },
-    //     listen(port, ...rest) {
-    //         if (options) {
-    //             https.createServer(options, server)
-    //                 .listen(port, ...rest);
-    //         } else {
-    //             server.listen(port, ...rest);
-    //         }
-    //     }
-    // };
+    return {
+        use(...args) {
+            server.use(...args);
+            return this;
+        },
+        listen(port, ...rest) {
+            if (options) {
+                https.createServer(options, server)
+                    .listen(port, ...rest);
+            } else {
+                server.listen(port, ...rest);
+            }
+        }
+    };
 };

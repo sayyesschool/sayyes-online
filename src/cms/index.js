@@ -2,7 +2,7 @@ const express = require('express');
 
 const api = require('./api');
 
-const ALLOWED_ROLES = ['editor', 'manager', 'teacher', 'client'];
+const ALLOWED_ROLES = ['editor', 'learner', 'manager', 'teacher'];
 
 module.exports = core => {
     const app = express();

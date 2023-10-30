@@ -13,13 +13,13 @@ const Room = new Schema({
 Room.virtual('lessons', {
     ref: 'Lesson',
     localField: '_id',
-    foreignField: 'room'
+    foreignField: 'roomId'
 });
 
 Room.virtual('lessonCount', {
     ref: 'Lesson',
     localField: '_id',
-    foreignField: 'room',
+    foreignField: 'roomId',
     count: true
 });
 

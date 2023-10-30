@@ -45,9 +45,9 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
     const { data, handleChange } = useFormData({
         ...defaultEnrollment,
         ...enrollment,
-        client: enrollment.client?.id || '',
-        teachers: enrollment.teachers?.map(t => t.id || t),
-        managers: enrollment.managers?.map(m => m.id || m),
+        learnerId: enrollment.learner?.id || '',
+        teacherId: enrollment.teacher?.id,
+        managerId: enrollment.manager?.id,
         courses: undefined,
         lessons: undefined,
         payments: undefined

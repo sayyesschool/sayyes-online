@@ -5,7 +5,7 @@ module.exports = ({
     getMany: (req, res, next) => {
         Promise.all([
             Enrollment.find({ client: req.user.id, ...req.query })
-                .populate('client', 'firstname lastname imageUrl')
+                .populate('learner', 'firstname lastname imageUrl')
                 .populate('teacher', 'firstname lastname imageUrl')
                 .populate('lessons', 'id')
                 .populate('currentPayment', 'status amount description'),
@@ -76,8 +76,8 @@ module.exports = ({
                 email: req.user.email,
                 returnUrl: '/',
                 metadata: {
-                    userId: enrollment.client,
                     enrollmentId: enrollment.id,
+                    learnerId: enrollment.learnerId,
                     packId: pack.id
                 }
             }).then(payment => {

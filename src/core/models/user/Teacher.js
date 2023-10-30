@@ -11,19 +11,19 @@ const Teacher = new Schema({
 Teacher.virtual('enrollments', {
     ref: 'Enrollment',
     localField: '_id',
-    foreignField: 'teachers'
+    foreignField: 'teacherId'
 });
 
 Teacher.virtual('lessons', {
     ref: 'Lesson',
     localField: '_id',
-    foreignField: 'teacher'
+    foreignField: 'teacherId'
 });
 
 Teacher.virtual('meetings', {
     ref: 'Meeting',
     localField: '_id',
-    foreignField: 'teacher'
+    foreignField: 'hostId'
 });
 
 module.exports = Teacher;

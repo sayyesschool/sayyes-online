@@ -26,9 +26,9 @@ export default function EnrollmentLessons({ enrollment }) {
 
     const createLessons = useCallback(lessons => {
         lessons.forEach(lesson => {
-            lesson.enrollment = enrollment.id;
-            lesson.client = enrollment.client?.id || enrollment.client;
-            lesson.teacher = enrollment.teacher?.id || enrollment.teacher;
+            lesson.enrollmentId = enrollment.id;
+            lesson.learnerId = enrollment.learnerId;
+            lesson.teacherId = enrollment.teacherId;
         });
 
         return lessonActions.createLessons(lessons)

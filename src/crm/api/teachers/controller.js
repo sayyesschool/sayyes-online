@@ -20,7 +20,7 @@ module.exports = ({
                 path: 'enrollments',
                 select: 'status type domain format client schedules',
                 populate: {
-                    path: 'client',
+                    path: 'learner',
                     select: 'firstname lastname'
                 }
             })

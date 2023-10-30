@@ -4,10 +4,10 @@ module.exports = ({
     getMany: (req, res, next) => {
         Lesson.find({
             $or: [
-                { client: req.user }
+                { learnerId: req.user }
             ]
         })
-            .populate('client', 'firstname lastname fullname')
+            .populate('learner', 'firstname lastname fullname')
             .populate('teacher', 'firstname lastname fullname')
             .then(lessons => {
                 res.json({
@@ -20,7 +20,7 @@ module.exports = ({
 
     getOne: (req, res, next) => {
         Lesson.findById(req.params.lessonId)
-            .populate('client', 'firstname lastname fullname')
+            .populate('learner', 'firstname lastname fullname')
             .populate('teacher', 'firstname lastname fullname')
             .then(lesson => {
                 if (!lesson) {

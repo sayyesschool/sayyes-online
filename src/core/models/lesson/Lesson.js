@@ -12,10 +12,10 @@ const Lesson = new Schema({
     free: { type: Boolean, default: false },
     confirmed: { type: Boolean, default: false },
     note: { type: String, trim: true, default: '' },
-    enrollment: { type: Schema.Types.ObjectId, ref: 'Enrollment' },
-    client: { type: Schema.Types.ObjectId, ref: 'User' },
-    teacher: { type: Schema.Types.ObjectId, ref: 'User' },
-    room: { type: Schema.Types.ObjectId, ref: 'Room' }
+    enrollmentId: { type: Schema.Types.ObjectId, required: true },
+    learnerId: { type: Schema.Types.ObjectId },
+    teacherId: { type: Schema.Types.ObjectId },
+    roomId: { type: Schema.Types.ObjectId, ref: 'Room' }
 }, {
     timestamps: true
 });
@@ -36,8 +36,7 @@ Lesson.statics.findConflicting = function(teacherId, from, duration) {
             $gte: startDate,
             $lt: endDate
         }
-    })
-        .sort({ date: 1 })
+    }).sort({ date: 1 })
         .then(lessons => {
             const lesson = lessons.find(lesson => {
                 return (
@@ -95,6 +94,27 @@ Lesson.virtual('timeString').get(function() {
 
 Lesson.virtual('dateTimeString').get(function() {
     return moment(this.date).format('DD.MM.YYYY, HH:mm');
+});
+
+Lesson.virtual('enrollment', {
+    ref: 'Enrollment',
+    localField: 'enrollmentId',
+    foreignField: '_id',
+    justOne: true
+});
+
+Lesson.virtual('learner', {
+    ref: 'Learner',
+    localField: 'learnerId',
+    foreignField: '_id',
+    justOne: true
+});
+
+Lesson.virtual('teacher', {
+    ref: 'Teacher',
+    localField: 'teacherId',
+    foreignField: '_id',
+    justOne: true
 });
 
 module.exports = Lesson;

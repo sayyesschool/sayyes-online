@@ -41,7 +41,7 @@ module.exports = ({
             res.redirect('/cms');
         else if (req.user.role === 'manager')
             res.redirect('/crm');
-        else if (req.user.role === 'client' || req.user.role === 'teacher')
+        else if (req.user.role === 'learner' || req.user.role === 'teacher')
             res.redirect('/lms');
         else
             next();

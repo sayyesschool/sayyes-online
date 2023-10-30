@@ -12,7 +12,7 @@ export default function PaymentContent({ enrollment }) {
         :
         (
             <div className="payment-content">
-                <Text as="p" size="large">{enrollment.client.firstname}, остался всего один шаг: оплатить обучение.</Text>
+                <Text as="p" size="large">{enrollment.learner.firstname}, остался всего один шаг: оплатить обучение.</Text>
 
                 <Text as="p">Обратите внимание, что первую оплату нужно внести не позднее чем за сутки до назначенного времени первого урока. Если по какой-то причине Вы ещё не определились с датой и временем первого занятия — не беспокойтесь, Ваш менеджер помнит об этом и перезвонит Вам в ближайшее время.</Text>
 

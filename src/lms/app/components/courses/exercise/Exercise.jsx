@@ -89,7 +89,7 @@ export default function Exercise({
         return onDeleteComment(exercise.id, commentId);
     }, [exercise]);
 
-    const hasSaveableItems = user.role === 'client' && exercise.items.some(item =>
+    const hasSaveableItems = user.role === 'learner' && exercise.items.some(item =>
         item.type === 'essay' ||
         item.type === 'fib' ||
         item.type === 'input'

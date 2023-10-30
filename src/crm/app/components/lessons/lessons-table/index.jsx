@@ -97,8 +97,8 @@ export default function LessonsTable({ lessons, onView, onEdit, onDelete }) {
 
 const columns = [
     {
-        key: 'client',
-        text: 'Клиент'
+        key: 'learner',
+        text: 'Ученик'
     },
     {
         key: 'teacher',

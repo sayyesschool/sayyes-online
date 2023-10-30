@@ -5,7 +5,7 @@ import PageSection from 'shared/components/page-section';
 
 export default function TeacherEnrollments({ teacher }) {
     return (
-        <PageSection className="teacher-enrollments" title="Обучение" compact>
+        <PageSection className="TeacherEnrollments" title="Обучение" compact>
             {teacher.enrollments?.length > 0 &&
                 <List>
                     {teacher.enrollments.map(enrollment =>
@@ -16,8 +16,8 @@ export default function TeacherEnrollments({ teacher }) {
                             media={<Icon>{enrollment.statusIcon}</Icon>}
                             header={enrollment.domainLabel}
                             content={enrollment.statusLabel}
-                            endMedia={enrollment.client &&
-                                <Avatar text={enrollment.client.initials} title={enrollment.client.fullname} />
+                            endMedia={enrollment.learner &&
+                                <Avatar text={enrollment.learner.initials} title={enrollment.learner.fullname} />
                             }
                         />
                     )}

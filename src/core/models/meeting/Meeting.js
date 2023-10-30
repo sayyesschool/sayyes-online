@@ -18,9 +18,9 @@ const Meeting = new Schema({
     zoomId: { type: String },
     startUrl: { type: String },
     joinUrl: { type: String },
-    host: { type: Schema.Types.ObjectId, ref: 'User' },
     registrations: [Registration],
-    participants: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+    hostId: { type: Schema.Types.ObjectId },
+    participantIds: [{ type: Schema.Types.ObjectId }]
 }, {
     timestamps: true
 });
@@ -47,6 +47,19 @@ Meeting.virtual('hasRegistrations').get(function() {
 
 Meeting.virtual('hasParticipants').get(function() {
     return this.participants && this.participants.length > 0;
+});
+
+Meeting.virtual('host', {
+    ref: 'User',
+    localField: 'hostId',
+    foreignField: '_id',
+    justOne: true
+});
+
+Meeting.virtual('participants', {
+    ref: 'user',
+    localField: 'participantIds',
+    foreignField: '_id'
 });
 
 module.exports = Meeting;

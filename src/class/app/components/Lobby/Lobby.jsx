@@ -68,7 +68,7 @@ export default function Lobby({ user }) {
             }
 
             <Link
-                href={`/${user.role}`}
+                href="/lms"
                 content="Вернуться в кабинет"
             />
 

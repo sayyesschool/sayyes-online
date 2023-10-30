@@ -3,7 +3,7 @@ module.exports = ({
 }) => ({
     get: (req, res, next) => {
         Payment.find()
-            .populate('client', 'firstname lastname email')
+            .populate('learner', 'firstname lastname email')
             .then(payments => {
                 res.json({
                     ok: true,
@@ -15,7 +15,7 @@ module.exports = ({
 
     getOne: (req, res, next) => {
         Payment.findById(req.params.payment)
-            .populate('client', 'firstname lastname email')
+            .populate('learner', 'firstname lastname email')
             .then(payment => {
                 res.json({
                     ok: true,

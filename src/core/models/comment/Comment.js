@@ -23,7 +23,7 @@ Comment.virtual('author', {
     ref: 'User',
     localField: 'authorId',
     foreignField: '_id',
-    justOne: true,
+    justOne: true
 });
 
 Comment.virtual('datetimeLabel').get(function() {

@@ -41,7 +41,7 @@ export default function EnrollmentPage({ match, history }) {
     const deleteEnrollment = useCallback(() => {
         return actions.deleteEnrollment(enrollment.id)
             .then(() => {
-                history.push(`/clients/${enrollment.client.id}`);
+                history.push(`/learners/${enrollment.learners.id}`);
                 toggleConfirmationDialogOpen(false);
             });
     }, [enrollment]);
@@ -52,14 +52,14 @@ export default function EnrollmentPage({ match, history }) {
         <Page className="EnrollmentPage">
             <Page.Header
                 breadcrumbs={[
-                    { content: enrollment.client.fullname, to: enrollment?.client.url }
+                    { content: enrollment.learner.fullname, to: enrollment?.learner.url }
                 ]}
                 title={enrollment.domainLabel}
                 actions={[
-                    (enrollment.client?.hhid && {
+                    (enrollment.learner?.hhid && {
                         key: 'hhid',
                         element: 'a',
-                        href: `https://sayes.t8s.ru/Profile/${enrollment.client.hhid}`,
+                        href: `https://sayes.t8s.ru/Profile/${enrollment.learner.hhid}`,
                         target: '_blank',
                         icon: 'link',
                         title: 'Открыть в Hollihop'

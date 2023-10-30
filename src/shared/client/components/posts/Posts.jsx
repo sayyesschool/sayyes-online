@@ -20,9 +20,9 @@ export default function EnrollmentPosts({ enrollment }) {
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     const createPost = useCallback(data => {
-        data.enrollment = enrollment.id;
-        data.teacher = enrollment.teacher;
-        data.client = enrollment.client;
+        data.enrollmentId = enrollment.id;
+        data.learnerId = enrollment.learnerId;
+        data.teacherId = enrollment.teacherId;
 
         return actions.createPost(data)
             .then(() => togglePostFormOpen());

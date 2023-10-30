@@ -5,9 +5,9 @@ export default function EnrollmentCard({ enrollment, ...props }) {
         <Card className="EnrollmentCard" {...props}>
             <Card.Header
                 media={
-                    <Avatar text={enrollment.client.initials} />
+                    <Avatar text={enrollment.learner.initials} />
                 }
-                title={enrollment.client.fullname}
+                title={enrollment.learner.fullname}
                 subtitle={enrollment.domainLabel}
             />
         </Card>

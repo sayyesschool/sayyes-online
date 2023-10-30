@@ -5,13 +5,13 @@ import WeekSchedule from 'shared/components/week-schedule';
 import { pluralize } from 'shared/utils/format';
 
 const roleLabel = {
-    client: 'Ученик',
+    learner: 'Ученик',
     teacher: 'Преподаватель'
 };
 
 const otherUserRole = {
-    client: 'teacher',
-    teacher: 'client'
+    learner: 'teacher',
+    teacher: 'learner'
 };
 
 export default function EnrollmentDetailsCard({
@@ -89,7 +89,7 @@ export default function EnrollmentDetailsCard({
                     <Text color="primary.contrastText">{pluralize('урок', enrollment.numberOfScheduledLessons)}<br />по 50 минут</Text>
                 </Box>
 
-                {user.role === 'client' &&
+                {user.role === 'learner' &&
                     <Button
                         content="Пополнить"
                         //color="secondary"

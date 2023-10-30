@@ -5,8 +5,8 @@ const { RequestChannel, RequestSource, RequestStatus } = require('./constants');
 
 const Request = new Schema({
     status: {
-        type: String, enum:
-            Object.values(RequestStatus),
+        type: String,
+        enum: Object.values(RequestStatus),
         default: RequestStatus.New
     },
     description: {
@@ -36,9 +36,9 @@ const Request = new Schema({
         content: { type: String, default: '' }
     },
     note: { type: String, trim: true, default: '' },
-    client: { type: Schema.Types.ObjectId, ref: 'Client' },
-    manager: { type: Schema.Types.ObjectId, ref: 'Manager' },
-    enrollment: { type: Schema.Types.ObjectId, ref: 'Enrollment' },
+    enrollmentId: { type: Schema.Types.ObjectId },
+    learnerId: { type: Schema.Types.ObjectId },
+    managerId: { type: Schema.Types.ObjectId },
     createdAt: { type: Date },
     updatedAt: { type: Date }
 }, {
@@ -59,6 +59,27 @@ Request.virtual('timeString').get(function() {
 
 Request.virtual('dateTimeString').get(function() {
     return moment(this.createdAt).format('D MMM, H:mm');
+});
+
+Request.virtual('enrollment', {
+    ref: 'Enrollment',
+    localField: 'enrollmentId',
+    foreignField: '_id',
+    justOne: true
+});
+
+Request.virtual('learner', {
+    ref: 'Learner',
+    localField: 'learnerId',
+    foreignField: '_id',
+    justOne: true
+});
+
+Request.virtual('manager', {
+    ref: 'Manager',
+    localField: 'managerId',
+    foreignField: '_id',
+    justOne: true
 });
 
 module.exports = Request;

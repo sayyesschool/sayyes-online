@@ -13,7 +13,7 @@ const Task = new Schema({
     subtasks: [Subtask],
     note: { type: String },
     manager: { type: Schema.Types.ObjectId, ref: 'Manager' },
-    client: { type: Schema.Types.ObjectId, ref: 'Client' }
+    learner: { type: Schema.Types.ObjectId, ref: 'Learner' }
 }, {
     timestamps: true
 });

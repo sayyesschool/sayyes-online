@@ -34,7 +34,7 @@ export default function Room({ user, enrollment }) {
     const rootRef = useRef();
     const contentRef = useRef();
     const participantsById = useMemo(() => ({
-        [enrollment.client.id]: enrollment.client.fullname,
+        [enrollment.learner.id]: enrollment.learner.fullname,
         [enrollment.teacher.id]: enrollment.teacher.fullname
     }));
 
@@ -47,7 +47,7 @@ export default function Room({ user, enrollment }) {
 
     useEffect(() => {
         const namesById = {
-            [enrollment.client.id]: enrollment.client.fullname,
+            [enrollment.learner.id]: enrollment.learner.fullname,
             [enrollment.teacher.id]: enrollment.teacher.fullname
         };
 

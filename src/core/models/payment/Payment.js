@@ -17,7 +17,6 @@ const Payment = new Schema({
     expiresAt: { type: Date },
     paidAt: { type: Date },
     test: { type: Boolean },
-    //user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     metadata: { type: Object }
 }, {
     timestamps: true,
