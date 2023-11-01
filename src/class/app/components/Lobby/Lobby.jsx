@@ -6,6 +6,7 @@ import { Button, IconButton, Flex, Heading, Link } from 'shared/ui-components';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import { useHasAudioInputDevices, useHasVideoInputDevices } from 'app/hooks/useDevices';
+import useMediaDevicePermission from 'app/hooks/useMediaDevicePermission/useMediaDevicePermission';
 import LocalVideoPreview from 'app/components/LocalVideoPreview';
 import MediaAcquireDialog from 'app/components/MediaAcquireDialog';
 import MediaErrorDialog from 'app/components/MediaErrorDialog';
@@ -22,10 +23,19 @@ export default function Lobby({ user }) {
     } = useRoomContext();
     const hasAudioInputDevices = useHasAudioInputDevices();
     const hasVideoInputDevices = useHasVideoInputDevices();
+    const cameraPermission = useMediaDevicePermission('camera');
+    const microphonePermission = useMediaDevicePermission('microphone');
 
     const [isMediaDevicesDialogOpen, toggleMediaDevicesDialogOpen] = useBoolean(false);
     const [isMediaAcquireDialogOpen, setMediaAcquireDialogOpen] = useState(false);
     const [mediaError, setMediaError] = useState();
+
+    useEffect(() => {
+        if (
+            cameraPermission?.state === 'prompt' &&
+            microphonePermission?.state === 'prompt'
+        ) setMediaAcquireDialogOpen(true);
+    }, [cameraPermission, microphonePermission]);
 
     useEffect(() => {
         if (
@@ -35,12 +45,11 @@ export default function Lobby({ user }) {
             isAcquiringLocalTracks
         ) return;
 
-        setMediaAcquireDialogOpen(true);
-
         getAudioAndVideoTracks()
             .catch(error => {
                 setMediaError(error);
-            }).finally(() => {
+            })
+            .finally(() => {
                 setMediaAcquireDialogOpen(false);
             });
     }, [

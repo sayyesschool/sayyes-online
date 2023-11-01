@@ -23,7 +23,7 @@ export default function WeekTimeEvent({ event, onClick, ...props }) {
             <Text
                 className="CalendarEvent__title"
                 as="span"
-                type="body2"
+                type="body-md"
                 content={event.title}
                 color="primary.solidColor"
             />
@@ -31,7 +31,7 @@ export default function WeekTimeEvent({ event, onClick, ...props }) {
             <Text
                 className="CalendarEvent__time"
                 as="span"
-                type="body3"
+                type="body-xs"
                 content={`${formatTime(event.startTime.hours, event.startTime.minutes)} - ${formatTime(event.endTime.hours, event.endTime.minutes)}`}
                 color="primary.solidColor"
             />

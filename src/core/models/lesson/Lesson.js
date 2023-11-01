@@ -12,7 +12,7 @@ const Lesson = new Schema({
     free: { type: Boolean, default: false },
     confirmed: { type: Boolean, default: false },
     note: { type: String, trim: true, default: '' },
-    enrollmentId: { type: Schema.Types.ObjectId, required: true },
+    enrollmentId: { type: Schema.Types.ObjectId },
     learnerId: { type: Schema.Types.ObjectId },
     teacherId: { type: Schema.Types.ObjectId },
     roomId: { type: Schema.Types.ObjectId, ref: 'Room' }
@@ -113,6 +113,13 @@ Lesson.virtual('learner', {
 Lesson.virtual('teacher', {
     ref: 'Teacher',
     localField: 'teacherId',
+    foreignField: '_id',
+    justOne: true
+});
+
+Lesson.virtual('room', {
+    ref: 'Room',
+    localField: 'roomId',
     foreignField: '_id',
     justOne: true
 });

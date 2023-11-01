@@ -1,70 +1,28 @@
-import { forwardRef, useCallback, useRef, useState } from 'react';
+import { forwardRef } from 'react';
 import classnames from 'classnames';
 
-import { Snackbar as MuiSnackbar } from '@mui/base/Snackbar';
-import Alert from '../alert';
+import MuiSnackbar from '@mui/joy/Snackbar';
 
 const Snackbar = forwardRef(({
     content,
     start,
     end,
-    open,
-    color = 'info',
-    size = 'md',
-    variant = 'soft',
-    onClose,
 
     className,
     children = content,
     ...props
 }, ref) => {
-    // const [open, setOpen] = useState(false);
-    // const [exited, setExited] = useState(true);
-    // const nodeRef = useRef(null);
-
-    const handleClose = useCallback((_, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpen(false);
-    }, []);
-
-    const handleClick = useCallback(() => {
-        setOpen(true);
-    }, []);
-
-    const handleOnEnter = useCallback(() => {
-        setExited(false);
-    }, []);
-
-    const handleOnExited = useCallback(() => {
-        setExited(true);
-    }, []);
-
-    const classNames = classnames('ui-Snackbar', {
-        'ui-Snackbar--open': open
-    }, className);
+    const classNames = classnames('ui-Snackbar', className);
 
     return (
         <MuiSnackbar
             ref={ref}
             className={classNames}
-            open={open}
-            disableWindowBlurListener
-            onClose={onClose}
+            startDecorator={start}
+            endDecorator={end}
             {...props}
         >
-            <Alert
-                content={content}
-                start={start}
-                end={end}
-                color={color}
-                size={size}
-                variant={variant}
-            >
-                {children}
-            </Alert>
+            {children}
         </MuiSnackbar>
     );
 });

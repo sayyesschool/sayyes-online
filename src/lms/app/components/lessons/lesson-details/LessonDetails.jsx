@@ -62,7 +62,7 @@ export default function LessonDetails({ lesson }) {
                         :
                         <Alert
                             content="Просьба не задерживаться в аудитории более 5 мин после окончания вашего урока."
-                            color="info"
+                            color="neutral"
                         />
                     }
                 </>}

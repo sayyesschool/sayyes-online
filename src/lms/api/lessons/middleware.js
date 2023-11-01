@@ -20,7 +20,7 @@ module.exports = ({
                 message: 'Нет свободной аудитории.'
             });
 
-        req.body.room = availableRoom.id;
+        req.body.roomId = availableRoom.id;
         req.room = availableRoom;
 
         next();

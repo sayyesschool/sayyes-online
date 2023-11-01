@@ -56,18 +56,6 @@ export default function EnrollmentDetails({ enrollment }) {
                             header: 'Предпочтения',
                             content: enrollment.preferences || '[Не указаны]'
                         },
-                        enrollment.manager && {
-                            key: 'manager',
-                            icon: 'person',
-                            header: 'Менеджер',
-                            content: enrollment.manager.fullname,
-                            end: (
-                                <Avatar
-                                    src={enrollment.manager.imageUrl}
-                                    text={enrollment.manager.initials}
-                                />
-                            )
-                        },
                         enrollment.note && {
                             key: 'note',
                             icon: 'notes',

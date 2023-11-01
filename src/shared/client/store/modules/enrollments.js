@@ -88,20 +88,20 @@ export const enrollmentReducer = createReducer(null, {
 
     [createLessons]: (state, action) => ({
         ...state,
-        lessons: state.lessons.concat(...action.data.filter(lesson => lesson.enrollment === state.id))
+        lessons: state.lessons.concat(...action.data.filter(lesson => lesson.enrollmentId === state.id))
     }),
-    [createLesson]: (state, action) => (!state || state.id !== action.data.enrollment) ? state : {
+    [createLesson]: (state, action) => (!state || state.id !== action.data.enrollmentId) ? state : {
         ...state,
         lessons: state.lessons.concat(action.data)
     },
-    [updateLesson]: (state, action) => (!state || state?.id !== action.data.enrollment) ? state : {
+    [updateLesson]: (state, action) => (!state || state?.id !== action.data.enrollmentId) ? state : {
         ...state,
         lessons: state.lessons.map(lesson => lesson.id !== action.data.id ? lesson : {
             ...lesson,
             ...action.data
         })
     },
-    [deleteLesson]: (state, action) => (!state || state?.id !== action.data.enrollment) ? state : {
+    [deleteLesson]: (state, action) => (!state || state?.id !== action.data.enrollmentId) ? state : {
         ...state,
         lessons: state.lessons.filter(lesson => lesson.id !== action.data.id)
     },
@@ -126,18 +126,18 @@ export const enrollmentReducer = createReducer(null, {
 
     // Payments
 
-    [createPayment]: (state, action) => state.id !== action.data.enrollment ? state : {
+    [createPayment]: (state, action) => state.id !== action.data.enrollmentId ? state : {
         ...state,
         payments: [action.data, ...state.payments]
     },
-    [updatePayment]: (state, action) => state.id !== action.data.enrollment ? state : {
+    [updatePayment]: (state, action) => state.id !== action.data.enrollmentId ? state : {
         ...state,
         payments: state.payments.map(payment => payment.id !== action.data.id ? payment : {
             ...payment,
             ...action.data
         })
     },
-    [deletePayment]: (state, action) => state.id !== action.data.enrollment ? state : {
+    [deletePayment]: (state, action) => state.id !== action.data.enrollmentId ? state : {
         ...state,
         payments: state.payments.filter(payment => payment.id !== action.data.id)
     },

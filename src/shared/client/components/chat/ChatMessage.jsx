@@ -37,7 +37,7 @@ export default function ChatMessage({
     }, []);
 
     return (
-        <Surface
+        <div
             className={classnames(
                 'ChatMessage',
                 `ChatMessage--${message.type}`,
@@ -45,17 +45,13 @@ export default function ChatMessage({
                 'ChatMessage--local': message.isLocal,
                 'ChatMessage--remote': !message.isLocal
             })}
-            color={message.isLocal ? 'primary' : 'neutral'}
-            variant="soft"
             onContextMenu={message.isLocal ? handleRootRightClick : undefined}
         >
-            {showInfo &&
-                <div className="ChatMessage__info">
-                    <time>{time}</time>
-                </div>
-            }
-
-            <div className="ChatMessage__content">
+            <Surface
+                className="ChatMessage__content"
+                color={message.isLocal ? 'primary' : 'neutral'}
+                variant="soft"
+            >
                 {message.type === 'text' &&
                     <ChatMessageText
                         text={message.body}
@@ -67,7 +63,13 @@ export default function ChatMessage({
                         media={message.attachedMedia[0]}
                     />
                 }
-            </div>
+            </Surface>
+
+            {showInfo &&
+                <div className="ChatMessage__info">
+                    <time>{time}</time>
+                </div>
+            }
 
             {message.isLocal && anchorElement &&
                 <Menu
@@ -88,6 +90,6 @@ export default function ChatMessage({
                     onClose={handleMenuClose}
                 />
             }
-        </Surface>
+        </div>
     );
 }

@@ -102,7 +102,7 @@ Enrollment.virtual('materials', {
 Enrollment.virtual('payments', {
     ref: 'Payment',
     localField: '_id',
-    foreignField: 'enrollment',
+    foreignField: 'enrollmentId',
     options: {
         sort: { createdAt: -1 }
     }
@@ -111,7 +111,7 @@ Enrollment.virtual('payments', {
 Enrollment.virtual('currentPayment', {
     ref: 'Payment',
     localField: '_id',
-    foreignField: 'enrollment',
+    foreignField: 'enrollmentId',
     justOne: true,
     options: {
         sort: {
@@ -123,7 +123,7 @@ Enrollment.virtual('currentPayment', {
 Enrollment.virtual('lessons', {
     ref: 'Lesson',
     localField: '_id',
-    foreignField: 'enrollment',
+    foreignField: 'enrollmentId',
     options: {
         sort: { date: 1 }
     }

@@ -82,9 +82,6 @@ export default function useLocalTracks() {
         const isMicrophonePermissionDenied = await isPermissionDenied('microphone');
         const isCameraPermissionDenied = await isPermissionDenied('camera');
 
-        console.log('isMicrophonePermissionDenied', isMicrophonePermissionDenied);
-        console.log('isCameraPermissionDenied', isCameraPermissionDenied);
-
         // In Chrome, it is possible to deny permissions to only audio or only video.
         // If that has happened, then we don't want to attempt to acquire the device.
         if (isMicrophonePermissionDenied && isCameraPermissionDenied)

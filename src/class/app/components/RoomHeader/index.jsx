@@ -44,7 +44,7 @@ export default function RoomHeader({
 
             <div className="RoomHeader__tabs">
                 <Tabs
-                    defaultValue={views.indexOf(match.params?.view)}
+                    defaultValue={match.params?.view || '/'}
                     size="sm"
                     variant="plain"
                     items={[
@@ -55,30 +55,28 @@ export default function RoomHeader({
                             value: '/',
                             icon: 'video_camera_front',
                             content: 'Видео',
-                            color: match.url === '/' ? 'primary' : 'neutral',
-                            variant: match.url === '/' ? 'soft' : 'plain'
+                            color: match.url === '/' ? 'primary' : 'neutral'
                         },
                         {
                             key: 'courses',
                             as: NavLink,
                             to: '/courses',
-                            value: '/courses',
+                            value: 'courses',
                             icon: 'book',
                             content: 'Обучающие материалы',
-                            color: match.url === '/courses' ? 'primary' : 'neutral',
-                            variant: match.url === '/courses' ? 'soft' : 'plain'
+                            color: match.url === '/courses' ? 'primary' : 'neutral'
                         },
                         {
                             key: 'whiteboard',
                             as: NavLink,
                             to: '/whiteboard',
-                            value: '/whiteboard',
+                            value: 'whiteboard',
                             icon: 'draw',
                             content: 'Доска',
-                            color: match.url === '/whiteboard' ? 'primary' : 'neutral',
-                            variant: match.url === '/whiteboard' ? 'soft' : 'plain'
+                            color: match.url === '/whiteboard' ? 'primary' : 'neutral'
                         }
                     ]}
+                    disableUnderline
                 />
             </div>
 

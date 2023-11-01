@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { useBoolean } from 'shared/hooks/state';
 import { useEnrollments } from 'shared/hooks/enrollments';
 import { useLessons } from 'shared/hooks/lessons';
+import { useUser } from 'shared/hooks/user';
 import Calendar from 'shared/components/calendar';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
@@ -15,6 +16,7 @@ import LessonDetails from 'app/components/lessons/lesson-details';
 import LessonForm from 'app/components/lessons/lesson-form';
 
 export default function TeacherHomePage() {
+    const [user] = useUser();
     const [lessons, actions] = useLessons();
     const [enrollments] = useEnrollments();
 
@@ -39,12 +41,14 @@ export default function TeacherHomePage() {
     }, []);
 
     const handleCreateLesson = useCallback(data => {
+        data.teacherId = user.id;
+
         return actions.createLesson(data)
             .finally(() => {
                 setLesson();
                 toggleFormDialogOpen(false);
             });
-    }, [actions]);
+    }, [user, actions]);
 
     const handleUpdateLesson = useCallback(data => {
         if (!lesson) return;
@@ -145,6 +149,7 @@ export default function TeacherHomePage() {
                 open={isDialogOpen}
                 actions={[
                     <Button
+                        key="edit"
                         icon="edit"
                         content="Изменить"
                         variant="soft"
@@ -152,6 +157,7 @@ export default function TeacherHomePage() {
                         onClick={handleUpdateRequest}
                     />,
                     <Button
+                        key="delete"
                         icon="delete"
                         content="Удалить"
                         variant="soft"

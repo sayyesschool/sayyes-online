@@ -2,7 +2,10 @@ module.exports = ({
     models: { Lesson }
 }) => ({
     async get(req, res) {
-        const lessons = await Lesson.find({ teacher: req.user.id, ...req.query })
+        const lessons = await Lesson.find({
+            teacherId: req.user.id,
+            ...req.query
+        })
             .sort({ date: 1 })
             .populate('learner', 'firstname lastname email')
             .populate('room', 'title login password');
@@ -25,8 +28,6 @@ module.exports = ({
     },
 
     async create(req, res) {
-        req.body.teacher = req.user.id;
-
         const lesson = await Lesson.create(req.body);
 
         lesson.room = req.room;
@@ -59,7 +60,7 @@ module.exports = ({
             message: 'Урок удален',
             data: {
                 id: lesson.id,
-                enrollment: lesson.enrollment
+                enrollmentId: lesson.enrollmentId
             }
         });
     }

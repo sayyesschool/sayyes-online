@@ -19,7 +19,7 @@ export default function EnrollmentLessons({ enrollment, readonly }) {
     const [isDeleteConfirmationDialogOpen, toggleDeleteConfirmationDialogOpen] = useBoolean(false);
 
     const createLesson = useCallback(data => {
-        data.enrollment = enrollment.id;
+        data.enrollmentId = enrollment.id;
 
         return lessonActions.createLesson(data)
             .then(() => toggleNewLessonFormOpen(false));

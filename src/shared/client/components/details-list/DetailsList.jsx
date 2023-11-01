@@ -10,8 +10,8 @@ export default function DetailsList({ items = [], children }) {
                         <Icon>{item.icon}</Icon>
                     }
                     content={<>
-                        <Text type="body2">{item.header}</Text>
-                        <Text type="body1">{item.content}</Text>
+                        <Text type="body-sm">{item.header}</Text>
+                        <Text type="body-md">{item.content}</Text>
                     </>}
                     end={item.end}
                 />

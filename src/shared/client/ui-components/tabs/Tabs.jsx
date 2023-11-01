@@ -11,6 +11,9 @@ const Tabs = forwardRef(({
     variant,
     tabColor,
     tabVariant,
+    disableIndicator,
+    disableUnderline,
+    indicatorInset,
 
     children,
     className,
@@ -31,6 +34,9 @@ const Tabs = forwardRef(({
                     variant={variant}
                     tabColor={tabColor}
                     tabVariant={tabVariant}
+                    disableIndicator={disableIndicator}
+                    disableUnderline={disableUnderline}
+                    indicatorInset={indicatorInset}
                 />
             }
 

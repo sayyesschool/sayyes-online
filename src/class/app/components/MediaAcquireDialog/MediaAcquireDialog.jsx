@@ -7,9 +7,11 @@ export default function MediaAcquireDialog(props) {
             closable={false}
             {...props}
         >
-            <Image src="/images/media-permissions.svg" />
+            <Image src={`${STORAGE_URL}/assets/images/media-permissions/intro.svg`} />
 
-            <Text type="title-lg">Нажмите <strong>Разрешить</strong></Text>
+            <Text type="title-lg">Нам необходимо получить доступ к вашему микрофону и камере.</Text>
+
+            <Text type="title-md">Нажмите <strong>Разрешить</strong></Text>
 
             <Text>В любой момент встречи микрофон и камеру можно отключить.</Text>
         </Dialog>

@@ -1,41 +1,37 @@
 module.exports = ({
     Enrollment
 }) => ({
-    getMany: (req, res, next) => {
-        Enrollment.find({ teacher: req.user.id, ...req.query })
+    async getMany(req, res, next) {
+        const enrollments = await Enrollment.find({ teacher: req.user.id, ...req.query })
             .populate('learner', 'firstname lastname fullname email')
-            .populate('courses', 'slug title subtitle image')
-            .then(enrollments => {
-                res.json({
-                    ok: true,
-                    data: enrollments
-                });
-            })
-            .catch(next);
+            .populate('courses', 'slug title subtitle image');
+
+        res.json({
+            ok: true,
+            data: enrollments
+        });
     },
 
-    getOne: (req, res, next) => {
-        Enrollment.findById(req.params.enrollmentId)
+    async getOne(req, res, next) {
+        const enrollment = await Enrollment.findById(req.params.enrollmentId)
             .populate('learner', 'firstname lastname fullname')
             // .populate('clients', 'firstname lastname fullname')
             .populate('teacher', 'firstname lastname fullname')
-            .populate('courses', 'title slug image units._id lessons._id exercises._id')
-            .then(enrollment => {
-                if (!enrollment) {
-                    const error = new Error('Обучение не найдено');
-                    error.status = 404;
-                    return next(error);
-                }
+            .populate('courses', 'title slug image units._id lessons._id exercises._id');
 
-                const data = enrollment.toJSON();
+        if (!enrollment) {
+            const error = new Error('Обучение не найдено');
+            error.status = 404;
+            return next(error);
+        }
 
-                data.courses?.forEach(course => course.enrollmentId = enrollment.id);
+        const data = enrollment.toJSON();
 
-                res.json({
-                    ok: true,
-                    data
-                });
-            })
-            .catch(next);
+        data.courses?.forEach(course => course.enrollmentId = enrollment.id);
+
+        res.json({
+            ok: true,
+            data
+        });
     }
 });

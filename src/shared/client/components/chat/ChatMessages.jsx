@@ -36,10 +36,12 @@ export default function ChatMessages({
             <div ref={listRef} className="ChatMessages__list">
                 {messages.map((message, i) => {
                     const time = getFormattedTime(message.createdAt);
-                    const previousTime = getFormattedTime(messages[i - 1]?.createdAt);
+                    const nextTime = getFormattedTime(messages[i + 1]?.createdAt);
 
-                    // Display the MessageInfo component when the author or formatted timestamp differs from the previous message
-                    const shouldDisplayMessageInfo = time !== previousTime || message.author !== messages[i - 1]?.author;
+                    // Display the MessageInfo component when the author or formatted timestamp differs from the next message
+                    const shouldDisplayMessageInfo =
+                        time !== nextTime ||
+                        message.author !== messages[i + 1]?.author;
 
                     return (
                         <ChatMessage

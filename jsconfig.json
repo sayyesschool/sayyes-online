@@ -7,9 +7,14 @@
         "dist"
     ],
     "compilerOptions": {
+        "baseUrl": "./src/",
         "paths": {
-            "@/*": ["./src/*"],
-            "shared/*": ["./src/shared/*"],
+            "@/*": [
+                "./src/*"
+            ],
+            "shared/*": [
+                "./src/shared/*"
+            ],
         },
         "target": "es2020"
     }

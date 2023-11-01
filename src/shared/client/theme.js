@@ -1,7 +1,7 @@
 import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
 import { unstable_ClassNameGenerator } from '@mui/utils';
 
-unstable_ClassNameGenerator.configure((componentName) => componentName.replace('Mui', 'ui-'));
+unstable_ClassNameGenerator.configure(componentName => componentName.replace('Mui', 'ui-'));
 
 const theme = extendTheme({
     fontFamily: {
@@ -39,6 +39,13 @@ const theme = extendTheme({
                 root: {
                     flex: 1,
                     gap: '.5rem'
+                }
+            }
+        },
+        JoyListItemDecorator: {
+            styleOverrides: {
+                root: {
+                    marginInlineEnd: 'unset'
                 }
             }
         },

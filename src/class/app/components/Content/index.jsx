@@ -1,4 +1,4 @@
-import { createContext, useCallback, useRef, useState } from 'react';
+import { createContext, useCallback, useMemo, useRef, useState } from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 import { LocalAudioTrack, LocalVideoTrack } from 'twilio-video';
 
@@ -16,7 +16,6 @@ import { Button, Dialog } from 'shared/ui-components';
 const Context = createContext();
 
 import './index.scss';
-import { useMemo } from 'react';
 
 export default function ContentRouter({
     room,

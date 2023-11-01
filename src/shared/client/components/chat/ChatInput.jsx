@@ -108,7 +108,7 @@ export default function ChatInput({
                 startDecorator={editingMessage && 'Редактирование сообщения'}
                 endDecorator={<>
                     {!editingMessage ?
-                        <ButtonGroup sx={{ marginLeft: 'auto' }}>
+                        <ButtonGroup spacing={1} sx={{ marginLeft: 'auto' }}>
                             {/* <IconButton disabled={isSendingFile} /> */}
                             <IconButton
                                 ref={submitButtonRef}

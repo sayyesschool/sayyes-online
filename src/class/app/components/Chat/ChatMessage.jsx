@@ -49,12 +49,6 @@ export default function ChatMessage({
             variant="soft"
             onContextMenu={message.isLocal ? handleRootRightClick : undefined}
         >
-            {showInfo &&
-                <div className="ChatMessage__info">
-                    <time>{time}</time>
-                </div>
-            }
-
             <div className="ChatMessage__content">
                 {message.type === 'text' &&
                     <ChatMessageText
@@ -68,6 +62,12 @@ export default function ChatMessage({
                     />
                 }
             </div>
+
+            {showInfo &&
+                <div className="ChatMessage__info">
+                    <time>{time}</time>
+                </div>
+            }
 
             {message.isLocal && anchorElement &&
                 <Menu

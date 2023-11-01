@@ -12,18 +12,18 @@ export default function EnrollmentMaterials({ enrollment, readonly }) {
     const enrollmentActions = useActions('enrollments');
 
     const handleAddMaterial = useCallback(materialId => {
-        const materials = enrollment.materialIds.concat(materialId);
+        const materialIds = enrollment.materialIds.concat(materialId);
 
-        return enrollmentActions.updateEnrollment(enrollment.id, { materials });
+        return enrollmentActions.updateEnrollment(enrollment.id, { materialIds });
     }, [enrollment]);
 
     const handleRemoveMaterial = useCallback((event, materialId) => {
         event.preventDefault();
         event.stopPropagation();
 
-        const materials = enrollment.materials.filter(id => id !== materialId);
+        const materialIds = enrollment.materialIds.filter(id => id !== materialId);
 
-        return enrollmentActions.updateEnrollment(enrollment.id, { materials });
+        return enrollmentActions.updateEnrollment(enrollment.id, { materialIds });
     }, [enrollment]);
 
     const items = materials

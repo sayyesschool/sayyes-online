@@ -19,7 +19,7 @@ export default function MediaErrorDialog({
             onClose={onClose}
         >
             {image &&
-                <Image src={`/images/${image}`} />
+                <Image src={`${STORAGE_URL}/assets/images/media-permissions/${image}`} />
             }
 
             <Text>{message}</Text>

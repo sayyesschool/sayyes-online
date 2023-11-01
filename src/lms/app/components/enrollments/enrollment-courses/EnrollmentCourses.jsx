@@ -17,15 +17,15 @@ export default function EnrollmentCourses({ enrollment, readonly }) {
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     const handleAddCourse = useCallback(courseId => {
-        const courses = enrollment.courses.concat(courseId);
+        const courseIds = enrollment.courseIds.concat(courseId);
 
-        return enrollmentActions.updateEnrollment(enrollment.id, { courses });
+        return enrollmentActions.updateEnrollment(enrollment.id, { courseIds });
     }, [enrollment]);
 
     const handleRemoveCourse = useCallback(() => {
-        const courses = enrollment.courses.filter(id => id !== courseId);
+        const courseIds = enrollment.courseIds.filter(id => id !== courseId);
 
-        return enrollmentActions.updateEnrollment(enrollment.id, { courses })
+        return enrollmentActions.updateEnrollment(enrollment.id, { courseIds })
             .then(() => toggleConfirmationDialogOpen(false));
     }, [enrollment, courseId]);
 
@@ -34,10 +34,13 @@ export default function EnrollmentCourses({ enrollment, readonly }) {
         toggleConfirmationDialogOpen(true);
     }, [enrollment]);
 
-    const enrollmentCourses = enrollment.courses.map(course => ({
-        ...course,
-        url: course.url + `?enrollmentId=${enrollment.id}`
-    }));
+    const enrollmentCourses = enrollment.courseIds
+        .map(id => courses?.find(course => course.id === id))
+        .filter(Boolean)
+        .map(course => ({
+            ...course,
+            url: course.url + `?enrollmentId=${enrollment.id}`
+        }));
 
     const items = courses
         ?.filter(course => !enrollment.courseIds.includes(course.id))
