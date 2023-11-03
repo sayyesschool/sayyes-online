@@ -13,13 +13,26 @@ export default function LessonCard({ lesson, onSelect, ...props }) {
             </Card.Overflow>
 
             <Card.Content sx={{ px: 2 }}>
-                <Heading as="h2" type="h5">{lesson.title}</Heading>
+                <Heading
+                    as="h2"
+                    type="title-lg"
+                    content={lesson.title}
+                />
 
-                {/* {lesson.description &&
-                <Text as="p" dangerouslySetInnerHTML={{ __html: lesson.description }} />
-            } */}
+                <Text as="p" type="body-sm">
+                    {lesson.sections?.length} секций
+                </Text>
 
-                <Text as="p">{lesson.exercises?.length} упражнений</Text>
+                {lesson.description &&
+                    <Text
+                        as="article"
+                        type="body-md"
+                    >
+                        <div
+                            dangerouslySetInnerHTML={{ __html: lesson.description }}
+                        />
+                    </Text>
+                }
             </Card.Content>
         </Card>
     );

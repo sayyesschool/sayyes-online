@@ -1,6 +1,11 @@
-import { Card, Heading, Image, Text } from 'shared/ui-components';
+import { Avatar, Card, Flex, Heading, Image, Text } from 'shared/ui-components';
 
-export default function UnitCard({ unit, onSelectUnit, ...props }) {
+export default function UnitCard({
+    number,
+    unit,
+    onSelectUnit,
+    ...props
+}) {
     return (
         <Card
             className="UnitCard"
@@ -9,11 +14,23 @@ export default function UnitCard({ unit, onSelectUnit, ...props }) {
         >
             <Image src={unit.imageUrl} alt="" />
 
-            <Heading as="h3" type="h6">{unit.title}</Heading>
+            <Card.Content>
+                <Flex alignItems="center" gap="small">
+                    <Avatar size="sm" content={number} />
 
-            {unit.lessons &&
-                <Text as="p">{unit.lessons?.length} уроков</Text>
-            }
+                    <Flex dir="column">
+                        <Heading
+                            as="h3"
+                            type="title-lg"
+                            content={unit.title}
+                        />
+
+                        {unit.lessons &&
+                            <Text as="p" type="body-md">{unit.lessons?.length} уроков</Text>
+                        }
+                    </Flex>
+                </Flex>
+            </Card.Content>
         </Card>
     );
 }

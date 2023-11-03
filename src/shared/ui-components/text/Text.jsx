@@ -31,4 +31,6 @@ const Text = forwardRef(({
     );
 });
 
+Text.displayName = 'Text';
+
 export default Text;

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import { Avatar, List, Text } from 'shared/ui-components';
+import { DomainLabel } from 'shared/data/common';
 
 export default function EnrollmentsList({ enrollments }) {
     return (
@@ -18,7 +19,7 @@ export default function EnrollmentsList({ enrollments }) {
                     }
                     content={<>
                         <Text type="body1">{enrollment.learner.fullname}</Text>
-                        <Text type="body2">{enrollment.domainLabel}</Text>
+                        <Text type="body2">{DomainLabel[enrollment.domain]}</Text>
                     </>}
                 />
             )}

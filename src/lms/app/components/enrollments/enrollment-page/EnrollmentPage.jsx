@@ -82,7 +82,7 @@ export default function EnrollmentPage({ match }) {
 
             <Page.Content>
                 <Grid spacing={2}>
-                    <Grid.Item lg={8}>
+                    <Grid.Item lg={8} md={8} sm={8} xs={12}>
                         <Flex gap="medium" column>
                             <EnrollmentLessons
                                 enrollment={enrollment}
@@ -96,7 +96,7 @@ export default function EnrollmentPage({ match }) {
                         </Flex>
                     </Grid.Item>
 
-                    <Grid.Item lg={4}>
+                    <Grid.Item lg={4} md={4} sm={4} xs={12}>
                         <Flex gap="medium" column>
                             {(isTeacher || enrollment.courses?.length > 0) &&
                                 <EnrollmentCourses

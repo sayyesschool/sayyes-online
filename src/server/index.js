@@ -52,7 +52,7 @@ module.exports = (config, db, options) => {
         listen(port, ...rest) {
             if (options) {
                 https.createServer(options, server)
-                    .listen(port, ...rest);
+                    .listen(port, config.APP_DOMAIN, ...rest);
             } else {
                 server.listen(port, ...rest);
             }

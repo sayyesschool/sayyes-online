@@ -84,18 +84,6 @@ Lesson.virtual('endAt').get(function() {
     return moment(this.date).add(this.duration, 'minutes').toDate();
 });
 
-Lesson.virtual('dateString').get(function() {
-    return moment(this.date).format('DD.MM.YYYY');
-});
-
-Lesson.virtual('timeString').get(function() {
-    return moment(this.date).format('HH:mm');
-});
-
-Lesson.virtual('dateTimeString').get(function() {
-    return moment(this.date).format('DD.MM.YYYY, HH:mm');
-});
-
 Lesson.virtual('enrollment', {
     ref: 'Enrollment',
     localField: 'enrollmentId',

@@ -15,8 +15,8 @@ const server = require('./server');
 const context = core(config);
 
 const options = config.APP_ENV === 'production' ? null : {
-    key: fs.readFileSync('./ssl/dev.key'),
-    cert: fs.readFileSync('./ssl/dev.crt')
+    key: fs.readFileSync('./ssl/privatekey.pem'),
+    cert: fs.readFileSync('./ssl/certificate.pem')
 };
 
 context.middleware = {

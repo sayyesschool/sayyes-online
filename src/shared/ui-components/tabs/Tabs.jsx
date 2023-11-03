@@ -45,4 +45,6 @@ const Tabs = forwardRef(({
     );
 });
 
+Tabs.displayName = 'Tabs';
+
 export default Tabs;

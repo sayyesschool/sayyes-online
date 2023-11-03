@@ -31,4 +31,6 @@ const Heading = forwardRef(({
     );
 });
 
+Heading.displayName = 'Heading';
+
 export default Heading;

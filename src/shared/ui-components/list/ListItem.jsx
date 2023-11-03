@@ -35,9 +35,9 @@ const ListItem = forwardRef(({
             <JoyListItemContent>
                 {isValidElement(content) ? content : (
                     typeof content === 'object' ? (<>
-                        <Text type="body1">{content.primary}</Text>
-                        <Text type="body2">{content.secondary}</Text>
-                        <Text type="body3">{content.tertiary}</Text>
+                        <Text type="body-md">{content.primary}</Text>
+                        <Text type="body-sm">{content.secondary}</Text>
+                        <Text type="body-xs">{content.tertiary}</Text>
                     </>) : content
                 )}
             </JoyListItemContent>
@@ -68,6 +68,8 @@ const ListItem = forwardRef(({
         </JoyListItem>
     );
 });
+
+ListItem.displayName = 'ListItem';
 
 ListItem.Button = JoyListItemButton;
 ListItem.Content = JoyListItemContent;

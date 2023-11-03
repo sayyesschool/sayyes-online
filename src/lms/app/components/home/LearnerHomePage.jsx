@@ -15,7 +15,6 @@ export default function LearnerHomePage() {
 
     return (
         <Page className="HomePage">
-            { }
             <Page.Content>
                 {activeEnrollments?.map(enrollment =>
                     <EnrollmentDetailsCard

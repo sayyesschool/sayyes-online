@@ -152,13 +152,8 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
                 '@': path.resolve(__dirname, 'src'),
                 'app': path.resolve(__dirname, 'src', name, 'app'),
                 'core': path.resolve(__dirname, 'src', 'core'),
-                'lms': path.resolve(__dirname, 'src', 'lms'),
-                'shared/data': path.resolve(__dirname, 'src', 'shared', 'data'),
-                'shared/libs': path.resolve(__dirname, 'src', 'shared', 'libs'),
-                'shared/utils': path.resolve(__dirname, 'src', 'shared', 'utils'),
-                'shared/styles': path.resolve(__dirname, 'src', 'shared', 'styles'),
-                'shared': path.resolve(__dirname, 'src', 'shared', 'client'),
-                'lms': path.resolve(__dirname, 'src', 'lms', 'app')
+                'lms': path.resolve(__dirname, 'src', 'lms', 'app'),
+                'shared': path.resolve(__dirname, 'src', 'shared')
             },
 
             fallback: {

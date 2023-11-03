@@ -4,29 +4,35 @@ import { useBoolean } from 'shared/hooks/state';
 import { useEnrollments } from 'shared/hooks/enrollments';
 import { useLessons } from 'shared/hooks/lessons';
 import { useUser } from 'shared/hooks/user';
-import Calendar from 'shared/components/calendar';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import { Button, Dialog, Grid } from 'shared/ui-components';
+import { Button, Dialog, Tabs } from 'shared/ui-components';
 
-import EnrollmentsList from 'app/components/enrollments/enrollments-list';
-import LessonDetails from 'app/components/lessons/lesson-details';
-import LessonForm from 'app/components/lessons/lesson-form';
+import EnrollmentsList from 'lms/components/enrollments/enrollments-list';
+import LessonDetails from 'lms/components/lessons/lesson-details';
+import LessonForm from 'lms/components/lessons/lesson-form';
+import LessonsCalendar from 'lms/components/lessons/lessons-calendar';
+import LessonsSection from 'lms/components/lessons/lessons-section';
 
 export default function TeacherHomePage() {
     const [user] = useUser();
-    const [lessons, actions] = useLessons();
     const [enrollments] = useEnrollments();
+    const [lessons, actions] = useLessons();
 
+    const [tab, setTab] = useState('lessons');
     const [lesson, setLesson] = useState();
     const [isDialogOpen, toggleDialogOpen] = useBoolean(false);
     const [isFormDialogOpen, toggleFormDialogOpen] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
-    const handleEventClick = useCallback(event => {
-        setLesson(event.ref);
+    const handleTabChange = useCallback((event, value) => {
+        setTab(value);
+    }, []);
+
+    const handleLessonClick = useCallback(lesson => {
+        setLesson(lesson);
         toggleDialogOpen(true);
     }, []);
 
@@ -72,32 +78,6 @@ export default function TeacherHomePage() {
 
     if (!lessons) return <LoadingIndicator fullscreen />;
 
-    const events = lessons.map(lesson => {
-        const date = new Date(lesson.date);
-        const endDate = new Date(lesson.endAt);
-
-        const startTime = {
-            hours: date.getHours(),
-            minutes: date.getMinutes()
-        };
-        const endTime = {
-            hours: endDate.getHours(),
-            minutes: endDate.getMinutes()
-        };
-
-        return {
-            id: lesson.id,
-            ref: lesson,
-            title: 'Урок',
-            date,
-            startTime,
-            endTime,
-            duration: lesson.duration,
-            status: lesson.status,
-            icon: lesson.statusIcon
-        };
-    });
-
     return (
         <Page className="HomePage">
             <Page.Header
@@ -111,25 +91,56 @@ export default function TeacherHomePage() {
             />
 
             <Page.Content>
-                <Grid spacing={2}>
-                    <Grid.Item lg={3}>
-                        <Page.Section title="Активные студенты" compact>
-                            <EnrollmentsList
-                                enrollments={enrollments}
-                            />
-                        </Page.Section>
-                    </Grid.Item>
+                <Tabs
+                    value={tab}
+                    items={[
+                        {
+                            key: 'lessons',
+                            value: 'lessons',
+                            icon: 'schedule',
+                            content: 'Уроки',
+                            color: tab === 'lessons' && 'primary'
+                        },
+                        {
+                            key: 'calendar',
+                            value: 'calendar',
+                            icon: 'calendar_month',
+                            content: 'Календарь',
+                            color: tab === 'calendar' && 'primary'
+                        },
+                        {
+                            key: 'enrollments',
+                            value: 'enrollments',
+                            content: 'Ученики',
+                            icon: 'group',
+                            color: tab === 'enrollments' && 'primary'
+                        }
+                    ]}
+                    sx={{
+                        marginBottom: '1rem'
+                    }}
+                    onChange={handleTabChange}
+                />
 
-                    <Grid.Item lg={9}>
-                        <Page.Section compact>
-                            <Calendar
-                                view="week-time"
-                                events={events}
-                                onEventClick={handleEventClick}
-                            />
-                        </Page.Section>
-                    </Grid.Item>
-                </Grid>
+                {tab === 'lessons' &&
+                    <LessonsSection
+                        lessons={lessons}
+                        onLessonClick={handleLessonClick}
+                    />
+                }
+
+                {tab === 'calendar' &&
+                    <LessonsCalendar
+                        lessons={lessons}
+                        onLessonClick={handleLessonClick}
+                    />
+                }
+
+                {tab === 'enrollments' &&
+                    <EnrollmentsList
+                        enrollments={enrollments}
+                    />
+                }
             </Page.Content>
 
             <FormDialog

@@ -16,16 +16,18 @@ export default function LessonsChipGroup({
 }) {
     return (
         <Flex className="LessonsChipGroup" gap="smaller">
-            {lessons.map(lesson => ({ ...lesson, date: moment(lesson.date) })).map(lesson =>
-                <LessonChip
-                    key={lesson.id}
-                    lesson={lesson}
-                    readonly={readonly}
-                    onEdit={onEdit}
-                    onDelete={onDelete}
-                    onRefund={onRefund}
-                />
-            )}
+            {lessons
+                .map(lesson => ({ ...lesson, date: moment(lesson.date) }))
+                .map(lesson =>
+                    <LessonChip
+                        key={lesson.id}
+                        lesson={lesson}
+                        readonly={readonly}
+                        onEdit={onEdit}
+                        onDelete={onDelete}
+                        onRefund={onRefund}
+                    />
+                )}
         </Flex>
     );
 }

@@ -4,11 +4,11 @@ import classnames from 'classnames';
 import JoyAvatar from '@mui/joy/Avatar';
 
 const Avatar = forwardRef(({
-    text,
+    content,
     imageSrc,
     imageUrl = imageSrc,
 
-    children = text,
+    children = content,
     className,
     ...props
 }, ref) => {
@@ -25,5 +25,7 @@ const Avatar = forwardRef(({
         </JoyAvatar>
     );
 });
+
+Avatar.displayName = 'Avatar';
 
 export default Avatar;

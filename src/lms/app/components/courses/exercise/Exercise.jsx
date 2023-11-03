@@ -66,7 +66,7 @@ export default function Exercise({
         onAddToAssignment(exercise, assignment);
     }, [exercise, onAddToAssignment]);
 
-    const handleAddToNewAssignment = useCallback((event) => {
+    const handleAddToNewAssignment = useCallback(event => {
         event.stopPropagation();
         onAddToNewAssignment(exercise);
     }, [exercise, onAddToNewAssignment]);
@@ -76,18 +76,18 @@ export default function Exercise({
         onRemoveFromAssignment(exercise, assignment);
     }, [exercise, onRemoveFromAssignment]);
 
-    const handleCreateComment = useCallback((_, data) => {
-        return onCreateComment(exercise.id, data)
-            .then(() => toggleCommenting(false));
-    }, [exercise]);
+    // const handleCreateComment = useCallback((_, data) => {
+    //     return onCreateComment(exercise.id, data)
+    //         .then(() => toggleCommenting(false));
+    // }, [exercise]);
 
-    const handleUpdateComment = useCallback((commentId, data) => {
-        return onUpdateComment(exercise.id, commentId, data);
-    }, [exercise]);
+    // const handleUpdateComment = useCallback((commentId, data) => {
+    //     return onUpdateComment(exercise.id, commentId, data);
+    // }, [exercise]);
 
-    const handleDeleteComment = useCallback(commentId => {
-        return onDeleteComment(exercise.id, commentId);
-    }, [exercise]);
+    // const handleDeleteComment = useCallback(commentId => {
+    //     return onDeleteComment(exercise.id, commentId);
+    // }, [exercise]);
 
     const hasSaveableItems = user.role === 'learner' && exercise.items.some(item =>
         item.type === 'essay' ||
@@ -104,7 +104,7 @@ export default function Exercise({
         <Card className="Exercise">
             <header className="Exercise__header" onClick={toggleCollapsed}>
                 <Avatar
-                    text={index + 1}
+                    content={index + 1}
                     color={exercise.completed ? 'primary' : undefined}
                     size="sm"
                 />

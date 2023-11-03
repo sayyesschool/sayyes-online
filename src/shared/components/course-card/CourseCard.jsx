@@ -1,4 +1,4 @@
-import Card from 'shared/ui-components/card';
+import { Card } from 'shared/ui-components';
 
 export default function CourseCard({ course, ...props }) {
     return (

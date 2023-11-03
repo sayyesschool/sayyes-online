@@ -25,7 +25,7 @@ const TypeLabel = {
     [Type.Group]: 'В группе'
 };
 
-const statusOptions = Object.entries(constants.StatusLabel).map(([key, value]) => ({
+const statusOptions = Object.entries(StatusLabel).map(([key, value]) => ({
     key,
     value: key,
     label: value,
@@ -34,7 +34,7 @@ const statusOptions = Object.entries(constants.StatusLabel).map(([key, value]) =
 
 const typeOptions = [
     { key: 'null', value: '', label: '', content: '' },
-    ...Object.entries(constants.TypeLabel).map(([key, value]) => ({
+    ...Object.entries(TypeLabel).map(([key, value]) => ({
         key,
         value: key,
         label: value,
@@ -43,11 +43,11 @@ const typeOptions = [
 ];
 
 module.exports = {
-    ...constants,
+    Status,
     StatusIcon,
     StatusLabel,
+    Type,
     TypeLabel,
-    defaultEnrollment,
     statusOptions,
     typeOptions,
 };

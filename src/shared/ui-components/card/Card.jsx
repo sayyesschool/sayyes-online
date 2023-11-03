@@ -23,6 +23,8 @@ const Card = forwardRef(({
     );
 });
 
+Card.displayName = 'Card';
+
 Card.Cover = CardCover;
 Card.Content = CardContent;
 Card.Overflow = CardOverflow;

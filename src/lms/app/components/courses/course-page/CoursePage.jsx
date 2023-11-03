@@ -7,6 +7,8 @@ import CourseContent from 'lms/components/courses/course-content';
 export default function CoursePage({ match, location }) {
     const [course] = useCourse(match.params.course, location.search);
 
+    console.log(course);
+
     if (!course) return <LoadingIndicator />;
 
     return (

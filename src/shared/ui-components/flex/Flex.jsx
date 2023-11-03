@@ -5,6 +5,7 @@ import Stack from '@mui/joy/Stack';
 
 const Flex = forwardRef(({
     direction = 'row',
+    dir = direction,
     column,
     row,
     gap,
@@ -20,7 +21,7 @@ const Flex = forwardRef(({
         <Stack
             ref={ref}
             className={classNames}
-            direction={column ? 'column' : row ? 'row' : direction}
+            direction={column ? 'column' : row ? 'row' : dir}
             {...props}
         />
     );
