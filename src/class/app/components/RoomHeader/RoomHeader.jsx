@@ -11,8 +11,6 @@ import ToggleFullscreenButton from 'app/components/ToggleFullscreenButton';
 import ToggleScreenShareButton from 'app/components/ToggleScreenShareButton';
 import ToggleVideoButton from 'app/components/ToggleVideoButton';
 
-import './index.scss';
-
 const views = [undefined, 'courses', 'whiteboard'];
 
 export default function RoomHeader({

@@ -4,13 +4,11 @@ import { Button } from 'shared/ui-components';
 
 import useSharedState from 'app/hooks/useSharedState';
 
-import './index.scss';
-
 export default function MiroWhiteboard() {
     const sharedState = useSharedState();
 
     const handleOpenWhiteboard = useCallback(() => {
-        miroBoardsPicker.open({
+        window.miroBoardsPicker.open({
             clientId: window.MIRO_CLIENT_ID,
             action: 'access-link',
             allowCreateAnonymousBoards: true,
@@ -34,13 +32,10 @@ export default function MiroWhiteboard() {
 
     const board = sharedState?.data?.board;
 
-    return (
-        <div className="miro-whiteboard">
-            <Button
-                content="Open Whiteboard"
-                onClick={handleOpenWhiteboard}
-            />
+    console.log('Board', sharedState, board);
 
+    return (
+        <div className="MiroWhiteboard">
             {board &&
                 <iframe
                     key={board.id}
@@ -52,6 +47,11 @@ export default function MiroWhiteboard() {
                     allowFullScreen
                 />
             }
+
+            <Button
+                content={board ? 'Открыть другую доску' : 'Открыть доску'}
+                onClick={handleOpenWhiteboard}
+            />
         </div>
     );
 }

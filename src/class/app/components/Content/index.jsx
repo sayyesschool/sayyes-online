@@ -1,5 +1,5 @@
 import { createContext, useCallback, useMemo, useRef, useState } from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { LocalAudioTrack, LocalVideoTrack } from 'twilio-video';
 
 import Course from 'lms/components/courses/course-page';
@@ -11,7 +11,7 @@ import AudioPlayer from 'shared/components/audio-player';
 import BottomSheet from 'shared/components/bottom-sheet';
 import CoursesGrid from 'shared/components/courses-grid';
 import VideoPlayer from 'shared/components/video-player';
-import { Button, Dialog } from 'shared/ui-components';
+import { Dialog } from 'shared/ui-components';
 
 const Context = createContext();
 
@@ -31,7 +31,7 @@ export default function ContentRouter({
     const [audio, setAudio] = useState(null);
     const [video, setVideo] = useState(null);
 
-    const handleAudioRef = useCallback((player) => {
+    const handleAudioRef = useCallback(player => {
         if (!player) return;
 
         const audio = player.media;

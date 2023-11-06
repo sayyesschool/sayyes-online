@@ -1,7 +1,6 @@
 import { useBoolean } from 'shared/hooks/state';
 import DetailsList from 'shared/components/details-list';
 import PageSection from 'shared/components/page-section';
-import { Avatar } from 'shared/ui-components';
 
 export default function EnrollmentDetails({ enrollment }) {
     const [isOpen, toggleOpen] = useBoolean(false);

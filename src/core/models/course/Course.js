@@ -39,7 +39,7 @@ Course.virtual('exercises', {
 Course.virtual('progress', {
     ref: 'Progress',
     localField: '_id',
-    foreignField: 'course'
+    foreignField: 'courseId'
 });
 
 Course.static('createUnit', async function(courseId, data) {

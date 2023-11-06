@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import classnames from 'classnames';
 
-import { Chip, Flex, Text } from 'shared/ui-components';
 import { LessonColorByType } from 'shared/data/lesson';
+import { Chip, Flex, Text } from 'shared/ui-components';
 import { formatTime } from 'shared/utils/format';
 
 export default function WeekTimeEvent({ event, onClick, ...props }) {
@@ -21,7 +21,11 @@ export default function WeekTimeEvent({ event, onClick, ...props }) {
         >
             <Flex className="CalendarEvent__content">
                 <Text className="CalendarEvent__title">{event.title}</Text>
-                <Text className="CalendarEvent__time" size="sm">{formatTime(event.startTime.hours, event.startTime.minutes)} - {formatTime(event.endTime.hours, event.endTime.minutes)}</Text>
+                <Text className="CalendarEvent__time" size="sm">
+                    {formatTime(event.startTime.hours, event.startTime.minutes)}
+                    -
+                    {formatTime(event.endTime.hours, event.endTime.minutes)}
+                </Text>
             </Flex>
         </Chip>
     );

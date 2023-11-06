@@ -1,8 +1,6 @@
 import classnames from 'classnames';
 
-import { Box, Heading, IconButton } from 'shared/ui-components';
-
-import './index.scss';
+import { Heading, IconButton } from 'shared/ui-components';
 
 export default function RoomSidePanel({
     open,
@@ -17,7 +15,7 @@ export default function RoomSidePanel({
     });
 
     return (
-        <Box className={classNames} {...props}>
+        <aside className={classNames} {...props}>
             <div className="RoomSidePanel__header">
                 <Heading type="h5">{title}</Heading>
 
@@ -31,6 +29,6 @@ export default function RoomSidePanel({
             <div className="RoomSidePanel__content">
                 {children}
             </div>
-        </Box>
+        </aside>
     );
 }

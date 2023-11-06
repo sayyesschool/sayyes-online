@@ -1,10 +1,16 @@
-.miro-whiteboard {
+.MiroWhiteboard {
     position: relative;
 
-    .ui-button {
+    .ui-Button {
         position: absolute;
         bottom: 8px;
         left: 50%;
+        translate: -50% -50%;
+
+        &:only-child {
+            top: 50%;
+            bottom: unset;
+        }
     }
 
     iframe {

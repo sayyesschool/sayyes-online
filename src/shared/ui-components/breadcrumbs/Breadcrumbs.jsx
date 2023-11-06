@@ -18,4 +18,6 @@ const Breadcrumbs = forwardRef(({
     );
 });
 
+Breadcrumbs.displayName = 'Breadcrumbs';
+
 export default Breadcrumbs;

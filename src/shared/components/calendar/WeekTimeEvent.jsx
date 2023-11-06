@@ -17,7 +17,11 @@ export default function WeekTimeEvent({ event, onClick, ...props }) {
             className={classNames}
             color={LessonColorByType[event.status]}
             onClick={onClick && handleClick}
-            sx={{ position: 'absolute', padding: '0 4px' }}
+            sx={{
+                position: 'absolute',
+                padding: '0 4px',
+                maxWidth: 'unset'
+            }}
             {...props}
         >
             <Text
@@ -32,9 +36,12 @@ export default function WeekTimeEvent({ event, onClick, ...props }) {
                 className="CalendarEvent__time"
                 as="span"
                 type="body-xs"
-                content={`${formatTime(event.startTime.hours, event.startTime.minutes)} - ${formatTime(event.endTime.hours, event.endTime.minutes)}`}
                 color="primary.solidColor"
-            />
+            >
+                {formatTime(event.startTime.hours, event.startTime.minutes)}
+                -
+                {formatTime(event.endTime.hours, event.endTime.minutes)}
+            </Text>
         </Chip>
     );
 }

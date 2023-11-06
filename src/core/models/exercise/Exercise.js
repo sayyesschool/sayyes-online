@@ -11,7 +11,7 @@ const Exercise = new Schema({
 }, {
     toJSON: {
         transform: (exercise, object) => {
-            const progress = exercise.parent()?.progress?.find(item => item.exercise.toString() === exercise.id);
+            const progress = exercise.parent()?.progress?.find(({ exerciseId }) => exerciseId == exercise.id);
 
             if (progress) {
                 object.progressId = progress.id;

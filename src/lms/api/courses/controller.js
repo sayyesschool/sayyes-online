@@ -13,6 +13,12 @@ module.exports = ({
 
     async getCourse(req, res) {
         const course = await Course.findById(req.params.course)
+            .populate({
+                path: 'progress',
+                match: {
+                    enrollmentId: req.query.enrollmentId
+                }
+            })
             .populate('exercises');
 
         const data = course.toJSON();

@@ -10,6 +10,7 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { Button, Dialog, Tabs } from 'shared/ui-components';
 
+import EnrollmentDetailsCard from 'app/components/enrollments/enrollment-details-card';
 import EnrollmentsList from 'lms/components/enrollments/enrollments-list';
 import LessonDetails from 'lms/components/lessons/lesson-details';
 import LessonForm from 'lms/components/lessons/lesson-form';
@@ -21,7 +22,7 @@ export default function TeacherHomePage() {
     const [enrollments] = useEnrollments();
     const [lessons, actions] = useLessons();
 
-    const [tab, setTab] = useState('lessons');
+    const [tab, setTab] = useState('calendar');
     const [lesson, setLesson] = useState();
     const [isDialogOpen, toggleDialogOpen] = useBoolean(false);
     const [isFormDialogOpen, toggleFormDialogOpen] = useBoolean(false);
@@ -78,8 +79,10 @@ export default function TeacherHomePage() {
 
     if (!lessons) return <LoadingIndicator fullscreen />;
 
+    const activeEnrollments = enrollments?.filter(({ status }) => status === 'active');
+
     return (
-        <Page className="HomePage">
+        <Page className="TeacherHomepage HomePage">
             <Page.Header
                 title="Главная"
                 actions={[{
@@ -91,22 +94,30 @@ export default function TeacherHomePage() {
             />
 
             <Page.Content>
+                {activeEnrollments?.map(enrollment =>
+                    <EnrollmentDetailsCard
+                        key={enrollment.id}
+                        user={user}
+                        enrollment={enrollment}
+                    />
+                )}
+                
                 <Tabs
                     value={tab}
                     items={[
-                        {
-                            key: 'lessons',
-                            value: 'lessons',
-                            icon: 'schedule',
-                            content: 'Уроки',
-                            color: tab === 'lessons' && 'primary'
-                        },
                         {
                             key: 'calendar',
                             value: 'calendar',
                             icon: 'calendar_month',
                             content: 'Календарь',
                             color: tab === 'calendar' && 'primary'
+                        },
+                        {
+                            key: 'lessons',
+                            value: 'lessons',
+                            icon: 'schedule',
+                            content: 'Уроки',
+                            color: tab === 'lessons' && 'primary'
                         },
                         {
                             key: 'enrollments',
@@ -117,20 +128,20 @@ export default function TeacherHomePage() {
                         }
                     ]}
                     sx={{
-                        marginBottom: '1rem'
+                        marginTop: '2rem'
                     }}
                     onChange={handleTabChange}
                 />
 
-                {tab === 'lessons' &&
-                    <LessonsSection
+                {tab === 'calendar' &&
+                    <LessonsCalendar
                         lessons={lessons}
                         onLessonClick={handleLessonClick}
                     />
                 }
 
-                {tab === 'calendar' &&
-                    <LessonsCalendar
+                {tab === 'lessons' &&
+                    <LessonsSection
                         lessons={lessons}
                         onLessonClick={handleLessonClick}
                     />

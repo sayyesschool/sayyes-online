@@ -12,7 +12,8 @@ module.exports = {
     pluralize,
     getWordEnding,
     wordEnding,
-    timeToSeconds
+    timeToSeconds,
+    getLessonDateTimeString
 };
 
 function slugify(string = '') {
@@ -130,6 +131,14 @@ function timeToSeconds(value) {
     }
 
     return (hours * 3600) + (minutes * 60) + seconds;
+}
+
+function getLessonDateTimeString(lesson) {
+    const dateString = moment(lesson.date).format('dddd, DD.MM');
+    const startTime = moment(lesson.startAt).format('HH:mm');
+    const endTime = moment(lesson.endAt).format('HH:mm');
+
+    return `${dateString}, ${startTime}-${endTime}`;
 }
 
 const translit = {

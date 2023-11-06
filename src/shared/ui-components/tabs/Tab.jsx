@@ -29,15 +29,19 @@ const Tab = forwardRef(({
             {...props}
         >
             <Text
+                as="span"
                 color={color}
-                startDecorator={icon && (isValidElement(icon) ?
+                startDecorator={start || (icon && (isValidElement(icon) ?
                     icon : <Icon>{icon}</Icon>
-                )}
+                ))}
+                endDecorator={end}
             >
                 {children}
             </Text>
         </JoyTab>
     );
 });
+
+Tab.displayName = 'Tab';
 
 export default Tab;

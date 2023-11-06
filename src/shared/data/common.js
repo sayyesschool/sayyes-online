@@ -36,6 +36,13 @@ const PurposeLabel = {
     immigration: 'Иммиграция'
 };
 
+const RoleLabel = {
+    admin: 'Администратор',
+    editor: 'Редактор',
+    learner: 'Ученик',
+    teacher: 'Преподаватель'
+};
+
 const TeacherTypeLabel = {
     [TeacherType.Bilingual]: 'Билингва',
     [TeacherType.Native]: 'Носитель',
@@ -108,6 +115,7 @@ module.exports = {
     FormatLabel,
     LevelLabel,
     PurposeLabel,
+    RoleLabel,
     TeacherTypeLabel,
     ageGroupOptions,
     domainOptions,

@@ -43,6 +43,7 @@ export function useSync(token) {
 export function useSyncDoc(token, docId) {
     const syncRef = useSync(token);
     const docRef = useRef();
+
     const [data, setData] = useState(null);
 
     useEffect(() => {

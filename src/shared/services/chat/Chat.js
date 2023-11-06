@@ -87,7 +87,7 @@ export default class Chat extends EventEmitter {
                     if (error.status !== 404) throw error;
 
                     return this._client.createConversation({
-                        uniqueName: conversationId
+                        uniqueName: this._conversationId
                     });
                 })
                 .then(client => {
@@ -111,7 +111,7 @@ export default class Chat extends EventEmitter {
     }
 
     _handleTokenExpired() {
-        fetch(`/twilio/tokens/chat?identity=${userId}`)
+        fetch(`/twilio/tokens/chat?identity=${this.userId}`)
             .then(token => {
                 this._client.updateToken(token);
             })

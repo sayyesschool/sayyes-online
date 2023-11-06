@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { Flex, Tabs } from 'shared/ui-components';
+import { Chip, Flex, Tabs } from 'shared/ui-components';
 
 import Exercise from 'lms/components/courses/exercise';
 

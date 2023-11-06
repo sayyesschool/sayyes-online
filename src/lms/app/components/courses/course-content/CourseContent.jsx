@@ -12,7 +12,7 @@ export default function CourseContent({ course, onSelectUnit }) {
                     <Grid.Item key={unit.id} lg={3}>
                         <UnitCard
                             as={!onSelectUnit ? Link : undefined}
-                            to={!onSelectUnit ? unit.uri + (course.enrollmentId ? `?enrollmentId=${course.enrollmentId}` : '') : undefined}
+                            to={!onSelectUnit ? (unit.uri + (course.enrollmentId ? `?enrollmentId=${course.enrollmentId}` : '')) : undefined}
                             number={index + 1}
                             unit={unit}
                             onSelectUnit={onSelectUnit}

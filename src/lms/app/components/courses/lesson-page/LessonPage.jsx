@@ -8,6 +8,7 @@ import { useUser } from 'shared/hooks/user';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { Text } from 'shared/ui-components';
 
 import AssignmentForm from 'lms/components/assignments/assignment-form';
 import LessonContent from 'lms/components/courses/lesson-content';
@@ -21,7 +22,7 @@ export default function LessonPage({ match, location }) {
     const [exerciseIdForNewAssignment, setExerciseIdForNewAssignment] = useState();
     const [isFormDialogOpen, toggleFormDialogOpen] = useBoolean(false);
 
-    const handleSubmitAssignment = useCallback((data) => {
+    const handleSubmitAssignment = useCallback(data => {
         return assignmentActions.createAssignment({
             ...data,
             enrollmentId: enrollment.id,
@@ -49,7 +50,7 @@ export default function LessonPage({ match, location }) {
         });
     }, []);
 
-    const handleAddExerciseToNewAssignment = useCallback((exercise) => {
+    const handleAddExerciseToNewAssignment = useCallback(exercise => {
         setExerciseIdForNewAssignment(exercise.id);
         toggleFormDialogOpen(true);
     }, []);
@@ -65,14 +66,23 @@ export default function LessonPage({ match, location }) {
 
     if (!lesson) return <LoadingIndicator />;
 
+    const query = enrollment?.id ? `?enrollmentId=${enrollment.id}` : '';
+
     return (
         <Page className="LessonPage">
             <Page.Header
-                title={lesson.title}
                 breadcrumbs={[
-                    { to: course.uri, content: course.title },
-                    { to: unit.uri, content: unit.title }
+                    { to: course.uri + query, content: course.title },
+                    { to: unit.uri + query, content: unit.title }
                 ]}
+                title={lesson.title}
+                description={lesson.description &&
+                    <Text type="body-md">
+                        <span
+                            dangerouslySetInnerHTML={{ __html: lesson.description }}
+                        />
+                    </Text>
+                }
             />
 
             <Page.Content>

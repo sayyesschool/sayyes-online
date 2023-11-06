@@ -10,13 +10,14 @@ export default function UnitPage({ match, location }) {
     if (!course) return <LoadingIndicator />;
 
     const unit = course.unitsById.get(match.params.unit);
+    const query = course.enrollmentId ? `?enrollmentId=${course.enrollmentId}` : '';
 
     return (
         <Page className="UnitPage">
             <Page.Header
                 title={unit.title}
                 breadcrumbs={[
-                    { to: course.uri, content: course.title }
+                    { to: course.uri + query, content: course.title }
                 ]}
             />
 

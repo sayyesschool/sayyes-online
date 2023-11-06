@@ -4,11 +4,11 @@ import classnames from 'classnames';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useFullScreen, useScrollClassName } from 'shared/hooks/screen';
+import Chat from 'shared/components/chat';
 import { Alert, Icon } from 'shared/ui-components';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import useSharedState from 'app/hooks/useSharedState';
-import Chat from 'app/components/Chat';
 import Content from 'app/components/Content';
 import MainParticipant from 'app/components/MainParticipant';
 import ParticipantAudioTracks from 'app/components/ParticipantAudioTracks';
@@ -84,7 +84,7 @@ export default function Room({ user, enrollment }) {
         });
     }, [location]);
 
-    const handleMediaStart = useCallback((track) => {
+    const handleMediaStart = useCallback(track => {
         if (!track) return;
 
         console.log('publishing track', track);
@@ -95,7 +95,7 @@ export default function Room({ user, enrollment }) {
             });
     }, [localParticipant]);
 
-    const handleMediaStop = useCallback((track) => {
+    const handleMediaStop = useCallback(track => {
         if (!track) return;
 
         localParticipant.unpublishTrack(track);
