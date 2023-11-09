@@ -21,7 +21,7 @@ module.exports = ({ config, db }, options) => {
 
     server.use(cors({
         // origin: '*',
-        origin: /sayyes\.(ru|local)$/,
+        origin: /sayyes\.(school|local)$/,
         credentials: true
     }));
 
