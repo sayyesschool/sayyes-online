@@ -5,7 +5,7 @@ const https = require('https');
 const middleware = require('./middleware');
 const pages = require('./pages');
 
-module.exports = (config, db, options) => {
+module.exports = ({ config, db }, options) => {
     const server = express();
 
     server.set('trust proxy', true);
@@ -50,6 +50,8 @@ module.exports = (config, db, options) => {
             return this;
         },
         listen(port, ...rest) {
+            db.connect(config.MONGODB_URI);
+
             if (options) {
                 https.createServer(options, server)
                     .listen(port, config.APP_DOMAIN, ...rest);

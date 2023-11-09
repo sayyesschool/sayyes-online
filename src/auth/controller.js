@@ -3,7 +3,25 @@ const strategies = require('./strategies');
 module.exports = ({
     services: { Auth }
 }) => ({
-    register: (req, res) => {
+    user: (req, res) => {
+        const user = req.user;
+
+        res.json({
+            ok: true,
+            data: user ? {
+                id: user.id,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                fullname: user.fullname,
+                email: user.email,
+                initials: user.initials,
+                balance: user.balance,
+                role: user.role
+            } : null
+        });
+    },
+    
+    register: (req, res, next) => {
         Auth.register({
             email: req.body.email,
             firstname: req.body.firstname,
@@ -11,7 +29,7 @@ module.exports = ({
         })
             .then(user => {
                 req.session.userId = user.id;
-                res.redirect('/');
+                next();
             })
             .catch(error => {
                 req.flash('error', error.message || error);
@@ -19,11 +37,11 @@ module.exports = ({
             });
     },
 
-    login: (req, res) => {
+    login: (req, res, next) => {
         Auth.login(req.body.email, req.body.password)
             .then(user => {
                 req.session.userId = user.id;
-                res.redirect('/');
+                next();
             })
             .catch(error => {
                 req.flash('error', error.message || error);
@@ -31,9 +49,9 @@ module.exports = ({
             });
     },
 
-    logout: (req, res) => {
+    logout: (req, res, next) => {
         req.session.userId = undefined;
-        res.redirect('/');
+        next();
     },
 
     authenticate: (req, res, next) => {

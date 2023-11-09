@@ -24,7 +24,7 @@ export default function TrialContent({ enrollment }) {
 
             <Text as="p">В указанное время войдите, пожалуйста, на нашу платформу и нажмите на кнопку ниже "Войти в класс". Удачного урока!</Text>
 
-            <Button as="a" href={enrollment.classUrl} primary>Войти в класс</Button>
+            <Button as="a" href={`${CLASS_URL}/${enrollment.id}`} primary>Войти в класс</Button>
         </div>
     );
 }

@@ -1,4 +1,5 @@
 const express = require('express');
+const vhost = require('vhost');
 
 const api = require('./api');
 
@@ -35,5 +36,5 @@ module.exports = context => {
         res.render('index');
     });
 
-    return app;
+    return vhost(`lms.${context.config.APP_DOMAIN}`, app);
 };

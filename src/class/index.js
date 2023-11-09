@@ -1,5 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const vhost = require('vhost');
 
 const api = require('./api');
 
@@ -46,5 +47,5 @@ module.exports = context => {
         })
     );
 
-    return app;
+    return vhost(`class.${context.config.APP_DOMAIN}`, app);
 };

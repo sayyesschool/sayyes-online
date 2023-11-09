@@ -8,5 +8,5 @@ import storage from 'shared/store/middleware/storage';
 import notification from 'shared/store/middleware/notification';
 
 export default composeWithDevTools(
-    applyMiddleware(promise, storage, api(http, '/cms/api'), notification)
+    applyMiddleware(promise, storage, api(http, '/api'), notification)
 );

@@ -38,10 +38,6 @@ Enrollment.virtual('url').get(function() {
     return `/enrollments/${this.id}`;
 });
 
-Enrollment.virtual('classUrl').get(function() {
-    return `/class/${this.id}`;
-});
-
 Enrollment.virtual('scheduleLabel').get(function() {
     return this.schedule?.map(schedule => schedule.label).join(', ');
 });

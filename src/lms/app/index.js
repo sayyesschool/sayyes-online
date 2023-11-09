@@ -14,7 +14,7 @@ render(
     <ErrorBoundary>
         <StoreProvider store={store}>
             <ThemeProvider theme={theme}>
-                <Router basename="/lms">
+                <Router>
                     <App />
                 </Router>
             </ThemeProvider>

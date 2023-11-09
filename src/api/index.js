@@ -1,4 +1,5 @@
 const express = require('express');
+const vhost = require('vhost');
 
 const storage = require('./storage');
 const twilio = require('./twilio');
@@ -19,5 +20,5 @@ module.exports = context => {
         res.status(500).send({ error: error.message || error });
     });
 
-    return api;
+    return vhost(`api.${context.config.APP_DOMAIN}`, api);
 };

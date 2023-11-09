@@ -58,12 +58,15 @@ export default function EnrollmentDetailsCard({
                 {enrollment.schedule ?
                     <WeekSchedule schedule={enrollment.schedule} />
                     :
-                    <Text
-                        content="Не назначено"
-                    />
+                    <Text  content="Не назначено" />
                 }
 
-                <Button as="a" href={enrollment.classUrl} variant="soft">Перейти в класс</Button>
+                <Button
+                    as="a"
+                    href={`${CLASS_URL}/${enrollment.id}`}
+                    content="Перейти в класс"
+                    variant="soft"
+                />
             </Surface>
 
             <Box className="enrollment-details-card__payment-section" sx={{ bgcolor: 'primary.main' }}>

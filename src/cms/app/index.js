@@ -15,7 +15,7 @@ render(
     <ErrorBoundary>
         <StoreProvider store={store}>
             <ThemeProvider theme={theme}>
-                <Router basename="/cms">
+                <Router>
                     <App routes={routes} />
                 </Router>
             </ThemeProvider>

@@ -44,7 +44,7 @@ export default function EnrollmentPage({ match }) {
                     <Button
                         key="class"
                         as="a"
-                        href={enrollment.classUrl}
+                        href={`${CLASS_URL}/${enrollment.id}`}
                         icon="video_call"
                         content="Перейти в класс"
                         variant="soft"

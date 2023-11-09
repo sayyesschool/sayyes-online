@@ -10,6 +10,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 dotenv.config();
 
 const {
+    APP_DOMAIN,
     STATIC_URL,
     STORAGE_URL,
     YANDEX_METRIKA_ID,
@@ -101,11 +102,17 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
                 'process.env': JSON.stringify({}),
                 'APP_ENV': JSON.stringify(env),
                 'APP_URL': JSON.stringify(APP_URL),
+                'AUTH_URL': JSON.stringify(`//auth.${APP_DOMAIN}`),
+                'CLASS_URL': JSON.stringify(`//class.${APP_DOMAIN}`),
+                'CMS_URL': JSON.stringify(`//cms.${APP_DOMAIN}`),
+                'CRM_URL': JSON.stringify(`//crm.${APP_DOMAIN}`),
+                'GOOGLE_ANALYTICS_ID': JSON.stringify(GOOGLE_ANALYTICS_ID),
+                'LK_URL': JSON.stringify(`//lk.${APP_DOMAIN}`),
+                'LMS_URL': JSON.stringify(`//lms.${APP_DOMAIN}`),
                 'SENTRY_DSN': JSON.stringify(process.env.SENTRY_DSN || ''),
                 'STATIC_URL': JSON.stringify(STATIC_URL),
                 'STORAGE_URL': JSON.stringify(STORAGE_URL),
                 'YANDEX_METRIKA_ID': JSON.stringify(YANDEX_METRIKA_ID),
-                'GOOGLE_ANALYTICS_ID': JSON.stringify(GOOGLE_ANALYTICS_ID)
             }),
             new CssExtractPlugin({
                 filename: `css/${name}.[name].css`

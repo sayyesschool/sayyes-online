@@ -72,12 +72,12 @@ export default function Lobby({ user }) {
 
     return (
         <div className="Lobby">
-            {testPreflight &&
+            {/* {testPreflight &&
                 <PreflightTest />
-            }
+            } */}
 
             <Link
-                href="/lms"
+                href={LMS_URL}
                 content="Вернуться в кабинет"
             />
 

@@ -17,7 +17,7 @@ function handleApiResponse(response) {
 function options({ headers = {}, body, ...rest } = {}) {
     const isJSON = (typeof body === 'object') && !(body instanceof FormData);
     const options = {
-        credentials: 'same-origin',
+        credentials: 'include',
         headers: {
             'CSRF-Token': window.CSRF_TOKEN,
             'X-Requested-With': 'XMLHttpRequest',
@@ -69,7 +69,7 @@ const api = {
             .then(handleApiResponse);
     },
 
-    delete: (url) => {
+    delete: url => {
         return fetch(url, options({
             method: 'DELETE'
         }))

@@ -109,7 +109,7 @@ export default function EnrollmentDetailsCard({
                         <Card.Actions>
                             <Button
                                 as="a"
-                                href={enrollment.classUrl}
+                                href={`${CLASS_URL}/${enrollment.id}`}
                                 content="Перейти в класс"
                                 variant="soft"
                             />

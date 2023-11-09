@@ -14,16 +14,15 @@ module.exports = ({
     },
 
     authorize: (req, res, next) => {
-        if (req.user)
-            next();
-        else
-            res.redirect(`${config.APP_DOMAIN}/auth`);
+        req.user ?
+            next() : 
+            res.redirect(`//auth.${config.APP_DOMAIN}`);
     },
 
-    authorizeByRole: allowedRoles => (req, res, next) => {
-        if (allowedRoles.include(req.user?.role)) return next();
-
-        res.redirect(`//auth.${config.APP_DOMAIN}`);
+    authorizeRoles: allowedRoles => (req, res, next) => {
+        allowedRoles.includes(req.user?.role) ?
+            next() :
+            res.redirect(`//auth.${config.APP_DOMAIN}`);
     },
 
     authenticatedRoute: (req, res, next) => {
@@ -36,13 +35,13 @@ module.exports = ({
 
     redirect: (req, res, next) => {
         if (!req.user)
-            res.redirect('/auth');
+            res.redirect(`//auth.${config.APP_DOMAIN}`);
         else if (req.user.role === 'editor')
-            res.redirect('/cms');
+            res.redirect(`//cms.${config.APP_DOMAIN}`);
         else if (req.user.role === 'manager')
-            res.redirect('/crm');
+            res.redirect(`//crm.${config.APP_DOMAIN}`);
         else if (req.user.role === 'learner' || req.user.role === 'teacher')
-            res.redirect('/lms');
+            res.redirect(`//lms.${config.APP_DOMAIN}`);
         else
             next();
     }

@@ -16,14 +16,14 @@ export default function AppHeader({
                 items={[
                     {
                         key: 'account',
-                        as: Link,
-                        to: '/account',
+                        as: 'a',
+                        href: LK_URL,
                         content: 'Личный кабинет'
                     },
                     {
                         key: 'logout',
                         as: 'a',
-                        href: '/auth/logout',
+                        href: `${AUTH_URL}/logout`,
                         content: 'Выйти'
                     }
                 ]}
