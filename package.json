@@ -24,7 +24,7 @@
     "lint": "eslint",
     "start": "node src/main.js",
     "start-dev": "nodemon -r dotenv/config ./src/main.js",
-    "test": "mocha -r dotenv/config -r ./src/tests"
+    "test": "mocha -r dotenv/config -r ./test/setup.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.39.0",
