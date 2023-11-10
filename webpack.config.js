@@ -10,7 +10,6 @@ const TerserPlugin = require('terser-webpack-plugin');
 dotenv.config();
 
 const {
-    APP_DOMAIN,
     STATIC_URL,
     STORAGE_URL,
     YANDEX_METRIKA_ID,
@@ -27,7 +26,8 @@ module.exports = [
 ];
 
 function config({ name, env, rules = [], plugins = [], override = {} }) {
-    const APP_URL = env.development ? 'http://localhost' : 'https://sayyesonline.ru';
+    const APP_DOMAIN = env.development ? 'sayyes.local' : 'sayyes.school';
+    const APP_URL = `https://${APP_DOMAIN}`;
 
     return {
         name,
