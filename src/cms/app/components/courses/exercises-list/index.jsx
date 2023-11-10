@@ -37,7 +37,7 @@ export default function ExercisesList({
                                 gap="medium"
                                 alignItems="center"
                             >
-                                <Avatar text={index + 1} />
+                                <Avatar content={index + 1} size="sm" />
 
                                 <Content content={exercise.description} html />
                             </Flex>

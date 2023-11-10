@@ -32,6 +32,11 @@ export const defaultConfig = {
                 classes: ['number']
             },
             {
+                name: 'Нумерация',
+                element: 'p',
+                classes: ['numbered']
+            },
+            {
                 name: 'Диалог',
                 element: 'blockquote',
                 classes: ['dialog']

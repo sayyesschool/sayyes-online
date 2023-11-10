@@ -116,7 +116,7 @@ export default function Exercise({
                     html
                 />
 
-                <Flex alignItems="center" gap="small">
+                <Flex alignItems="center" alignSelf="start" gap="small">
                     {assignments?.length > 0 && (
                         <Flex alignItems="center" gap="smaller">
                             {assignments

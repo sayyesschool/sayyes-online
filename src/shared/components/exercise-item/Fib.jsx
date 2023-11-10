@@ -42,6 +42,7 @@ export default function FibItem({
 
             if (item.type in Components) {
                 item.type = Components[item.type];
+                item.props.id = item.id;
                 item.props.value = state[item.props.id];
                 item.props.completed = completed;
                 item.props.checked = checked;
@@ -50,7 +51,7 @@ export default function FibItem({
 
             return item;
         });
-    }, [checked]);
+    }, [content, checked, handleChange]);
 
     return (
         <div className={className}>

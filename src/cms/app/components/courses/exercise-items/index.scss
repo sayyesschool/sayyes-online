@@ -1,5 +1,6 @@
 .ExerciseItems {
     position: relative;
+    counter-reset: number 0;
 
     .ExerciseItem {
         width: 100%;
