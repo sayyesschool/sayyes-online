@@ -1,11 +1,13 @@
 const { Router } = require('express');
 
-module.exports = ({ models: { Meeting } }) => {
+module.exports = ({
+    models: { Meeting }
+}) => {
     const router = Router();
 
     router.post('/meetings', (req, res, next) => {
         const event = req.body.event;
-        const data = req.body.payload.object;
+        const data = req.body.payload?.object;
 
         switch (event) {
             case 'meeting.started':
@@ -18,28 +20,24 @@ module.exports = ({ models: { Meeting } }) => {
 
             case 'meeting.ended':
                 Meeting.updateOne({
-                    date: { $lt: new Date() },
-                    zoomId: data.id
+                    zoomId: data.id,
+                    date: { $lt: new Date() }
                 }, {
                     status: 'ended'
                 }).catch(next);
                 break;
 
             case 'meeting.participant_joined':
-                Meeting.findOne({ zoomId: data.id })
-                    .then(meeting => {
-                        if (!meeting) return;
-
-                        const registration = meeting.registrations.find(r => r.zoomId === data.participant.id);
-
-                        if (registration) {
-                            meeting.participants.addToSet(registration.user);
-                            return meeting.save();
-                        }
-                    })
-                    .catch(next);
+                Meeting.updateOne({
+                    zoomId: data.id,
+                    'registrations.zoomId': data.participant.registrant_id
+                }, {
+                    $set: { 'registrations.$.participated': true }
+                }).catch(next);
                 break;
         }
+
+        res.status(200).send();
     });
 
     return router;

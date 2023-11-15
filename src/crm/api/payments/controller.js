@@ -49,6 +49,18 @@ module.exports = ({
             .catch(next);
     },
 
+    resolve: (req, res, next) => {
+        Payment.resolve(req.params.id)
+            .then(payment => {
+                res.json({
+                    ok: true,
+                    message: 'Платеж обновлен',
+                    data: payment
+                });
+            })
+            .catch(next);
+    },
+
     delete: (req, res, next) => {
         Payment.findByIdAndDelete(req.params.payment)
             .then(payment => {

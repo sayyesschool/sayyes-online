@@ -23,4 +23,8 @@ PaymentMethod.virtual('card.title').get(function() {
     return `${this.card.type} *${this.card.last4}`;
 });
 
+PaymentMethod.virtual('card.number').get(function() {
+    return `**** **** **** ${this.card.last4}`;
+});
+
 module.exports = PaymentMethod;

@@ -2,9 +2,9 @@ const { Router } = require('express');
 
 const Controller = require('./controller');
 
-module.exports = context => {
+module.exports = core => {
     const router = Router();
-    const controller = Controller(context);
+    const controller = Controller(core);
 
     router.route('/')
         .get(controller.get)
@@ -15,11 +15,8 @@ module.exports = context => {
         .put(controller.update)
         .delete(controller.delete);
 
-    router.route('/:meetingId/registrations')
-        .post(controller.addRegistration);
-
-    router.route('/:meetingId/registrations/:registrationId')
-        .post(controller.approveRegistration)
+    router.route('/:meetingId/registrations/:registrationId?')
+        .post(controller.addRegistration)
         .put(controller.updateRegistration)
         .delete(controller.removeRegistration);
 

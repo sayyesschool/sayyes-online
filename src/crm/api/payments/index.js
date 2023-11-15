@@ -13,6 +13,7 @@ module.exports = context => {
     router.route('/:payment')
         .get(controller.getOne)
         .put(controller.update)
+        .patch(controller.resolve)
         .delete(controller.delete);
 
     return router;

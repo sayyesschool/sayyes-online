@@ -1,30 +1,36 @@
+import React from 'react';
 import {
     Card,
     IconButton
 } from 'mdc-react';
 
-import MeetingForm from '../meeting-form';
+import MeetingForm from 'app/components/meetings/meeting-form';
+
+import './index.scss';
 
 export default function MeetingDetails({ meeting, onUpdate }) {
     return (
-        <Card>
-            <Card.Header
-                title="Детали"
-                actions={
-                    <IconButton
-                        icon="save"
-                        type="submit"
-                        form="meeting-form"
-                    />
-                }
-            />
-
-            <Card.Section primary>
-                <MeetingForm
-                    meeting={meeting}
-                    onSubmit={onUpdate}
+        <section className="meeting-details">
+            <Card outlined>
+                <Card.Header
+                    title="Детали"
+                    actions={
+                        <IconButton
+                            icon="save"
+                            type="submit"
+                            form="meeting-form"
+                            title="Сохранить"
+                        />
+                    }
                 />
-            </Card.Section>
-        </Card>
+
+                <Card.Section primary>
+                    <MeetingForm
+                        meeting={meeting}
+                        onSubmit={onUpdate}
+                    />
+                </Card.Section>
+            </Card>
+        </section>
     );
 }

@@ -10,6 +10,7 @@ import Page from 'shared/components/page';
 // import TicketsCard from 'app/components/account/tickets-card';
 // import MeetingsCard from 'app/components/account/meetings-card';
 import ProfileForm from 'app/components/account/profile-form';
+import PasswordDialogForm from 'app/components/password-dialog-form';
 
 import './index.scss';
 
@@ -27,10 +28,16 @@ export default function AccountPage() {
     const meetings = [];
 
     const [isProfileDialogOpen, setProfileDialogOpen] = useState(false);
+    const [isPasswordDialogOpen, setPasswordDialogOpen] = useState(false);
 
     const handleProfileFormSubmit = useCallback(data => {
         actions.updateProfile(data)
             .then(() => setProfileDialogOpen(false));
+    }, []);
+
+    const handlePasswordFormSubmit = useCallback(data => {
+        actions.updatePassword(data)
+            .then(() => setPasswordDialogOpen(false));
     }, []);
 
     return (

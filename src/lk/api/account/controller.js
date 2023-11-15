@@ -6,6 +6,28 @@ module.exports = () => ({
         });
     },
 
+    increaseBalance: (req, res, next) => {
+        Payment.make({
+            amount: req.body.amount,
+            description: 'Пополнение баланса',
+            email: req.user.email,
+            returnUrl: req.body.meetingId && `/meetings/${req.body.meetingId}`,
+            metadata: {
+                userId: req.user.id,
+                meetingId: req.body.meetingId
+            }
+        }).then(payment => {
+            if (payment.confirmationUrl) {
+                return res.redirect(payment.confirmationUrl);
+            }
+
+            res.json({
+                ok: true,
+                data: payment
+            });
+        }).catch(next);
+    },
+
     updateProfile: (req, res, next) => {
         req.user.firstname = req.body.firstname;
         req.user.lastname = req.body.lastname;

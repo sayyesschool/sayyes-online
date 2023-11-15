@@ -47,6 +47,14 @@ function ImageField({
         }
     }, [name]);
 
+    const handleFileChange = useCallback(event => {
+        const file = event.target.files[0];
+        const imageUrl = URL.createObjectURL(file);
+
+        setFile(file);
+        setImageUrl(imageUrl);
+    }, []);
+
     const handleReset = useCallback(() => {
 
     }, []);

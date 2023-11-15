@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Grid } from 'shared/ui-components';
 
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
+import { Grid } from 'shared/ui-components';
 
 import { useStore } from 'app/hooks/store';
 import MeetingForm from 'app/components/meetings/meeting-form';
@@ -134,19 +134,3 @@ export default function Meeting({ match, history }) {
         </Page>
     );
 }
-
-//- script(src='//cdn.quilljs.com/1.3.6/quill.min.js')
-//- script.
-//-     new Quill('#editor', {
-//-         modules: {
-//-             toolbar: [
-//-                 [{ header: [1, 2, false] }],
-//-                 ['bold', 'italic', 'underline'],
-//-                 [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-//-                 [{ 'indent': '-1'}, { 'indent': '+1' }],
-//-                 ['link']
-//-             ],
-//-         },
-//-         placeholder: 'Заметки',
-//-         theme: 'snow'
-//-     });

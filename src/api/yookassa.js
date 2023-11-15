@@ -9,6 +9,7 @@ module.exports = ({
 
             if (type !== 'notification') return res.sendStatus(200);
 
+            const payment = await Payment.resolve(object.id);
             const transaction = await Transaction.findOne({ paymentId: object.id });
 
             if (transaction) return res.sendStatus(200);
@@ -41,6 +42,14 @@ module.exports = ({
                     user: object.metadata.userId,
                     enrollment: object.metadata.enrollmentId
                 });
+
+                if (payment?.paid) {
+                    await User.increaseBalance(payment.user, payment.amount, true);
+    
+                    if (payment.meeting) {
+                        await Meeting.register(payment.meeting, payment.user);
+                    }
+                }
 
                 await Client.updateOne({
                     _id: transaction.user
@@ -77,7 +86,7 @@ module.exports = ({
                     cancellationDetails: object.cancellation_details
                 });
             } else if (event === 'refund.succeeded') {
-
+                await Payment.update({ uuid: object.payment_id }, { refunded: true });
             }
 
             res.sendStatus(200);

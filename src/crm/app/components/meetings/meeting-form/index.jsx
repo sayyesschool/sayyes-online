@@ -6,7 +6,6 @@ import api from 'shared/services/api';
 import useForm from 'shared/hooks/form';
 import Form from 'shared/ui-components/form';
 import FileInput from 'shared/components/file-input';
-import TextEditor from 'shared/components/text-editor';
 
 import './index.scss';
 
@@ -22,10 +21,21 @@ const defaultMeeting = {
     description: ''
 };
 
+const levelOptions = [
+    { key: 'elementary', value: 'Elementary', text: 'Elementary' },
+    { key: 'beginner', value: 'Beginner', text: 'Beginner' },
+    { key: 'intermediate', value: 'Intermediate', text: 'Intermediate' },
+    { key: 'pre-intermediate', value: 'Pre-intermediate', text: 'Pre-Intermediate' },
+    { key: 'upper-intermediate', value: 'Upper-intermediate', text: 'Upper-Intermediate' },
+    { key: 'advanced', value: 'Advanced', text: 'Advanced' }
+];
+
 const levels = ['Beginner', 'Elementary', 'Intermediate', 'Pre-Intermediate', 'Upper-Intermediate', 'Advanced'];
 
 export default function MeetingForm({ meeting = defaultMeeting, onSubmit }) {
     const fileInputRef = useRef();
+    const contentEditorRef = useRef();
+
     const { data, setData } = useForm({
         title: meeting.title,
         date: moment(meeting.date).format('YYYY-MM-DDTHH:mm'),
@@ -37,6 +47,7 @@ export default function MeetingForm({ meeting = defaultMeeting, onSubmit }) {
         image: meeting.image,
         description: meeting.description
     });
+
     const [hosts, setHosts] = useState([]);
 
     useEffect(() => {
@@ -47,9 +58,24 @@ export default function MeetingForm({ meeting = defaultMeeting, onSubmit }) {
     const handleSubmit = useCallback(() => {
         const file = fileInputRef.current.input.files[0];
 
+        data.date = moment(data.date).tz('Europe/Moscow', true).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
+        data.description = content;
+
         if (file) {
-            file.path = `meetings/`;
+            file.path = 'meetings/';
         }
+
+        // if (file) {
+        //     upload(file, {
+        //         filename: meeting.id,
+        //         folder: 'meetings'
+        //     }).then(response => {
+        //         data.thumbnailUrl = response.url;
+        //         onSubmit(data);
+        //     });
+        // } else {
+        //     onSubmit(data);
+        // }
 
         getData(data => onSubmit(Object.assign(data, {
             date: moment(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]'),
@@ -125,6 +151,16 @@ export default function MeetingForm({ meeting = defaultMeeting, onSubmit }) {
                 onChange={setData}
             />
 
+            <Form.Input
+                type="url"
+                name="materialsUrl"
+                value={data.materialsUrl}
+                label="Ссылка на материалы"
+                filled
+                required
+                onChange={setData}
+            />
+
             <FileInput
                 ref={fileInputRef}
                 name="file"
@@ -134,13 +170,22 @@ export default function MeetingForm({ meeting = defaultMeeting, onSubmit }) {
             />
 
             <Form.Field label="Описание">
-                <TextEditor
-                    name="description"
-                    value={data.description}
-                    label="Описание"
-                    onChange={setData}
+                <ContentEditor
+                    ref={contentEditorRef}
+                    content={data.description}
                 />
             </Form.Field>
+
+            {/* {!meeting.id &&
+                <Form.Field label="Онлайн">
+                    <Switch
+                        name="online"
+                        checked={data.online}
+                        disabled={data.id}
+                        onChange={setData}
+                    />
+                </Form.Field>
+            } */}
         </Form>
     );
 }

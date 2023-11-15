@@ -1,9 +1,11 @@
 module.exports = ({
-    services: { Club }
+    models: { User },
+    services: { Meeting }
 }) => ({
     get: (req, res, next) => {
-        Club.getMeetings(req.query)
-            .sort({ date: 1 })
+        Meeting.get(req.query)
+            .sort({ date: -1 })
+            .limit(30)
             .populate('host')
             .then(meetings => {
                 res.json({
@@ -15,7 +17,7 @@ module.exports = ({
     },
 
     getOne: (req, res, next) => {
-        Club.getMeeting(req.params.meetingId)
+        Meeting.getOne(req.params.meetingId)
             .populate('host')
             .populate('participants')
             .populate('registrations.user')
@@ -29,7 +31,7 @@ module.exports = ({
     },
 
     create: (req, res, next) => {
-        Club.createMeeting(req.body)
+        Meeting.create(req.body)
             .then(meeting => {
                 res.json({
                     ok: true,
@@ -41,7 +43,7 @@ module.exports = ({
     },
 
     update: (req, res, next) => {
-        Club.updateMeeting(req.params.meetingId, req.body)
+        Meeting.update(req.params.meetingId, req.body)
             .then(meeting => {
                 res.json({
                     ok: true,
@@ -53,7 +55,7 @@ module.exports = ({
     },
 
     delete: (req, res, next) => {
-        Club.deleteMeeting(req.params.meetingId)
+        Meeting.delete(req.params.meetingId)
             .then(() => {
                 res.json({
                     ok: true,
@@ -67,32 +69,21 @@ module.exports = ({
     },
 
     addRegistration: (req, res, next) => {
-        const registration = {
-            registrant: req.body,
-            status: 'approved'
-        };
+        User.findOne({ email: req.body.email }, 'firstname lastname email balance')
+            .then(user => {
+                if (req.body.paid) {
+                    return Meeting.register(req.params.meetingId, user).then(([meeting]) => meeting);
+                } else {
+                    return Meeting.addRegistration(req.params.meetingId, user);
+                }
+            }).then(meeting => {
+                const registration = meeting.registrations.slice(-1);
 
-        Club.addRegistration(req.params.meetingId, registration)
-            .then(registration => {
-                registration.meetingId = req.params.meetingId;
-
-                res.json({
-                    ok: true,
-                    message: 'Регистрация подтверждена',
-                    data: registration
-                });
-            })
-            .catch(next);
-    },
-
-    approveRegistration: (req, res, next) => {
-        Club.approveRegistration(req.params.meetingId, req.params.registrationId)
-            .then(registration => {
-                registration.meetingId = req.params.meetingId;
+                registration.meetingId = meeting.id;
 
                 res.json({
                     ok: true,
-                    message: 'Регистрация подтверждена',
+                    message: 'Регистрация добавлена',
                     data: registration
                 });
             })
@@ -100,10 +91,10 @@ module.exports = ({
     },
 
     updateRegistration: (req, res, next) => {
-        const action = req.body.action;
+        Meeting.updateRegistration(req.params.meetingId, req.params.registrationId, req.body.action)
+            .then(meeting => {
+                const registration = meeting.registrations.find(r => r.id == req.params.registrationId);
 
-        Club[`${action}Registration`](req.params.meetingId, req.params.registrationId)
-            .then(registration => {
                 registration.meetingId = req.params.meetingId;
 
                 res.json({
@@ -116,9 +107,12 @@ module.exports = ({
     },
 
     removeRegistration: (req, res, next) => {
-        Club.removeRegistration(req.params.meetingId, req.params.registrationId)
-            .then(registration => {
-                registration.meetingId = req.params.meetingId;
+        Meeting.removeRegistration(req.params.meetingId, req.params.registrationId)
+            .then(() => {
+                const registration = {
+                    id: req.params.registrationId,
+                    meetingId: req.params.meetingId
+                };
 
                 res.json({
                     ok: true,

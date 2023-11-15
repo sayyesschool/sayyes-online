@@ -21,6 +21,8 @@ export default function MeetingsPage() {
             .then(() => setMeetingFormOpen(false));
     }, []);
 
+    const meetings = state?.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+
     return (
         <Page id="meetings-page" loading={!meetings}>
             <Page.Header

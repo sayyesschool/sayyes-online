@@ -1,0 +1,91 @@
+extends ../index
+
+block header
+    +mdc-top-app-bar()(element='header' fixed)#header
+        +mdc-top-app-bar__row
+            +mdc-top-app-bar__section()(align='start')
+                a(href='/').logo
+                    img(src='https://static.sayes.ru/images/logos/sayyes-speaking-club-white.png')
+
+            +mdc-top-app-bar__section()(align='end')
+                +mdc-button('Help')(icon='help' data-open='#help-dialog' unelevated)
+
+                +mdc-button('Presentation')(
+                    element='a'
+                    href='https://1drv.ms/p/s!Aj2uTCTzkGRAg5taUJktj1DUzY_QEg'
+                    target='_blank'
+                    icon='file_present'
+                    unelevated
+                )
+
+                +mdc-button('Exit')(element='a' href='/logout' icon='logout' unelevated)
+
+block main
+    +mdc-typography('My meetings')(type='headline5')
+
+    +mdc-tab-bar
+        +mdc-tab('Scheduled')(icon='event' active minWidth)
+        +mdc-tab('Past')(icon='event_available' minWidth)            
+
+    section.tab-panel.tab-panel--active
+        +mdc-layout-grid
+            for meeting in scheduledMeetings
+                +mdc-layout-grid__cell(4)
+                    +meeting-card(meeting)
+            else
+                +mdc-layout-grid__cell(12)
+                    +mdc-typography('No scheduled meetings yet.')
+
+    section.tab-panel
+        +mdc-layout-grid
+            for meeting in pastMeetings
+                +mdc-layout-grid__cell(4)
+                    +meeting-card(meeting)
+            else
+                +mdc-layout-grid__cell(12)
+                    +mdc-typography('No past meetings yet.')
+
+    +mdc-dialog#help-dialog
+        +mdc-dialog__title('How to start a meeting')
+
+        +mdc-dialog__content
+            +mdc-typography
+                | To start a meeting just click the #[b Start] button. You will be prompted to open the Zoom app. Click OK and the meeting should start automatically without the login or password.
+
+            +mdc-typography()
+                | The meeting #[i might] not start automatically and you will be asked to sign in. Click the sign in button. The login is #[b club@sayes.ru] and the password is #[b h3*IL^B2myw*]. The Zoom app should open and the meeting should start.
+
+            +mdc-typography
+                | If you are still experiencing problems starting the meeting, just open up the Zoom app, and #[b log in to the club account] using the login and password provided above. Find your meeting and start it.
+
+            +mdc-typography('Good luck and have a great meeting!')
+
+        +mdc-dialog__actions
+            +mdc-dialog__button('Got it')(action='close')
+
+append scripts
+    script.
+        (function() {
+            var tabBar = document.querySelector('.mdc-tab-bar');
+            var tabPanels = document.querySelectorAll('.tab-panel');
+
+            tabBar.addEventListener('MDCTabBar:activated', function(event) {
+                tabPanels.forEach(function(panel) {
+                    panel.classList.remove('tab-panel--active');
+                });
+                
+                tabPanels[event.detail.index].classList.add('tab-panel--active');
+            });
+        })();
+
+mixin meeting-card(meeting)
+    +mdc-card()(outlined).meeting-card
+        +mdc-card__media(meeting.thumbnailUrl)(wide)
+
+        +mdc-card__header(meeting.title, `${moment(meeting.date).tz('Europe/Moscow').locale('en-us').format('MMMM D, YYYY @ H:mm')} (Moscow)`)
+        
+        +mdc-card__actions
+            +mdc-typography(`${meeting.registrations.length} registrants`)(element='span' type='overline' noMargin)
+
+            if meeting.isToday
+                +mdc-card__button('Start')(element='a' href=meeting.startUrl target='blank' unelevated)

@@ -30,6 +30,13 @@ export const updatePayment = createAction('UPDATE_PAYMENT', (id, data) => ({
     }
 }));
 
+export const resolvePayment = createAction('RESOLVE_PAYMENT', id => ({
+    request: {
+        method: 'patch',
+        path: `payments/${id}`
+    }
+}));
+
 export const deletePayment = createAction('DELETE_PAYMENT', id => ({
     request: {
         method: 'delete',

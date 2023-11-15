@@ -1,4 +1,36 @@
 module.exports = () => ({
+    get: (req, res, next) => {
+        const query = { ...req.query };
+        const page = req.query.page || 0;
+        const limit = 100;
+        const skip = page * limit;
+
+        if (query.search) {
+            const regex = new RegExp(req.query.search.trim(), 'i');
+
+            query.$or = [
+                { firstname: regex },
+                { lastname: regex },
+                { email: regex }
+            ];
+
+            delete query.search;
+        }
+
+        User.get(query)
+            .select('firstname lastname email role createdAt')
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit)
+            .then(users => {
+                res.json({
+                    ok: true,
+                    data: users
+                });
+            })
+            .catch(next);
+    },
+
     getUser: (req, res, next) => {
         res.json({
             ok: true,
