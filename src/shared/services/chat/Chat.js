@@ -27,6 +27,7 @@ export default class Chat extends EventEmitter {
         this._handleMessageAdded = this._handleMessageAdded.bind(this);
         this._handleMessageUpdated = this._handleMessageUpdated.bind(this);
         this._handleMessageRemoved = this._handleMessageRemoved.bind(this);
+        this._handleConversationJoined = this._handleConversationJoined.bind(this);
         this._handleConversationError = this._handleConversationError.bind(this);
     }
 
@@ -95,17 +96,16 @@ export default class Chat extends EventEmitter {
                     this._conversation.on('messageAdded', this._handleMessageAdded);
                     this._conversation.on('messageUpdated', this._handleMessageUpdated);
                     this._conversation.on('messageRemoved', this._handleMessageRemoved);
+                    this._conversation.on('joined', this._handleConversationJoined);
                     this._conversation.on('error', this._handleConversationError);
                     return this._conversation.init();
                 })
                 .then(() => {
                     return this._conversation.join();
                 })
-                .then(() => {
-                    this.emit('joined');
-                })
                 .catch(error => {
                     this.emit('error', error);
+                    throw error;
                 });
         }
     }
@@ -118,6 +118,10 @@ export default class Chat extends EventEmitter {
             .catch(error => {
                 this.emit('Could not refresh token', error);
             });
+    }
+
+    _handleConversationJoined(data) {
+        this.emit('joined', data);
     }
 
     _handleMessageAdded(message) {

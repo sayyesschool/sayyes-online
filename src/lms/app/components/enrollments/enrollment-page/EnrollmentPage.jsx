@@ -1,7 +1,9 @@
+import { useCallback, useState } from 'react';
+
 import { useBoolean } from 'shared/hooks/state';
 import { useEnrollment } from 'shared/hooks/enrollments';
 import { useUser } from 'shared/hooks/user';
-import { Button, Flex, IconButton, Grid, MenuButton } from 'shared/ui-components';
+import { Badge, Button, Flex, IconButton, Grid, MenuButton } from 'shared/ui-components';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { DomainLabel } from 'shared/data/common';
@@ -21,7 +23,13 @@ export default function EnrollmentPage({ match }) {
     const [enrollment] = useEnrollment(match.params.id);
     const [user] = useUser();
 
+    const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
     const [isDrawerOpen, toggleDrawerOpen] = useBoolean(false);
+
+    const handleChatJoined = useCallback(data => {
+        console.log(data);
+        setUnreadMessagesCount(data.unreadMessagesCount);
+    }, []);
 
     if (!enrollment) return <LoadingIndicator fullscreen />;
 
@@ -34,6 +42,7 @@ export default function EnrollmentPage({ match }) {
                 <EnrollmentChat
                     enrollment={enrollment}
                     user={user}
+                    onJoined={handleChatJoined}
                     onClose={toggleDrawerOpen}
                 />
             </Page.Drawer>
@@ -49,13 +58,19 @@ export default function EnrollmentPage({ match }) {
                         content="Перейти в класс"
                         variant="soft"
                     />,
-                    <IconButton
+                    <Badge
                         key="chat"
-                        icon="chat"
-                        title="Чат"
-                        variant="soft"
-                        onClick={toggleDrawerOpen}
-                    />,
+                        badgeContent={unreadMessagesCount}
+                        showZero={false}
+                        size="sm"
+                    >
+                        <IconButton
+                            icon="chat"
+                            title="Чат"
+                            variant="soft"
+                            onClick={toggleDrawerOpen}
+                        />
+                    </Badge>,
                     (enrollment.teacher?.zoomUrl &&
                         <MenuButton
                             key="menu"

@@ -85,10 +85,11 @@ export default class Conversation extends EventEmitter {
         return this._client.join()
             .catch(error => {
                 if (this._client.status === 'joined') {
-                    this.emit('joined');
                     this._client.getUnreadMessagesCount()
-                        .then(arg => {
-                            console.log('getUnreadMessagesCount', arg);
+                        .then(count => {
+                            this.emit('joined', {
+                                unreadMessagesCount: count
+                            });
                         });
                 } else {
                     throw error;
@@ -101,7 +102,7 @@ export default class Conversation extends EventEmitter {
             .catch(error => {
                 this.emit('error', error);
                 throw error;
-            });;
+            });
     }
 
     async updateMessage(id, content) {
@@ -121,10 +122,7 @@ export default class Conversation extends EventEmitter {
     }
 
     async setAllMessagesRead() {
-        return this._client.setAllMessagesRead()
-            .then((arg) => {
-                console.log('setAllMessagesRead', arg);
-            });
+        return this._client.setAllMessagesRead();
     }
 
     _handleParticipantJoined(participant) {
