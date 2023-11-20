@@ -6,7 +6,6 @@ const Section = require('./Section');
 const Unit = require('./Unit');
 
 const Course = new Schema({
-    slug: { type: String, required: true, unique: true },
     title: { type: String },
     subtitle: { type: String },
     description: { type: String },

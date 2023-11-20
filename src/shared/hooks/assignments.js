@@ -4,7 +4,10 @@ import { useStore, useActions } from 'shared/hooks/store';
 import { actions as assignmentActions } from 'shared/store/modules/assignments';
 
 export function useAssignments() {
-    const [assignments, actions] = useStore(state => state.assignments.list, assignmentActions);
+    const [assignments, actions] = useStore(
+        state => state?.assignments?.list ?? state.assignments,
+        assignmentActions
+    );
 
     useEffect(() => {
         if (!assignments) {
@@ -16,7 +19,10 @@ export function useAssignments() {
 }
 
 export function useAssignment(id) {
-    const [assignment, actions] = useStore(state => state.assignments.single, assignmentActions);
+    const [assignment, actions] = useStore(
+        state => state?.assignments?.single ?? state.assignment,
+        assignmentActions
+    );
 
     useEffect(() => {
         if (!id) return;

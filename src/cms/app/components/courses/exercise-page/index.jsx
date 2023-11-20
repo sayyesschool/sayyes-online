@@ -49,8 +49,6 @@ export default function ExercisePage({ match, history }) {
     const lesson = section.lesson;
     const unit = lesson.unit;
 
-    console.log('EXERCISE', exercise);
-
     return (
         <Page className="ExercisePage">
             <Page.Header

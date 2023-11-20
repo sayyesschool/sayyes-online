@@ -55,7 +55,7 @@ export default function ChatInput({
         setFileSendError(null);
 
         onSendFile(file)
-            .catch((e) => {
+            .catch(e => {
                 if (e.code === 413) {
                     setFileSendError('File size is too large. Maximum file size is 150MB.');
                 } else {
@@ -83,8 +83,6 @@ export default function ChatInput({
         }
         onCancelEditing();
     }, [onCancelEditing]);
-
-    console.log('ChatInput editingMessage', editingMessage);
 
     return (
         <div className="ChatInput">

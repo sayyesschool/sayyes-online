@@ -25,8 +25,6 @@ export default function EnrollmentAssignments({
         data.teacherId = enrollment.teacherId;
         data.learnerId = enrollment.learnerId;
 
-        console.log('createAssignment', enrollment, data);
-
         return actions.createAssignment(data)
             .then(() => toggleCreateFormOpen(false));
     }, [enrollment]);

@@ -33,6 +33,7 @@ export default function Room({ user, enrollment }) {
 
     const rootRef = useRef();
     const contentRef = useRef();
+    
     const participantsById = useMemo(() => ({
         [enrollment.learner.id]: enrollment.learner.fullname,
         [enrollment.teacher.id]: enrollment.teacher.fullname
@@ -70,12 +71,8 @@ export default function Room({ user, enrollment }) {
         history.push(sharedState.data.path);
     }, [sharedState.data?.path]);
 
-    const handleChatConnected = useCallback(channel => {
-        channel.getUnconsumedMessagesCount()
-            .then(unconsumedMessagesCount => {
-                setNumberOfUnreadMessages(unconsumedMessagesCount);
-                channel.setAllMessagesConsumed();
-            });
+    const handleChatJoined = useCallback(data => {
+        setNumberOfUnreadMessages(data.unreadMessagesCount);
     }, []);
 
     const handleSync = useCallback(() => {
@@ -86,8 +83,6 @@ export default function Room({ user, enrollment }) {
 
     const handleMediaStart = useCallback(track => {
         if (!track) return;
-
-        console.log('publishing track', track);
 
         return localParticipant.publishTrack(track)
             .then(() => {
@@ -133,7 +128,7 @@ export default function Room({ user, enrollment }) {
                     conversationId={enrollment.id}
                     userId={user.id}
                     participantsById={participantsById}
-                    onConnected={handleChatConnected}
+                    onJoined={handleChatJoined}
                 />
             </RoomSidePanel>
 

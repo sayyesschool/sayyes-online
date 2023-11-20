@@ -100,8 +100,6 @@ export default function Exercise({
         (item.type === 'input' && item.items?.length > 0)
     );
 
-    console.log('Exercise', exercise);
-
     return (
         <Card className="Exercise">
             <header className="Exercise__header" onClick={toggleCollapsed}>
