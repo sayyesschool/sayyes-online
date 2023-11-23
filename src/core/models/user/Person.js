@@ -32,15 +32,15 @@ const Person = new Schema({
         trim: true,
         minlength: 8,
         maxlength: 12,
-        set: value => value.trim().replace(/[\s()\-\+]+/g, '')
+        set: value => value.trim().replace(/[\s()\-+]+/g, '')
     },
-    phones: {
-        type: [String],
+    phones: [{
+        type: String,
         trim: true,
         minlength: 8,
         maxlength: 12,
-        set: value => value.trim().replace(/[\s()\-\+]+/g, '')
-    },
+        set: value => value.trim().replace(/[\s()\-+]+/g, '')
+    }],
     gender: { type: String, enum: ['', 'male', 'female'], default: '' },
     dob: { type: Date }
 });
