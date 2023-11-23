@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
+import { AUTH_URL, LK_URL } from 'shared/constants';
 import NavBar from 'shared/components/nav-bar';
 import UserMenu from 'shared/components/user-menu';
 
@@ -8,6 +9,8 @@ export default function AppBar({
     routes,
     ...props
 }) {
+    const location = useLocation();
+
     return (
         <div className="AppBar" {...props}>
             <div className="AppBar__logo">
@@ -15,6 +18,7 @@ export default function AppBar({
             </div>
 
             <NavBar
+                defaultValue={location.pathname}
                 items={routes.filter(route => !route.hidden).map(route => ({
                     key: route.id,
                     icon: route.icon,

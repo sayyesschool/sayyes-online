@@ -179,7 +179,7 @@ Enrollment.methods.rescheduleLessons = function(lessons, startDate = new Date())
     return lessons
         .filter(lesson => new Date(lesson.date) > startDate)
         .map((lesson, i) => {
-            const currentSchedule = schedule[i % schedule.length];
+            const currentSchedule = this.schedule[i % this.schedule.length];
             const [hours, minutes] = currentSchedule.from?.split(':');
             const lessonDate = moment(lesson.date)
                 .weekday(currentSchedule.day)

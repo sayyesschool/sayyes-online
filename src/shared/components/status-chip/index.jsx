@@ -4,7 +4,13 @@ import { Chip } from 'shared/ui-components';
 import StatusIcon from 'shared/components/status-icon';
 import { StatusLabel, StatusColor } from 'shared/data/status';
 
-export default function StatusChip({ status, className, ...props }) {
+export default function StatusChip({
+    status,
+    size,
+    variant = 'soft',
+    className,
+    ...props
+}) {
     const classNames = classnames('StatusChip', {
         [`StatusChip--${status}`]: status
     }, className);
@@ -17,7 +23,8 @@ export default function StatusChip({ status, className, ...props }) {
             }
             content={StatusLabel[status]}
             color={StatusColor[status]}
-            variant="soft"
+            variant={variant}
+            size={size}
             {...props}
         />
     );

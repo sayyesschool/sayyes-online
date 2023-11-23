@@ -28,16 +28,15 @@ const Tab = forwardRef(({
             color={color}
             {...props}
         >
-            <Text
-                as="span"
-                color={color}
-                startDecorator={start || (icon && (isValidElement(icon) ?
-                    icon : <Icon>{icon}</Icon>
-                ))}
-                endDecorator={end}
-            >
-                {children}
-            </Text>
+            {start}
+
+            {icon && (isValidElement(icon) ? icon :
+                <Icon>{icon}</Icon>
+            )}
+
+            {children}
+
+            {end}
         </JoyTab>
     );
 });

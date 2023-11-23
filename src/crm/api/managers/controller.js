@@ -18,8 +18,8 @@ module.exports = ({
         Manager.findById(req.params.id)
             .populate({
                 path: 'enrollments',
-                select: 'status type domain format student schedules',
-                populate: { path: 'student', select: 'firstname lastname' }
+                select: 'status type domain format learnerId schedule',
+                populate: { path: 'learner', select: 'firstname lastname' }
             })
             .then(manager => {
                 res.json({

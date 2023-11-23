@@ -28,10 +28,11 @@ const IconButtonGroup = forwardRef(({
         >
             {buttons?.map(button =>
                 <IconButton
-                    {...button}
+                    key={button.key}
                     color={color}
                     size={size}
                     variant={variant}
+                    {...button}
                 />
             )}
 
@@ -39,6 +40,8 @@ const IconButtonGroup = forwardRef(({
         </Box>
     );
 });
+
+IconButtonGroup.displayName = 'IconButtonGroup';
 
 IconButton.Group = IconButtonGroup;
 

@@ -1,0 +1,13 @@
+/* eslint-disable no-undef */
+
+export const APP_ENV = env.APP_ENV;
+export const AUTH_URL = env.AUTH_URL;
+export const CLASS_URL = env.CLASS_URL;
+export const CMS_URL = env.CMS_URL;
+export const CRM_URL = env.CRM_URL;
+export const GOOGLE_ANALYTICS_ID = env.GOOGLE_ANALYTICS_ID;
+export const LK_URL = env.LK_URL;
+export const LMS_URL = env.LMS_URL;
+export const SENTRY_DSN = env.SENTRY_DSN;
+export const STORAGE_URL = env.STORAGE_URL;
+export const YANDEX_METRIKA_ID = env.YANDEX_METRIKA_ID;

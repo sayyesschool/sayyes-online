@@ -9,8 +9,6 @@ import { Form, Text } from 'shared/ui-components';
 
 import { useStore } from 'app/hooks/store';
 
-import './index.scss';
-
 export default function LessonsForm({ enrollment, onSubmit, ...props }) {
     const [teachers] = useStore('teachers.list');
 

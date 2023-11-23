@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 
+import { AUTH_URL, LK_URL } from 'shared/constants';
 import UserMenu from 'shared/components/user-menu';
 
 export default function AppHeader({

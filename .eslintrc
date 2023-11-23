@@ -49,7 +49,7 @@
             "warn",
             "always"
         ],
-        "no-undef": "warn",
+        "no-undef": "error",
         "no-unused-vars": "warn",
         "quotes": [
             "error",

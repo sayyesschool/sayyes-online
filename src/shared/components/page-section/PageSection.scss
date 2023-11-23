@@ -2,6 +2,7 @@
 
 .PageSection {
     border-radius: 8px;
+    overflow: hidden;
 
     &__header {
         display: flex;
