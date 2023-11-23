@@ -10,7 +10,7 @@ module.exports = (config, lib, models) => {
     const mail = Mail(lib.mailjet);
     const newsletter = Newsletter(lib.mailjet);
     const auth = Auth(models, {
-        onRegister: user => mail.send({
+        onRegister: (user, password) => mail.send({
             subject: 'Добро пожаловать в SAY YES Online!',
             to: [{
                 email: user.email
@@ -27,7 +27,7 @@ module.exports = (config, lib, models) => {
             to: [{
                 email: user.email
             }],
-            templateId: 1348816,
+            templateId: 5329582,
             variables: {
                 firstname: user.firstname,
                 resetUrl: `${config.APP_URL}/reset/${user.resetPasswordToken}`

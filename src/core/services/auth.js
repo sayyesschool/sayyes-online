@@ -11,7 +11,7 @@ module.exports = ({ User }, { onRegister, onResetPasswordTokenSent }) => ({
     async register({ password = crypto.randomBytes(12).toString('base64'), ...data }) {
         const user = await User.create({ password, ...data });
 
-        onRegister(user);
+        onRegister(user, password);
 
         return user;
     },
