@@ -3,10 +3,10 @@ const FROM = {
     name: 'Разговорный клуб SAY YES'
 };
 
-module.exports = MailJet => {
+module.exports = mailClient => {
     return {
         send({ from = FROM, to, subject, text, html, templateId, variables }) {
-            return MailJet
+            return mailClient
                 .post('send', { 'version': 'v3.1' })
                 .request({
                     Messages: [
@@ -28,7 +28,7 @@ module.exports = MailJet => {
         },
 
         sendMany(messages) {
-            return MailJet
+            return mailClient
                 .post('send', { 'version': 'v3.1' })
                 .request({
                     Messages: messages.map(message => ({
