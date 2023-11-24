@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { STORAGE_URL } from 'shared/constants';
 import Chat from 'shared/services/chat';
 
 export default function useChat({
