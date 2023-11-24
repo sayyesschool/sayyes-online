@@ -9,5 +9,6 @@ export const GOOGLE_ANALYTICS_ID = env.GOOGLE_ANALYTICS_ID;
 export const LK_URL = env.LK_URL;
 export const LMS_URL = env.LMS_URL;
 export const SENTRY_DSN = env.SENTRY_DSN;
+export const STATIC_URL = env.STATIC_URL;
 export const STORAGE_URL = env.STORAGE_URL;
 export const YANDEX_METRIKA_ID = env.YANDEX_METRIKA_ID;

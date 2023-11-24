@@ -49,7 +49,7 @@ export function useChat({ token, identity }) {
             setClientState(state);
 
             if (state === 'failed') {
-                console.error("There was a problem connecting to Twilio's conversation service.");
+                console.error('There was a problem connecting to Twilio\'s conversation service.');
                 // onError(new Error("There was a problem connecting to Twilio's conversation service."));
             }
         }

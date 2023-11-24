@@ -1,3 +1,4 @@
+import { STORAGE_URL } from 'shared/constants';
 import { Dialog, Image, Text } from 'shared/ui-components';
 
 export default function MediaAcquireDialog(props) {

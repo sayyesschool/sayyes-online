@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { testPreflight } from 'twilio-video';
 
+import { LMS_URL } from 'shared/constants';
 import { useBoolean } from 'shared/hooks/state';
 import { Button, IconButton, Flex, Heading, Link } from 'shared/ui-components';
 

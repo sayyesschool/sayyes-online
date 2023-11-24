@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 
+import { CLASS_URL } from 'shared/constants';
 import WeekSchedule from 'shared/components/week-schedule';
 import { DomainLabel, RoleLabel } from 'shared/data/common';
 import { Avatar, Button, Card, Divider, Flex, Heading, Image, Surface, Text } from 'shared/ui-components';

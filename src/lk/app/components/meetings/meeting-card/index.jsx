@@ -7,6 +7,8 @@ import {
     Icon
 } from 'mdc-react';
 
+import { STATIC_URL } from 'shared/constants';
+
 import './index.scss';
 
 export default function MeetingCard({ meeting, onRegister }) {

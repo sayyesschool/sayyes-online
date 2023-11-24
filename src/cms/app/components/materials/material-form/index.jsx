@@ -1,5 +1,6 @@
 import { useCallback, useRef } from 'react';
 
+import { STATIC_URL } from 'shared/constants';
 import useForm from 'shared/hooks/form';
 import Form from 'shared/ui-components/form';
 import ImageField from 'shared/components/image-field';
@@ -22,13 +23,13 @@ const getDefaultData = ({
 export default function MaterialForm({ material = {}, onSubmit, ...props }) {
     const imageFieldRef = useRef();
 
-    const { data, setData } = useForm(getDefaultData(material), [material.id]);
+    const { data, setData, getData } = useForm(getDefaultData(material), [material.id]);
 
     const handleSubmit = useCallback(() => {
         const file = imageFieldRef.current.input.files[0];
 
         if (file) {
-            file.path = `materials/`;
+            file.path = 'materials/';
         }
 
         getData(data => onSubmit(Object.assign(data, { file })));

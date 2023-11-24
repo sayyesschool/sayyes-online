@@ -1,3 +1,4 @@
+import { CLASS_URL } from 'shared/constants';
 import { useEnrollment } from 'shared/hooks/enrollments';
 import { Button, Flex, Grid, MenuButton } from 'shared/ui-components';
 import EnrollmentPosts from 'shared/components/enrollment-posts';

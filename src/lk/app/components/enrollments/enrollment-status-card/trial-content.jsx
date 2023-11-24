@@ -1,3 +1,4 @@
+import { CLASS_URL } from 'shared/constants';
 import { Avatar, Button, Card, Flex, Text } from 'shared/ui-components';
 
 export default function TrialContent({ enrollment }) {

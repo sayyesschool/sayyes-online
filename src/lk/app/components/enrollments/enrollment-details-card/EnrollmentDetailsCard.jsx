@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 
-import { Avatar, Box, Button, Flex, Grid, Heading, Image, Surface, Text } from 'shared/ui-components';
+import { CLASS_URL } from 'shared/constants';
 import WeekSchedule from 'shared/components/week-schedule';
+import { Avatar, Box, Button, Flex, Heading, Image, Surface, Text } from 'shared/ui-components';
 import { pluralize } from 'shared/utils/format';
 
 export default function EnrollmentDetailsCard({

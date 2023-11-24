@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 
+import { CLASS_URL } from 'shared/constants';
 import { useBoolean } from 'shared/hooks/state';
 import { useEnrollment } from 'shared/hooks/enrollments';
 import { useUser } from 'shared/hooks/user';

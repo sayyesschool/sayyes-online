@@ -1,4 +1,5 @@
-import { Dialog, Image, Flex, Text } from 'shared/ui-components';
+import { STORAGE_URL } from 'shared/constants';
+import { Dialog, Image, Text } from 'shared/ui-components';
 
 import { getContent } from './helpers';
 
