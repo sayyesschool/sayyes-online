@@ -1,0 +1,55 @@
+.invite {
+	position: relative;
+
+	&__content {
+		display: flex;
+		justify-content: space-between;
+		padding: 40px 60px 55px;
+
+		background-color: $yellow;
+		border-radius: $border-radius;
+	}
+
+	&__title {
+		max-width: 381px;
+		margin-bottom: 20px;
+
+		font-size: 42px;
+		font-weight: 700;
+		line-height: 40px;
+	}
+
+	&__description {
+		max-width: 290px;
+	}
+
+	&__left {
+		flex-basis: 648px;
+	}
+
+	&__right {
+		flex-basis: 473px;
+	}
+
+	&__bg {
+		width: 545px;
+		height: 404px;
+		position: absolute;
+		bottom: 0;
+		left: 465px;
+		transform: translateX(-50%);
+	}
+
+	&--children {
+		.invite__content {
+			padding: 40px 60px 105px;
+			background-color: $medium-magenta;
+		}
+
+		.invite__bg {
+			width: 566px;
+			height: 374px;
+			left: 432px;
+		}
+	}
+}

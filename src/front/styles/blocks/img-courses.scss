@@ -1,0 +1,14 @@
+.img-courses {
+	margin-bottom: 100px;
+
+	.subtitle {
+		max-width: 860px;
+		margin-bottom: 40px;
+	}
+
+	&__blocks {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 20px;
+	}
+}

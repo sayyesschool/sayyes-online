@@ -1,0 +1,27 @@
+{% for item in courses %}
+	<li class="big-course {{item.class}}">
+		{% if withoutImg != true %}
+			<img src="./assets/images/courses/{{item.img}}.jpg" alt="Say Yes" class="big-course__img">
+		{% endif %}
+		<div class="big-course__content">
+			<h3 class="big-course__title">{{item.title}}</h3>
+			<p class="big-course__description">{{item.description}}</p>
+
+			{% if withoutInfo != true %}
+				<div class="big-course__info">
+					{% if withoutPrice != true %}<div class="big-course__lesson-cost">Стоимость обучения:</div>{% endif %}
+					<ul class="big-course__list">
+						{% for lesson in item.list %}
+							<li class="big-course__item">
+								<div class="big-course__lesson-type">{{lesson.lessonType}}</div>
+								<div class="big-course__lesson-price">{{lesson.lessonSince}}
+									<span class="big-course__accent">{{lesson.lessonPrice}}</span>{{lesson.lessonTime}}
+								</div>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			{% endif %}
+		</div>
+	</li>
+{% endfor %}

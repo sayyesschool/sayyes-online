@@ -1,0 +1,133 @@
+{% set btnColor = 'yellow' %}
+
+{% set pageData = {
+    'about': {
+        'title': 'Школа английского языка SAY YES! С нами вы скажете «Да!» свободе общения с миром.',
+        'description': 'Влюбляем в английский и исполняем ваши мечты с 2013 года',
+        'img': 'mainscreen-2'
+    },
+    'methodology': {
+        'title': 'Методика школы SA Y YES! — это оптимальный и современный способ изучения языков.',
+        'description': 'Мы выбираем комбинацию из коммуникативного подхода и собственных разработок в обучении.',
+        'img': 'mainscreen-3',
+        'mixin': 'methodology'
+    },
+    'teachers': {
+        'title': 'Сильные и харизматичные преподаватели SAY YES! — главная причина вашего прогресса.',
+        'description': 'Доверьте свой английский экспертам, кто прошел наш строгий отбор.',
+        'splitImg1': 'mainscreen-split-1',
+        'splitImg2': 'mainscreen-split-2',
+        'btnText': 'Оставить заявку',
+        'mixin': 'teachers',
+        'showSplit': true,
+        'showBtn': true
+    },
+    'vacancies': {
+        'title': 'Стань онлайн или офлайн преподавателем в SAY YES!',
+        'description': 'Приглашаем в  команду увлеченных единомышленников для совместного роста и реализации.',
+        'splitImg1': 'mainscreen-split-1',
+        'splitImg2': 'mainscreen-split-2',
+        'btnText': 'Хочу работать преподавателем',
+        'mixin': 'vacancies',
+        'showSplit': true,
+        'showBtn': true
+    },
+    'progress': {
+        'title': 'Отчёты о прогрессе студентов SAY YES!',
+        'description': 'Одна из важных особенностей нашей школы — это то, что мы замеряем разговорный навык наших студентов по прошествии некоторого времени обучения. Посмотрите, как студенты SAY YES! уверенно говорят на видео!',
+        'img': 'mainscreen-4',
+        'mixin': 'progress'
+    },
+    'price': {
+        'title': 'Стоимость обучения в школе английского языка SAY YES!',
+        'description': 'Оставьте заявку на обратный звонок, и мы подробно расскажем о ценах на курсы и действующих акциях.',
+        'splitImg1': 'mainscreen-split-3',
+        'splitImg2': 'mainscreen-split-4',
+        'btnText': 'Оставить заявку',
+        'mixin': 'price',
+        'showSplit': true,
+        'showBtn': true
+    },
+    'adults': {
+        'title': 'Курсы английского языка SAY YES! для взрослых',
+        'description': 'Оставьте заявку на обратный звонок, и мы подробно расскажем о курсах, форматах обучения и стоимости.',
+        'btnText': 'Оставить заявку',
+        'img': 'mainscreen-5',
+        'mixin': 'adults',
+        'showBtn': true
+    },
+    'children': {
+        'title': 'Курсы английского языка SAY YES! для детей',
+        'description': 'Оставьте заявку на обратный звонок, и мы подробно расскажем о курсах, форматах обучения и стоимости.',
+        'btnText': 'Оставить заявку',
+        'img': 'mainscreen-6',
+        'mixin': 'children',
+        'showBtn': true
+    },
+    'education': {
+        'title': 'Формы обучения в школе SAY YES! для взрослых и детей.',
+        'description': 'Оставьте заявку на обратный звонок, и мы подробно расскажем о курсах, формах обучения и стоимости.',
+        'splitImg1': 'mainscreen-split-1',
+        'splitImg2': 'mainscreen-split-2',
+        'btnText': 'Оставить заявку',
+        'mixin': 'education',
+        'showSplit': true,
+        'showBtn': true
+    },
+    'companies': {
+        'title': 'Корпоративное обучение английскому языку в SAY YES!',
+        'description': 'Предлагаем компаниям лучшее соотношение цены и качества.',
+        'img': 'mainscreen-7',
+        'btnText': 'Оставить заявку на звонок',
+        'btnColor': 'black',
+        'mixin': 'companies',
+        'showBtn': true
+    },
+    'adults-courses': {
+        'title': 'Курсы английского языка для начинающих',
+        'description': 'Курс «Английский с нуля» подходит тем, кто раньше никогда не изучал английский язык или помнит совсем мало.',
+        'btnText': 'Оставить заявку',
+        'img': 'mainscreen-9',
+        'mixin': 'adults-courses',
+        'showBtn': true
+    },
+    'children-courses': {
+        'title': 'Курс английского языка для детей 5–7 лет “Bright ideas”',
+        'description': 'Данный курс познакомит вашего ребенка с азами языка в игровой форме и привьет любовь к английскому.',
+        'btnText': 'Оставить заявку',
+        'img': 'mainscreen-11',
+        'mixin': 'children-courses',
+        'showBtn': true,
+    },
+    'offline': {
+        'title': 'Обучение английскому языку в группе офлайн в Москве',
+        'description': 'Если вы живете в Москве и цените личное общение и командный дух, то данный формат для вас!',
+        'btnText': 'Оставить заявку',
+        'img': 'mainscreen-10',
+        'mixin': 'offline',
+        'showBtn': true
+    },
+} %}
+
+{% set data = pageData[page] %}
+
+{% set showSplit = data.showSplit ?? false %}
+{% set showBtn = data.showBtn ?? false %}
+
+<section class="mainscreen-big mainscreen-big--{{ data.mixin ?? '' }}">
+	<h1 class="title">{{ data.title }}</h1>
+	<p class="mainscreen-big__description">{{ data.description }}</p>
+
+	{% if showBtn %}
+		<button class="btn btn--{{ btnColor }}">{{ data.btnText }}</button>
+	{% endif %}
+
+	{% if showSplit %}
+		<div class="split-image">
+			<img src="./assets/images/mainscreens/{{ data.splitImg1 }}.jpg" alt="Say Yes" class="split-image__first-img">
+			<img src="./assets/images/mainscreens/{{ data.splitImg2 }}.jpg" alt="Say Yes" class="split-image__second-img">
+		</div>
+	{% else %}
+		<img src="./assets/images/mainscreens/{{ data.img }}.jpg" alt="Say Yes" class="mainscreen-big__img">
+	{% endif %}
+</section>

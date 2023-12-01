@@ -1,0 +1,14 @@
+<section class="club-shortly">
+	<div class="section-container">
+		<h2 class="subtitle">Коротко о разговорном клубе SAY YES!</h2>
+
+		<div class="club-shortly__blocks">
+			{% for item in shortlyAboutClub %}
+				<div class="text-block {{item.class}}">
+					<h4 class="text-block__title">{{item.title}}</h4>
+					<p class="text-block__description">{{item.description}}</p>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</section>

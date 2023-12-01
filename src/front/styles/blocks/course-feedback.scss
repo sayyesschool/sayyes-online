@@ -1,0 +1,129 @@
+.course-feedback {
+	margin-bottom: 135px;
+
+	.subtitle {
+		max-width: 470px;
+		margin-bottom: 20px;
+	}
+
+	.btn {
+		margin: 30px auto 0;
+		display: block;
+	}
+
+	.slider {
+		padding-top: 45px;
+	}
+
+	.slider__arrows {
+		top: -80px;
+		right: -5px;
+	}
+
+	.slider__pagination {
+		bottom: -100px;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	&__description {
+		max-width: 440px;
+	}
+
+	&__rating {
+		margin: 0 0 17px 48px;
+		display: flex;
+		align-items: center;
+		gap: 14px;
+	}
+
+	&__rating-value {
+		font-size: 46px;
+		font-weight: 700;
+		line-height: 70px;
+	}
+
+	&__zoon {
+		font-weight: 800;
+	}
+
+	&__block {
+		padding: 33px 62px 50px;
+
+		border-radius: $border-radius;
+		background-color: $yellow;
+	}
+
+	&__cards {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&__card {
+		width: 568px;
+		min-height: 460px;
+		padding: 46px 40px 44px 49px;
+		display: flex;
+		flex-direction: column;
+
+		background-color: $white;
+		border-radius: $border-radius;
+	}
+
+	&__paragraph {
+		font-size: 16px;
+		font-weight: 600;
+
+		&:not(:last-of-type) {
+			margin-bottom: 5px;
+		}
+	}
+
+	&__link {
+		margin-top: auto;
+
+		text-decoration: underline;
+		color: $violent;
+		font-size: 16px;
+		line-height: 15px;
+	}
+
+	&__info {
+		margin-top: 35px;
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+	}
+
+	&__author {
+		font-size: 16px;
+		font-weight: 800;
+	}
+
+	&__date {
+		font-size: 16px;
+		color: lighten($black, 50%);
+	}
+
+	&__offline {
+		.course-feedback__block {
+			background-color: $violent;
+		}
+
+		.course-feedback__rating {
+			color: $white;
+		}
+	}
+
+	&__adults-courses {
+		.slider__pagination {
+			bottom: -40px;
+		}
+	}
+
+	&__adults-courses {
+		.subtitle {
+			max-width: 550px;
+		}
+	}
+}

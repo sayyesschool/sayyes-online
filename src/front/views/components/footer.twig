@@ -1,0 +1,84 @@
+<footer class="footer">
+	<div class="section-container">
+		<div class="footer__wrapper">
+			<div class="footer__column">
+				{% include '../components/logo.twig' with { fill: "#520360" } %}
+				{% include '../components/phone-numbers.twig' %}
+				<ul class="footer__call">
+					<li class="footer__call-item">
+						<a href="#" class="footer__link">Заказать звонок</a>
+					</li>
+					<li class="footer__call-item">
+						<a href="#" class="footer__link">Напишите нам в WhatsApp</a>
+					</li>
+				</ul>
+				<div class="footer__email">
+					<div class="footer__title">E-MAIL:</div>
+					<div class="footer__item">
+						<a href="#" class="footer__link">{{meta.email}}</a>
+					</div>
+				</div>
+				<div class="footer__address">
+					<div class="footer__title">Адрес школы</div>
+					<div class="footer__item">{{meta.address}}</div>
+				</div>
+				<div class="footer__policy">
+					<p>Политика конфиденциальности</p>
+					<p>Договор-оферта</p>
+				</div>
+			</div>
+			<div class="footer__column">
+				<div class="footer__copyright">
+					<p>© 2013–2023 SAY YES!</p>
+					<p>Все права защищены</p>
+				</div>
+			</div>
+			<div class="footer__column">
+				<ul class="footer__about">
+					<div class="footer__title">О SAY YES</div>
+					{% for item in footerNavItems.about %}
+						<li class="footer__item">
+							<a href="{{item.url}}" class="footer__link">{{item.text}}</a>
+						</li>
+					{% endfor %}
+				</ul>
+				{% include '../components/social.twig' %}
+				<div class="footer__with-love">
+					Сделано с
+					<img src="./assets/images/decoration/elements/heart-2.svg" alt="С любовью" class="footer__with-love-img">
+				</div>
+			</div>
+			<div class="footer__column">
+				<div class="footer__title">Курсы и программы школы</div>
+				<div class="footer__courses">
+					<ul class="footer__subcolumn">
+						{% for item in footerNavItems.courses %}
+							<li class="footer__item">
+								<a href="{{item.url}}" class="footer__link">{{item.text}}</a>
+							</li>
+						{% endfor %}
+					</ul>
+					<ul class="footer__subcolumn">
+						{% for item in footerNavItems.programms %}
+							<li class="footer__item">
+								<a href="{{item.url}}" class="footer__link">{{item.text}}</a>
+							</li>
+						{% endfor %}
+						<div class="footer__results-title">Результаты проведения СОУТ</div>
+					</ul>
+				</div>
+				<div class="license">
+					<img src="./assets/images/pictures/license.png" alt="Лицензия 77 Л01 №0007610" class="license__img">
+					<div class="license__info">
+						<h4 class="license__title">Лицензия на доп. образование</h4>
+						<p class="license__series">серия 77 Л01 №0007610</p>
+					</div>
+				</div>
+				<div class="footer__designer">
+					<p>Дизайн сайта</p>
+					<p>Насибуллина Екатерина</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>

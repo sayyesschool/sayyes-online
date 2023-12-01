@@ -1,0 +1,35 @@
+.meetings {
+	background-color: $yellow;
+	border-radius: $border-radius;
+
+	padding: 65px 0 90px;
+	margin-bottom: 100px;
+
+	.subtitle {
+		margin-bottom: 20px;
+	}
+
+	.slider {
+		padding-top: 40px;
+	}
+
+	.slider__pagination {
+		bottom: -35px;
+		right: 50%;
+		transform: translateX(50%);
+		width: 40px;
+	}
+
+	.slider__arrows {
+		top: -30px;
+	}
+
+	&__description {
+		max-width: 550px;
+	}
+
+	&__cards {
+		display: flex;
+		justify-content: space-between;
+	}
+}

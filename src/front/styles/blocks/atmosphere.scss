@@ -1,0 +1,91 @@
+.atmosphere {
+	background-color: $white;
+	border-radius: 0 0 $border-radius $border-radius;
+	padding: 50px 0 95px;
+
+	.subtitle {
+		margin-bottom: 20px;
+	}
+
+	.video {
+		overflow: hidden;
+		margin-right: 20px;
+		border-radius: $border-radius;
+
+		.play {
+			right: 50%;
+			transform: translateX(50%);
+		}
+	}
+
+	&__description {
+		max-width: 570px;
+
+		&:last-of-type {
+			margin-bottom: 40px;
+		}
+	}
+
+	&__trip {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 20px;
+		position: relative;
+	}
+
+	&__trip-img,
+	&__celebration-img {
+		display: block;
+		object-fit: cover;
+		border-radius: $border-radius;
+	}
+
+	&__celebration-img-2 {
+		border-radius: $border-radius;
+	}
+
+	&__trip-img {
+		width: 666px;
+		height: 360px;
+	}
+
+	&__celebration-img {
+		width: 274px;
+		height: 495px;
+		margin-right: 20px;
+	}
+
+	&__trip-tip {
+		position: absolute;
+		top: -120px;
+		right: 150px;
+	}
+
+	&__celebrations {
+		display: flex;
+		justify-content: space-between;
+		position: relative;
+	}
+
+	&__celebrations-list {
+		max-width: 207px;
+	}
+
+	&__celebrations-item {
+		font-weight: 700;
+		max-width: 180px;
+		margin-bottom: 15px;
+	}
+
+	&__celebrations-images {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+	}
+
+	&__celebrations-tip {
+		position: absolute;
+		top: 235px;
+		left: 287px;
+	}
+}

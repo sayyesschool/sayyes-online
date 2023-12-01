@@ -1,0 +1,9 @@
+<ul class="phone-numbers">
+	{% for item in meta.phonenumberItems %}
+		{% set combinedClasses = item.icon ~ ' ' ~ classes %}
+		<li class="phone-numbers__item">
+			{% include '../components/icon.twig' with {class: combinedClasses} %}
+			<a id="callback" href="#" class="phone-numbers__link">{{item.text}}</a>
+		</li>
+	{% endfor %}
+</ul>

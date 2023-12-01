@@ -1,0 +1,18 @@
+<section class="education-directions">
+	<div class="section-container">
+		<h2 class="subtitle">Более 10 лет мы
+			<span class="text text--violent">обучаем</span>
+			сотрудников компаний
+			<span class="text text--violent">по направлениям:</span>
+		</h2>
+
+		<div class="education-directions__blocks">
+			{% for item in educationDirections %}
+				<div class="text-block {{item.class}}">
+					<h4 class="text-block__title">{{item.title}}</h4>
+					<p class="text-block__description">{{item.description}}</p>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</section>

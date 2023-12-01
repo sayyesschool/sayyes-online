@@ -1,0 +1,21 @@
+<section class="organizations">
+	<div class="section-container">
+		<h2 class="subtitle">Нас уже выбрали:</h2>
+		<div class="slider">
+			<div class="slider__arrows">
+				<button class="slider__left-arrow"></button>
+				<button class="slider__right-arrow"></button>
+			</div>
+			<div class="slider__slide">
+				<ul class="organizations__list">
+					{% for item in organizations %}
+						<li class="organizations__item">
+							<img src="./assets/images/organizations/{{item.img}}.png" alt="{{item.name}}">
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+			<ul class="slider__pagination"></ul>
+		</div>
+	</div>
+</section>

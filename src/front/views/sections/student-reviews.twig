@@ -1,0 +1,34 @@
+<section class="student-reviews">
+	<div class="content-container">
+		<h2 class="subtitle">Лучшие показатели нашей работы — это студенты, уверенно владеющие языком.</h2>
+		<p class="student-reviews__description">Наши ученики рассказывают о своих результатах и процессе обучения в SAY YES! на английском.</p>
+		<div class="student-reviews__reviews">
+			{% for person in studentReviews %}
+				<div class="video-block">
+					<div class="video">
+						<img src="./assets/images/student-reviews/{{person.img}}.jpg" alt="Say Yes" class="video__bg">
+						<button class="play" id="{{person.videoId}}"></button>
+					</div>
+					<div class="video-block__content">
+						<h4 class="video-block__title">{{person.name}}</h4>
+						<p class="video-block__description">{{person.description}}</p>
+						<ul class="video-block__progress">
+							<li class="video-block__item">
+								<div class="video-block__start">Старт обучения:
+								</div>
+								<div class="video-block__level">{{person.startLevel}}</div>
+							</li>
+							<li class="video-block__item">
+								<div class="video-block__teacher">Преподаватель:
+								</div>
+								<div class="block__teacher-name">{{person.teacher}}</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				{% include '../components/modal.twig' with {modal: 'video', url: person.videoUrl, id: person.videoId} %}
+			{% endfor %}
+		</div>
+		<button class="btn btn--yellow">Показать ещё</button>
+	</div>
+</section>

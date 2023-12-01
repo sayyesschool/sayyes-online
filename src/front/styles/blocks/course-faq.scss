@@ -1,0 +1,27 @@
+.course-faq {
+	margin-bottom: 100px;
+
+	.subtitle {
+		max-width: 800px;
+		margin-bottom: 40px;
+	}
+
+	.accordion {
+		width: 100%;
+	}
+
+	&__img {
+		width: 372px;
+		height: 460px;
+		display: block;
+		object-fit: cover;
+		border-radius: $border-radius;
+		box-shadow: 0px 0px 20px 0px $white;
+	}
+
+	&__block {
+		display: flex;
+		justify-content: space-between;
+		gap: 20px;
+	}
+}

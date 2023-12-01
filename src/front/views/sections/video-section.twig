@@ -1,0 +1,56 @@
+{% if page == 'about' %}
+	{% set subtitle = 'Быть нашим студентом — это...' %}
+	{% set videoImg = 'video-section-1' %}
+	{% set videoId = 'video-5' %}
+{% elseif page == 'methodology'  %}
+	{% set subtitle = 'Посмотрите короткое видео о нашем подходе к обучению' %}
+	{% set videoImg = 'video-section-2' %}
+	{% set mixin = 'methodology' %}
+	{% set videoId = 'video-6' %}
+{% elseif page == 'companies'  %}
+	{% set subtitle = 'Управляющий директор SAY YES! Роман Сорочук коротко расскажет о преимуществах нашего обучения и процессе работы с компаниями.' %}
+	{% set videoImg = 'video-section-3' %}
+	{% set mixin = 'companies' %}
+	{% set videoId = 'video-7' %}
+{% elseif page == 'companies-2'  %}
+	{% set subtitle = 'Посмотрите короткое видео о нашем подходе к корпоративному обучению.' %}
+	{% set videoImg = 'video-section-4' %}
+	{% set mixin = 'companies-2' %}
+	{% set videoId = 'video-8' %}
+{% elseif page == 'speaking-club'  %}
+	{% set subtitle = 'Посмотрите, как проходят встречи нашего разговорного клуба' %}
+	{% set videoImg = 'video-section-5' %}
+	{% set mixin = 'speaking-club' %}
+	{% set videoId = 'video-9' %}
+{% elseif page == 'offline'  %}
+	{% set subtitle = 'Посмотрите видео о методике школы' %}
+	{% set videoImg = 'video-section-2' %}
+	{% set mixin = 'offline' %}
+	{% set videoId = 'video-10' %}
+{% elseif page == 'children-courses' %}
+	{% set subtitle = 'Занятия онлайн — это удобно!' %}
+	{% set description = ['Обучение в комфортной и безопасной для вашего ребенка обстановке.', 'Экономия времени на поездках к репетитору или в школу.'] %}
+	{% set videoImg = 'video-section-6' %}
+	{% set mixin = 'children-courses' %}
+	{% set videoId = 'video-11' %}
+{% elseif page == 'children-courses-2' %}
+	{% set subtitle = 'Единственная онлайн-школа, где снимают отчеты о прогрессе учеников на видео' %}
+	{% set description = ['Посмотрите не просто отзывы наших юных студентов, а то, как они говорят на английском'] %}
+	{% set videoImg = 'video-section-7' %}
+	{% set mixin = 'children-courses-2' %}
+	{% set videoId = 'video-12' %}
+{% endif %}
+
+<section class="video-section video-section--{{mixin}}">
+	<div class="video-section__info">
+		<h2 class="subtitle">{{subtitle}}</h2>
+		{% for paragraph in description %}
+			<p class="video-section__description">{{paragraph}}</p>
+		{% endfor %}
+	</div>
+	<div class="video">
+		<img src="./assets/images/video-sections/{{videoImg}}.jpg" alt="Офлайн" class="video__bg">
+		<button class="play" id="{{videoId}}"></button>
+	</div>
+	{% include '../components/modal.twig' with {modal: 'video', url: "https://www.youtube.com/embed/6ISA01NE2rY", id: videoId} %}
+</section>

@@ -1,0 +1,11 @@
+{% extends '../layouts/base.twig' %}
+
+{% block content %}
+	{% include '../sections/mainscreen-big.twig' with { page: 'education' } %}
+
+	{% include '../sections/img-courses-2.twig' with { page: 'education' } %}
+
+	{% include '../sections/lessons-type.twig' %}
+
+	{% include '../sections/trial-lesson.twig' %}
+{% endblock %}

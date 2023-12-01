@@ -1,0 +1,51 @@
+.personal-approach {
+	padding: 55px 60px 60px;
+	margin-bottom: 100px;
+
+	background-color: $violent;
+	border-radius: $border-radius;
+	color: $white;
+
+	.subtitle {
+		max-width: 750px;
+		margin-bottom: 20px;
+	}
+
+	.slider {
+		margin-bottom: 20px;
+		padding-top: 40px;
+	}
+
+	.slider__arrows {
+		top: -30px;
+		right: 105px;
+	}
+
+	.text-block {
+		justify-content: flex-start;
+		min-height: 370px;
+		padding-right: 25px;
+		padding-top: 200px;
+
+		.text-block__title {
+			position: absolute;
+			max-width: 260px;
+		}
+
+		.text-block__description {
+			margin-top: 65px;
+		}
+	}
+
+	&__description {
+		max-width: 500px;
+	}
+
+	&__cards {
+		display: flex;
+		justify-content: space-between;
+		gap: 20px;
+
+		color: $black;
+	}
+}

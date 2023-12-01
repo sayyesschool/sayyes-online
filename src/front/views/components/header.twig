@@ -1,0 +1,27 @@
+<header class="main-header">
+	<div class="main-header__overview">
+		<div class="container">
+			{% include '../components/logo.twig' with { fill: "#fff" } %}
+			<button class="btn btn--transparent btn--uppercase btn--sm" id="feedback">Бесплатный урок</button>
+			<a href="#" class="main-header__link">Онлайн тест</a>
+			<a href="#" class="main-header__link">Обратный звонок</a>
+			{% include '../components/phone-numbers.twig' with {classes: 'icon--white icon--sm'}  %}
+			<div class="main-header__contacts">
+				<div class="main-header__city">Москва</div>
+				<div class="main-header__time">ПН-ПТ с 12:00 до 21:00</div>
+			</div>
+			<a href="//auth.{{APP_DOMAIN}}" class="main-header__link">Войти</a>
+		</div>
+	</div>
+
+	<nav class="main-header__navigation">
+		<ul class="main-header__list">
+			{% for item in headerNavItems %}
+				<li class="main-header__item">
+					<a href="{{item.url}}" class="main-header__sublink">{{item.text}}</a>
+					{% include '../components/subnav.twig' %}
+				</li>
+			{% endfor %}
+		</ul>
+	</nav>
+</header>

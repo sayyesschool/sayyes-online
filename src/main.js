@@ -9,6 +9,7 @@ const authMiddleware = require('./auth/middleware');
 const classroom = require('./class');
 const cms = require('./cms');
 const crm = require('./crm');
+const front = require('./front');
 const lms = require('./lms');
 const server = require('./server');
 
@@ -27,6 +28,7 @@ const options = config.APP_ENV === 'production' ? null : {
 const { authenticate, authorize, redirect } = context.middleware.auth;
 
 server(context, options)
+    .use(front(context))
     .use(authenticate)
     .use(api(context))
     .use(auth(context))

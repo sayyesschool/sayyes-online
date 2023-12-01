@@ -1,0 +1,33 @@
+.course-results {
+	margin-bottom: 100px;
+
+	.subtitle {
+		max-width: 700px;
+		margin-bottom: 20px;
+	}
+
+	.list {
+		width: 568px;
+	}
+
+	&__content {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&__description {
+		max-width: 450px;
+		position: relative;
+
+		&::after {
+			content: "";
+			width: 254px;
+			height: 148px;
+			position: absolute;
+			top: 104px;
+			left: 115px;
+			background: url("../../assets/images/decoration/notes/free-2.svg")
+				center center/cover no-repeat;
+		}
+	}
+}

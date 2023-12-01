@@ -1,0 +1,42 @@
+.about-course {
+	margin-bottom: 100px;
+	display: flex;
+	justify-content: space-between;
+
+	&__title {
+		max-width: 540px;
+		font-size: 42px;
+		font-weight: 700;
+		line-height: 40px;
+	}
+
+	&__info {
+		max-width: 550px;
+	}
+
+	&__text {
+		margin-bottom: 15px;
+	}
+
+	&__purpose {
+		font-weight: 700;
+	}
+
+	&--children-courses {
+		.about-course__title {
+			max-width: 500px;
+		}
+	}
+
+	&--offline {
+		.about-course__title {
+			max-width: 530px;
+		}
+	}
+
+	&--offline-2 {
+		.about-course__title {
+			max-width: 490px;
+		}
+	}
+}

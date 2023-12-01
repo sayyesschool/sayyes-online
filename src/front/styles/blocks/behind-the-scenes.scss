@@ -1,0 +1,158 @@
+.behind-the-scenes {
+	padding: 100px 60px;
+	margin-bottom: 100px;
+	position: relative;
+
+	border-radius: $border-radius;
+	background-color: $white;
+	overflow: hidden;
+
+	&::before,
+	&::after {
+		content: "";
+		position: absolute;
+	}
+
+	&::before {
+		width: 1285px;
+		height: 1916px;
+		top: -4px;
+		left: -5px;
+		background: url("../../assets/images/decoration/elements/confetti-2.svg")
+			center center/cover no-repeat;
+	}
+
+	.subtitle {
+		max-width: 590px;
+		margin-bottom: 20px;
+	}
+
+	&__description {
+		max-width: 730px;
+
+		&:not(:last-of-type) {
+			margin-bottom: 10px;
+		}
+	}
+
+	&__gallery {
+		display: grid;
+		grid-template-areas:
+			"a a a a a a a b b b b b"
+			"c c d d d d d d . . . ."
+			"e e e e e f f f f f f f"
+			". . . . g g g g g g h h";
+		gap: 20px;
+		margin-top: 40px;
+	}
+
+	&__item {
+		position: relative;
+
+		&:nth-child(1) {
+			grid-area: a;
+
+			&::before {
+				content: "";
+				width: 360px;
+				height: 205px;
+				position: absolute;
+				top: -10px;
+				left: -281px;
+				transform: scaleX(-1) rotate(50deg);
+				background: url("../../assets/images/decoration/elements/tinsel.svg")
+					center center/cover no-repeat;
+			}
+		}
+
+		&:nth-child(2) {
+			grid-area: b;
+
+			&::before {
+				content: "";
+				width: 157px;
+				height: 142px;
+				position: absolute;
+				top: -193px;
+				right: 134px;
+				background: url("../../assets/images/decoration/notes/celebration.svg")
+					center center/cover no-repeat;
+			}
+		}
+
+		&:nth-child(3) {
+			grid-area: c;
+
+			&::before {
+				content: "";
+				content: "";
+				width: 324px;
+				height: 190px;
+				position: absolute;
+				top: -28px;
+				left: 774px;
+				background: url("../../assets/images/decoration/elements/tinsel.svg")
+					center center/cover no-repeat;
+			}
+		}
+
+		&:nth-child(4) {
+			grid-area: d;
+
+			&::before {
+				content: "";
+				width: 173px;
+				height: 107px;
+				position: absolute;
+				top: 205px;
+				right: -245px;
+				background: url("../../assets/images/decoration/notes/fun.svg")
+					center center/cover no-repeat;
+			}
+		}
+
+		&:nth-child(5) {
+			grid-area: e;
+		}
+
+		&:nth-child(6) {
+			grid-area: f;
+		}
+
+		&:nth-child(7) {
+			grid-area: g;
+
+			&::before {
+				content: "";
+				width: 227px;
+				height: 164px;
+				position: absolute;
+				bottom: -47px;
+				left: -470px;
+				background: url("../../assets/images/decoration/elements/petard.svg")
+					center center/cover no-repeat;
+			}
+		}
+
+		&:nth-child(8) {
+			grid-area: h;
+
+			&::before {
+				content: "";
+				width: 137px;
+				height: 85px;
+				position: absolute;
+				top: 108px;
+				left: -773px;
+				background: url("../../assets/images/decoration/notes/awards.svg")
+					center center/cover no-repeat;
+			}
+		}
+	}
+
+	&__img {
+		display: block;
+		object-fit: cover;
+		border-radius: $border-radius;
+	}
+}

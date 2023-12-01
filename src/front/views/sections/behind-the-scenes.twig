@@ -1,0 +1,14 @@
+<section class="behind-the-scenes">
+	<div class="section-container">
+		<h2 class="subtitle">Жизнь Школы за кулисами и не только</h2>
+		<p class="behind-the-scenes__description">Для нас Школа — это не только интересная работа, но и совместное времяпрепровождение.</p>
+		<p class="behind-the-scenes__description">Мы веселимся, вместе учимся новому и делаем жизнь нашего SAY YES! коммьюнити насыщенней яркими моментами и от того счастливее.</p>
+		<ul class="behind-the-scenes__gallery">
+			{% for item in gallery %}
+				<li class="behind-the-scenes__item">
+					<img src="./assets/images/behind-the-scenes/{{item.img}}.jpg" alt="{{item.title}}" class="behind-the-scenes__img">
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+</section>

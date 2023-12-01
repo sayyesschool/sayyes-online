@@ -1,0 +1,27 @@
+{% extends '../layouts/base.twig' %}
+
+{% block content %}
+	{% include '../sections/mainscreen-big.twig' with { page: 'companies' } %}
+
+	{% include '../sections/video-section.twig' with {page: 'companies'} %}
+
+	{% include '../sections/education-directions.twig' %}
+
+	{% include '../sections/img-courses.twig' with { page: 'companies' } %}
+
+	{% include '../sections/profitable-cooperation.twig' %}
+
+	{% include '../sections/history.twig' %}
+
+	{% include '../sections/all-teachers.twig' %}
+
+	{% include '../sections/video-section.twig' with {page: 'companies-2'} %}
+
+	{% include '../sections/advantages-cooperation.twig' %}
+
+	{% include '../sections/organizations.twig' %}
+
+	{% include '../sections/reviews.twig' %}
+
+	{% include '../sections/getting-started.twig' %}
+{% endblock %}

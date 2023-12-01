@@ -1,0 +1,17 @@
+<section class="knowledge-check">
+	<h2 class="subtitle">Узнайте уровень английского у вашего ребенка на пробном бесплатном уроке, где вы также:</h2>
+	<div class="knowledge-check__content">
+		{% include '../components/list.twig' with {list: knowledgeCheckList, classes: 'list--ul-sm list--central-marker'} %}
+
+		<form action="POST" class="knowledge-check__form">
+			<input type="text" placeholder="Имя родителя" class="knowledge-check__input"/>
+			<input type="text" placeholder="+7 (999)-99-99" class="knowledge-check__input"/>
+			<button class="btn">Записаться на бесплатный урок</button>
+			<div class="knowledge-check__policy">
+				<input type="checkbox"/>
+				Я согласен с
+				<span class="text text--underline">политикой обработки персональных данных</span>
+			</div>
+		</form>
+	</div>
+</section>

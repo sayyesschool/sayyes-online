@@ -1,0 +1,27 @@
+{% if page == 'vacancies' %}
+	{% set title = 'Мы предлагаем:' %}
+	{% set cards = proposal %}
+	{% set mixin = 'big-cards--vacancies' %}
+{% elseif page == 'speaking-club' %}
+	{% set title = 'Почему вам стоит посещать разговорные клубы?' %}
+	{% set cards = clubBigCards %}
+	{% set mixin = 'big-cards--speaking-club' %}
+{% endif %}
+
+<section class="big-cards {{mixin}}">
+	<h2 class="subtitle">{{title}}</h2>
+	<div class="big-cards__cards">
+		{% for card in cards %}
+			<div class="big-cards__card">
+				<h4 class="big-cards__title">{{card.title}}</h4>
+				<ul class="big-cards__list">
+					{% for cardItem in card.list %}
+						<li class="big-cards__item">{{cardItem.property}}
+							<br>
+							{{cardItem.value}}</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endfor %}
+	</div>
+</section>

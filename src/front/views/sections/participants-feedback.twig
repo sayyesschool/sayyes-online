@@ -1,0 +1,29 @@
+<section class="participants-feedback">
+	<div class="section-container">
+		<h2 class="subtitle">Отзывы участников</h2>
+		<p class="participants-feedback__description">Мы готовы вкладываться в ваше развитие, но базовый опыт и знания необходимы уже со старта работы у нас в школе.</p>
+		<div class="slider">
+			<div class="slider__arrows">
+				<button class="slider__left-arrow"></button>
+				<button class="slider__right-arrow"></button>
+			</div>
+			<div class="slider__slide">
+				<div class="participants-feedback__cards">
+					{% for item in participantsFeedback %}
+						<div class="participants-feedback__card">
+							{% for paragraph in item.text %}
+								<p class="participants-feedback__text">{{paragraph}}</p>
+							{% endfor %}
+
+							<div class="participants-feedback__author">
+								<a href="{{item.author.inst}}" class="participants-feedback__link">{{item.author.name}}</a>
+								{% include '../components/icon.twig' with {class: 'icon--inst'} %}
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			<ul class="slider__pagination"></ul>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,29 @@
+{% if page == 'adults' %}
+	{% set title = 'Выберите необходимое для вас обучение:' %}
+	{% set courses = courses4 %}
+{% elseif page == 'children' %}
+	{% set title = 'Выберите необходимое для вас обучение:' %}
+	{% set courses = courses6 %}
+	{% set mixin = 'img-courses-2--children' %}
+{% elseif page == 'education' %}
+	{% set title = 'Наша школа предлагает курсы английского языка для разных уровней знаний и в разнообразных форматах.' %}
+	{% set courses = courses7 %}
+	{% set withoutPrice = true %}
+	{% set mixin = 'img-courses-2--education' %}
+{% endif %}
+
+<section class="img-courses-2 {{mixin}}">
+	<div class="section-container">
+		<h2 class="subtitle">{{title}}</h2>
+		<ul class="img-courses-2__blocks">
+			{% include '../components/big-courses.twig' with {courses, withoutPrice} %}
+			{% if page == 'education' %}
+				<div class="course-selection">
+					<h3 class="course-selection__title">Затрудняетесь с выбором формы обучения?</h3>
+					<p class="course-selection__description">Подберем для вас удобный курс и формат обучения!</p>
+					<button class="btn btn--violent">Оставить заявку</button>
+				</div>
+			{% endif %}
+		</ul>
+	</div>
+</section>

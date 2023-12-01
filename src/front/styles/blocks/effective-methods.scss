@@ -1,0 +1,21 @@
+.effective-methods {
+	margin-bottom: 100px;
+
+	position: relative;
+
+	.subtitle {
+		max-width: 715px;
+		margin-bottom: 40px;
+	}
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: 15px;
+		right: 173px;
+		width: 218px;
+		height: 85px;
+		background: url("../../assets/images/decoration/notes/combination-of-techniques.svg")
+			center center/contain no-repeat;
+	}
+}

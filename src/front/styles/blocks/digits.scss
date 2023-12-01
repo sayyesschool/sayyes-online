@@ -1,0 +1,81 @@
+.digits {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 100px;
+
+	.subtitle {
+		max-width: 190px;
+		font-size: 40px;
+		line-height: 42px;
+	}
+
+	&__list {
+		width: 764px;
+		display: grid;
+		gap: 20px;
+		grid-template-areas:
+			"a a a b b b b b"
+			"c c c c c d d d"
+			"e e e e e d d d";
+	}
+
+	&__item {
+		background-color: $yellow;
+		border-radius: $border-radius;
+
+		min-height: 200px;
+		padding: 45px 0 0 45px;
+
+		&:nth-child(1) {
+			grid-area: a;
+		}
+
+		&:nth-child(2) {
+			grid-area: b;
+		}
+
+		&:nth-child(3) {
+			grid-area: c;
+			display: flex;
+			min-height: 150px;
+
+			.digits__title {
+				margin-right: 70px;
+			}
+		}
+
+		&:nth-child(4) {
+			grid-area: d;
+		}
+
+		&:nth-child(5) {
+			grid-area: e;
+			display: flex;
+			min-height: 150px;
+
+			.digits__title {
+				margin-right: 45px;
+			}
+		}
+
+		&--default {
+			background-color: $yellow;
+		}
+
+		&--white {
+			background-color: $white;
+		}
+	}
+
+	&__title {
+		font-size: 70px;
+		font-weight: 700;
+		line-height: 60px;
+
+		margin-bottom: 10px;
+	}
+
+	&__description {
+		max-width: 140px;
+	}
+}

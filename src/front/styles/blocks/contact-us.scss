@@ -1,0 +1,12 @@
+.contact-us {
+	margin-bottom: 100px;
+
+	.subtitle {
+		margin-bottom: 40px;
+	}
+
+	&__cards {
+		display: flex;
+		justify-content: space-between;
+	}
+}

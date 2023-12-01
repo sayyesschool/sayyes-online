@@ -1,0 +1,15 @@
+<section class="expectations">
+	<div class="section-container">
+		<h2 class="subtitle">Ожидание от кандидатов</h2>
+		<p class="expectations__description">Мы готовы вкладываться в ваше развитие, но базовый опыт и знания необходимы уже со старта работы у нас в школе.</p>
+
+		<div class="text-blocks text-blocks--expectations">
+			{% for item in expectations1 %}
+				<div class="text-block {{item.class}}">
+					<h4 class="text-block__title">{{item.title}}</h4>
+					<p class="text-block__description">{{item.description}}</p>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</section>

@@ -1,0 +1,52 @@
+.mainscreen {
+	max-width: 1280px;
+	height: 560px;
+	padding: 60px 0 0 51px;
+	margin-bottom: 100px;
+	color: white;
+
+	border-radius: $border-radius;
+	background: url("../../assets/images/mainscreens/mainscreen-1.jpg") center
+		center/cover no-repeat;
+
+	.title {
+		font-size: 68px;
+		font-weight: 700;
+		line-height: 60px;
+
+		margin-bottom: 25px;
+	}
+
+	.btn {
+		margin-top: 84px;
+		font-size: 18px;
+	}
+
+	&__description {
+		position: relative;
+	}
+
+	&__note {
+		position: absolute;
+		bottom: -100px;
+		right: -105px;
+	}
+
+	&__left {
+		max-width: 440px;
+	}
+
+	&__text {
+		max-width: 270px;
+	}
+
+	&--speaking-club {
+		padding: 68px 0 0 106px;
+
+		.title {
+			margin-bottom: 38px;
+		}
+
+		background-image: url("../../assets/images/mainscreens/mainscreen-8.jpg");
+	}
+}

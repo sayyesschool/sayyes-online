@@ -1,0 +1,30 @@
+<section class="all-teachers">
+	<div class="section-container">
+		<h2 class="subtitle">
+			<span class="text text--violent">Наши</span>
+			харизматичные и профессиональные
+			<span class="text text--violent">преподаватели</span>
+		</h2>
+		<p class="all-teachers__description">Корпоративные курсы английского в школе “SAY YES!” проводят как носители языка, так и русскоязычные преподаватели с многолетним опытом преподавания, в том числе деловому английскому.</p>
+		<p class="all-teachers__description">Прежде, чем попасть в нашу команду, преподаватели проходят многоэтапный отбор и обучение методике школы. Это профессионалы, не лишенные чувства юмора и энергичности, с которыми учить английский вашим сотрудникам будет в удовольствие!</p>
+		<div class="cards">
+			{% for person in teacherCards3 %}
+				<div class="card card--{{person.type}}">
+					<img src="./assets/images/teachers/{{person.img}}.jpg" alt="{{person.name}}" class="card__img">
+					<div class="card__content">
+						<h3 class="card__name">{{person.name}}</h3>
+						<ul class="card__description">
+							{% for merits in person.merits %}
+								<li>{{merits.merit}}:
+									{{merits.description}}</li>
+							{% endfor %}
+						</ul>
+						<button class="btn btn--transparent btn--transparent-black btn--md" id="{{person.teacherId}}">Подробнее</button>
+					</div>
+				</div>
+				{% include '../components/modal.twig' with {modal: "teacher", id: person.teacherId, teacher: person} %}
+			{% endfor %}
+		</div>
+		<button class="btn btn--violent">Все преподаватели</button>
+	</div>
+</section>

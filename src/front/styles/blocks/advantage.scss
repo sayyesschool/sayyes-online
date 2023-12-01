@@ -1,0 +1,32 @@
+.advantage {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 470px;
+	height: 110px;
+	padding: 35px;
+	margin-bottom: 20px;
+
+	background-color: $pearl-white;
+	border-radius: $border-radius;
+	font-weight: 700;
+	font-size: 18px;
+	line-height: 20px;
+
+	&__numbering {
+		padding-right: 20px;
+		font-size: 42px;
+		line-height: 45px;
+	}
+
+	&__title {
+		max-width: 150px;
+		align-self: flex-end;
+	}
+
+	&__description {
+		margin-left: auto;
+		text-align: right;
+		max-width: 200px;
+	}
+}

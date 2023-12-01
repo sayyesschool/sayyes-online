@@ -1,0 +1,80 @@
+.text-blocks {
+	display: flex;
+	gap: 20px;
+	flex-wrap: wrap;
+
+	.text-block {
+		align-self: flex-start;
+		min-height: 190px;
+
+		&:nth-child(1) {
+			min-height: 215px;
+		}
+
+		&:nth-child(2) {
+			min-height: 425px;
+		}
+
+		&:nth-child(4) {
+			margin-top: -210px;
+		}
+
+		&:nth-child(5) {
+			margin-left: auto;
+			min-height: 215px;
+			margin-top: -235px;
+		}
+	}
+
+	.subtitle {
+		max-width: 740px;
+		margin-bottom: 45px;
+	}
+
+	&--advantages {
+		.text-block {
+			min-height: 195px;
+
+			.text-block__title {
+				max-width: 220px;
+			}
+
+			&:nth-child(2) {
+				overflow: hidden;
+
+				.text-block__title {
+					margin-top: 0;
+				}
+			}
+		}
+	}
+
+	&--advantages-cooperation {
+		.text-block {
+			min-height: 175px;
+			padding-right: 140px;
+
+			&:nth-child(1) {
+				min-height: 175px;
+			}
+
+			&:nth-child(2) {
+				min-height: 370px;
+			}
+
+			&:nth-child(4) {
+				min-height: 175px;
+				margin-top: -195px;
+			}
+
+			&:nth-child(5) {
+				min-height: 175px;
+				margin-top: -195px;
+			}
+
+			.text-block__description {
+				margin-top: auto;
+			}
+		}
+	}
+}

@@ -1,0 +1,44 @@
+.reviews {
+	margin-bottom: 150px;
+
+	.subtitle {
+		max-width: 580px;
+	}
+
+	.slider {
+		padding-top: 30px;
+	}
+
+	.slider__arrows {
+		top: -25px;
+	}
+
+	.slider__pagination {
+		bottom: -70px;
+		right: 50%;
+		transform: translateX(50%);
+	}
+
+	&__list {
+		display: flex;
+		justify-content: space-between;
+		gap: 20px;
+	}
+
+	&__item {
+		width: 274px;
+	}
+
+	&__img {
+		width: 274px;
+		height: 380px;
+		display: block;
+		object-fit: cover;
+	}
+
+	&__name {
+		font-weight: 800;
+
+		margin-left: 5px;
+	}
+}

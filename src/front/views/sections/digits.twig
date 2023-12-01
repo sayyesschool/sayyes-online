@@ -1,0 +1,11 @@
+<section class="digits">
+	<h2 class="subtitle">SAY YES! в цифрах</h2>
+	<ul class="digits__list">
+		{% for item in digits %}
+			<li class="digits__item digits__item--{{item.bg}}">
+				<h4 class="digits__title">{{item.title}}</h4>
+				<p class="digits__description">{{item.description}}</p>
+			</li>
+		{% endfor %}
+	</ul>
+</section>

@@ -75,6 +75,7 @@
     "redux": "^4.1.1",
     "redux-promise": "^0.6.0",
     "request": "^2.88.2",
+    "twig": "^1.17.1",
     "twilio": "^3.84.1",
     "twilio-sync": "^3.2.2",
     "twilio-video": "^2.26.0",

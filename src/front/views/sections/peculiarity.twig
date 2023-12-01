@@ -1,0 +1,13 @@
+<section class="peculiarity">
+	<div class="section-container">
+		<h2 class="subtitle">Особенности группового обучения в SAY YES!</h2>
+		<div class="peculiarity__cards">
+			{% for item in peculiarity %}
+				<div class="peculiarity__card">
+					<h4 class="peculiarity__title">{{item.title}}</h4>
+					<p class="peculiarity__description">{{item.description}}</p>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</section>

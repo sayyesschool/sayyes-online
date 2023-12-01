@@ -1,0 +1,60 @@
+.big-cards {
+	padding: 65px 62px 80px;
+	margin-bottom: 100px;
+
+	background-color: $violent;
+	border-radius: $border-radius;
+
+	.subtitle {
+		margin-bottom: 45px;
+		max-width: 660px;
+
+		color: $white;
+	}
+
+	&__cards {
+		display: grid;
+		grid-template-columns: repeat(3, 372px);
+		grid-template-rows: repeat(2, 245px);
+		gap: 20px;
+	}
+
+	&__card {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		padding: 45px 45px 45px 50px;
+
+		background-color: $white;
+		border-radius: $border-radius;
+	}
+
+	&__title {
+		font-size: 24px;
+		font-weight: 700;
+		line-height: 25px;
+
+		max-width: 210px;
+	}
+
+	&__item {
+		&:not(:last-child) {
+			margin-bottom: 5px;
+		}
+	}
+
+	&--speaking-club {
+		.big-cards__cards {
+			grid-template-rows: repeat(2, 320px);
+		}
+
+		.big-cards__title {
+			max-width: 273px;
+			margin-bottom: 20px;
+		}
+
+		.big-cards__card {
+			justify-content: flex-start;
+		}
+	}
+}

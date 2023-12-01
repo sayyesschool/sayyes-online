@@ -1,0 +1,21 @@
+{% extends '../layouts/base.twig' %}
+
+{% block content %}
+	{% include '../sections/mainscreen-big.twig' with {page: 'adults-courses'} %}
+
+	{% include '../sections/about-course.twig' with {page: 'adults-courses'} %}
+
+	{% include '../sections/learning-form.twig' with {page: 'adults-courses'} %}
+
+	{% include '../sections/trial-lesson-mini.twig' %}
+
+	{% include '../sections/advantages.twig' with {page: 'adults-courses'} %}
+
+	{% include '../sections/course-results.twig' %}
+
+	{% include '../sections/course-feedback.twig' with {page: 'adults-courses'} %}
+
+	{% include '../sections/course-faq.twig' %}
+
+	{% include '../sections/trial-lesson.twig' %}
+{% endblock %}

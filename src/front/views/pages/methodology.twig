@@ -1,0 +1,13 @@
+{% extends '../layouts/base.twig' %}
+
+{% block content %}
+	{% include '../sections/mainscreen-big.twig' with {page: 'methodology'} %}
+
+	{% include '../sections/video-section.twig' with {page: 'methodology'} %}
+
+	{% include '../sections/effective-methods.twig' %}
+
+	{% include '../sections/advantages.twig' with {page: 'methodology'} %}
+
+	{% include '../sections/trial-lesson.twig' %}
+{% endblock %}

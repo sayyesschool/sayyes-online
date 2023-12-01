@@ -1,0 +1,9 @@
+{% extends '../layouts/base.twig' %}
+
+{% block content %}
+	{% include '../sections/mainscreen-big.twig' with {page: 'progress'} %}
+
+	{% include '../sections/student-reviews.twig' %}
+
+	{% include '../sections/trial-lesson.twig' %}
+{% endblock %}

@@ -1,0 +1,154 @@
+@import "vars";
+@import "vendor/reset";
+
+body {
+	background-color: $pearl-white;
+	font-size: 18px;
+	font-weight: 600;
+	line-height: 20px;
+	color: $black;
+	font-family: "Raleway", sans-serif;
+	font-variant-numeric: lining-nums proportional-nums;
+	overflow-x: hidden;
+	padding-top: 105px;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+
+.title {
+	font-size: 46px;
+	color: $white;
+	font-weight: 700;
+	line-height: 45px;
+}
+
+a {
+	text-decoration: none;
+}
+
+.container {
+	max-width: 1280px;
+	margin: 0 auto;
+
+	.trial-lesson-mini,
+	.img-comment,
+	.digits,
+	.cards-square,
+	.about-course,
+	.features {
+		margin-right: 62px;
+		margin-left: 62px;
+	}
+}
+
+@import "blocks/license";
+@import "blocks/about-teacher";
+@import "blocks/feedback-block";
+@import "blocks/teacher-block";
+@import "blocks/youtube-video";
+@import "blocks/overlay";
+@import "blocks/feedback-form";
+@import "blocks/convenient-oc";
+@import "blocks/result-children";
+@import "blocks/teacher-card";
+@import "blocks/personal-approach";
+@import "blocks/features";
+@import "blocks/children-advantages";
+@import "blocks/knowledge-check";
+@import "blocks/list";
+@import "blocks/course-results";
+@import "blocks/peculiarity";
+@import "blocks/offline-shortly";
+@import "blocks/course-faq";
+@import "blocks/stars";
+@import "blocks/course-feedback";
+@import "blocks/learning-form";
+@import "blocks/about-course";
+@import "blocks/club-events";
+@import "blocks/accordion";
+@import "blocks/faq";
+@import "blocks/participants-feedback";
+@import "blocks/tags";
+@import "blocks/tag";
+@import "blocks/meeting-card";
+@import "blocks/meetings";
+@import "blocks/club-shortly";
+@import "blocks/getting-started";
+@import "blocks/profitable-cooperation";
+@import "blocks/reviews";
+@import "blocks/organizations";
+@import "blocks/advantages-cooperation";
+@import "blocks/all-teachers";
+@import "blocks/cooperation";
+@import "blocks/education-directions";
+@import "blocks/img-courses-2";
+@import "blocks/img-courses";
+@import "blocks/big-course";
+@import "blocks/certificates";
+@import "blocks/discounts";
+@import "blocks/icon";
+@import "blocks/contact-us";
+@import "blocks/contacts";
+@import "blocks/contacts-section";
+@import "blocks/video-block-2";
+@import "blocks/video-block";
+@import "blocks/student-reviews";
+@import "blocks/part-of-team";
+@import "blocks/cards-square";
+@import "blocks/big-cards";
+@import "blocks/expectations";
+@import "blocks/text-block";
+@import "blocks/text-blocks";
+@import "blocks/advantages";
+@import "blocks/methods";
+@import "blocks/effective-methods";
+@import "blocks/team-of-teachers";
+@import "blocks/split-image";
+@import "blocks/subnav";
+@import "blocks/behind-the-scenes";
+@import "blocks/digits";
+@import "blocks/cards";
+@import "blocks/card";
+@import "blocks/back-office";
+@import "blocks/appeal";
+@import "blocks/img-comment";
+@import "blocks/video-section";
+@import "blocks/mainscreen-big";
+@import "blocks/video";
+@import "blocks/feedback";
+@import "blocks/tabs";
+@import "blocks/lessons-type";
+@import "blocks/course-selection";
+@import "blocks/course";
+@import "blocks/courses";
+@import "blocks/reward";
+@import "blocks/history";
+@import "blocks/trial-lesson-mini";
+@import "blocks/about-person";
+@import "blocks/comment";
+@import "blocks/slider";
+@import "blocks/student-progress";
+@import "blocks/atmosphere";
+@import "blocks/platform";
+@import "blocks/dream-team";
+@import "blocks/section-container";
+@import "blocks/practice";
+@import "blocks/play";
+@import "blocks/advantage";
+@import "blocks/central-text";
+@import "blocks/invite";
+@import "blocks/text";
+@import "blocks/subtitle";
+@import "blocks/trial-lesson";
+@import "blocks/main-list";
+@import "blocks/mainscreen";
+@import "blocks/social";
+@import "blocks/phone-numbers";
+@import "blocks/btn";
+@import "blocks/logo";
+@import "blocks/header";
+@import "blocks/footer";

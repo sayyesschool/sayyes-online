@@ -1,0 +1,568 @@
+.text-block {
+	// чтобы не разбивать цикл в twig файле, мне пришлось использовать тут трансформацию, так как в другом случае потребывалось бы делить цикл и добавлять несколько контейнеров в вёрстку
+	display: flex;
+	flex-direction: column;
+	width: 372px;
+	min-height: 190px;
+	padding: 40px 50px 45px 48px;
+	position: relative;
+
+	background-color: $white;
+	border-radius: $border-radius;
+
+	&__title {
+		font-size: 24px;
+		font-weight: 700;
+		line-height: 25px;
+
+		margin-top: auto;
+		margin-bottom: 15px;
+	}
+
+	&__tip {
+		font-weight: 800;
+	}
+
+	&--violent {
+		background-color: $medium-magenta;
+	}
+
+	&--yellow {
+		background-color: $yellow;
+	}
+
+	&--books-bg,
+	&--books-2-bg,
+	&--hourglass-bg,
+	&--comment-bg,
+	&--comment-2-bg,
+	&--comments-bg,
+	&--comments-2-bg,
+	&--heart-bg,
+	&--heart-2-bg,
+	&--diploma-bg,
+	&--diploma-2-bg,
+	&--leaves-bg,
+	&--mail-bg,
+	&--contact-bg,
+	&--contact-2-bg,
+	&--contacts-bg,
+	&--contacts-2-bg,
+	&--cap-bg,
+	&--cap-2-bg,
+	&--note-bg,
+	&--note-2-bg,
+	&--notes-bg,
+	&--notes-2-bg,
+	&--person-bg,
+	&--briefcase-bg,
+	&--webcam-bg,
+	&--webcam-2-bg,
+	&--format-bg,
+	&--video-bg,
+	&--fire-bg,
+	&--student-bg,
+	&--student-2-bg,
+	&--family-bg,
+	&--levels-bg,
+	&--levels-2-bg,
+	&--lightning-bg,
+	&--clock-bg,
+	&--clock-2-bg,
+	&--rubles-bg,
+	&--calendar-bg,
+	&--woman-bg,
+	&--target-bg,
+	&--casting-bg {
+		overflow: hidden;
+
+		&::before {
+			content: "";
+			position: absolute;
+			background-position: center center;
+			background-size: cover;
+			background-repeat: no-repeat;
+		}
+	}
+
+	&--discount-bg,
+	&--discount-2-bg,
+	&--free-lessons-bg {
+		overflow: hidden;
+
+		&::after {
+			content: "";
+			position: absolute;
+			background-position: center center;
+			background-size: cover;
+			background-repeat: no-repeat;
+		}
+	}
+
+	&--discount-bg {
+		&::after {
+			width: 123px;
+			height: 79px;
+			top: 55px;
+			left: 50px;
+			background-image: url("../../assets/images/decoration/notes/discount-20.svg");
+		}
+	}
+
+	&--discount-2-bg {
+		&::after {
+			width: 121px;
+			height: 76px;
+			top: 60px;
+			left: 50px;
+			background-image: url("../../assets/images/decoration/notes/permanent-discount.svg");
+		}
+	}
+
+	&--free-lessons-bg {
+		&::after {
+			width: 100px;
+			height: 60px;
+			top: 60px;
+			left: 50px;
+			background-image: url("../../assets/images/decoration/notes/free-lessons.svg");
+		}
+	}
+
+	&--books-bg {
+		overflow: visible;
+
+		&::before {
+			width: 288px;
+			height: 233px;
+			bottom: -20px;
+			right: -55px;
+			background-image: url("../../assets/images/decoration/elements/books.svg");
+		}
+	}
+
+	&--books-2-bg {
+		&::before {
+			width: 249px;
+			height: 200px;
+			top: 5px;
+			right: -90px;
+			background-image: url("../../assets/images/decoration/elements/books.svg");
+		}
+	}
+
+	&--hourglass-bg {
+		&::before {
+			width: 182px;
+			height: 210px;
+			top: -42px;
+			right: 15px;
+			background-image: url("../../assets/images/decoration/elements/hourglass-2.svg");
+		}
+	}
+
+	&--comment-bg {
+		&::before {
+			width: 114px;
+			height: 97px;
+			top: -15px;
+			right: -4px;
+			background-image: url("../../assets/images/decoration/elements/comment.svg");
+		}
+	}
+
+	&--comment-2-bg {
+		&::before {
+			width: 197px;
+			height: 168px;
+			top: -12px;
+			right: -33px;
+			background-image: url("../../assets/images/decoration/elements/comment.svg");
+		}
+	}
+
+	&--comments-bg {
+		&::before {
+			width: 208px;
+			height: 163px;
+			top: -36px;
+			right: -40px;
+			background-image: url("../../assets/images/decoration/elements/comments.svg");
+		}
+	}
+
+	&--comments-2-bg {
+		&::before {
+			width: 302px;
+			height: 222px;
+			bottom: 13px;
+			right: -120px;
+			background-image: url("../../assets/images/decoration/elements/comments-2.svg");
+		}
+	}
+
+	&--heart-bg {
+		&::before {
+			width: 226px;
+			height: 215px;
+			top: -18px;
+			right: -18px;
+			background-image: url("../../assets/images/decoration/elements/heart.svg");
+		}
+	}
+
+	&--heart-2-bg {
+		&::before {
+			width: 188px;
+			height: 178px;
+			bottom: -7px;
+			right: -42px;
+			transform: rotate(-17deg);
+			background-image: url("../../assets/images/decoration/elements/heart.svg");
+		}
+	}
+
+	&--diploma-bg {
+		&::before {
+			width: 133px;
+			height: 124px;
+			top: -21px;
+			right: 0px;
+			background-image: url("../../assets/images/decoration/elements/diploma.svg");
+		}
+	}
+
+	&--diploma-2-bg {
+		&::before {
+			width: 192px;
+			height: 191px;
+			top: -20px;
+			right: -35px;
+			transform: rotate(7deg);
+			background-image: url("../../assets/images/decoration/elements/diploma.svg");
+		}
+	}
+
+	&--leaves-bg {
+		&::before {
+			width: 104px;
+			height: 106px;
+			top: -10px;
+			right: -19px;
+			background-image: url("../../assets/images/decoration/elements/leaves.svg");
+		}
+	}
+
+	&--mail-bg {
+		&::before {
+			width: 157px;
+			height: 122px;
+			top: -22px;
+			right: -12px;
+			background-image: url("../../assets/images/decoration/elements/mail.svg");
+		}
+	}
+
+	&--contact-bg {
+		&::before {
+			width: 154px;
+			height: 123px;
+			top: -12px;
+			right: -9px;
+			background-image: url("../../assets/images/decoration/elements/person.svg");
+		}
+	}
+
+	&--contact-2-bg {
+		&::before {
+			width: 189px;
+			height: 151px;
+			top: -30px;
+			right: -50px;
+			background-image: url("../../assets/images/decoration/elements/person.svg");
+		}
+	}
+
+	&--contacts-bg {
+		&::before {
+			width: 231px;
+			height: 175px;
+			top: -46px;
+			right: -50px;
+			background-image: url("../../assets/images/decoration/elements/people.svg");
+		}
+	}
+
+	&--contacts-2-bg {
+		&::before {
+			width: 193px;
+			height: 147px;
+			top: -36px;
+			right: -33px;
+			background-image: url("../../assets/images/decoration/elements/people.svg");
+		}
+	}
+
+	&--cap-2-bg {
+		&::before {
+			width: 190px;
+			height: 152px;
+			top: -18px;
+			right: -43px;
+			background-image: url("../../assets/images/decoration/elements/cap.svg");
+		}
+	}
+
+	&--cap-bg {
+		&::before {
+			width: 187px;
+			height: 150px;
+			top: -25px;
+			right: -35px;
+			background-image: url("../../assets/images/decoration/elements/cap.svg");
+		}
+	}
+
+	&--note-bg {
+		&::before {
+			width: 200px;
+			height: 164px;
+			top: -60px;
+			right: -21px;
+			background-image: url("../../assets/images/decoration/elements/note-with-pen.svg");
+		}
+	}
+
+	&--notes-bg {
+		&::before {
+			width: 180px;
+			height: 168px;
+			top: -43px;
+			right: -22px;
+			background-image: url("../../assets/images/decoration/elements/notes.svg");
+		}
+	}
+
+	&--notes-2-bg {
+		&::before {
+			width: 180px;
+			height: 168px;
+			top: -48px;
+			right: -15px;
+			background-image: url("../../assets/images/decoration/elements/notes.svg");
+		}
+	}
+
+	&--note-2-bg {
+		&::before {
+			width: 259px;
+			height: 262px;
+			top: -91px;
+			right: -68px;
+			background-image: url("../../assets/images/decoration/elements/diary.svg");
+		}
+	}
+
+	&--person-bg {
+		&::before {
+			width: 131px;
+			height: 131px;
+			top: -10px;
+			right: -28px;
+			background-image: url("../../assets/images/decoration/elements/worker.svg");
+		}
+	}
+
+	&--briefcase-bg {
+		&::before {
+			width: 197px;
+			height: 142px;
+			top: -21px;
+			right: -62px;
+			background-image: url("../../assets/images/decoration/elements/briefcase.svg");
+		}
+	}
+
+	&--video-bg {
+		&::before {
+			width: 279px;
+			height: 246px;
+			top: -22px;
+			right: -29px;
+			background-image: url("../../assets/images/decoration/elements/monitor.svg");
+		}
+	}
+
+	&--format-bg {
+		&::before {
+			width: 170px;
+			height: 164px;
+			top: -29px;
+			right: -5px;
+			background-image: url("../../assets/images/decoration/elements/format-video.svg");
+		}
+	}
+
+	&--webcam-bg {
+		&::before {
+			width: 178px;
+			height: 164px;
+			top: -45px;
+			right: -36px;
+			background-image: url("../../assets/images/decoration/elements/person-3.svg");
+		}
+	}
+
+	&--webcam-2-bg {
+		&::before {
+			width: 187px;
+			height: 139px;
+			top: -15px;
+			right: -40px;
+			background-image: url("../../assets/images/decoration/elements/person-2.svg");
+		}
+	}
+
+	&--levels-bg {
+		&::before {
+			width: 185px;
+			height: 138px;
+			top: -19px;
+			right: -21px;
+			background-image: url("../../assets/images/decoration/elements/levels.svg");
+		}
+	}
+
+	&--levels-2-bg {
+		&::before {
+			width: 197px;
+			height: 147px;
+			bottom: -40px;
+			right: -30px;
+			transform: rotate(10deg);
+			background-image: url("../../assets/images/decoration/elements/levels.svg");
+		}
+	}
+
+	&--fire-bg {
+		&::before {
+			width: 141px;
+			height: 194px;
+			top: -45px;
+			right: -8px;
+			background-image: url("../../assets/images/decoration/elements/fire.svg");
+		}
+	}
+
+	&--student-bg {
+		&::before {
+			width: 200px;
+			height: 211px;
+			top: -5px;
+			right: -60px;
+			background-image: url("../../assets/images/decoration/elements/student.svg");
+		}
+	}
+
+	&--student-2-bg {
+		&::before {
+			width: 139px;
+			height: 147px;
+			top: -26px;
+			right: -6px;
+			transform: rotate(-22deg);
+			background-image: url("../../assets/images/decoration/elements/student.svg");
+		}
+	}
+
+	&--family-bg {
+		&::before {
+			width: 230px;
+			height: 218px;
+			top: -5px;
+			right: -50px;
+			background-image: url("../../assets/images/decoration/elements/family.svg");
+		}
+	}
+
+	&--lightning-bg {
+		&::before {
+			width: 79px;
+			height: 141px;
+			top: -18px;
+			right: 4px;
+			background-image: url("../../assets/images/decoration/elements/lightning-2.svg");
+		}
+	}
+
+	&--clock-bg {
+		&::before {
+			width: 269px;
+			height: 269px;
+			bottom: -70px;
+			right: -30px;
+			background-image: url("../../assets/images/decoration/elements/clock.svg");
+		}
+	}
+
+	&--clock-2-bg {
+		&::before {
+			width: 110px;
+			height: 110px;
+			top: -26px;
+			right: 2px;
+			background-image: url("../../assets/images/decoration/elements/clock-2.svg");
+		}
+	}
+
+	&--rubles-bg {
+		&::before {
+			width: 151px;
+			height: 164px;
+			bottom: -27px;
+			right: -7px;
+			background-image: url("../../assets/images/decoration/elements/rubles.svg");
+		}
+	}
+
+	&--calendar-bg {
+		&::before {
+			width: 190px;
+			height: 146px;
+			top: -9px;
+			right: -53px;
+			transform: rotate(20deg);
+			background-image: url("../../assets/images/decoration/elements/calendar.svg");
+		}
+	}
+
+	&--woman-bg {
+		&::before {
+			width: 159px;
+			height: 187px;
+			bottom: -3px;
+			right: -4px;
+			background-image: url("../../assets/images/decoration/elements/woman.svg");
+		}
+	}
+
+	&--target-bg {
+		&::before {
+			width: 207px;
+			height: 187px;
+			bottom: -6px;
+			right: -52px;
+			background-image: url("../../assets/images/decoration/elements/target.svg");
+		}
+	}
+
+	&--casting-bg {
+		&::before {
+			width: 174px;
+			height: 180px;
+			top: -4px;
+			right: -6px;
+			background-image: url("../../assets/images/decoration/elements/casting.svg");
+		}
+	}
+}

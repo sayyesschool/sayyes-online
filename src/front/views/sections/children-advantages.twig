@@ -1,0 +1,13 @@
+<section class="children-advantages">
+	<div class="section-container">
+		<h2 class="subtitle">Почему дети начинают разговаривать на английском, любить язык и получать хорошие отметки в школе, обучаясь в SAY YES?</h2>
+		<div class="children-advantages__blocks">
+			{% for item in childrenAdvantages %}
+				<div class="text-block {{item.class}}">
+					<h4 class="text-block__title">{{item.title}}</h4>
+					<p class="text-block__description">{{item.description}}</p>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</section>

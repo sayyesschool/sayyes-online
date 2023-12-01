@@ -1,0 +1,35 @@
+<section class="result-children">
+	<div class="section-container">
+		<h2 class="subtitle">Лучшие показатели нашей работы — это ученики, владеющие языком и довольные родители!</h2>
+		<p class="result-children__description">Родители наших учеников рассказывают о результатах и процессе обучения детей в SAY YES!</p>
+		<div class="slider">
+			<div class="slider__arrows">
+				<button class="slider__left-arrow"></button>
+				<button class="slider__right-arrow"></button>
+			</div>
+			<div class="slider__slide">
+				<div class="result-children__cards">
+					{% for item in childrenReviews %}
+						<div class="video-block-2">
+							<div class="video">
+								<img src="./assets/images/children-reviews/{{item.img}}.jpg" alt="Say Yes" class="video__bg">
+								<button class="play" id="{{item.videoId}}"></button>
+							</div>
+							<div class="video-block-2__content">
+								<a href="{{item.parent.url}}" class="video-block-2__title">
+									{{item.parent.name}}
+									{% include '../components/icon.twig' with {class: item.parent.icon} %}
+								</a>
+								<p class="video-block-2__subtitle">{{item.baby}}</p>
+								<p class="video-block-2__description">{{item.description}}</p>
+								<button class="video-block-2__btn">Развернуть</button>
+							</div>
+						</div>
+						{% include '../components/modal.twig' with {modal: 'video', url: item.videoUrl, id: item.videoId} %}
+					{% endfor %}
+				</div>
+			</div>
+			<ul class="slider__pagination"></ul>
+		</div>
+	</div>
+</section>

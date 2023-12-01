@@ -1,0 +1,30 @@
+.convenient-oc {
+	margin-bottom: 100px;
+
+	.subtitle {
+		max-width: 540px;
+		margin-bottom: 20px;
+	}
+
+	&__content {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&__description {
+		max-width: 500px;
+	}
+
+	&__paragraph {
+		&:not(:last-child) {
+			margin-bottom: 10px;
+		}
+	}
+
+	&__img {
+		width: 568px;
+		height: 310px;
+		border-radius: $border-radius;
+		object-fit: cover;
+	}
+}

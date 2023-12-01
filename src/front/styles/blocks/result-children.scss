@@ -1,0 +1,23 @@
+.result-children {
+	margin-bottom: 135px;
+
+	.subtitle {
+		max-width: 1000px;
+		margin-bottom: 20px;
+	}
+
+	.slider__pagination {
+		bottom: -30px;
+		right: 50%;
+		transform: translateX(50%);
+	}
+
+	&__description {
+		max-width: 500px;
+	}
+
+	&__cards {
+		display: flex;
+		justify-content: space-between;
+	}
+}

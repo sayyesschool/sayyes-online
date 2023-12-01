@@ -1,0 +1,33 @@
+.courses {
+	margin-bottom: 100px;
+
+	.subtitle {
+		max-width: 712px;
+		margin-bottom: 30px;
+	}
+
+	&__course-blocks {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		margin-top: 40px;
+	}
+
+	&--offer {
+		.subtitle {
+			max-width: 881px;
+			margin: 0 auto 20px;
+
+			text-align: center;
+		}
+
+		.tabs {
+			margin: 0 auto;
+		}
+
+		.courses__description {
+			text-align: center;
+			margin-bottom: 40px;
+		}
+	}
+}

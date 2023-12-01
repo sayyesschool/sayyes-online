@@ -1,0 +1,31 @@
+{% if page == 'about' %}
+	{% set title = 'Обращение основателей школы' %}
+	{% set description = '
+			<p class="appeal__description">Цель нашей Школы —
+				<span class="text text--violent">научить ГОВОРИТЬ</span>
+				на английском и
+				<span class="text text--violent">влюбить</span>
+				в сам процесс освоения языка. Ведь сам по себе путь может быть не менее прекрасен результата!</p>
+			<p class="appeal__description">Мы не только обладаем эффективными методиками обучения, но и стремимся создать атмосферу дружелюбия и уюта, в которую вам захочется возвращаться снова и снова.</p>
+			<p class="appeal__description">Приходите к нам за новыми знаниями и приятным времяпрепровождением =)</p>
+			<p class="appeal__description">Ждем вас в Школе SAY YES! в Москве и онлайн!</p>' %}
+	{% set img = './assets/images/pictures/founders-2.png' %}
+	{% set mixin = 'img-comment--about' %}
+{% elseif page == 'speaking-club' %}
+	{% set title = 'Разговорный клуб проводят ТОП преподаватели SAY YES!' %}
+	{% set description = '
+		<p class="appeal__description">Ведущие нашего онлайн клуба — самые опытные и харизматичные преподаватели SAY YES! и носители языка из Англии и США.</p>
+		<p class="appeal__description">Наши ведущие прошли обучение формату ведения уроков онлайн и могут разговорить любого, даже самого интровертного участника.</p>' %}
+	{% set img = './assets/images/pictures/casey.png' %}
+	{% set mixin = 'img-comment--speaking-club' %}
+{% endif %}
+
+<section class="img-comment {{mixin}}">
+	<div class="appeal">
+		<h3 class="appeal__title">{{title}}</h3>
+		<div class="appeal__text">{{description}}</div>
+	</div>
+	<div class="img-comment__picture">
+		<img src="{{img}}" alt="Say Yes" class="img-comment__img">
+	</div>
+</section>

@@ -1,0 +1,19 @@
+{% if page == 'methodology' %}
+	{% set title = 'Важные факты о преимуществах обучения в SAY YES!' %}
+{% elseif page == 'adults-courses' %}
+	{% set title = 'Важные факты о курсе Английский с нуля' %}
+{% endif %}
+
+<section class="advantages">
+	<div class="section-container">
+		<h2 class="subtitle">{{title}}</h2>
+		<div class="text-blocks text-blocks--advantages">
+			{% for item in advantages %}
+				<div class="text-block {{item.class}}">
+					<h4 class="text-block__title">{{item.title}}</h4>
+					<p class="text-block__description">{{item.description}}</p>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</section>

@@ -1,0 +1,17 @@
+{% extends '../layouts/base.twig' %}
+
+{% block content %}
+	{% include '../sections/mainscreen-big.twig' with {page: 'about'} %}
+
+	{% include '../sections/video-section.twig' with {page: 'about'} %}
+
+	{% include '../sections/img-comment.twig' with {page: 'about'} %}
+
+	{% include '../sections/digits.twig' %}
+
+	{% include '../sections/back-office.twig' %}
+
+	{% include '../sections/behind-the-scenes.twig' %}
+
+	{% include '../sections/trial-lesson.twig' %}
+{% endblock %}

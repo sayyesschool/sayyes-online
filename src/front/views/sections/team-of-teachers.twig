@@ -1,0 +1,82 @@
+<section class="team-of-teachers">
+	<div class="section-container">
+		<h2 class="subtitle">В нашей команде более 80 профессиональных преподавателей.</h2>
+		<p class="team-of-teachers__description">Мы ценим не только опыт и образование, но и энергичность, современность и жизнелюбие наших преподавателей.</p>
+		<p class="team-of-teachers__description">Выберите удобный формат обучения и познакомьтесь с настоящими фанатами своего дела.</p>
+		<div class="tabs">
+			<div class="tabs__nav tabs__nav--teachers">
+				<button class="tabs__tab active">Офлайн в Москве</button>
+				<button class="tabs__tab">Онлайн по всему миру</button>
+			</div>
+			<div class="tabs__content">
+				<div class="tabs__item active">
+					<div class="cards">
+						{% for person in teacherCards1 %}
+							<div class="card card--{{person.type}}">
+								<img src="./assets/images/teachers/{{person.img}}.jpg" alt="{{person.name}}" class="card__img">
+								<div class="card__content">
+									<h3 class="card__name">{{person.name}}</h3>
+									<ul class="card__description">
+										{% for merits in person.merits %}
+											<li>{{merits.merit}}:
+												{{merits.description}}</li>
+										{% endfor %}
+									</ul>
+									<button class="btn btn--transparent btn--transparent-black btn--md" id="{{person.teacherId}}">Подробнее</button>
+								</div>
+							</div>
+							{% include '../components/modal.twig' with {modal: "teacher", id: person.teacherId, teacher: person} %}
+						{% endfor %}
+					</div>
+				</div>
+				<div class="tabs__item">
+					<div class="cards">
+						{% for person in teacherCards2 %}
+							<div class="card card--{{person.type}}">
+								<img src="./assets/images/teachers/{{person.img}}.jpg" alt="{{person.name}}" class="card__img">
+								<div class="card__content">
+									<h3 class="card__name">{{person.name}}</h3>
+									<ul class="card__description">
+										{% for merits in person.merits %}
+											<li>{{merits.merit}}:
+												{{merits.description}}</li>
+										{% endfor %}
+									</ul>
+									<button class="btn btn--transparent btn--transparent-black btn--md" id="{{person.teacherId}}">Подробнее</button>
+								</div>
+							</div>
+							{% include '../components/modal.twig' with {modal: "teacher", id: person.teacherId, teacher: person} %}
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+{% include '../sections/trial-lesson-mini.twig' %}
+
+
+<section class="team-of-teachers">
+	<div class="section-container">
+		<div class="cards">
+			{% for person in teacherCards2 %}
+				<div class="card card--{{person.type}}">
+					<img src="./assets/images/teachers/{{person.img}}.jpg" alt="{{person.name}}" class="card__img">
+					<div class="card__content">
+						<h3 class="card__name">{{person.name}}</h3>
+						<ul class="card__description">
+							{% for merits in person.merits %}
+								<li>
+									<span class="text text--weight-700">{{merits.merit}}</span>:
+									{{merits.description}}</li>
+							{% endfor %}
+						</ul>
+						<button class="btn btn--transparent btn--transparent-black btn--md">Подробнее</button>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		<button class="btn btn--yellow">Показать ещё</button>
+	</div>
+</section>

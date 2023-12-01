@@ -1,0 +1,31 @@
+{% extends '../layouts/base.twig' %}
+
+{% block content %}
+	{% include '../sections/mainscreen-big.twig' with {page: 'children-courses'} %}
+
+	{% include '../sections/about-course.twig' with {page: 'children-courses'} %}
+
+	{% include '../sections/learning-form.twig' with {page: 'children-courses'} %}
+
+	{% include '../sections/knowledge-check.twig' %}
+
+	{% include '../sections/children-advantages.twig' %}
+
+	{% include '../sections/video-section.twig' with {page: 'children-courses'} %}
+
+	{% include '../sections/features.twig' %}
+
+	{% include '../sections/personal-approach.twig' %}
+
+	{% include '../sections/course-feedback.twig' with {page: 'children-courses'} %}
+
+	{% include '../sections/result-children.twig' %}
+
+	{% include '../sections/video-section.twig' with {page: 'children-courses-2'} %}
+
+	{% include '../sections/convenient-oc.twig' %}
+
+	{% include '../sections/course-faq.twig' %}
+
+	{% include '../sections/trial-lesson.twig' %}
+{% endblock %}

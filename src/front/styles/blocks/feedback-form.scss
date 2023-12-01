@@ -1,0 +1,57 @@
+.feedback-form {
+	.btn {
+		width: 100%;
+		min-height: 50px;
+	}
+
+	&__format {
+		margin-bottom: 13px;
+
+		font-weight: 700;
+	}
+
+	&__radio-buttons {
+		width: 390px;
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 18px;
+	}
+
+	&__radio-btn {
+		font-weight: 500;
+		line-height: 15px;
+	}
+
+	&__input-text {
+		display: block;
+		width: 100%;
+		padding: 10px 20px;
+		margin-bottom: 10px;
+
+		border-radius: $border-radius;
+		border: none;
+	}
+
+	&__input-select {
+		display: block;
+		width: 100%;
+		padding: 10px 20px;
+		margin: 5px 0 30px;
+
+		border-radius: $border-radius;
+		border: none;
+	}
+
+	&__communication {
+		font-weight: 700;
+
+		margin-top: 15px;
+	}
+
+	&__policy {
+		font-size: 13px;
+		line-height: 11px;
+
+		margin-top: 11px;
+	}
+}

@@ -1,0 +1,24 @@
+.club-shortly {
+	margin-bottom: 100px;
+
+	.subtitle {
+		max-width: 550px;
+		margin-bottom: 45px;
+	}
+
+	.text-block {
+		min-height: 275px;
+
+		.text-block__title {
+			font-weight: 800;
+			font-size: 18px;
+			line-height: 20px;
+		}
+	}
+
+	&__blocks {
+		display: flex;
+		justify-content: space-between;
+		gap: 20px;
+	}
+}

@@ -1,0 +1,23 @@
+{% extends '../layouts/base.twig' %}
+
+{% block content %}
+	{% include '../sections/mainscreen.twig' with {page: 'speaking-club'} %}
+
+	{% include '../sections/club-shortly.twig' %}
+
+	{% include '../sections/big-cards.twig' with {page: 'speaking-club'} %}
+
+	{% include '../sections/cards-square.twig' with {page: 'speaking-club'} %}
+
+	{% include '../sections/meetings.twig' %}
+
+	{% include '../sections/img-comment.twig' with {page: 'speaking-club'} %}
+
+	{% include '../sections/video-section.twig' with {page: 'speaking-club'} %}
+
+	{% include '../sections/participants-feedback.twig' %}
+
+	{% include '../sections/faq.twig' %}
+
+	{% include '../sections/club-events.twig' %}
+{% endblock %}

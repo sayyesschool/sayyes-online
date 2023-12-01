@@ -1,0 +1,15 @@
+.trial-lesson {
+	margin-bottom: 100px;
+
+	.subtitle {
+		max-width: 701px;
+		line-height: 40px;
+		font-size: 42px;
+		margin-bottom: 20px;
+	}
+
+	&__description {
+		max-width: 380px;
+		margin-bottom: -20px;
+	}
+}

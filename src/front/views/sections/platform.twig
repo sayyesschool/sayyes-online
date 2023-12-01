@@ -1,0 +1,13 @@
+<section class="platform">
+	<div class="section-container">
+		<h2 class="subtitle">Собственная онлайн платформа</h2>
+		<p class="platform__description">
+			Для удобного и нескучного закрепления материала дома и проведения онлайн уроков
+		</p>
+		<div class="video">
+			<img src="./assets/images/pictures/platform.jpg" alt="Собственная онлайн платформа" class="platform__img">
+			<button class="play" id="video-1"></button>
+		</div>
+	</div>
+	{% include '../components/modal.twig' with {modal: 'video', url: "https://www.youtube.com/embed/6ISA01NE2rY", id: 'video-1'} %}
+</section>

@@ -1,0 +1,29 @@
+<section class="contact-us">
+	<div class="section-container">
+		<h2 class="subtitle">Свяжитесь с нами</h2>
+		<div class="contact-us__cards">
+			{% for person in contactUsCards %}
+				<div class="card card--contact-card">
+					{% if person.type == 'team-card' %}
+						<img src="./assets/images/team/{{person.img}}.jpg" alt="{{person.name}}" class="card__img">
+						<div class="card__content">
+							<h3 class="card__name">{{person.name}}</h3>
+							<h4 class="card__post">{{person.post}}</h4>
+							<p class="card__description">{{person.about}}</p>
+							<ul class="card__description">
+								{% for contact in person.contacts %}
+									<li>
+										<span>{% include '../components/icon.twig' with {class: contact.icon} %}</span>
+										<span>{{contact.value}}</span>
+									</li>
+								{% endfor %}
+							</ul>
+						</div>
+					{% else %}
+						<p class="card__text">{{person.text}}</p>
+					{% endif %}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</section>

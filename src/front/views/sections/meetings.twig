@@ -1,0 +1,44 @@
+<section class="meetings">
+	<div class="section-container">
+		<h2 class="subtitle">Ближайшие встречи</h2>
+		<p class="meetings__description">Не упустите возможность попрактиковать свой английский в кругу единомышленников — записывайтесь на ближайшую встречу прямо сейчас!</p>
+
+		<div class="slider">
+			<div class="slider__arrows">
+				<button class="slider__left-arrow"></button>
+				<button class="slider__right-arrow"></button>
+			</div>
+			<div class="slider__slide">
+				<div class="meetings__cards">
+					{% for item in clubMetingCards %}
+						<div class="meeting-card">
+							<img src="./assets/images/meetings/{{item.img.src}}.jpg" alt="{{item.img.alt}}" class="meeting-card__img"/>
+							<div class="meeting-card__content">
+								<div class="tags">
+									{% for tag in item.tags %}
+										<span class="tag {{tag.class}}">{{tag.text}}</span>
+									{% endfor %}
+								</div>
+								<p class="meeting-card__info">{{item.date}}</p>
+								<h3 class="meeting-card__title">{{item.title}}</h3>
+								<ul class="meeting-card__list">
+									<li class="meeting-card__list-item">
+										{% include '../components/icon.twig' with {class: 'icon--teacher'} %}
+										<a href="{{item.teacher.url}}" class="meeting-card__name">{{item.teacher.name}}</a>
+									</li>
+									<li class="meeting-card__list-item">
+										{% include '../components/icon.twig' with {class: 'icon--time icon--white'} %}
+										<span class="meeting-card__time">{{item.time}}</span>
+									</li>
+								</ul>
+								<p class="meeting-card__price">{{item.price}}</p>
+								<button class="btn btn--md">Подробнее</button>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			<ul class="slider__pagination"></ul>
+		</div>
+	</div>
+</section>

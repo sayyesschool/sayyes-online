@@ -1,0 +1,15 @@
+{% extends '../layouts/base.twig' %}
+
+{% block content %}
+	{% include '../sections/mainscreen-big.twig' with {page: 'vacancies'} %}
+
+	{% include '../sections/expectations.twig' %}
+
+	{% include '../sections/big-cards.twig' with {page: 'vacancies'} %}
+
+	{% include '../sections/cards-square.twig' with {page: 'vacancies'} %}
+
+	{% include '../sections/part-of-team.twig' %}
+
+	{% include '../sections/trial-lesson-mini.twig' %}
+{% endblock %}

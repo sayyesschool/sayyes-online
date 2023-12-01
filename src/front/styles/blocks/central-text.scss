@@ -1,0 +1,19 @@
+.central-text {
+	max-width: 876px;
+	margin: 0 auto;
+
+	text-align: center;
+
+	&__title {
+		font-size: 42px;
+		font-weight: 700;
+		line-height: 40px;
+
+		margin-bottom: 19px;
+	}
+
+	&__description {
+		max-width: 580px;
+		margin: 0 auto;
+	}
+}

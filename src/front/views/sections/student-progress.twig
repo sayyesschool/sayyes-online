@@ -1,0 +1,47 @@
+<section class="student-progress">
+	<div class="section-container">
+		<h2 class="subtitle">Наши ученики рассказывают
+			<span class="text text--violent">о своем прогрессе</span>
+		</h2>
+		<p class="student-progress__description">
+			Лучшие показатели нашей работы — это студенты, уверенно владеющие языком.
+		</p>
+		<p class="student-progress__description">
+			Ученики рассказывают о своих результатах и процессе обучения в SAY YES! на английском:
+		</p>
+	</div>
+	<div class="slider swiper">
+		<div class="slider__arrows">
+			<button class="slider__left-arrow"></button>
+			<button class="slider__right-arrow"></button>
+		</div>
+		<div class="swiper-wrapper">
+			{% for item in studentsAboutProgress %}
+				<div class="slider__slide swiper-slide">
+					<div class="feedback">
+						<div class="feedback__video">
+							<div class="video">
+								<img src="./assets/images/student-progress/{{item.img}}.jpg" alt="Анастасия Король" class="video__bg">
+								<button class="play" id="{{item.videoId}}"></button>
+							</div>
+							<div class="comment comment--sm comment--angle">
+								<p class="commet__description">{{item.comment}}</p>
+							</div>
+						</div>
+						<div class="about-person">
+							<h3 class="about-person__title">{{item.name}}</h3>
+							<h4 class="about-person__mini-title">Прогресс за 3 месяца</h4>
+							<p class="about-person__description">{{item.description}}</p>
+							<h4 class="about-person__mini-title">Преподаватель:</h4>
+							<a href="#" class="about-person__link">{{item.teacher}}</a>
+							<h4 class="about-person__mini-title">Курс:</h4>
+							<a href="#" class="about-person__link">{{item.course}}</a>
+						</div>
+					</div>
+				</div>
+				{% include '../components/modal.twig' with {modal: 'video', url: item.videoUrl, id: item.videoId} %}
+			{% endfor %}
+		</div>
+		<div class="slider__pagination"></div>
+	</div>
+</section>

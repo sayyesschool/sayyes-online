@@ -1,0 +1,19 @@
+{% if page == 'adults' %}
+	{% set title = 'Наша школа предлагает курсы английского языка для разных уровней знаний и в разнообразных форматах:' %}
+	{% set courses = courses3 %}
+{% elseif page == 'children' %}
+	{% set title = 'Мы обучаем онлайн на собственной онлайн платформе.' %}
+	{% set courses = courses5 %}
+{% elseif page == 'companies' %}
+	{% set title = 'Наши <span class="text text--violent">форматы обучения</span> позволяют подстроиться под месторасположение и график компаний' %}
+	{% set courses = educationFormats %}
+{% endif %}
+
+<section class="img-courses">
+	<div class="section-container">
+		<h2 class="subtitle">{{title}}</h2>
+		<ul class="img-courses__blocks">
+			{% include '../components/big-courses.twig' with {courses, withoutInfo: true} %}
+		</ul>
+	</div>
+</section>

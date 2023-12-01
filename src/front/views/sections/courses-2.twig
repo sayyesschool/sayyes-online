@@ -1,0 +1,25 @@
+<section class="courses courses--offer">
+	<div class="section-container">
+		<h2 class="subtitle">Мы предлагаем курсы для взрослых и детей в различных форматах: офлайн в Москве, онлайн в группе и индивидуально.</h2>
+		<p class="courses__description">Выберите необходимое для вас обучение.</p>
+
+		<div class="tabs">
+			<div class="tabs__nav tabs__nav--courses-2">
+				<button class="tabs__tab active">Курсы для взрослых</button>
+				<button class="tabs__tab">Курсы для детей</button>
+			</div>
+			<div class="tabs__content">
+				<div class="tabs__item active">
+					<ul class="courses__course-blocks">
+						{% include '../components/courses.twig' with {courses: courses2} %}
+					</ul>
+				</div>
+				<div class="tabs__item">
+					<ul class="courses__course-blocks">
+						{% include '../components/courses.twig' with {courses: childrenCourses} %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,26 @@
+.education-directions {
+	margin-bottom: 100px;
+
+	.subtitle {
+		max-width: 900px;
+		margin-bottom: 40px;
+	}
+
+	.text-block {
+		min-height: 275px;
+		padding: 123px 20px 16px 38px;
+
+		.text-block__title {
+			margin: 0 0 15px;
+			max-width: 100px;
+			font-size: 18px;
+			line-height: 20px;
+		}
+	}
+
+	&__blocks {
+		display: flex;
+		justify-content: space-between;
+		gap: 20px;
+	}
+}

@@ -1,0 +1,34 @@
+{% set btnColor = 'yellow' %}
+
+{% if page == 'main' %}
+	{% set title = 'Исполняем мечты о свободном английском' %}
+	{% set mixin = 'mainscreen--main' %}
+{% elseif page == 'speaking-club' %}
+	{% set title = '<span class="text text--yellow">Разговорный клуб</span> по цене чашки кофе' %}
+	{% set mixin = 'mainscreen--speaking-club' %}
+{% endif %}
+
+<section class="mainscreen {{mixin}}">
+	<div class="mainscreen__left">
+		<h1 class="title">{{title}}</h1>
+		<div class="mainscreen__description">
+			{% if page == 'main' %}
+				<ul class="main-list">
+					<li class="main-list__item">
+						<span class="main-list__primary">Очно</span>
+						в Москве и
+						<span class="main-list__primary">онлайн</span>
+					</li>
+					<li class="main-list__item">С заботой о вашем прогрессе</li>
+					<li class="main-list__item">В атмосфере дружбы и уюта</li>
+				</ul>
+				<img src="./assets/images/decoration/notes/dream-team.svg" alt="Команда мечты" class="mainscreen__note">
+			{% elseif page == 'speaking-club' %}
+				<p class="mainscreen__text">Практикуй английский онлайн
+					<span class="text text--yellow">с носителями языка</span>
+					и улучшай свои разговорные навыки!</p>
+				<button class="btn btn--yellow">Записаться</button>
+			{% endif %}
+		</div>
+	</div>
+</section>

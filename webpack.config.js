@@ -21,7 +21,7 @@ module.exports = [
     env => config({ name: 'class', env }),
     env => config({ name: 'cms', env }),
     env => config({ name: 'crm', env }),
-    env => config({ name: 'front', env, override: { entry: './src/front/index.js' } }),
+    env => config({ name: 'front', env, override: { entry: './src/front/client.js' } }),
     env => config({ name: 'lms', env })
 ];
 

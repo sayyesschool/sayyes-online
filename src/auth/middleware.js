@@ -34,6 +34,8 @@ module.exports = ({
     },
 
     redirect: (req, res, next) => {
+        console.log('REDIRECT');
+
         if (!req.user)
             res.redirect(`//auth.${config.APP_DOMAIN}`);
         else if (req.user.role === 'editor')

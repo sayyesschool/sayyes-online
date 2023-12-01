@@ -1,0 +1,29 @@
+.practice {
+	padding: 95px 0 30px;
+	margin-top: 100px;
+
+	background-color: $white;
+	border-radius: $border-radius $border-radius 0 0;
+
+	.subtitle {
+		max-width: 570px;
+	}
+
+	&__content {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 40px;
+	}
+
+	&__description {
+		max-width: 380px;
+	}
+
+	&__img {
+		width: 666px;
+		height: 360px;
+		object-fit: cover;
+
+		border-radius: $border-radius;
+	}
+}

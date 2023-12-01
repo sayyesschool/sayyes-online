@@ -1,0 +1,31 @@
+{% if section == 'profitable-cooperation' %}
+	{% set name = 'Роман Сорочук' %}
+	{% set aboutPerson = 'Руководитель корпоративного направления' %}
+	{% set img = './assets/images/pictures/roman.png' %}
+	{% set list = cooperation %}
+	{% set btnText  = 'Рассчитать точную стоимость обучения' %}
+	{% set listClasses = 'list--ul' %}
+	{% set mixin = 'cooperation--profitable-cooperation' %}
+{% elseif section == 'getting-started' %}
+	{% set name = 'Анастасия Жителева' %}
+	{% set aboutPerson = 'Менеджер по работе с клиентами офлайн' %}
+	{% set img = './assets/images/pictures/anastasia.png' %}
+	{% set list = gettingStarted %}
+	{% set btnText = 'Заполнить заявку на обучение' %}
+	{% set listClasses = 'list--ol' %}
+	{% set mixin = 'cooperation--getting-started ' %}
+{% endif %}
+
+<div class="cooperation {{mixin}}">
+	<div class="cooperation__preview">
+		<div class="cooperation__info">
+			<h3 class="cooperation__name">{{name}}</h3>
+			<div class="cooperation__person-about">{{aboutPerson}}</div>
+		</div>
+		<img src="{{img}}" alt="{{name}}" class="cooperation__img">
+	</div>
+	<div class="cooperation__content">
+		{% include '../components/list.twig' with {list, classes: listClasses} %}
+		<button class="btn btn--big btn--violent">{{btnText}}</button>
+	</div>
+</div>

@@ -1,0 +1,8 @@
+<ul class="list {{classes}}">
+	{% for item in list %}
+		<li class="list__item">
+			<h4 class="list__title">{{item.title}}</h4>
+			<p class="list__description">{{item.description}}</p>
+		</li>
+	{% endfor %}
+</ul>

@@ -1,0 +1,107 @@
+.cooperation {
+	display: flex;
+	justify-content: space-between;
+	gap: 20px;
+
+	.btn {
+		display: block;
+		margin: 30px auto 50px;
+
+		font-size: 18px;
+		font-weight: 700;
+	}
+
+	&__preview {
+		flex-basis: 371px;
+		min-height: 510px;
+		padding: 38px 15px 0 0;
+		display: flex;
+		justify-content: flex-end;
+		position: relative;
+
+		background-color: $grey;
+		border-radius: $border-radius;
+	}
+
+	&__info {
+		font-size: 16px;
+		line-height: 15px;
+		font-style: italic;
+		font-weight: 500;
+	}
+
+	&__name {
+		font-weight: 700;
+		margin-bottom: 5px;
+	}
+
+	&__person-about {
+		max-width: 160px;
+	}
+
+	&__img {
+		width: 362px;
+		height: 440px;
+		display: block;
+		object-fit: cover;
+		position: absolute;
+		bottom: 0;
+	}
+
+	&__content {
+		flex-basis: 764px;
+
+		background-color: $white;
+		border-radius: $border-radius;
+	}
+
+	&--profitable-cooperation {
+		.cooperation__img {
+			left: -55px;
+		}
+	}
+
+	&--getting-started {
+		.list {
+			padding: 59px 40px 0px 174px;
+		}
+
+		.cooperation__preview {
+			min-height: 450px;
+			padding-right: 47px;
+		}
+
+		.cooperation__img {
+			width: 300px;
+			height: 366px;
+			left: -20px;
+		}
+
+		.cooperation__person-about {
+			max-width: 175px;
+		}
+
+		.list--ol {
+			.list__description {
+				display: inline-block;
+				position: relative;
+			}
+
+			.list__item {
+				&:nth-child(4),
+				&:nth-child(5) {
+					.list__description::after {
+						content: "";
+						width: 63px;
+						height: 44px;
+						position: absolute;
+						top: -10px;
+						right: -78px;
+						background: url("../../assets/images/decoration/notes/free.svg")
+							center center/contain no-repeat;
+					}
+				}
+			}
+		}
+	}
+}

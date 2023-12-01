@@ -1,0 +1,21 @@
+.feedback {
+	min-height: 375px;
+  display: flex;
+	gap: 20px;
+
+	.video {
+		width: 568px;
+		height: 310px;
+	}
+
+
+	&__video {
+		display: flex;
+		flex-direction: column;
+		align-items: end;
+	}
+
+	&__right {
+		align-self: flex-end;
+	}
+}

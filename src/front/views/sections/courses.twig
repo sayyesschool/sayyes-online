@@ -1,0 +1,34 @@
+<section class="courses">
+	<div class="section-container">
+		<h2 class="subtitle">Какой курс английского языка подойдет вам?</h2>
+
+		<div class="tabs">
+			<div class="tabs__nav tabs__nav--courses">
+				<button class="tabs__tab active">Курсы для взрослых</button>
+				<button class="tabs__tab">Курсы для детей</button>
+			</div>
+			<div class="tabs__content">
+				<div class="tabs__item active">
+					<ul class="courses__course-blocks">
+						{% include '../components/courses.twig' %}
+						<div class="course-selection">
+							<h3 class="course-selection__title">Затрудняетесь с выбором курса или ваша цель специфична?</h3>
+							<p class="course-selection__description">Подберем курс под ваши цели или создадим индивидуальный курс под вас!</p>
+							<button class="btn btn--violent">Попробовать бесплатно</button>
+						</div>
+					</ul>
+				</div>
+				<div class="tabs__item">
+					<ul class="courses__course-blocks">
+						{% include '../components/courses.twig' with {courses: childrenCourses} %}
+						<div class="course-selection">
+							<h3 class="course-selection__title">Затрудняетесь с выбором курса или ваша цель специфична?</h3>
+							<p class="course-selection__description">Подберем курс под ваши цели или создадим индивидуальный курс под вас!</p>
+							<button class="btn btn--violent">Оставить заявку</button>
+						</div>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

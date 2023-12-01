@@ -1,0 +1,18 @@
+.student-progress {
+	margin: 150px 0 85px 60px;
+	width: 1058px;
+
+	.slider {
+		margin-top: -30px;
+	}
+
+	.subtitle {
+		max-width: 640px;
+		margin-bottom: 20px;
+	}
+
+	&__description {
+		margin-top: 10px;
+		max-width: 490px;
+	}
+}

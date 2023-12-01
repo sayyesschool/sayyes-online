@@ -1,0 +1,16 @@
+.expectations {
+	margin-bottom: 80px;
+
+	.subtitle {
+		margin-bottom: 20px;
+	}
+
+	.text-block:not(.text-block--heart-bg) {
+		overflow: visible;
+	}
+
+	&__description {
+		max-width: 530px;
+		margin-bottom: 40px;
+	}
+}

@@ -1,0 +1,39 @@
+<section class="personal-approach">
+	<h2 class="subtitle">Наши преподаватели найдут подход к любому ребенку</h2>
+	<p class="personal-approach__description">В нашей команде только внимательные и заботливые преподаватели с опытом обучения детей</p>
+
+	<div class="slider">
+		<div class="slider__arrows">
+			<button class="slider__left-arrow"></button>
+			<button class="slider__right-arrow"></button>
+		</div>
+		{% for item in personalApproachSlider %}
+			<div class="slider__slide">
+				<div class="teacher-card">
+					<div class="video">
+						<img src="./assets/images/teachers-2/teacher-1.jpg" alt="Say Yes" class="video__bg">
+						<button class="play"></button>
+					</div>
+					<div class="teacher-card__info">
+						<h3 class="teacher-card__title">{{item.name}}</h3>
+						<p class="teacher-card__description">{{item.description}}</p>
+						<ul class="teacher-card__list">
+							{% for listItem in item.list %}
+								<li class="teacher-card__list-item">{{listItem}}</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+
+	<div class="personal-approach__cards">
+		{% for item in personalApproachList %}
+			<div class="text-block {{item.class}}">
+				<h4 class="text-block__title">{{item.title}}</h4>
+				<p class="text-block__description">{{item.description}}</p>
+			</div>
+		{% endfor %}
+	</div>
+</section>

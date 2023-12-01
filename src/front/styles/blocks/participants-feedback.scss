@@ -1,0 +1,59 @@
+.participants-feedback {
+	margin-bottom: 190px;
+
+	.subtitle {
+		margin-bottom: 20px;
+	}
+
+	.slider {
+		padding-top: 40px;
+	}
+
+	.slider__arrows {
+		top: -30px;
+	}
+
+	.slider__pagination {
+		bottom: -35px;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	&__description {
+		max-width: 500px;
+	}
+
+	&__cards {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&__card {
+		width: 568px;
+		min-height: 500px;
+		padding: 50px 40px 45px 50px;
+		display: flex;
+		flex-direction: column;
+
+		background-color: $white;
+		border-radius: $border-radius;
+	}
+
+	&__text {
+		&:not(:last-child) {
+			margin-bottom: 15px;
+		}
+	}
+
+	&__author {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		margin-top: auto;
+	}
+
+	&__link {
+		color: $black;
+		font-weight: 800;
+	}
+}

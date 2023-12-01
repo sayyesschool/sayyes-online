@@ -1,0 +1,15 @@
+<section class="discounts">
+	<div class="section-container">
+		<h2 class="subtitle">Акции и скидки</h2>
+		<p class="discounts__description">Ваше обучение может быть выгоднее!</p>
+		<div class="discounts__blocks">
+			{% for item in discounts %}
+				<div class="text-block {{item.class}}">
+					<h4 class="text-block__title">{{item.title}}</h4>
+					<p class="text-block__description">{{item.description}}</p>
+				</div>
+			{% endfor %}
+		</div>
+		<div class="discounts__ps">* Узнавайте подробности и условия акции у менеджеров</div>
+	</div>
+</section>

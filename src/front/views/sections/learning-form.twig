@@ -1,0 +1,20 @@
+{% if page == 'adults-courses' %}
+	{% set title = 'Формы обучения на курсе Английский с нуля' %}
+	{% set description = 'Вы можете проходить курс английского языка с нуля в различных форматах. Продолжительность и стоимость курса зависят от интенсивности и формата обучения.' %}
+	{% set courses = courses8 %}
+{% elseif page == 'children-courses'  %}
+	{% set title = 'Формы обучения на курсе для детей “Bright ideas”' %}
+	{% set description = 'Ваш ребенок может проходить данный курс индивидуально в двух форматах. Стоимость обучения зависит от количества приобретенных уроков в пакете.' %}
+	{% set mixin = 'learning-form--children-courses' %}
+	{% set courses = courses9  %}
+{% endif %}
+
+<section class="learning-form {{mixin}}">
+	<div class="section-container">
+		<h2 class="subtitle">{{title}}</h2>
+		<p class="learning-form__description">{{description}}</p>
+		<ul class="learning-form__blocks">
+			{% include '../components/big-courses.twig' with {courses, withoutImg: true, withoutPrice: true} %}
+		</ul>
+	</div>
+</section>

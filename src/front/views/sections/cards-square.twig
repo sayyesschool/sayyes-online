@@ -1,0 +1,22 @@
+{% if page == 'vacancies' %}
+	{% set title = 'Как стать частью команды?' %}
+	{% set cards = expectations2 %}
+	{% set mixin = 'cards-square--vacancies' %}
+{% elseif page == 'speaking-club' %}
+	{% set title = 'Как проходит встреча разговорного клуба в SAY YES?' %}
+	{% set cards = clubMetings %}
+	{% set mixin = 'cards-square--speaking-club' %}
+{% endif %}
+
+<section class="cards-square {{mixin}}">
+	<h2 class="subtitle">{{title}}</h2>
+	<div class="cards-square__blocks">
+		{% for item in cards %}
+			<div class="text-block {{item.class}}">
+				<p class="text-block__tip">{{item.tip}}</p>
+				<h4 class="text-block__title">{{item.title}}</h4>
+				<p class="text-block__description">{{item.description}}</p>
+			</div>
+		{% endfor %}
+	</div>
+</section>
