@@ -7,6 +7,7 @@ const api = require('./api');
 const auth = require('./auth');
 const authMiddleware = require('./auth/middleware');
 const classroom = require('./class');
+const club = require('./club');
 const cms = require('./cms');
 const crm = require('./crm');
 const lms = require('./lms');
@@ -31,6 +32,7 @@ server(context, options)
     .use(api(context))
     .use(auth(context))
     .use(authorize, classroom(context))
+    .use(authorize, club(context))
     .use(authorize, cms(context))
     .use(authorize, crm(context))
     .use(authorize, lms(context))

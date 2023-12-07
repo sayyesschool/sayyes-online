@@ -5,18 +5,16 @@ import AppHeader from 'shared/components/app-header';
 import AppContent from 'shared/components/app-content';
 import AppNotification from 'shared/components/app-notification';
 import LoadingIndicator from 'shared/components/loading-indicator';
-import NavBar from 'shared/components/nav-bar';
 
-import Assignments from 'app/components/assignments';
-import Courses from 'app/components/courses';
-import Enrollments from 'app/components/enrollments';
-import { LearnerHomePage, TeacherHomePage } from 'app/components/home';
-import Materials from 'app/components/materials';
-import navItems from 'app/data/nav';
+import LearnerPage from 'app/components/learner/learner-page';
+import ManagerPage from 'app/components/manager/manager-page';
+import MeetingPage from 'app/components/meetings/meeting-page';
+import TeacherPage from 'app/components/teacher/teacher-page';
 
-const PageHomeByRole = {
-    learner: LearnerHomePage,
-    teacher: TeacherHomePage
+const PageByRole = {
+    learner: LearnerPage,
+    manager: ManagerPage,
+    teacher: TeacherPage
 };
 
 export default function App() {
@@ -24,21 +22,18 @@ export default function App() {
 
     if (!user) return <LoadingIndicator fullscreen />;
 
+    const HomePage = PageByRole[user.role];
+
     return (
         <div className="App">
             <AppHeader
                 user={user}
-            >
-                <NavBar items={navItems} />
-            </AppHeader>
+            />
 
             <AppContent>
                 <Switch>
-                    <Route exact path="/" component={PageHomeByRole[user.role]} />
-                    <Route path="/assignments" component={Assignments} />
-                    <Route path="/courses" component={Courses} />
-                    <Route path="/enrollments" component={Enrollments} />
-                    {/* <Route path="/materials" component={Materials} /> */}
+                    <Route exact path="/" component={HomePage} />
+                    <Route path="/meetings/:meetingId" component={MeetingPage} />
                 </Switch>
             </AppContent>
 

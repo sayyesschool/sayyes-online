@@ -1,0 +1,22 @@
+#meeting-page {
+    .mdc-card {
+        margin-bottom: 1rem;
+    }
+
+    .mdc-chip-set {
+        padding: 0;
+        margin: .5rem 0 1rem;
+    }
+
+    .mdc-button {
+        width: 100%;
+
+        + .mdc-button {
+            margin-top: 8px;
+        }
+    }
+
+    .join-button {
+        margin-bottom: 1rem;
+    }
+}

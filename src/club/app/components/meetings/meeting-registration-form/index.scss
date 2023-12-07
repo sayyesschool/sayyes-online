@@ -1,0 +1,11 @@
+#register-dialog {
+    .mdc-layout {
+        margin-bottom: 1rem;
+    }
+
+    .mdc-dialog__actions {
+        .mdc-button:first-child {
+            margin-right: auto;
+        }
+    }
+}

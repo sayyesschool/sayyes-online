@@ -19,6 +19,7 @@ const {
 
 module.exports = [
     env => config({ name: 'class', env }),
+    env => config({ name: 'club', env }),
     env => config({ name: 'cms', env }),
     env => config({ name: 'crm', env }),
     env => config({ name: 'front', env, override: { entry: './src/front/index.js' } }),

@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const moment = require('moment');
 
-const Registration = require('../registration');
+const Registration = require('./Registration');
 
 const Level = {
     Elementary: 'elementary',
@@ -122,4 +122,4 @@ Meeting.methods.getRegistrationByUser = function(user) {
     return this.registrations.find(r => r.user == (user?.id || user));
 };
 
-module.exports = model('Meeting', Meeting);
+module.exports = Meeting;
