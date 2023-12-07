@@ -1,12 +1,12 @@
 module.exports = ({
     models: { Lesson }
 }) => ({
-    get: (req, res, next) => {
+    async get(req, res) {
         const query = {};
 
         if (req.query.date) {
             const from = new Date(req.query.date);
-            const to = new Date(req.query.date);;
+            const to = new Date(req.query.date);
 
             to.setDate(from.getDate() + 1);
 
@@ -26,93 +26,86 @@ module.exports = ({
             query.date.$lt = new Date(req.query.to);
         }
 
-        Lesson.find(query)
-            .populate('learner', 'firstname lastname email')
-            .populate('teacher', 'firstname lastname email')
-            .sort({ date: -1 })
-            .limit(100)
-            .then(lessons => {
-                if (req.query.days) {
-                    const days = req.query.days.split(',').map(v => Number(v));
-
-                    lessons = lessons.filter(lesson => {
-                        const day = new Date(lesson.date).getDay();
-
-                        return days.includes(day);
-                    });
-                }
-
-                res.json({
-                    ok: true,
-                    data: lessons
-                });
-            })
-            .catch(next);
-    },
-
-    getTodays: (req, res, next) => {
-        Lesson.findTodays()
+        let lessons = await Lesson.find(query)
             .populate('learner', 'firstname lastname email')
             .populate('teacher', 'firstname lastname email')
             .populate('room', 'title')
-            .then(lessons => {
-                res.json({
-                    ok: true,
-                    data: lessons
-                });
-            })
-            .catch(next);
+            .sort({ date: -1 })
+            .limit(100);
+            
+        if (req.query.days) {
+            const days = req.query.days.split(',').map(v => Number(v));
+
+            lessons = lessons.filter(lesson => {
+                const day = new Date(lesson.date).getDay();
+
+                return days.includes(day);
+            });
+        }
+
+        res.json({
+            ok: true,
+            data: lessons
+        });
     },
 
-    getOne: (req, res, next) => {
-        Lesson.findById(req.params.lessonId)
+    async getTodays(req, res) {
+        const lessons = await Lesson.findTodays()
+            .populate('learner', 'firstname lastname email')
+            .populate('teacher', 'firstname lastname email')
+            .populate('room', 'title');
+        
+        res.json({
+            ok: true,
+            data: lessons
+        });
+    },
+
+    async getOne(req, res) {
+        const lesson = await Lesson.findById(req.params.lessonId)
             .populate('learner')
-            .populate('teacher')
-            .then(lesson => {
-                res.json({
-                    ok: true,
-                    data: lesson
-                });
-            })
-            .catch(next);
+            .populate('teacher');
+        
+        res.json({
+            ok: true,
+            data: lesson
+        });
     },
 
-    create: (req, res, next) => {
-        Lesson.create(req.body)
-            .then(lesson => {
-                res.json({
-                    ok: true,
-                    message: req.body.length > 0 ? 'Уроки созданы' : 'Урок создан',
-                    data: lesson
-                });
-            })
-            .catch(next);
+    async create(req, res) {
+        const lesson = await Lesson.create(req.body);
+        
+        res.json({
+            ok: true,
+            message: req.body.length > 0 ? 'Уроки созданы' : 'Урок создан',
+            data: lesson
+        });
     },
 
-    update: (req, res, next) => {
-        Lesson.findByIdAndUpdate(req.params.lessonId, req.body, { new: true })
-            .then(lesson => {
-                res.json({
-                    ok: true,
-                    message: 'Урок изменен',
-                    data: lesson
-                });
-            })
-            .catch(next);
+    async update(req, res) {
+        const lesson = await Lesson.findByIdAndUpdate(
+            req.params.lessonId,
+            req.body,
+            { new: true }
+        );
+        
+        res.json({
+            ok: true,
+            message: 'Урок изменен',
+            data: lesson
+        });
     },
 
-    delete: (req, res, next) => {
-        Lesson.findByIdAndDelete(req.params.lessonId)
-            .then(lesson => {
-                res.json({
-                    ok: true,
-                    message: 'Урок удален',
-                    data: {
-                        id: lesson.id,
-                        enrollment: lesson.enrollment
-                    }
-                });
-            })
-            .catch(next);
+    async delete(req, res) {
+        const lesson = await Lesson.findByIdAndDelete(req.params.lessonId);
+        
+        res.json({
+            ok: true,
+            message: 'Урок удален',
+            data: {
+                id: lesson.id,
+                enrollment: lesson.enrollment
+            }
+        });
     }
 });

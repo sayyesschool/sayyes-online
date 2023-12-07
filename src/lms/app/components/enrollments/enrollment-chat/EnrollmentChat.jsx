@@ -4,7 +4,13 @@ import Chat from 'shared/components/chat';
 import PageSection from 'shared/components/page-section';
 import { IconButton } from 'shared/ui-components';
 
-export default function EnrollmentChat({ enrollment, user, onClose }) {
+export default function EnrollmentChat({
+    enrollment,
+    user,
+    onConnected,
+    onJoined,
+    onClose
+}) {
     const participantsById = useMemo(() => {
         const { learner, teacher } = enrollment;
 
@@ -12,7 +18,7 @@ export default function EnrollmentChat({ enrollment, user, onClose }) {
             [learner.id]: learner.fullname,
             [teacher.id]: teacher.fullname
         };
-    });
+    }, [enrollment]);
 
     return (
         <PageSection
@@ -31,7 +37,8 @@ export default function EnrollmentChat({ enrollment, user, onClose }) {
                 conversationId={enrollment.id}
                 userId={user.id}
                 participantsById={participantsById}
-            //onConnected={handleChatConnected}
+                onJoined={onJoined}
+                onConnected={onConnected}
             />
         </PageSection>
     );

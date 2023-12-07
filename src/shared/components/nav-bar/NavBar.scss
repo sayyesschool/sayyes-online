@@ -1,49 +1,23 @@
 .NavBar {
-    display: flex;
-    flex-direction: column;
-}
-
-.NavBarItem {
-    &__link {
-        
-    }
-
-    &__icon {
-        font-size: 1.5rem;
-    }
-
-    &__text {
-        width: 100%;
-        font-size: .7rem;
-        text-align: center;
+    .ui-TabList {
         overflow: hidden;
-        text-overflow: ellipsis;
     }
 
-    &--active {
-        padding-left: 0;
-        border-left: 4px solid #464775;
-        background-color: rgba(0,0,0,.05);
-
-        &__icon,
-        &__text {
-            color: #464775;
-        }
-    }
-}
-
-.NavBarItem__link.NavBarItem__link--active {
-    background-color: var(--joy-palette-neutral-plainHoverBg, var(--joy-palette-neutral-100, #EBEBEF));
+    .NavBarItem {
+        padding-left: 4px;
+        padding-right: 4px;
+        text-align: center;
     
-    &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 4px;
-        height: 100%;
-        background-color: #520360;
-        border-top-right-radius: 8px;
-        border-bottom-right-radius: 8px;
+        &__icon {
+            font-size: 1.5rem;
+        }
+    
+        &__text {
+            width: 100%;
+        }
+
+        &--active {
+            --Tab-indicatorColor: var(--joy-palette-primary-500) !important;
+        }
     }
 }

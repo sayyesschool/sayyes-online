@@ -2,9 +2,15 @@ import { useEffect } from 'react';
 
 import { useStore, useActions } from 'shared/hooks/store';
 import { actions as assignmentActions } from 'shared/store/modules/assignments';
+import { hasKey } from 'shared/utils/object';
 
 export function useAssignments() {
-    const [assignments, actions] = useStore(state => state.assignments.list, assignmentActions);
+    const [assignments, actions] = useStore(
+        state => state && hasKey(state.assignments, 'list') ?
+            state.assignments.list :
+            state.assignments,
+        assignmentActions
+    );
 
     useEffect(() => {
         if (!assignments) {
@@ -16,7 +22,12 @@ export function useAssignments() {
 }
 
 export function useAssignment(id) {
-    const [assignment, actions] = useStore(state => state.assignments.single, assignmentActions);
+    const [assignment, actions] = useStore(
+        state => state && hasKey(state.assignments, 'single') ?
+            state.assignments.single :
+            state.assignment,
+        assignmentActions
+    );
 
     useEffect(() => {
         if (!id) return;

@@ -5,6 +5,7 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 import { SharedStateProvider } from 'app/contexts/SharedStateContext';
 import useRoomState from 'app/hooks/useRoomState';
 import useVisibilityHandler from 'app/hooks/useVisibilityHandler';
+import AppNotification from 'shared/components/app-notification';
 import Lobby from 'app/components/Lobby';
 import Room from 'app/components/Room';
 import ReconnectingAlert from 'app/components/ReconnectingAlert';
@@ -38,6 +39,8 @@ export default function App() {
             {roomState === 'reconnecting' &&
                 <ReconnectingAlert />
             }
+
+            <AppNotification />
         </div>
     );
 }

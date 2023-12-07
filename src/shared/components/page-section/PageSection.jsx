@@ -50,6 +50,7 @@ export default function PageSection({
                             actions.filter(a => !!a).map(action =>
                                 isValidElement(action) ? action :
                                     <IconButton
+                                        key={action.key}
                                         size="sm"
                                         variant="plain"
                                         color="neutral"

@@ -21,4 +21,6 @@ const Badge = forwardRef(({
     );
 });
 
+Badge.displayName = 'Badge';
+
 export default Badge;

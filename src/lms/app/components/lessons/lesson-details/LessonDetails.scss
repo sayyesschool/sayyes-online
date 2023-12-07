@@ -1,7 +1,6 @@
-.lesson-details {
-    .ui-list {
-        &__item {
-            padding: 0;
-        }
+.LessonDetails {
+    .ui-ListItem {
+        padding-left: 0;
+        padding-right: 0;
     }
 }

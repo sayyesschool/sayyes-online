@@ -3,9 +3,9 @@ const FROM = {
     name: 'Разговорный клуб SAY YES'
 };
 
-module.exports = MailClient => ({
+module.exports = mailClient => ({
     send({ from = FROM, to, subject, text, html, templateId, variables }) {
-        return MailClient
+        return mailClient
             .post('send', { 'version': 'v3.1' })
             .request({
                 Messages: [
@@ -27,7 +27,7 @@ module.exports = MailClient => ({
     },
 
     sendMany(messages) {
-        return MailClient
+        return mailClient
             .post('send', { 'version': 'v3.1' })
             .request({
                 Messages: messages.map(message => ({

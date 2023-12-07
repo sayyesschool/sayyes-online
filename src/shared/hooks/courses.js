@@ -2,11 +2,15 @@ import { useEffect, useMemo } from 'react';
 
 import { useStore } from 'shared/hooks/store';
 import { actions as courseActions, mapCourse } from 'shared/store/modules/courses';
-
-const EMPTY = Object.freeze({});
+import { emptyObject, hasKey } from 'shared/utils/object';
 
 export function useCourses(query) {
-    const [courses, actions] = useStore(state => (state.courses && 'list' in state.courses) ? state.courses.list : state.courses, courseActions);
+    const [courses, actions] = useStore(
+        state => state && hasKey(state.courses, 'list') ?
+            state.courses.list :
+            state.courses,
+        courseActions
+    );
 
     useEffect(() => {
         if (!courses) {
@@ -18,7 +22,12 @@ export function useCourses(query) {
 }
 
 export function useCourse(courseId, query) {
-    const [course, actions] = useStore(state => (state.courses && 'single' in state.courses) ? state.courses.single : state.course, courseActions);
+    const [course, actions] = useStore(
+        state => state && hasKey(state.courses, 'single') ?
+            state.courses.single :
+            state.course,
+        courseActions
+    );
 
     useEffect(() => {
         if (course?.id === courseId || course?.slug === courseId) return;
@@ -37,7 +46,7 @@ export function useUnit({ courseId, unitId }) {
     const [course, actions] = useCourse(courseId);
     const unit = course?.unitsById?.get(unitId);
 
-    return useMemo(() => !course ? EMPTY : ({
+    return useMemo(() => !course ? emptyObject : ({
         course,
         unit,
         actions
@@ -48,7 +57,7 @@ export function useLesson({ courseId, lessonId }) {
     const [course, actions] = useCourse(courseId);
     const lesson = course?.lessonsById?.get(lessonId);
 
-    return useMemo(() => !course ? EMPTY : ({
+    return useMemo(() => !course ? emptyObject : ({
         course,
         lesson,
         unit: course.unitsById?.get(lesson.unitId),
@@ -60,7 +69,7 @@ export function useSection({ courseId, sectionId }) {
     const [course, actions] = useCourse(courseId);
     const section = course?.sectionsById?.get(sectionId);
 
-    return useMemo(() => !course ? EMPTY : ({
+    return useMemo(() => !course ? emptyObject : ({
         course,
         section,
         lesson: course.lessonsById?.get(section.lessonId),
@@ -73,11 +82,11 @@ export function useExercise({ courseId, exerciseId }) {
     const [course, actions] = useCourse(courseId);
     const exercise = course?.exercisesById?.get(exerciseId);
 
-    return useMemo(() => !course ? EMPTY : ({
+    return useMemo(() => !course ? emptyObject : ({
         course,
         exercise,
-        unit: course.unitsById?.get(exercise.unitId),
-        lesson: course.lessonsById?.get(exercise.lessonId),
+        // unit: course.unitsById?.get(exercise.unitId),
+        // lesson: course.lessonsById?.get(exercise.lessonId),
         actions
     }), [course, exerciseId]);
 }
@@ -85,7 +94,7 @@ export function useExercise({ courseId, exerciseId }) {
 export function use({ courseId, unitId, lessonId, exerciseId }) {
     const [course, actions] = useCourse(courseId);
 
-    return useMemo(() => !course ? EMPTY : ({
+    return useMemo(() => !course ? emptyObject : ({
         course,
         unit: unitId && course.unitsById?.get(unitId),
         lesson: lessonId && course.lessonsById?.get(lessonId),

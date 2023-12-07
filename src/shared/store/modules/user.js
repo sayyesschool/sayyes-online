@@ -1,3 +1,4 @@
+import { AUTH_URL } from 'shared/constants';
 import { createAction, createReducer } from 'shared/store/helpers';
 
 export const getUser = createAction('GET_USER', () => ({

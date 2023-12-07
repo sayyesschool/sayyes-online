@@ -5,6 +5,7 @@ import {
     ErrorBoundary as SentryErrorBoundary
 } from '@sentry/react';
 
+import { APP_ENV, SENTRY_DSN } from 'shared/constants';
 import ErrorState from 'shared/components/error-state';
 
 if (APP_ENV === 'production') {

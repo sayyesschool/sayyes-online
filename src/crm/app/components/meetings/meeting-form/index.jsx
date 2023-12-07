@@ -3,9 +3,11 @@ import moment from 'moment';
 
 import api from 'shared/services/api';
 
+import { STATIC_URL } from 'shared/constants';
 import useForm from 'shared/hooks/form';
-import Form from 'shared/ui-components/form';
 import FileInput from 'shared/components/file-input';
+import TextEditor from 'shared/components/text-editor';
+import Form from 'shared/ui-components/form';
 
 import './index.scss';
 
@@ -34,9 +36,7 @@ const levels = ['Beginner', 'Elementary', 'Intermediate', 'Pre-Intermediate', 'U
 
 export default function MeetingForm({ meeting = defaultMeeting, onSubmit }) {
     const fileInputRef = useRef();
-    const contentEditorRef = useRef();
-
-    const { data, setData } = useForm({
+    const { data, getData, setData } = useForm({
         title: meeting.title,
         date: moment(meeting.date).format('YYYY-MM-DDTHH:mm'),
         host: meeting.host && meeting.host.id,

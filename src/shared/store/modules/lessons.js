@@ -1,4 +1,5 @@
 import { createAction, createReducer, combineReducers } from 'shared/store/helpers';
+import datetime from 'shared/libs/datetime';
 
 export const getLessons = createAction('GET_LESSONS', query => {
     return {
@@ -75,7 +76,7 @@ export const actions = {
 };
 
 export const lessonsReducer = createReducer(null, {
-    [getLessons]: (state, action) => action.data,
+    [getLessons]: (state, action) => action.data.map(mapLesson),
     [createLesson]: (state, action) => state ? [...state, action.data] : [action.data],
     // [createLessons]: (state, action) => state ? [...state, ...action.data] : action.data,
     [updateLesson]: (state, action) => state && state.map(lesson => lesson.id === action.data.id ? ({ ...lesson, ...action.data }) : lesson),
@@ -91,3 +92,16 @@ export default combineReducers({
     list: lessonsReducer,
     single: lessonReducer
 });
+
+function mapLesson(lesson) {
+    const dateTime = datetime(lesson.date);
+    const dateTimeAbs = dateTime.utc().add(3, 'hours'); // Moscow Time
+
+    return {
+        ...lesson,
+        dateString: dateTime.format('DD.MM.YYYY'),
+        timeString: dateTime.format('HH:mm'),
+        dateStringAbs: dateTimeAbs.format('DD.MM.YYYY'),
+        timeStringAbs: dateTimeAbs.format('HH:mm')
+    };
+}

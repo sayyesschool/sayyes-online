@@ -11,13 +11,17 @@ export default function Chat({
     userId,
     participantsById,
     onConnected,
+    onJoined,
     onError
 }) {
     const chat = useChat({
         token: window.TWILIO_CHAT_TOKEN,
         conversationId,
         userId,
-        participantsById
+        participantsById,
+        onConnected,
+        onJoined,
+        onError
     });
 
     const [editingMessage, setEditingMessage] = useState();
@@ -45,7 +49,7 @@ export default function Chat({
 
     const handleSeenLastMessage = useCallback(() => {
         return chat.setAllMessagesRead();
-    }, []);
+    }, [chat]);
 
     const handleEditMessage = useCallback(message => {
         setEditingMessage(message);

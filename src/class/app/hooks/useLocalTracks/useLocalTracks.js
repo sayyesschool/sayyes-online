@@ -128,8 +128,6 @@ export default function useLocalTracks() {
                         videoTrack.mediaStreamTrack.getSettings().deviceId ?? ''
                     );
                 }
-
-                console.log('TRACKS', tracks);
             })
             .finally(() => setIsAcquiringLocalTracks(false));
     }, [

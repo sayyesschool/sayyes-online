@@ -32,8 +32,6 @@ export default function MiroWhiteboard() {
 
     const board = sharedState?.data?.board;
 
-    console.log('Board', sharedState, board);
-
     return (
         <div className="MiroWhiteboard">
             {board &&

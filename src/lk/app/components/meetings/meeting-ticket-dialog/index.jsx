@@ -7,6 +7,8 @@ import {
     Typography
 } from 'mdc-react';
 
+import { YANDEX_METRIKA_ID } from 'shared/constants';
+
 import './index.scss';
 
 export default function TicketDialog({ onClose, ...props }) {
@@ -14,11 +16,11 @@ export default function TicketDialog({ onClose, ...props }) {
 
     function handleSubmit() {
         if (typeof ym === 'function') {
-            ym(YANDEX_METRIKA_ID, 'reachGoal', 'purchase');
+            window.ym(YANDEX_METRIKA_ID, 'reachGoal', 'purchase');
         }
 
         if (typeof gtag === 'function') {
-            gtag('event', 'click', { event_category: 'purchase' });
+            window.gtag('event', 'click', { event_category: 'purchase' });
         }
 
         return true;

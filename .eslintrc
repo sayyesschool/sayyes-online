@@ -3,7 +3,8 @@
         "es6": true,
         "browser": true,
         "node": true,
-        "mocha": true
+        "mocha": true,
+        "jest": true
     },
     "extends": [
         "eslint:recommended",
@@ -49,8 +50,9 @@
             "warn",
             "always"
         ],
-        "no-undef": "warn",
+        "no-undef": "error",
         "no-unused-vars": "warn",
+        "no-useless-escape": "warn",
         "quotes": [
             "error",
             "single"
@@ -60,7 +62,8 @@
             "always"
         ],
         "react/react-in-jsx-scope": "off",
-        "react/prop-types": "off"
+        "react/prop-types": "off",
+        "react/no-unescaped-entities": "warn"
     },
     "plugins": [
         "react"

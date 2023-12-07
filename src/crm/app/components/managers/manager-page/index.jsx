@@ -79,23 +79,27 @@ export default function ManagerPage({ match, location, history }) {
             />
 
             <Page.Content>
-                <Grid>
-                    <Flex gap="medium" column>
-                        <ManagerDetails
-                            manager={manager}
-                            onEdit={toggleManagerFormOpen}
-                        />
-                    </Flex>
+                <Grid spacing={2}>
+                    <Grid.Item xs={4}>
+                        <Flex gap="medium" column>
+                            <ManagerDetails
+                                manager={manager}
+                                onEdit={toggleManagerFormOpen}
+                            />
+                        </Flex>
+                    </Grid.Item>
 
-                    <Flex gap="medium" column>
-                        <ManagerRequests
-                            requests={manager.requests}
-                        />
+                    <Grid.Item xs={8}>
+                        <Flex gap="medium" column>
+                            <ManagerRequests
+                                requests={manager.requests}
+                            />
 
-                        <ManagerEnrollments
-                            manager={manager}
-                        />
-                    </Flex>
+                            <ManagerEnrollments
+                                manager={manager}
+                            />
+                        </Flex>
+                    </Grid.Item>
                 </Grid>
             </Page.Content>
 

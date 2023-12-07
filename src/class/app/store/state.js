@@ -1,5 +1,6 @@
 export default {
-    user: null,
+    assignments: null,
+    course: null,
     enrollment: null,
-    course: null
+    user: null,
 };

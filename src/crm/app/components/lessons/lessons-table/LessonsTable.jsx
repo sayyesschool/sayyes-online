@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 import StatusChip from 'shared/components/status-chip';
-import { Chip, IconButton, Table, Text } from 'shared/ui-components';
+import { IconButton, Link, Table } from 'shared/ui-components';
 import { LessonStatusLabel } from 'shared/data/lesson';
 
-export default function LessonsTable({ lessons, onView, onEdit, onDelete }) {
+export default function LessonsTable({ lessons, onEdit, onDelete }) {
     return (
         <Table className="LessonsTable">
             <Table.Head>
@@ -23,25 +23,39 @@ export default function LessonsTable({ lessons, onView, onEdit, onDelete }) {
                 {lessons.map(lesson =>
                     <Table.Row key={lesson.id}>
                         <Table.Cell>
-                            {lesson.client &&
-                                <Chip
-                                    as={Link}
+                            {lesson.learner ?
+                                <Link
+                                    as={RouterLink}
                                     to={`/clients/${lesson.client.id}`}
                                     content={lesson.client.fullname}
-                                    variant="outlined"
+                                    color="neutral"
+                                    variant="plain"
+                                    underline="none"
                                 />
+                                :
+                                '–'
                             }
                         </Table.Cell>
 
                         <Table.Cell>
                             {lesson.teacher &&
-                                <Chip
-                                    as={Link}
+                                <Link
+                                    as={RouterLink}
                                     to={`/teachers/${lesson.teacher.id}`}
                                     content={lesson.teacher.fullname}
-                                    variant="outlined"
+                                    color="neutral"
+                                    variant="plain"
+                                    underline="none"
                                 />
                             }
+                        </Table.Cell>
+
+                        <Table.Cell>
+                            {lesson.dateStringAbs} · {lesson.timeStringAbs}
+                        </Table.Cell>
+
+                        <Table.Cell>
+                            {lesson.room?.title}
                         </Table.Cell>
 
                         <Table.Cell>
@@ -51,24 +65,15 @@ export default function LessonsTable({ lessons, onView, onEdit, onDelete }) {
                             />
                         </Table.Cell>
 
-                        <Table.Cell>
-                            <Text>{lesson.dateString}</Text>
-                            <Text type="body2">{lesson.timeString}</Text>
-                        </Table.Cell>
-
                         <Table.Cell content={lesson.trial ? 'Да' : 'Нет'} />
 
                         <Table.Cell content={lesson.free ? 'Да' : 'Нет'} />
 
-                        <Table.Cell>
+                        <Table.Cell content={lesson.confirmed ? 'Да' : 'Нет'} />
+
+                        <Table.Cell align="end">
                             <IconButton.Group
                                 buttons={[
-                                    {
-                                        key: 'view',
-                                        title: 'Посмотреть',
-                                        icon: 'preview',
-                                        onClick: () => onView(lesson)
-                                    },
                                     {
                                         key: 'edit',
                                         title: 'Изменить',
@@ -79,6 +84,7 @@ export default function LessonsTable({ lessons, onView, onEdit, onDelete }) {
                                         key: 'delete',
                                         title: 'Удалить',
                                         icon: 'delete',
+                                        color: 'danger',
                                         onClick: () => onDelete(lesson)
                                     }
                                 ]}
@@ -105,20 +111,28 @@ const columns = [
         text: 'Преподаватель'
     },
     {
-        key: 'status',
-        text: 'Статус'
-    },
-    {
         key: 'datetime',
         text: 'Дата и время'
     },
     {
+        key: 'room',
+        text: 'Аудитория'
+    },
+    {
+        key: 'status',
+        text: 'Статус'
+    },
+    {
         key: 'trial',
-        text: 'Пробное'
+        text: 'Пробный'
     },
     {
         key: 'free',
-        text: 'Бесплатное'
+        text: 'Бесплатный'
+    },
+    {
+        key: 'confirmed',
+        text: 'Подтвержден'
     },
     {
         key: 'actions'

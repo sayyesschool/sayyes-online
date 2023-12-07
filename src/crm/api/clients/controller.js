@@ -1,10 +1,10 @@
 module.exports = ({
-    models: { Client }
+    models: { Learner }
 }) => ({
     get: (req, res, next) => {
         const query = req.query ? req.query : {};
 
-        Client.find(query)
+        Learner.find(query)
             .then(clients => {
                 res.json({
                     ok: true,
@@ -15,7 +15,7 @@ module.exports = ({
     },
 
     getOne: (req, res, next) => {
-        Client.findById(req.params.id)
+        Learner.findById(req.params.id)
             .populate({
                 path: 'requests',
                 select: 'status manager contact',
@@ -40,7 +40,7 @@ module.exports = ({
     },
 
     create: (req, res, next) => {
-        Client.create(req.body)
+        Learner.create(req.body)
             .then(client => {
                 res.json({
                     ok: true,
@@ -52,7 +52,7 @@ module.exports = ({
     },
 
     update: (req, res, next) => {
-        Client.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        Learner.findByIdAndUpdate(req.params.id, req.body, { new: true })
             .then(client => {
                 res.json({
                     ok: true,
@@ -64,7 +64,7 @@ module.exports = ({
     },
 
     delete: (req, res, next) => {
-        Client.findByIdAndDelete(req.params.id)
+        Learner.findByIdAndDelete(req.params.id)
             .then(client => {
                 res.json({
                     ok: true,

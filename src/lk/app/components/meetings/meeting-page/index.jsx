@@ -12,6 +12,7 @@ import {
     Typography
 } from 'mdc-react';
 
+import { STATIC_URL } from 'shared/constants';
 import { useMeeting } from 'shared/hooks/meetings';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';

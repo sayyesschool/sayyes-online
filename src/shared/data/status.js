@@ -19,7 +19,7 @@ const StatusColor = {
     [Status.Missed]: 'warning',
     [Status.New]: 'primary',
     [Status.Processing]: 'warning',
-    [Status.Scheduled]: 'primary',
+    [Status.Scheduled]: 'neutral',
     [Status.Started]: 'info',
     [Status.Succeeded]: 'success'
 };

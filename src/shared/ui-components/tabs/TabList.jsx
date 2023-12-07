@@ -9,6 +9,8 @@ const TabList = forwardRef(({
     items,
     tabColor,
     tabVariant,
+    disableIndicator,
+    indicatorInset,
 
     children,
     className,
@@ -25,8 +27,11 @@ const TabList = forwardRef(({
             {items?.map(item =>
                 isValidElement(item) ? item :
                     <Tab
+                        key={item.key}
                         color={tabColor}
                         variant={tabVariant}
+                        disableIndicator={disableIndicator}
+                        indicatorInset={indicatorInset}
                         {...item}
                     />
             )}
@@ -35,5 +40,7 @@ const TabList = forwardRef(({
         </JoyTabList>
     );
 });
+
+TabList.displayName = 'TabList';
 
 export default TabList;

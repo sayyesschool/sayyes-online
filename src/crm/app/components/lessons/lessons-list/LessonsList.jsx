@@ -17,9 +17,8 @@ export default function LessonsList({ lessons, statusIcon = true }) {
                         />
                     }
                     content={<>
-                        <Text type="body2">{lesson.teacher?.fullname}</Text>
-                        <Text type="body3">{lesson.dateTimeString}</Text>
-                        <Text type="body3">{lesson.room?.name}</Text>
+                        <Text type="body-md">{lesson.teacher?.fullname}</Text>
+                        <Text type="body-sm">{lesson.timeString} · {lesson.room?.name}</Text>
                     </>}
                 />
             )}
