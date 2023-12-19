@@ -107,6 +107,8 @@ export default function PageHeader({
                     </div>
                 }
             </div>
+
+            {children}
         </header>
     );
 }

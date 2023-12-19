@@ -1,22 +1,15 @@
 import { useState } from 'react';
 
-import { useStore } from 'shared/hooks/store';
 import Page from 'shared/components/page';
 import { Grid } from 'shared/components/ui';
+import { useMeetings } from 'shared/hooks/meetings';
 import datetime from 'shared/libs/datetime';
 
-import { actionCreators } from 'app/store/modules/meetings';
 import MeetingCard from 'app/components/teacher/meeting-card';
 import HelpDialog from 'app/components/teacher/help-dialog';
 
 export default function TeacherPage() {
-    const [{ meetings }] = useStore(
-        state => ({
-            account: state.account,
-            meetings: state.meetings.filter(meeting => meeting.status !== 'ended')
-        }),
-        actionCreators
-    );
+    const [meetings] = useMeetings();
 
     const [isHelpDialogOpen, setHelpDialogOpen] = useState(false);
 

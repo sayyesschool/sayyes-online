@@ -7,6 +7,7 @@ const Image = forwardRef(({
     src,
     alt = '',
     ratio,
+    sx,
 
     className,
     ...props
@@ -17,11 +18,12 @@ const Image = forwardRef(({
         <AspectRatio
             ref={ref}
             className={classNames}
-            {...props}
+            sx={sx}
         >
             <img
                 src={src}
                 alt={alt}
+                {...props}
             />
         </AspectRatio>
         :
@@ -29,8 +31,11 @@ const Image = forwardRef(({
             className={classNames}
             src={src}
             alt={alt}
+            {...props}
         />
     );
 });
+
+Image.displayName = 'Image';
 
 export default Image;

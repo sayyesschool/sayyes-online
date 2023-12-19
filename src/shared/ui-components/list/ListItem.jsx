@@ -6,13 +6,15 @@ import JoyListItemButton from '@mui/joy/ListItemButton';
 import JoyListItemContent from '@mui/joy/ListItemContent';
 import JoyListItemDecorator from '@mui/joy/ListItemDecorator';
 
+import Icon from '../icon/Icon';
 import Text from '../text/Text';
 
 const ListItem = forwardRef(({
     start,
     end,
     content,
-    decorator,
+    icon,
+    decorator = icon && <Icon name={icon} />,
     interactive,
     selected,
     to,

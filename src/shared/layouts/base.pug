@@ -1,4 +1,6 @@
 include ../mixins/form
+include ../mixins/yandex-metrika
+include ../mixins/google-analytics
 
 doctype html
 html(lang="ru")
@@ -14,9 +16,9 @@ html(lang="ru")
             meta(name="keywords" content=keywords)
         
         if title
-            title= title + ' | Say Yes Online'
+            title= title + ' | Say Yes'
         else
-            title Say Yes Online
+            title Say Yes
         link(rel="preconnect" href="https://fonts.gstatic.com")
         link(rel="icon" href="https://static.sayes.ru/images/favicons/favicon-192x192.png")
         link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght@20,300")

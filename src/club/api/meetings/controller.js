@@ -1,23 +1,24 @@
 module.exports = ({
-    libs: { datetime },
-    services: { Meeting }
+    models: { Meeting }
 }) => ({
-    index: (req, res, next) => {
-        Meeting.get({ host: req.user })
-            .sort({ date: -1 })
-            .then(meetings => {
-                const today = new Date();
-
-                const scheduledMeetings = meetings.filter(m => datetime(m.date).isSameOrAfter(today, 'day'));
-                const pastMeetings = meetings.filter(m => datetime(m.date).isBefore(today, 'day'));
-
-                res.render('home', {
-                    id: 'home',
-                    meetings,
-                    scheduledMeetings,
-                    pastMeetings
-                });
-            })
-            .catch(next);
+    async getMany(req, res) {
+        const meetings = await Meeting.find()
+            .populate('host', 'firstname lastname imageUrl')
+            .sort({ date: -1 });
+        
+        res.send({
+            ok: true,
+            data: meetings
+        });
+    },
+    async getOne(req, res) {
+        const meeting = await Meeting.findOne({ _id: req.params.id })
+            .populate('host', 'firstname lastname imageUrl')
+            .sort({ date: -1 });
+        
+        res.send({
+            ok: true,
+            data: meeting
+        });
     }
 });

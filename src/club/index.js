@@ -36,5 +36,5 @@ module.exports = context => {
         res.render('index');
     });
 
-    return vhost(`lms.${context.config.APP_DOMAIN}`, app);
+    return vhost(`club.${context.config.APP_DOMAIN}`, app);
 };

@@ -20,6 +20,8 @@ const PageByRole = {
 export default function App() {
     const [user] = useUser();
 
+    console.log(user);
+
     if (!user) return <LoadingIndicator fullscreen />;
 
     const HomePage = PageByRole[user.role];

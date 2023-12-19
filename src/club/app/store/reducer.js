@@ -1,14 +1,11 @@
 import { combineReducers } from 'redux';
 
 import notification from 'shared/store/modules/notification';
-
-import account from './modules/account';
-import meetings from './modules/meetings';
-import tickets from './modules/tickets';
+import user from 'shared/store/modules/user';
+import meetings from 'shared/store/modules/meetings';
 
 export default combineReducers({
     notification,
-    account,
     meetings,
-    tickets
+    user
 });

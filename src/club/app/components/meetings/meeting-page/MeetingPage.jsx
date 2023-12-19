@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 
-import { useStore } from 'shared/hooks/store';
+import { useMeeting } from 'shared/hooks/meetings';
+import { useUser } from 'shared/hooks/user';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
@@ -12,24 +13,23 @@ import {
     Flex,
     Heading,
     Icon,
+    Image,
     Grid,
-    Text
+    Text,
+    Surface
 } from 'shared/components/ui';
 
-import { actionCreators } from 'app/store/modules/meetings';
 import RegistrationForm from 'app/components/meetings/meeting-registration-form';
 
 export default function MeetingPage({ match }) {
-    const [{ account, meeting }, actions] = useStore(state => ({
-        account: state.account,
-        meeting: state.meetings.find(meeting => meeting.id === match.params.meetingId)
-    }), actionCreators);
+    const [user] = useUser();
+    const [meeting, actions] = useMeeting(match.params.meetingId);
 
     const [isLoading, setLoading] = useState(false);
     const [isRegisterDialogOpen, setRegisterDialogOpen] = useState(false);
 
     const handleRegister = useCallback(() => {
-        if (meeting.free || account.balance >= meeting.price) {
+        if (meeting.free || user.balance >= meeting.price) {
             setLoading(true);
             actions.registerForMeeting(meeting.id).finally(() => setLoading(false));
         } else {
@@ -60,47 +60,57 @@ export default function MeetingPage({ match }) {
 
     return (
         <Page className="MeetingPage">
-            <Page.Content>
-                <Grid>
-                    <Grid.Item span="8">
-                        <Heading element="h1" type="headline3" noMargin>{meeting.title}</Heading>
+            <Page.Header
+                breadcrumbs={[
+                    { to: '/', content: 'Назад' }
+                ]}
+                title={meeting.title}
+            >
+                <Flex gap="small">
+                    <Text
+                        content={meeting.datetime}
+                    />
 
-                        <Text type="subtitle1" noMargin>{meeting.datetime}</Text>
+                    <Chip
+                        content={meeting.online ? 'Онлайн' : 'Офлайн'}
+                        color="primary"
+                    />
 
-                        <Flex gap="small">
-                            {/* <Chip
+                    {/* <Chip
                             leadingIcon={<Icon>{meeting.online ? 'laptop' : 'business'}</Icon>}
                             text={meeting.online ? 'Онлайн' : 'Офлайн'}
                             title="Формат"
                             outlined
                         /> */}
 
-                            <Chip
-                                className="meeting-host"
-                                leadingIcon={meeting.host.avatarUrl ? <Avatar src={meeting.host.avatarUrl} /> : <Icon>person</Icon>}
-                                text={meeting.host.fullname}
-                                title="Ведущий"
-                                outlined
-                            />
+                    {meeting.host &&
+                        <Chip
+                            start={meeting.host.avatarUrl ? <Avatar src={meeting.host.avatarUrl} /> : <Icon>person</Icon>}
+                            content={meeting.host.fullname}
+                            title="Ведущий"
+                        />
+                    }
 
-                            <Chip
-                                className="meeting-duration"
-                                leadingIcon={<Icon>timelapse</Icon>}
-                                text={`${meeting.duration} мин.`}
-                                title="Продолжительность"
-                                outlined
-                            />
+                    <Chip
+                        start={<Icon>timelapse</Icon>}
+                        content={`${meeting.duration} мин.`}
+                        title="Продолжительность"
+                    />
 
-                            <Chip
-                                className={`meeting-level meeting-level--${meeting.level.toLowerCase()}`}
-                                leadingIcon={<Icon>star</Icon>}
-                                text={meeting.level}
-                                title="Уровень"
-                                outlined
-                            />
-                        </Flex>
+                    <Chip
+                        start={<Icon>star</Icon>}
+                        content={meeting.level}
+                        title="Уровень"
+                    />
+                </Flex>
+            </Page.Header>
 
-                        <div dangerouslySetInnerHTML={{ __html: meeting.description }} />
+            <Page.Content>
+                <Grid spacing={2}>
+                    <Grid.Item md={8}>
+                        <Text as="div">
+                            <div dangerouslySetInnerHTML={{ __html: meeting.description }} />
+                        </Text>
 
                         {meeting.materialsUrl && meeting.isRegistered &&
                             <Button
@@ -112,17 +122,19 @@ export default function MeetingPage({ match }) {
                         }
                     </Grid.Item>
 
-                    <Grid.Item span="4">
-                        <Card outlined>
-                            <Card.Media
-                                imageUrl={meeting.thumbnailUrl}
-                                wide
+                    <Grid.Item md={4}>
+                        <Card>
+                            <Image
+                                src={meeting.thumbnailUrl}
+                                ratio="21/9"
+                                alt=""
+                                sx={{ width: '100%' }}
                             />
                         </Card>
 
-                        <Card outlined>
+                        <Card>
                             {meeting.isRegistered ?
-                                <Card.Section primary>
+                                <Card.Content>
                                     <Text type="subtitle1" display="block">Вы зарегистрированы на встречу.</Text>
 
                                     {!meeting.isEnded &&
@@ -148,19 +160,18 @@ export default function MeetingPage({ match }) {
                                         />
                                     </>
                                     }
-                                </Card.Section>
+                                </Card.Content>
                                 :
-                                <Card.Section primary>
+                                <Card.Content>
                                     <Text type="overline" display="block" align="center">Стоимость участия</Text>
                                     <Text type="headline5" align="center">{meeting.price} руб.</Text>
 
                                     <Button
-                                        label="Зарегистрироваться"
+                                        content="Зарегистрироваться"
                                         disabled={isLoading}
-                                        unelevated
                                         onClick={handleRegister}
                                     />
-                                </Card.Section>
+                                </Card.Content>
                             }
                         </Card>
                     </Grid.Item>
@@ -173,7 +184,7 @@ export default function MeetingPage({ match }) {
                 onClose={handleDialogClose}
             >
                 <RegistrationForm
-                    account={account}
+                    user={user}
                     meeting={meeting}
                     onSubmit={handleSubmit}
                 />

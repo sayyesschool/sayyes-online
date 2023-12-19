@@ -1,5 +1,5 @@
 export default {
-    account: null,
+    user: null,
     tickets: [],
     meetings: []
 };

@@ -2,35 +2,54 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import {
+    Alert,
     Avatar,
     Button,
     Card,
     Chip,
     Flex,
-    Icon
+    Heading,
+    Icon,
+    Image,
+    Text
 } from 'shared/components/ui';
 
-export default function MeetingCard({ meeting }) {
+export default function MeetingCard({ meeting, onRegister }) {
     return (
         <Card className="MeetingCard" outlined>
             {meeting.isPending &&
-                <Card.Header
-                    title="Заявка обрабатывается"
-                    graphic={<Icon>hourglass_empty</Icon>}
+                <Alert
+                    start={<Icon>hourglass_empty</Icon>}
+                    content="Заявка обрабатывается"
                 />
             }
 
-            <Card.Media
-                imageUrl={meeting.thumbnailUrl}
-                wide
-            />
+            <Card.Overflow>
+                <Image
+                    src={meeting.thumbnailUrl}
+                    ratio="16/9"
+                    loading="lazy"
+                    alt=""
+                    sx={{ width: '100%' }}
+                />
+            </Card.Overflow>
 
-            <Card.Header
-                title={meeting.title}
-                subtitle={meeting.datetime}
-            />
+            <Card.Content>
+                <Text
+                    content={meeting.online ? 'Онлайн' : 'Офлайн'}
+                    type="body-xs"
+                />
 
-            <Card.Section>
+                <Heading
+                    content={meeting.title}
+                    type="title-md"
+                />
+
+                <Text
+                    content={meeting.datetime}
+                    type="body-sm"
+                />
+
                 <Flex gap="small">
                     {/* <Chip
                         leadingIcon={<Icon>{meeting.online ? 'laptop' : 'business'}</Icon>}
@@ -39,35 +58,49 @@ export default function MeetingCard({ meeting }) {
                         outlined
                     /> */}
 
-                    <Chip
-                        className="meeting-host"
-                        leadingIcon={meeting.host.avatarUrl ? <Avatar src={meeting.host.avatarUrl} /> : <Icon>person</Icon>}
-                        text={meeting.host.fullname}
-                        title="Ведущий"
-                        outlined
-                    />
+                    {meeting.host &&
+                        <Chip
+                            start={meeting.host.avatarUrl ?
+                                <Avatar src={meeting.host.avatarUrl} /> :
+                                <Icon>person</Icon>
+                            }
+                            content={meeting.host.fullname}
+                            title="Ведущий"
+                            size="sm"
+                        />
+                    }
 
                     <Chip
-                        className="meeting-duration"
-                        leadingIcon={<Icon>timelapse</Icon>}
-                        text={`${meeting.duration} мин.`}
+                        start={<Icon>timelapse</Icon>}
+                        content={`${meeting.duration} мин.`}
                         title="Продолжительность"
-                        outlined
+                        size="sm"
                     />
 
                     <Chip
-                        className={`meeting-level meeting-level--${meeting.level.toLowerCase()}`}
-                        leadingIcon={<Icon>star</Icon>}
-                        text={meeting.level}
+                        start={<Icon>star</Icon>}
+                        content={meeting.level}
                         title="Уровень"
-                        outlined
+                        size="sm"
                     />
                 </Flex>
-            </Card.Section>
+            </Card.Content>
 
-            <Card.Actions>
-                <Button component={Link} to={meeting.url}>Подробнее</Button>
-            </Card.Actions>
+            <Card.Overflow>
+                <Flex justifyContent="space-between">
+                    <Button
+                        as={Link}
+                        to={meeting.url}
+                        content="Подробнее"
+                        variant="plain"
+                    />
+
+                    <Button
+                        content="Зарегистрироваться"
+                        onClick={() => onRegister(meeting)}
+                    />
+                </Flex>
+            </Card.Overflow>
         </Card>
     );
 }

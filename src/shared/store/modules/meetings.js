@@ -69,6 +69,31 @@ export const removeRegistration = createAction('REMOVE_MEETING_REGISTRATION', (m
     }
 }));
 
+export const registerForMeeting = createAction('REGISTER_FOR_MEETING', meetingId => {
+    if (typeof window.ym === 'function') {
+        // eslint-disable-next-line no-undef
+        window.ym(YANDEX_METRIKA_ID, 'reachGoal', 'purchase');
+    }
+
+    if (typeof window.gtag === 'function') {
+        window.gtag('event', 'click', { event_category: 'purchase' });
+    }
+
+    return {
+        request: {
+            method: 'post',
+            url: `/meetings/${meetingId}/registration`
+        }
+    };
+});
+
+export const unregisterFromMeeting = createAction('UNREGISTER_FROM_MEETING', meetingId => ({
+    request: {
+        method: 'delete',
+        url: `/meetings/${meetingId}/registration`
+    }
+}));
+
 export const actions = {
     getMeetings,
     getMeeting,
@@ -79,7 +104,9 @@ export const actions = {
     deleteMeeting,
     addRegistration,
     updateRegistration,
-    removeRegistration
+    removeRegistration,
+    registerForMeeting,
+    unregisterFromMeeting
 };
 
 export const meetingsReducer = createReducer(null, {
@@ -108,6 +135,14 @@ export const meetingReducer = createReducer(null, {
     [removeRegistration]: (state, action) => ({
         ...state,
         registrations: state.registrations.filter(r => r.id !== action.id.id)
+    }),
+    [registerForMeeting]: (state, action) => ({
+        ...state,
+        ...action.meeting
+    }),
+    [registerForMeeting]: (state, action) => ({
+        ...state,
+        ...action.meeting
     })
 });
 

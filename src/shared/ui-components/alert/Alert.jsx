@@ -27,4 +27,6 @@ const Alert = forwardRef(({
     );
 });
 
+Alert.displayName = 'Alert';
+
 export default Alert;

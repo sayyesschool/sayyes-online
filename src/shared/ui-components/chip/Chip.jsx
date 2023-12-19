@@ -28,6 +28,8 @@ const Chip = forwardRef(({
     );
 });
 
+Chip.displayName = 'Chip';
+
 Chip.Delete = ChipDelete;
 
 export { ChipDelete };
