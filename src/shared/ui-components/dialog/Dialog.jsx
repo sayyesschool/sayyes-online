@@ -5,7 +5,6 @@ import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
 import ModalDialog from '@mui/joy/ModalDialog';
 
-import Box from '../box/Box';
 import Button from '../button/Button';
 import Flex from '../flex/Flex';
 import Heading from '../heading/Heading';
@@ -28,9 +27,9 @@ export default function Dialog({
     className,
     ...props
 }) {
-    const classNames = classnames(className, 'ui-Dialog', {
+    const classNames = classnames('ui-Dialog', {
         'ui-Dialog--scrollable': scrollableContent
-    });
+    }, className);
 
     return (
         <Modal
@@ -61,7 +60,10 @@ export default function Dialog({
                 {isValidElement(actions) ? actions : (Array.isArray(actions) &&
                     <Flex gap="smaller" justifyContent="flex-end">
                         {actions?.map(action => isValidElement(action) ? action :
-                            <Button {...action} />
+                            <Button
+                                key={action.key}
+                                {...action}
+                            />
                         )}
                     </Flex>
                 )}

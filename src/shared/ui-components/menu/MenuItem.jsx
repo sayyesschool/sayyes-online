@@ -19,6 +19,7 @@ const MenuItem = forwardRef(({
     onMenuClose = Function.prototype,
 
     as,
+    className,
     children = content,
     ...props
 }, ref) => {
@@ -45,7 +46,7 @@ const MenuItem = forwardRef(({
         onMenuClose();
     }, [onItemClick, onMenuClose]);
 
-    const classNames = classnames('ui-MenuItem');
+    const classNames = classnames('ui-MenuItem', className);
 
     return (
         <JoyMenuItem
@@ -85,6 +86,7 @@ const MenuItem = forwardRef(({
                                 <ListDivider key={item.key} />
                                 :
                                 <MenuItem
+                                    key={item.key}
                                     {...item}
                                     onClick={handleClick}
                                     onClicked={handleSubItemClicked}
@@ -96,5 +98,7 @@ const MenuItem = forwardRef(({
         </JoyMenuItem>
     );
 });
+
+MenuItem.displayName = 'MenuItem';
 
 export default MenuItem;

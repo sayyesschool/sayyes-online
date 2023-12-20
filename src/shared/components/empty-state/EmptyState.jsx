@@ -1,6 +1,5 @@
-import classnames from 'classnames';
-
 import { Icon, Text } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 
 export default function EmptyState({ icon, title, description, className, ...props }) {
     const classNames = classnames('EmptyState', className);

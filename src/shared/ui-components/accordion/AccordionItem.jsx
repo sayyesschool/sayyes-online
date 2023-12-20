@@ -2,7 +2,6 @@ import { forwardRef } from 'react';
 import classnames from 'classnames';
 
 import IconButton from '../icon-button/IconButton';
-import Text from '../text/Text';
 
 const AccordionItem = forwardRef(({
     header,
@@ -40,11 +39,13 @@ const AccordionItem = forwardRef(({
 
             {open &&
                 <div className="ui-AccordionItem__content">
-                    {content}
+                    {children}
                 </div>
             }
         </div>
     );
 });
+
+AccordionItem.displayName = 'AccordionItem';
 
 export default AccordionItem;

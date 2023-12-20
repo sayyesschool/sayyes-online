@@ -1,6 +1,5 @@
-import classnames from 'classnames';
-
 import { Drawer } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 
 export default function PageDrawer({ className, children, ...props }) {
     const classNames = classnames(className, 'PageDrawer');

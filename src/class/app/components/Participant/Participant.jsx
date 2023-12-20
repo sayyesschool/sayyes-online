@@ -1,7 +1,7 @@
 import { memo } from 'react';
-import classnames from 'classnames';
 
 import { Avatar, Icon, Text } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 
 import useIsTrackSwitchedOff from 'app/hooks/useIsTrackSwitchedOff';
 import useParticipantIsReconnecting from 'app/hooks/useParticipantIsReconnecting';

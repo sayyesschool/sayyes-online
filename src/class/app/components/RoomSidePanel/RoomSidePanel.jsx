@@ -1,6 +1,5 @@
-import classnames from 'classnames';
-
 import { Heading, IconButton } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 
 export default function RoomSidePanel({
     open,

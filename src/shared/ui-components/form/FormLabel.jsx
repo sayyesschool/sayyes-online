@@ -18,4 +18,6 @@ const FormLabel = forwardRef(({
     );
 });
 
+FormLabel.displayName = 'FormLabel';
+
 export default FormLabel;

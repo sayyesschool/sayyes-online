@@ -28,13 +28,21 @@ const ChipGroup = forwardRef(({
             {...props}
         >
             {chips?.map(chip =>
-                <Chip {...chip} />
+                <Chip
+                    key={chip.key}
+                    color={color}
+                    size={size}
+                    variant={variant}
+                    {...chip}
+                />
             )}
 
             {children}
         </Box>
     );
 });
+
+ChipGroup.displayName = 'ChipGroup';
 
 Chip.Group = ChipGroup;
 

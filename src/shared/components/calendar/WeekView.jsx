@@ -1,10 +1,10 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import classnames from 'classnames';
 
 import { getWeekData, getWeekLabel } from 'shared/libs/calendar';
 import { Button, Icon, Label, Text } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 
 WeekView.defaultProps = {
     weekdayNames: Array.of(...moment.weekdaysMin().slice(1), moment.weekdaysMin()[0]),

@@ -3,6 +3,7 @@ import classnames from 'classnames';
 
 const TableRow = forwardRef(({
     header,
+    content,
 
     className,
     children = content,
@@ -22,5 +23,7 @@ const TableRow = forwardRef(({
         </tr>
     );
 });
+
+TableRow.displayName = 'TableRow';
 
 export default TableRow;

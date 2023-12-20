@@ -1,8 +1,7 @@
-import classnames from 'classnames';
-
-import { Chip } from 'shared/ui-components';
 import StatusIcon from 'shared/components/status-icon';
 import { StatusLabel, StatusColor } from 'shared/data/status';
+import { Chip } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 
 export default function StatusChip({
     status,

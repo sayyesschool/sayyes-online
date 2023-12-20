@@ -15,6 +15,8 @@ const Menu = forwardRef(({
     items,
     onItemClick = Function.prototype,
     onClose = Function.prototype,
+
+    className,
     ...props
 }, ref) => {
     const handleItemClicked = useCallback((event, { value, shouldClose }) => {
@@ -29,7 +31,7 @@ const Menu = forwardRef(({
         onClose();
     }, [onClose]);
 
-    const classNames = classnames('ui-Menu');
+    const classNames = classnames('ui-Menu', className);
 
     return (
         <Popover
@@ -57,6 +59,7 @@ const Menu = forwardRef(({
                             <ListDivider key={item.key} />
                             :
                             <MenuItem
+                                key={item.key}
                                 {...item}
                                 onClicked={handleItemClicked}
                                 onMenuClose={onClose}
@@ -67,5 +70,7 @@ const Menu = forwardRef(({
         </Popover>
     );
 });
+
+Menu.displayName = 'Menu';
 
 export default Menu;

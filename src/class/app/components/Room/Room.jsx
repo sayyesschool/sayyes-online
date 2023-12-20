@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
-import classnames from 'classnames';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useFullScreen, useScrollClassName } from 'shared/hooks/screen';
 import Chat from 'shared/components/chat';
 import { Alert, Icon } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import useSharedState from 'app/hooks/useSharedState';

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
-import classnames from 'classnames';
 
 import { Box, Text } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 import { pluralize } from 'shared/utils/format';
 
 import './index.scss';

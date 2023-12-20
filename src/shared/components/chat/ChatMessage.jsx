@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
-import classnames from 'classnames';
 
 import { Menu, Surface } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 
 import ChatMessageMedia from './ChatMessageMedia';
 import ChatMessageText from './ChatMessageText';
@@ -42,9 +42,9 @@ export default function ChatMessage({
                 'ChatMessage',
                 `ChatMessage--${message.type}`,
                 `ChatMessage--attached-${attached}`, {
-                'ChatMessage--local': message.isLocal,
-                'ChatMessage--remote': !message.isLocal
-            })}
+                    'ChatMessage--local': message.isLocal,
+                    'ChatMessage--remote': !message.isLocal
+                })}
             onContextMenu={message.isLocal ? handleRootRightClick : undefined}
         >
             <Surface

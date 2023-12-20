@@ -9,6 +9,8 @@ import TableHead from './TableHead';
 import TableRow from './TableRow';
 
 const Table = forwardRef(({
+    content,
+
     className,
     children = content,
     ...props
@@ -25,6 +27,8 @@ const Table = forwardRef(({
         </JoyTable>
     );
 });
+
+Table.displayName = 'Table';
 
 Table.Body = TableBody;
 Table.Cell = TableCell;

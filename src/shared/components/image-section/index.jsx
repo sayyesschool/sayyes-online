@@ -1,5 +1,4 @@
 import { useCallback, useRef, useState } from 'react';
-import classnames from 'classnames';
 
 import storage from 'shared/services/storage';
 import { useBoolean } from 'shared/hooks/state';
@@ -7,6 +6,7 @@ import { Button, Dialog, Icon, Image, Input, Text } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import PageSection from 'shared/components/page-section';
+import classnames from 'shared/utils/classnames';
 
 import './index.scss';
 

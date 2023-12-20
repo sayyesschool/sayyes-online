@@ -1,13 +1,12 @@
 import { useCallback } from 'react';
-import classnames from 'classnames';
 
 import Content from 'shared/components/content';
 import { List, Switch } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 
 import './Boolean.scss';
 
 export default function BooleanItem({
-    id,
     content,
     items,
     checked,
@@ -17,11 +16,11 @@ export default function BooleanItem({
     className
 }) {
     const handleChange = useCallback(itemId => {
-        onUpdateState(item.id, {
+        onUpdateState(itemId, {
             ...state,
             [itemId]: state ? !state[itemId] : true
         });
-    }, [id, state, onUpdateState]);
+    }, [state, onUpdateState]);
 
     return (
         <div className={className}>

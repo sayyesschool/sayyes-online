@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classnames from 'shared/utils/classnames';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import Participant from 'app/components/Participant';

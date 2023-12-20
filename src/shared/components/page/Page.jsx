@@ -1,5 +1,4 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import LoadingIndicator from 'shared/components/loading-indicator';
 import NotFound from 'shared/components/not-found';
@@ -7,6 +6,7 @@ import PageContent from 'shared/components/page-content';
 import PageDrawer from 'shared/components/page-drawer';
 import PageHeader from 'shared/components/page-header';
 import PageSection from 'shared/components/page-section';
+import classnames from 'shared/utils/classnames';
 
 const Page = forwardRef(({
     loading,
@@ -24,6 +24,8 @@ const Page = forwardRef(({
         <main ref={ref} className={classNames} {...props} />
     );
 });
+
+Page.displayName = 'Page';
 
 Page.Content = PageContent;
 Page.Drawer = PageDrawer;

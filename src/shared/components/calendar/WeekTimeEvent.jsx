@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
-import classnames from 'classnames';
 
 import { LessonColorByType } from 'shared/data/lesson';
 import { Chip, Text } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 import { formatTime } from 'shared/utils/format';
 
 export default function WeekTimeEvent({ event, onClick, ...props }) {

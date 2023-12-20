@@ -31,6 +31,7 @@ const Accordion = forwardRef(({
         >
             {items?.map((item, index) =>
                 <AccordionItem
+                    key={item.key}
                     open={activeItemIndexes.includes(index)}
                     onClick={() => handleItemClick(index)}
                     {...item}
@@ -41,5 +42,7 @@ const Accordion = forwardRef(({
         </div>
     );
 });
+
+Accordion.displayName = 'Accordion';
 
 export default Accordion;

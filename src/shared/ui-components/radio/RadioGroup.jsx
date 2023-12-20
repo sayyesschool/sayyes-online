@@ -21,12 +21,17 @@ const RadioGroup = forwardRef(({
             {...props}
         >
             {items?.map(item => (
-                <Radio {...item} />
+                <Radio
+                    key={item.key}
+                    {...item}
+                />
             ))}
 
             {children}
         </JoyRadioGroup>
     );
 });
+
+RadioGroup.displayName = 'RadioGroup';
 
 export default RadioGroup;

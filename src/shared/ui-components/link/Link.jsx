@@ -11,7 +11,7 @@ const Link = forwardRef(({
     className,
     ...props
 }, ref) => {
-    const classNames = classnames('ui-Link');
+    const classNames = classnames('ui-Link', className);
 
     return (
         <JoyLink
@@ -24,5 +24,7 @@ const Link = forwardRef(({
         </JoyLink>
     );
 });
+
+Link.displayName = 'Link';
 
 export default Link;

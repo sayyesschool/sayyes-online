@@ -21,13 +21,18 @@ const ButtonGroup = forwardRef(({
             {...props}
         >
             {buttons?.map(button =>
-                <Button {...button} />
+                <Button
+                    key={button.key}
+                    {...button}
+                />
             )}
 
             {children}
         </JoyButtonGroup>
     );
 });
+
+ButtonGroup.displayName = 'ButtonGroup';
 
 Button.Group = ButtonGroup;
 

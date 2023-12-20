@@ -1,6 +1,5 @@
-import classnames from 'classnames';
-
 import { Avatar, Text } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import useIsTrackSwitchedOff from 'app/hooks/useIsTrackSwitchedOff';

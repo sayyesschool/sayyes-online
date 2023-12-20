@@ -5,17 +5,15 @@ import JoyDrawer from '@mui/joy/Drawer';
 
 const Drawer = forwardRef(({
     content,
-    start,
-    end,
     open,
 
     children = content,
     className,
     ...props
 }, ref) => {
-    const classNames = classnames(className, 'ui-Drawer', {
+    const classNames = classnames('ui-Drawer', {
         'ui-Drawer--open': open
-    });
+    }, className);
 
     return (
         <JoyDrawer
@@ -28,5 +26,7 @@ const Drawer = forwardRef(({
         </JoyDrawer>
     );
 });
+
+Drawer.displayName = 'Drawer';
 
 export default Drawer;

@@ -1,9 +1,8 @@
 import { useCallback } from 'react';
-import classnames from 'classnames';
 import moment from 'moment';
 
-import { useBoolean } from 'shared/hooks/state';
 import { Chip, Flex, MenuButton } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 
 import './index.scss';
 

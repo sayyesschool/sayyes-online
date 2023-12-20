@@ -2,6 +2,8 @@ import { forwardRef } from 'react';
 import classnames from 'classnames';
 
 const TableHead = forwardRef(({
+    content,
+    
     className,
     children = content,
     ...props
@@ -18,5 +20,7 @@ const TableHead = forwardRef(({
         </thead>
     );
 });
+
+TableHead.displayName = 'TableHead';
 
 export default TableHead;

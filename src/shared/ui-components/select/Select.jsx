@@ -39,6 +39,7 @@ const Select = forwardRef(({
         >
             {options?.map(option =>
                 <Option
+                    key={option.key}
                     label={option.label || option.content}
                     {...option}
                 />
@@ -48,6 +49,8 @@ const Select = forwardRef(({
         </JoySelect>
     );
 });
+
+Select.displayName = 'Select';
 
 Select.Option = Option;
 

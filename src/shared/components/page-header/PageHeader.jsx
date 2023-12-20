@@ -1,8 +1,8 @@
 import { cloneElement, isValidElement } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import classnames from 'classnames';
 
 import { Breadcrumbs, Button, Heading, IconButton, Link, Tabs, Text } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 
 export default function PageHeader({
     overline,

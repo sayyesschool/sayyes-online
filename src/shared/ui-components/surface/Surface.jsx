@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import Sheet from '@mui/joy/Sheet';
 
 const Surface = forwardRef(({ className, ...props }, ref) => {
-    const classNames = classnames(className, 'ui-Surface');
+    const classNames = classnames('ui-Surface', className);
 
     return (
         <Sheet

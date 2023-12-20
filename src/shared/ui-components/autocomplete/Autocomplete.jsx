@@ -40,4 +40,6 @@ const Autocomplete = forwardRef(({
     );
 });
 
+Autocomplete.displayName = 'Autocomplete';
+
 export default Autocomplete;

@@ -8,9 +8,9 @@ export default function Icon({
     className,
     ...props
 }) {
-    const classNames = classnames('ui-Icon', {
+    const classNames = classnames(className, 'ui-Icon', {
         [`ui-Icon--${size}`]: size
-    }, className);
+    });
 
     return (
         <i className={classNames} {...props}>{children}</i>

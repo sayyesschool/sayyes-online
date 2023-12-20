@@ -27,4 +27,6 @@ const Flex = forwardRef(({
     );
 });
 
+Flex.displayName = 'Flex';
+
 export default Flex;

@@ -1,5 +1,4 @@
 import { useCallback, useRef, useState } from 'react';
-import classnames from 'classnames';
 
 import storage from 'shared/services/storage';
 import { useBoolean } from 'shared/hooks/state';
