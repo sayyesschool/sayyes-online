@@ -3,7 +3,7 @@ const strategies = require('./strategies');
 module.exports = ({
     services: { Auth }
 }) => ({
-    user: (req, res) => {
+    user(req, res) {
         const user = req.user;
 
         res.json({
@@ -21,7 +21,7 @@ module.exports = ({
         });
     },
     
-    register: (req, res, next) => {
+    register(req, res, next) {
         Auth.register({
             email: req.body.email,
             firstname: req.body.firstname,
@@ -37,7 +37,7 @@ module.exports = ({
             });
     },
 
-    login: (req, res, next) => {
+    login(req, res, next) {
         Auth.login(req.body.email, req.body.password)
             .then(user => {
                 req.session.userId = user.id;
@@ -49,12 +49,12 @@ module.exports = ({
             });
     },
 
-    logout: (req, res, next) => {
+    logout(req, res, next) {
         req.session.userId = undefined;
         next();
     },
 
-    authenticate: (req, res, next) => {
+    authenticate(req, res, next) {
         const provider = strategies[req.body.provider];
 
         if (!provider) return next(new Error('Провайдер не найден'));
@@ -64,11 +64,15 @@ module.exports = ({
         provider.auth(req, res, next);
     },
 
-    callback: (req, res, next) => req.provider.callback(req, res, next),
+    callback(req, res, next) {
+        req.provider.callback(req, res, next);
+    },
 
-    connect: (req, res, next) => req.provider.auth(req, res, next),
+    connect(req, res, next) {
+        req.provider.auth(req, res, next);
+    },
 
-    sendResetPasswordToken: (req, res) => {
+    sendResetPasswordToken(req, res) {
         Auth.sendResetPasswordToken(req.body.email)
             .then(() => {
                 req.flash('info', 'На указанный адрес было отправлено письмо для сброса пароля');
@@ -80,17 +84,17 @@ module.exports = ({
             });
     },
 
-    showResetPasswordForm: (req, res) => {
+    showResetPasswordForm(req, res) {
         if (!req.params.token) return res.redirect('/');
 
-        res.render('auth/pages/reset', {
+        res.render('reset', {
             id: 'reset',
             title: 'Сброс пароля',
             token: req.params.token
         });
     },
 
-    resetPassword: (req, res) => {
+    resetPassword(req, res) {
         if (!req.body.password) {
             req.flash('error', 'Пароль не указан');
             return res.redirect('back');
@@ -108,7 +112,7 @@ module.exports = ({
             .finally(() => res.redirect('/'));
     },
 
-    redirect: (req, res) => {
+    redirect(req, res) {
         if (req.session.returnUrl) {
             const returnUrl = req.session.returnUrl;
             delete req.session.returnUrl;

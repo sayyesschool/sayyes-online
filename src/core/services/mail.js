@@ -1,6 +1,6 @@
 const FROM = {
-    email: 'club@sayes.ru',
-    name: 'Разговорный клуб SAY YES'
+    email: 'online@sayyes.school',
+    name: 'SAY YES English School'
 };
 
 module.exports = mailClient => {

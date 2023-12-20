@@ -13,7 +13,7 @@ const UserRole = {
 };
 
 const User = new Schema([Person, {
-    password: { type: String, trim: true, set: value => bcrypt.hashSync(value, bcrypt.genSaltSync()) },
+    password: { type: String, trim: true },
     role: { type: String, enum: Object.values(UserRole), default: UserRole.Customer },
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
     activated: { type: Boolean, default: false, alias: 'isActivated' },
@@ -50,6 +50,7 @@ User.virtual('url').get(function() {
 User.statics.Role = UserRole;
 
 User.statics.hashPassword = function(password) {
+    console.log('hashPassword', password);
     return bcrypt.hashSync(password, bcrypt.genSaltSync());
 };
 
@@ -63,6 +64,14 @@ User.methods.validatePassword = function(password) {
     if (!this.password) throw new Error('Необходимо сбросить пароль.');
 
     return bcrypt.compareSync(password, this.password);
+};
+
+User.methods.resetPassword = function(password) {
+    this.password = password;
+    this.resetPasswordToken = undefined;
+    this.resetPasswordTokenExpiresAt = undefined;
+
+    return this.save();
 };
 
 User.methods.generateActivationToken = function() {
@@ -85,6 +94,26 @@ User.methods.isActivationTokenValid = function(token) {
 
 User.methods.isResetPasswordTokenValid = function(token) {
     return (this.resetPasswordToken === token) && (new Date() <= this.resetPasswordTokenExpiresAt);
+};
+
+User.methods.addAccount = function(account) {
+    this.accounts.push(account);
+
+    return this.save();
+};
+
+User.methods.removeAccount = function(accountId) {
+    const account = this.accounts.id(accountId);
+
+    if (!account) {
+        const error = new Error('Аккаунт не найден');
+        error.status = 404;
+        throw error;
+    }
+
+    account.remove();
+
+    return this.save().then(() => account);
 };
 
 /* Middleware */

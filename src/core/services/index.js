@@ -30,7 +30,7 @@ module.exports = (config, lib, models) => {
             templateId: 5329582,
             variables: {
                 firstname: user.firstname,
-                resetUrl: `${config.APP_URL}/reset/${user.resetPasswordToken}`
+                resetUrl: `https://auth.${config.APP_DOMAIN}/reset/${user.resetPasswordToken}`
             }
         })
     });
