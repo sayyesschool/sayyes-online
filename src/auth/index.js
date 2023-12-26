@@ -21,10 +21,10 @@ module.exports = context => {
             res.render('login');
     });
     
-    app.get('/user', controller.user);
     app.post('/register', controller.register, middleware.redirect);
     app.post('/login', controller.login, middleware.redirect);
     app.get('/logout', controller.logout, middleware.redirect);
+    app.get('/user', controller.user);
     
     app.post('/oauth', controller.authenticate);
     app.get('/oauth/:provider/callback', controller.callback, controller.redirect);

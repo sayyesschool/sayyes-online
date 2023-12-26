@@ -22,11 +22,7 @@ module.exports = ({
     },
     
     register(req, res, next) {
-        Auth.register({
-            email: req.body.email,
-            firstname: req.body.firstname,
-            lastname: req.body.lastname
-        })
+        Auth.register(req.body)
             .then(user => {
                 req.session.userId = user.id;
                 next();
@@ -95,14 +91,17 @@ module.exports = ({
     },
 
     resetPassword(req, res) {
-        if (!req.body.password) {
+        const password = req.body.password;
+        const token = req.params.token;
+
+        if (!password) {
             req.flash('error', 'Пароль не указан');
             return res.redirect('back');
         }
 
         req.session.userId = undefined;
 
-        Auth.resetPassword(req.params.token, req.body.password)
+        Auth.resetPassword(token, password)
             .then(() => {
                 req.flash('success', 'Пароль изменен');
             })
@@ -113,13 +112,13 @@ module.exports = ({
     },
 
     redirect(req, res) {
-        if (req.session.returnUrl) {
-            const returnUrl = req.session.returnUrl;
-            delete req.session.returnUrl;
+        if (!req.session.returnUrl)
+            return res.redirect('/');
 
-            return res.redirect(returnUrl);
-        }
+        const returnUrl = req.session.returnUrl;
 
-        res.redirect('/');
+        delete req.session.returnUrl;
+
+        return res.redirect(returnUrl);
     }
 });

@@ -11,7 +11,7 @@ module.exports = context => {
     router.put('/password', controller.updatePassword);
 
     router.use((error, req, res, next) => {
-        res.status(error.status || 500).send({
+        res.status(error.code || error.status || 500).send({
             ok: false,
             error: typeof error === 'object' ? error.message : undefined
         });

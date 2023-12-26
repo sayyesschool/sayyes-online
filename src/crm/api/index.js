@@ -39,7 +39,7 @@ module.exports = context => {
 
     router.use((error, req, res, next) => {
         console.error(error);
-        res.status(error.status || 500).send({ ok: false, error: error.message || error });
+        res.status(error.code || error.status || 500).send({ ok: false, error: error.message || error });
     });
 
     return router;

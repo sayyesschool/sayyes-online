@@ -12,9 +12,25 @@ const UserRole = {
     Teacher: 'teacher'
 };
 
+function hashPassword(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync());
+}
+
+function generateToken() {
+    return crypto.randomBytes(20).toString('hex');
+}
+
 const User = new Schema([Person, {
-    password: { type: String, trim: true },
-    role: { type: String, enum: Object.values(UserRole), default: UserRole.Customer },
+    password: {
+        type: String,
+        trim: true,
+        set: hashPassword
+    },
+    role: {
+        type: String,
+        enum: Object.values(UserRole),
+        default: UserRole.Customer 
+    },
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
     activated: { type: Boolean, default: false, alias: 'isActivated' },
     timezone: { type: String },
@@ -39,24 +55,17 @@ const User = new Schema([Person, {
     }
 });
 
+/* Statics */
+
+User.statics.Role = UserRole;
+User.statics.hashPassword = hashPassword;
+User.statics.generateToken = generateToken;
+
 /* Virtuals */
 
 User.virtual('url').get(function() {
     return `/${this.role}s/${this.id}`;
 });
-
-/* Statics */
-
-User.statics.Role = UserRole;
-
-User.statics.hashPassword = function(password) {
-    console.log('hashPassword', password);
-    return bcrypt.hashSync(password, bcrypt.genSaltSync());
-};
-
-User.statics.generateToken = function() {
-    return crypto.randomBytes(20).toString('hex');
-};
 
 /* Methods */
 
@@ -75,14 +84,14 @@ User.methods.resetPassword = function(password) {
 };
 
 User.methods.generateActivationToken = function() {
-    this.activationToken = User.statics.generateToken();
+    this.activationToken = generateToken();
     this.activationTokenExpiresAt = Date.now() + 86400000;
 
     return this.save();
 };
 
 User.methods.generateResetPasswordToken = function() {
-    this.resetPasswordToken = User.statics.generateToken();
+    this.resetPasswordToken = generateToken();
     this.resetPasswordTokenExpiresAt = Date.now() + 86400000;
 
     return this.save();
@@ -119,13 +128,13 @@ User.methods.removeAccount = function(accountId) {
 /* Middleware */
 
 // Generate password
-User.pre('save', function(next) {
-    if (!this.isModified('password')) return next();
+// User.pre('save', function(next) {
+//     if (!this.isModified('password')) return next();
 
-    this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync());
+//     this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync());
 
-    next();
-});
+//     next();
+// });
 
 // Check email
 User.pre('save', function(next) {
@@ -143,7 +152,7 @@ User.pre('save', function(next) {
     if (!this.isNew) return next();
 
     // Generate email verification token
-    this.activationToken = User.statics.generateToken();
+    this.activationToken = generateToken();
     this.activationTokenExpiresAt = Date.now() + 86400000;
 
     next();

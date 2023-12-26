@@ -14,8 +14,23 @@ module.exports = ({
         failureFlash: true
     },
 
-    async register({ password = crypto.randomBytes(12).toString('base64'), ...data }) {
-        const user = await User.create({ password, ...data });
+    async register({
+        email,
+        password = crypto.randomBytes(12).toString('base64'),
+        firstname,
+        lastname
+    } = {}) {
+        if (!email) throw {
+            code: 403,
+            message: 'Для регистрации необходимо указать адрес электронной почты'
+        };
+
+        const user = await User.create({
+            email,
+            password,
+            firstname,
+            lastname
+        });
 
         onRegister?.(user, password);
 
