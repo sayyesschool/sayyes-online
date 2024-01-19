@@ -61,6 +61,21 @@
             "error",
             "always"
         ],
+        "sort-imports": [
+            "warn",
+            {
+                "ignoreCase": false,
+                "ignoreDeclarationSort": true,
+                "ignoreMemberSort": false,
+                "memberSyntaxSortOrder": [
+                    "all",
+                    "single",
+                    "multiple",
+                    "none"
+                ],
+                "allowSeparatedGroups": true
+            }
+        ],
         "react/react-in-jsx-scope": "off",
         "react/prop-types": "off",
         "react/no-unescaped-entities": "warn"
