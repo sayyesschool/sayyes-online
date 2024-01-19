@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import moment from 'moment';
 
 import { useBoolean } from 'shared/hooks/state';
 import DataContext from 'shared/contexts/data';
@@ -6,7 +7,7 @@ import DetailsList from 'shared/components/details-list';
 import PageSection from 'shared/components/page-section';
 import { Avatar, IconButton, List, MenuButton, } from 'shared/ui-components';
 
-export default function EnrollmentClient({ enrollment: { learner } }) {
+export default function EnrollmentLearner({ enrollment: { learner } }) {
     const data = useContext(DataContext);
 
     const [isOpen, toggleOpen] = useBoolean(false);

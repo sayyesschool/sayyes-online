@@ -4,7 +4,7 @@ module.exports = ({
 }) => ({
     getMany: (req, res, next) => {
         Promise.all([
-            Enrollment.find({ client: req.user.id, ...req.query })
+            Enrollment.find({ learnerId: req.user.id, ...req.query })
                 .populate('learner', 'firstname lastname imageUrl')
                 .populate('teacher', 'firstname lastname imageUrl')
                 .populate('lessons', 'id')
@@ -62,7 +62,7 @@ module.exports = ({
 
     pay: (req, res, next) => {
         Promise.all([
-            Enrollment.findOne({ _id: req.params.id, client: req.user.id }),
+            Enrollment.findOne({ _id: req.params.id, learnerId: req.user.id }),
             Pack.findById(req.body.packId)
         ]).then(([enrollment, pack]) => {
             if (!enrollment) return next({ code: 401, message: 'Обучение не найдено' });

@@ -16,12 +16,13 @@ const Format = {
 };
 
 const Level = {
-    Beginner: 'a0',
-    Elementary: 'a1',
-    PreIntermediate: 'a2',
-    Intermediate: 'b1',
-    UpperIntermediate: 'b2',
-    Advanced: 'c1'
+    Beginner: 0,
+    Elementary: 1,
+    PreIntermediate: 2,
+    Intermediate: 3,
+    UpperIntermediate: 4,
+    Advanced: 5,
+    Proficiency: 6
 };
 
 const Purpose = {

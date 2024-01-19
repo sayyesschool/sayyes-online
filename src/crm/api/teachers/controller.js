@@ -18,7 +18,7 @@ module.exports = ({
         Teacher.findById(req.params.id)
             .populate({
                 path: 'enrollments',
-                select: 'status type domain format client schedules',
+                select: 'status type domain format learner schedules',
                 populate: {
                     path: 'learner',
                     select: 'firstname lastname'

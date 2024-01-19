@@ -1,5 +1,5 @@
 module.exports = ({
-    models: { Request, Client }
+    models: { Request, Learner }
 }) => ({
     get: (req, res, next) => {
         Request.find({ status: { $in: ['new', 'processing'] }, ...req.query })
@@ -40,16 +40,16 @@ module.exports = ({
             .populate('learner', 'firstname lastname')
             .populate('manager', 'firstname lastname')
             .then(request => {
-                return Client.findOne({
+                return Learner.findOne({
                     phone: request.contact.phone
-                }).then(client => {
-                    return [request, client];
+                }).then(learner => {
+                    return [request, learner];
                 });
             })
-            .then(([request, client]) => {
+            .then(([request, learner]) => {
                 const data = request.toJSON({ getters: true, virtuals: true });
 
-                data.existingClient = client;
+                data.existinglearner = learner;
 
                 res.json({
                     ok: true,

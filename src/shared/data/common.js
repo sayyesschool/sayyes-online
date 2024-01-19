@@ -19,11 +19,12 @@ const FormatLabel = {
 
 const LevelLabel = {
     [Level.Beginner]: 'Beginner',
-    [Level.Elementary]: 'Elementary',
-    [Level.PreIntermediate]: 'Pre-Intermediate',
-    [Level.Intermediate]: 'Intermediate',
-    [Level.UpperIntermediate]: 'Upper-Intermediate',
-    [Level.Advanced]: 'Advanced'
+    [Level.Elementary]: 'Elementary (A1)',
+    [Level.PreIntermediate]: 'Pre-Intermediate (A2)',
+    [Level.Intermediate]: 'Intermediate (B1)',
+    [Level.UpperIntermediate]: 'Upper-Intermediate (B2)',
+    [Level.Advanced]: 'Advanced (C1)',
+    [Level.Proficiency]: 'Proficiency (C2)'
 };
 
 const PurposeLabel = {

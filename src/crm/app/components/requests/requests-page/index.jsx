@@ -17,7 +17,7 @@ export default function RequestsPage({ history }) {
     const [managers] = useStore('managers.list');
     const [{ list: requests, single: request }, requestActions] = useStore('requests');
 
-    const clientActions = useActions('clients');
+    const learnerActions = useActions('learners');
     const enrollmentActions = useActions('enrollments');
     const { showNotification } = useActions('notification');
 
@@ -25,7 +25,7 @@ export default function RequestsPage({ history }) {
     const [isRequestFormOpen, toggleRequestFormOpen] = useBoolean(false);
     const [isSearchFormOpen, toggleSearchFormOpen] = useBoolean(false);
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
-    const [requestWithExistingClient, setRequestWithExistingClient] = useState();
+    const [requestWithExistingLearner, setRequestWithExistingLearner] = useState();
 
     useEffect(() => {
         requestActions.getRequests();
@@ -50,8 +50,8 @@ export default function RequestsPage({ history }) {
     const handleCheckRequest = useCallback(request => {
         return requestActions.getRequest(request.id)
             .then(({ data: request }) => {
-                if (request.existingClient) {
-                    setRequestWithExistingClient(request);
+                if (request.existingLearner) {
+                    setRequestWithExistingLearner(request);
                 } else {
                     handleProcessRequest(request);
                 }
@@ -59,10 +59,10 @@ export default function RequestsPage({ history }) {
     }, []);
 
     const handleProcessRequestSubmit = useCallback(data => {
-        return clientActions.createClient(data.client)
-            .then(({ data: client }) => enrollmentActions.createEnrollment({
+        return learnerActions.createLearner(data.learner)
+            .then(({ data: learner }) => enrollmentActions.createEnrollment({
                 ...data.enrollment,
-                client: client.id,
+                learner: learner.id,
                 manager: user.id,
                 request: request.id
             }))
@@ -72,25 +72,25 @@ export default function RequestsPage({ history }) {
                 enrollmentId: enrollment.enrollment,
                 learnerId: enrollment.learnerId
             }))
-            .then(({ data }) => history.push(`/learners/${data.client.id}`));
+            .then(({ data }) => history.push(`/learners/${data.learner.id}`));
     }, [request]);
 
-    const handleExistingClient = useCallback(() => {
-        return requestActions.updateRequest(requestWithExistingClient.id, {
+    const handleExistingLearner = useCallback(() => {
+        return requestActions.updateRequest(requestWithExistingLearner.id, {
             status: 'completed',
             manager: user.id,
-            client: requestWithExistingClient.existingClient.id
+            learner: requestWithExistingLearner.existingLearner.id
         }).then(({ data }) => {
-            history.push(`/clients/${data.client.id}`);
+            history.push(`/learners/${data.learner.id}`);
             showNotification({ text: 'Заявка привязана к клиенту' });
         });
-    }, [requestWithExistingClient]);
+    }, [requestWithExistingLearner]);
 
     const handleContinueProcessing = useCallback(() => {
-        delete requestWithExistingClient.existingClient;
-        handleProcessRequest(requestWithExistingClient);
-        setRequestWithExistingClient(undefined);
-    }, [requestWithExistingClient]);
+        delete requestWithExistingLearner.existingLearner;
+        handleProcessRequest(requestWithExistingLearner);
+        setRequestWithExistingLearner(undefined);
+    }, [requestWithExistingLearner]);
 
     const handleEditRequest = useCallback(request => {
         requestActions.setRequest(request);
@@ -175,9 +175,9 @@ export default function RequestsPage({ history }) {
 
             <ConfirmationDialog
                 title="Совпадение номера телефона"
-                message={`Номер телефона в заявке совпадает с номером телефона существующего клиента ${requestWithExistingClient?.existingClient.fullname} (${requestWithExistingClient?.existingClient.phone}). Вы хотите привязать заявку к нему?`}
-                open={Boolean(requestWithExistingClient)}
-                onConfirm={handleExistingClient}
+                message={`Номер телефона в заявке совпадает с номером телефона существующего клиента ${requestWithExistingLearner?.existingLearner.fullname} (${requestWithExistingLearner?.existingLearner.phone}). Вы хотите привязать заявку к нему?`}
+                open={Boolean(requestWithExistingLearner)}
+                onConfirm={handleExistingLearner}
                 onClose={handleContinueProcessing}
             />
         </Page>

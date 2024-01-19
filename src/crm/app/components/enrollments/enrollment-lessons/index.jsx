@@ -147,8 +147,8 @@ export default function EnrollmentLessons({ enrollment }) {
                     id="create-lesson-form"
                     lesson={{
                         duration: enrollment.lessonDuration,
-                        client: enrollment?.client,
-                        teacher: enrollment?.teachers[0]
+                        learner: enrollment?.Learner,
+                        teacher: enrollment?.teacher
                     }}
                     onSubmit={createLesson}
                 />

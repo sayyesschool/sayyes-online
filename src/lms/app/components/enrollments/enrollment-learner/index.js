@@ -1,1 +1,1 @@
-export { default } from './EnrollmentClient';
+export { default } from './EnrollmentLearner';

@@ -26,8 +26,8 @@ export default function LessonsTable({ lessons, onEdit, onDelete }) {
                             {lesson.learner ?
                                 <Link
                                     as={RouterLink}
-                                    to={`/clients/${lesson.client.id}`}
-                                    content={lesson.client.fullname}
+                                    to={`/learners/${lesson.learner.id}`}
+                                    content={lesson.learner.fullname}
                                     color="neutral"
                                     variant="plain"
                                     underline="none"

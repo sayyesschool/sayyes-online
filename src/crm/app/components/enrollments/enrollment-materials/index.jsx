@@ -25,10 +25,10 @@ export default function EnrollmentMaterials({ enrollment }) {
     }, [enrollment]);
 
     const enrollmentMaterials = materials
-        .filter(material => enrollment.materials.includes(material.id));
+        .filter(material => enrollment.materialIds.includes(material.id));
 
     const items = materials
-        .filter(material => !enrollment.materials.includes(material.id))
+        .filter(material => !enrollment.materialIds.includes(material.id))
         .map(material => ({
             key: material.id,
             value: material.id,

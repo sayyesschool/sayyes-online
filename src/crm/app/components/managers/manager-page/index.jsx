@@ -43,7 +43,7 @@ export default function ManagerPage({ match, location, history }) {
     }, [manager]);
 
     const deleteManager = useCallback(() => {
-        return managerActions.deleteClient(manager.id)
+        return managerActions.deleteManager(manager.id)
             .then(() => history.push('/managers'));
     }, [manager]);
 

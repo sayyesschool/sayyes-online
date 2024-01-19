@@ -15,7 +15,7 @@ export default function PaymentSearchForm({
         description: '',
         date: moment(payment.date).format('YYYY-MM-DD'),
         paymentMethod: payment.method?.type,
-        client: payment.client ? payment.client.id : '',
+        learner: payment.learner ? payment.learner.id : '',
         ...payment
     });
 

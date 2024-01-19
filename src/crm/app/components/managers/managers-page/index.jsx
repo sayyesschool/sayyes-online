@@ -29,7 +29,7 @@ export default function ManagersPage({ history }) {
     const deleteManager = useCallback(() => {
         return actions.deleteManager(manager.id)
             .then(() => {
-                setClient(null);
+                setManager(null);
                 toggleConfirmationDialogOpen(false);
             });
     }, [manager]);

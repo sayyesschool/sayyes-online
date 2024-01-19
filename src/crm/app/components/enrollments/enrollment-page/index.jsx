@@ -1,23 +1,24 @@
 import { useCallback } from 'react';
 
+import { DomainLabel } from 'shared/data/common';
 import { useBoolean } from 'shared/hooks/state';
 import { useEnrollment } from 'shared/hooks/enrollments';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import { Badge, Flex, IconButton, Grid } from 'shared/ui-components';
+import { Badge, Flex, Grid, IconButton } from 'shared/ui-components';
 
-import EnrollmentForm from 'app/components/enrollments/enrollment-form';
 import EnrollmentComments from 'app/components/enrollments/enrollment-comments';
 import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';
 import EnrollmentDetails from 'app/components/enrollments/enrollment-details';
-import EnrollmentMeta from 'app/components/enrollments/enrollment-meta';
+import EnrollmentForm from 'app/components/enrollments/enrollment-form';
 import EnrollmentLessons from 'app/components/enrollments/enrollment-lessons';
 import EnrollmentMaterials from 'app/components/enrollments/enrollment-materials';
+import EnrollmentMeta from 'app/components/enrollments/enrollment-meta';
 // import EnrollmentPayments from 'app/components/enrollments/enrollment-payments';
-import EnrollmentStatus from 'app/components/enrollments/enrollment-status';
 import EnrollmentSchedule from 'app/components/enrollments/enrollment-schedule';
+import EnrollmentStatus from 'app/components/enrollments/enrollment-status';
 // import EnrollmentTrialLesson from 'app/components/enrollments/enrollment-trial-lesson';
 
 import './index.scss';
@@ -54,7 +55,7 @@ export default function EnrollmentPage({ match, history }) {
                 breadcrumbs={[
                     { content: enrollment.learner.fullname, to: enrollment?.learner.url }
                 ]}
-                title={enrollment.domainLabel}
+                title={DomainLabel[enrollment.domain]}
                 actions={[
                     (enrollment.learner?.hhid && {
                         key: 'hhid',

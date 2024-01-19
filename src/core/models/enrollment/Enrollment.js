@@ -9,12 +9,12 @@ const { Status, Type } = require('./constants');
 const Enrollment = new Schema({
     hhid: { type: String },
     ageGroup: { type: String, default: AgeGroup.Adults },
-    domain: { type: String, enum: Object.keys(Domain), default: Domain.general },
+    domain: { type: String, enum: Object.values(Domain), default: Domain.general },
     format: { type: String, default: Format.online },
-    type: { type: String, enum: Object.keys(Type), default: Type.Individual },
+    type: { type: String, enum: Object.values(Type), default: Type.Individual },
     teacherType: { type: String, default: TeacherType.Russian },
-    status: { type: String, enum: Object.keys(Status), default: Status.Processing },
-    level: { type: String, enum: Object.keys(Level) },
+    status: { type: String, enum: Object.values(Status), default: Status.Processing },
+    level: { type: Number, enum: Object.values(Level) },
     lessonDuration: { type: Number, default: 50 },
     lessonPrice: { type: Number, default: 0 },
     schedule: [Schedule],
@@ -166,9 +166,9 @@ Enrollment.methods.scheduleLessons = function(numberOfLessons, startDate = new D
         lessons.push({
             date: lessonDate,
             duration: this.lessonDuration,
-            enrollment: this._id,
-            client: this.client,
-            teacher: this.teacher
+            enrollmentId: this._id,
+            learnerId: this.learnerId,
+            teacherId: this.teacherId
         });
     }
 

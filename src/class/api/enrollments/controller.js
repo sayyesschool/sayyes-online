@@ -15,7 +15,6 @@ module.exports = ({
     async getOne(req, res, next) {
         const enrollment = await Enrollment.findById(req.params.enrollmentId)
             .populate('learner', 'firstname lastname fullname')
-            // .populate('clients', 'firstname lastname fullname')
             .populate('teacher', 'firstname lastname fullname')
             .populate('courses', 'title slug image units._id lessons._id exercises._id');
 

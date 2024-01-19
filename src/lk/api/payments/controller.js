@@ -44,7 +44,7 @@ module.exports = ({
                 confirmationUrl: payment.confirmationUrl,
                 test: payment.test,
                 operator: 'yookassa',
-                client: req.user.id,
+                user: req.user.id,
                 enrollment: enrollment.id
             });
         }).then(payment => {

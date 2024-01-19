@@ -1,15 +1,15 @@
 export default {
-    clients: {
-        list: null,
-        single: null
-    },
-
     courses: {
         list: null,
         single: null
     },
 
     enrollments: {
+        list: null,
+        single: null
+    },
+    
+    learners: {
         list: null,
         single: null
     },

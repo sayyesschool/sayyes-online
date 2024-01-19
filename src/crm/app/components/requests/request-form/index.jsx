@@ -24,7 +24,7 @@ function RequestForm({ request = {}, onSubmit, ...props }, ref) {
     const { data, handleChange } = useFormData({
         ...defaultRequest,
         ...request,
-        client: request.client?.id,
+        learner: request.learner?.id,
         manager: request.manager?.id
     });
 
@@ -71,15 +71,15 @@ function RequestForm({ request = {}, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            {data.client &&
+            {data.learner &&
                 <UserSelect
-                    name="client"
+                    name="learner"
                     label="Клиент"
-                    value={data.client}
+                    value={data.learner}
                     options={[{
-                        key: request.client.id,
-                        value: request.client.id,
-                        label: request.client.fullname
+                        key: request.learner.id,
+                        value: request.learner.id,
+                        label: request.learner.fullname
                     }]}
                     disabled
                 />

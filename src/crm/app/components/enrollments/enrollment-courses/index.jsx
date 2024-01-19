@@ -25,10 +25,10 @@ export default function EnrollmentCourses({ enrollment }) {
     }, [enrollment]);
 
     const enrollmentCourses = courses
-        .filter(course => enrollment.courses.includes(course.id));
+        .filter(course => enrollment.courseIds.includes(course.id));
 
     const items = courses
-        .filter(course => !enrollment.courses.includes(course.id))
+        .filter(course => !enrollment.courseIds.includes(course.id))
         .map(course => ({
             key: course.id,
             value: course.id,
