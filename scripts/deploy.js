@@ -17,7 +17,7 @@ const config = {
 const ftp = new Ftp();
 
 ftp.on('uploaded', data => {
-    console.log(`Uploading ${data.filename} (${data.transferredFileCount}/${data.totalFilesCount})`);
+    console.log(`Uploaded ${data.filename} (${data.transferredFileCount}/${data.totalFilesCount})`);
 });
 
 ftp.on('log', data => {
