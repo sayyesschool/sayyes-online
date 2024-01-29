@@ -4,25 +4,25 @@ import MaterialsList from 'shared/components/materials-list';
 import PageSection from 'shared/components/page-section';
 import { IconButton, MenuButton } from 'shared/ui-components';
 
-import { useStore, useActions } from 'app/store';
+import { useActions, useStore } from 'app/store';
 
 export default function EnrollmentMaterials({ enrollment }) {
     const [materials = []] = useStore('materials.list');
-    const enrollmentActions = useActions('enrollments');
+    const actions = useActions('enrollments');
 
     const handleAddMaterial = useCallback((event, { value }) => {
         if (!value) return;
 
-        const materials = enrollment.materials.concat(value);
-
-        return enrollmentActions.updateEnrollment(enrollment.id, { materials });
-    }, [enrollment]);
+        return actions.updateEnrollment(enrollment.id, {
+            materialIds: enrollment.materialIds.concat(value)
+        });
+    }, [enrollment, actions]);
 
     const handleRemoveMaterial = useCallback(materialId => {
-        const materials = enrollment.materials.filter(id => id !== materialId);
-
-        return enrollmentActions.updateEnrollment(enrollment.id, { materials });
-    }, [enrollment]);
+        return actions.updateEnrollment(enrollment.id, {
+            materialIds: enrollment.materialIds.filter(id => id !== materialId)
+        });
+    }, [enrollment, actions]);
 
     const enrollmentMaterials = materials
         .filter(material => enrollment.materialIds.includes(material.id));
