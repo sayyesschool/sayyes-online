@@ -29,8 +29,8 @@ module.exports = ({ config, db }, options) => {
     server.use('/lib', express.static('node_modules'));
     server.use(express.json());
     server.use(express.urlencoded({ extended: true }));
-    server.use(middleware.logger);
     server.use(middleware.session(config, db.connection));
+    server.use(middleware.logger);
     server.use(...middleware.flash);
     //server.use(pages); 
 
