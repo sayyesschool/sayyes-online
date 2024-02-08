@@ -9,6 +9,7 @@ const ALLOWED_ROLES = ['learner', 'teacher'];
 module.exports = context => {
     const app = express();
 
+    app.set('trust proxy', true);
     app.set('view engine', 'pug');
     app.set('views', __dirname);
 

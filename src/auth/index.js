@@ -10,6 +10,7 @@ module.exports = context => {
     const middleware = Middleware(context);
     const controller = Controller(context);
 
+    app.set('trust proxy', true);
     app.set('view engine', 'pug');
     app.set('views', path.join(__dirname, 'views'));
 

@@ -6,6 +6,7 @@ const api = require('./api');
 module.exports = context => {
     const app = express();
 
+    app.set('trust proxy', true);
     app.set('view engine', 'pug');
     app.set('views', __dirname);
 

@@ -7,7 +7,8 @@ const ALLOWED_ROLES = ['learner', 'teacher'];
 
 module.exports = context => {
     const app = express();
-
+    
+    app.set('trust proxy', true);
     app.set('view engine', 'pug');
     app.set('views', __dirname);
 
@@ -17,9 +18,9 @@ module.exports = context => {
         Object.assign(app.locals, parent.locals);
     });
 
-    // app.use((req, res, next) => {
-    //     ALLOWED_ROLES.includes(req.user?.role) ? next() : next('router');
-    // });
+    app.use((req, res, next) => {
+        ALLOWED_ROLES.includes(req.user?.role) ? next() : next('router');
+    });
     app.use('/api', api(context));
     app.use((req, res, next) => {
         const twilio = context.libs.twilio;
