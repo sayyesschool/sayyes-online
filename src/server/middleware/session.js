@@ -11,7 +11,7 @@ module.exports = ({ APP_DOMAIN, SESSION_SECRET }, dbConnection) => expressSessio
     cookie: {
         domain: `.${APP_DOMAIN}`,
         httpOnly: true,
-        sameSite: 'none',
+        sameSite: false,
         secure: true,
         signed: true,
         maxAge: 1000 * 60 * 60 * 24 * 3 // 3 days
