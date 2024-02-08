@@ -1,5 +1,7 @@
 const Ftp = require('ftp-deploy');
 
+const include = process.argv[2];
+
 const config = {
     host: 'sayyes.ftp.evennode.com',
     port: 21,
@@ -7,7 +9,7 @@ const config = {
     password: '2FQ7uH!vqefbQ:B',
     localRoot: process.cwd(),
     remoteRoot: '/',
-    include: ['public/**/*'],
+    include: [include ? `public/**/${include}` : 'public/**/*'],
     deleteRemote: false,
     // Passive mode is forced (EPSV command is not sent)
     forcePasv: true,
