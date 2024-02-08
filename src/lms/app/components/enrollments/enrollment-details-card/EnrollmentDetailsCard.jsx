@@ -18,7 +18,7 @@ export default function EnrollmentDetailsCard({
     ...props
 }) {
     const nextLesson = enrollment.lessons?.find(({ status }) => status === 'scheduled');
-    const otherUser = enrollment[otherUserRole[user.role]];
+    const otherUser = enrollment[otherUserRole[user?.role]];
 
     return (
         <Card
@@ -61,7 +61,7 @@ export default function EnrollmentDetailsCard({
             >
                 <Heading
                     as="h3"
-                    content={RoleLabel[otherUser.role]}
+                    content={RoleLabel[otherUser?.role]}
                 />
 
                 <Flex
