@@ -4,7 +4,7 @@ import { CLASS_URL } from 'shared/constants';
 import { useBoolean } from 'shared/hooks/state';
 import { useEnrollment } from 'shared/hooks/enrollments';
 import { useUser } from 'shared/hooks/user';
-import { Badge, Button, Flex, IconButton, Grid, MenuButton } from 'shared/ui-components';
+import { Badge, Button, Flex, Grid, IconButton, MenuButton } from 'shared/ui-components';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { DomainLabel } from 'shared/data/common';
@@ -36,17 +36,20 @@ export default function EnrollmentPage({ match }) {
 
     const isLearner = user.role === 'learner';
     const isTeacher = user.role === 'teacher';
+    const hasChat = enrollment.learner && enrollment.teacher;
 
     return (
         <Page className="EnrollmentPage">
-            <Page.Drawer open={isDrawerOpen}>
-                <EnrollmentChat
-                    enrollment={enrollment}
-                    user={user}
-                    onJoined={handleChatJoined}
-                    onClose={toggleDrawerOpen}
-                />
-            </Page.Drawer>
+            {hasChat &&
+                <Page.Drawer open={isDrawerOpen}>
+                    <EnrollmentChat
+                        enrollment={enrollment}
+                        user={user}
+                        onJoined={handleChatJoined}
+                        onClose={toggleDrawerOpen}
+                    />
+                </Page.Drawer>
+            }
 
             <Page.Header
                 title={DomainLabel[enrollment.domain]}
@@ -59,7 +62,7 @@ export default function EnrollmentPage({ match }) {
                         content="Перейти в класс"
                         variant="soft"
                     />,
-                    <Badge
+                    hasChat && <Badge
                         key="chat"
                         badgeContent={unreadMessagesCount}
                         showZero={false}
@@ -132,7 +135,7 @@ export default function EnrollmentPage({ match }) {
                                 enrollment={enrollment}
                             />
 
-                            {isLearner &&
+                            {enrollment.teacher && isLearner &&
                                 <EnrollmentTeacher
                                     enrollment={enrollment}
                                 />
@@ -144,15 +147,17 @@ export default function EnrollmentPage({ match }) {
                                 />
                             }
 
-                            {isTeacher &&
+                            {enrollment.learner && isTeacher &&
                                 <EnrollmentLearner
                                     enrollment={enrollment}
                                 />
                             }
 
-                            <EnrollmentManager
-                                enrollment={enrollment}
-                            />
+                            {enrollment.manager &&
+                                <EnrollmentManager
+                                    enrollment={enrollment}
+                                />
+                            }
                         </Flex>
                     </Grid.Item>
                 </Grid>
