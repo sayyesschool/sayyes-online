@@ -15,6 +15,7 @@
     "db-backup": "node -r dotenv/config ./scripts/db/backup.js",
     "db-migrate": "node -r dotenv/config ./scripts/db/migrate.js",
     "db-restore": "node -r dotenv/config ./scripts/db/restore.js",
+    "db-seed": "node -r dotenv/config ./scripts/db/seed.js",
     "deploy": "git push evennode master",
     "deploy-ftp": "node ./scripts/deploy.js",
     "dev-class": "webpack --watch --env=development --mode=development --config-name=class",
