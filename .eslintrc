@@ -9,7 +9,8 @@
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended",
-        "plugin:react-hooks/recommended"
+        "plugin:react-hooks/recommended",
+        "plugin:@stylistic/disable-legacy"
     ],
     "parser": "@babel/eslint-parser",
     "parserOptions": {
@@ -33,34 +34,46 @@
             ]
         }
     },
+    "plugins": [
+        "@stylistic",
+        "react"
+    ],
     "rules": {
-        "arrow-parens": [
+        "@stylistic/arrow-parens": [
             "warn",
             "as-needed"
         ],
-        "indent": [
-            "error",
+        "@stylistic/indent": [
+            "warn",
             4,
             {
                 "SwitchCase": 1,
                 "MemberExpression": 1
             }
         ],
-        "object-curly-spacing": [
+        "@stylistic/semi": [
+            "error",
+            "always"
+        ],
+        "@stylistic/comma-spacing": "warn",
+        "@stylistic/object-curly-spacing": [
             "warn",
             "always"
+        ],
+        "@stylistic/object-property-newline": [
+            "warn",
+            {
+                "allowAllPropertiesOnSameLine": true
+            }
+        ],
+        "@stylistic/no-trailing-spaces": "warn",
+        "@stylistic/quotes": [
+            "error",
+            "single"
         ],
         "no-undef": "error",
         "no-unused-vars": "warn",
         "no-useless-escape": "warn",
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ],
         "sort-imports": [
             "warn",
             {
@@ -80,9 +93,6 @@
         "react/prop-types": "off",
         "react/no-unescaped-entities": "warn"
     },
-    "plugins": [
-        "react"
-    ],
     "overrides": [
         {
             "files": [
