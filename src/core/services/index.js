@@ -4,6 +4,7 @@ const Club = require('./club');
 const File = require('./file');
 const Mail = require('./mail');
 const Newsletter = require('./newsletter');
+const Schedule = require('./schedule');
 const Storage = require('./storage');
 
 module.exports = (config, lib, models) => {
@@ -37,6 +38,7 @@ module.exports = (config, lib, models) => {
     const checkout = Checkout(config, models);
     const club = Club(lib.zoom, models, { mail: Mail, newsletter: Newsletter, checkout: Checkout });
     const file = File();
+    const schedule = Schedule({ models });
     const storage = new Storage({
         accessKeyId: config.YANDEX_CLOUD_ACCESS_KEY_ID,
         secretAccessKey: config.YANDEX_CLOUD_SECRET_ACCESS_KEY,
@@ -52,6 +54,7 @@ module.exports = (config, lib, models) => {
         File: file,
         Mail: mail,
         Newsletter: newsletter,
+        Schedule: schedule,
         Storage: storage
     };
 };
