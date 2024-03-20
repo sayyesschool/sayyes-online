@@ -19,8 +19,8 @@ export default function EnrollmentPayments({ enrollment }) {
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     const createPayment = useCallback(data => {
-        data.client = enrollment.client.id;
-        data.enrollment = enrollment.id;
+        data.enrollmentId = enrollment.id;
+        data.learnerId = enrollment.learnerId;
 
         return actions.createPayment(data)
             .then(() => toggleCreateFormOpen(false));

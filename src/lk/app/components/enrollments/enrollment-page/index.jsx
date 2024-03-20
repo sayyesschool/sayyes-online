@@ -1,3 +1,4 @@
+import { CLASS_URL } from 'shared/constants';
 import { useEnrollment } from 'shared/hooks/enrollments';
 import { Button, Flex, Grid, MenuButton } from 'shared/ui-components';
 import EnrollmentPosts from 'shared/components/enrollment-posts';
@@ -26,7 +27,7 @@ export default function EnrollmentPage({ match }) {
                     <Button
                         key="class"
                         as="a"
-                        href={enrollment.classUrl}
+                        href={`${CLASS_URL}/${enrollment.id}`}
                         icon="video_call"
                         content="Перейти в класс"
                     />,

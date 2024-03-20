@@ -9,7 +9,7 @@ moment.locale('ru');
 module.exports = {
     APP_VERSION: project.version,
     APP_IP: process.env.APP_IP || '127.0.0.1',
-    APP_PORT: process.env.APP_PORT || process.env.PORT || 80,
+    APP_PORT: process.env.APP_PORT || process.env.PORT || 3000,
     APP_ENV: process.env.NODE_ENV,
     APP_DOMAIN: process.env.APP_DOMAIN,
     APP_URL: process.env.APP_URL,

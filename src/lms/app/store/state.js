@@ -1,5 +1,8 @@
 export default {
-    user: null,
+    assignments: {
+        list: null,
+        single: null
+    },
 
     courses: {
         list: null,
@@ -19,5 +22,7 @@ export default {
     posts: {
         list: null,
         single: null
-    }
+    },
+
+    user: null
 };

@@ -1,0 +1,15 @@
+.MediaErrorDialog {
+    .ui-ModalDialog-root {
+        max-width: 640px;
+    }
+
+    img {
+        max-width: 256px;
+    }
+
+    .ui-Dialog__content {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+}

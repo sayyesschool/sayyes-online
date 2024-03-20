@@ -1,13 +1,15 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const vhost = require('vhost');
 
 const api = require('./api');
 
-const ALLOWED_ROLES = ['client', 'teacher'];
+const ALLOWED_ROLES = ['learner', 'teacher'];
 
 module.exports = context => {
     const app = express();
 
+    app.set('trust proxy', true);
     app.set('view engine', 'pug');
     app.set('views', __dirname);
 
@@ -46,5 +48,5 @@ module.exports = context => {
         })
     );
 
-    return app;
+    return vhost(`class.${context.config.APP_DOMAIN}`, app);
 };

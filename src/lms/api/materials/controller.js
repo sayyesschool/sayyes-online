@@ -1,63 +1,53 @@
 module.exports = ({
     models: { Material }
 }) => ({
-    get: (req, res, next) => {
-        Material.find(req.query)
-            .select('id slug title subtitle image')
-            .then(materials => {
-                res.json({
-                    ok: true,
-                    data: materials
-                });
-            })
-            .catch(next);
+    async get(req, res) {
+        const materials = await Material.find(req.query)
+            .select('id slug title subtitle image');
+
+        res.json({
+            ok: true,
+            data: materials
+        });
     },
 
-    getOne: (req, res, next) => {
-        Material.findById(req.params.material)
-            .then(material => {
-                res.json({
-                    ok: true,
-                    data: material
-                });
-            })
-            .catch(next);
+    async getOne(req, res) {
+        const material = await Material.findById(req.params.material);
+
+        res.json({
+            ok: true,
+            data: material
+        });
     },
 
-    create: (req, res, next) => {
-        Material.create(req.body)
-            .then(material => {
-                res.json({
-                    ok: true,
-                    message: 'Материал создан',
-                    data: material
-                });
-            })
-            .catch(next);
+    async create(req, res) {
+        const material = await Material.create(req.body);
+
+        res.json({
+            ok: true,
+            message: 'Материал создан',
+            data: material
+        });
     },
 
-    update: (req, res, next) => {
-        Material.findByIdAndUpdate(req.params.material, req.body, { new: true })
-            .then(material => {
-                res.json({
-                    ok: true,
-                    message: 'Материал изменен',
-                    data: material
-                });
-            })
-            .catch(next);
+    async update(req, res) {
+        const material = await Material.findByIdAndUpdate(req.params.material, req.body, { new: true });
+
+        res.json({
+            ok: true,
+            message: 'Материал изменен',
+            data: material
+        });
     },
 
-    delete: (req, res, next) => {
-        Material.findByIdAndDelete(req.params.material)
-            .select('id')
-            .then(material => {
-                res.json({
-                    ok: true,
-                    message: 'Материал удален',
-                    data: material
-                });
-            })
-            .catch(next);
+    async delete(req, res) {
+        const material = await Material.findByIdAndDelete(req.params.material)
+            .select('id');
+
+        res.json({
+            ok: true,
+            message: 'Материал удален',
+            data: material
+        });
     }
 });

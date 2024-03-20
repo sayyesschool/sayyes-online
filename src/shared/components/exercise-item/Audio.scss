@@ -1,0 +1,25 @@
+.AudioItem {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+    &__player {
+        flex: 1;
+        border: 1px solid rgba(0, 0, 0, .12);
+        border-radius: 4px;
+        padding: .5rem;
+
+        .plyr__controls {
+            padding: 0;
+        }
+    }
+
+    &__script {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        max-height: 480px;
+        overflow: auto;
+    }
+}

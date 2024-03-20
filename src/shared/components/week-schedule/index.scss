@@ -1,0 +1,65 @@
+@use 'shared/styles/variables';
+
+.WeekSchedule {
+    display: flex;
+
+    &__day {
+        flex: 1 1 40px;
+        display: flex;
+        flex-direction: column;
+        border-bottom: 0;
+    }
+
+    &__day + &__day {
+        border-left: 1px #dadada solid;
+    }
+
+    &__day-name {
+        display: flex;
+        align-items: center;
+        min-height: 100%;
+        padding: 4px;
+        color: #707070;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 1;
+        border-right: 1px #dadada solid;
+
+        @media (min-width: 768px)  {
+            min-height: 0;
+            width: 100%;
+            text-align: center;
+            display: block;
+            border: 0;
+            border-bottom: 1px #dadada solid;
+        }
+    }
+
+    &__day-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow: hidden;
+        padding: 8px 4px;
+    }
+
+    &__day-event {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+
+        &::before {
+            content: '';
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background-color: variables.$secondary-color;
+            border-radius: 100%;
+        }
+
+        time {
+            font-size: 12px;
+        }
+    }
+}

@@ -13,7 +13,7 @@ export default function PaymentForm({ payment = {}, onSubmit }) {
         description: '',
         date: moment(payment.date).format('YYYY-MM-DD'),
         paymentMethod: payment.method?.type,
-        client: payment.client ? payment.client.id : '',
+        learner: payment.learner ? payment.learner.id : '',
         ...payment
     });
 
@@ -56,7 +56,7 @@ export default function PaymentForm({ payment = {}, onSubmit }) {
                 value={data.paymentMethod}
                 label="Способ оплаты"
                 options={paymentMethodOptions}
-                onChange={onChange}
+                //onChange={onChange}
             />
 
             <Form.Select
@@ -64,7 +64,7 @@ export default function PaymentForm({ payment = {}, onSubmit }) {
                 value={data.operator}
                 label="Оператор"
                 options={operatorOptions}
-                onChange={onChange}
+                //onChange={onChange}
             />
         </Form>
     );

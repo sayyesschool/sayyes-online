@@ -4,8 +4,8 @@ module.exports = ({
     get: (req, res, next) => {
         Enrollment.find(req.query)
             .select('-messages')
-            .populate('client', 'firstname lastname')
-            .populate('managers', 'firstname lastname')
+            .populate('learner', 'firstname lastname')
+            .populate('manager', 'firstname lastname')
             .populate('lessons', 'status')
             .sort({ createdAt: 1 })
             .then(enrollments => {
@@ -19,9 +19,9 @@ module.exports = ({
 
     getOne: (req, res, next) => {
         Enrollment.findById(req.params.id)
-            .populate('client', 'hhid firstname lastname imageUrl')
-            .populate('managers', 'firstname lastname imageUrl')
-            .populate('teachers', 'firstname lastname imageUrl')
+            .populate('learner', 'hhid firstname lastname imageUrl')
+            .populate('manager', 'firstname lastname imageUrl')
+            .populate('teacher', 'firstname lastname imageUrl')
             .populate('payments')
             .populate('lessons')
             .populate({
@@ -62,8 +62,8 @@ module.exports = ({
             new: true
         });
 
-        if (keys.includes('client')) {
-            query.populate('client', 'firstname lastname');
+        if (keys.includes('learner')) {
+            query.populate('learner', 'firstname lastname');
         }
 
         if (keys.includes('managers')) {
@@ -183,7 +183,7 @@ module.exports = ({
                 amount: amountToReturn,
                 currency: 'RUB',
                 description: 'Возврат денежных средств за уроки',
-                user: enrollment.client,
+                user: enrollment.learner,
                 enrollment: enrollment.id
             });
         }).then(transaction => {

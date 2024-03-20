@@ -1,1 +1,1 @@
-module.exports = require('./course');
+module.exports = require('./Course');

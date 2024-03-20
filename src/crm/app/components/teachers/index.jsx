@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import Teachers from './teachers-page';
 import Teacher from './teacher-page';
 
-export default function ClientsRouter() {
+export default function TeachersRouter() {
     return (
         <Switch>
             <Route exact path="/teachers" component={Teachers} />

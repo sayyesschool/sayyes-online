@@ -180,14 +180,14 @@ export default function ExerciseItems({
                     items={[
                         {
                             key: 'add_above',
-                            decorator: <Icon>arrow_upward</Icon>,
+                            decorator: <Icon size="small">arrow_upward</Icon>,
                             content: 'Добавить выше',
                             onItemClick: (_, { value }) => handleAdd(value, 0),
                             items: exerciseTypeMenuItems
                         },
                         {
                             key: 'add_below',
-                            decorator: <Icon>arrow_downward</Icon>,
+                            decorator: <Icon size="small">arrow_downward</Icon>,
                             content: 'Добавить ниже',
                             onItemClick: (_, { value }) => handleAdd(value, 1),
                             items: exerciseTypeMenuItems
@@ -198,14 +198,14 @@ export default function ExerciseItems({
                         },
                         {
                             key: 'move_up',
-                            decorator: <Icon>move_up</Icon>,
+                            decorator: <Icon size="small">move_up</Icon>,
                             content: 'Переместить выше',
                             disabled: firstItem?.id === activeItemId,
                             onClick: () => handleMove(activeItemId, -1)
                         },
                         {
                             key: 'move_down',
-                            decorator: <Icon>move_down</Icon>,
+                            decorator: <Icon size="small">move_down</Icon>,
                             content: 'Переместить ниже',
                             disabled: lastItem?.id === activeItemId,
                             onClick: () => handleMove(activeItemId, 1)
@@ -216,13 +216,13 @@ export default function ExerciseItems({
                         },
                         {
                             key: 'edit',
-                            decorator: <Icon>edit</Icon>,
+                            decorator: <Icon size="small">edit</Icon>,
                             content: 'Изменить',
                             onClick: handleEdit
                         },
                         {
                             key: 'delete',
-                            decorator: <Icon>delete</Icon>,
+                            decorator: <Icon size="small">delete</Icon>,
                             content: 'Удалить',
                             color: 'danger',
                             onClick: handleDeleteRequest

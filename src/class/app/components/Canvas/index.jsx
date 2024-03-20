@@ -5,7 +5,7 @@ import useDataTrack from 'app/hooks/useDataTrack';
 
 import './index.scss';
 
-export default function Canvas({ type, imageSrc, children, ...props }) {
+export default function Canvas({ type, imageSrc, ...props }) {
     const imageRef = useRef();
     const canvasRef = useRef();
     const whiteboardRef = useRef();

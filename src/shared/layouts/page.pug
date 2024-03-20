@@ -1,7 +1,7 @@
 extends base
 
 append head
-    link(rel="stylesheet" href="/css/front.css")
+    link(rel="stylesheet" href="/css/front.main.css")
 
 block body
     include ../includes/header
@@ -11,3 +11,6 @@ block body
     block main
 
     include ../includes/footer
+
+    script(src="/js/front.vendors.js")
+    script(src="/js/front.main.js")

@@ -1,3 +1,1 @@
-const Enrollment = require('./enrollment');
-
-module.exports = Enrollment;
+module.exports = require('./Enrollment');

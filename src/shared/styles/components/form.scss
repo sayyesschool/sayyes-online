@@ -1,11 +1,9 @@
-form {
-    &.ui-Form {
-        display: block;
+.ui-Form {
+    display: block;
 
-        .TextEditor {
-            border: 1px solid rgba(0,0,0,.12);
-            border-radius: 4px;
-        }
+    .TextEditor {
+        border: 1px solid rgba(0,0,0,.12);
+        border-radius: 4px;
     }
 
     fieldset {

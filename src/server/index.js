@@ -5,7 +5,7 @@ const https = require('https');
 const middleware = require('./middleware');
 const pages = require('./pages');
 
-module.exports = (config, db, options) => {
+module.exports = ({ config, db }, options) => {
     const server = express();
 
     server.set('trust proxy', true);
@@ -21,21 +21,20 @@ module.exports = (config, db, options) => {
 
     server.use(cors({
         // origin: '*',
-        origin: /sayyes\.(ru|local)$/,
+        origin: /sayyes\.(school|local)$/,
         credentials: true
     }));
 
     server.use(express.static('public'));
-    server.use('/lib', express.static('node_modules'));
     server.use(express.json());
     server.use(express.urlencoded({ extended: true }));
-    server.use(middleware.logger);
     server.use(middleware.session(config, db.connection));
+    server.use(middleware.logger);
     server.use(...middleware.flash);
-    //server.use(pages); 
+    //server.use(pages);
 
     process.on('SIGTERM', () => {
-        console.info('SIGTERM signal received.');
+        console.log('SIGTERM signal received.');
         console.log('Closing http server.');
 
         server.close(() => {
@@ -44,20 +43,20 @@ module.exports = (config, db, options) => {
         });
     });
 
-    return server;
+    return {
+        use(...args) {
+            server.use(...args);
+            return this;
+        },
+        start(...args) {
+            if (options) {
+                https.createServer(options, server)
+                    .listen(config.APP_PORT, config.APP_DOMAIN, ...args);
+            } else {
+                server.listen(config.APP_PORT, ...args);
+            }
 
-    // return {
-    //     use(...args) {
-    //         server.use(...args);
-    //         return this;
-    //     },
-    //     listen(port, ...rest) {
-    //         if (options) {
-    //             https.createServer(options, server)
-    //                 .listen(port, ...rest);
-    //         } else {
-    //             server.listen(port, ...rest);
-    //         }
-    //     }
-    // };
+            console.log('Server started');
+        }
+    };
 };

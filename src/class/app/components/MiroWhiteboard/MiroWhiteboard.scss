@@ -1,0 +1,21 @@
+.MiroWhiteboard {
+    position: relative;
+
+    .ui-Button {
+        position: absolute;
+        bottom: 8px;
+        left: 50%;
+        translate: -50% -50%;
+
+        &:only-child {
+            top: 50%;
+            bottom: unset;
+        }
+    }
+
+    iframe {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}

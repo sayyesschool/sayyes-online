@@ -1,6 +1,6 @@
 import { useTodaysLessons } from 'shared/hooks/lessons';
-import { Grid } from 'shared/ui-components';
 import Page from 'shared/components/page';
+import { Grid } from 'shared/ui-components';
 
 import { useStore } from 'app/hooks/store';
 import RequestsList from 'app/components/requests/requests-list';

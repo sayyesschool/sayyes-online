@@ -1,16 +1,18 @@
 @use 'shared/styles/variables';
 
 .EnrollmentDetailsCard {
-    display: flex;
-    border-radius: 8px;
     overflow: hidden;
 
     &__main-section,
     &__person-section,
     &__schedule-section,
     &__payment-section {
-        padding: 1rem;
         width: 25%;
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        padding: 1rem;
+        border-radius: 0;
 
         > .ui-Button {
             margin-top: auto;
@@ -18,10 +20,7 @@
     }
     
     &__main-section {
-        display: flex;
-        flex-direction: column;
         align-items: center;
-        gap: .5rem;
         background-color: #e6e6fa;
         text-align: center;
 
@@ -31,63 +30,33 @@
     }
 
     &__person-section {
-        display: flex;
-        flex-direction: column;
-        gap: .5rem;
         background-color: #f7f7f7;
         text-align: center;
-
-        .person-info {
-            margin: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
     }
 
     &__schedule-section {
-        display: flex;
-        flex-direction: column;
-        gap: .5rem;
-
-        .week-schedule {
+        .WeekSchedule {
             border: 1px solid #dadada;
-            border-radius: 4px;
+            border-radius: var(--joy-radius-md);
         }
     }
 
     &__payment-section {
-        display: flex;
-        flex-direction: column;
-        gap: .25rem;
-        background-color: variables.$primary-color;
         background-image: url('https://static.sayes.ru/images/kids/fourth.png');
         color: variables.$text-light-color;
 
-        .ui-header,
-        .ui-text {
+        .ui-Heading,
+        .ui-Text {
             color: variables.$text-light-color;
         }
 
-        .balance-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-
-            .ui-text {
-                line-height: 1.2;
-            }
-
-            strong.ui-text {
-                font-size: 42px;
-                font-weight: bold;
-                line-height: 42px;
-                margin-right: 8px;
-            }
+        .ui-Text {
+            line-height: 1.2;
         }
 
-        .ui-Button {
-            margin-top: auto;
+        strong.ui-Text {
+            font-size: 42px;
+            line-height: 42px;
         }
     }
 }

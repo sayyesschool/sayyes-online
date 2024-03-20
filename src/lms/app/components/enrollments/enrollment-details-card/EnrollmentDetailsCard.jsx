@@ -1,17 +1,14 @@
 import { Link } from 'react-router-dom';
 
-import { Avatar, Box, Button, Flex, Heading, Image, Surface, Text } from 'shared/ui-components';
+import { CLASS_URL } from 'shared/constants';
 import WeekSchedule from 'shared/components/week-schedule';
-import { pluralize } from 'shared/utils/format';
-
-const roleLabel = {
-    client: 'Ученик',
-    teacher: 'Преподаватель'
-};
+import { DomainLabel, RoleLabel } from 'shared/data/common';
+import { Avatar, Button, Card, Divider, Flex, Heading, Image, Surface, Text } from 'shared/ui-components';
+import { getLessonDateTimeString, pluralize } from 'shared/utils/format';
 
 const otherUserRole = {
-    client: 'teacher',
-    teacher: 'client'
+    learner: 'teacher',
+    teacher: 'learner'
 };
 
 export default function EnrollmentDetailsCard({
@@ -20,12 +17,22 @@ export default function EnrollmentDetailsCard({
 
     ...props
 }) {
-    const nextLesson = enrollment.lessons?.find(lesson => lesson.status === 'scheduled');;
-    const otherUser = enrollment[otherUserRole[user.role]];
+    const nextLesson = enrollment.lessons?.find(({ status }) => status === 'scheduled');
+    const otherUser = enrollment[otherUserRole[user?.role]];
 
     return (
-        <article className="EnrollmentDetailsCard" {...props}>
-            <Surface className="EnrollmentDetailsCard__main-section" color="primary" variant="soft">
+        <Card
+            className="EnrollmentDetailsCard"
+            variant="plain"
+            orientation="horizontal"
+            sx={{ gap: 0, padding: 0 }}
+            {...props}
+        >
+            <Surface
+                className="EnrollmentDetailsCard__main-section"
+                color="primary"
+                variant="soft"
+            >
                 <Heading
                     as="h3"
                     content="Направление обучения"
@@ -35,30 +42,45 @@ export default function EnrollmentDetailsCard({
 
                 <Text
                     as="p"
-                    content={enrollment.domainLabel}
-                    size="large"
-                    weight="bold"
+                    content={DomainLabel[enrollment.domain]}
+                    type="title-lg"
                 />
 
-                <Button as={Link} to={enrollment.url} variant="plain">Подробнее</Button>
+                <Button
+                    as={Link}
+                    to={enrollment.url}
+                    content="Подробнее"
+                    variant="plain"
+                />
             </Surface>
 
-            <Surface className="EnrollmentDetailsCard__person-section" color="neutral" variant="plain">
+            <Surface
+                className="EnrollmentDetailsCard__person-section"
+                color="neutral"
+                variant="plain"
+            >
                 <Heading
                     as="h3"
-                    content={roleLabel[otherUser.role]}
+                    content={RoleLabel[otherUser?.role]}
                 />
 
-                <Flex className="person-info" gap="small" direction="column">
+                <Flex
+                    flex="1"
+                    dir="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    gap="small"
+                >
                     <Avatar
-                        className="person-avatar"
                         src={otherUser?.imageUrl}
                         sx={{ width: 128, height: 128 }}
                     />
 
-                    <Text size="large" weight="bold">{otherUser?.fullname}</Text>
+                    <Text type="title-lg">{otherUser?.fullname}</Text>
                 </Flex>
             </Surface>
+
+            <Divider orientation="vertical" />
 
             <Surface className="EnrollmentDetailsCard__schedule-section">
                 <Heading
@@ -69,27 +91,53 @@ export default function EnrollmentDetailsCard({
                 {enrollment.schedule ?
                     <WeekSchedule schedule={enrollment.schedule} />
                     :
-                    <Text
-                        content="Не назначено"
-                    />
+                    <Text content="Не назначено" />
                 }
 
-                <Button as="a" href={enrollment.classUrl} variant="soft">Перейти в класс</Button>
+                {nextLesson &&
+                    <Card size="small">
+                        <Card.Content>
+                            <Text
+                                type="title-md"
+                                content={getLessonDateTimeString(nextLesson)}
+                            />
+
+                            {nextLesson.room &&
+                                <Text type="body-md">{nextLesson.room.name}</Text>
+                            }
+                        </Card.Content>
+
+                        <Card.Actions>
+                            <Button
+                                as="a"
+                                href={`${CLASS_URL}/${enrollment.id}`}
+                                content="Перейти в класс"
+                                variant="soft"
+                            />
+                        </Card.Actions>
+                    </Card>
+                }
             </Surface>
 
-            <Box className="EnrollmentDetailsCard__payment-section" sx={{ bgcolor: 'primary.main' }}>
+            <Surface
+                className="EnrollmentDetailsCard__payment-section"
+                color="primary"
+                variant="solid"
+            >
                 <Heading
                     as="h3"
                     content="Баланс"
-                    color="primary.contrastText"
                 />
 
-                <Box className="balance-item">
-                    <Text as="strong" type="h1" color="primary.contrastText">0</Text>
-                    <Text color="primary.contrastText">{pluralize('урок', enrollment.numberOfScheduledLessons)}<br />по 50 минут</Text>
-                </Box>
+                <Flex alignItems="center" gap="small">
+                    <Text as="strong">0</Text>
+                    <Text>
+                        {pluralize('урок', enrollment.numberOfScheduledLessons)}<br />
+                        по 50 минут
+                    </Text>
+                </Flex>
 
-                {user.role === 'client' &&
+                {user.role === 'learner' &&
                     <Button
                         content="Пополнить"
                         //color="secondary"
@@ -97,7 +145,7 @@ export default function EnrollmentDetailsCard({
                     //onClick={onPay}
                     />
                 }
-            </Box>
-        </article>
+            </Surface>
+        </Card>
     );
 }

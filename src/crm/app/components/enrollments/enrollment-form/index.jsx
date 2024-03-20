@@ -1,16 +1,40 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 
+import { Status } from 'core/models/enrollment/constants';
+
 import { useFormData } from 'shared/hooks/form';
 // import ScheduleSelect from 'shared/components/schedule-select';
 // import DateTimeSelect from 'shared/components/datetime-select';
 import UserSelect from 'shared/components/user-select';
 import { Form } from 'shared/ui-components';
 import {
-    defaultEnrollment, domainOptions, typeOptions, formatOptions,
-    ageOptions, teacherTypeOptions, levelOptions, purposeOptions
-} from 'shared/data/enrollment';
+    ageGroupOptions,
+    domainOptions,
+    formatOptions,
+    levelOptions,
+    purposeOptions,
+    teacherTypeOptions
+} from 'shared/data/common';
+import { typeOptions } from 'shared/data/enrollment';
 
 import { useStore } from 'app/store';
+
+const defaultEnrollment = {
+    status: Status.Processing,
+    domain: '',
+    type: '',
+    format: '',
+    ageGroup: '',
+    teacherType: '',
+    level: '',
+    purpose: '',
+    experience: '',
+    preferences: '',
+    lessonDuration: 50,
+    schedule: [],
+    trialLessonSchedule: [],
+    note: ''
+};
 
 function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
     const formRef = useRef();
@@ -21,13 +45,16 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
     const { data, handleChange } = useFormData({
         ...defaultEnrollment,
         ...enrollment,
-        client: enrollment.client?.id || '',
-        teachers: enrollment.teachers?.map(t => t.id || t),
-        managers: enrollment.managers?.map(m => m.id || m),
-        courses: undefined,
+        learnerId: enrollment.learnerId || '',
+        managerId: enrollment.managerId,
+        teacherId: enrollment.teacherId,
+        courseIds: undefined,
+        materialIds: undefined,
         lessons: undefined,
         payments: undefined
     });
+
+    console.log('DATA', data);
 
     useImperativeHandle(ref, () => ({
         get form() { return formRef.current; },
@@ -74,7 +101,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 name="age"
                 value={data.age}
                 label="Возрастная группа"
-                options={ageOptions}
+                options={ageGroupOptions}
                 onChange={handleChange}
             />
 
@@ -148,28 +175,26 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
             {enrollment.id &&
                 <>
                     <UserSelect
-                        name="managers"
-                        value={data.managers}
+                        name="managerId"
+                        value={data.managerId}
                         label="Менеджеры"
                         options={managers.map(manager => ({
                             key: manager.id,
                             value: manager.id,
                             label: manager.fullname
                         }))}
-                        multiple
                         onChange={handleChange}
                     />
 
                     <UserSelect
-                        name="teachers"
-                        value={data.teachers}
+                        name="teacherId"
+                        value={data.teacherId}
                         label="Преподаватели"
                         options={teachers.map(teacher => ({
                             key: teacher.id,
                             value: teacher.id,
                             label: teacher.fullname
                         }))}
-                        multiple
                         onChange={handleChange}
                     />
                 </>

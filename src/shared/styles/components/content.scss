@@ -30,7 +30,7 @@
 
     &::after {
         content: $icon;
-        font-family: 'Material Icons Round';
+        font-family: 'Material Symbols Rounded';
         position: absolute;
         top: .5rem;
         left: .75rem;
@@ -80,16 +80,39 @@
         position: absolute;
         width: 24px;
         height: 24px;
-        background: var(--joy-palette-info-100);
-        position: absolute;
-        margin: 0;
+        background: var(--joy-palette-primary-100);
         text-align: center;
         line-height: 24px;
         border-radius: 100%;
         overflow: hidden;
+        margin-right: .5rem;
+        
+        &:only-child {
+            position: relative;
+            display: inline-block;
+            vertical-align: middle;
+        }
 
-        + * {
+        & + * {
             margin-left: 2rem !important;
+        }
+    }
+
+    p.numbered {
+        counter-increment: number;
+
+        &::before {
+            content: counter(number);
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: var(--joy-palette-primary-100);
+            text-align: center;
+            line-height: 24px;
+            border-radius: 100%;
+            overflow: hidden;
+            margin-right: .5rem;
+            vertical-align: middle;
         }
     }
     

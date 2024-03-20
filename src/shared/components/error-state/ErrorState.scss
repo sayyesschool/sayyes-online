@@ -1,0 +1,18 @@
+.ErrorState {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    gap: 1rem;
+
+    .ui-Alert {
+        max-width: 720px;
+    }
+
+    pre {
+        text-wrap: pretty;
+    }
+}

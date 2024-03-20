@@ -1,48 +1,98 @@
 {
-    "parser": "babel-eslint",
     "env": {
         "es6": true,
         "browser": true,
         "node": true,
-        "mocha": true
+        "mocha": true,
+        "jest": true
     },
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended",
-        "plugin:react-hooks/recommended"
+        "plugin:react-hooks/recommended",
+        "plugin:@stylistic/disable-legacy"
     ],
+    "parser": "@babel/eslint-parser",
     "parserOptions": {
-        "ecmaVersion": 2018,
+        "ecmaVersion": "latest",
         "sourceType": "module",
         "ecmaFeatures": {
             "jsx": true
+        },
+        "requireConfigFile": false,
+        "babelOptions": {
+            "babelrc": false,
+            "configFile": false,
+            "presets": [
+                "@babel/preset-env",
+                [
+                    "@babel/preset-react",
+                    {
+                        "runtime": "automatic"
+                    }
+                ]
+            ]
         }
     },
+    "plugins": [
+        "@stylistic",
+        "react"
+    ],
     "rules": {
-        "indent": [
-            "error",
+        "@stylistic/arrow-parens": [
+            "warn",
+            "as-needed"
+        ],
+        "@stylistic/indent": [
+            "warn",
             4,
             {
                 "SwitchCase": 1,
                 "MemberExpression": 1
             }
         ],
-        "linebreak-style": [
+        "@stylistic/semi": [
             "error",
-            "windows"
+            "always"
         ],
-        "quotes": [
+        "@stylistic/comma-spacing": "warn",
+        "@stylistic/object-curly-spacing": [
+            "warn",
+            "always"
+        ],
+        "@stylistic/object-property-newline": [
+            "warn",
+            {
+                "allowAllPropertiesOnSameLine": true
+            }
+        ],
+        "@stylistic/no-trailing-spaces": "warn",
+        "@stylistic/quotes": [
             "error",
             "single"
         ],
-        "semi": [
-            "error",
-            "always"
-        ]
+        "no-undef": "error",
+        "no-unused-vars": "warn",
+        "no-useless-escape": "warn",
+        "sort-imports": [
+            "warn",
+            {
+                "ignoreCase": false,
+                "ignoreDeclarationSort": true,
+                "ignoreMemberSort": false,
+                "memberSyntaxSortOrder": [
+                    "all",
+                    "single",
+                    "multiple",
+                    "none"
+                ],
+                "allowSeparatedGroups": true
+            }
+        ],
+        "react/react-in-jsx-scope": "off",
+        "react/prop-types": "off",
+        "react/no-unescaped-entities": "warn"
     },
-    "plugins": [
-        "react"
-    ],
     "overrides": [
         {
             "files": [

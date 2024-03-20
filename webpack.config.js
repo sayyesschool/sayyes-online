@@ -21,11 +21,13 @@ module.exports = [
     env => config({ name: 'class', env }),
     env => config({ name: 'cms', env }),
     env => config({ name: 'crm', env }),
+    env => config({ name: 'front', env, override: { entry: './src/front/index.js' } }),
     env => config({ name: 'lms', env })
 ];
 
 function config({ name, env, rules = [], plugins = [], override = {} }) {
-    const APP_URL = env.development ? 'http://localhost' : 'https://sayyesonline.ru';
+    const APP_DOMAIN = env.development ? 'sayyes.local' : 'sayyes.school';
+    const APP_URL = `https://${APP_DOMAIN}`;
 
     return {
         name,
@@ -98,13 +100,19 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
         plugins: [
             new webpack.DefinePlugin({
                 'process.env': JSON.stringify({}),
-                'APP_ENV': JSON.stringify(env),
-                'APP_URL': JSON.stringify(APP_URL),
-                'SENTRY_DSN': JSON.stringify(process.env.SENTRY_DSN || ''),
-                'STATIC_URL': JSON.stringify(STATIC_URL),
-                'STORAGE_URL': JSON.stringify(STORAGE_URL),
-                'YANDEX_METRIKA_ID': JSON.stringify(YANDEX_METRIKA_ID),
-                'GOOGLE_ANALYTICS_ID': JSON.stringify(GOOGLE_ANALYTICS_ID)
+                'env.APP_ENV': JSON.stringify(env),
+                'env.APP_URL': JSON.stringify(APP_URL),
+                'env.AUTH_URL': JSON.stringify(`//auth.${APP_DOMAIN}`),
+                'env.CLASS_URL': JSON.stringify(`//class.${APP_DOMAIN}`),
+                'env.CMS_URL': JSON.stringify(`//cms.${APP_DOMAIN}`),
+                'env.CRM_URL': JSON.stringify(`//crm.${APP_DOMAIN}`),
+                'env.GOOGLE_ANALYTICS_ID': JSON.stringify(GOOGLE_ANALYTICS_ID),
+                'env.LK_URL': JSON.stringify(`//lk.${APP_DOMAIN}`),
+                'env.LMS_URL': JSON.stringify(`//lms.${APP_DOMAIN}`),
+                'env.SENTRY_DSN': JSON.stringify(process.env.SENTRY_DSN || ''),
+                'env.STATIC_URL': JSON.stringify(STATIC_URL),
+                'env.STORAGE_URL': JSON.stringify(STORAGE_URL),
+                'env.YANDEX_METRIKA_ID': JSON.stringify(YANDEX_METRIKA_ID),
             }),
             new CssExtractPlugin({
                 filename: `css/${name}.[name].css`
@@ -151,12 +159,8 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
                 '@': path.resolve(__dirname, 'src'),
                 'app': path.resolve(__dirname, 'src', name, 'app'),
                 'core': path.resolve(__dirname, 'src', 'core'),
-                'lms': path.resolve(__dirname, 'src', 'lms'),
-                'shared/data': path.resolve(__dirname, 'src', 'shared', 'data'),
-                'shared/libs': path.resolve(__dirname, 'src', 'shared', 'libs'),
-                'shared/utils': path.resolve(__dirname, 'src', 'shared', 'utils'),
-                'shared': path.resolve(__dirname, 'src', 'shared', 'client'),
-                'lms': path.resolve(__dirname, 'src', 'lms', 'app')
+                'lms': path.resolve(__dirname, 'src', 'lms', 'app'),
+                'shared': path.resolve(__dirname, 'src', 'shared')
             },
 
             fallback: {

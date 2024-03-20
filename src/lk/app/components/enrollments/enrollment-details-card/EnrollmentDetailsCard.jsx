@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 
-import { Avatar, Box, Button, Flex, Grid, Heading, Image, Surface, Text } from 'shared/ui-components';
+import { CLASS_URL } from 'shared/constants';
 import WeekSchedule from 'shared/components/week-schedule';
+import { Avatar, Box, Button, Flex, Heading, Image, Surface, Text } from 'shared/ui-components';
 import { pluralize } from 'shared/utils/format';
 
 export default function EnrollmentDetailsCard({
@@ -58,12 +59,15 @@ export default function EnrollmentDetailsCard({
                 {enrollment.schedule ?
                     <WeekSchedule schedule={enrollment.schedule} />
                     :
-                    <Text
-                        content="Не назначено"
-                    />
+                    <Text  content="Не назначено" />
                 }
 
-                <Button as="a" href={enrollment.classUrl} variant="soft">Перейти в класс</Button>
+                <Button
+                    as="a"
+                    href={`${CLASS_URL}/${enrollment.id}`}
+                    content="Перейти в класс"
+                    variant="soft"
+                />
             </Surface>
 
             <Box className="enrollment-details-card__payment-section" sx={{ bgcolor: 'primary.main' }}>

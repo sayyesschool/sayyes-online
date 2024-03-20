@@ -3,7 +3,7 @@ module.exports = (error, req, res, next) => {
 
     error.message = error.message || 'Что-то пошло не так :(';
 
-    res.status(error.status || 500);
+    res.status(error.code || error.status || 500);
 
     if (error.status === 500) {
         res.render('server/pages/error', {

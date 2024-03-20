@@ -4,7 +4,7 @@ import CoursesList from 'shared/components/courses-list';
 import PageSection from 'shared/components/page-section';
 import { IconButton, MenuButton } from 'shared/ui-components';
 
-import { useStore, useActions } from 'app/store';
+import { useActions, useStore } from 'app/store';
 
 export default function EnrollmentCourses({ enrollment }) {
     const [courses = []] = useStore('courses.list');
@@ -13,22 +13,22 @@ export default function EnrollmentCourses({ enrollment }) {
     const handleAddCourse = useCallback((event, { value }) => {
         if (!value) return;
 
-        const courses = enrollment.courses.concat(value);
-
-        return actions.updateEnrollment(enrollment.id, { courses });
-    }, [enrollment]);
+        return actions.updateEnrollment(enrollment.id, {
+            courseIds: enrollment.courseIds.concat(value)
+        });
+    }, [enrollment, actions]);
 
     const handleRemoveCourse = useCallback(courseId => {
-        const courses = enrollment.courses.filter(id => id !== courseId);
-
-        return actions.updateEnrollment(enrollment.id, { courses });
-    }, [enrollment]);
+        return actions.updateEnrollment(enrollment.id, {
+            courseIds: enrollment.courseIds.filter(id => id !== courseId)
+        });
+    }, [enrollment, actions]);
 
     const enrollmentCourses = courses
-        .filter(course => enrollment.courses.includes(course.id));
+        .filter(course => enrollment.courseIds.includes(course.id));
 
     const items = courses
-        .filter(course => !enrollment.courses.includes(course.id))
+        .filter(course => !enrollment.courseIds.includes(course.id))
         .map(course => ({
             key: course.id,
             value: course.id,

@@ -13,7 +13,7 @@ import Root from './components';
 render(
     <StoreProvider store={store}>
         <ThemeProvider theme={theme}>
-            <Router basename={`/class/${ENROLLMENT_ID}`}>
+            <Router basename={`/${ENROLLMENT_ID}`}>
                 <AppStateProvider>
                     <Root />
                 </AppStateProvider>

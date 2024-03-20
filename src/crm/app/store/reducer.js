@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 
-import clients from 'shared/store/modules/clients';
 import courses from 'shared/store/modules/courses';
 import enrollments from 'shared/store/modules/enrollments';
+import learners from 'shared/store/modules/learners';
 import lessons from 'shared/store/modules/lessons';
 import managers from 'shared/store/modules/managers';
 import materials from 'shared/store/modules/materials';
@@ -16,9 +16,9 @@ import teachers from 'shared/store/modules/teachers';
 import user from 'shared/store/modules/user';
 
 export default combineReducers({
-    clients,
     courses,
     enrollments,
+    learners,
     lessons,
     managers,
     materials,

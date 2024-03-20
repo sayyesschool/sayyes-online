@@ -1,0 +1,6 @@
+.ExerciseContent {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    counter-reset: number 0;
+}

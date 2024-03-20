@@ -1,7 +1,7 @@
 import { createElement, useCallback, useRef, useState } from 'react';
-import classnames from 'classnames';
 
 import { IconButton, Flex, Text } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 import { capitalize } from 'shared/utils/string';
 
 import AudioItem from './audio';

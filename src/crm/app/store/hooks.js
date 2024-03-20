@@ -1,6 +1,6 @@
 import {
-    clients,
     enrollments,
+    learners,
     lessons,
     managers,
     meetings,
@@ -14,8 +14,8 @@ import {
 import { configureActions, configureStore } from 'shared/store/helpers';
 
 const modules = {
-    clients,
     enrollments,
+    learners,
     lessons,
     managers,
     meetings,

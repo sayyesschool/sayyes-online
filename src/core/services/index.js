@@ -4,13 +4,14 @@ const Club = require('./club');
 const File = require('./file');
 const Mail = require('./mail');
 const Newsletter = require('./newsletter');
+const Schedule = require('./schedule');
 const Storage = require('./storage');
 
 module.exports = (config, lib, models) => {
     const mail = Mail(lib.mailjet);
     const newsletter = Newsletter(lib.mailjet);
     const auth = Auth(models, {
-        onRegister: user => mail.send({
+        onRegister: (user, password) => mail.send({
             subject: 'Добро пожаловать в SAY YES Online!',
             to: [{
                 email: user.email
@@ -27,16 +28,17 @@ module.exports = (config, lib, models) => {
             to: [{
                 email: user.email
             }],
-            templateId: 1348816,
+            templateId: 5329582,
             variables: {
                 firstname: user.firstname,
-                resetUrl: `${config.APP_URL}/reset/${user.resetPasswordToken}`
+                resetUrl: `https://auth.${config.APP_DOMAIN}/reset/${user.resetPasswordToken}`
             }
         })
     });
     const checkout = Checkout(config, models);
     const club = Club(lib.zoom, models, { mail: Mail, newsletter: Newsletter, checkout: Checkout });
     const file = File();
+    const schedule = Schedule({ models });
     const storage = new Storage({
         accessKeyId: config.YANDEX_CLOUD_ACCESS_KEY_ID,
         secretAccessKey: config.YANDEX_CLOUD_SECRET_ACCESS_KEY,
@@ -52,6 +54,7 @@ module.exports = (config, lib, models) => {
         File: file,
         Mail: mail,
         Newsletter: newsletter,
+        Schedule: schedule,
         Storage: storage
     };
 };

@@ -1,10 +1,10 @@
 module.exports = ({
-    models: { Request, Client }
+    models: { Request, Learner }
 }) => ({
     get: (req, res, next) => {
         Request.find({ status: { $in: ['new', 'processing'] }, ...req.query })
+            .populate('learner', 'firstname lastname')
             .populate('manager', 'firstname lastname')
-            .populate('client', 'firstname lastname')
             .sort({ createdAt: 1 })
             .then(requests => {
                 res.json({
@@ -37,19 +37,19 @@ module.exports = ({
 
     getOne: (req, res, next) => {
         Request.findById(req.params.requestId)
+            .populate('learner', 'firstname lastname')
             .populate('manager', 'firstname lastname')
-            .populate('client', 'firstname lastname')
             .then(request => {
-                return Client.findOne({
+                return Learner.findOne({
                     phone: request.contact.phone
-                }).then(client => {
-                    return [request, client];
+                }).then(learner => {
+                    return [request, learner];
                 });
             })
-            .then(([request, client]) => {
+            .then(([request, learner]) => {
                 const data = request.toJSON({ getters: true, virtuals: true });
 
-                data.existingClient = client;
+                data.existinglearner = learner;
 
                 res.json({
                     ok: true,
@@ -61,8 +61,8 @@ module.exports = ({
 
     create: (req, res, next) => {
         Request.create(req.body)
+            .populate('learner', 'firstname lastname')
             .populate('manager', 'firstname lastname')
-            .populate('client', 'firstname lastname')
             .then(request => {
                 res.json({
                     ok: true,
@@ -75,8 +75,8 @@ module.exports = ({
 
     update: (req, res, next) => {
         Request.findByIdAndUpdate(req.params.requestId, req.body, { new: true })
+            .populate('learner', 'firstname lastname')
             .populate('manager', 'firstname lastname')
-            .populate('client', 'firstname lastname')
             .then(request => {
                 res.json({
                     ok: true,

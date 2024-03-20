@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
-import classnames from 'classnames';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useFullScreen, useScrollClassName } from 'shared/hooks/screen';
+import Chat from 'shared/components/chat';
+import { Alert, Icon } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 
 import useRoomContext from 'app/hooks/useRoomContext';
 import useSharedState from 'app/hooks/useSharedState';
-
-import Chat from 'app/components/Chat';
-// import Courses from 'app/components/Courses';
+import Content from 'app/components/Content';
 import MainParticipant from 'app/components/MainParticipant';
 import ParticipantAudioTracks from 'app/components/ParticipantAudioTracks';
 import ParticipantList from 'app/components/ParticipantList';
@@ -20,27 +20,35 @@ import ScreenShareAlert from 'app/components/ScreenShareAlert';
 import MiroWhiteboard from 'app/components/MiroWhiteboard';
 
 export default function Room({ user, enrollment }) {
-    const { room, participants, isSharingScreen, toggleScreenShare } = useRoomContext();
+    const {
+        room,
+        localParticipant,
+        participants,
+        isSharingScreen,
+        toggleScreenShare
+    } = useRoomContext();
     const sharedState = useSharedState();
     const location = useLocation();
     const history = useHistory();
 
     const rootRef = useRef();
     const contentRef = useRef();
+    
     const participantsById = useMemo(() => ({
-        [enrollment.client.id]: enrollment.client.fullname,
+        [enrollment.learner.id]: enrollment.learner.fullname,
         [enrollment.teacher.id]: enrollment.teacher.fullname
     }));
 
     const [isFullscreen, toggleFullscreen] = useFullScreen(rootRef);
     const [isChatOpen, toggleChatOpen] = useBoolean(false);
+    const [isBroadcastingMedia, toggleBroadcastingMedia] = useBoolean(false);
     const [numberOfUnreadMessages, setNumberOfUnreadMessages] = useState(0);
 
     useScrollClassName(contentRef, 'RoomContent--scrolling', []);
 
     useEffect(() => {
         const namesById = {
-            [enrollment.client.id]: enrollment.client.fullname,
+            [enrollment.learner.id]: enrollment.learner.fullname,
             [enrollment.teacher.id]: enrollment.teacher.fullname
         };
 
@@ -63,19 +71,31 @@ export default function Room({ user, enrollment }) {
         history.push(sharedState.data.path);
     }, [sharedState.data?.path]);
 
+    const handleChatJoined = useCallback(data => {
+        setNumberOfUnreadMessages(data.unreadMessagesCount);
+    }, []);
+
     const handleSync = useCallback(() => {
         sharedState.updateDoc({
             path: location.pathname + location.search
         });
     }, [location]);
 
-    const handleChatConnected = useCallback(channel => {
-        channel.getUnconsumedMessagesCount()
-            .then(unconsumedMessagesCount => {
-                setNumberOfUnreadMessages(unconsumedMessagesCount);
-                channel.setAllMessagesConsumed();
+    const handleMediaStart = useCallback(track => {
+        if (!track) return;
+
+        return localParticipant.publishTrack(track)
+            .then(() => {
+                toggleBroadcastingMedia(true);
             });
-    }, []);
+    }, [localParticipant]);
+
+    const handleMediaStop = useCallback(track => {
+        if (!track) return;
+
+        localParticipant.unpublishTrack(track);
+        toggleBroadcastingMedia(false);
+    }, [localParticipant]);
 
     const handleDisconnect = useCallback(() => {
         room.disconnect();
@@ -108,7 +128,7 @@ export default function Room({ user, enrollment }) {
                     conversationId={enrollment.id}
                     userId={user.id}
                     participantsById={participantsById}
-                    onConnected={handleChatConnected}
+                    onJoined={handleChatJoined}
                 />
             </RoomSidePanel>
 
@@ -123,12 +143,15 @@ export default function Room({ user, enrollment }) {
                 <ParticipantList />
 
                 <Switch>
-                    {/* <Route path="/courses">
-                        <Courses
+                    <Route path="/courses">
+                        <Content
                             user={user}
                             enrollment={enrollment}
+                            room={room}
+                            onMediaStart={handleMediaStart}
+                            onMediaStop={handleMediaStop}
                         />
-                    </Route> */}
+                    </Route>
 
                     <Route path="/whiteboard">
                         <MiroWhiteboard />
@@ -139,6 +162,22 @@ export default function Room({ user, enrollment }) {
             {isSharingScreen &&
                 <ScreenShareAlert
                     onDisableSharing={toggleScreenShare}
+                />
+            }
+
+            {isBroadcastingMedia &&
+                <Alert
+                    start={<Icon name="cast" />}
+                    color="warning"
+                    content="Вы транслируете медиа для всех участников"
+                    sx={{
+                        position: 'fixed',
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        zIndex: 1000,
+                        borderRadius: 0
+                    }}
                 />
             }
         </div>

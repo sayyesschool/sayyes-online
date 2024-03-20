@@ -1,1 +1,1 @@
-module.exports = require('./image');
+module.exports = require('./Image');

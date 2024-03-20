@@ -13,6 +13,12 @@ mongoose.set('toJSON', {
     transform: (document, object, options) => {
         delete object._id;
 
+        // for (const key in object) {
+        //     if (key.startsWith('_')) {
+        //         delete object[key];
+        //     }
+        // }
+
         if (options.hide) {
             options.hide.split(' ').forEach(prop => delete object[prop]);
         }
@@ -21,17 +27,17 @@ mongoose.set('toJSON', {
     }
 });
 
-mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
-mongoose.connection.once('open', () => console.log('Connected to MongoDB'));
-mongoose.connection.on('disconnected', () => console.log('Disconnected from MongoDB'));
+mongoose.connection.on('connected', () => console.log('Connected to DB'));
+mongoose.connection.on('disconnected', () => console.log('Disconnected from DB'));
+mongoose.connection.on('error', () => console.error(console, 'DB connection error:'));
 
-process.on('SIGINT', () => {
+process.on('SIGINT', async () => {
     console.info('SIGINT signal received');
 
-    mongoose.connection.close(() => {
-        console.log('Mongoose disconnected through app termination');
-        process.exit(0);
-    });
+    await mongoose.connection.close();
+
+    console.log('Disconnected from DB through app termination');
+    process.exit(0);
 });
 
 module.exports = {

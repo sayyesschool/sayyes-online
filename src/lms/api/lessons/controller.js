@@ -1,76 +1,77 @@
 module.exports = ({
-    models: { Lesson }
+    models: { Lesson },
+    services: { Schedule }
 }) => ({
-    get: (req, res, next) => {
-        Lesson.find({ teacher: req.user.id, ...req.query })
-            .sort({ date: 1 })
-            .populate('client', 'firstname lastname email')
-            .populate('room', 'title login password')
-            .then(lessons => {
-                res.json({
-                    ok: true,
-                    data: lessons
-                });
-            })
-            .catch(next);
-    },
-
-    getOne: (req, res, next) => {
-        Lesson.findById(req.params.lessonId)
-            .populate('client', 'firstname lastname email')
-            .populate('room', 'title login password')
-            .then(lesson => {
-                res.json({
-                    ok: true,
-                    data: lesson
-                });
-            })
-            .catch(next);
-    },
-
-    create: (req, res, next) => {
-        req.body.teacher = req.user.id;
-
-        Lesson.create(req.body)
-            .then(lesson => {
-                lesson.room = req.room;
-
-                res.json({
-                    ok: true,
-                    message: 'Урок создан',
-                    data: lesson
-                });
-            })
-            .catch(next);
-    },
-
-    update: async (req, res, next) => {
-        Lesson.findByIdAndUpdate(req.params.lessonId, req.body, {
-            new: true,
-            select: Object.keys(req.body).join(' ')
+    async get(req, res) {
+        const lessons = await Lesson.find({
+            teacherId: req.user.id,
+            ...req.query
         })
-            .then(lesson => {
-                res.json({
-                    ok: true,
-                    message: 'Урок изменен',
-                    data: lesson
-                });
-            })
-            .catch(next);
+            .sort({ date: 1 })
+            .populate('learner', 'firstname lastname email')
+            .populate('room', 'title login password');
+
+        res.json({
+            ok: true,
+            data: lessons
+        });
     },
 
-    delete: (req, res, next) => {
-        Lesson.findByIdAndDelete(req.params.lessonId)
-            .then(lesson => {
-                res.json({
-                    ok: true,
-                    message: 'Урок удален',
-                    data: {
-                        id: lesson.id,
-                        enrollment: lesson.enrollment
-                    }
-                });
-            })
-            .catch(next);
+    async getOne(req, res) {
+        const lesson = await Lesson.findById(req.params.lessonId)
+            .populate('learner', 'firstname lastname email')
+            .populate('room', 'title login password');
+
+        res.json({
+            ok: true,
+            data: lesson
+        });
+    },
+
+    async create(req, res) {
+        const lesson = await Schedule.scheduleLesson(req.body);
+
+        lesson.room = req.room;
+
+        res.json({
+            ok: true,
+            message: 'Урок создан',
+            data: lesson
+        });
+    },
+
+    async update(req, res) {
+        let lesson;
+
+        if (req.body.date && req.body.duration) {
+            lesson = await Schedule.scheduleLesson({
+                id: req.params.lessonId,
+                ...req.body
+            });
+        } else {
+            lesson = await Lesson.findByIdAndUpdate(req.params.lessonId, req.body, {
+                new: true,
+                select: Object.keys(req.body).join(' ')
+            });
+        }
+
+        res.json({
+            ok: true,
+            message: 'Урок изменен',
+            data: lesson
+        });
+    },
+
+    async delete(req, res) {
+        const lesson = await Lesson.findByIdAndDelete(req.params.lessonId);
+
+        res.json({
+            ok: true,
+            message: 'Урок удален',
+            data: {
+                id: lesson.id,
+                enrollmentId: lesson.enrollmentId
+            }
+        });
     }
 });

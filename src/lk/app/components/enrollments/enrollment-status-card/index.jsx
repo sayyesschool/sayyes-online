@@ -1,7 +1,8 @@
 import { createElement } from 'react';
 
-import { Box, Surface } from 'shared/ui-components';
+import { STORAGE_URL } from 'shared/constants';
 import Stepper from 'shared/components/stepper';
+import { Box, Surface } from 'shared/ui-components';
 
 import PaymentContent from './payment-content';
 import ProcessingContent from './processing-content';

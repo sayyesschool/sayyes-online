@@ -25,7 +25,7 @@ export default function ParticipantTracks({
 
     return filteredPublications.map(publication => (
         <Publication
-            key={publication.kind}
+            key={publication.trackSid}
             publication={publication}
             participant={participant}
             local={local}

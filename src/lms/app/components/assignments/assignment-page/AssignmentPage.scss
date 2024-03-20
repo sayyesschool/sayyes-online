@@ -1,0 +1,13 @@
+.AssignmentPage {
+    .PageHeader,
+    .PageContent {
+        max-width: 1024px;
+        margin: 0 auto;
+    }
+
+    .PageContent {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+}

@@ -1,0 +1,13 @@
+.ui-Dialog {
+    &__content {
+        margin: .75rem 0;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    &--scrollable &__content {
+        overflow: hidden auto;
+    }
+}

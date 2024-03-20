@@ -1,5 +1,5 @@
 import Home from 'app/components/home';
-import Clients from 'app/components/clients';
+import Learners from 'app/components/learners';
 import Enrollments from 'app/components/enrollments';
 import Lessons from 'app/components/lessons';
 import Managers from 'app/components/managers';
@@ -16,7 +16,7 @@ export default [
     { id: 'enrollments', name: '', path: '/enrollments', exact: false, component: Enrollments, icon: '', hidden: true },
     { id: 'lessons', name: 'Уроки', path: '/lessons', exact: false, component: Lessons, icon: 'event' },
     // { id: 'meetings', name: 'Встречи', path: '/meetings', exact: false, component: Meetings, icon: 'event' },
-    { id: 'clients', name: 'Клиенты', path: '/clients', exact: false, component: Clients, icon: 'groups' },
+    { id: 'learners', name: 'Ученики', path: '/learners', exact: false, component: Learners, icon: 'groups' },
     { id: 'teachers', name: 'Преподаватели', path: '/teachers', exact: false, component: Teachers, icon: 'face' },
     { id: 'managers', name: 'Менеджеры', path: '/managers', exact: false, component: Managers, icon: 'support_agent' },
     { id: 'settings', name: 'Настройки', path: '/settings', exact: false, component: Settings, icon: 'settings' }

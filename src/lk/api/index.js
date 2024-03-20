@@ -1,5 +1,6 @@
 const { Router } = require('express');
 
+const account = require('./account');
 const enrollments = require('./enrollments');
 const lessons = require('./lessons');
 const meetings = require('./meetings');
@@ -14,6 +15,7 @@ module.exports = context => {
     router.use('/courses*', redirectToCMS);
     router.use('/materials*', redirectToCMS);
 
+    router.use('/account', account(context));
     router.use('/enrollments', enrollments(context));
     router.use('/lessons', lessons(context));
     router.use('/meetings', meetings(context));
@@ -24,7 +26,7 @@ module.exports = context => {
 
     router.use((error, req, res, next) => {
         console.error(error);
-        res.status(error.status || 500).send({
+        res.status(error.code || error.status || 500).send({
             ok: false,
             error: typeof error === 'object' ? error.message : error
         });
@@ -34,5 +36,5 @@ module.exports = context => {
 };
 
 function redirectToCMS(req, res) {
-    res.redirect(req.originalUrl.replace('client', 'cms'));
+    res.redirect(req.originalUrl.replace('learner', 'cms'));
 }
