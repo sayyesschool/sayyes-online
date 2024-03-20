@@ -27,16 +27,16 @@ mongoose.set('toJSON', {
     }
 });
 
-mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
-mongoose.connection.once('open', () => console.log('Connected to MongoDB'));
-mongoose.connection.on('disconnected', () => console.log('Disconnected from MongoDB'));
+mongoose.connection.on('connected', () => console.log('Connected to DB'));
+mongoose.connection.on('disconnected', () => console.log('Disconnected from DB'));
+mongoose.connection.on('error', () => console.error(console, 'DB connection error:'));
 
 process.on('SIGINT', async () => {
     console.info('SIGINT signal received');
 
     await mongoose.connection.close();
 
-    console.log('Mongoose disconnected through app termination');
+    console.log('Disconnected from DB through app termination');
     process.exit(0);
 });
 
