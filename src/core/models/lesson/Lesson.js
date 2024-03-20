@@ -23,55 +23,6 @@ const Lesson = new Schema({
 Lesson.statics.Type = LessonType;
 Lesson.statics.Status = LessonStatus;
 
-Lesson.statics.findConflicting = function(teacherId, from, duration) {
-    const { years, months, date } = moment(from).utc().toObject();
-    const startDate = new Date(Date.UTC(years, months, date));
-    const endDate = new Date(Date.UTC(years, months, date + 1));
-    const fromMoment = moment(from).utc();
-    const toMoment = fromMoment.clone().add(duration, 'minutes');
-
-    return this.find({
-        teacher: teacherId,
-        date: {
-            $gte: startDate,
-            $lt: endDate
-        }
-    }).sort({ date: 1 })
-        .then(lessons => {
-            const lesson = lessons.find(lesson => {
-                return (
-                    moment(lesson.endAt).isAfter(fromMoment, 'minutes') &&
-                    moment(lesson.startAt).isBefore(toMoment, 'minutes')
-                );
-            });
-
-            return lesson;
-        });
-};
-
-Lesson.statics.findScheduled = function() {
-    return this.find({
-        date: { $gte: new Date() },
-        status: LessonStatus.Scheduled
-    }).sort({ date: 1 });
-};
-
-Lesson.statics.findTodays = function() {
-    const date = new Date();
-    const year = date.getUTCFullYear();
-    const month = date.getUTCMonth();
-    const day = date.getUTCDate();
-    const from = new Date(Date.UTC(year, month, day, 0, 0, 0, 0));
-    const to = new Date(Date.UTC(year, month, day + 1, 0, 0, 0, 0));
-
-    return this.find({
-        date: {
-            $gte: from,
-            $lt: to
-        }
-    }).sort({ date: 1 });
-};
-
 Lesson.virtual('url').get(function() {
     return `/lessons/${this.id}`;
 });
@@ -111,5 +62,47 @@ Lesson.virtual('room', {
     foreignField: '_id',
     justOne: true
 });
+
+Lesson.statics.findTodays = function() {
+    const startDate = moment().utc().startOf('day').toDate();
+    const endDate = moment().utc().endOf('day').toDate();
+
+    return this.find({
+        date: {
+            $gte: startDate,
+            $lt: endDate
+        }
+    }).sort({ date: 1 });
+};
+
+Lesson.statics.findScheduled = function() {
+    const startOfToday = moment().utc().startOf('day').toDate();
+
+    return this.find({
+        status: LessonStatus.Scheduled,
+        date: { $gte: startOfToday }
+    }).sort({ date: 1 });
+};
+
+Lesson.statics.findConflicting = async function({ date, duration, teacherId, roomId }) {
+    const startMoment = moment(date).utc();
+    const endMoment = startMoment.clone().add(duration, 'minutes');
+    const startDate = startMoment.clone().startOf('day').toDate();
+    const endDate = endMoment.toDate();
+
+    const lessons = await this.find({
+        teacherId,
+        roomId,
+        date: {
+            $gte: startDate,
+            $lt: endDate
+        }
+    }).sort({ date: 1 });
+
+    return lessons.find(lesson => 
+        moment(lesson.endAt).isAfter(startMoment, 'minutes') &&
+        moment(lesson.startAt).isBefore(endMoment, 'minutes')
+    );
+};
 
 module.exports = Lesson;
