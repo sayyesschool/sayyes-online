@@ -26,7 +26,9 @@
     "lint": "eslint ./src",
     "start": "node src/main.js",
     "start-dev": "nodemon -r dotenv/config ./src/main.js",
-    "test": "mocha -r dotenv/config -r ./test/setup.js"
+    "test": "mocha -r dotenv/config",
+    "test:unit": "npm test -- -r ./test/unit/setup.js",
+    "test:functional": "npm test -- -r ./test/functional/setup.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.39.0",
@@ -34,7 +36,6 @@
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/joy": "^5.0.0-beta.23",
-    "@radix-ui/react-toast": "^1.1.4",
     "@reduxjs/toolkit": "^1.6.2",
     "@sayyes/ckeditor5-classic": "^3.9.1",
     "@sentry/react": "^7.50.0",
@@ -121,7 +122,7 @@
     "sass": "^1.43.2",
     "sass-loader": "^12.2.0",
     "sinon": "^17.0.0",
-    "supertest": "^6.3.3",
+    "supertest": "^6.3.4",
     "terser-webpack-plugin": "^5.2.4",
     "util": "^0.12.4",
     "webpack": "^5.72.1",
