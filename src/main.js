@@ -26,6 +26,8 @@ const options = config.APP_ENV === 'production' ? null : {
 
 const { authenticate, authorize, redirect } = context.middleware.auth;
 
+db.connect(config.MONGODB_URI);
+
 server(context, options)
     .use(authenticate)
     .use(api(context))
@@ -35,6 +37,4 @@ server(context, options)
     .use(authorize, crm(context))
     .use(authorize, lms(context))
     .use(redirect)
-    .listen(config.APP_PORT, () => {
-        console.log('Server started');
-    });
+    .start();

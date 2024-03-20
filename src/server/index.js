@@ -31,10 +31,10 @@ module.exports = ({ config, db }, options) => {
     server.use(middleware.session(config, db.connection));
     server.use(middleware.logger);
     server.use(...middleware.flash);
-    //server.use(pages); 
+    //server.use(pages);
 
     process.on('SIGTERM', () => {
-        console.info('SIGTERM signal received.');
+        console.log('SIGTERM signal received.');
         console.log('Closing http server.');
 
         server.close(() => {
@@ -48,15 +48,15 @@ module.exports = ({ config, db }, options) => {
             server.use(...args);
             return this;
         },
-        listen(port, ...rest) {
-            db.connect(config.MONGODB_URI);
-
+        start(...args) {
             if (options) {
                 https.createServer(options, server)
-                    .listen(port, config.APP_DOMAIN, ...rest);
+                    .listen(config.APP_PORT, config.APP_DOMAIN, ...args);
             } else {
-                server.listen(port, ...rest);
+                server.listen(config.APP_PORT, ...args);
             }
+
+            console.log('Server started');
         }
     };
 };
