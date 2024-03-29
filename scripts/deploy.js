@@ -1,12 +1,23 @@
 const Ftp = require('ftp-deploy');
 
 const include = process.argv[2];
+const stand = process.argv[3];
 
-const config = {
-    host: 'sayyes.ftp.evennode.com',
+const credentials = {
+    dev: {
+        host: 'sayyesonline.ftp.evennode.com',
+        user: 'sayes-online_d76e6',
+        password: 'j6sfgwPJ-.pX!zx'
+    },
+    prod: {
+        host: 'sayyes.ftp.evennode.com',
+        user: 'sayyes_fed37',
+        password: '2FQ7uH!vqefbQ:B'
+    }
+};
+
+const config = Object.assign(credentials[stand], {
     port: 21,
-    user: 'sayyes_fed37',
-    password: '2FQ7uH!vqefbQ:B',
     localRoot: process.cwd(),
     remoteRoot: '/',
     include: [include ? `public/**/${include}` : 'public/**/*'],
@@ -14,7 +25,7 @@ const config = {
     // Passive mode is forced (EPSV command is not sent)
     forcePasv: true,
     sftp: false
-};
+});
 
 const ftp = new Ftp();
 
