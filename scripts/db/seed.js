@@ -36,8 +36,9 @@ const {
     });
 
     const exercise = await Exercise.create({
+        _id: '660af90c20a265092f53b487',
         courseId : '5fb265487ef0653994e53a26',
-        sectionId : '64b797bdacb9a1b32b6365f0',
+        sectionId : '64b6c8b8368b0620f3298514',
         description : '<p class="directions">Complete the conversations. Use the conversations above to help you. Then practice with a partner. Use your own names.</p><p>Заполните пропуски, используя диалоги выше. Затем попрактикуйте данные диалоги с партнёром, используя свои собственные имена.</p>',
         items : [
             {
@@ -53,6 +54,7 @@ const {
     });
 
     const course = await Course.create({
+        _id: '5fb265487ef0653994e53a26',
         title : 'Course',
         description : '<p>Course description</p>',
         units : [
@@ -84,7 +86,7 @@ const {
                 _unit : '64b6c779368b0620f32984ed',
                 _lesson : '64b6c782368b0620f32984f2',
                 _exercises : [
-                    exercise.id
+                    '660af90c20a265092f53b487'
                 ]
             }
         ]
