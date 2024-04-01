@@ -20,8 +20,8 @@ context.middleware = {
 };
 
 const options = config.APP_ENV === 'production' ? null : {
-    key: fs.readFileSync('/etc/ssl/private/sayyes-selfsigned.key'),
-    cert: fs.readFileSync('/etc/ssl/certs/sayyes-selfsigned.crt')
+    cert: fs.readFileSync(config.SSL_CERT_PATH),
+    key: fs.readFileSync(config.SSL_KEY_PATH)
 };
 
 const { authenticate, authorize, redirect } = context.middleware.auth;
