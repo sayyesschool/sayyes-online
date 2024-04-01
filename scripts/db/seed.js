@@ -2,7 +2,7 @@ const config = require('../../src/config');
 const db = require('../../src/db');
 const core = require('../../src/core');
 
-const { models: { Room, User } } = core(config);
+const { models: { Enrollment, Room, User } } = core(config);
 
 (async () => {
     await db.connect('mongodb://localhost:27017/sayyes');
@@ -11,12 +11,28 @@ const { models: { Room, User } } = core(config);
         { name: 'A', active: true }
     ]);
 
-    await User.create([
+    const learner = await User.create([
         {
-            firstname: 'Teacher',
+            firstname: 'Ученик',
+            email: 'learner@sayyes.school',
+            password: '2406YiS2013',
+            role: 'learner'
+        }
+    ]);
+
+    const teacher = await User.create([
+        {
+            firstname: 'Учитель',
             email: 'teacher@sayyes.school',
             password: '2406YiS2013',
             role: 'teacher'
+        }
+    ]);
+
+    await Enrollment.create([
+        {
+            learnerId: learner.id,
+            teacherId: teacher.id,
         }
     ]);
 
