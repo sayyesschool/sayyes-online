@@ -45,5 +45,6 @@ module.exports = {
     connect: uri => mongoose.connect(uri, {
         autoIndex: false
     }),
-    disconnect: () => mongoose.disconnect()
+    disconnect: () => mongoose.disconnect(),
+    drop: () => mongoose.connection.dropDatabase()
 };
