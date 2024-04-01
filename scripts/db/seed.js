@@ -93,6 +93,7 @@ const {
     });
 
     await Enrollment.create({
+        status: 'active',
         learnerId: learner.id,
         teacherId: teacher.id,
         courseIds:[course.id]
