@@ -14,9 +14,9 @@ module.exports = ({ models: {
 
         data.roomId = room.id;
 
-        return id ? 
+        return id ?
             Lesson.findByIdAndUpdate(id, data, {
-                new: true,
+                new: true
             }) :
             Lesson.create(data);
     },
@@ -29,7 +29,7 @@ module.exports = ({ models: {
             message: 'Время уже занято.'
         };
     },
-    
+
     async getAvailableRoom({ date, duration }) {
         const endDate = moment(date).add(duration, 'minutes').toDate();
 

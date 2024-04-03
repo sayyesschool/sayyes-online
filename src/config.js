@@ -31,6 +31,9 @@ module.exports = {
     STATIC_URL: process.env.STATIC_URL,
     STORAGE_URL: process.env.STORAGE_URL,
 
+    SSL_CERT_PATH: process.env.SSL_CERT_PATH,
+    SSL_KEY_PATH: process.env.SSL_KEY_PATH,
+
     TWILIO_ACCOUNT_ID: process.env.TWILIO_ACCOUNT_ID,
     TWILIO_API_KEY: process.env.TWILIO_API_KEY,
     TWILIO_API_SECRET: process.env.TWILIO_API_SECRET,

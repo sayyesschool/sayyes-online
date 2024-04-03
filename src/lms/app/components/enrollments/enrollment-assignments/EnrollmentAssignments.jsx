@@ -1,11 +1,11 @@
 import { useCallback, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
-import { useAssignmentActions } from 'shared/hooks/assignments';
 import AssignmentsList from 'shared/components/assignments-list';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
+import { useAssignmentActions } from 'shared/hooks/assignments';
+import { useBoolean } from 'shared/hooks/state';
 import { IconButton } from 'shared/ui-components';
 
 import AssignmentForm from 'app/components/assignments/assignment-form';

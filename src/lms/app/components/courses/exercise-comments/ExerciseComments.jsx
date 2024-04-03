@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 
-import { useUser } from 'shared/hooks/user';
-import { useBoolean } from 'shared/hooks/state';
 import Comment from 'shared/components/comment';
+import { useBoolean } from 'shared/hooks/state';
+import { useUser } from 'shared/hooks/user';
 import { Button } from 'shared/ui-components';
 
 export default function ExerciseComments({

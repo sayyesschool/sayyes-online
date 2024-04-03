@@ -1,6 +1,6 @@
 import { applyMiddleware } from 'redux';
-import promise from 'redux-promise';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
+import promise from 'redux-promise';
 
 import http from 'shared/services/http';
 import api from 'shared/store/middleware/api';

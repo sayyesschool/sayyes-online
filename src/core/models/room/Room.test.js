@@ -1,8 +1,8 @@
 const { model } = require('mongoose');
 const expect = require('expect');
 
-const RoomSchema = require('../../../src/core/models/room');
-const { at } = require('../../helpers');
+const RoomSchema = require('.');
+const { at } = require('../../../../test/helpers');
 
 const Room = model('Room', RoomSchema);
 

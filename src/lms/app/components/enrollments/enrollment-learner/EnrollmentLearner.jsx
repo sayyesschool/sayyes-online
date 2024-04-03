@@ -1,11 +1,12 @@
 import { useContext } from 'react';
+
 import moment from 'moment';
 
-import { useBoolean } from 'shared/hooks/state';
-import DataContext from 'shared/contexts/data';
 import DetailsList from 'shared/components/details-list';
 import PageSection from 'shared/components/page-section';
-import { Avatar, IconButton, List, MenuButton, } from 'shared/ui-components';
+import DataContext from 'shared/contexts/data';
+import { useBoolean } from 'shared/hooks/state';
+import { Avatar, IconButton, List, MenuButton } from 'shared/ui-components';
 
 export default function EnrollmentLearner({ enrollment: { learner } }) {
     const data = useContext(DataContext);
@@ -50,7 +51,8 @@ export default function EnrollmentLearner({ enrollment: { learner } }) {
                                 {
                                     key: 'whatsapp',
                                     element: 'a',
-                                    href: `https://wa.me/${learner.phone}`, target: '_blank',
+                                    href: `https://wa.me/${learner.phone}`,
+                                    target: '_blank',
                                     content: 'Написать в What\'s App'
                                 },
                                 {

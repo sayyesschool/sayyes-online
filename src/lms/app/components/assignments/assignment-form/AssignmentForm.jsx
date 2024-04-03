@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 
-import { useFormData } from 'shared/hooks/form';
-import Form from 'shared/ui-components/form';
-import datetime from 'shared/libs/datetime';
 import { statusOptions } from 'shared/data/assignment';
+import { useFormData } from 'shared/hooks/form';
+import datetime from 'shared/libs/datetime';
+import Form from 'shared/ui-components/form';
 
 const getDefaultData = data => ({
     title: '',
