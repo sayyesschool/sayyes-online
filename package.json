@@ -27,7 +27,7 @@
     "start": "node src/main.js",
     "start-dev": "nodemon -r dotenv/config ./src/main.js",
     "test": "mocha -r dotenv/config",
-    "test:unit": "npm test -- -r ./test/unit/setup.js",
+    "test:unit": "npm test -- -r ./test/helpers.js",
     "test:functional": "npm test -- -r ./test/functional/setup.js"
   },
   "dependencies": {
