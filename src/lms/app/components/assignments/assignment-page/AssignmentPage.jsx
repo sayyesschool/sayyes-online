@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 
 import { useBoolean } from 'shared/hooks/state';
 import { useAssignment } from 'shared/hooks/assignments';
@@ -18,6 +18,7 @@ import Exercise from 'lms/components/courses/exercise';
 export default function AssignmentPage({ match, location, history }) {
     const [assignment, actions] = useAssignment(match.params.id, location.search);
     const [user] = useUser();
+    const editorRef = useRef();
 
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
@@ -46,6 +47,12 @@ export default function AssignmentPage({ match, location, history }) {
                 toggleConfirmationDialogOpen();
                 history.push(`/enrollments/${assignment.enrollmentId}`);
             });
+    }, [assignment]);
+
+    const handleSave = useCallback(() => {
+        const data = { ...assignment, content: editorRef.current.getData() };
+
+        return actions.updateAssignment(assignment.id, data);
     }, [assignment]);
 
     if (!assignment) return <LoadingIndicator />;
@@ -94,7 +101,13 @@ export default function AssignmentPage({ match, location, history }) {
                             key: 'delete',
                             icon: 'delete',
                             title: 'Удалить задание',
-                            onClick: toggleConfirmationDialogOpen
+                            onClick: toggleConfirmationDialogOpen,
+                        },
+                        {
+                            key: 'save',
+                            icon: 'save',
+                            title: 'Сохранить задание',
+                            onClick: handleSave,
                         }
                     ]
                     ||
@@ -107,6 +120,7 @@ export default function AssignmentPage({ match, location, history }) {
                     isTeacher && (
                         <Surface variant="outlined">
                             <ContentEditor
+                                ref={editorRef}
                                 content={assignment.content}
                             />
                         </Surface>
