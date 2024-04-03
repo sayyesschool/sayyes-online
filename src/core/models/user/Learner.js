@@ -20,8 +20,8 @@ Learner.virtual('status').get(function() {
     return this.enrollments?.some(enrollment => enrollment.isActive)?.status;
 });
 
-Learner.virtual('requests', {
-    ref: 'Request',
+Learner.virtual('assignments', {
+    ref: 'Assignment',
     localField: '_id',
     foreignField: 'learnerId'
 });
@@ -42,6 +42,12 @@ Learner.virtual('payments', {
     ref: 'Payment',
     localField: '_id',
     foreignField: 'userId'
+});
+
+Learner.virtual('requests', {
+    ref: 'Request',
+    localField: '_id',
+    foreignField: 'learnerId'
 });
 
 Learner.virtual('transactions', {

@@ -2,7 +2,7 @@ const expect = require('expect');
 const { model } = require('mongoose');
 const { stub } = require('sinon');
 
-const LessonSchema = require('../../../src/core/models/lesson');
+const LessonSchema = require('./Lesson');
 
 const Lesson = model('Lesson', LessonSchema);
 

@@ -6,15 +6,7 @@ const ObjectId = Schema.Types.ObjectId;
 const Comment = new Schema({
     content: { type: String, required: true },
     authorId: { type: ObjectId, required: true },
-    ref: {
-        type: Schema.Types.ObjectId,
-        refPath: 'refModel',
-        required: true
-    },
-    refModel: {
-        type: String,
-        enum: ['Enrollment', 'Exercise', 'User']
-    }
+    itemId: { type: ObjectId, required: true }
 }, {
     timestamps: true
 });

@@ -1,17 +1,17 @@
 import { useCallback, useRef } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
-import { useAssignment } from 'shared/hooks/assignments';
-import { useUser } from 'shared/hooks/user';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import Content from 'shared/components/content';
 import ContentEditor from 'shared/components/content-editor';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import { Heading, Surface, Text } from 'shared/ui-components';
-import datetime from 'shared/libs/datetime';
 import { StatusColor, StatusLabel } from 'shared/data/assignment';
 import { DomainLabel } from 'shared/data/common';
+import { useAssignment } from 'shared/hooks/assignments';
+import { useBoolean } from 'shared/hooks/state';
+import { useUser } from 'shared/hooks/user';
+import datetime from 'shared/libs/datetime';
+import { Heading, Surface, Text } from 'shared/ui-components';
 
 import Exercise from 'lms/components/courses/exercise';
 
@@ -25,21 +25,21 @@ export default function AssignmentPage({ match, location, history }) {
     const handleExerciseProgressChange = useCallback((exercise, data) => {
         return actions.updateExerciseProgress(exercise.progressId, {
             ...data,
-            enrollmentId: course.enrollmentId,
-            courseId: course.id,
+            enrollmentId: assignment.enrollmentId,
+            courseId: exercise.courseId,
             exerciseId: exercise.id
         });
-    }, []);
+    }, [assignment, actions]);
 
     const updateAssignmentStatus = useCallback(status => {
         return actions.updateAssignment(assignment.id, { status });
-    }, [assignment]);
+    }, [assignment, actions]);
 
     const handleRemoveExercise = useCallback(exercise => {
         return actions.updateAssignment(assignment.id, {
             exerciseIds: assignment.exerciseIds.filter(id => id !== exercise.id)
         });
-    }, []);
+    }, [assignment, actions]);
 
     const handleDelete = useCallback(() => {
         return actions.deleteAssignment(assignment.id)
@@ -47,7 +47,7 @@ export default function AssignmentPage({ match, location, history }) {
                 toggleConfirmationDialogOpen();
                 history.push(`/enrollments/${assignment.enrollmentId}`);
             });
-    }, [assignment]);
+    }, [assignment, actions, history, toggleConfirmationDialogOpen]);
 
     const handleSave = useCallback(() => {
         const data = { ...assignment, content: editorRef.current.getData() };
@@ -146,9 +146,8 @@ export default function AssignmentPage({ match, location, history }) {
                     />
                 ) : (
                     <>
-                        <Text
-                            content="Нет упражнений"
-                        />
+                        <Text content="Нет упражнений" />
+
                         <Text
                             content="Добавьте упражнения в задание на странице курса"
                             type="body-sm"

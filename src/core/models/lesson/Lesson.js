@@ -99,7 +99,7 @@ Lesson.statics.findConflicting = async function({ date, duration, teacherId, roo
         }
     }).sort({ date: 1 });
 
-    return lessons.find(lesson => 
+    return lessons.find(lesson =>
         moment(lesson.endAt).isAfter(startMoment, 'minutes') &&
         moment(lesson.startAt).isBefore(endMoment, 'minutes')
     );

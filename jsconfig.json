@@ -7,13 +7,12 @@
         "dist"
     ],
     "compilerOptions": {
-        "baseUrl": "./src/",
         "paths": {
             "@/*": [
                 "./src/*"
             ],
             "lms/*": [
-                "./src/lms/*"
+                "./src/lms/app/*"
             ],
             "shared/*": [
                 "./src/shared/*"

@@ -5,7 +5,7 @@ import Material from 'shared/components/material-page';
 export default function MaterialRouter() {
     return (
         <Switch>
-            <Route exact path="/enrollments/:id/materials/:slug" component={Material} />
+            <Route path="/enrollments/:id/materials/:slug" component={Material} exact />
         </Switch>
     );
 }
