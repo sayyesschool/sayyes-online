@@ -1,7 +1,7 @@
-import { useCourses } from 'shared/hooks/courses';
 import CoursesGrid from 'shared/components/courses-grid';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useCourses } from 'shared/hooks/courses';
 
 export default function CoursesPage() {
     const [courses] = useCourses();

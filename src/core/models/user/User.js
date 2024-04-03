@@ -29,7 +29,7 @@ const User = new Schema([Person, {
     role: {
         type: String,
         enum: Object.values(UserRole),
-        default: UserRole.Customer 
+        default: UserRole.Customer
     },
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
     activated: { type: Boolean, default: false, alias: 'isActivated' },

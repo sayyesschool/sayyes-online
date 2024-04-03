@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
-import { CLASS_URL } from 'shared/constants';
 import WeekSchedule from 'shared/components/week-schedule';
+import { CLASS_URL } from 'shared/constants';
 import { DomainLabel, RoleLabel } from 'shared/data/common';
 import { Avatar, Button, Card, Divider, Flex, Heading, Image, Surface, Text } from 'shared/ui-components';
 import { getLessonDateTimeString, pluralize } from 'shared/utils/format';
@@ -131,6 +131,7 @@ export default function EnrollmentDetailsCard({
 
                 <Flex alignItems="center" gap="small">
                     <Text as="strong">0</Text>
+
                     <Text>
                         {pluralize('урок', enrollment.numberOfScheduledLessons)}<br />
                         по 50 минут

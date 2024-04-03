@@ -1,16 +1,16 @@
 import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useBoolean } from 'shared/hooks/state';
 import Content from 'shared/components/content';
+import { useBoolean } from 'shared/hooks/state';
 import {
     Avatar,
     Button,
     Card,
     Chip,
+    Flex,
     Icon,
     IconButton,
-    Flex,
     MenuButton
 } from 'shared/ui-components';
 

@@ -1,13 +1,13 @@
 import { useCallback, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LessonPillGroup from 'shared/components/lessons-pill-group';
 import PageSection from 'shared/components/page-section';
+import { useBoolean } from 'shared/hooks/state';
 
-import { useActions } from 'app/store/hooks';
 import LessonForm from 'app/components/lessons/lesson-form';
+import { useActions } from 'app/store/hooks';
 
 export default function EnrollmentLessons({ enrollment, readonly }) {
     const lessonActions = useActions('lessons');
@@ -73,10 +73,10 @@ export default function EnrollmentLessons({ enrollment, readonly }) {
             {enrollment.lessons.length > 0 &&
                 <LessonPillGroup
                     lessons={enrollment.lessons}
+                    readonly={readonly}
                     onEdit={handleEdit}
                     onRefund={handleRefund}
                     onDelete={handleDelete}
-                    readonly={readonly}
                 />
             }
 

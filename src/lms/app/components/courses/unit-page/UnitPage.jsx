@@ -1,6 +1,6 @@
-import { useCourse } from 'shared/hooks/courses';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useCourse } from 'shared/hooks/courses';
 
 import UnitContent from 'lms/components/courses/unit-content';
 

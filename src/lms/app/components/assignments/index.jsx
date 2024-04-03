@@ -5,7 +5,7 @@ import AssignmentPage from './assignment-page';
 export default function AssignmentsRouter() {
     return (
         <Switch>
-            <Route exact path="/assignments/:id" component={AssignmentPage} />
+            <Route path="/assignments/:id" component={AssignmentPage} exact />
         </Switch>
     );
 }

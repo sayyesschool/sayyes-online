@@ -1,20 +1,20 @@
 import { useCallback, useState } from 'react';
 
-import { CLASS_URL } from 'shared/constants';
-import { useBoolean } from 'shared/hooks/state';
-import { useEnrollment } from 'shared/hooks/enrollments';
-import { useUser } from 'shared/hooks/user';
-import { Badge, Button, Flex, Grid, IconButton, MenuButton } from 'shared/ui-components';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { CLASS_URL } from 'shared/constants';
 import { DomainLabel } from 'shared/data/common';
+import { useEnrollment } from 'shared/hooks/enrollments';
+import { useBoolean } from 'shared/hooks/state';
+import { useUser } from 'shared/hooks/user';
+import { Badge, Button, Flex, Grid, IconButton, MenuButton } from 'shared/ui-components';
 
 import EnrollmentAssignments from 'app/components/enrollments/enrollment-assignments';
 import EnrollmentChat from 'app/components/enrollments/enrollment-chat';
 import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';
 import EnrollmentDetails from 'app/components/enrollments/enrollment-details';
-import EnrollmentLessons from 'app/components/enrollments/enrollment-lessons';
 import EnrollmentLearner from 'app/components/enrollments/enrollment-learner';
+import EnrollmentLessons from 'app/components/enrollments/enrollment-lessons';
 import EnrollmentManager from 'app/components/enrollments/enrollment-manager';
 import EnrollmentMaterials from 'app/components/enrollments/enrollment-materials';
 import EnrollmentSchedule from 'app/components/enrollments/enrollment-schedule';
