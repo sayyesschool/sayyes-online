@@ -36,6 +36,12 @@ Assignment.virtual('exercises', {
     foreignField: '_id'
 });
 
+Assignment.virtual('comments', {
+    ref: 'Comment',
+    localField: '_id',
+    foreignField: 'itemId'
+});
+
 Assignment.virtual('hasExercises').get(function() {
     return this.exerciseIds && this.exerciseIds.length > 0;
 });
