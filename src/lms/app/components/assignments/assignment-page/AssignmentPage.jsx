@@ -18,6 +18,7 @@ import Exercise from 'lms/components/courses/exercise';
 export default function AssignmentPage({ match, location, history }) {
     const [assignment, actions] = useAssignment(match.params.id, location.search);
     const [user] = useUser();
+
     const editorRef = useRef();
 
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
@@ -50,10 +51,10 @@ export default function AssignmentPage({ match, location, history }) {
     }, [assignment, actions, history, toggleConfirmationDialogOpen]);
 
     const handleSave = useCallback(() => {
-        const data = { ...assignment, content: editorRef.current.getData() };
+        const data = { content: editorRef.current.getData() };
 
         return actions.updateAssignment(assignment.id, data);
-    }, [assignment]);
+    }, [assignment, actions]);
 
     if (!assignment) return <LoadingIndicator />;
 
@@ -101,13 +102,13 @@ export default function AssignmentPage({ match, location, history }) {
                             key: 'delete',
                             icon: 'delete',
                             title: 'Удалить задание',
-                            onClick: toggleConfirmationDialogOpen,
+                            onClick: toggleConfirmationDialogOpen
                         },
                         {
                             key: 'save',
                             icon: 'save',
                             title: 'Сохранить задание',
-                            onClick: handleSave,
+                            onClick: handleSave
                         }
                     ]
                     ||
