@@ -146,18 +146,18 @@ export const enrollmentReducer = createReducer(null, {
 
     [createAssignment]: (state, action) => state?.id !== action.data.enrollmentId ? state : {
         ...state,
-        assignments: state && state.assignments.concat(action.data)
+        assignments: state?.assignments?.concat(action.data)
     },
     [updateAssignment]: (state, action) => state?.id !== action.data.enrollmentId ? state : {
         ...state,
-        assignments: state && state.assignments.map(assignment => assignment.id !== action.data.id ? assignment : {
+        assignments: state?.assignments?.map(assignment => assignment.id !== action.data.id ? assignment : {
             ...assignment,
             ...action.data
         })
     },
     [deleteAssignment]: (state, action) => state?.id !== action.data.enrollmentId ? state : {
         ...state,
-        assignments: state && state.assignments.filter(assignment => assignment.id !== action.data.id)
+        assignments: state?.assignments?.filter(assignment => assignment.id !== action.data.id)
     }
 });
 
