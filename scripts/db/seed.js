@@ -105,7 +105,7 @@ const {
         title: 'Assignment 1',
         content: 'Do your homework',
         status: 'assigned',
-        dueDate: new Date('2025-01-01T:10:00'),
+        dueDate: new Date('2025-01-01T10:00'),
         exerciseIds: [exercise.id],
         enrollmentId: enrollment.id,
         learnerId: learner.id,
