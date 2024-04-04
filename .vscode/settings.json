@@ -4,6 +4,7 @@
         "source.organizeImports": "explicit"
     },
     "eslint.format.enable": true,
+    "prettier.enable": false,
     "[javascript]": {
         "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     }
