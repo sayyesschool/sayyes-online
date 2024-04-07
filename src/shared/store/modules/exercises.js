@@ -1,4 +1,5 @@
 import { combineReducers, createAction, createReducer } from 'shared/store/helpers';
+import { createComment, deleteComment, updateComment } from 'shared/store/modules/comments';
 
 export const getExercises = createAction('GET_EXERCISES', query => ({
     request: {
@@ -14,8 +15,6 @@ export const getExercise = createAction('GET_EXERCISE', id => ({
         path: `exercises/${id}`
     }
 }));
-
-export const unsetExercise = createAction('UNSET_EXERCISE');
 
 export const createExercise = createAction('CREATE_EXERCISE', data => ({
     request: {
@@ -40,39 +39,56 @@ export const deleteExercise = createAction('DELETE_EXERCISE', id => ({
     }
 }));
 
-export const createComment = createAction('CREATE_COMMENT', (id, data) => ({
+export const unsetExercise = createAction('UNSET_EXERCISE');
+
+// Items
+
+export const createExerciseItem = createAction('CREATE_EXERCISE_ITEM', (exerciseId, data) => ({
     request: {
         method: 'post',
-        path: `/comments/${id}`,
+        path: `exercises/${exerciseId}/items`,
         body: data
     }
 }));
 
-export const updateComment = createAction('UPDATE_COMMENT', (id, data) => ({
+export const updateExerciseItem = createAction('UPDATE_EXERCISE_ITEM', (exerciseId, itemId, data) => ({
     request: {
         method: 'put',
-        path: `/comments/${id}`,
+        path: `exercises/${exerciseId}/items/${itemId}`,
         body: data
     }
 }));
 
-export const deleteComment = createAction('DELETE_COMMENT', id => ({
+export const deleteExerciseItem = createAction('DELETE_EXERCISE_ITEM', (exerciseId, itemId, body) => ({
     request: {
         method: 'delete',
-        path: `comments/${id}`
+        path: `exercises/${exerciseId}/items/${itemId}`,
+        body
+    }
+}));
+
+// Progress
+
+export const updateExerciseProgress = createAction('UPDATE_EXERCISE_PROGRESS', (progressId = '', data) => ({
+    request: {
+        method: 'post',
+        path: `progress/${progressId}`,
+        body: data
     }
 }));
 
 export const actions = {
     getExercises,
     getExercise,
-    unsetExercise,
     createExercise,
     updateExercise,
     deleteExercise,
-    createComment,
-    updateComment,
-    deleteComment
+
+    createExerciseItem,
+    updateExerciseItem,
+    deleteExerciseItem,
+
+    updateExerciseProgress
 };
 
 export const exercisesReducer = createReducer(null, {
@@ -93,11 +109,11 @@ export const exercisesReducer = createReducer(null, {
 export const exerciseReducer = createReducer(null, {
     [getExercise]: (state, action) => action.data,
 
-    [unsetExercise]: () => null,
-
     [updateExercise]: (state, action) => ({ ...state, ...action.data }),
 
     [deleteExercise]: () => null,
+
+    [unsetExercise]: () => null,
 
     [createComment]: (state, action) => ({
         ...state,
