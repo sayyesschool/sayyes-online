@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import CommentForm from 'shared/components/comment-form';
 import Content from 'shared/components/content';
+import { useBoolean } from 'shared/hooks/state';
 import { Avatar, Box, Button, Flex, Icon, IconButton, MenuButton, Text } from 'shared/ui-components';
 
 export default function Comment({
@@ -16,8 +16,8 @@ export default function Comment({
     const [isEditing, toggleEditing] = useBoolean(editing);
 
     const handleSubmit = useCallback(data => {
-        return onSave(comment.id, data);
-    }, [comment, onSave]);
+        return onSave(data, comment.id).then(() => toggleEditing(false));;
+    }, [comment.id, onSave, toggleEditing]);
 
     const handleDelete = useCallback(() => {
         return onDelete(comment.id);

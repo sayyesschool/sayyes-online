@@ -16,7 +16,7 @@ export default function CommentForm({ comment = {}, onSubmit, ...props }) {
         <Form className="CommentForm" onSubmit={handleSubmit} {...props}>
             <ContentEditor
                 ref={editorRef}
-                defaultValue={comment.content}
+                content={comment.content}
             />
         </Form>
     );

@@ -32,6 +32,12 @@ Exercise.virtual('uri').get(function() {
     return `/exercises/${this.id}`;
 });
 
+Exercise.virtual('comments', {
+    ref: 'Comment',
+    localField: '_id',
+    foreignField: 'itemId'
+});
+
 Exercise.static('addItem', async function(exerciseId, { data, position } = {}) {
     if (!data) throw {
         code: 400,

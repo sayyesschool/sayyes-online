@@ -15,18 +15,20 @@ export default function ExerciseComments({
 
     const [isCommenting, toggleCommenting] = useBoolean(false);
 
-    const handleCreateComment = useCallback((_, data) => {
-        return onCreate(exercise.id, data)
-            .then(() => toggleCommenting(false));
-    }, [exercise]);
+    console.log(123, { isCommenting });
 
-    const handleUpdateComment = useCallback((commentId, data) => {
-        return onUpdate(exercise.id, commentId, data);
-    }, [exercise]);
+    const handleCreateComment = useCallback(data => {
+        return onCreate({ itemId: exercise.id, ...data })
+            .then(() => toggleCommenting(false));
+    }, [exercise.id, onCreate, toggleCommenting]);
+
+    const handleUpdateComment = useCallback((data, commentId) => {
+        return onUpdate(data, commentId);
+    }, [onUpdate]);
 
     const handleDeleteComment = useCallback(commentId => {
-        return onDelete(exercise.id, commentId);
-    }, [exercise]);
+        return onDelete(commentId);
+    }, [onDelete]);
 
     return (
         <>

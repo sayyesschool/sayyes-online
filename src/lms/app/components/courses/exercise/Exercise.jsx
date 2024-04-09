@@ -32,10 +32,9 @@ export default function Exercise({
     onComplete
 }) {
     const [exercise, actions] = useExercise(id);
-
-    const [state, setState] = useState(exercise.state || {});
+    const [state, setState] = useState(exercise?.state || {});
     const [isCollapsed, toggleCollapsed] = useBoolean(true);
-    const [isCommenting, toggleCommenting] = useBoolean(false);
+    // const [isCommenting, toggleCommenting] = useBoolean(false);
     const [isChecked, setChecked] = useBoolean(false);
     const [isSaving, setSaving] = useBoolean(false);
 
@@ -79,13 +78,12 @@ export default function Exercise({
         onRemoveFromAssignment(exercise, assignment);
     }, [exercise, onRemoveFromAssignment]);
 
-    const handleCreateComment = useCallback((_, data) => {
-        return actions.createComment(data)
-            .then(() => toggleCommenting(false));
-    }, [exercise, actions, toggleCommenting]);
+    const handleCreateComment = useCallback(data => {
+        return actions.createComment(data);
+    }, [actions]);
 
     const handleUpdateComment = useCallback((commentId, data) => {
-        return actions.updateComment(commentId, data);
+        return actions.updateComment(data, commentId);
     }, [actions]);
 
     const handleDeleteComment = useCallback(commentId => {
@@ -98,7 +96,7 @@ export default function Exercise({
         item.type === 'input'
     );
 
-    const hasCheckableItems = exercise.items.some(item =>
+    const hasCheckableItems = exercise?.items.some(item =>
         item.type === 'fib' ||
         (item.type === 'input' && item.items?.length > 0)
     );
@@ -108,12 +106,12 @@ export default function Exercise({
             <header className="Exercise__header" onClick={toggleCollapsed}>
                 <Avatar
                     content={index + 1}
-                    color={exercise.completed ? 'primary' : undefined}
+                    color={exercise?.completed ? 'primary' : undefined}
                     size="sm"
                 />
 
                 <Content
-                    content={exercise.description}
+                    content={exercise?.description}
                     html
                 />
 
@@ -121,7 +119,7 @@ export default function Exercise({
                     {assignments?.length > 0 && (
                         <Flex alignItems="center" gap="smaller">
                             {assignments
-                                .filter(assignment => assignment.exerciseIds.includes(exercise.id))
+                                .filter(assignment => assignment.exerciseIds.includes(exercise?.id))
                                 .map(assignment =>
                                     <Chip
                                         key={assignment.id}
@@ -159,7 +157,7 @@ export default function Exercise({
                                 />
                             }
                             items={(assignments || [])
-                                .filter(assignment => !assignment.exerciseIds.includes(exercise.id))
+                                .filter(assignment => !assignment.exerciseIds.includes(exercise?.id))
                                 .map(assignment => ({
                                     key: assignment.id,
                                     content: assignment.title,
@@ -212,13 +210,6 @@ export default function Exercise({
                             onClick={handleSave}
                         />
                     }
-
-                    {/* <Button
-                            label="Оставить комментарий"
-                            icon="comment"
-                            outlined
-                            onClick={toggleCommenting}
-                        /> */}
 
                     {user.role === 'teacher' &&
                         <Button

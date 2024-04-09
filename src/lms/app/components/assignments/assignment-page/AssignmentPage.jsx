@@ -138,9 +138,9 @@ export default function AssignmentPage({ match, location, history }) {
                 {assignment.exercises.length > 0 ? assignment.exercises.map((exercise, index) =>
                     <Exercise
                         key={exercise.id}
+                        id={exercise.id}
                         index={index}
                         user={user}
-                        exercise={exercise}
                         showRemoveFromAssignment={user.role === 'teacher'}
                         onRemoveFromAssignment={handleRemoveExercise}
                         onProgressChange={handleExerciseProgressChange}
