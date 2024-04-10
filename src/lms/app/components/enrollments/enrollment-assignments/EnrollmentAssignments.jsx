@@ -8,7 +8,7 @@ import { useAssignmentActions } from 'shared/hooks/assignments';
 import { useBoolean } from 'shared/hooks/state';
 import { IconButton } from 'shared/ui-components';
 
-import AssignmentForm from 'app/components/assignments/assignment-form';
+import AssignmentForm from 'lms/components/assignments/assignment-form';
 
 export default function EnrollmentAssignments({
     enrollment,

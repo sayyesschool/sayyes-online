@@ -1,26 +1,26 @@
 import { useCallback } from 'react';
 
-import { DomainLabel } from 'shared/data/common';
-import { useBoolean } from 'shared/hooks/state';
-import { useEnrollment } from 'shared/hooks/enrollments';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { DomainLabel } from 'shared/data/common';
+import { useEnrollment } from 'shared/hooks/enrollments';
+import { useBoolean } from 'shared/hooks/state';
 import { Badge, Flex, Grid, IconButton } from 'shared/ui-components';
 
-import EnrollmentComments from 'app/components/enrollments/enrollment-comments';
-import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';
-import EnrollmentDetails from 'app/components/enrollments/enrollment-details';
-import EnrollmentForm from 'app/components/enrollments/enrollment-form';
-import EnrollmentLessons from 'app/components/enrollments/enrollment-lessons';
-import EnrollmentMaterials from 'app/components/enrollments/enrollment-materials';
-import EnrollmentMeta from 'app/components/enrollments/enrollment-meta';
-// import EnrollmentPayments from 'app/components/enrollments/enrollment-payments';
-import EnrollmentSchedule from 'app/components/enrollments/enrollment-schedule';
-import EnrollmentStatus from 'app/components/enrollments/enrollment-status';
-// import EnrollmentTrialLesson from 'app/components/enrollments/enrollment-trial-lesson';
+import EnrollmentComments from 'crm/components/enrollments/enrollment-comments';
+import EnrollmentCourses from 'crm/components/enrollments/enrollment-courses';
+import EnrollmentDetails from 'crm/components/enrollments/enrollment-details';
+import EnrollmentForm from 'crm/components/enrollments/enrollment-form';
+import EnrollmentLessons from 'crm/components/enrollments/enrollment-lessons';
+import EnrollmentMaterials from 'crm/components/enrollments/enrollment-materials';
+import EnrollmentMeta from 'crm/components/enrollments/enrollment-meta';
+// import EnrollmentPayments from 'crm/components/enrollments/enrollment-payments';
+import EnrollmentSchedule from 'crm/components/enrollments/enrollment-schedule';
+import EnrollmentStatus from 'crm/components/enrollments/enrollment-status';
 
+// import EnrollmentTrialLesson from 'crm/components/enrollments/enrollment-trial-lesson';
 import './index.scss';
 
 export default function EnrollmentPage({ match, history }) {

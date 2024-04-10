@@ -1,21 +1,21 @@
 import { useCallback, useEffect } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
-import { useUser } from 'shared/hooks/user';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useBoolean } from 'shared/hooks/state';
+import { useUser } from 'shared/hooks/user';
 import { Flex, Grid } from 'shared/ui-components';
 
-import { useStore } from 'app/store';
-import LearnerForm from 'app/components/learners/learner-form';
-import LearnerDetails from 'app/components/learners/learner-details';
-import LearnerContacts from 'app/components/learners/learner-contacts';
-import LearnerEnrollments from 'app/components/learners/learner-enrollments';
-import LearnerRequests from 'app/components/learners/learner-requests';
-import LearnerTransactions from 'app/components/learners/learner-transactions';
-import PasswordForm from 'app/components/shared/password-form';
+import LearnerContacts from 'crm/components/learners/learner-contacts';
+import LearnerDetails from 'crm/components/learners/learner-details';
+import LearnerEnrollments from 'crm/components/learners/learner-enrollments';
+import LearnerForm from 'crm/components/learners/learner-form';
+import LearnerRequests from 'crm/components/learners/learner-requests';
+import LearnerTransactions from 'crm/components/learners/learner-transactions';
+import PasswordForm from 'crm/components/shared/password-form';
+import { useStore } from 'crm/store';
 
 export default function LearnerPage({ match, location, history }) {
     const user = useUser();

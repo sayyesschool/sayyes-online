@@ -1,12 +1,12 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
+import { useBoolean } from 'shared/hooks/state';
 
-import ContactForm from 'app/components/shared/contact-form';
-import ContactsList from 'app/components/shared/contacts-list';
+import ContactForm from 'crm/components/shared/contact-form';
+import ContactsList from 'crm/components/shared/contacts-list';
 
 export default function LearnerContacts({ learner, onUpdate }) {
     const [contact, setContact] = useState();

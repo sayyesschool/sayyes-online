@@ -1,15 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
-import Button from 'shared/ui-components/button';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import PageSection from 'shared/components/page-section';
+import { useBoolean } from 'shared/hooks/state';
 
-import { useStore } from 'app/store';
-import RoomForm from 'app/components/rooms/room-form';
-import RoomsTable from 'app/components/rooms/rooms-table';
+import RoomForm from 'crm/components/rooms/room-form';
+import RoomsTable from 'crm/components/rooms/rooms-table';
+import { useStore } from 'crm/store';
 
 export default function Rooms() {
     const [rooms, actions] = useStore('rooms.list');
@@ -43,7 +42,7 @@ export default function Rooms() {
             });
     }, [room]);
 
-    const toggleRoomActive = useCallback((room) => {
+    const toggleRoomActive = useCallback(room => {
         return actions.updateRoom(room.id, { active: !room.active });
     }, []);
 

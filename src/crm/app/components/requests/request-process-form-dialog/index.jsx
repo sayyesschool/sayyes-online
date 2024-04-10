@@ -2,9 +2,9 @@ import { useCallback, useMemo, useRef } from 'react';
 
 import { Accordion, Button, Dialog } from 'shared/ui-components';
 
-import LearnerForm from 'app/components/learners/learner-form';
-import EnrollmentForm from 'app/components/enrollments/enrollment-form';
-import RequestForm from 'app/components/requests/request-form';
+import EnrollmentForm from 'crm/components/enrollments/enrollment-form';
+import LearnerForm from 'crm/components/learners/learner-form';
+import RequestForm from 'crm/components/requests/request-form';
 
 import './index.scss';
 

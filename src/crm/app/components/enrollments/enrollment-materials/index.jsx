@@ -4,7 +4,7 @@ import MaterialsList from 'shared/components/materials-list';
 import PageSection from 'shared/components/page-section';
 import { IconButton, MenuButton } from 'shared/ui-components';
 
-import { useActions, useStore } from 'app/store';
+import { useActions, useStore } from 'crm/store';
 
 export default function EnrollmentMaterials({ enrollment }) {
     const [materials = []] = useStore('materials.list');
