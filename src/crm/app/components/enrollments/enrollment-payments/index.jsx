@@ -1,13 +1,13 @@
 import { useCallback, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
+import { useBoolean } from 'shared/hooks/state';
 
-import { useActions } from 'app/store';
-import PaymentForm from 'app/components/payments/payment-form';
-import PaymentsList from 'app/components/payments/payments-list';
+import PaymentForm from 'crm/components/payments/payment-form';
+import PaymentsList from 'crm/components/payments/payments-list';
+import { useActions } from 'crm/store';
 
 export default function EnrollmentPayments({ enrollment }) {
     const actions = useActions('payments');

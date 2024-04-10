@@ -2,10 +2,10 @@ import { useCallback, useEffect, useState } from 'react';
 
 import Page from 'shared/components/page';
 
-import { useStore } from 'app/hooks/store';
-import FormPanel from 'app/components/shared/form-panel';
-import MeetingsTable from 'app/components/meetings/meetings-table';
-import MeetingForm from 'app/components/meetings/meeting-form';
+import MeetingForm from 'crm/components/meetings/meeting-form';
+import MeetingsTable from 'crm/components/meetings/meetings-table';
+import FormPanel from 'crm/components/shared/form-panel';
+import { useStore } from 'crm/hooks/store';
 
 export default function MeetingsPage() {
     const [meetings, actions] = useStore('meetings.list');

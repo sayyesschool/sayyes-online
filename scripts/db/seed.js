@@ -4,6 +4,8 @@ const core = require('../../src/core');
 
 const {
     models: {
+        Assignment,
+        Comment,
         Enrollment,
         Exercise,
         Course,
@@ -92,11 +94,28 @@ const {
         ]
     });
 
-    await Enrollment.create({
+    const enrollment = await Enrollment.create({
         status: 'active',
         learnerId: learner.id,
         teacherId: teacher.id,
         courseIds:[course.id]
+    });
+
+    await Assignment.create({
+        title: 'Assignment 1',
+        content: 'Do your homework',
+        status: 'assigned',
+        dueDate: new Date('2025-01-01T10:00'),
+        exerciseIds: [exercise.id],
+        enrollmentId: enrollment.id,
+        learnerId: learner.id,
+        teacherId: teacher.id
+    });
+
+    await Comment.create({
+        content: 'Comment',
+        authorId: learner.id,
+        itemId: exercise.id
     });
 
     console.log('DB seeded');

@@ -13,47 +13,21 @@ module.exports = ({
     },
 
     async create(req, res) {
-        req.body.user = req.user.id;
+        req.body.authorId = req.user.id;
 
-        const comment = await Comment.findByIdAndUpdate(req.params.id, {
-            $push: { comments: req.body }
-        }, {
-            new: true,
-            projection: {
-                id: true,
-                slug: true,
-                comments: { $slice: -1 }
-            }
-        }).populate('comments.user', 'firstname lastname email');
-
-        const data = post.comments[0].toObject();
-
-        data.postId = post.id;
+        const comment = await Comment.create(req.body);
 
         res.json({
             ok: true,
-            data
+            message: 'Комментарий создан',
+            data: comment
         });
     },
 
     async update(req, res) {
-        const data = Array.from(Object.entries(req.body))
-            .reduce((data, [key, value]) => {
-                data[`comments.$[c].${key}`] = value;
-                return data;
-            }, {});
-
-        const comment = await Comment.findByIdAndUpdate(req.params.postId, {
-            $set: data
-        }, {
-            new: true,
-            arrayFilters: [{ 'c._id': req.params.commentId }],
-            projection: {
-                id: true,
-                slug: true,
-                comments: { $elemMatch: { _id: req.params.commentId } }
-            }
-        }).populate('comments.user', 'firstname lastname email');
+        const comment = await Comment.findByIdAndUpdate(req.params.id, req.body, {
+            new: true
+        });
 
         res.json({
             ok: true,
@@ -63,24 +37,17 @@ module.exports = ({
     },
 
     async delete(req, res) {
-        const comment = await Comment.findByIdAndUpdate(req.params.postId, {
-            $pull: {
-                comments: { _id: req.params.commentId }
-            }
-        }, {
-            projection: {
-                comments: { $elemMatch: { _id: req.params.commentId } },
-            }
+        const comment = await Comment.findOneAndDelete({
+            _id: req.params.id
         });
-
-        const data = post.comments[0].toObject();
-
-        data.postId = post.id;
 
         res.json({
             ok: true,
             message: 'Комментарий удален',
-            data
+            data: {
+                id: comment.id,
+                itemId: comment.itemId
+            }
         });
-    },
+    }
 });

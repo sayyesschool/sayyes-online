@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useBoolean } from 'shared/hooks/state';
 
-import { useStore } from 'app/hooks/store';
-import LearnersTable from 'app/components/learners/learners-table';
-import LearnerForm from 'app/components/learners/learner-form';
-import LearnersSearchForm from 'app/components/learners/learners-search-form';
+import LearnerForm from 'crm/components/learners/learner-form';
+import LearnersSearchForm from 'crm/components/learners/learners-search-form';
+import LearnersTable from 'crm/components/learners/learners-table';
+import { useStore } from 'crm/hooks/store';
 
 export default function LearnersPage({ history }) {
     const [learners, actions] = useStore('learners.list');

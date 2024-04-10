@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Content from 'shared/components/content';
+import { useExercise } from 'shared/hooks/exercises';
 import { useBoolean } from 'shared/hooks/state';
 import {
     Avatar,
@@ -14,13 +15,13 @@ import {
     MenuButton
 } from 'shared/ui-components';
 
+import ExerciseComments from 'lms/components/courses/exercise-comments';
 import ExerciseContent from 'lms/components/courses/exercise-content';
-// import ExerciseComments from 'app/components/courses/exercise-comments';
 
 export default function Exercise({
     index,
     user,
-    exercise,
+    id,
     assignments,
     showMenu,
     showRemoveFromAssignment,
@@ -30,6 +31,8 @@ export default function Exercise({
     onRemoveFromAssignment,
     onComplete
 }) {
+    const [exercise, actions] = useExercise(id);
+
     const [state, setState] = useState(exercise.state || {});
     const [isCollapsed, toggleCollapsed] = useBoolean(true);
     const [isCommenting, toggleCommenting] = useBoolean(false);
@@ -76,18 +79,18 @@ export default function Exercise({
         onRemoveFromAssignment(exercise, assignment);
     }, [exercise, onRemoveFromAssignment]);
 
-    // const handleCreateComment = useCallback((_, data) => {
-    //     return onCreateComment(exercise.id, data)
-    //         .then(() => toggleCommenting(false));
-    // }, [exercise]);
+    const handleCreateComment = useCallback((_, data) => {
+        return actions.createComment(data)
+            .then(() => toggleCommenting(false));
+    }, [exercise, actions, toggleCommenting]);
 
-    // const handleUpdateComment = useCallback((commentId, data) => {
-    //     return onUpdateComment(exercise.id, commentId, data);
-    // }, [exercise]);
+    const handleUpdateComment = useCallback((commentId, data) => {
+        return actions.updateComment(commentId, data);
+    }, [actions]);
 
-    // const handleDeleteComment = useCallback(commentId => {
-    //     return onDeleteComment(exercise.id, commentId);
-    // }, [exercise]);
+    const handleDeleteComment = useCallback(commentId => {
+        return actions.deleteComment(commentId);
+    }, [actions]);
 
     const hasSaveableItems = user.role === 'learner' && exercise.items.some(item =>
         item.type === 'essay' ||
@@ -228,12 +231,12 @@ export default function Exercise({
                     }
                 </footer>
 
-                {/* <ExerciseComments
+                <ExerciseComments
                     exercise={exercise}
                     onCreate={handleCreateComment}
                     onUpdate={handleUpdateComment}
                     onDelete={handleDeleteComment}
-                /> */}
+                />
             </>}
         </Card>
     );

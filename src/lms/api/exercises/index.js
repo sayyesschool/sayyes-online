@@ -6,8 +6,7 @@ module.exports = context => {
     const router = Router();
     const controller = Controller(context);
 
-    router.get('/', controller.getCourses);
-    router.get('/:course', controller.getCourse);
+    router.get('/:id', controller.getCourse);
 
     return router;
 };

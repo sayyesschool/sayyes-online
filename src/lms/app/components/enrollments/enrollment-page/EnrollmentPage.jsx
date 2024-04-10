@@ -9,16 +9,16 @@ import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
 import { Badge, Button, Flex, Grid, IconButton, MenuButton } from 'shared/ui-components';
 
-import EnrollmentAssignments from 'app/components/enrollments/enrollment-assignments';
-import EnrollmentChat from 'app/components/enrollments/enrollment-chat';
-import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';
-import EnrollmentDetails from 'app/components/enrollments/enrollment-details';
-import EnrollmentLearner from 'app/components/enrollments/enrollment-learner';
-import EnrollmentLessons from 'app/components/enrollments/enrollment-lessons';
-import EnrollmentManager from 'app/components/enrollments/enrollment-manager';
-import EnrollmentMaterials from 'app/components/enrollments/enrollment-materials';
-import EnrollmentSchedule from 'app/components/enrollments/enrollment-schedule';
-import EnrollmentTeacher from 'app/components/enrollments/enrollment-teacher';
+import EnrollmentAssignments from 'lms/components/enrollments/enrollment-assignments';
+import EnrollmentChat from 'lms/components/enrollments/enrollment-chat';
+import EnrollmentCourses from 'lms/components/enrollments/enrollment-courses';
+import EnrollmentDetails from 'lms/components/enrollments/enrollment-details';
+import EnrollmentLearner from 'lms/components/enrollments/enrollment-learner';
+import EnrollmentLessons from 'lms/components/enrollments/enrollment-lessons';
+import EnrollmentManager from 'lms/components/enrollments/enrollment-manager';
+import EnrollmentMaterials from 'lms/components/enrollments/enrollment-materials';
+import EnrollmentSchedule from 'lms/components/enrollments/enrollment-schedule';
+import EnrollmentTeacher from 'lms/components/enrollments/enrollment-teacher';
 
 export default function EnrollmentPage({ match }) {
     const [enrollment] = useEnrollment(match.params.id);

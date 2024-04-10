@@ -1,4 +1,4 @@
-import { createAction, createReducer, combineReducers } from 'shared/store/helpers';
+import { combineReducers, createAction, createReducer } from 'shared/store/helpers';
 
 export const getAssignments = createAction('GET_ASSIGNMENTS', query => ({
     request: {

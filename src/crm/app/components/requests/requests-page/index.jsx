@@ -1,16 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useBoolean } from 'shared/hooks/state';
 
-import { useStore, useActions } from 'app/store';
-import RequestsTable from 'app/components/requests/requests-table';
-import RequestForm from 'app/components/requests/request-form';
-import RequestProcessFormDialog from 'app/components/requests/request-process-form-dialog';
-import RequestSearchForm from 'app/components/requests/request-search-form';
+import RequestForm from 'crm/components/requests/request-form';
+import RequestProcessFormDialog from 'crm/components/requests/request-process-form-dialog';
+import RequestSearchForm from 'crm/components/requests/request-search-form';
+import RequestsTable from 'crm/components/requests/requests-table';
+import { useActions, useStore } from 'crm/store';
 
 export default function RequestsPage({ history }) {
     const [user] = useStore('user');

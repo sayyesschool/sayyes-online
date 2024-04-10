@@ -1,6 +1,6 @@
 import PageSection from 'shared/components/page-section';
 
-import RequestsList from 'app/components/requests/requests-list';
+import RequestsList from 'crm/components/requests/requests-list';
 
 export default function LearnerRequests({ requests }) {
     return (

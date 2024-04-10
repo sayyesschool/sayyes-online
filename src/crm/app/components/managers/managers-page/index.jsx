@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useBoolean } from 'shared/hooks/state';
 
-import { useStore } from 'app/store';
-import ManagersTable from 'app/components/managers/managers-table';
-import ManagerForm from 'app/components/managers/manager-form';
+import ManagerForm from 'crm/components/managers/manager-form';
+import ManagersTable from 'crm/components/managers/managers-table';
+import { useStore } from 'crm/store';
 
 export default function ManagersPage({ history }) {
     const [managers, actions] = useStore('managers.list');

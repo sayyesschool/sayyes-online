@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useBoolean } from 'shared/hooks/state';
 
-import { useStore } from 'app/hooks/store';
-import LessonForm from 'app/components/lessons/lesson-form';
-import LessonsTable from 'app/components/lessons/lessons-table';
+import LessonForm from 'crm/components/lessons/lesson-form';
+import LessonsTable from 'crm/components/lessons/lessons-table';
+import { useStore } from 'crm/hooks/store';
 
 export default function Lessons() {
     const [lessons, actions] = useStore('lessons.list');

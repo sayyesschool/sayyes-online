@@ -1,4 +1,4 @@
-import { createAction, createReducer, combineReducers } from 'shared/store/helpers';
+import { combineReducers, createAction, createReducer } from 'shared/store/helpers';
 
 // Courses
 
@@ -45,7 +45,6 @@ export const deleteCourse = createAction('DELETE_COURSE', courseId => ({
     }
 }));
 
-
 // Units
 
 export const createUnit = createAction('CREATE_COURSE_UNIT', (courseId, data) => ({
@@ -71,7 +70,6 @@ export const deleteUnit = createAction('DELETE_COURSE_UNIT', (courseId, unitId) 
     }
 }));
 
-
 // Lessons
 
 export const createLesson = createAction('CREATE_COURSE_LESSON', (courseId, data) => ({
@@ -93,10 +91,9 @@ export const updateLesson = createAction('UPDATE_COURSE_LESSON', (courseId, less
 export const deleteLesson = createAction('DELETE_COURSE_LESSON', (courseId, lessonId) => ({
     request: {
         method: 'delete',
-        path: `courses/${courseId}/lessons/${lessonId}`,
+        path: `courses/${courseId}/lessons/${lessonId}`
     }
 }));
-
 
 // Sections
 
@@ -119,7 +116,7 @@ export const updateSection = createAction('UPDATE_COURSE_SECTION', (courseId, se
 export const deleteSection = createAction('DELETE_COURSE_SECTION', (courseId, sectionId) => ({
     request: {
         method: 'delete',
-        path: `courses/${courseId}/sections/${sectionId}`,
+        path: `courses/${courseId}/sections/${sectionId}`
     }
 }));
 
@@ -129,7 +126,6 @@ export const getSectionExercises = createAction('GET_COURSE_SECTION_EXERCISES', 
         path: `courses/${courseId}/sections/${sectionId}/exercises`
     }
 }));
-
 
 // Exercises
 
@@ -163,7 +159,6 @@ export const deleteExercise = createAction('DELETE_COURSE_EXERCISE', (courseId, 
     }
 }));
 
-
 // Items
 
 export const createExerciseItem = createAction('CREATE_COURSE_EXERCISE_ITEM', (courseId, exerciseId, data) => ({
@@ -190,7 +185,6 @@ export const deleteExerciseItem = createAction('DELETE_COURSE_EXERCISE_ITEM', (c
     }
 }));
 
-
 // Progress
 
 export const updateExerciseProgress = createAction('UPDATE_COURSE_EXERCISE_PROGRESS', (progressId = '', data) => ({
@@ -200,7 +194,6 @@ export const updateExerciseProgress = createAction('UPDATE_COURSE_EXERCISE_PROGR
         body: data
     }
 }));
-
 
 // Comments
 
@@ -392,7 +385,7 @@ export const courseReducer = createReducer(null, {
                     action.data.item,
                     ...exercise.items.slice(action.data.position)
                 ]
-        }),
+        })
     }),
     [updateExerciseItem]: (state, action) => ({
         ...state,

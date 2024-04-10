@@ -1,16 +1,17 @@
 import { useCallback } from 'react';
+
 import moment from 'moment';
 
 import { useFormData } from 'shared/hooks/form';
 import { Checkbox, Form } from 'shared/ui-components';
 
-import { useStore } from 'app/hooks/store';
+import { useStore } from 'crm/hooks/store';
 
 const statuses = [
     { key: 'scheduled', value: 'scheduled', content: 'Запланировано' },
     { key: 'started', value: 'started', content: 'Началось' },
     { key: 'ended', value: 'ended', content: 'Завершилось' },
-    { key: 'canceled', value: 'canceled', content: 'Отменено' },
+    { key: 'canceled', value: 'canceled', content: 'Отменено' }
 ];
 
 const getFormData = ({

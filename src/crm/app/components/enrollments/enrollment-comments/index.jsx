@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import Comment from 'shared/components/comment';
 import CommentForm from 'shared/components/comment-form';
 import EmptyState from 'shared/components/empty-state';
 import PageSection from 'shared/components/page-section';
+import { useBoolean } from 'shared/hooks/state';
 
-import { useStore, useActions } from 'app/store';
+import { useActions, useStore } from 'crm/store';
 
 export default function EnrollmentComments({ enrollment }) {
     const [user] = useStore('user');

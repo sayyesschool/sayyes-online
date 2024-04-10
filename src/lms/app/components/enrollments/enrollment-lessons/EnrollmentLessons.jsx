@@ -6,8 +6,8 @@ import LessonPillGroup from 'shared/components/lessons-pill-group';
 import PageSection from 'shared/components/page-section';
 import { useBoolean } from 'shared/hooks/state';
 
-import LessonForm from 'app/components/lessons/lesson-form';
-import { useActions } from 'app/store/hooks';
+import LessonForm from 'lms/components/lessons/lesson-form';
+import { useActions } from 'lms/store/hooks';
 
 export default function EnrollmentLessons({ enrollment, readonly }) {
     const lessonActions = useActions('lessons');

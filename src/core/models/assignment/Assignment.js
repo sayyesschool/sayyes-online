@@ -27,7 +27,7 @@ Assignment.virtual('enrollment', {
     ref: 'Enrollment',
     localField: 'enrollmentId',
     foreignField: '_id',
-    justOne: true,
+    justOne: true
 });
 
 Assignment.virtual('exercises', {
