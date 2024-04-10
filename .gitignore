@@ -10,7 +10,7 @@ node_modules
 .npm
 
 .env
-cert/
-backups/
-public/
+backups
+build
+public
 ssl
