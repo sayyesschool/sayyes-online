@@ -134,7 +134,7 @@
                         "@/(.*)"
                     ],
                     [
-                        "shared/."
+                        "^shared/."
                     ],
                     [
                         "[app||cms|core|crm|lms]/."
