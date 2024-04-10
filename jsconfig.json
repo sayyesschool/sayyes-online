@@ -22,7 +22,7 @@
             ],
             "shared/*": [
                 "./src/shared/*"
-            ],
+            ]
         },
         "target": "es2020"
     }
