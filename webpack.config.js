@@ -66,7 +66,7 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
                         {
                             loader: 'css-loader',
                             options: {
-                                url: false,
+                                url: false
                                 // modules: true
                             }
                         },
@@ -112,7 +112,7 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
                 'env.SENTRY_DSN': JSON.stringify(process.env.SENTRY_DSN || ''),
                 'env.STATIC_URL': JSON.stringify(STATIC_URL),
                 'env.STORAGE_URL': JSON.stringify(STORAGE_URL),
-                'env.YANDEX_METRIKA_ID': JSON.stringify(YANDEX_METRIKA_ID),
+                'env.YANDEX_METRIKA_ID': JSON.stringify(YANDEX_METRIKA_ID)
             }),
             new CssExtractPlugin({
                 filename: `css/${name}.[name].css`
@@ -143,8 +143,8 @@ function config({ name, env, rules = [], plugins = [], override = {} }) {
                 new TerserPlugin({
                     terserOptions: {
                         format: {
-                            comments: false,
-                        },
+                            comments: false
+                        }
                     },
                     extractComments: false
                 }),

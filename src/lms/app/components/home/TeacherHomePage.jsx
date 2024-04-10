@@ -1,16 +1,16 @@
 import { useCallback, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
-import { useEnrollments } from 'shared/hooks/enrollments';
-import { useLessons } from 'shared/hooks/lessons';
-import { useUser } from 'shared/hooks/user';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useEnrollments } from 'shared/hooks/enrollments';
+import { useLessons } from 'shared/hooks/lessons';
+import { useBoolean } from 'shared/hooks/state';
+import { useUser } from 'shared/hooks/user';
 import { Button, Dialog, Tabs } from 'shared/ui-components';
 
-import EnrollmentDetailsCard from 'app/components/enrollments/enrollment-details-card';
+import EnrollmentDetailsCard from 'lms/components/enrollments/enrollment-details-card';
 import EnrollmentsList from 'lms/components/enrollments/enrollments-list';
 import LessonDetails from 'lms/components/lessons/lesson-details';
 import LessonForm from 'lms/components/lessons/lesson-form';
@@ -101,7 +101,7 @@ export default function TeacherHomePage() {
                         enrollment={enrollment}
                     />
                 )}
-                
+
                 <Tabs
                     value={tab}
                     items={[

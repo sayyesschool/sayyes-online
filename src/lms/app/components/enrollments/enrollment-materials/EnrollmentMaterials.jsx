@@ -5,7 +5,7 @@ import PageSection from 'shared/components/page-section';
 import { useMaterials } from 'shared/hooks/materials';
 import { IconButton, MenuButton } from 'shared/ui-components';
 
-import { useActions } from 'app/store/hooks';
+import { useActions } from 'lms/store/hooks';
 
 export default function EnrollmentMaterials({ enrollment, readonly }) {
     const [materials] = useMaterials();

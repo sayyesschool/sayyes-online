@@ -1,14 +1,14 @@
 import { useCallback, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
+import { useBoolean } from 'shared/hooks/state';
 import { Tabs } from 'shared/ui-components';
 
-import { useActions } from 'app/store';
-import PaymentForm from 'app/components/payments/payment-form';
-import TransactionsList from 'app/components/transactions/transactions-list';
+import PaymentForm from 'crm/components/payments/payment-form';
+import TransactionsList from 'crm/components/transactions/transactions-list';
+import { useActions } from 'crm/store';
 
 export default function LearnerTransactions({ learner }) {
     const actions = useActions('payments');

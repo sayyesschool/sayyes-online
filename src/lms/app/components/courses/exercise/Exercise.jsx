@@ -15,7 +15,7 @@ import {
     MenuButton
 } from 'shared/ui-components';
 
-import ExerciseComments from 'app/components/courses/exercise-comments';
+import ExerciseComments from 'lms/components/courses/exercise-comments';
 import ExerciseContent from 'lms/components/courses/exercise-content';
 
 export default function Exercise({

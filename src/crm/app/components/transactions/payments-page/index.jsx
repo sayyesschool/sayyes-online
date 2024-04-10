@@ -1,12 +1,12 @@
 import { useCallback, useEffect } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
+import { useBoolean } from 'shared/hooks/state';
 
-import { useStore } from 'app/hooks/store';
-import PaymentForm from 'app/components/payments/payment-form';
-import PaymentsTable from 'app/components/payments/payments-table';
+import PaymentForm from 'crm/components/payments/payment-form';
+import PaymentsTable from 'crm/components/payments/payments-table';
+import { useStore } from 'crm/hooks/store';
 
 export default function Payments({ match, history }) {
     const [{ list: payments, single: payment }, actions] = useStore('payments');

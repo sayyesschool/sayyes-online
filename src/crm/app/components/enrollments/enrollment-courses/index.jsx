@@ -4,7 +4,7 @@ import CoursesList from 'shared/components/courses-list';
 import PageSection from 'shared/components/page-section';
 import { IconButton, MenuButton } from 'shared/ui-components';
 
-import { useActions, useStore } from 'app/store';
+import { useActions, useStore } from 'crm/store';
 
 export default function EnrollmentCourses({ enrollment }) {
     const [courses = []] = useStore('courses.list');

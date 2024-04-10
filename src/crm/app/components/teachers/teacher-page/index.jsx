@@ -1,18 +1,18 @@
 import { useCallback, useEffect } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
-import LoadingIndicator from 'shared/components/loading-indicator';
 import FormDialog from 'shared/components/form-dialog';
+import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useBoolean } from 'shared/hooks/state';
 import { Grid } from 'shared/ui-components';
 
-import { useStore } from 'app/hooks/store';
-import TeacherForm from 'app/components/teachers/teacher-form';
-import TeacherDetails from 'app/components/teachers/teacher-details';
-import TeacherEnrollments from 'app/components/teachers/teacher-enrollments';
-import TeacherLessons from 'app/components/teachers/teacher-lessons';
-import PasswordForm from 'app/components/shared/password-form';
+import PasswordForm from 'crm/components/shared/password-form';
+import TeacherDetails from 'crm/components/teachers/teacher-details';
+import TeacherEnrollments from 'crm/components/teachers/teacher-enrollments';
+import TeacherForm from 'crm/components/teachers/teacher-form';
+import TeacherLessons from 'crm/components/teachers/teacher-lessons';
+import { useStore } from 'crm/hooks/store';
 
 export default function TeacherPage({ match, location, history }) {
     const [teacher, actions] = useStore('teachers.single');

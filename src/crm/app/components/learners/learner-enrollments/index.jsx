@@ -1,13 +1,13 @@
 import { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
+import { useBoolean } from 'shared/hooks/state';
 
-import { useActions } from 'app/hooks/store';
-import EnrollmentForm from 'app/components/enrollments/enrollment-form';
-import EnrollmentsList from 'app/components/enrollments/enrollments-list';
+import EnrollmentForm from 'crm/components/enrollments/enrollment-form';
+import EnrollmentsList from 'crm/components/enrollments/enrollments-list';
+import { useActions } from 'crm/hooks/store';
 
 export default function LearnerEnrollments({ learner, manager }) {
     const history = useHistory();
