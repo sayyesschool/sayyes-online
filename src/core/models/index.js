@@ -6,6 +6,7 @@ const Course = require('./course');
 const Enrollment = require('./enrollment');
 const Exercise = require('./exercise');
 const Lesson = require('./lesson');
+const Lexeme = require('./lexeme');
 const Material = require('./material');
 const Meeting = require('./meeting');
 const Pack = require('./pack');
@@ -16,6 +17,7 @@ const Room = require('./room');
 const Task = require('./task');
 const Transaction = require('./transaction');
 const UserSchema = require('./user');
+const Vocabulary = require('./vocabulary');
 
 const User = model('User', UserSchema);
 const Admin = User.discriminator('Admin', UserSchema.Admin, 'admin');
@@ -30,6 +32,7 @@ module.exports = () => ({
     Course: model('Course', Course),
     Enrollment: model('Enrollment', Enrollment),
     Exercise: model('Exercise', Exercise),
+    Lexeme: model('Lexeme', Lexeme),
     Lesson: model('Lesson', Lesson),
     Material: model('Material', Material),
     Meeting: model('Meeting', Meeting),
@@ -40,6 +43,7 @@ module.exports = () => ({
     Room: model('Room', Room),
     Task: model('Task', Task),
     Transaction: model('Transaction', Transaction),
+    Vocabulary: model('Vocabulary', Vocabulary),
     User,
     Admin,
     Editor,
