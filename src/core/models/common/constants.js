@@ -12,7 +12,7 @@ const Domain = {
 
 const Format = {
     Offline: 'offline',
-    Online: 'online',
+    Online: 'online'
 };
 
 const Level = {
@@ -22,7 +22,7 @@ const Level = {
     Intermediate: 3,
     UpperIntermediate: 4,
     Advanced: 5,
-    Proficiency: 6
+    Proficient: 6
 };
 
 const Purpose = {
