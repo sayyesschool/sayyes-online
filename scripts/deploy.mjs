@@ -1,4 +1,4 @@
-const Ftp = require('ftp-deploy');
+import Ftp from 'ftp-deploy';
 
 const include = process.argv[2];
 const stand = process.argv[3];
