@@ -1,7 +1,6 @@
 import { resolve } from 'node:path';
 
 import { config } from 'dotenv';
-import { build } from 'esbuild';
 import { sassPlugin } from 'esbuild-sass-plugin';
 
 config();
@@ -16,11 +15,11 @@ const {
     YANDEX_METRIKA_ID
 } = process.env;
 
-await build({
+export default {
     outdir: 'public',
     entryPoints: [
         { in: './src/crm/app/index.js', out: 'crm' },
-        { in: './src/crm/app/index.js', out: 'lms' }
+        { in: './src/lms/app/index.js', out: 'lms' }
     ],
     entryNames: '[dir]/[ext]/[name]',
     define: {
@@ -41,14 +40,12 @@ await build({
     },
     jsx: 'automatic',
     loader: { '.js': 'jsx' },
-    allowOverwrite: true,
     bundle: true,
-    minify: true,
-    sourcemap: true,
+    logLevel: 'info',
     plugins: [sassPlugin({
         loadPaths: [
             resolve('node_modules'),
             resolve('src')
         ]
     })]
-});
+};
