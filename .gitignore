@@ -11,6 +11,5 @@ node_modules
 
 .env
 backups
-build
 public
 ssl
