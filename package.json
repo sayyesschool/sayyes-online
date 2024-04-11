@@ -4,7 +4,7 @@
   "private": true,
   "main": "src/main.js",
   "scripts": {
-    "build": "npm run build-class && npm run build-cms && npm run build-crm && npm run build-front && npm run build-lms",
+    "build": "node ./scripts/build.mjs",
     "build-class": "webpack --env=production --mode=production --config-name=class",
     "build-cms": "webpack --env=production --mode=production --config-name=cms",
     "build-crm": "webpack --env=production --mode=production --config-name=crm",
