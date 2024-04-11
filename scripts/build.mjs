@@ -17,7 +17,7 @@ const {
 } = process.env;
 
 await build({
-    outdir: 'build',
+    outdir: 'public',
     entryPoints: [
         { in: './src/crm/app/index.js', out: 'crm' },
         { in: './src/crm/app/index.js', out: 'lms' }
