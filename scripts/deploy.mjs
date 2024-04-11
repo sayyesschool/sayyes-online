@@ -1,7 +1,7 @@
 import Ftp from 'ftp-deploy';
 
-const include = process.argv[2];
-const stand = process.argv[3];
+const stand = process.argv[2];
+const include = process.argv[3];
 
 const credentials = {
     dev: {

@@ -7,7 +7,7 @@ module.exports = ({ models: {
     async scheduleLesson({ id, ...data }) {
         const room = await this.getAvailableRoom(data);
 
-        this.checkConflictingLesson({
+        await this.checkConflictingLesson({
             ...data,
             roomId: room.id
         });
