@@ -1,4 +1,4 @@
-const { execSync } = require('node:child_process');
+import { execSync } from 'node:child_process';
 
 const { DB_CONNECTION_STRING } = process.env;
 
