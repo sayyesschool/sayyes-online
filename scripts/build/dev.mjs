@@ -1,8 +1,10 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, rm } from 'node:fs/promises';
 
 import { context } from 'esbuild';
 
 import common from './common.mjs';
+
+await rm('./public', { recursive: true, force: true });
 
 await (await context({
     ...common,

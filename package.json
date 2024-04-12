@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "build": "node ./scripts/build/prod.mjs",
-    "build-dev": "rm -rf ./public && node -r dotenv/config ./scripts/build/dev.mjs",
+    "build-dev": "node -r dotenv/config ./scripts/build/dev.mjs",
     "cron": "node ./src/cron.js",
     "cron-dev": "nodemon -r dotenv/config ./src/cron.js",
     "db-backup": "node --import ./loaders/register.js -r dotenv/config ./scripts/db/backup.mjs",
