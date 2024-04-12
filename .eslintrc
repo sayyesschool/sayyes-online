@@ -137,7 +137,7 @@
                         "^shared/."
                     ],
                     [
-                        "[app||cms|core|crm|lms]/."
+                        "[app|class|cms|core|crm|lk|lms]/."
                     ],
                     [
                         // Parent imports. Put `..` last.
