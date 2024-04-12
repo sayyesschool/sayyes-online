@@ -1,9 +1,6 @@
 import { resolve } from 'node:path';
 
-import { config } from 'dotenv';
 import { sassPlugin } from 'esbuild-sass-plugin';
-
-config();
 
 const {
     APP_DOMAIN,
