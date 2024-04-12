@@ -69,6 +69,10 @@
             "error",
             "never"
         ],
+        "@stylistic/eol-last": [
+            "warn",
+            "never"
+        ],
         "@stylistic/object-curly-spacing": [
             "warn",
             "always"
@@ -137,7 +141,7 @@
                         "^shared/."
                     ],
                     [
-                        "[app||cms|core|crm|lms]/."
+                        "[app|class|cms|core|crm|lk|lms]/."
                     ],
                     [
                         // Parent imports. Put `..` last.
