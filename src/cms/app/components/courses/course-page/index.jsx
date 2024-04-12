@@ -1,16 +1,15 @@
 import { useCallback } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
-import { useCourse } from 'shared/hooks/courses';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import EditableText from 'shared/components/editable-text';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import { Heading, Grid } from 'shared/ui-components';
+import { useCourse } from 'shared/hooks/courses';
+import { useBoolean } from 'shared/hooks/state';
+import { Grid, Heading } from 'shared/ui-components';
 
-import CourseDescription from 'app/components/courses/course-description';
-import CourseImage from 'app/components/courses/course-image';
-import CourseUnits from 'app/components/courses/course-units';
+import CourseDescription from 'cms/components/courses/course-description';
+import CourseUnits from 'cms/components/courses/course-units';
 
 export default function CoursePage({ match, history }) {
     const [course, actions] = useCourse(match.params.courseId);

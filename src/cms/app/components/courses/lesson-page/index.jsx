@@ -1,15 +1,15 @@
 import { useCallback } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
-import { useLesson } from 'shared/hooks/courses';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import EditableText from 'shared/components/editable-text';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useLesson } from 'shared/hooks/courses';
+import { useBoolean } from 'shared/hooks/state';
 import { Grid } from 'shared/ui-components';
 
-import LessonDescription from 'app/components/courses/lesson-description';
-import LessonSections from 'app/components/courses/lesson-sections';
+import LessonDescription from 'cms/components/courses/lesson-description';
+import LessonSections from 'cms/components/courses/lesson-sections';
 
 export default function LessonPage({ match, history }) {
     const { course, unit, lesson, actions } = useLesson(match.params);
