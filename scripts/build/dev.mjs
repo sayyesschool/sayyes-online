@@ -14,11 +14,13 @@ await (await context({
             name: 'excludeVendorFromSourceMap',
             setup(build) {
                 build.onLoad({ filter: /node_modules/ }, async args => {
-                    const contents = await readFile(args.path, 'utf8') + '\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIiJdLCJtYXBwaW5ncyI6IkEifQ==';
+                    const contents = await readFile(args.path, 'utf8');
 
                     return {
                         loader: 'default',
-                        contents
+                        contents: args.path.endsWith('.json') ?
+                            contents :
+                            contents + '\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIiJdLCJtYXBwaW5ncyI6IkEifQ=='
                     };
                 });
             }
