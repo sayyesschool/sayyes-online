@@ -2,7 +2,7 @@ import expect from 'expect';
 import { model } from 'mongoose';
 import { stub } from 'sinon';
 
-import LessonSchema from './Lesson';
+import LessonSchema from './Lesson.js';
 
 const Lesson = model('Lesson', LessonSchema);
 

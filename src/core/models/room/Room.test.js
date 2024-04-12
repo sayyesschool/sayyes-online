@@ -1,9 +1,9 @@
 import expect from 'expect';
 import { model } from 'mongoose';
 
-import { at } from '../../../../test/helpers';
+import { at } from '../../../../test/helpers.js';
 
-import RoomSchema from './Room';
+import RoomSchema from './Room.js';
 
 const Room = model('Room', RoomSchema);
 
