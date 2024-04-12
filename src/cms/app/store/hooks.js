@@ -1,5 +1,5 @@
-import { courses, materials, notification, user } from 'shared/store/modules';
 import { configureActions, configureStore } from 'shared/store/helpers';
+import { courses, materials, notification, user } from 'shared/store/modules';
 
 const modules = {
     courses,

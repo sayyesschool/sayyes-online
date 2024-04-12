@@ -1,3 +1,3 @@
 import './Button.scss';
-export { default, default as Button } from './Button';
+export { default as Button, default } from './Button';
 export { default as ButtonGroup } from './ButtonGroup';

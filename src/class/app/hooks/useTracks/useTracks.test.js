@@ -1,5 +1,7 @@
-import { renderHook, act } from '@testing-library/react-hooks';
-import EventEmitter from 'events';
+import EventEmitter from 'node:events';
+
+import { act, renderHook } from '@testing-library/react-hooks';
+
 import useTracks from './useTracks';
 
 describe('the useTracks hook', () => {
@@ -10,7 +12,7 @@ describe('the useTracks hook', () => {
         mockParticipant.tracks = new Map([
             [0, { track: 'track1' }],
             [1, { track: null }],
-            [2, { track: 'track2' }],
+            [2, { track: 'track2' }]
         ]);
     });
 
@@ -37,13 +39,13 @@ describe('the useTracks hook', () => {
 
     it('should return a new set of tracks if the participant changes', () => {
         const { result, rerender } = renderHook(({ participant }) => useTracks(participant), {
-            initialProps: { participant: mockParticipant },
+            initialProps: { participant: mockParticipant }
         });
         expect(result.current).toEqual(['track1', 'track2']);
         mockParticipant = new EventEmitter();
         mockParticipant.tracks = new Map([
             [0, { track: 'track3' }],
-            [1, { track: 'track4' }],
+            [1, { track: 'track4' }]
         ]);
         rerender({ participant: mockParticipant });
         expect(result.current).toEqual(['track3', 'track4']);

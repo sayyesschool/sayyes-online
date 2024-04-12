@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
 import { courseReducer } from 'shared/store/modules/courses';
-import { enrollmentsReducer, enrollmentReducer } from 'shared/store/modules/enrollments';
+import { enrollmentReducer, enrollmentsReducer } from 'shared/store/modules/enrollments';
 import { lessonsReducer } from 'shared/store/modules/lessons';
 import { materialReducer } from 'shared/store/modules/materials';
 import notification from 'shared/store/modules/notification';

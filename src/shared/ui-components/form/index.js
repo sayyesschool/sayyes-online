@@ -23,8 +23,8 @@ export {
     FormAutocomplete,
     FormCheckbox,
     FormField,
-    FormLabel,
     FormInput,
+    FormLabel,
     FormRadioGroup,
     FormSelect,
     FormTextarea

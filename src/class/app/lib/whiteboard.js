@@ -254,7 +254,7 @@ const eventMap = {
     touchstart: 'mousedown',
     touchmove: 'mousemove',
     touchend: 'mouseup',
-    touchcancel: 'mouseup',
+    touchcancel: 'mouseup'
 };
 
 let firstTouchId = 0;

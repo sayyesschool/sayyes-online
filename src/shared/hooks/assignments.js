@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useStore, useActions } from 'shared/hooks/store';
+import { useActions, useStore } from 'shared/hooks/store';
 import { actions as assignmentActions } from 'shared/store/modules/assignments';
 import { hasKey } from 'shared/utils/object';
 

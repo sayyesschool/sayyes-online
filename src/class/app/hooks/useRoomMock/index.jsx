@@ -1,5 +1,6 @@
-import EventEmitter from 'events';
-import { useRef, useState, useCallback } from 'react';
+import EventEmitter from 'node:events';
+
+import { useCallback, useRef, useState } from 'react';
 
 export default function useRoom(localTracks, onError, options) {
     const optionsRef = useRef(options);

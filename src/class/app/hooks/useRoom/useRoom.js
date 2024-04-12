@@ -1,6 +1,7 @@
+import EventEmitter from 'node:events';
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import EventEmitter from 'events';
 import Video from 'twilio-video';
 
 import { isMobile } from 'class/utils';

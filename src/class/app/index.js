@@ -1,14 +1,17 @@
-import { render } from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { Provider as StoreProvider } from 'react-redux';
+/*global ENROLLMENT_ID*/
 
-import { ThemeProvider, theme } from 'shared/theme';
+import { render } from 'react-dom';
+import { Provider as StoreProvider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
+
+import { theme, ThemeProvider } from 'shared/theme';
+
+import { AppStateProvider } from './contexts/AppStateContext';
+
+import Root from './components';
+import store from './store';
 
 import './index.scss';
-
-import store from './store';
-import { AppStateProvider } from './contexts/AppStateContext';
-import Root from './components';
 
 render(
     <StoreProvider store={store}>

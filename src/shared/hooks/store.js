@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+
 import { bindActionCreators } from 'redux';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 
 export function useState(mapState = state => state) {
     return useSelector(mapState, shallowEqual);
