@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
-import useRoomContext from 'app/hooks/useRoomContext';
-import useIsTrackEnabled from 'app/hooks/useIsTrackEnabled';
+import useIsTrackEnabled from 'class/hooks/useIsTrackEnabled';
+import useRoomContext from 'class/hooks/useRoomContext';
 
 export default function useLocalAudioToggle() {
     const { audioTrack } = useRoomContext();

@@ -2,8 +2,8 @@ import { useCallback } from 'react';
 
 import { FormSelect, Text } from 'shared/ui-components';
 
-import useAppState from 'app/hooks/useAppState';
-import { useAudioOutputDevices } from 'app/hooks/useDevices';
+import useAppState from 'class/hooks/useAppState';
+import { useAudioOutputDevices } from 'class/hooks/useDevices';
 
 export default function AudioOutputList() {
     const { activeSinkId, setActiveSinkId } = useAppState();

@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react';
 
-import useRoomContext from 'app/hooks/useRoomContext';
-import useLocalVideoToggle from 'app/hooks/useLocalVideoToggle';
-import { isMobile } from 'app/utils';
+import useLocalVideoToggle from 'class/hooks/useLocalVideoToggle';
+import useRoomContext from 'class/hooks/useRoomContext';
+import { isMobile } from 'class/utils';
 
-/* 
+/*
   This component adds a visibilitychange handler to the document when
   the user is using a mobile device. When the handler detects that
   the browser has been backgrounded, it unpublishes the users local

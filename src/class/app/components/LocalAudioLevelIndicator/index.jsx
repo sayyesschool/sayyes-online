@@ -1,5 +1,5 @@
-import useRoomContext from 'app/hooks/useRoomContext';
-import AudioLevelIndicator from 'app/components/AudioLevelIndicator';
+import AudioLevelIndicator from 'class/components/AudioLevelIndicator';
+import useRoomContext from 'class/hooks/useRoomContext';
 
 export default function LocalAudioLevelIndicator() {
     const { localTracks } = useRoomContext();

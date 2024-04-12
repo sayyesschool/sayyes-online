@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
-import useLocalDataTrack from 'app/hooks/useLocalDataTrack';
-import useRemoteDataTrack from 'app/hooks/useRemoteDataTrack';
+import useLocalDataTrack from 'class/hooks/useLocalDataTrack';
+import useRemoteDataTrack from 'class/hooks/useRemoteDataTrack';
 
 import './index.scss';
 

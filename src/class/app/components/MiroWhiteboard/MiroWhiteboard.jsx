@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import { Button } from 'shared/ui-components';
 
-import useSharedState from 'app/hooks/useSharedState';
+import useSharedState from 'class/hooks/useSharedState';
 
 export default function MiroWhiteboard() {
     const sharedState = useSharedState();

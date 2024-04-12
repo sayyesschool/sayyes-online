@@ -1,7 +1,7 @@
 import { IconButton, Tooltip } from 'shared/ui-components';
 
-import useRoomContext from 'app/hooks/useRoomContext';
-import useLocalAudioToggle from 'app/hooks/useLocalAudioToggle';
+import useLocalAudioToggle from 'class/hooks/useLocalAudioToggle';
+import useRoomContext from 'class/hooks/useRoomContext';
 
 export default function ToggleAudioButton({ disabled }) {
     const { localTracks } = useRoomContext();

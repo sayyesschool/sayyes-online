@@ -1,9 +1,9 @@
+import { act, renderHook } from '@testing-library/react-hooks';
 import EventEmitter from 'events';
 import Video from 'twilio-video';
-import { act, renderHook } from '@testing-library/react-hooks';
 
-import { mockRoom } from 'app/__mocks__/twilio-video';
-import * as utils from 'app/utils';
+import { mockRoom } from 'class/__mocks__/twilio-video';
+import * as utils from 'class/utils';
 
 import useRoom from './useRoom';
 

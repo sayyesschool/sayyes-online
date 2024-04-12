@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import useLocalVideoToggle from 'app/hooks/useLocalVideoToggle';
+import useLocalVideoToggle from 'class/hooks/useLocalVideoToggle';
 
 export default function usePictureInPicture(videoRef, initialValue) {
     const [isVideoEnabled, toggleVideoEnabled] = useLocalVideoToggle();

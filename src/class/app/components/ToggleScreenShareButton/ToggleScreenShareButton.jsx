@@ -1,6 +1,6 @@
 import { IconButton, Tooltip } from 'shared/ui-components';
 
-import useRoomContext from 'app/hooks/useRoomContext';
+import useRoomContext from 'class/hooks/useRoomContext';
 
 export const SCREEN_SHARE_TEXT = 'Показать экран';
 export const STOP_SCREEN_SHARE_TEXT = 'Остановить показ экрана';

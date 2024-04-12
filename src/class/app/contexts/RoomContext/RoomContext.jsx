@@ -1,15 +1,15 @@
 import { createContext } from 'react';
 
-import useConnectionOptions from 'app/hooks/useConnectionOptions';
-import useLocalTracks from 'app/hooks/useLocalTracks';
-import useRoom from 'app/hooks/useRoom';
-import useDominantSpeaker from 'app/hooks/useDominantSpeaker';
-import useParticipants from 'app/hooks/useParticipants';
-import useSelectedParticipant from 'app/hooks/useSelectedParticipant';
-import useScreenShareToggle from 'app/hooks/useScreenShareToggle';
-import useScreenShareParticipant from 'app/hooks/useScreenShareParticipant';
-import useHandleRoomDisconnection from 'app/hooks/useHandleRoomDisconnection';
-import useHandleTrackPublicationFailed from 'app/hooks/useHandleTrackPublicationFailed';
+import useConnectionOptions from 'class/hooks/useConnectionOptions';
+import useDominantSpeaker from 'class/hooks/useDominantSpeaker';
+import useHandleRoomDisconnection from 'class/hooks/useHandleRoomDisconnection';
+import useHandleTrackPublicationFailed from 'class/hooks/useHandleTrackPublicationFailed';
+import useLocalTracks from 'class/hooks/useLocalTracks';
+import useParticipants from 'class/hooks/useParticipants';
+import useRoom from 'class/hooks/useRoom';
+import useScreenShareParticipant from 'class/hooks/useScreenShareParticipant';
+import useScreenShareToggle from 'class/hooks/useScreenShareToggle';
+import useSelectedParticipant from 'class/hooks/useSelectedParticipant';
 
 export const RoomContext = createContext(null);
 

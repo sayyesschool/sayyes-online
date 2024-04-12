@@ -1,7 +1,7 @@
 import { Text } from 'shared/ui-components';
 
-import useConnectedTime from 'app/hooks/useConnectedTime';
-import { formatTime } from 'app/utils';
+import useConnectedTime from 'class/hooks/useConnectedTime';
+import { formatTime } from 'class/utils';
 
 export default function ConnectedTime() {
     const connectedTime = useConnectedTime();

@@ -1,19 +1,18 @@
 import { useCallback, useEffect, useState } from 'react';
-import { testPreflight } from 'twilio-video';
 
 import { LMS_URL } from 'shared/constants';
 import { useBoolean } from 'shared/hooks/state';
-import { Button, IconButton, Flex, Heading, Link } from 'shared/ui-components';
+import { Button, Flex, Heading, IconButton, Link } from 'shared/ui-components';
 
-import useRoomContext from 'app/hooks/useRoomContext';
-import { useHasAudioInputDevices, useHasVideoInputDevices } from 'app/hooks/useDevices';
-import useMediaDevicePermission from 'app/hooks/useMediaDevicePermission/useMediaDevicePermission';
-import LocalVideoPreview from 'app/components/LocalVideoPreview';
-import MediaAcquireDialog from 'app/components/MediaAcquireDialog';
-import MediaErrorDialog from 'app/components/MediaErrorDialog';
-import MediaDevicesDialog from 'app/components/MediaDevicesDialog';
-import ToggleAudioButton from 'app/components/ToggleAudioButton';
-import ToggleVideoButton from 'app/components/ToggleVideoButton';
+import LocalVideoPreview from 'class/components/LocalVideoPreview';
+import MediaAcquireDialog from 'class/components/MediaAcquireDialog';
+import MediaDevicesDialog from 'class/components/MediaDevicesDialog';
+import MediaErrorDialog from 'class/components/MediaErrorDialog';
+import ToggleAudioButton from 'class/components/ToggleAudioButton';
+import ToggleVideoButton from 'class/components/ToggleVideoButton';
+import { useHasAudioInputDevices, useHasVideoInputDevices } from 'class/hooks/useDevices';
+import useMediaDevicePermission from 'class/hooks/useMediaDevicePermission/useMediaDevicePermission';
+import useRoomContext from 'class/hooks/useRoomContext';
 
 export default function Lobby({ user }) {
     const {
@@ -94,7 +93,6 @@ export default function Lobby({ user }) {
             <Flex alignItems="center" justifyContent="space-between">
                 <IconButton.Group>
                     <ToggleAudioButton disabled={disableButtons} />
-
                     <ToggleVideoButton disabled={disableButtons} />
 
                     <IconButton
