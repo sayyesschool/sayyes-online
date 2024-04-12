@@ -1,11 +1,11 @@
 import moment from 'moment';
 
-import { useBoolean } from 'shared/hooks/state';
 import DetailsList from 'shared/components/details-list';
-import IconButton from 'shared/ui-components/icon-button';
 import PageSection from 'shared/components/page-section';
+import { useBoolean } from 'shared/hooks/state';
+import IconButton from 'shared/ui-components/icon-button';
 
-import ProfileForm from 'app/components/account/profile-form';
+import ProfileForm from 'lk/components/account/profile-form';
 
 export default function ProfileCard({ user }) {
     const [isEditing, toggleEditing] = useBoolean(false);

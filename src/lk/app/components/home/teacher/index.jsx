@@ -1,18 +1,18 @@
 import { useCallback, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
-import { useEnrollments } from 'shared/hooks/enrollments';
-import { useLessons } from 'shared/hooks/lessons';
 import Calendar from 'shared/components/calendar';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useEnrollments } from 'shared/hooks/enrollments';
+import { useLessons } from 'shared/hooks/lessons';
+import { useBoolean } from 'shared/hooks/state';
 import { Button, Dialog, Grid } from 'shared/ui-components';
 
-import EnrollmentsList from 'app/components/enrollments/enrollments-list';
-import LessonDetails from 'app/components/lessons/lesson-details';
-import LessonForm from 'app/components/lessons/lesson-form';
+import EnrollmentsList from 'lk/components/enrollments/enrollments-list';
+import LessonDetails from 'lk/components/lessons/lesson-details';
+import LessonForm from 'lk/components/lessons/lesson-form';
 
 export default function HomePage() {
     const [lessons, actions] = useLessons();

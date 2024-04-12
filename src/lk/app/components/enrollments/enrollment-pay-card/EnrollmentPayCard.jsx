@@ -3,8 +3,8 @@ import { useCallback, useState } from 'react';
 import { useBoolean } from 'shared/hooks/state';
 import { Box, Button, Checkbox, Flex, Heading, Icon, Image, Surface, Text } from 'shared/ui-components';
 
-import EnrollmentPackCard from 'app/components/enrollments/enrollment-pack-card';
-import EnrollmentCheckoutForm from 'app/components/enrollments/enrollment-checkout-form';
+import EnrollmentCheckoutForm from 'lk/components/enrollments/enrollment-checkout-form';
+import EnrollmentPackCard from 'lk/components/enrollments/enrollment-pack-card';
 
 export default function EnrollmentPayCard({ enrollment, onCheckout, onCancel, ...props }) {
     const [selectedPack, setSelectedPack] = useState(enrollment?.packs[0]);

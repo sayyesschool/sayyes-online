@@ -1,20 +1,17 @@
 import { Route, Switch } from 'react-router-dom';
 
-import { useUser } from 'shared/hooks/user';
-import AppHeader from 'shared/components/app-header';
 import AppContent from 'shared/components/app-content';
-import AppAlert from 'shared/components/app-alert';
+import AppHeader from 'shared/components/app-header';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import NavBar from 'shared/components/nav-bar';
+import { useUser } from 'shared/hooks/user';
 
-import Account from 'app/components/account';
-import Home from 'app/components/home';
-import Enrollments from 'app/components/enrollments';
-import Courses from 'app/components/courses';
-import Materials from 'app/components/materials';
-// import Meetings from 'app/components/meetings';
-// import Posts from 'app/components/posts';
-import navItems from 'app/data/nav';
+import Courses from 'lk/components/courses';
+import Enrollments from 'lk/components/enrollments';
+import Home from 'lk/components/home';
+// import Meetings from 'lk/components/meetings';
+// import Posts from 'lk/components/posts';
+import navItems from 'lk/data/nav';
 
 
 import './index.scss';

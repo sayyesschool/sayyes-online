@@ -1,16 +1,14 @@
 import { useCallback, useState } from 'react';
 
-import http from 'shared/services/http';
-import { useUser } from 'shared/hooks/user';
-import { useEnrollments } from 'shared/hooks/enrollments';
-import { useLessons } from 'shared/hooks/lessons';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import CalendarCard from 'shared/components/calendar-card';
+import { useEnrollments } from 'shared/hooks/enrollments';
+import { useLessons } from 'shared/hooks/lessons';
+import { useUser } from 'shared/hooks/user';
 
-import EnrollmentDetailsCard from 'app/components/enrollments/enrollment-details-card';
-import EnrollmentStatusCard from 'app/components/enrollments/enrollment-status-card';
-import EnrollmentPayCard from 'app/components/enrollments/enrollment-pay-card';
+import EnrollmentDetailsCard from 'lk/components/enrollments/enrollment-details-card';
+import EnrollmentPayCard from 'lk/components/enrollments/enrollment-pay-card';
+import EnrollmentStatusCard from 'lk/components/enrollments/enrollment-status-card';
 
 import './index.scss';
 
