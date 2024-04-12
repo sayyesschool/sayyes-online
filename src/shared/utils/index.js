@@ -1,4 +1,2 @@
-module.exports = {
-    format: require('./format'),
-    password: require('./password')
-};
+export * from './format';
+export * from './password';

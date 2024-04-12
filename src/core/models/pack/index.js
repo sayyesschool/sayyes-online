@@ -1,1 +1,1 @@
-module.exports = require('./Pack');
+export { default, Pack } from './Pack';

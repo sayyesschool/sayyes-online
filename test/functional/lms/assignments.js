@@ -1,8 +1,4 @@
-const expect = require('expect');
-
-const { createId } = require('../../helpers');
-
-module.exports = (api, { models: { Comment } }) =>
+export default (api, { models: { Comment } }) =>
     describe('/comments', () => {
         xdescribe('POST /', () => {
             it('should create a comment', async () => {

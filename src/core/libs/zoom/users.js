@@ -1,4 +1,4 @@
-module.exports = request => ({
+export default request => ({
     create: ({ email, firstname: first_name, lastname: last_name, type = 1 }) => {
         if (!email) return Promise.reject('Email is required to create a user on Zoom');
 

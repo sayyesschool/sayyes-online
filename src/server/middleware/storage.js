@@ -1,6 +1,8 @@
-const upload = require('multer')();
+import multer from 'multer';
 
-module.exports = ({ services: { Storage } }) => ({
+const upload = multer();
+
+export default ({ services: { Storage } }) => ({
     upload: [
         upload.single('image'),
         (req, res, next) => {

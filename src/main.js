@@ -1,30 +1,30 @@
-const fs = require('fs');
+import { readFileSync } from 'node:fs';
 
-const config = require('./config');
-const db = require('./db');
-const core = require('./core');
-const api = require('./api');
-const auth = require('./auth');
-const authMiddleware = require('./auth/middleware');
-const classroom = require('./class');
-const cms = require('./cms');
-const crm = require('./crm');
-const lms = require('./lms');
-const server = require('./server');
+import api from './api';
+import auth, { Middleware as AuthMiddleware } from './auth';
+import classroom from './class';
+import cms from './cms';
+import config from './config';
+import core from './core';
+import crm from './crm';
+import db from './db';
+import lms from './lms';
+import server from './server';
 
 const context = core(config);
+const authMiddleware = AuthMiddleware(context);
+
+const { authenticate, authorize, redirect } = authMiddleware;
+
+const options = config.APP_ENV === 'production' ? null : {
+    cert: readFileSync(config.SSL_CERT_PATH),
+    key: readFileSync(config.SSL_KEY_PATH)
+};
 
 context.db = db;
 context.middleware = {
-    auth: authMiddleware(context)
+    auth: authMiddleware
 };
-
-const options = config.APP_ENV === 'production' ? null : {
-    cert: fs.readFileSync(config.SSL_CERT_PATH),
-    key: fs.readFileSync(config.SSL_KEY_PATH)
-};
-
-const { authenticate, authorize, redirect } = context.middleware.auth;
 
 db.connect(config.MONGODB_URI);
 

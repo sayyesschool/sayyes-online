@@ -1,7 +1,7 @@
-const passport = require('passport');
-const YandexStrategy = require('passport-yandex').Strategy;
+import passport from 'passport';
+import { Strategy } from 'passport-yandex';
 
-module.exports = (Auth, { YANDEX_CLIENT_ID, YANDEX_CLIENT_SECRET, YANDEX_CALLBACK_URL }) => {
+export default (Auth, { YANDEX_CLIENT_ID, YANDEX_CLIENT_SECRET, YANDEX_CALLBACK_URL }) => {
     const config = {
         clientID: YANDEX_CLIENT_ID,
         clientSecret: YANDEX_CLIENT_SECRET,
@@ -9,7 +9,7 @@ module.exports = (Auth, { YANDEX_CLIENT_ID, YANDEX_CLIENT_SECRET, YANDEX_CALLBAC
         passReqToCallback: true
     };
 
-    passport.use(new YandexStrategy(config, (req, token, refreshToken, profile, done) => {
+    passport.use(new Strategy(config, (req, token, refreshToken, profile, done) => {
         const account = {
             _id: 'yandex',
             title: 'Яндекс',

@@ -1,15 +1,15 @@
-const { Router } = require('express');
+import { Router } from 'express';
 
-const account = require('./account');
-const enrollments = require('./enrollments');
-const lessons = require('./lessons');
-const meetings = require('./meetings');
-const packs = require('./packs');
-const payments = require('./payments');
-const posts = require('./posts');
-const user = require('./user');
+import account from './account';
+import enrollments from './enrollments';
+import lessons from './lessons';
+import meetings from './meetings';
+import packs from './packs';
+import payments from './payments';
+import posts from './posts';
+import user from './user';
 
-module.exports = context => {
+export default context => {
     const router = Router();
 
     router.use('/courses*', redirectToCMS);

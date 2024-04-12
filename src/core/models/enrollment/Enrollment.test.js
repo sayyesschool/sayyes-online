@@ -1,4 +1,4 @@
-const moment = require('moment');
+import moment from 'moment';
 
 moment.locale('ru');
 
@@ -41,7 +41,7 @@ function createLessons(quantity) {
     for (let i = 0; i < quantity; i++) {
         const schedule = this.schedule[i % this.schedule.length];
         const currentWeekday = date.weekday();
-        const [hours, minutes] = schedule.from?.split(':');
+        const [hours, minutes] = schedule.from?.split(':') ?? [];
 
         if (schedule.day <= currentWeekday) {
             date.weekday(7);

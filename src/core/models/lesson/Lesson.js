@@ -1,9 +1,9 @@
-const { Schema } = require('mongoose');
-const moment = require('moment');
+import moment from 'moment';
+import { Schema } from 'mongoose';
 
-const { LessonType, LessonStatus } = require('./constants');
+import { LessonStatus, LessonType } from './constants';
 
-const Lesson = new Schema({
+export const Lesson = new Schema({
     type: { type: String, enum: Object.values(LessonType) },
     status: { type: String, enum: Object.values(LessonStatus), default: LessonStatus.Scheduled },
     date: { type: Date, set: value => moment(value).utc().format('YYYY-MM-DDTHH:mm:ss[Z]') },
@@ -105,4 +105,4 @@ Lesson.statics.findConflicting = async function({ date, duration, teacherId, roo
     );
 };
 
-module.exports = Lesson;
+export default Lesson;

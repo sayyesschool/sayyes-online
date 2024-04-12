@@ -1,8 +1,8 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Item = require('./Item');
+import Item from './Item';
 
-const Exercise = new Schema({
+export const Exercise = new Schema({
     courseId: { type: Schema.Types.ObjectId, required: true },
     sectionId: { type: Schema.Types.ObjectId, required: true },
     description: { type: String, default: '' },
@@ -97,4 +97,4 @@ Exercise.static('removeItem', async function(exerciseId, itemId) {
     return item;
 });
 
-module.exports = Exercise;
+export default Exercise;

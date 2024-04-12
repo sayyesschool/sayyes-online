@@ -1,9 +1,9 @@
-const { Router } = require('express');
+import { Router } from 'express';
 
-const error = require('./error');
-const notFound = require('./not-found');
+import error from './error';
+import notFound from './not-found';
 
-module.exports = context => {
+export default () => {
     const router = Router();
 
     router.use(notFound);

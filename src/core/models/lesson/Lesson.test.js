@@ -1,8 +1,8 @@
-const expect = require('expect');
-const { model } = require('mongoose');
-const { stub } = require('sinon');
+import expect from 'expect';
+import { model } from 'mongoose';
+import { stub } from 'sinon';
 
-const LessonSchema = require('./Lesson');
+import LessonSchema from './Lesson';
 
 const Lesson = model('Lesson', LessonSchema);
 

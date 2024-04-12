@@ -1,19 +1,18 @@
-const path = require('path');
-const moment = require('moment-timezone');
-require('moment/locale/ru');
+import path from 'node:path';
 
-const project = require('../package.json');
+import moment from 'moment-timezone';
+
+import 'moment/locale/ru';
 
 moment.locale('ru');
 
-module.exports = {
-    APP_VERSION: project.version,
-    APP_IP: process.env.APP_IP || '127.0.0.1',
-    APP_PORT: process.env.APP_PORT || process.env.PORT || 3000,
-    APP_ENV: process.env.NODE_ENV,
+export default {
     APP_DOMAIN: process.env.APP_DOMAIN,
-    APP_URL: process.env.APP_URL,
+    APP_ENV: process.env.NODE_ENV,
+    APP_IP: process.env.APP_IP || '127.0.0.1',
     APP_PATH: path.normalize(process.env.APP_PATH || path.resolve(process.cwd(), 'src')),
+    APP_PORT: process.env.APP_PORT || process.env.PORT || 3000,
+    APP_URL: process.env.APP_URL,
 
     FACEBOOK_PIXEL_ID: '758563291240040',
 
@@ -28,11 +27,12 @@ module.exports = {
     MONGODB_URI: process.env.DB_CONNECTION_STRING,
 
     SESSION_SECRET: 'BHve6rr4mAAP2w4G93qK',
-    STATIC_URL: process.env.STATIC_URL,
-    STORAGE_URL: process.env.STORAGE_URL,
 
     SSL_CERT_PATH: process.env.SSL_CERT_PATH,
     SSL_KEY_PATH: process.env.SSL_KEY_PATH,
+
+    STATIC_URL: process.env.STATIC_URL,
+    STORAGE_URL: process.env.STORAGE_URL,
 
     TWILIO_ACCOUNT_ID: process.env.TWILIO_ACCOUNT_ID,
     TWILIO_API_KEY: process.env.TWILIO_API_KEY,

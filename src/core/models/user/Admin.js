@@ -1,5 +1,5 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Admin = new Schema({});
+export const Admin = new Schema({});
 
-module.exports = Admin;
+export default Admin;

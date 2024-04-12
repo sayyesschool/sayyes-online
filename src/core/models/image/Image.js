@@ -1,6 +1,6 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Image = new Schema({
+export const Image = new Schema({
     path: { type: String },
     src: { type: String },
     alt: { type: String },
@@ -11,4 +11,4 @@ Image.virtual('url').get(function() {
     return this.path ? `${process.env.STORAGE_URL}/${this.path}` : this.src;
 });
 
-module.exports = Image;
+export default Image;

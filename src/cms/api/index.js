@@ -1,10 +1,10 @@
-const { Router } = require('express');
+import { Router } from 'express';
 
-const courses = require('./courses');
-const materials = require('./materials');
-const user = require('./user');
+import courses from './courses';
+import materials from './materials';
+import user from './user';
 
-module.exports = context => {
+export default context => {
     const router = Router();
 
     router.use('/courses', courses(context));

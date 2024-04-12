@@ -1,4 +1,5 @@
-module.exports = (error, req, res, next) => {
+// eslint-disable-next-line no-unused-vars
+export default (error, req, res, next) => { // `next` is needed for this function to be an error handler
     console.error(error);
 
     error.message = error.message || 'Что-то пошло не так :(';

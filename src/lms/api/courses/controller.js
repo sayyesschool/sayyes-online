@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     models: { Course }
 }) => ({
     async getCourses(req, res) {

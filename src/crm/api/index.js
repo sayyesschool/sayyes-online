@@ -1,21 +1,21 @@
-const { Router } = require('express');
+import { Router } from 'express';
 
-const comments = require('./comments');
-const courses = require('./courses');
-const enrollments = require('./enrollments');
-const learners = require('./learners');
-const lessons = require('./lessons');
-const managers = require('./managers');
-const materials = require('./materials');
-const meetings = require('./meetings');
-const packs = require('./packs');
-const payments = require('./payments');
-const requests = require('./requests');
-const rooms = require('./rooms');
-const teachers = require('./teachers');
-const users = require('./users');
+import comments from './comments';
+import courses from './courses';
+import enrollments from './enrollments';
+import learners from './learners';
+import lessons from './lessons';
+import managers from './managers';
+import materials from './materials';
+import meetings from './meetings';
+import packs from './packs';
+import payments from './payments';
+import requests from './requests';
+import rooms from './rooms';
+import teachers from './teachers';
+import users from './users';
 
-module.exports = context => {
+export default context => {
     const router = Router();
 
     router.use('/comments', comments(context));

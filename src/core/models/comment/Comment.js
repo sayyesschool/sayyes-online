@@ -1,9 +1,9 @@
-const { Schema } = require('mongoose');
-const moment = require('moment');
+import moment from 'moment';
+import { Schema, Types } from 'mongoose';
 
-const ObjectId = Schema.Types.ObjectId;
+const { ObjectId } = Types;
 
-const Comment = new Schema({
+export const Comment = new Schema({
     content: { type: String, required: true },
     authorId: { type: ObjectId, required: true },
     itemId: { type: ObjectId, required: true }
@@ -22,4 +22,4 @@ Comment.virtual('datetimeLabel').get(function() {
     return moment(this.createdAt).tz('Europe/Moscow').format('D MMM YYYY в H:mm');
 });
 
-module.exports = Comment;
+export default Comment;

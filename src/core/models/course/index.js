@@ -1,1 +1,1 @@
-module.exports = require('./Course');
+export { Course, default } from './Course';

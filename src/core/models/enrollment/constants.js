@@ -1,4 +1,4 @@
-const Status = {
+export const EnrollmentStatus = {
     Active: 'active',
     Canceled: 'canceled',
     Completed: 'completed',
@@ -8,12 +8,7 @@ const Status = {
     Trial: 'trial'
 };
 
-const Type = {
+export const EnrollmentType = {
     Individual: 'individual',
     Group: 'group'
-};
-
-module.exports = {
-    Status,
-    Type
 };

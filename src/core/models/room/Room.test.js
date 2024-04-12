@@ -1,8 +1,9 @@
-const { model } = require('mongoose');
-const expect = require('expect');
+import expect from 'expect';
+import { model } from 'mongoose';
 
-const RoomSchema = require('.');
-const { at } = require('../../../../test/helpers');
+import { at } from '../../../../test/helpers';
+
+import RoomSchema from './Room';
 
 const Room = model('Room', RoomSchema);
 

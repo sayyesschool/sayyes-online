@@ -1,8 +1,8 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Content = require('./Content');
+import Content from './Content';
 
-const Material = new Schema({
+export const Material = new Schema({
     slug: { type: String, required: true, unique: true },
     title: { type: String },
     subtitle: { type: String },
@@ -29,4 +29,4 @@ Material.virtual('documentUrl').get(function() {
     return this.document && `https://static.sayes.ru/materials/${this.slug}/${this.document}`;
 });
 
-module.exports = Material;
+export default Material;

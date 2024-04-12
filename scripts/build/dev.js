@@ -2,7 +2,7 @@ import { readFile, rm } from 'node:fs/promises';
 
 import { context } from 'esbuild';
 
-import common from './common.mjs';
+import common from './common.js';
 
 await rm('./public', { recursive: true, force: true });
 

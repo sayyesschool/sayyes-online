@@ -1,4 +1,4 @@
-module.exports = (meeting, user) => {
+export function mapMeeting(meeting, user) {
     const object = meeting.toJSON();
     const registration = meeting.registrations.find(r => r.user == user.id);
 
@@ -16,4 +16,4 @@ module.exports = (meeting, user) => {
     object.joinUrl = registration?.joinUrl;
 
     return object;
-};
+}

@@ -1,7 +1,7 @@
-const { Schema } = require('mongoose');
-const moment = require('moment');
+import moment from 'moment';
+import { Schema } from 'mongoose';
 
-const Room = new Schema({
+export const Room = new Schema({
     name: { type: String, trim: true, alias: 'title' },
     login: { type: String },
     password: { type: String },
@@ -72,4 +72,4 @@ Room.statics.findWithLessonCountFor = function(amount = 0, unit = 'days') {
         });
 };
 
-module.exports = Room;
+export default Room;

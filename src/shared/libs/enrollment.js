@@ -6,7 +6,7 @@ export function scheduleLessons({ schedule, quantity = 0, duration, startDate = 
 
     for (let i = 0; i < quantity; i++) {
         const currentSchedule = schedule[i % schedule.length];
-        const [hours, minutes] = currentSchedule.from?.split(':');
+        const [hours, minutes] = currentSchedule.from?.split(':') ?? [];
 
         if (currentSchedule.day <= date.weekday()) {
             date.weekday(7);
@@ -31,7 +31,7 @@ export function scheduleLessons({ schedule, quantity = 0, duration, startDate = 
 export function rescheduleLessons({ schedule, lessons, startDate = new Date() }) {
     return lessons.filter(lesson => new Date(lesson.date) > startDate).map((lesson, i) => {
         const currentSchedule = schedule[i % schedule.length];
-        const [hours, minutes] = currentSchedule.from?.split(':');
+        const [hours, minutes] = currentSchedule.from?.split(':') ?? [];
         const lessonDate = moment(lesson.date)
             .weekday(currentSchedule.day)
             .hours(hours)

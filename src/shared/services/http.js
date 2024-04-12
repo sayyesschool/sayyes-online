@@ -1,4 +1,4 @@
-export function request(url, { headers = {}, body, ...rest } = {}) {
+export async function request(url, { headers = {}, body, ...rest } = {}) {
     const isJSON = (typeof body === 'object') && !(body instanceof FormData);
     const options = {
         mode: 'cors',
@@ -6,7 +6,7 @@ export function request(url, { headers = {}, body, ...rest } = {}) {
         headers: {
             'CSRF-Token': window.CSRF_TOKEN,
             'X-Requested-With': 'XMLHttpRequest',
-            ...headers,
+            ...headers
         },
         body,
         ...rest
@@ -32,11 +32,11 @@ export function request(url, { headers = {}, body, ...rest } = {}) {
 }
 
 export default {
-    get: (url = '', options) => {
+    async get(url = '', options) {
         return request(url, options);
     },
 
-    post: (url, body, options) => {
+    async post(url, body, options) {
         return request(url, {
             method: 'POST',
             body,
@@ -44,7 +44,7 @@ export default {
         });
     },
 
-    put: (url, body, options) => {
+    async put(url, body, options) {
         return request(url, {
             method: 'PUT',
             body,
@@ -52,7 +52,7 @@ export default {
         });
     },
 
-    patch: (url, body, options) => {
+    async patch(url, body, options) {
         return request(url, {
             method: 'PATCH',
             body,
@@ -60,7 +60,7 @@ export default {
         });
     },
 
-    delete: (url, options) => {
+    async delete(url, options) {
         return request(url, {
             method: 'DELETE',
             ...options

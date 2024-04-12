@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 mongoose.set('toObject', {
     virtuals: true,
@@ -40,7 +40,7 @@ process.on('SIGINT', async () => {
     process.exit(0);
 });
 
-module.exports = {
+export default {
     connection: mongoose.connection,
     connect: uri => mongoose.connect(uri, {
         autoIndex: false

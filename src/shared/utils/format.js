@@ -1,26 +1,12 @@
-const moment = require('moment');
+import moment from 'moment';
 
 moment.locale('ru');
 
-module.exports = {
-    slugify,
-    translitify,
-    split,
-    formatDate,
-    formatTime,
-    formatDuration,
-    pluralize,
-    getWordEnding,
-    wordEnding,
-    timeToSeconds,
-    getLessonDateTimeString
-};
-
-function slugify(string = '') {
+export function slugify(string = '') {
     return string.toLowerCase().trim().replace(/[^\w\s$*_+~.()!\-:@]+/g, '').replace(/[\s]+/g, '-');
 }
 
-function translitify(value = '') {
+export function translitify(value = '') {
     const string = value.toLowerCase();
     let result = '';
 
@@ -31,7 +17,7 @@ function translitify(value = '') {
     return result;
 }
 
-function split(value) {
+export function split(value) {
     if (typeof value !== 'string') {
         return value;
     } else {
@@ -39,15 +25,15 @@ function split(value) {
     }
 }
 
-function formatDate(date, format) {
+export function formatDate(date, format) {
     return moment(date).format(format);
 }
 
-function formatTimeSegment(s) {
+export function formatTimeSegment(s) {
     return s > 9 ? s : `0${s}`;
 }
 
-function formatTime(hours, minutes, seconds) {
+export function formatTime(hours, minutes, seconds) {
     let result = '';
 
     if (typeof hours === 'number') {
@@ -65,7 +51,7 @@ function formatTime(hours, minutes, seconds) {
     return result;
 }
 
-function formatDuration(seconds = 0) {
+export function formatDuration(seconds = 0) {
     if (seconds === 0) return;
 
     const duration = moment.duration(seconds, 'seconds');
@@ -84,7 +70,7 @@ function formatDuration(seconds = 0) {
     return result;
 }
 
-function pluralize(word, count) {
+export function pluralize(word, count) {
     const lastDigit = count % 10;
 
     if (lastDigit === 1) {
@@ -96,7 +82,7 @@ function pluralize(word, count) {
     }
 }
 
-function getWordEnding(root, quantity, endings) {
+export function getWordEnding(root, quantity, endings) {
     if (quantity === 1)
         return root + endings[0];
     if (quantity < 5)
@@ -104,7 +90,7 @@ function getWordEnding(root, quantity, endings) {
     return root + endings[2];
 }
 
-function wordEnding(root, endings) {
+export function wordEnding(root, endings) {
     return quantity => {
         if (quantity === 1)
             return root + endings[0];
@@ -114,7 +100,7 @@ function wordEnding(root, endings) {
     };
 }
 
-function timeToSeconds(value) {
+export function timeToSeconds(value) {
     if (!value) return 0;
     if (Number(value) || Number(value) === 0) return value;
 
@@ -133,7 +119,7 @@ function timeToSeconds(value) {
     return (hours * 3600) + (minutes * 60) + seconds;
 }
 
-function getLessonDateTimeString(lesson) {
+export function getLessonDateTimeString(lesson) {
     const dateString = moment(lesson.date).format('dddd, DD.MM');
     const startTime = moment(lesson.startAt).format('HH:mm');
     const endTime = moment(lesson.endAt).format('HH:mm');
@@ -141,7 +127,7 @@ function getLessonDateTimeString(lesson) {
     return `${dateString}, ${startTime}-${endTime}`;
 }
 
-const translit = {
+export const translit = {
     'а': 'a',
     'б': 'b',
     'в': 'v',

@@ -1,6 +1,6 @@
 import { build } from 'esbuild';
 
-import common from './common.mjs';
+import common from './common.js';
 
 await build({
     ...common,

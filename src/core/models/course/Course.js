@@ -1,11 +1,12 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Image = require('../image');
-const Lesson = require('./Lesson');
-const Section = require('./Section');
-const Unit = require('./Unit');
+import Image from '../image';
 
-const Course = new Schema({
+import Lesson from './Lesson';
+import Section from './Section';
+import Unit from './Unit';
+
+export const Course = new Schema({
     title: { type: String },
     subtitle: { type: String },
     description: { type: String },
@@ -248,11 +249,11 @@ Course.static('removeExercise', async function(courseId, sectionId, exerciseId) 
             'sections.$[s]._exercises': exerciseId
         }
     }, {
-        arrayFilters: [{ 's._id': sectionId }],
+        arrayFilters: [{ 's._id': sectionId }]
     });
 });
 
-module.exports = Course;
+export default Course;
 
 function getUpdateData(field, data) {
     return Array.from(Object.entries(data))
