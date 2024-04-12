@@ -15,7 +15,11 @@ const {
 export default {
     outdir: 'public',
     entryPoints: [
+        { in: './src/class/app/index.js', out: 'class' },
+        { in: './src/cms/app/index.js', out: 'cms' },
         { in: './src/crm/app/index.js', out: 'crm' },
+        { in: './src/front/index.js', out: 'front' },
+        // { in: './src/lk/app/index.js', out: 'lk' },
         { in: './src/lms/app/index.js', out: 'lms' }
     ],
     entryNames: '[dir]/[ext]/[name]',
