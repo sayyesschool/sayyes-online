@@ -1,16 +1,21 @@
 const { Schema } = require('mongoose');
 
-const VocabularyItem = require('./VocabularyItem');
+const Image = require('../image');
 
 const Vocabulary = new Schema({
     title: { type: String },
     description: { type: String },
+    image: { type: Image },
     courseId: { type: Schema.Types.ObjectId },
     learnerId: { type: Schema.Types.ObjectId },
     teacherId: { type: Schema.Types.ObjectId },
-    items: [VocabularyItem]
+    lexemeIds: [{ type: Schema.Types.ObjectId }]
 }, {
     timestamps: true
+});
+
+Vocabulary.virtual('numberOfItems').get(function() {
+    return this.lexemes.length;
 });
 
 module.exports = Vocabulary;

@@ -26,10 +26,10 @@ const Enrollment = new Schema({
         note: { type: String, default: '' }
     },
     learnerId: { type: Schema.Types.ObjectId, required: true },
-    teacherId: { type: Schema.Types.ObjectId, },
-    managerId: { type: Schema.Types.ObjectId, },
-    courseIds: [{ type: Schema.Types.ObjectId, }],
-    materialIds: [{ type: Schema.Types.ObjectId, }]
+    teacherId: { type: Schema.Types.ObjectId },
+    managerId: { type: Schema.Types.ObjectId },
+    courseIds: [{ type: Schema.Types.ObjectId }],
+    materialIds: [{ type: Schema.Types.ObjectId }]
 }, {
     timestamps: true
 });

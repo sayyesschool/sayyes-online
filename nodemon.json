@@ -1,11 +1,9 @@
 {
     "ignore": [
         "public",
-        "src/class/app",
-        "src/cms/app",
-        "src/crm/app",
-        "src/lk/app",
-        "src/lms/app",
+        "scripts",
+        "test",
+        "**/app/**",
         "src/shared"
     ]
 }
