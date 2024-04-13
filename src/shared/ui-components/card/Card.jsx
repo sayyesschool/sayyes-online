@@ -1,10 +1,11 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyCard from '@mui/joy/Card';
-import CardCover from '@mui/joy/CardCover';
 import CardContent from '@mui/joy/CardContent';
+import CardCover from '@mui/joy/CardCover';
 import CardOverflow from '@mui/joy/CardOverflow';
+import CardTypography from '@mui/joy/Typography';
+import classnames from 'classnames';
 
 const Card = forwardRef(({
     as,
@@ -15,8 +16,8 @@ const Card = forwardRef(({
 
     return (
         <JoyCard
-            component={as}
             ref={ref}
+            component={as}
             className={classNames}
             {...props}
         />
@@ -25,6 +26,7 @@ const Card = forwardRef(({
 
 Card.displayName = 'Card';
 
+Card.Text = CardTypography;
 Card.Cover = CardCover;
 Card.Content = CardContent;
 Card.Overflow = CardOverflow;

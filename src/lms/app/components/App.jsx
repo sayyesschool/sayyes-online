@@ -11,6 +11,7 @@ import Assignments from 'lms/components/assignments';
 import Courses from 'lms/components/courses';
 import Enrollments from 'lms/components/enrollments';
 import { LearnerHomePage, TeacherHomePage } from 'lms/components/home';
+import Vocabularies from 'lms/components/vocabulary';
 import navItems from 'lms/data/nav';
 
 const PageHomeByRole = {
@@ -35,6 +36,7 @@ export default function App() {
                     <Route path="/assignments" component={Assignments} />
                     <Route path="/courses" component={Courses} />
                     <Route path="/enrollments" component={Enrollments} />
+                    <Route path="/vocabulary" component={Vocabularies} />
                     {/* <Route path="/materials" component={Materials} /> */}
                 </Switch>
             </AppContent>
