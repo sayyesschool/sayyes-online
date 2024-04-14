@@ -1,19 +1,15 @@
-const constants = require('../../core/models/payment/constants');
+import { PaymentMethod, PaymentOperator } from 'core/models/payment/constants';
 
-const paymentMethodOptions = Object.entries(constants.PaymentMethod).map(([key, value]) => ({
+export * from 'core/models/payment/constants';
+
+export const paymentMethodOptions = Object.entries(PaymentMethod).map(([key, value]) => ({
     key,
     value: key,
     content: value
 }));
 
-const operatorOptions = Object.entries(constants.Operator).map(([key, value]) => ({
+export const operatorOptions = Object.entries(PaymentOperator).map(([key, value]) => ({
     key,
     value: key,
     content: value
 }));
-
-module.exports = {
-    paymentMethodOptions,
-    operatorOptions,
-    ...constants
-};

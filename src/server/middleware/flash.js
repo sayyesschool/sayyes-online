@@ -1,6 +1,6 @@
-const flash = require('connect-flash');
+import flash from 'connect-flash';
 
-module.exports = [
+export default [
     flash(),
     (req, res, next) => {
         res.locals.flash = req.flash();

@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     models: { Enrollment, Lesson, Transaction }
 }) => ({
     get: (req, res, next) => {

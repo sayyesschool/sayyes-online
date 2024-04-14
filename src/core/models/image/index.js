@@ -1,1 +1,1 @@
-module.exports = require('./Image');
+export { default, Image } from './Image';

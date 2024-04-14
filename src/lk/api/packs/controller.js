@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     models: { Pack }
 }) => ({
     getMany: (req, res, next) => {

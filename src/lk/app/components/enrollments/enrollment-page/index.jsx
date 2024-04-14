@@ -1,16 +1,15 @@
+import LoadingIndicator from 'shared/components/loading-indicator';
+import Page from 'shared/components/page';
 import { CLASS_URL } from 'shared/constants';
 import { useEnrollment } from 'shared/hooks/enrollments';
 import { Button, Flex, Grid, MenuButton } from 'shared/ui-components';
-import EnrollmentPosts from 'shared/components/enrollment-posts';
-import LoadingIndicator from 'shared/components/loading-indicator';
-import Page from 'shared/components/page';
 
-import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';
-import EnrollmentLessons from 'app/components/enrollments/enrollment-lessons';
-import EnrollmentManagers from 'app/components/enrollments/enrollment-managers';
-import EnrollmentMaterials from 'app/components/enrollments/enrollment-materials';
-import EnrollmentSchedule from 'app/components/enrollments/enrollment-schedule';
-import EnrollmentTeachers from 'app/components/enrollments/enrollment-teachers';
+import EnrollmentCourses from 'lk/components/enrollments/enrollment-courses';
+import EnrollmentLessons from 'lk/components/enrollments/enrollment-lessons';
+import EnrollmentManagers from 'lk/components/enrollments/enrollment-managers';
+import EnrollmentMaterials from 'lk/components/enrollments/enrollment-materials';
+import EnrollmentSchedule from 'lk/components/enrollments/enrollment-schedule';
+import EnrollmentTeachers from 'lk/components/enrollments/enrollment-teachers';
 
 import './index.scss';
 
@@ -60,9 +59,7 @@ export default function EnrollmentPage({ match }) {
             <Page.Content>
                 <Grid spacing={2}>
                     <Grid.Item lg={8}>
-                        <EnrollmentPosts
-                            enrollment={enrollment}
-                        />
+
                     </Grid.Item>
 
                     <Grid.Item lg={4}>

@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 @use 'shared/styles/mixins' as *;
 
 .Participant {
@@ -13,7 +15,7 @@
 
     @include breakpoint(sm) {
         height: 90px;
-        width: (90px * 16) / 9;
+        width: math.div(90px * 16, 9);
         margin-right: 8px;
         margin-bottom: 0;
         font-size: 10px;
@@ -94,7 +96,7 @@
         right: 0;
         display: flex;
         padding: 4px;
-        background: rgba(0,0,0,.5);
+        background: rgba(0, 0, 0, .5);
         color: #fff;
     }
 

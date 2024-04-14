@@ -1,6 +1,6 @@
-const strategies = require('./strategies');
+import * as strategies from './strategies';
 
-module.exports = ({
+export default ({
     services: { Auth }
 }) => ({
     user(req, res) {
@@ -20,7 +20,7 @@ module.exports = ({
             } : null
         });
     },
-    
+
     register(req, res, next) {
         Auth.register(req.body)
             .then(user => {

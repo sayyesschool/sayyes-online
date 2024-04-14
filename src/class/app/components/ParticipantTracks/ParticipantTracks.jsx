@@ -1,5 +1,5 @@
-import usePublications from 'app/hooks/usePublications';
-import Publication from 'app/components/Publication';
+import Publication from 'class/components/Publication';
+import usePublications from 'class/hooks/usePublications';
 
 /*
  *  The object model for the Room object (found here: https://www.twilio.com/docs/video/migrating-1x-2x#object-model) shows

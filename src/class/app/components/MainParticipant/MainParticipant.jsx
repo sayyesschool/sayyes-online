@@ -1,14 +1,13 @@
 import { Avatar, Text } from 'shared/ui-components';
 import classnames from 'shared/utils/classnames';
 
-import useRoomContext from 'app/hooks/useRoomContext';
-import useIsTrackSwitchedOff from 'app/hooks/useIsTrackSwitchedOff';
-import useParticipantIsReconnecting from 'app/hooks/useParticipantIsReconnecting';
-import usePublications from 'app/hooks/usePublications';
-import useTrack from 'app/hooks/useTrack';
-
-import AudioLevelIndicator from 'app/components/AudioLevelIndicator';
-import ParticipantTracks from 'app/components/ParticipantTracks';
+import AudioLevelIndicator from 'class/components/AudioLevelIndicator';
+import ParticipantTracks from 'class/components/ParticipantTracks';
+import useIsTrackSwitchedOff from 'class/hooks/useIsTrackSwitchedOff';
+import useParticipantIsReconnecting from 'class/hooks/useParticipantIsReconnecting';
+import usePublications from 'class/hooks/usePublications';
+import useRoomContext from 'class/hooks/useRoomContext';
+import useTrack from 'class/hooks/useTrack';
 
 /* audio is disabled for this participant component because this participant's audio is already being rendered in the <ParticipantList /> component. */
 

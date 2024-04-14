@@ -1,14 +1,14 @@
-import { useUser } from 'shared/hooks/user';
-import { useEnrollment } from 'shared/hooks/enrollments';
-import LoadingIndicator from 'shared/components/loading-indicator';
-
-import { SharedStateProvider } from 'app/contexts/SharedStateContext';
-import useRoomState from 'app/hooks/useRoomState';
-import useVisibilityHandler from 'app/hooks/useVisibilityHandler';
 import AppNotification from 'shared/components/app-notification';
-import Lobby from 'app/components/Lobby';
-import Room from 'app/components/Room';
-import ReconnectingAlert from 'app/components/ReconnectingAlert';
+import LoadingIndicator from 'shared/components/loading-indicator';
+import { useEnrollment } from 'shared/hooks/enrollments';
+import { useUser } from 'shared/hooks/user';
+
+import Lobby from 'class/components/Lobby';
+import ReconnectingAlert from 'class/components/ReconnectingAlert';
+import Room from 'class/components/Room';
+import { SharedStateProvider } from 'class/contexts/SharedStateContext';
+import useRoomState from 'class/hooks/useRoomState';
+import useVisibilityHandler from 'class/hooks/useVisibilityHandler';
 
 import './index.scss';
 

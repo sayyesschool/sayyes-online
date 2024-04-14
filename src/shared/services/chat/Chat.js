@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+
 import { Client } from '@twilio/conversations';
 
 import Conversation from './Conversation';

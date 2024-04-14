@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     models: { Lesson }
 }) => ({
     async get(req, res) {
@@ -32,7 +32,7 @@ module.exports = ({
             .populate('room', 'title')
             .sort({ date: -1 })
             .limit(100);
-            
+
         if (req.query.days) {
             const days = req.query.days.split(',').map(v => Number(v));
 
@@ -54,7 +54,7 @@ module.exports = ({
             .populate('learner', 'firstname lastname email')
             .populate('teacher', 'firstname lastname email')
             .populate('room', 'title');
-        
+
         res.json({
             ok: true,
             data: lessons
@@ -65,7 +65,7 @@ module.exports = ({
         const lesson = await Lesson.findById(req.params.lessonId)
             .populate('learner')
             .populate('teacher');
-        
+
         res.json({
             ok: true,
             data: lesson
@@ -74,7 +74,7 @@ module.exports = ({
 
     async create(req, res) {
         const lesson = await Lesson.create(req.body);
-        
+
         res.json({
             ok: true,
             message: req.body.length > 0 ? 'Уроки созданы' : 'Урок создан',
@@ -88,7 +88,7 @@ module.exports = ({
             req.body,
             { new: true }
         );
-        
+
         res.json({
             ok: true,
             message: 'Урок изменен',
@@ -98,7 +98,7 @@ module.exports = ({
 
     async delete(req, res) {
         const lesson = await Lesson.findByIdAndDelete(req.params.lessonId);
-        
+
         res.json({
             ok: true,
             message: 'Урок удален',

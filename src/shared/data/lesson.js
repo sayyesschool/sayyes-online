@@ -1,6 +1,6 @@
-const { LessonStatus } = require('@/core/models/lesson/constants');
+import { LessonStatus } from 'core/models/lesson';
 
-const LessonStatusLabel = {
+export const LessonStatusLabel = {
     [LessonStatus.Scheduled]: 'Запланирован',
     [LessonStatus.Missed]: 'Пропущен',
     [LessonStatus.Started]: 'Начался',
@@ -8,7 +8,7 @@ const LessonStatusLabel = {
     [LessonStatus.Canceled]: 'Отменен'
 };
 
-const LessonStatusIcon = {
+export const LessonStatusIcon = {
     [LessonStatus.Scheduled]: 'event',
     [LessonStatus.Missed]: 'event',
     [LessonStatus.Started]: 'event',
@@ -16,7 +16,7 @@ const LessonStatusIcon = {
     [LessonStatus.Canceled]: 'event_busy'
 };
 
-const LessonStatusByType = {
+export const LessonStatusByType = {
     [LessonStatus.Scheduled]: 'info',
     [LessonStatus.Missed]: 'unknown',
     [LessonStatus.Started]: 'warning',
@@ -24,17 +24,10 @@ const LessonStatusByType = {
     [LessonStatus.Canceled]: 'error'
 };
 
-const LessonColorByType = {
+export const LessonColorByType = {
     [LessonStatus.Scheduled]: 'primary',
     [LessonStatus.Missed]: 'warning',
     [LessonStatus.Started]: 'info',
     [LessonStatus.Ended]: 'success',
     [LessonStatus.Canceled]: 'danger'
-};
-
-module.exports = {
-    LessonStatusLabel,
-    LessonStatusIcon,
-    LessonStatusByType,
-    LessonColorByType
 };

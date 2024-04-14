@@ -91,7 +91,7 @@ export function useExercise({ courseId, exerciseId }) {
     }), [course, exerciseId]);
 }
 
-export function use({ courseId, unitId, lessonId, exerciseId }) {
+export function useAll({ courseId, unitId, lessonId, exerciseId }) {
     const [course, actions] = useCourse(courseId);
 
     return useMemo(() => !course ? emptyObject : ({

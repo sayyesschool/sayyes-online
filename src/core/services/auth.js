@@ -1,6 +1,6 @@
-const crypto = require('crypto');
+import { randomBytes } from 'node:crypto';
 
-module.exports = ({
+export default ({
     User
 }, {
     onRegister,
@@ -16,7 +16,7 @@ module.exports = ({
 
     async register({
         email,
-        password = crypto.randomBytes(12).toString('base64'),
+        password = randomBytes(12).toString('base64'),
         firstname,
         lastname
     } = {}) {
@@ -66,7 +66,7 @@ module.exports = ({
             .then(user => {
                 if (user && (user.id === currentUser.id))
                     throw new Error('Данный аккаунт уже привязан');
-                
+
                 if (user)
                     throw new Error('Данный аккаунт уже привязан к другой учетной записи');
 

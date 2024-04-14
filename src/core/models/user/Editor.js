@@ -1,5 +1,5 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Editor = new Schema({});
+export const Editor = new Schema({});
 
-module.exports = Editor;
+export default Editor;

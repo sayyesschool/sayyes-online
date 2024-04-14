@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     models: { Material }
 }) => ({
     async get(req, res) {

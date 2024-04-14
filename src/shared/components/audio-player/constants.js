@@ -28,5 +28,5 @@ export const defaultI18n = {
     all: 'Все',
     reset: 'Reset',
     disabled: 'Отключено',
-    advertisement: 'Реклама',
+    advertisement: 'Реклама'
 };

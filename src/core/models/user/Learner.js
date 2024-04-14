@@ -1,8 +1,8 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Contact = require('./Contact');
+import Contact from './Contact';
 
-const Learner = new Schema({
+export const Learner = new Schema({
     level: { type: String },
     info: {
         address: { type: String },
@@ -56,4 +56,4 @@ Learner.virtual('transactions', {
     foreignField: 'userId'
 });
 
-module.exports = Learner;
+export default Learner;

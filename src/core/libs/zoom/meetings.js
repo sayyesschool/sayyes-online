@@ -1,4 +1,4 @@
-module.exports = request => ({
+export default request => ({
     list: () => request({
         path: '/meetings',
         method: 'GET'

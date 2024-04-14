@@ -1,7 +1,7 @@
-const querystring = require('querystring');
-const { nanoid } = require('nanoid');
-const FormData = require('form-data');
-const axios = require('axios').default;
+import axios from 'axios';
+import FormData from 'form-data';
+import { nanoid } from 'nanoid';
+import { stringify } from 'querystring';
 
 function uploadFile(file, { name = nanoid(16), path } = {}) {
     const data = new FormData();
@@ -21,7 +21,7 @@ function uploadFile(file, { name = nanoid(16), path } = {}) {
 }
 
 function deleteFile(path) {
-    const data = querystring.stringify({ path });
+    const data = stringify({ path });
 
     return axios.post('https://static.sayes.ru/delete.php', data, {
         headers: {
@@ -30,7 +30,7 @@ function deleteFile(path) {
     }).then(res => res.data);
 }
 
-module.exports = () => {
+export default () => {
     return {
         uploadFile,
         deleteFile,

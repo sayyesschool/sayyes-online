@@ -11,11 +11,20 @@
             "@/*": [
                 "./src/*"
             ],
+            "class/*": [
+                "./src/class/app/*"
+            ],
+            "cms/*": [
+                "./src/cms/app/*"
+            ],
             "core/*": [
                 "./src/core/*"
             ],
             "crm/*": [
                 "./src/crm/app/*"
+            ],
+            "lk/*": [
+                "./src/lk/app/*"
             ],
             "lms/*": [
                 "./src/lms/app/*"

@@ -1,15 +1,15 @@
 import { useCallback } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
-import { useSection } from 'shared/hooks/courses';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import EditableText from 'shared/components/editable-text';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useSection } from 'shared/hooks/courses';
+import { useBoolean } from 'shared/hooks/state';
 import { Grid } from 'shared/ui-components';
 
-import SectionDescription from 'app/components/courses/section-description';
-import SectionExercises from 'app/components/courses/section-exercises';
+import SectionDescription from 'cms/components/courses/section-description';
+import SectionExercises from 'cms/components/courses/section-exercises';
 
 export default function SectionPage({ match, history }) {
     const { course, unit, lesson, section, actions } = useSection(match.params);

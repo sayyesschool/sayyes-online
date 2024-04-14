@@ -1,4 +1,4 @@
-const RequestChannel = {
+export const RequestChannel = {
     None: '',
     Site: 'site',
     Call: 'call',
@@ -6,7 +6,7 @@ const RequestChannel = {
     Instagram: 'instagram'
 };
 
-const RequestSource = {
+export const RequestSource = {
     None: '',
     Instagram: 'instagram',
     WhatsApp: 'whatsapp',
@@ -15,16 +15,10 @@ const RequestSource = {
     Recommendation: 'recommendation'
 };
 
-const RequestStatus = {
+export const RequestStatus = {
     New: 'new',
     Processing: 'processing',
     Postponed: 'postponed',
     Completed: 'completed',
     Canceled: 'canceled'
-};
-
-module.exports = {
-    RequestChannel,
-    RequestSource,
-    RequestStatus
 };

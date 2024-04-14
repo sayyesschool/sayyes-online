@@ -1,1 +1,2 @@
-module.exports = require('./Payment');
+export * from './constants';
+export { default, Payment } from './Payment';

@@ -15,11 +15,11 @@ import { typeOptions } from 'shared/data/enrollment';
 import { useFormData } from 'shared/hooks/form';
 import { Form } from 'shared/ui-components';
 
-import { Status } from 'core/models/enrollment/constants';
+import { EnrollmentStatus } from 'core/models/enrollment/constants';
 import { useStore } from 'crm/store';
 
 const defaultEnrollment = {
-    status: Status.Processing,
+    status: EnrollmentStatus.Processing,
     domain: '',
     type: '',
     format: '',

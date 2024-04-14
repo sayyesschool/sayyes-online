@@ -1,6 +1,6 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Registration = new Schema({
+export const Registration = new Schema({
     user: { type: Schema.Types.ObjectId, ref: 'User' },
     ticket: { type: Schema.Types.ObjectId, ref: 'Ticket' },
     registrant: {
@@ -13,4 +13,4 @@ const Registration = new Schema({
     joinUrl: { type: String }
 });
 
-module.exports = Registration;
+export default Registration;

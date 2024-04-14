@@ -2,7 +2,7 @@ import CoursesGrid from 'shared/components/courses-grid';
 import MaterialsGrid from 'shared/components/materials-grid';
 import Page from 'shared/components/page';
 
-import { useStore } from 'app/store';
+import { useStore } from 'cms/store';
 
 import './index.scss';
 

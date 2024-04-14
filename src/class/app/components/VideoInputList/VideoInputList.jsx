@@ -2,11 +2,11 @@ import { useCallback, useState } from 'react';
 
 import { FormSelect, Text } from 'shared/ui-components';
 
-import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_VIDEO_INPUT_KEY } from 'app/constants';
-import useRoomContext from 'app/hooks/useRoomContext';
-import useMediaStreamTrack from 'app/hooks/useMediaStreamTrack';
-import { useVideoInputDevices } from 'app/hooks/useDevices';
-import VideoTrack from 'app/components/VideoTrack';
+import VideoTrack from 'class/components/VideoTrack';
+import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_VIDEO_INPUT_KEY } from 'class/constants';
+import { useVideoInputDevices } from 'class/hooks/useDevices';
+import useMediaStreamTrack from 'class/hooks/useMediaStreamTrack';
+import useRoomContext from 'class/hooks/useRoomContext';
 
 export default function VideoInputList() {
     const { localTracks } = useRoomContext();

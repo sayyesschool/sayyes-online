@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     models: { Enrollment, Pack, Payment },
     services: { Checkout }
 }) => ({
@@ -71,7 +71,7 @@ module.exports = ({
             return Checkout.createPayment({
                 amount: pack.price,
                 description: `Оплата ${pack.numberOfLessons} занятий по 50 минут`,
-                paymentMethod: req.body.usePaymentMethod ? user.paymentMethod : undefined,
+                paymentMethod: req.body.usePaymentMethod ? req.user.paymentMethod : undefined,
                 savePaymentMethod: req.body.savePaymentMethod,
                 email: req.user.email,
                 returnUrl: '/',

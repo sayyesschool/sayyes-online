@@ -1,6 +1,6 @@
-const YooKassa = require('yookassa');
+import YooKassa from 'yookassa';
 
-module.exports = ({ YOOKASSA_SHOP_ID, YOOKASSA_SECRET_KEY, APP_URL }, { Payment }) => {
+export default ({ YOOKASSA_SHOP_ID, YOOKASSA_SECRET_KEY, APP_URL }, { Payment }) => {
     const kassa = new YooKassa({
         shopId: YOOKASSA_SHOP_ID,
         secretKey: YOOKASSA_SECRET_KEY

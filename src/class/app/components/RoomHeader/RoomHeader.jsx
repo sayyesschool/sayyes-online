@@ -2,14 +2,13 @@ import { NavLink, useRouteMatch } from 'react-router-dom';
 
 import { Button, IconButton, Tabs } from 'shared/ui-components';
 
-import useRoomState from 'app/hooks/useRoomState';
-
-import ConnectedTime from 'app/components/ConnectedTime';
-import ToggleAudioButton from 'app/components/ToggleAudioButton';
-import ToggleChatButton from 'app/components/ToggleChatButton';
-import ToggleFullscreenButton from 'app/components/ToggleFullscreenButton';
-import ToggleScreenShareButton from 'app/components/ToggleScreenShareButton';
-import ToggleVideoButton from 'app/components/ToggleVideoButton';
+import ConnectedTime from 'class/components/ConnectedTime';
+import ToggleAudioButton from 'class/components/ToggleAudioButton';
+import ToggleChatButton from 'class/components/ToggleChatButton';
+import ToggleFullscreenButton from 'class/components/ToggleFullscreenButton';
+import ToggleScreenShareButton from 'class/components/ToggleScreenShareButton';
+import ToggleVideoButton from 'class/components/ToggleVideoButton';
+import useRoomState from 'class/hooks/useRoomState';
 
 const views = [undefined, 'courses', 'whiteboard'];
 
@@ -96,9 +95,7 @@ export default function RoomHeader({
                 />
 
                 <ToggleAudioButton disabled={isReconnecting} />
-
                 <ToggleVideoButton disabled={isReconnecting} />
-
                 <ToggleScreenShareButton disabled={isReconnecting} />
 
                 <ToggleFullscreenButton

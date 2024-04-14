@@ -1,19 +1,19 @@
-const { Schema } = require('mongoose');
-const moment = require('moment');
+import moment from 'moment';
+import { Schema } from 'mongoose';
 
-const { AgeGroup, Domain, Format, Level, TeacherType } = require('../common/constants');
-const Schedule = require('../schedule');
+import { AgeGroup, Domain, Format, Level, TeacherType } from '../common';
+import Schedule from '../schedule';
 
-const { Status, Type } = require('./constants');
+import { EnrollmentStatus, EnrollmentType } from './constants';
 
-const Enrollment = new Schema({
+export const Enrollment = new Schema({
     hhid: { type: String },
     ageGroup: { type: String, default: AgeGroup.Adults },
     domain: { type: String, enum: Object.values(Domain), default: Domain.general },
     format: { type: String, default: Format.online },
-    type: { type: String, enum: Object.values(Type), default: Type.Individual },
+    type: { type: String, enum: Object.values(EnrollmentType), default: EnrollmentType.Individual },
     teacherType: { type: String, default: TeacherType.Russian },
-    status: { type: String, enum: Object.values(Status), default: Status.Processing },
+    status: { type: String, enum: Object.values(EnrollmentStatus), default: EnrollmentStatus.Processing },
     level: { type: Number, enum: Object.values(Level) },
     lessonDuration: { type: Number, default: 50 },
     lessonPrice: { type: Number, default: 0 },
@@ -150,7 +150,7 @@ Enrollment.methods.scheduleLessons = function(numberOfLessons, startDate = new D
 
     for (let i = 0; i < numberOfLessons; i++) {
         const currentSchedule = schedule[i % schedule.length];
-        const [hours, minutes] = currentSchedule.from?.split(':');
+        const [hours, minutes] = currentSchedule.from?.split(':') ?? [];
 
         if (currentSchedule.day <= date.weekday()) {
             date.weekday(7);
@@ -180,7 +180,7 @@ Enrollment.methods.rescheduleLessons = function(lessons, startDate = new Date())
         .filter(lesson => new Date(lesson.date) > startDate)
         .map((lesson, i) => {
             const currentSchedule = this.schedule[i % this.schedule.length];
-            const [hours, minutes] = currentSchedule.from?.split(':');
+            const [hours, minutes] = currentSchedule.from?.split(':') ?? [];
             const lessonDate = moment(lesson.date)
                 .weekday(currentSchedule.day)
                 .hours(hours)
@@ -198,4 +198,4 @@ Enrollment.methods.rescheduleLessons = function(lessons, startDate = new Date())
         });
 };
 
-module.exports = Enrollment;
+export default Enrollment;

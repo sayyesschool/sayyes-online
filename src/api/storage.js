@@ -1,11 +1,13 @@
-const { basename, extname, join } = require('path/posix');
-const { Router } = require('express');
-const upload = require('multer')();
-const { v4: uuidv4 } = require('uuid');
+import { basename, extname, join } from 'node:path/posix';
 
-const router = Router();
+import { Router } from 'express';
+import multer from 'multer';
+import { v4 as uuid } from 'uuid';
 
-module.exports = ({ services: { Storage } }) => {
+export default ({ services: { Storage } }) => {
+    const router = Router();
+    const upload = multer();
+
     router.post('/', upload.single('file'), (req, res, next) => {
         if (!req.file) return next(new Error('No file'));
         if (!req.body.path) return next(new Error('No path'));
@@ -50,7 +52,7 @@ function isFilename(path) {
 }
 
 function getUniqueFilename(file) {
-    return uuidv4() + extname(file.originalname);
+    return uuid() + extname(file.originalname);
 }
 
 function getNormalizedPath(path, file) {

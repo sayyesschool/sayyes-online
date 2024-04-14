@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     models: { Lesson }
 }, { mapLesson }) => ({
     getMany: (req, res, next) => {

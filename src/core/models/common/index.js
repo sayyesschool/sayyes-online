@@ -1,1 +1,1 @@
-module.exports = require('./constants');
+export * from './constants';

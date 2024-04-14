@@ -1,8 +1,10 @@
-import EventEmitter from 'events';
+import EventEmitter from 'node:events';
+
 import { act, renderHook } from '@testing-library/react-hooks';
 
-import useRoomState from './useRoomState';
 import useVideoContext from '../useVideoContext/useVideoContext';
+
+import useRoomState from './useRoomState';
 
 jest.mock('../useVideoContext/useVideoContext');
 
@@ -18,7 +20,7 @@ describe('useRoomState', () => {
             isConnecting: false,
             localTracks: [],
             onError: () => { },
-            onDisconnect: () => { },
+            onDisconnect: () => { }
         }));
     });
 
@@ -74,7 +76,7 @@ describe('useRoomState', () => {
                 isConnecting: false,
                 localTracks: [],
                 onError: () => { },
-                onDisconnect: () => { },
+                onDisconnect: () => { }
             }));
         });
 
@@ -97,7 +99,7 @@ describe('useRoomState', () => {
                 isConnecting: false,
                 localTracks: [],
                 onError: () => { },
-                onDisconnect: () => { },
+                onDisconnect: () => { }
             }));
         });
 

@@ -1,21 +1,21 @@
-const AgeGroup = {
+export const AgeGroup = {
     Adults: 'adults',
     Teenagers: 'teenagers',
     Children: 'children'
 };
 
-const Domain = {
+export const Domain = {
     Business: 'business',
     General: 'general',
     Prep: 'prep'
 };
 
-const Format = {
+export const Format = {
     Offline: 'offline',
     Online: 'online'
 };
 
-const Level = {
+export const Level = {
     Beginner: 0,
     Elementary: 1,
     PreIntermediate: 2,
@@ -25,7 +25,7 @@ const Level = {
     Proficient: 6
 };
 
-const Purpose = {
+export const Purpose = {
     Work: 'work',
     Study: 'study',
     Interview: 'interview',
@@ -35,17 +35,8 @@ const Purpose = {
     Immigration: 'immigration'
 };
 
-const TeacherType = {
+export const TeacherType = {
     Russian: 'russian',
     Bilingual: 'bilingual',
     Native: 'native'
-};
-
-module.exports = {
-    AgeGroup,
-    Domain,
-    Format,
-    Level,
-    Purpose,
-    TeacherType
 };

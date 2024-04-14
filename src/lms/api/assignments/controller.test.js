@@ -1,7 +1,7 @@
-const expect = require('expect');
-const { stub } = require('sinon');
+import expect from 'expect';
+import { stub } from 'sinon';
 
-const Controller = require('./controller');
+import Controller from './controller';
 
 const Assignment = {
     find: stub(),

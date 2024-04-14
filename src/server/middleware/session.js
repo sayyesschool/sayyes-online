@@ -1,9 +1,9 @@
-const connectMongo = require('connect-mongo');
-const expressSession = require('express-session');
+import connectMongo from 'connect-mongo';
+import expressSession from 'express-session';
 
 const MongoStore = connectMongo(expressSession);
 
-module.exports = ({ APP_DOMAIN, SESSION_SECRET }, dbConnection) => expressSession({
+export default ({ APP_DOMAIN, SESSION_SECRET }, dbConnection) => expressSession({
     name: 'sessionId',
     secret: SESSION_SECRET,
     resave: false,

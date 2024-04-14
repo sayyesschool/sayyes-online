@@ -1,9 +1,9 @@
-const expect = require('expect');
-const express = require('express');
-const { stub } = require('sinon');
-const test = require('supertest');
+import expect from 'expect';
+import express, { json } from 'express';
+import { stub } from 'sinon';
+import test from 'supertest';
 
-const router = require('./router');
+import router from './router';
 
 const context = global.$context;
 const Assignment = stub(context.models.Assignment);
@@ -12,7 +12,7 @@ context.models.Assignment = Assignment;
 
 const app = test(
     express()
-        .use(express.json())
+        .use(json())
         .use(router(context))
 );
 

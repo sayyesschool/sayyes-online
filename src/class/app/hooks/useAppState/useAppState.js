@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { AppStateContext } from 'app/contexts/AppStateContext';
+import { AppStateContext } from 'class/contexts/AppStateContext';
 
 export default function useAppState() {
     const context = useContext(AppStateContext);

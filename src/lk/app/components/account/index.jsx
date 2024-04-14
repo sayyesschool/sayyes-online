@@ -1,15 +1,14 @@
 import { useCallback, useState } from 'react';
 
+import Page from 'shared/components/page';
 import { useStore } from 'shared/hooks/store';
 import { actions as userActions } from 'shared/store/modules/user';
 import Avatar from 'shared/ui-components/avatar';
-import Page from 'shared/components/page';
 
-// import ProfileCard from 'app/components/account/profile-card';
-// import PaymentsCard from 'app/components/account/payments-card';
-// import TicketsCard from 'app/components/account/tickets-card';
-// import MeetingsCard from 'app/components/account/meetings-card';
-import ProfileForm from 'app/components/account/profile-form';
+// import ProfileCard from 'lk/components/account/profile-card';
+// import PaymentsCard from 'lk/components/account/payments-card';
+// import TicketsCard from 'lk/components/account/tickets-card';
+// import MeetingsCard from 'lk/components/account/meetings-card';
 
 import './index.scss';
 

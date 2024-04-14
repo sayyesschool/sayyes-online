@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 
-import useMediaStreamTrack from 'app/hooks/useMediaStreamTrack';
-import useVideoTrackDimensions from 'app/hooks/useVideoTrackDimensions';
-import usePictureInPicture from 'app/hooks/usePictureInPicture';
+import useMediaStreamTrack from 'class/hooks/useMediaStreamTrack';
+import usePictureInPicture from 'class/hooks/usePictureInPicture';
+import useVideoTrackDimensions from 'class/hooks/useVideoTrackDimensions';
 
 export default function VideoTrack({ track, local: isLocal, priority }) {
     const elementRef = useRef(null);

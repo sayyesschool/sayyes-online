@@ -1,8 +1,8 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
 const labels = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
-const Schedule = new Schema({
+export const Schedule = new Schema({
     date: { type: String },
     day: { type: Number, min: 0, max: 6 },
     from: { type: String },
@@ -18,4 +18,4 @@ Schedule.virtual('label').get(function() {
     return result;
 });
 
-module.exports = Schedule;
+export default Schedule;
