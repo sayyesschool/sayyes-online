@@ -1,6 +1,6 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Lexicon = new Schema({
+export const Lexicon = new Schema({
     learnerId: { type: Schema.Types.ObjectId, required: true },
     lexemeId: { type: Schema.Types.ObjectId, required: true },
     status: {
@@ -12,4 +12,4 @@ const Lexicon = new Schema({
     reviewDate: { type: Date }
 });
 
-module.exports = Lexicon;
+export default Lexicon;
