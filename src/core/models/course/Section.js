@@ -1,6 +1,6 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Section = new Schema({
+export const Section = new Schema({
     title: { type: String, required: true },
     description: { type: String, default: '' },
     _unit: { type: Schema.Types.ObjectId, required: true },
@@ -42,4 +42,4 @@ Section.virtual('exercises', {
     foreignField: '_id'
 });
 
-module.exports = Section;
+export default Section;

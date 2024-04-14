@@ -1,5 +1,5 @@
-import { createAction, createReducer, combineReducers } from 'shared/store/helpers';
 import datetime from 'shared/libs/datetime';
+import { combineReducers, createAction, createReducer } from 'shared/store/helpers';
 
 export const getLessons = createAction('GET_LESSONS', query => {
     return {

@@ -1,1 +1,2 @@
-module.exports = require('./Lesson');
+export * from './constants';
+export { default, Lesson } from './Lesson';

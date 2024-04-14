@@ -60,6 +60,10 @@
                 "max": 1
             }
         ],
+        "@stylistic/eol-last": [
+            "warn",
+            "never"
+        ],
         "@stylistic/semi": [
             "error",
             "always"
@@ -115,7 +119,12 @@
             }
         ],
         "no-undef": "error",
-        "no-unused-vars": "warn",
+        "no-unused-vars": [
+            "warn",
+            {
+                "args": "none"
+            }
+        ],
         "no-useless-escape": "warn",
         "react/no-deprecated": "warn",
         "react/react-in-jsx-scope": "off",

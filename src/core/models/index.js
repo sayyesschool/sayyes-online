@@ -1,30 +1,36 @@
-const { model } = require('mongoose');
+import { model } from 'mongoose';
 
-const Assignment = require('./assignment');
-const Comment = require('./comment');
-const Course = require('./course');
-const Enrollment = require('./enrollment');
-const Exercise = require('./exercise');
-const Lesson = require('./lesson');
-const Material = require('./material');
-const Meeting = require('./meeting');
-const Pack = require('./pack');
-const Payment = require('./payment');
-const Progress = require('./progress');
-const Request = require('./request');
-const Room = require('./room');
-const Task = require('./task');
-const Transaction = require('./transaction');
-const UserSchema = require('./user');
+import Assignment from './assignment';
+import Comment from './comment';
+import Course from './course';
+import Enrollment from './enrollment';
+import Exercise from './exercise';
+import Lesson from './lesson';
+import Material from './material';
+import Meeting from './meeting';
+import Pack from './pack';
+import Payment from './payment';
+import Progress from './progress';
+import Request from './request';
+import Room from './room';
+import Task from './task';
+import Transaction from './transaction';
+import UserSchema, {
+    Admin as AdminSchema,
+    Editor as EditorSchema,
+    Learner as LearnerSchema,
+    Manager as ManagerSchema,
+    Teacher as TeacherSchema
+} from './user';
 
 const User = model('User', UserSchema);
-const Admin = User.discriminator('Admin', UserSchema.Admin, 'admin');
-const Editor = User.discriminator('Editor', UserSchema.Editor, 'editor');
-const Learner = User.discriminator('Learner', UserSchema.Learner, 'learner');
-const Manager = User.discriminator('Manager', UserSchema.Manager, 'manager');
-const Teacher = User.discriminator('Teacher', UserSchema.Teacher, 'teacher');
+const Admin = User.discriminator('Admin', AdminSchema, 'admin');
+const Editor = User.discriminator('Editor', EditorSchema, 'editor');
+const Learner = User.discriminator('Learner', LearnerSchema, 'learner');
+const Manager = User.discriminator('Manager', ManagerSchema, 'manager');
+const Teacher = User.discriminator('Teacher', TeacherSchema, 'teacher');
 
-module.exports = () => ({
+export default () => ({
     Assignment: model('Assignment', Assignment),
     Comment: model('Comment', Comment),
     Course: model('Course', Course),

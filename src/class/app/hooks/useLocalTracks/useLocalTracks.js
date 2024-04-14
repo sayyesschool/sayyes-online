@@ -1,14 +1,14 @@
 import { useCallback, useState } from 'react';
-import { createLocalAudioTrack, createLocalVideoTrack, createLocalTracks } from 'twilio-video';
+
+import { createLocalAudioTrack, createLocalTracks, createLocalVideoTrack } from 'twilio-video';
 
 import {
     DEFAULT_VIDEO_CONSTRAINTS,
     SELECTED_AUDIO_INPUT_KEY,
     SELECTED_VIDEO_INPUT_KEY
-} from 'app/constants';
-import useAppState from 'app/hooks/useAppState';
-import { useAudioInputDevices, useVideoInputDevices } from 'app/hooks/useDevices';
-import { isPermissionDenied } from 'app/utils';
+} from 'class/constants';
+import { useAudioInputDevices, useVideoInputDevices } from 'class/hooks/useDevices';
+import { isPermissionDenied } from 'class/utils';
 
 // const noiseCancellationOptions = {
 //     sdkAssetsPath: '/noisecancellation',
@@ -96,12 +96,12 @@ export default function useLocalTracks() {
         const localTrackConstraints = {
             audio: {
                 // noiseCancellationOptions,
-                ...(hasSelectedAudioDevice && { deviceId: { exact: selectedAudioDeviceId } }),
+                ...(hasSelectedAudioDevice && { deviceId: { exact: selectedAudioDeviceId } })
             },
             video: {
                 ...DEFAULT_VIDEO_CONSTRAINTS,
                 name: `camera-${Date.now()}`,
-                ...(hasSelectedVideoDevice && { deviceId: { exact: selectedVideoDeviceId } }),
+                ...(hasSelectedVideoDevice && { deviceId: { exact: selectedVideoDeviceId } })
             }
         };
 

@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     Enrollment
 }) => ({
     async getMany(req, res, next) {

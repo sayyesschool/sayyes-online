@@ -1,1 +1,1 @@
-module.exports = require('./Room');
+export { default, Room } from './Room';

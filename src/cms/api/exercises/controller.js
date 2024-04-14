@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     models: { Course, Exercise }
 }) => ({
     getExercise: async (req, res) => {
@@ -45,7 +45,7 @@ module.exports = ({
                 'sections.$[s]._exercises': exercise.id
             }
         }, {
-            arrayFilters: [{ 's._id': exercise.sectionId }],
+            arrayFilters: [{ 's._id': exercise.sectionId }]
         });
 
         res.json({

@@ -4,4 +4,4 @@ import './ChatMessage.scss';
 import './ChatMessageMedia.scss';
 import './ChatMessages.scss';
 
-export { default, default as Chat } from './Chat';
+export { default as Chat, default } from './Chat';

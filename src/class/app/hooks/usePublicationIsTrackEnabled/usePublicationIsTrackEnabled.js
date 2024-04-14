@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function usePublicationIsTrackEnabled(publication) {
     const [isEnabled, setIsEnabled] = useState(publication ? publication.isTrackEnabled : false);

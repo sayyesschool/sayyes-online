@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 export default function useScreenShareToggle(room, onError) {
     const stopScreenShareRef = useRef(null);
@@ -24,7 +24,7 @@ export default function useScreenShareToggle(room, onError) {
                 room.localParticipant
                     .publishTrack(track, {
                         name: 'screen', // Tracks can be named to easily find them later
-                        priority: 'low', // Priority is set to high by the subscriber when the video track is rendered
+                        priority: 'low' // Priority is set to high by the subscriber when the video track is rendered
                     })
                     .then(trackPublication => {
                         stopScreenShareRef.current = () => {

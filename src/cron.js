@@ -1,6 +1,9 @@
-const { CronJob } = require('cron');
+import { CronJob } from 'cron';
 
-const { services: { Meeting } } = require('./core');
+import config from './config';
+import core from './core';
+
+const { services: { Meeting } } = core(config);
 
 new CronJob({
     cronTime: '0 0 9-21 * * *',

@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import ExerciseItem from 'shared/components/exercise-item';
 import PageSection from 'shared/components/page-section';
+import { useBoolean } from 'shared/hooks/state';
 import { Button, Flex, Icon, IconButton, MenuButton } from 'shared/ui-components';
 
-import ExerciseItemForm from 'app/components/courses/exercise-item-form';
+import ExerciseItemForm from 'cms/components/courses/exercise-item-form';
 
 import './index.scss';
 

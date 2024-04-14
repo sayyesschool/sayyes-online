@@ -1,6 +1,6 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Pack = new Schema({
+export const Pack = new Schema({
     age: { type: String, required: true },
     domain: { type: String, required: true },
     teacherType: { type: String },
@@ -15,4 +15,4 @@ Pack.virtual('price').get(function() {
     return Math.ceil((this.numberOfLessons * this.lessonPrice) / 100) * 100;
 });
 
-module.exports = Pack;
+export default Pack;

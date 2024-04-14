@@ -1,15 +1,15 @@
-const { Router } = require('express');
+import { Router } from 'express';
 
-const assignments = require('./assignments');
-const comments = require('./comments');
-const courses = require('./courses');
-const enrollments = require('./enrollments');
-const exercises = require('./exercises');
-const lessons = require('./lessons');
-const materials = require('./materials');
-const progress = require('./progress');
+import assignments from './assignments';
+import comments from './comments';
+import courses from './courses';
+import enrollments from './enrollments';
+import exercises from './exercises';
+import lessons from './lessons';
+import materials from './materials';
+import progress from './progress';
 
-module.exports = context => {
+export default context => {
     const router = Router();
 
     router.use('/assignments', assignments(context));

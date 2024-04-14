@@ -1,6 +1,6 @@
-const expect = require('expect');
+import expect from 'expect';
 
-const { at } = require('../../../helpers');
+import { at } from '../../../helpers.js';
 
 const { models: { Lesson, Room } } = global.$context;
 

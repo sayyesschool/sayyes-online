@@ -1,11 +1,12 @@
-const { rejects } = require('assert/strict');
-const expect = require('expect');
-const moment = require('moment-timezone');
-const { model } = require('mongoose');
+import { rejects } from 'node:assert/strict';
 
-const ScheduleService = require('../../../../src/core/services/schedule');
-const LessonSchema = require('../../../../src/core/models/lesson');
-const RoomSchema = require('../../../../src/core/models/room');
+import expect from 'expect';
+import { tz } from 'moment-timezone';
+import { model } from 'mongoose';
+
+import LessonSchema from '../../../../src/core/models/lesson/Lesson.js';
+import RoomSchema from '../../../../src/core/models/room/Room.js';
+import ScheduleService from '../../../../src/core/services/schedule.js';
 
 const Lesson = model('Lesson', LessonSchema);
 const Room = model('Room', RoomSchema);
@@ -28,12 +29,12 @@ describe('ScheduleService', () => {
         describe('two teachers from the same timezone', () => {
             it('should be able to schedule a lesson at different times', async () => {
                 await scheduleService.scheduleLesson({
-                    date: moment.tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
+                    date: tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
                     duration: 60
                 });
 
                 await scheduleService.scheduleLesson({
-                    date: moment.tz('2023-04-03T12:00', 'Europe/Moscow').toDate(),
+                    date: tz('2023-04-03T12:00', 'Europe/Moscow').toDate(),
                     duration: 60
                 });
 
@@ -44,13 +45,13 @@ describe('ScheduleService', () => {
 
             it('should not be able to schedule a lesson at the same time', async () => {
                 await scheduleService.scheduleLesson({
-                    date: moment.tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
+                    date: tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
                     duration: 60
                 });
 
                 await rejects(async () => {
                     await scheduleService.scheduleLesson({
-                        date: moment.tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
+                        date: tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
                         duration: 60
                     });
                 }, {
@@ -62,12 +63,12 @@ describe('ScheduleService', () => {
         describe('two teachers from different timezones', () => {
             it('should be able to schedule a lesson at different times', async () => {
                 await scheduleService.scheduleLesson({
-                    date: moment.tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
+                    date: tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
                     duration: 60
                 });
 
                 await scheduleService.scheduleLesson({
-                    date: moment.tz('2023-04-03T10:00', 'Asia/Novosibirsk').toDate(),
+                    date: tz('2023-04-03T10:00', 'Asia/Novosibirsk').toDate(),
                     duration: 60
                 });
 
@@ -78,13 +79,13 @@ describe('ScheduleService', () => {
 
             it('should not be able to schedule a lesson at the same time', async () => {
                 await scheduleService.scheduleLesson({
-                    date: moment.tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
+                    date: tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
                     duration: 60
                 });
 
                 await rejects(async () => {
                     await scheduleService.scheduleLesson({
-                        date: moment.tz('2023-04-03T14:00', 'Asia/Novosibirsk').toDate(),
+                        date: tz('2023-04-03T14:00', 'Asia/Novosibirsk').toDate(),
                         duration: 60
                     });
                 }, {
@@ -105,12 +106,12 @@ describe('ScheduleService', () => {
         describe('two teachers from the same timezone', () => {
             it('should be able to schedule a lesson at different times', async () => {
                 const lesson1 = await scheduleService.scheduleLesson({
-                    date: moment.tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
+                    date: tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
                     duration: 60
                 });
 
                 const lesson2 = await scheduleService.scheduleLesson({
-                    date: moment.tz('2023-04-03T12:00', 'Europe/Moscow').toDate(),
+                    date: tz('2023-04-03T12:00', 'Europe/Moscow').toDate(),
                     duration: 60
                 });
 
@@ -120,12 +121,12 @@ describe('ScheduleService', () => {
 
             it('should be able to schedule a lesson at the same time', async () => {
                 const lesson1 = await scheduleService.scheduleLesson({
-                    date: moment.tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
+                    date: tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
                     duration: 60
                 });
 
                 const lesson2 = await scheduleService.scheduleLesson({
-                    date: moment.tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
+                    date: tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
                     duration: 60
                 });
 
@@ -137,12 +138,12 @@ describe('ScheduleService', () => {
         describe('two teachers from different timezones', () => {
             it('should be able to schedule a lesson at different times', async () => {
                 const lesson1 = await scheduleService.scheduleLesson({
-                    date: moment.tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
+                    date: tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
                     duration: 60
                 });
 
                 const lesson2 = await scheduleService.scheduleLesson({
-                    date: moment.tz('2023-04-03T10:00', 'Asia/Novosibirsk').toDate(),
+                    date: tz('2023-04-03T10:00', 'Asia/Novosibirsk').toDate(),
                     duration: 60
                 });
 
@@ -152,12 +153,12 @@ describe('ScheduleService', () => {
 
             it('should be able to schedule a lesson at the same time', async () => {
                 const lesson1 = await scheduleService.scheduleLesson({
-                    date: moment.tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
+                    date: tz('2023-04-03T10:00', 'Europe/Moscow').toDate(),
                     duration: 60
                 });
 
                 const lesson2 = await scheduleService.scheduleLesson({
-                    date: moment.tz('2023-04-03T14:00', 'Asia/Novosibirsk').toDate(),
+                    date: tz('2023-04-03T14:00', 'Asia/Novosibirsk').toDate(),
                     duration: 60
                 });
 

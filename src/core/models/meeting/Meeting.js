@@ -1,9 +1,9 @@
-const { Schema } = require('mongoose');
-const moment = require('moment');
+import moment from 'moment';
+import { Schema } from 'mongoose';
 
-const Registration = require('./Registration');
+import Registration from './Registration';
 
-const Meeting = new Schema({
+export const Meeting = new Schema({
     title: { type: String, required: true, trim: true },
     description: { type: String, trim: true },
     notes: { type: String, trim: true, default: '' },
@@ -12,7 +12,7 @@ const Meeting = new Schema({
     level: { type: String, lowercase: true, enum: ['elementary', 'beginner', 'pre-intermediate', 'intermediate', 'upper-intermediate', 'advanced'], get: value => value[0].toUpperCase() + value.slice(1) },
     capacity: { type: Number },
     status: { type: String, enum: ['scheduled', 'started', 'ended', 'canceled'], default: 'scheduled' },
-    free: { type: Boolean, default: false, },
+    free: { type: Boolean, default: false },
     published: { type: Boolean, default: false },
     image: { type: String },
     zoomId: { type: String },
@@ -62,4 +62,4 @@ Meeting.virtual('participants', {
     foreignField: '_id'
 });
 
-module.exports = Meeting;
+export default Meeting;

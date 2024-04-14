@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+
 import { LocalDataTrack } from 'twilio-video';
 
-import useRoomContext from 'app/hooks/useRoomContext';
+import useRoomContext from 'class/hooks/useRoomContext';
 
 export default function useDataTrack(type) {
     const { room } = useRoomContext();

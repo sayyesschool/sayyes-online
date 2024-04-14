@@ -1,6 +1,6 @@
-import { createAction, createReducer, combineReducers } from 'shared/store/helpers';
+import { combineReducers, createAction, createReducer } from 'shared/store/helpers';
 
-import { createPayment, updatePayment, deletePayment } from './payments';
+import { createPayment, deletePayment, updatePayment } from './payments';
 
 export const getLearners = createAction('GET_LEARNERS', query => ({
     request: {

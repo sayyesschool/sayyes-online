@@ -2,11 +2,11 @@ import { useCallback } from 'react';
 
 import { Dialog, Input, Text } from 'shared/ui-components';
 
-import { inputLabels, RenderDimensions } from 'app/data/settings';
-import useAppState from 'app/hooks/useAppState';
-import useRoomState from 'app/hooks/useRoomState';
+import { inputLabels, RenderDimensions } from 'class/data/settings';
+import useAppState from 'class/hooks/useAppState';
+import useRoomState from 'class/hooks/useRoomState';
 
-const withDefault = (val) => (typeof val === 'undefined' ? 'default' : val);
+const withDefault = val => (typeof val === 'undefined' ? 'default' : val);
 
 function FormControl(props) {
     return (
@@ -39,8 +39,7 @@ export default function ConnectionOptionsDialog({ open, onClose }) {
 
     return (
         <Dialog
-            open={open} onClose={onClose}
-            header="Connection Settings"
+            open={open} header="Connection Settings"
             content={<>
                 <Text hidden={!isDisabled}>These settings cannot be changed when connected to a room.</Text>
 
@@ -165,6 +164,7 @@ export default function ConnectionOptionsDialog({ open, onClose }) {
                 content: 'Применить',
                 onClick: onClose
             }}
+            onClose={onClose}
         />
     );
 }

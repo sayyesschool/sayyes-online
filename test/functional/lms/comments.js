@@ -1,6 +1,6 @@
-const expect = require('expect');
+import expect from 'expect';
 
-module.exports = (api, { models: { Lesson, Room, User } }) =>
+export default (api, { models: { Lesson, Room, User } }) =>
     describe('/comments', () => {
         const user = new User({ firstname: 'User' });
 

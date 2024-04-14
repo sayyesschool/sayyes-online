@@ -1,14 +1,14 @@
-const config = require('../../src/config');
-const db = require('../../src/db');
-const core = require('../../src/core');
+import config from '../../src/config.js';
+import core from '../../src/core/index.js';
+import db from '../../src/db.js';
 
 global.$context = core(config);
 
-exports.mochaGlobalSetup = async function () {
+export async function mochaGlobalSetup () {
     await db.connect('mongodb://localhost:27017/sayyes-test');
-};
+}
 
-exports.mochaGlobalTeardown = async function () {
+export async function mochaGlobalTeardown () {
     await db.drop();
     await db.disconnect();
-};
+}

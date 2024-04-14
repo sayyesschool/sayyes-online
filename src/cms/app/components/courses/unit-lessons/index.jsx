@@ -1,12 +1,12 @@
 import { useCallback, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
+import { useBoolean } from 'shared/hooks/state';
 
-import LessonForm from 'app/components/courses/lesson-form';
-import LessonsList from 'app/components/courses/lessons-list';
+import LessonForm from 'cms/components/courses/lesson-form';
+import LessonsList from 'cms/components/courses/lessons-list';
 
 export default function UnitLessons({ unit, onCreate, onDelete, onReorder }) {
     const [lesson, setLesson] = useState();

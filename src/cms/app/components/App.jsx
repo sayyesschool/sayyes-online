@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
-import AppHeader from 'shared/components/app-header';
 import AppContent from 'shared/components/app-content';
+import AppHeader from 'shared/components/app-header';
 import AppNotification from 'shared/components/app-notification';
 import LoadingIndicator from 'shared/components/loading-indicator';
 
-import { useStore, useActions } from 'app/store';
-import UI from 'app/contexts/ui';
+import UI from 'cms/contexts/ui';
+import { useActions, useStore } from 'cms/store';
 
 import './App.scss';
 

@@ -1,15 +1,15 @@
-const { Schema } = require('mongoose');
-const moment = require('moment');
+import moment from 'moment';
+import { Schema } from 'mongoose';
 
-const { Status, StatusLabel, StatusIcon, Operator } = require('./constants');
-const PaymentMethod = require('./PaymentMethod');
+import { PaymentOperator, PaymentStatus, PaymentStatusIcon, PaymentStatusLabel } from './constants';
+import PaymentMethod from './PaymentMethod';
 
-const Payment = new Schema({
+export const Payment = new Schema({
     uuid: { type: String },
     amount: { type: Number, default: 0, min: 0, required: true },
     currency: { type: String, default: 'RUB' },
-    status: { type: String, required: true, enum: Object.keys(Status) },
-    operator: { type: String, enum: Object.keys(Operator) },
+    status: { type: String, required: true, enum: Object.keys(PaymentStatus) },
+    operator: { type: String, enum: Object.keys(PaymentOperator) },
     description: { type: String, trim: true },
     confirmationUrl: { type: String },
     method: PaymentMethod,
@@ -35,12 +35,12 @@ Payment.virtual('dateLabel')
 
 Payment.virtual('statusLabel')
     .get(function() {
-        return StatusLabel[this.status];
+        return PaymentStatusLabel[this.status];
     });
 
 Payment.virtual('statusIcon')
     .get(function() {
-        return StatusIcon[this.status];
+        return PaymentStatusIcon[this.status];
     });
 
 Payment.virtual('isPending').get(function() {
@@ -73,4 +73,4 @@ Payment.methods.getResolveUrl = function(paymentId) {
         `/user/payments/${paymentId}`;
 };
 
-module.exports = Payment;
+export default Payment;

@@ -1,9 +1,10 @@
-import EventEmitter from 'events';
-import Video from 'twilio-video';
-import { act, renderHook } from '@testing-library/react-hooks';
+import EventEmitter from 'node:events';
 
-import { mockRoom } from 'app/__mocks__/twilio-video';
-import * as utils from 'app/utils';
+import { act, renderHook } from '@testing-library/react-hooks';
+import Video from 'twilio-video';
+
+import { mockRoom } from 'class/__mocks__/twilio-video';
+import * as utils from 'class/utils';
 
 import useRoom from './useRoom';
 
@@ -14,7 +15,7 @@ describe('useRoom', () => {
     afterEach(() => mockRoom.removeAllListeners());
 
     it('should return an empty room when no token is provided', () => {
-        const { result } = renderHook(() => useRoom([], () => { }, {})); s;
+        const { result } = renderHook(() => useRoom([], () => { }, {}));
 
         expect(result.current.room).toEqual(new EventEmitter());
     });
@@ -94,6 +95,7 @@ describe('useRoom', () => {
     });
 
     describe('when isMobile is true', () => {
+        // eslint-disable-next-line no-import-assign
         utils.isMobile = true;
 
         it('should add a listener for the "pagehide" event when connected to a room', async () => {

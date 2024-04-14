@@ -1,5 +1,5 @@
 @use 'shared/styles/variables';
-@use 'bootstrap' with (
+@use 'bootstrap/scss/bootstrap' with (
     $primary: variables.$primary-color,
     $font-family-sans-serif: variables.$font-family
 );

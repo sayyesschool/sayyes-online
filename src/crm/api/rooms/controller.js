@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     models: { Room }
 }) => ({
     get: (req, res, next) => {

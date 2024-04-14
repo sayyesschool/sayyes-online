@@ -1,5 +1,7 @@
-const moment = require('moment');
-const { Types: { ObjectId }, isValidObjectId } = require('mongoose');
+import moment from 'moment';
+import { isValidObjectId, Types } from 'mongoose';
+
+const { ObjectId } = Types;
 
 const registrationActionToStatus = {
     approve: 'approved',
@@ -7,7 +9,7 @@ const registrationActionToStatus = {
     deny: 'denied'
 };
 
-module.exports = (Zoom, { Meeting, Ticket }, { Checkout, Mail, Newsletter }) => ({
+export default (Zoom, { Meeting, Ticket }, { Checkout, Mail, Newsletter }) => ({
     getMeetings(...args) {
         return Meeting.find(...args)
             .populate('host', 'firstname lastname avatarUrl');
@@ -309,7 +311,7 @@ module.exports = (Zoom, { Meeting, Ticket }, { Checkout, Mail, Newsletter }) => 
                     name: `${registration.registrant.firstname} ${registration.registrant.lastname}`,
                     email: registration.registrant.email
                 }],
-                subject: `Заявка на участие во встрече отклонена`,
+                subject: 'Заявка на участие во встрече отклонена',
                 templateId: 1377309,
                 variables: {
                     firstname: registration.registrant.firstname,

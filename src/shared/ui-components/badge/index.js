@@ -1,2 +1,2 @@
 import './Badge.scss';
-export { default, default as Badge } from './Badge';
+export { default as Badge, default } from './Badge';

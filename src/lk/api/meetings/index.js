@@ -1,11 +1,11 @@
-const { Router } = require('express');
+import { Router } from 'express';
 
-const Controller = require('./controller');
-const mapMeeting = require('./mapper');
+import Controller from './controller';
+import * as mappers from './mappers';
 
-module.exports = context => {
+export default context => {
     const router = Router();
-    const controller = Controller(context, { mapMeeting });
+    const controller = Controller(context, mappers);
 
     router.param('meetingId', controller.find);
 

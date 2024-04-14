@@ -1,12 +1,12 @@
 import { useCallback, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
+import { useBoolean } from 'shared/hooks/state';
 
-import SectionForm from 'app/components/courses/section-form';
-import SectionsList from 'app/components/courses/sections-list';
+import SectionForm from 'cms/components/courses/section-form';
+import SectionsList from 'cms/components/courses/sections-list';
 
 export default function LessonSections({
     lesson,

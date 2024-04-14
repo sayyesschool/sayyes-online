@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import useRoomContext from 'app/hooks/useRoomContext';
+import useRoomContext from 'class/hooks/useRoomContext';
 
 export default function useRoomState() {
     const { room } = useRoomContext();

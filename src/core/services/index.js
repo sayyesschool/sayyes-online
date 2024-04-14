@@ -1,13 +1,13 @@
-const Auth = require('./auth');
-const Checkout = require('./checkout');
-const Club = require('./club');
-const File = require('./file');
-const Mail = require('./mail');
-const Newsletter = require('./newsletter');
-const Schedule = require('./schedule');
-const Storage = require('./storage');
+import Auth from './auth';
+import Checkout from './checkout';
+import Club from './club';
+import File from './file';
+import Mail from './mail';
+import Newsletter from './newsletter';
+import Schedule from './schedule';
+import Storage from './storage';
 
-module.exports = (config, lib, models) => {
+export default (config, lib, models) => {
     const mail = Mail(lib.mailjet);
     const newsletter = Newsletter(lib.mailjet);
     const auth = Auth(models, {

@@ -1,11 +1,11 @@
-const configureLibs = require('./libs');
-const configureModels = require('./models');
-const configureServices = require('./services');
+import Libs from './libs';
+import Models from './models';
+import Services from './services';
 
-module.exports = config => {
-    const libs = configureLibs(config);
-    const models = configureModels();
-    const services = configureServices(config, libs, models);
+export default config => {
+    const libs = Libs(config);
+    const models = Models(config);
+    const services = Services(config, libs, models);
 
     return {
         config,

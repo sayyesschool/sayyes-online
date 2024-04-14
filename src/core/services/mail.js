@@ -3,7 +3,7 @@ const FROM = {
     name: 'SAY YES English School'
 };
 
-module.exports = mailClient => {
+export default mailClient => {
     return {
         send({ from = FROM, to, subject, text, html, templateId, variables }) {
             return mailClient

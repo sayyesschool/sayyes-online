@@ -1,6 +1,6 @@
-module.exports = ({
+export default ({
     models: { Meeting, Ticket },
-    services: { Club },
+    services: { Club }
 }, { mapMeeting, mapTicket }) => ({
     find: (req, res, next, id) => {
         Club.getMeeting(id)
@@ -20,7 +20,7 @@ module.exports = ({
 
     getMany: (req, res, next) => {
         Club.getMeetings({
-            published: true,
+            published: true
         })
             .then(meetings => {
                 res.json({

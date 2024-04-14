@@ -1,11 +1,11 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Person = require('./Person');
+import Person from './Person';
 
-const Contact = new Schema([Person, {
+export const Contact = new Schema([Person, {
     relation: { type: String },
     occupation: { type: String },
     note: { type: String, trim: true }
 }]);
 
-module.exports = Contact;
+export default Contact;

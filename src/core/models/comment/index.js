@@ -1,1 +1,1 @@
-module.exports = require('./Comment');
+export { Comment, default } from './Comment';

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
 import { SyncClient } from 'twilio-sync';
 
 export function useSync(token) {
@@ -16,7 +17,7 @@ export function useSync(token) {
             //     component.addParticipant(identity);
             // } else {
             //   component.setState({
-            //     status:'error', 
+            //     status:'error',
             //     errorMessage:`Error: expected connected status but got ${state}`
             //   });
             // }

@@ -1,6 +1,6 @@
-const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 
-class Storage {
+export default class Storage {
     constructor({ accessKeyId, secretAccessKey, endpoint, region, bucket }) {
         this.endpoint = endpoint;
         this.bucket = bucket;
@@ -45,5 +45,3 @@ class Storage {
         });
     }
 }
-
-module.exports = Storage;

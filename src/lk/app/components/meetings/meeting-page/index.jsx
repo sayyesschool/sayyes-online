@@ -1,30 +1,22 @@
 import { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
-import {
-    Card,
-    Banner,
-    Button,
-    ChipSet, Chip,
-    FAB,
-    Icon,
-    Layout,
-    LayoutGrid,
-    Typography
-} from 'mdc-react';
 
-import { STATIC_URL } from 'shared/constants';
-import { useMeeting } from 'shared/hooks/meetings';
+// import {
+//     Button,
+//     Card,
+//     Chip,
+//     FAB,
+//     Icon,
+//     LayoutGrid,
+//     Typography
+// } from 'mdc-react';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
-import PageContent from 'shared/components/page-content';
-import MeetingRegisterDialog from 'app/components/meetings/meeting-register-dialog';
-import MeetingLevelDialog from 'app/components/meetings/meeting-level-dialog';
+import { useMeeting } from 'shared/hooks/meetings';
 
 import './index.scss';
 
 export default function MeetingPage({ match }) {
-    const [meeting] = useMeeting(match.params.id);
+    const [meeting, actions] = useMeeting(match.params.id);
 
     const [isLevelDialogOpen, setLevelDialogOpen] = useState(false);
     const [isRegisterDialogOpen, setRegisterDialogOpen] = useState(false);
@@ -52,9 +44,9 @@ export default function MeetingPage({ match }) {
 
     return (
         <Page id="meeting-page">
-            <PageHeader
+            {/* <PageHeader
                 breadcrumbs={[
-                    <Link to="/meetings">Разговорный клуб</Link>
+                    <Link key="meetings" to="/meetings">Разговорный клуб</Link>
                 ]}
                 title={meeting.title}
                 actions={
@@ -133,7 +125,7 @@ export default function MeetingPage({ match }) {
                 open={isRegisterDialogOpen}
                 onSubmit={handleSubmit}
                 onClose={() => setRegisterDialogOpen(false)}
-            />
+            /> */}
         </Page>
     );
 }

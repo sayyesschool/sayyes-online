@@ -1,7 +1,7 @@
-const { Schema } = require('mongoose');
-const moment = require('moment');
+import moment from 'moment';
+import { Schema } from 'mongoose';
 
-const Transaction = new Schema({
+export const Transaction = new Schema({
     type: { type: String, required: true, enum: ['debit', 'credit'] },
     amount: { type: Number, default: 0, min: 0, required: true },
     currency: { type: String, default: 'RUB' },
@@ -44,4 +44,4 @@ Transaction.virtual('enrollment', {
     justOne: true
 });
 
-module.exports = Transaction;
+export default Transaction;

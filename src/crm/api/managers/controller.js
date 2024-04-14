@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     models: { Manager }
 }) => ({
     get: (req, res, next) => {

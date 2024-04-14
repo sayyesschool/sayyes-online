@@ -1,8 +1,8 @@
-const MailJet = require('./mailjet');
-const Twilio = require('./twilio');
-const Zoom = require('./zoom');
+import MailJet from './mailjet';
+import Twilio from './twilio';
+import Zoom from './zoom';
 
-module.exports = config => ({
+export default config => ({
     mailjet: MailJet(config),
     twilio: Twilio(config),
     zoom: Zoom(config)

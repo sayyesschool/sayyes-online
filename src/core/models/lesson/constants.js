@@ -1,17 +1,12 @@
-const LessonType = {
+export const LessonType = {
     Online: 'online',
     Offline: 'offline'
 };
 
-const LessonStatus = {
+export const LessonStatus = {
     Canceled: 'canceled',
     Ended: 'ended',
     Missed: 'missed',
     Scheduled: 'scheduled',
     Started: 'started'
-};
-
-module.exports = {
-    LessonType,
-    LessonStatus
 };

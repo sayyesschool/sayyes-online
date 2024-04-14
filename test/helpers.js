@@ -1,21 +1,18 @@
-const { Types } = require('mongoose');
-const sinon = require('sinon');
+import { Types } from 'mongoose';
+import { addBehavior, stub } from 'sinon';
 
-sinon.addBehavior('returnsQuery', (fake, value) => {
+addBehavior('returnsQuery', (fake, value) => {
     fake.returns({
-        sort: sinon.stub().returnsThis(),
-        populate: sinon.stub().returnsThis(),
+        sort: stub().returnsThis(),
+        populate: stub().returnsThis(),
         then: fn => fn(value)
     });
 });
 
-function at(time = '00:00') {
+export function at(time = '00:00') {
     return `2022-01-01T${time}:00Z`;
 }
 
-function createId() {
+export function createId() {
     return new Types.ObjectId();
 }
-
-module.exports.at = at;
-module.exports.createId = createId;

@@ -1,18 +1,18 @@
 import { useCallback } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
-import { use } from 'shared/hooks/courses';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import EditableText from 'shared/components/editable-text';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useAll } from 'shared/hooks/courses';
+import { useBoolean } from 'shared/hooks/state';
 import { Grid } from 'shared/ui-components';
 
-import UnitDescription from 'app/components/courses/unit-description';
-import UnitLessons from 'app/components/courses/unit-lessons';
+import UnitDescription from 'cms/components/courses/unit-description';
+import UnitLessons from 'cms/components/courses/unit-lessons';
 
 export default function UnitPage({ match, history }) {
-    const { course, unit, actions } = use(match.params);
+    const { course, unit, actions } = useAll(match.params);
 
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 

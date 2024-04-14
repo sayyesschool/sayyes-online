@@ -1,1 +1,1 @@
-module.exports = require('./Transaction');
+export { default } from './Transaction';
