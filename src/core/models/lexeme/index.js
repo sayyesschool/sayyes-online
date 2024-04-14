@@ -1,1 +1,1 @@
-module.exports = require('./Lexeme');
+export { default, Lexeme } from './Lexeme';

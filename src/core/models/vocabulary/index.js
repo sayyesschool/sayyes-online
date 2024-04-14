@@ -1,1 +1,1 @@
-module.exports = require('./Vocabulary');
+export { default, Vocabulary } from './Vocabulary';

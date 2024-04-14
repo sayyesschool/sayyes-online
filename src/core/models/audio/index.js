@@ -1,1 +1,1 @@
-module.exports = require('./Audio');
+export { Audio, default } from './Audio';

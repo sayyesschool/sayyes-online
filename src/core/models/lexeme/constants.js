@@ -1,8 +1,4 @@
-const LexemeType = {
+export const LexemeType = {
     Word: 'word',
     Phrase: 'phrase'
-};
-
-module.exports = {
-    LexemeType
 };

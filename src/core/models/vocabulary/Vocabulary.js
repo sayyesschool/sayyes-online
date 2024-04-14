@@ -1,8 +1,8 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Image = require('../image');
+import Image from '../image';
 
-const Vocabulary = new Schema({
+export const Vocabulary = new Schema({
     title: { type: String },
     description: { type: String },
     image: { type: Image },
@@ -18,4 +18,4 @@ Vocabulary.virtual('numberOfItems').get(function() {
     return this.lexemes.length;
 });
 
-module.exports = Vocabulary;
+export default Vocabulary;

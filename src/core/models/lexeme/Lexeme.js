@@ -1,12 +1,12 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Audio = require('../audio');
-const { Level } = require('../common');
-const Image = require('../image');
+import Audio from '../audio';
+import { Level } from '../common';
+import Image from '../image';
 
-const { LexemeType } = require('./constants');
+import { LexemeType } from './constants';
 
-const Lexeme = new Schema({
+export const Lexeme = new Schema({
     value: { type: String, required: true },
     type: {
         type: String,
@@ -25,4 +25,4 @@ const Lexeme = new Schema({
     timestamps: true
 });
 
-module.exports = Lexeme;
+export default Lexeme;
