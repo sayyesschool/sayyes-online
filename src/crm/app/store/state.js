@@ -8,7 +8,7 @@ export default {
         list: null,
         single: null
     },
-    
+
     learners: {
         list: null,
         single: null

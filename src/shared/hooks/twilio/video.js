@@ -1,4 +1,5 @@
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+
 import { createLocalVideoTrack } from 'twilio-video';
 
 export function useLocalVideo() {

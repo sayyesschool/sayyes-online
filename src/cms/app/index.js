@@ -3,11 +3,12 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import ErrorBoundary from 'shared/components/error-boundary';
 import { StoreProvider } from 'shared/store';
-import { ThemeProvider, theme } from 'shared/theme';
+import { theme, ThemeProvider } from 'shared/theme';
 
-import store from './store';
-import routes from './routes';
 import App from './components/App';
+
+import routes from './routes';
+import store from './store';
 
 import './index.scss';
 

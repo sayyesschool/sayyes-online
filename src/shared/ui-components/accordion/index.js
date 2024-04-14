@@ -1,3 +1,3 @@
 import './Accordion.scss';
 
-export { default, default as Accordion } from './Accordion';
+export { default as Accordion, default } from './Accordion';

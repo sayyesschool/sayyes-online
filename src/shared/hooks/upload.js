@@ -2,8 +2,9 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import storage from 'shared/services/storage';
 
-export function useFileUpload({ accept, path }) {
+export function useFileUpload({ accept, path, src, onChange }) {
     const inputRef = useRef();
+    const altInputRef = useRef();
 
     // useImperativeHandle(ref, () => ({
     //     get input() { return inputRef.current; },
