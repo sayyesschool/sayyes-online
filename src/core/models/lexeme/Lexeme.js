@@ -25,4 +25,10 @@ export const Lexeme = new Schema({
     timestamps: true
 });
 
+Lexeme.virtual('data', {
+    ref: 'Lexicon',
+    localField: '_id',
+    foreignField: 'lexemeId'
+});
+
 export default Lexeme;
