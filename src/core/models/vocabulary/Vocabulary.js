@@ -18,4 +18,10 @@ Vocabulary.virtual('numberOfItems').get(function() {
     return this.lexemes.length;
 });
 
+Vocabulary.virtual('lexemes', {
+    ref: 'Lexeme',
+    localField: 'lexemeIds',
+    foreignField: '_id'
+});
+
 export default Vocabulary;
