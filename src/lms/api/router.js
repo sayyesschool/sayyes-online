@@ -8,6 +8,7 @@ import exercises from './exercises';
 import lessons from './lessons';
 import materials from './materials';
 import progress from './progress';
+import vocabularies from './vocabularies';
 
 export default context => {
     const router = Router();
@@ -20,6 +21,7 @@ export default context => {
     router.use('/lessons', lessons(context));
     router.use('/materials', materials(context));
     router.use('/progress', progress(context));
+    router.use('/vocabularies', vocabularies(context));
 
     router.use((error, req, res, next) => {
         console.error(error);
