@@ -7,6 +7,7 @@ import Enrollment from './enrollment';
 import Exercise from './exercise';
 import Lesson from './lesson';
 import Lexeme from './lexeme';
+import Lexicon from './lexicon';
 import Material from './material';
 import Meeting from './meeting';
 import Pack from './pack';
@@ -38,6 +39,7 @@ export default () => ({
     Course: model('Course', Course),
     Enrollment: model('Enrollment', Enrollment),
     Exercise: model('Exercise', Exercise),
+    Lexicon: model('Lexicon', Lexicon, 'lexicon'),
     Lexeme: model('Lexeme', Lexeme),
     Lesson: model('Lesson', Lesson),
     Material: model('Material', Material),
