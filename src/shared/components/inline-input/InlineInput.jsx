@@ -2,8 +2,6 @@ import { useCallback, useState } from 'react';
 
 import classnames from 'shared/utils/classnames';
 
-import './index.scss';
-
 export default function InlineInput({
     id,
     value: _value = '',

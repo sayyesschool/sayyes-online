@@ -1,0 +1,27 @@
+@use 'shared/styles/variables';
+
+.Page.Vocabulary  {
+  .PageContent {
+    max-width: 980px;
+  }
+}
+
+.Vocabulary {
+  .InlineInput {
+    width: 220px;
+  }
+
+  &__header {
+    border: 1px solid lighten(variables.$text-color, 50%);
+    border-radius: 10px;
+    padding: 5px 12px;
+
+    // flex-direction: row;
+    // justify-content: space-between;
+    // align-items: center;
+  }
+
+  &__select {
+    width: 240px;
+  }
+}

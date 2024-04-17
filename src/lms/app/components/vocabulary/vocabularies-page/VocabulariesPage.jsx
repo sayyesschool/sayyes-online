@@ -167,7 +167,7 @@ const extraVocabularies2 = [{
 
 export default function VocabulariesPage() {
     return (
-        <Page className="VocabularyPage">
+        <Page className="VocabulariesPage">
             <Page.Content>
                 <Page.Header
                     title="Мой словарь"
@@ -206,4 +206,3 @@ export default function VocabulariesPage() {
         </Page>
     );
 };
-
