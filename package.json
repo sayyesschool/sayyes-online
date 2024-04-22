@@ -18,7 +18,7 @@
     "lint": "eslint ./src",
     "prestart": "npm run build",
     "start": "node --import ./loaders/register.cjs src/main.js",
-    "start-dev": "nodemon --import ./loaders/register.cjs -r dotenv/config ./src/main.js",
+    "start-dev": "nodemon --import=./loaders/register.cjs -r dotenv/config ./src/main.js",
     "test": "mocha -r dotenv/config",
     "test:unit": "npm test -- -r ./test/helpers.js",
     "test:functional": "npm test -- -r ./test/functional/setup.js"
@@ -87,6 +87,7 @@
     "@stylistic/eslint-plugin": "^1.7.0",
     "@stylistic/eslint-plugin-jsx": "^1.7.0",
     "@types/d3-timer": "^1.0.9",
+    "@types/expect": "^1.20.4",
     "@types/fscreen": "^1.0.1",
     "@types/jest": "^24.9.1",
     "@types/node": "^12.12.26",

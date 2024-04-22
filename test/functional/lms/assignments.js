@@ -1,24 +1,24 @@
 export default (api, { models: { Comment } }) =>
-    describe('/comments', () => {
-        xdescribe('POST /', () => {
+    xdescribe('/assignments', () => {
+        describe('POST /', () => {
             it('should create a comment', async () => {
 
             });
         });
 
-        xdescribe('GET /:id', () => {
+        describe('GET /:id', () => {
             it('should get a comment by id', async () => {
 
             });
         });
 
-        xdescribe('PUT /:id', () => {
+        describe('PUT /:id', () => {
             it('should update a comment', async () => {
 
             });
         });
 
-        xdescribe('DELETE /:id', () => {
+        describe('DELETE /:id', () => {
             it('should delete an comment', async () => {
 
             });

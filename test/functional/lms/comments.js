@@ -1,9 +1,7 @@
 import expect from 'expect';
 
-export default (api, { models: { Lesson, Room, User } }) =>
+export default (api, { models: { Lesson, Room }, user }) =>
     describe('/comments', () => {
-        const user = new User({ firstname: 'User' });
-
         describe('GET /', () => {
             it('should return a list of user\'s lessons', async () => {
                 await Lesson.create([

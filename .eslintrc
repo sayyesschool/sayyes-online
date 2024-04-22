@@ -149,6 +149,9 @@
                         "[app|class|cms|core|crm|lk|lms]/."
                     ],
                     [
+                        "@/[app|class|cms|core|crm|lk|lms]/."
+                    ],
+                    [
                         // Parent imports. Put `..` last.
                         "^\\.\\.(?!/?$)",
                         "^\\.\\./?$"

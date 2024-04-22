@@ -7,6 +7,8 @@ import api from './api';
 
 const ALLOWED_ROLES = ['learner', 'teacher'];
 
+export { api };
+
 export default context => {
     const app = express();
 
