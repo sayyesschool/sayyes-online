@@ -1,6 +1,6 @@
-import config from '../../src/config.js';
-import core from '../../src/core/index.js';
-import db from '../../src/db.js';
+import config from '@/config';
+import core from '@/core';
+import db from '@/db';
 
 global.$context = core(config);
 
