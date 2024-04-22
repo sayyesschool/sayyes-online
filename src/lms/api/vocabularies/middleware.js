@@ -1,8 +1,8 @@
 export default ({
     models: { Vocabulary }
 }) => ({
-    async fineOne(req, res, next) {
-        const vocabulary = await Vocabulary.findOneById(req.params.id);
+    async findOne(req, res, next, id) {
+        const vocabulary = await Vocabulary.findById(id);
 
         if (!vocabulary) throw {
             code: 404,
@@ -10,5 +10,7 @@ export default ({
         };
 
         req.vocabulary = vocabulary;
+
+        next();
     }
 });
