@@ -6,6 +6,11 @@ import Image from '../image';
 
 import { LexemeType } from './constants';
 
+const TextWithTranslation = new Schema({
+    text: { type: String, require: true },
+    translation: { type: String }
+});
+
 export const Lexeme = new Schema({
     value: { type: String, required: true },
     type: {
@@ -18,17 +23,19 @@ export const Lexeme = new Schema({
     audio: { type: Audio },
     level: { type: Number, enum: Object.values(Level) },
     frequency: { type: Number, min: 0, max: 1 },
-    definitions: { type: [String] },
-    translations: { type: [String] },
-    examples: { type: [String] }
+    definition: { type: String, required: true },
+    translations: { type: [TextWithTranslation] },
+    examples: { type: [TextWithTranslation] },
+    createdBy: { type: Schema.Types.ObjectId }
 }, {
     timestamps: true
 });
 
 Lexeme.virtual('data', {
-    ref: 'Lexicon',
+    ref: 'Record',
     localField: '_id',
-    foreignField: 'lexemeId'
+    foreignField: 'lexemeId',
+    justOne: true
 });
 
 export default Lexeme;

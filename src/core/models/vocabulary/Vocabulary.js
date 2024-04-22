@@ -2,7 +2,19 @@ import { Schema } from 'mongoose';
 
 import Image from '../image';
 
+const VocabularyType = {
+    Default: 'default',
+    Custom: 'custom',
+    Course: 'course',
+    Extra: 'extra'
+};
+
 export const Vocabulary = new Schema({
+    type: {
+        type: String,
+        enum: Object.values(VocabularyType),
+        default: VocabularyType.Default
+    },
     title: { type: String },
     description: { type: String },
     image: { type: Image },
@@ -15,7 +27,7 @@ export const Vocabulary = new Schema({
 });
 
 Vocabulary.virtual('numberOfItems').get(function() {
-    return this.lexemes.length;
+    return this.lexemeIds?.length;
 });
 
 Vocabulary.virtual('lexemes', {
