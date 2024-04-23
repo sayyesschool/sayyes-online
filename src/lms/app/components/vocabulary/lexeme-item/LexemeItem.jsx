@@ -2,8 +2,9 @@ import Typography from '@mui/joy/Typography';
 
 import { Checkbox, IconButton, ListItem } from 'shared/ui-components';
 
-export default function LexemeItem({ lexeme, handleDeleteLexeme, setCurrentLexeme, toggleDialogOpen }) {
+export default function LexemeItem({ lexeme, userId, handleDeleteLexeme, setCurrentLexeme, toggleDialogOpen }) {
     const { value, translations } = lexeme;
+    const isAuthor = userId !== lexeme?.createdBy;
 
     const openModal = () => {
         toggleDialogOpen();
@@ -41,6 +42,7 @@ export default function LexemeItem({ lexeme, handleDeleteLexeme, setCurrentLexem
                 icon="edit"
                 title='Редактировать слово'
                 className="EditBtn"
+                disabled={isAuthor}
                 onClick={openModal}
             />
 
@@ -51,6 +53,7 @@ export default function LexemeItem({ lexeme, handleDeleteLexeme, setCurrentLexem
                 icon="delete"
                 title='Архивировать слово'
                 className="DeleteBtn"
+                disabled={isAuthor}
                 onClick={deleteLexeme}
             />
         </ListItem>

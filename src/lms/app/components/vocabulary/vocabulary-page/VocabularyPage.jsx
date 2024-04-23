@@ -5,6 +5,7 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { useForm } from 'shared/hooks/form';
 import { useBoolean } from 'shared/hooks/state';
+import { useUser } from 'shared/hooks/user';
 import { useVocabulary } from 'shared/hooks/vocabularies';
 import { Button, Checkbox, Flex, Form, Icon, List, Select } from 'shared/ui-components';
 
@@ -15,7 +16,9 @@ export default function VocabularyPage({ match }) {
     const vocabularyId = match.params.vocabulary;
     const [isDialogOpen, toggleDialogOpen] = useBoolean(false);
     const [currentLexeme, setCurrentLexeme] = useState(null);
+    const [user] =  useUser();
     const [vocabulary, actions] = useVocabulary(vocabularyId);
+    const userId = user.id;
 
     const handleDeleteLexeme = useCallback(lexemeId => {
         return actions.deleteLexeme(vocabularyId, lexemeId);
@@ -39,6 +42,8 @@ export default function VocabularyPage({ match }) {
     });
 
     if (!vocabulary) return <LoadingIndicator />;
+
+    console.log(111, { vocabulary, user });
 
     const { title, lexemes, numberOfLexemes } = vocabulary;
     const vocabularyTitle = `${title} (${numberOfLexemes})`;
@@ -95,6 +100,7 @@ export default function VocabularyPage({ match }) {
                     {lexemes?.map(lexeme =>
                         <LexemeItem
                             key={lexeme.id}
+                            userId={userId}
                             lexeme={lexeme}
                             handleDeleteLexeme={handleDeleteLexeme}
                             setCurrentLexeme={setCurrentLexeme}
