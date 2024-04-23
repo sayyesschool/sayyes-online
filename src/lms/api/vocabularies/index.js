@@ -8,19 +8,18 @@ export default context => {
     const controller = Controller(context);
     const middleware = Middleware(context);
 
+    router.param('vocabularyId', middleware.findOne);
+
     router.route('/')
         .get(controller.getMany)
-        .create(controller.create);
+        .post(controller.create);
 
-    router.route('/:id')
-        .use(middleware.fineOne)
-        .get(controller.get)
-        .post(controller.create)
+    router.route('/:vocabularyId')
+        .get(controller.getOne)
         .put(controller.update)
         .delete(controller.delete);
 
-    router.route('/:vocabularyId/:lexemeId?')
-        .use(middleware.fineOne)
+    router.route('/:vocabularyId/lexemes/:lexemeId?')
         .post(controller.addLexeme)
         .put(controller.updateLexeme)
         .delete(controller.removeLexeme);

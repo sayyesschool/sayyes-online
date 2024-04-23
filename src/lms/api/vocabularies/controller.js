@@ -1,5 +1,5 @@
 export default ({
-    models: { Lexeme, Lexicon, Vocabulary }
+    models: { Lexeme, LexiconRecord, Vocabulary }
 }) => ({
     async getMany(req, res) {
         const vocabularies = await Vocabulary.find({
@@ -14,9 +14,16 @@ export default ({
 
     async getOne(req, res) {
         const vocabulary = await req.vocabulary.populate({
-            path: 'lexeme',
+            path: 'lexemes',
             populate: {
-                path: 'data'
+                path: 'data',
+                match: {
+                    learnerId: req.user.id
+                },
+                transform: record => ({
+                    status: record.status,
+                    reviewDate: record.reviewDate
+                })
             }
         });
 
@@ -41,12 +48,13 @@ export default ({
     },
 
     async update(req, res) {
-        const vocabulary = await Vocabulary.findByIdAndUpdate(req.params.id, {
+        const vocabulary = await Vocabulary.findByIdAndUpdate(req.params.vocabularyId, {
             title: req.body.title,
             description: req.body.description,
             image: req.body.image
         }, {
-            new: true
+            new: true,
+            select: Object.keys(req.body).join(' ')
         });
 
         res.json({
@@ -56,7 +64,7 @@ export default ({
     },
 
     async delete(req, res) {
-        const vocabulary = await Vocabulary.findByIdAndDelete(req.params.id);
+        const vocabulary = await Vocabulary.findByIdAndDelete(req.params.vocabularyId);
 
         res.json({
             ok: true,
@@ -74,12 +82,12 @@ export default ({
         } else {
             lexeme = await Lexeme.create({
                 value: req.body.value,
-                translations: [req.body.translation],
-                authorId: req.user.id
+                definition: req.body.definition,
+                createdBy: req.user.id
             });
         }
 
-        await Lexicon.create({
+        const record = await LexiconRecord.create({
             lexemeId: lexeme.id,
             learnerId: req.user.id
         });
@@ -87,6 +95,8 @@ export default ({
         const data = lexeme.toJSON();
 
         data.vocabularyId = req.vocabulary.id;
+        data.status = record.status;
+        data.reviewDate = record.reviewDate;
 
         res.json({
             ok: true,
@@ -95,11 +105,19 @@ export default ({
     },
 
     async updateLexeme(req, res) {
-        const lexeme = await Lexeme.findByIdAndUpdate(req.params.lexemeId, {
-            translation: [req.body.translation]
+        const lexeme = await Lexeme.findOneAndUpdate({
+            _id: req.params.lexemeId,
+            createdBy: req.user.id
+        }, {
+            definition: req.body.definition
         }, {
             new: true
         });
+
+        if (!lexeme) throw {
+            code: 404,
+            message: 'Не найдено'
+        };
 
         const data = lexeme.toJSON();
 
@@ -112,7 +130,15 @@ export default ({
     },
 
     async removeLexeme(req, res) {
-        const lexeme = await Lexeme.findByIdAndDelete(req.params.lexemeId);
+        const lexeme = await Lexeme.findOneAndDelete({
+            _id: req.params.lexemeId,
+            createdBy: req.user.id
+        });
+
+        if (!lexeme) throw {
+            code: 404,
+            message: 'Не найдено'
+        };
 
         res.json({
             ok: true,
