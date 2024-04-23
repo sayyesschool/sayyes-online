@@ -1,16 +1,16 @@
 @use 'shared/styles/variables';
 
-.LeximaItem {
+.LexemeItem {
   &:not(:last-of-type) {
     border-bottom: 1px solid lighten(variables.$text-color, 50%);
   }
 
-  .LeximaItemValue {
+  .LexemeItemValue {
     color: variables.$primary-color;
     font-weight: 900;
   }
 
-  .DeleteBtn {
+  .EditBtn {
     margin-left: auto;
   }
 }

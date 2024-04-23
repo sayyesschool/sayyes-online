@@ -9,6 +9,7 @@ import materials from 'shared/store/modules/materials';
 import notification from 'shared/store/modules/notification';
 import posts from 'shared/store/modules/posts';
 import user from 'shared/store/modules/user';
+import vocabularies from 'shared/store/modules/vocabularies';
 
 export default combineReducers({
     assignments,
@@ -19,5 +20,6 @@ export default combineReducers({
     materials,
     notification,
     posts,
+    vocabularies,
     user
 });

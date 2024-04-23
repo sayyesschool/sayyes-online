@@ -29,5 +29,10 @@ export default {
         single: null
     },
 
+    vocabularies: {
+        list: null,
+        single: null
+    },
+
     user: null
 };

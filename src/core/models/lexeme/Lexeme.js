@@ -9,7 +9,7 @@ import { LexemeType } from './constants';
 const TextWithTranslation = new Schema({
     text: { type: String, require: true },
     translation: { type: String }
-});
+}, { _id: false });
 
 export const Lexeme = new Schema({
     value: { type: String, required: true },
@@ -23,7 +23,7 @@ export const Lexeme = new Schema({
     audio: { type: Audio },
     level: { type: Number, enum: Object.values(Level) },
     frequency: { type: Number, min: 0, max: 1 },
-    definition: { type: String, required: true },
+    definition: { type: String },
     translations: { type: [TextWithTranslation] },
     examples: { type: [TextWithTranslation] },
     createdBy: { type: Schema.Types.ObjectId }

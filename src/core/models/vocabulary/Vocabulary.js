@@ -26,7 +26,7 @@ export const Vocabulary = new Schema({
     timestamps: true
 });
 
-Vocabulary.virtual('numberOfItems').get(function() {
+Vocabulary.virtual('numberOfLexemes').get(function() {
     return this.lexemeIds?.length;
 });
 

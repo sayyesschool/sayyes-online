@@ -19,7 +19,7 @@ export default context => {
         .put(controller.update)
         .delete(controller.delete);
 
-    router.route('/:vocabularyId/lexemes/:lexemeId?')
+    router.route('/:vocabularyId/:lexemeId?')
         .post(controller.addLexeme)
         .put(controller.updateLexeme)
         .delete(controller.removeLexeme);

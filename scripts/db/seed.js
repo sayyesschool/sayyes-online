@@ -55,13 +55,11 @@ await Comment.create({
 
 const lexemes = await Lexeme.create(data.lexemes);
 
-const vocabulary = await Vocabulary.create({
-    title: 'Animals',
+await Vocabulary.create({
+    title: 'My dictionary',
     learnerId: learner.id,
     teacherId: teacher.id,
-    items: lexemes.map(l => ({
-        lexemeId: l.id
-    }))
+    lexemeIds: lexemes.map(l => l.id)
 });
 
 console.log('DB seeded');
