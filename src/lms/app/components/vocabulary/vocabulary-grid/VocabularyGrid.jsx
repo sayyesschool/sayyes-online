@@ -15,21 +15,20 @@ export default function VocabularyGrid({ vocabularies }) {
             gap="10px"
             container
         >
-            {vocabularies?.map(({ id, url, title, description, imageUrl, itemsCount, coursePath }) =>
+            {vocabularies.map(({ id, title, description, imageUrl, numberOfLexemes, coursePath }) =>
                 <VocabularyCard
                     key={id}
                     as={Link}
                     imageUrl={imageUrl}
                     title={title}
                     subtitle={description}
-                    itemsCount={itemsCount}
+                    numberOfLexemes={numberOfLexemes}
                     coursePath={coursePath}
                     to={{
-                        pathname: url
+                        pathname: `vocabulary/${id}`
                     }}
                 />
             )}
         </Grid>
     );
 };
-

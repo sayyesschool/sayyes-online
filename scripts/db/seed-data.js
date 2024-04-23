@@ -79,36 +79,70 @@ export const teacher = {
 export const lexemes = [
     {
         value: 'cat',
-        definitions: [
-            'a small animal with fur, four legs, and a tail that is kept as a pet'
-        ],
+        definition: 'a small animal with fur, four legs, and a tail that is kept as a pet',
         translations: [
-            'кот',
-            'кошка'
+            {
+                text: 'кошка',
+                translation: ''
+            },
+            {
+                text: 'кот',
+                translation: ''
+            }
         ],
         examples: [
-            'My cat likes dozing in front of the fire.',
-            'I usually feed the neighbour\'s cat while she\'s away.',
-            'She\'s always chasing cats out of the garden to protect her precious birds.',
-            'A cat was miaowing pitifully outside the door.',
-            'The cat purred as I stroked its fur.'
+            {
+                text: 'My cat likes dozing in front of the fire.',
+                translation: 'Моя кошка любит подремать у камина.'
+            },
+            {
+                text: 'She\'s always chasing cats out of the garden to protect her precious birds.',
+                translation: 'Она всегда выгоняет кошек из сада, чтобы защитить своих драгоценных птиц.'
+            },
+            {
+                text: 'A cat was miaowing pitifully outside the door.',
+                translation: 'За дверью жалобно мяукала кошка.'
+            },
+            {
+                text: 'The cat purred as I stroked its fur.',
+                translation: 'Кот замурлыкал, когда я погладил его по шерсти.'
+            }
         ]
     },
     {
         value: 'dog',
-        definitions: [
-            'a common animal with four legs, especially kept by people as a pet or to hunt or guard things'
-        ],
+        definition: 'a common animal with four legs, especially kept by people as a pet or to hunt or guard things',
         translations: [
-            'собака',
-            'пёс'
+            {
+                text: 'собака',
+                translation: ''
+            },
+            {
+                text: 'пёс',
+                translation: ''
+            }
         ],
         examples: [
-            'I grabbed the dog by the collar and dragged it out of the room.',
-            'A dog lay under the table, gnawing on a bone.',
-            'Steve\'s gone out to walk the dogs.',
-            'The security guards set their dogs on the intruders.',
-            'Please keep your dog on a lead when on the beach.'
+            {
+                text: 'I grabbed the dog by the collar and dragged it out of the room.',
+                translation: 'Я схватил пса за ошейник и выволок его из комнаты.'
+            },
+            {
+                text: 'A dog lay under the table, gnawing on a bone.',
+                translation: 'Под столом лежала собака и грызла кость.'
+            },
+            {
+                text: 'Steve\'s gone out to walk the dogs.',
+                translation: 'Стив пошел выгуливать собак.'
+            },
+            {
+                text: 'The security guards set their dogs on the intruders.',
+                translation: 'Охранники натравили на незваных гостей своих собак.'
+            },
+            {
+                text: 'Please keep your dog on a lead when on the beach.',
+                translation: 'Пожалуйста, держите свою собаку на поводке, когда вы находитесь на пляже.'
+            }
         ]
     }
 ];

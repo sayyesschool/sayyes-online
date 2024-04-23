@@ -1,5 +1,5 @@
 export default ({
-    models: { Lexeme, Lexicon, Vocabulary }
+    models: { Lexeme, LexiconRecord, Vocabulary }
 }) => ({
     async getMany(req, res) {
         const vocabularies = await Vocabulary.find({
@@ -13,12 +13,17 @@ export default ({
     },
 
     async getOne(req, res) {
-        const vocabulary = await req.vocabulary.populate({
-            path: 'lexeme',
+        const vocabulary = await Vocabulary.findById(req.params.id).populate({
+            path: 'lexemes',
             populate: {
                 path: 'data'
             }
         });
+
+        if (!vocabulary) throw {
+            code: 404,
+            message: 'Словарь не найден'
+        };
 
         res.json({
             ok: true,
@@ -67,26 +72,27 @@ export default ({
     },
 
     async addLexeme(req, res) {
-        let lexeme;
+        // TODO: move vocabulary to middleware
+        const vocabulary = await Vocabulary.findById(req.params.vocabularyId);
 
-        if (req.body.lexemeId) {
-            lexeme = await Lexeme.findById(req.body.lexemeId);
-        } else {
-            lexeme = await Lexeme.create({
-                value: req.body.value,
-                translations: [req.body.translation],
-                authorId: req.user.id
-            });
-        }
+        const lexeme = await Lexeme.create({
+            value: req.body.value,
+            translations: [{ text: req.body.translation }],
+            createdBy: req.user.id
+        });
 
-        await Lexicon.create({
+        await LexiconRecord.create({
             lexemeId: lexeme.id,
             learnerId: req.user.id
         });
 
+        vocabulary.lexemeIds.push(lexeme.id);
+
+        await vocabulary.save();
+
         const data = lexeme.toJSON();
 
-        data.vocabularyId = req.vocabulary.id;
+        data.vocabularyId = req.params.vocabularyId;
 
         res.json({
             ok: true,
@@ -95,15 +101,20 @@ export default ({
     },
 
     async updateLexeme(req, res) {
-        const lexeme = await Lexeme.findByIdAndUpdate(req.params.lexemeId, {
-            translation: [req.body.translation]
-        }, {
-            new: true
-        });
+        const lexeme = await Lexeme.findById(req.params.lexemeId);
+
+        if (lexeme?.createdBy?.toString() !== req.user.id) throw {
+            code: 403,
+            message: 'Это слово нельзя изменить'
+        };
+
+        lexeme.translations = [{ text: req.body.translation }];
+
+        await lexeme.save();
 
         const data = lexeme.toJSON();
 
-        data.vocabularyId = req.vocabulary.id;
+        data.vocabularyId = req.params.vocabularyId;
 
         res.json({
             ok: true,
@@ -112,13 +123,24 @@ export default ({
     },
 
     async removeLexeme(req, res) {
-        const lexeme = await Lexeme.findByIdAndDelete(req.params.lexemeId);
+        // TODO: move vocabulary to middleware
+        const vocabulary = await Vocabulary.findById(req.params.vocabularyId).populate('lexemes');
+        const lexemeToRemove = vocabulary.lexemes.find(lexeme => lexeme.id === req.params.lexemeId);
+
+        if (lexemeToRemove?.createdBy?.toString() !== req.user.id) throw {
+            code: 403,
+            message: 'Это слово нельзя удалить'
+        };
+
+        vocabulary.lexemeIds.filter(lexemeId => lexemeId !== req.params.lexemeId);
+
+        await vocabulary.save();
 
         res.json({
             ok: true,
             data: {
-                id: lexeme.id,
-                vocabularyId: req.vocabulary.id
+                id: req.params.lexemeId,
+                vocabularyId: req.params.vocabularyId
             }
         });
     }
