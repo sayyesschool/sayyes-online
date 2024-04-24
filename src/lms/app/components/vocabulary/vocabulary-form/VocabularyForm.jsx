@@ -1,4 +1,3 @@
-
 import { useForm } from 'shared/hooks/form';
 import Form from 'shared/ui-components/form';
 
@@ -14,16 +13,16 @@ export default function VocabularyForm({ lexeme, onSubmit, ...props }) {
     return (
         <Form className="VocabularyForm" onSubmit={handleSubmit} {...props}>
             <Form.Input
-                name="value"
                 label="Значение"
+                name="value"
                 value={data.value.value}
                 disabled
                 onChange={handleChange}
             />
 
             <Form.Input
-                name="translation"
                 label="Перевод"
+                name="translation"
                 value={data.translation.value}
                 onChange={handleChange}
             />

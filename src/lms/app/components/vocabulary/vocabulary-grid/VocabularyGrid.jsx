@@ -1,7 +1,6 @@
-
 import { Link } from 'react-router-dom';
 
-import Grid from '@mui/joy/Grid';
+import { Grid } from 'shared/ui-components';
 
 import VocabularyCard from 'lms/components/vocabulary/vocabulary-card';
 
@@ -15,20 +14,14 @@ export default function VocabularyGrid({ vocabularies }) {
             gap="10px"
             container
         >
-            {vocabularies.map(({ id, title, description, imageUrl, numberOfLexemes, coursePath }) =>
+            {vocabularies.map(vocabulary =>
                 <VocabularyCard
-                    key={id}
+                    key={vocabulary.id}
                     as={Link}
-                    imageUrl={imageUrl}
-                    title={title}
-                    subtitle={description}
-                    numberOfLexemes={numberOfLexemes}
-                    coursePath={coursePath}
-                    to={{
-                        pathname: `vocabulary/${id}`
-                    }}
+                    to={`vocabulary/${vocabulary.id}`}
+                    vocabulary={vocabulary}
                 />
             )}
         </Grid>
     );
-};
+}

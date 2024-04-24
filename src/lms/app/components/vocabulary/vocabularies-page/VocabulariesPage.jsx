@@ -18,4 +18,4 @@ export default function VocabulariesPage() {
             </Page.Content>
         </Page>
     );
-};
+}
