@@ -81,14 +81,8 @@ export const lexemes = [
         value: 'cat',
         definition: 'a small animal with fur, four legs, and a tail that is kept as a pet',
         translations: [
-            {
-                text: 'кошка',
-                translation: ''
-            },
-            {
-                text: 'кот',
-                translation: ''
-            }
+            'кошка',
+            'кот'
         ],
         examples: [
             {
@@ -113,14 +107,8 @@ export const lexemes = [
         value: 'dog',
         definition: 'a common animal with four legs, especially kept by people as a pet or to hunt or guard things',
         translations: [
-            {
-                text: 'собака',
-                translation: ''
-            },
-            {
-                text: 'пёс',
-                translation: ''
-            }
+            'собака',
+            'пёс'
         ],
         examples: [
             {
