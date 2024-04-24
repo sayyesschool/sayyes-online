@@ -20,7 +20,7 @@ export default ({
                 match: {
                     learnerId: req.user.id
                 },
-                transform: record => ({
+                transform: record => record && ({
                     status: record.status,
                     reviewDate: record.reviewDate
                 })
