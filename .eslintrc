@@ -46,6 +46,15 @@
             "warn",
             "as-needed"
         ],
+        "@stylistic/comma-dangle": [
+            "warn",
+            "never"
+        ],
+        "@stylistic/comma-spacing": "warn",
+        "@stylistic/eol-last": [
+            "warn",
+            "never"
+        ],
         "@stylistic/indent": [
             "warn",
             4,
@@ -60,19 +69,7 @@
                 "max": 1
             }
         ],
-        "@stylistic/semi": [
-            "error",
-            "always"
-        ],
-        "@stylistic/comma-spacing": "warn",
-        "@stylistic/comma-dangle": [
-            "error",
-            "never"
-        ],
-        "@stylistic/eol-last": [
-            "warn",
-            "never"
-        ],
+        "@stylistic/no-trailing-spaces": "warn",
         "@stylistic/object-curly-spacing": [
             "warn",
             "always"
@@ -83,10 +80,21 @@
                 "allowAllPropertiesOnSameLine": true
             }
         ],
-        "@stylistic/no-trailing-spaces": "warn",
+        "@stylistic/padded-blocks": [
+            "warn",
+            "never"
+        ],
         "@stylistic/quotes": [
             "error",
             "single"
+        ],
+        "@stylistic/semi": [
+            "error",
+            "always"
+        ],
+        "@stylistic/jsx/jsx-closing-bracket-location": [
+            "warn",
+            "tag-aligned"
         ],
         "@stylistic/jsx/jsx-first-prop-new-line": [
             "warn",
@@ -98,10 +106,6 @@
                 "prevent": true,
                 "allowMultilines": true
             }
-        ],
-        "@stylistic/jsx/jsx-closing-bracket-location": [
-            "warn",
-            "tag-aligned"
         ],
         "@stylistic/jsx/jsx-sort-props": [
             "warn",
@@ -123,9 +127,9 @@
         ],
         "no-useless-escape": "warn",
         "react/no-deprecated": "warn",
-        "react/react-in-jsx-scope": "off",
-        "react/prop-types": "off",
         "react/no-unescaped-entities": "warn",
+        "react/prop-types": "off",
+        "react/react-in-jsx-scope": "off",
         "simple-import-sort/imports": [
             "error",
             {
@@ -140,16 +144,11 @@
                         "^@?\\w"
                     ],
                     [
-                        "@/(.*)"
+                        "^(@/shared|shared)(/.*|$)",
+                        "^\\u0000(@/shared|shared)"
                     ],
                     [
-                        "^shared/."
-                    ],
-                    [
-                        "[app|class|cms|core|crm|lk|lms]/."
-                    ],
-                    [
-                        "@/[app|class|cms|core|crm|lk|lms]/."
+                        "^(@|class|cms|core|crm|lk|lms)(/.*|$)"
                     ],
                     [
                         // Parent imports. Put `..` last.
@@ -165,11 +164,11 @@
                     [
                         // Side effect imports.
                         "^\\u0000"
-                    ],
-                    [
-                        // Style imports.
-                        "^.+\\.s?css$"
                     ]
+                    // [
+                    //     // Style imports.
+                    //     "^.+\\.s?css$"
+                    // ]
                 ]
             }
         ],
