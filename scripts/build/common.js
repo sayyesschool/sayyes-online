@@ -43,10 +43,22 @@ export default {
     loader: { '.js': 'jsx' },
     bundle: true,
     logLevel: 'info',
-    plugins: [sassPlugin({
-        loadPaths: [
-            resolve('node_modules'),
-            resolve('src')
-        ]
-    })]
+    plugins: [
+        sassPlugin({
+            type: 'local-css',
+            filter: /\.module\.scss$/,
+            loadPaths: [
+                resolve('node_modules'),
+                resolve('src')
+            ]
+        }),
+        sassPlugin({
+            type: 'css',
+            filter: /\.scss$/,
+            loadPaths: [
+                resolve('node_modules'),
+                resolve('src')
+            ]
+        })
+    ]
 };
