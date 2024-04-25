@@ -49,9 +49,22 @@ export const actions = {
     deleteLexeme
 };
 
-// TODO: fix vocabulariesReducer
 export const vocabulariesReducer = createReducer(null, {
-    [getVocabularies]: (state, action) => action.data
+    [getVocabularies]: (state, action) => action.data,
+    [addLexeme]: (state, action) =>
+        state &&
+      state.map(vocabulary => {
+          return vocabulary.id === action.data.vocabularyId
+              ? { ...vocabulary, numberOfLexemes: ++vocabulary.numberOfLexemes }
+              : vocabulary;
+      }),
+    [deleteLexeme]: (state, action) =>
+        state &&
+      state.map(vocabulary =>
+          vocabulary.id === action.data.vocabularyId
+              ? { ...vocabulary, numberOfLexemes: --vocabulary.numberOfLexemes }
+              : vocabulary
+      )
 });
 
 export const vocabularyReducer = createReducer(null, {
@@ -66,7 +79,7 @@ export const vocabularyReducer = createReducer(null, {
         ...state,
         lexemes: state.lexemes.map(lexeme => lexeme.id === action.data.id ? action.data : lexeme)
     }),
-    [deleteLexeme]: (state, action) => state && ({
+    [deleteLexeme]: (state, action) => ({
         ...state,
         lexemes: state.lexemes.filter(lexeme => lexeme.id !== action.data.id),
         numberOfLexemes: --state.numberOfLexemes
