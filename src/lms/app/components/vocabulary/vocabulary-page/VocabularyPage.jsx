@@ -43,8 +43,6 @@ export default function VocabularyPage({ match }) {
 
     if (!vocabulary) return <LoadingIndicator />;
 
-    console.log(111, { vocabulary, user });
-
     const { title, lexemes, numberOfLexemes } = vocabulary;
     const vocabularyTitle = `${title} (${numberOfLexemes})`;
 

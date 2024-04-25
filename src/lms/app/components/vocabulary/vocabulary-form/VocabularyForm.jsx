@@ -5,7 +5,7 @@ export default function VocabularyForm({ lexeme, onSubmit, ...props }) {
     const { data, handleChange, handleSubmit } = useForm({
         values: {
             value: lexeme.value,
-            translation: lexeme.translations[0].text
+            translation: lexeme.translations[0]
         },
         onSubmit
     }, [lexeme.updatedAt]);

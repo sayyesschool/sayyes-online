@@ -33,7 +33,7 @@ export default function LexemeItem({ lexeme, userId, handleDeleteLexeme, setCurr
 
             <Typography className="LexemeItemValue">{value}</Typography>
             —
-            <Typography className="LexemeItemTranslation">{translations[0].text}</Typography>
+            <Typography className="LexemeItemTranslation">{translations[0]}</Typography>
 
             <IconButton
                 size="lg"

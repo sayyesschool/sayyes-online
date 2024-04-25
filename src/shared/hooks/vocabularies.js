@@ -30,12 +30,9 @@ export function useVocabulary(id) {
     );
 
     useEffect(() => {
-        console.log('useEffect', vocabulary);
         if (!id) return;
 
         if (!vocabulary) {
-            console.log('Condition');
-
             actions.getVocabulary(id);
         }
 

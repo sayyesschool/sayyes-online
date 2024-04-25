@@ -79,6 +79,7 @@ export default ({
             Lexeme.findById(req.body.lexemeId) :
             Lexeme.create({
                 value: req.body.value,
+                translations: req.body.translation,
                 definition: req.body.definition,
                 createdBy: req.user.id
             })
@@ -109,11 +110,10 @@ export default ({
             createdBy: req.user.id
         }, {
             definition: req.body.definition,
-            translations: req.body.translations,
+            translations: req.body.translation,
             examples: req.body.examples
         }, {
-            new: true,
-            select: Object.keys(req.body).join(' ')
+            new: true
         });
 
         if (!lexeme) throw {

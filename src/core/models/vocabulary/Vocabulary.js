@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { Schema, Types } from 'mongoose';
 
 import Image from '../image';
 
@@ -43,7 +43,7 @@ Vocabulary.methods.addLexeme = async function(lexemeId) {
 };
 
 Vocabulary.methods.removeLexeme = async function(lexemeId) {
-    if (this.lexemeIds.includes(lexemeId))
+    if (!this.lexemeIds.some(id => id.equals(lexemeId)))
         throw new Error('Lexeme is not in the vocabulary');
 
     this.lexemeIds.remove(lexemeId);
