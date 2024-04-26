@@ -3,14 +3,14 @@ import { useCallback, useState } from 'react';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import { useForm } from 'shared/hooks/form';
 import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
 import { useVocabulary } from 'shared/hooks/vocabularies';
-import { Button, Checkbox, Flex, Form, Icon, List, Select } from 'shared/ui-components';
+import { Checkbox, Flex, Form, Icon, List, Select } from 'shared/ui-components';
 
 import LexemeItem from 'lms/components/vocabulary/lexeme-item';
 import VocabularyForm from 'lms/components/vocabulary/vocabulary-form';
+import VocabularyPopover from 'lms/components/vocabulary/vocabulary-popover';
 
 export default function VocabularyPage({ match }) {
     const vocabularyId = match.params.vocabulary;
@@ -24,22 +24,10 @@ export default function VocabularyPage({ match }) {
         return actions.deleteLexeme(vocabularyId, lexemeId);
     }, [actions, vocabularyId]);
 
-    const handleAddLexeme = useCallback(data => {
-        return actions.addLexeme(vocabularyId, data);
-    }, [actions, vocabularyId]);
-
     const handleUpdateLexeme = useCallback(data => {
         return actions.updateLexeme(vocabularyId, currentLexeme.id, data)
-            .finally(() => toggleDialogOpen(false));;
+            .finally(() => toggleDialogOpen(false));
     }, [actions, currentLexeme?.id, toggleDialogOpen, vocabularyId]);
-
-    const { data, handleChange, handleSubmit } = useForm({
-        values: {
-            value: '',
-            translation: ''
-        },
-        onSubmit: handleAddLexeme
-    });
 
     if (!vocabulary) return <LoadingIndicator />;
 
@@ -55,6 +43,19 @@ export default function VocabularyPage({ match }) {
                         onChange={() => console.log('check')}
                     />
 
+                    <Form.Input
+                        endDecorator={<Icon>search</Icon>}
+                        placeholder="Поиск"
+                        className="Vocabulary__search"
+                        onChange={() => console.log('search')}
+                    />
+
+                    <VocabularyPopover
+                        vocabularyId={vocabularyId}
+                        numberOfLexemes={numberOfLexemes}
+                        addLexeme={actions.addLexeme}
+                    />
+
                     <Select
                         name='VocabularySelect'
                         className="Vocabulary__select"
@@ -65,33 +66,6 @@ export default function VocabularyPage({ match }) {
                         <Select.Option value="course">Course vocabulary</Select.Option>
                         <Select.Option value="extra">Extra vocabulary</Select.Option>
                     </Select>
-
-                    <Form.Input
-                        endDecorator={<Icon>search</Icon>}
-                        placeholder="Поиск"
-                        className="Vocabulary__search"
-                        onChange={() => console.log('search')}
-                    />
-
-                    <Form className="VocabularyForm" onSubmit={handleSubmit}>
-                        <Form.Input
-                            name="value"
-                            placeholder="Слово"
-                            className="Vocabulary__input"
-                            value={data.value.value}
-                            onChange={handleChange}
-                        />
-
-                        <Form.Input
-                            name="translation"
-                            placeholder="Перевод"
-                            className="Vocabulary__input"
-                            value={data.translation.value}
-                            onChange={handleChange}
-                        />
-
-                        <Button type="submit" content="Добавить слово" />
-                    </Form>
                 </Flex>
 
                 <List className="Vocabulary__body">

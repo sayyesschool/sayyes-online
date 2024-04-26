@@ -7,36 +7,21 @@
 }
 
 .Vocabulary {
-  // .InlineInput {
-  //   width: 150px;
-  // }
-
-  .VocabularyForm {
-    display: flex;
-    align-items: center;
-
-    input {
-      width: 150px;
-    }
-  }
-
-  // &__input {
-  //   text-align: left;
-  // }
-
   &__header {
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;
+    gap: 20px;
     border: 1px solid lighten(variables.$text-color, 50%);
     border-radius: 10px;
     padding: 5px 12px;
 
-    // flex-direction: row;
-    // justify-content: space-between;
-    // align-items: center;
   }
 
   &__search {
-    width: 200px;
+    width: 250px;
+  }
+
+  &__select {
+    margin-left: auto;
   }
 }
