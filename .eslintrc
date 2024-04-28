@@ -148,7 +148,7 @@
                         "^\\u0000(@/shared|shared)"
                     ],
                     [
-                        "^(@|class|cms|core|crm|lk|lms)(/.*|$)"
+                        "^(@|class|cms|config|core|db|crm|lk|lms)(/.*|$)"
                     ],
                     [
                         // Parent imports. Put `..` last.
