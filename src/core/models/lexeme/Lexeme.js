@@ -17,6 +17,7 @@ export const Lexeme = new Schema({
     definition: { type: String },
     translations: { type: [String] },
     examples: [{
+        id: { type: Schema.Types.UUID },
         text: { type: String, require: true },
         translation: { type: String }
     }],

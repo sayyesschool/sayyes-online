@@ -1,3 +1,5 @@
+import { v4 as uuid } from 'uuid';
+
 export const assignment = {
     title: 'Assignment 1',
     content: 'Do your homework',
@@ -65,7 +67,7 @@ export const exercise = {
 export const learner = {
     firstname: 'Ученик',
     email: 'learner@sayyes.school',
-    password: '2406YiS2013',
+    password: 'learner@sayyes.school',
     role: 'learner'
 };
 
@@ -82,22 +84,27 @@ export const lexemes = [
         definition: 'a small animal with fur, four legs, and a tail that is kept as a pet',
         translations: [
             'кошка',
-            'кот'
+            'кот',
+            'крот'
         ],
         examples: [
             {
+                id: uuid(),
                 text: 'My cat likes dozing in front of the fire.',
                 translation: 'Моя кошка любит подремать у камина.'
             },
             {
+                id: uuid(),
                 text: 'She\'s always chasing cats out of the garden to protect her precious birds.',
                 translation: 'Она всегда выгоняет кошек из сада, чтобы защитить своих драгоценных птиц.'
             },
             {
+                id: uuid(),
                 text: 'A cat was miaowing pitifully outside the door.',
                 translation: 'За дверью жалобно мяукала кошка.'
             },
             {
+                id: uuid(),
                 text: 'The cat purred as I stroked its fur.',
                 translation: 'Кот замурлыкал, когда я погладил его по шерсти.'
             }
@@ -112,22 +119,27 @@ export const lexemes = [
         ],
         examples: [
             {
+                id: uuid(),
                 text: 'I grabbed the dog by the collar and dragged it out of the room.',
                 translation: 'Я схватил пса за ошейник и выволок его из комнаты.'
             },
             {
+                id: uuid(),
                 text: 'A dog lay under the table, gnawing on a bone.',
                 translation: 'Под столом лежала собака и грызла кость.'
             },
             {
+                id: uuid(),
                 text: 'Steve\'s gone out to walk the dogs.',
                 translation: 'Стив пошел выгуливать собак.'
             },
             {
+                id: uuid(),
                 text: 'The security guards set their dogs on the intruders.',
                 translation: 'Охранники натравили на незваных гостей своих собак.'
             },
             {
+                id: uuid(),
                 text: 'Please keep your dog on a lead when on the beach.',
                 translation: 'Пожалуйста, держите свою собаку на поводке, когда вы находитесь на пляже.'
             }

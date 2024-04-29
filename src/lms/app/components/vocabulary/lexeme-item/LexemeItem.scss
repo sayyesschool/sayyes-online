@@ -13,4 +13,10 @@
   .EditBtn {
     margin-left: auto;
   }
+
+  &__sheet {
+    flex: 1;
+    height: 40px;
+    cursor:pointer;
+  }
 }

@@ -1,6 +1,7 @@
 import config from 'config';
-import core from 'core';
 import db from 'db';
+
+import core from 'core';
 
 import * as data from './seed-data';
 
@@ -56,7 +57,7 @@ await Comment.create({
 const lexemes = await Lexeme.create(data.lexemes);
 
 await Vocabulary.create({
-    title: 'My dictionary',
+    title: 'Мой словарь',
     learnerId: learner.id,
     teacherId: teacher.id,
     lexemeIds: lexemes.map(l => l.id)

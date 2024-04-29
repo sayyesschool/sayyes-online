@@ -1,13 +1,20 @@
 import Typography from '@mui/joy/Typography';
 
-import { Checkbox, IconButton, ListItem } from 'shared/ui-components';
+import { Checkbox, IconButton, ListItem, Surface } from 'shared/ui-components';
 
-export default function LexemeItem({ lexeme, userId, handleDeleteLexeme, setCurrentLexeme, toggleDialogOpen }) {
+export default function LexemeItem({ lexeme, userId, handleDeleteLexeme, setCurrentLexeme, toggleEditModalOpen, togglePreviewModalOpen }) {
     const { value, translations } = lexeme;
+    const translationsString = translations.join(', ');
     const isAuthor = userId !== lexeme?.createdBy;
+    // const isAuthor = false;
 
-    const openModal = () => {
-        toggleDialogOpen();
+    const openEditModal = () => {
+        toggleEditModalOpen();
+        setCurrentLexeme(lexeme);
+    };
+
+    const openPreviewModal = () => {
+        togglePreviewModalOpen();
         setCurrentLexeme(lexeme);
     };
 
@@ -33,17 +40,18 @@ export default function LexemeItem({ lexeme, userId, handleDeleteLexeme, setCurr
 
             <Typography className="LexemeItemValue">{value}</Typography>
             —
-            <Typography className="LexemeItemTranslation">{translations[0]}</Typography>
+            <Typography className="LexemeItemTranslation">{translationsString}</Typography>
+            <Surface sx={{ background: 'transparent' }} className="LexemeItem__sheet" onClick={openPreviewModal}></Surface>
 
             <IconButton
                 size="lg"
                 variant="plain"
                 color="neutral"
-                icon="edit"
+                icon="edit_note"
                 title='Редактировать слово'
                 className="EditBtn"
                 disabled={isAuthor}
-                onClick={openModal}
+                onClick={openEditModal}
             />
 
             <IconButton

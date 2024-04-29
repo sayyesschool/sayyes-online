@@ -1,0 +1,15 @@
+@use 'shared/styles/variables';
+
+.example {
+  border: 1px solid lighten(variables.$text-color, 50%);
+  margin-bottom: 5px;
+}
+
+.value {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.exampleInputs {
+  flex-grow: 1;
+}

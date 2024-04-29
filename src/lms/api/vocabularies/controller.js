@@ -110,7 +110,7 @@ export default ({
             createdBy: req.user.id
         }, {
             definition: req.body.definition,
-            translations: req.body.translation,
+            translations: req.body.translations,
             examples: req.body.examples
         }, {
             new: true

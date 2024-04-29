@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react';
 
-import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { useBoolean } from 'shared/hooks/state';
@@ -9,15 +8,18 @@ import { useVocabulary } from 'shared/hooks/vocabularies';
 import { Checkbox, Flex, Form, Icon, List, Select } from 'shared/ui-components';
 
 import LexemeItem from 'lms/components/vocabulary/lexeme-item';
-import VocabularyForm from 'lms/components/vocabulary/vocabulary-form';
+import VocabularyEditModal from 'lms/components/vocabulary/vocabulary-edit-modal';
+import { transformLexemeObject } from 'lms/components/vocabulary/vocabulary-edit-modal';
 import VocabularyPopover from 'lms/components/vocabulary/vocabulary-popover';
+import VocabularyPreviewModal from 'lms/components/vocabulary/vocabulary-preview-modal';
 
 export default function VocabularyPage({ match }) {
     const vocabularyId = match.params.vocabulary;
-    const [isDialogOpen, toggleDialogOpen] = useBoolean(false);
-    const [currentLexeme, setCurrentLexeme] = useState(null);
-    const [user] =  useUser();
     const [vocabulary, actions] = useVocabulary(vocabularyId);
+    const [currentLexeme, setCurrentLexeme] = useState(null);
+    const [isEditModalOpen, toggleEditModalOpen] = useBoolean(false);
+    const [isPreviewModalOpen, togglePreviewModalOpen] = useBoolean(false);
+    const [user] =  useUser();
     const userId = user.id;
 
     const handleDeleteLexeme = useCallback(lexemeId => {
@@ -25,9 +27,9 @@ export default function VocabularyPage({ match }) {
     }, [actions, vocabularyId]);
 
     const handleUpdateLexeme = useCallback(data => {
-        return actions.updateLexeme(vocabularyId, currentLexeme.id, data)
-            .finally(() => toggleDialogOpen(false));
-    }, [actions, currentLexeme?.id, toggleDialogOpen, vocabularyId]);
+        return actions.updateLexeme(vocabularyId, currentLexeme.id, transformLexemeObject(data))
+            .finally(() => toggleEditModalOpen(false));
+    }, [actions, currentLexeme?.id, toggleEditModalOpen, vocabularyId]);
 
     if (!vocabulary) return <LoadingIndicator />;
 
@@ -76,21 +78,28 @@ export default function VocabularyPage({ match }) {
                             lexeme={lexeme}
                             handleDeleteLexeme={handleDeleteLexeme}
                             setCurrentLexeme={setCurrentLexeme}
-                            toggleDialogOpen={toggleDialogOpen}
+                            toggleEditModalOpen={toggleEditModalOpen}
+                            togglePreviewModalOpen={togglePreviewModalOpen}
                         />)}
                 </List>
 
-                <FormDialog
-                    title="Редактирование"
-                    open={isDialogOpen}
-                    onClose={toggleDialogOpen}
-                >
-                    <VocabularyForm
-                        id="vocabulary-form"
+                {(currentLexeme && isEditModalOpen) && (
+                    <VocabularyEditModal
+                        id="vocabulary-edit-form"
                         lexeme={currentLexeme}
+                        open={isEditModalOpen}
+                        onClose={toggleEditModalOpen}
                         onSubmit={handleUpdateLexeme}
                     />
-                </FormDialog>
+                )}
+
+                {(currentLexeme && isPreviewModalOpen) && (
+                    <VocabularyPreviewModal
+                        lexeme={currentLexeme}
+                        open={isPreviewModalOpen}
+                        onClose={togglePreviewModalOpen}
+                    />
+                )}
             </Page.Content>
         </Page>
     );
