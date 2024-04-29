@@ -25,6 +25,7 @@ export const Lexeme = new Schema({
     audio: { type: Audio },
     level: { type: Number, enum: Object.values(Level) },
     frequency: { type: Number, min: 0, max: 1 },
+    approved: { type: Boolean, default: false },
     createdBy: { type: Schema.Types.ObjectId }
 }, {
     timestamps: true

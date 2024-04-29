@@ -14,6 +14,8 @@ export default context => {
         .get(controller.getMany)
         .post(controller.create);
 
+    router.get('/search', controller.search);
+
     router.route('/:vocabularyId')
         .get(controller.getOne)
         .put(controller.update)

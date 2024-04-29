@@ -1,6 +1,27 @@
 export default ({
     models: { Lexeme, LexiconRecord, Vocabulary }
 }) => ({
+    async search(req, res) {
+        const regex = req.query.q && new RegExp(req.query.q, 'i');
+        const page = req.query.p ?? 0;
+        const limit = req.query.c;
+
+        const [count, lexemes] = await Promise.all([
+            Lexeme.count(),
+            Lexeme.find({ value: regex })
+                .skip(page * limit)
+                .limit(limit)
+        ]);
+
+        res.json({
+            ok: true,
+            meta: {
+                more: page * limit + lexemes.length < count
+            },
+            data: lexemes
+        });
+    },
+
     async getMany(req, res) {
         const vocabularies = await Vocabulary.find({
             learnerId: req.user.id
