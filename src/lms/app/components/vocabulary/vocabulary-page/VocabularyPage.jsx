@@ -9,7 +9,6 @@ import { Checkbox, Flex, Form, Icon, List, Select } from 'shared/ui-components';
 
 import LexemeItem from 'lms/components/vocabulary/lexeme-item';
 import VocabularyEditModal from 'lms/components/vocabulary/vocabulary-edit-modal';
-import { transformLexemeObject } from 'lms/components/vocabulary/vocabulary-edit-modal';
 import VocabularyPopover from 'lms/components/vocabulary/vocabulary-popover';
 import VocabularyPreviewModal from 'lms/components/vocabulary/vocabulary-preview-modal';
 
@@ -27,7 +26,7 @@ export default function VocabularyPage({ match }) {
     }, [actions, vocabularyId]);
 
     const handleUpdateLexeme = useCallback(data => {
-        return actions.updateLexeme(vocabularyId, currentLexeme.id, transformLexemeObject(data))
+        return actions.updateLexeme(vocabularyId, currentLexeme.id, data)
             .finally(() => toggleEditModalOpen(false));
     }, [actions, currentLexeme?.id, toggleEditModalOpen, vocabularyId]);
 

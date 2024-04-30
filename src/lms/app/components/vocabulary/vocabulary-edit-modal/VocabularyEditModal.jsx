@@ -1,104 +1,61 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import Typography from '@mui/joy/Typography';
 import { v4 as uuid } from 'uuid';
 
 import FormDialog from 'shared/components/form-dialog';
-import { useForm } from 'shared/hooks/form';
 import { Accordion, Button, Flex, Form, IconButton, Surface } from 'shared/ui-components';
 
 import styles from './VocabularyEditModal.module.scss';
 
-// TODO: need to move it to helper
-function arrayToKeyedObject(array) {
-    return array.reduce((result, { id, text, translation }) => {
-        result[`text&${id}`] = text;
-        result[`translation&${id}`] = translation;
-
-        return result;
-    }, {});
-}
-
-export function transformLexemeObject(obj) {
-    const { definition, translations, ...rest } = obj;
-
-    const examples = Object.entries(rest)
-        .reduce((acc, [key, value]) => {
-            const [type, id] = key.split('&');
-            if (type === 'text' || type === 'translation') {
-                let example = acc.find(ex => ex.id === id);
-                if (!example) {
-                    example = { id };
-                    acc.push(example);
-                }
-                example[type === 'text' ? 'text' : 'translation'] = value;
-            }
-            return acc;
-        }, []);
-
-    let transformedTranslations = translations;
-    if (transformedTranslations) {
-        transformedTranslations = transformedTranslations.split(', ').map(t => t.trim());
-    }
-
-    return {
-        definition,
-        translations: transformedTranslations,
-        examples
-    };
-}
-
 export default function VocabularyEditModal({ open, lexeme, onSubmit, onClose, ...props }) {
+    const [translations, setTranslations] = useState(lexeme.translations?.join(', ') ?? '');
+    const [definition, setDefinition] = useState(lexeme.definition ?? '');
     const [examples, setExamples] = useState(lexeme.examples);
-    const exampleValues = useMemo(() => arrayToKeyedObject(examples), [examples]);
-    const translationsString = lexeme.translations?.join(', ') ?? '';
-    const defenitionString = lexeme.definition ?? '';
 
-    const { data, handleChange, handleSubmit } = useForm({
-        values: {
-            ...exampleValues,
-            'translations*': translationsString,
-            'definition': defenitionString
-        },
-        dataToSubmit: { examples },
-        onSubmit
-    }, [examples]);
+    const handleTranslationChange = useCallback(e => {
+        setTranslations(e.target.value);
+    }, [setTranslations]);
 
-    const addExample = useCallback(() => {
-        setExamples([...examples, {
+    const handleDefinitionChange = e => {
+        setDefinition(e.target.value);
+    };
+
+    const handleExampleChange = (id, field, value) => {
+        const updatedExamples = examples.map(example =>
+            example.id === id ? { ...example, [field]: value } : example
+        );
+        setExamples(updatedExamples);
+    };
+
+    const handleDeleteExample = id => {
+        const updatedExamples = examples.filter(example => example.id !== id);
+        setExamples(updatedExamples);
+    };
+
+    const handleAddExample = useCallback(() => {
+        const newExample = {
             id: uuid(),
             text: '',
             translation: ''
-        }]);
-    }, [examples]);
+        };
+        setExamples(prevExamples => [...prevExamples, newExample]);
+    }, [setExamples]);
 
-    const onChange = useCallback(e => {
-        const { name, value } = e.target;
-        const [fieldName, id] = name.split('&');
+    const handleSubmit = e => {
+        e.preventDefault();
 
-        setExamples(prevExamples =>
-            prevExamples.map(ex =>
-                ex.id === id
-                    ? {
-                        ...ex,
-                        [fieldName]: value
-                    }
-                    : ex
-            )
-        );
-        handleChange(e);
-    }, [handleChange]);
+        const formData = {
+            translations: translations.split(',').map(item => item.trim()),
+            definition: definition,
+            examples: examples
+        };
 
-    const deleteExample = useCallback(id => {
-        setExamples(prevExamples => prevExamples.filter(ex => ex.id !== id));
-    }, []);
+        onSubmit(formData);
+    };
 
     return (
-        <FormDialog
-            title="Редактирование"
-            open={open}
-            onClose={onClose}
-        >
+        <FormDialog title="Редактирование" open={open} onClose={onClose}>
             <Form onSubmit={handleSubmit} {...props}>
                 <Typography className={styles.value}>{lexeme.value}</Typography>
 
@@ -109,10 +66,9 @@ export default function VocabularyEditModal({ open, lexeme, onSubmit, onClose, .
                             header: 'Перевод',
                             content: (
                                 <Form.Input
-                                    name="translations"
-                                    value={data.translations.value}
+                                    value={translations}
                                     required
-                                    onChange={handleChange}
+                                    onChange={handleTranslationChange}
                                 />
                             )
                         },
@@ -121,9 +77,8 @@ export default function VocabularyEditModal({ open, lexeme, onSubmit, onClose, .
                             header: 'Объяснение',
                             content: (
                                 <Form.Input
-                                    name="definition"
-                                    value={data.definition.value}
-                                    onChange={handleChange}
+                                    value={definition}
+                                    onChange={handleDefinitionChange}
                                 />
                             )
                         },
@@ -132,18 +87,24 @@ export default function VocabularyEditModal({ open, lexeme, onSubmit, onClose, .
                             header: 'Примеры',
                             content: (
                                 <Surface>
-                                    {examples.map(item => (
-                                        <Flex key={item.id} className={styles.example}>
+                                    {examples.map(({ id, text, translation }) => (
+                                        <Flex key={id} className={styles.example}>
                                             <Surface className={styles.exampleInputs}>
-                                                {['text', 'translation'].map(type => (
-                                                    <Form.Input
-                                                        key={`${type}&${item.id}`}
-                                                        name={`${type}&${item.id}`}
-                                                        value={data[`${type}&${item.id}`]?.value ?? ''}
-                                                        required
-                                                        onChange={onChange}
-                                                    />
-                                                ))}
+                                                <Form.Input
+                                                    value={text}
+                                                    required
+                                                    onChange={e =>
+                                                        handleExampleChange(id, 'text', e.target.value)
+                                                    }
+                                                />
+
+                                                <Form.Input
+                                                    value={translation}
+                                                    required
+                                                    onChange={e =>
+                                                        handleExampleChange(id, 'translation', e.target.value)
+                                                    }
+                                                />
                                             </Surface>
 
                                             <IconButton
@@ -151,13 +112,13 @@ export default function VocabularyEditModal({ open, lexeme, onSubmit, onClose, .
                                                 variant="plain"
                                                 color="neutral"
                                                 icon="delete"
-                                                title='Удалить пример'
-                                                onClick={() => deleteExample(item.id)}
+                                                title="Удалить пример"
+                                                onClick={() => handleDeleteExample(id)}
                                             />
                                         </Flex>
                                     ))}
 
-                                    <Button content="Добавить пример" onClick={addExample} />
+                                    <Button content="Добавить пример" onClick={handleAddExample} />
                                 </Surface>
                             )
                         }
