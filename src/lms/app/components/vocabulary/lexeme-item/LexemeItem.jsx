@@ -2,11 +2,12 @@ import Typography from '@mui/joy/Typography';
 
 import { Checkbox, IconButton, ListItem, Surface } from 'shared/ui-components';
 
+import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
+
 export default function LexemeItem({ lexeme, userId, handleDeleteLexeme, setCurrentLexeme, toggleEditModalOpen, togglePreviewModalOpen }) {
-    const { value, translations } = lexeme;
+    const { value, translations, data } = lexeme;
     const translationsString = translations.join(', ');
     const isAuthor = userId !== lexeme?.createdBy;
-    // const isAuthor = false;
 
     const openEditModal = () => {
         toggleEditModalOpen();
@@ -21,6 +22,8 @@ export default function LexemeItem({ lexeme, userId, handleDeleteLexeme, setCurr
     const deleteLexeme = () => {
         handleDeleteLexeme(lexeme.id);
     };
+
+    console.log(111, { lexeme });
 
     return (
         <ListItem className="LexemeItem">
@@ -42,6 +45,7 @@ export default function LexemeItem({ lexeme, userId, handleDeleteLexeme, setCurr
             —
             <Typography className="LexemeItemTranslation">{translationsString}</Typography>
             <Surface sx={{ background: 'transparent' }} className="LexemeItem__sheet" onClick={openPreviewModal}></Surface>
+            <LexemeStatus level={data?.status} />
 
             <IconButton
                 size="lg"

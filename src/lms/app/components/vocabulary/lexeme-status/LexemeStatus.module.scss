@@ -1,0 +1,22 @@
+@use 'shared/styles/variables';
+
+.progress {
+  cursor: pointer;
+}
+
+.icon {
+  color: variables.$text-color;
+  // color: variables.$yandex-color;
+  // color: #28C38A;
+}
+
+.popover {
+  border-radius: 10px;
+  overflow: hidden;
+
+  button {
+    background-color: variables.$text-color;
+    color: #fff;
+    border-radius: 0;
+  }
+}
