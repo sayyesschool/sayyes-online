@@ -1,10 +1,10 @@
 import { Types } from 'mongoose';
-import { addBehavior, stub } from 'sinon';
+import sinon from 'sinon';
 
-addBehavior('returnsQuery', (fake, value) => {
+sinon.addBehavior('returnsQuery', (fake, value) => {
     fake.returns({
-        sort: stub().returnsThis(),
-        populate: stub().returnsThis(),
+        sort: sinon.stub().returnsThis(),
+        populate: sinon.stub().returnsThis(),
         then: fn => fn(value)
     });
 });
