@@ -38,9 +38,6 @@ export default ({
             path: 'lexemes',
             populate: {
                 path: 'data',
-                match: {
-                    learnerId: req.user.id
-                },
                 transform: record => record && ({
                     status: record.status,
                     reviewDate: record.reviewDate
@@ -160,6 +157,34 @@ export default ({
             data: {
                 id: req.params.lexemeId,
                 vocabularyId: req.params.vocabularyId
+            }
+        });
+    },
+
+    async updateLexemeStatus(req, res) {
+        const lexicon = await LexiconRecord.findOneAndUpdate({
+            lexemeId: req.params.lexemeId,
+            learnerId: req.user.id
+        }, {
+            status: req.body.status
+        }, {
+            new: true,
+            upsert: true
+        });
+
+        if (!lexicon) throw {
+            code: 404,
+            message: 'Не найдено'
+        };
+
+        res.json({
+            ok: true,
+            data: {
+                id: req.params.lexemeId,
+                lexiconData: {
+                    status: lexicon.status,
+                    reviewDate: lexicon.reviewDate
+                }
             }
         });
     }

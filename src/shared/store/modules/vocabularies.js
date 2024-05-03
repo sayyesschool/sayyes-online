@@ -1,4 +1,8 @@
-import { combineReducers, createAction, createReducer } from 'shared/store/helpers';
+import {
+    combineReducers,
+    createAction,
+    createReducer
+} from 'shared/store/helpers';
 
 export const getVocabularies = createAction('GET_VOCABULARIES', query => ({
     request: {
@@ -25,20 +29,37 @@ export const addLexeme = createAction('ADD_LEXEME', (vocabularyId, data) => ({
     }
 }));
 
-export const updateLexeme = createAction('UPDATE_LEXEME', (vocabularyId, lexemeId, data) => ({
-    request: {
-        method: 'put',
-        path: `vocabularies/${vocabularyId}/${lexemeId}`,
-        body: data
-    }
-}));
+export const updateLexeme = createAction(
+    'UPDATE_LEXEME',
+    (vocabularyId, lexemeId, data) => ({
+        request: {
+            method: 'put',
+            path: `vocabularies/${vocabularyId}/${lexemeId}`,
+            body: data
+        }
+    })
+);
 
-export const deleteLexeme = createAction('DELETE_LEXEME', (vocabularyId, lexemeId) => ({
-    request: {
-        method: 'delete',
-        path: `vocabularies/${vocabularyId}/${lexemeId}`
-    }
-}));
+export const deleteLexeme = createAction(
+    'DELETE_LEXEME',
+    (vocabularyId, lexemeId) => ({
+        request: {
+            method: 'delete',
+            path: `vocabularies/${vocabularyId}/${lexemeId}`
+        }
+    })
+);
+
+export const updateLexemeStatus = createAction(
+    'UPDATE_LEXEME_STATUS',
+    (lexemeId, status) => ({
+        request: {
+            method: 'put',
+            path: `vocabularies/status/${lexemeId}`,
+            body: { status }
+        }
+    })
+);
 
 export const actions = {
     getVocabularies,
@@ -46,7 +67,8 @@ export const actions = {
     unsetVocabulary,
     addLexeme,
     updateLexeme,
-    deleteLexeme
+    deleteLexeme,
+    updateLexemeStatus
 };
 
 export const vocabulariesReducer = createReducer(null, {
@@ -77,12 +99,22 @@ export const vocabularyReducer = createReducer(null, {
     }),
     [updateLexeme]: (state, action) => ({
         ...state,
-        lexemes: state.lexemes.map(lexeme => lexeme.id === action.data.id ? action.data : lexeme)
+        lexemes: state.lexemes.map(lexeme =>
+            lexeme.id === action.data.id ? action.data : lexeme
+        )
     }),
     [deleteLexeme]: (state, action) => ({
         ...state,
         lexemes: state.lexemes.filter(lexeme => lexeme.id !== action.data.id),
         numberOfLexemes: --state.numberOfLexemes
+    }),
+    [updateLexemeStatus]: (state, action) => ({
+        ...state,
+        lexemes: state.lexemes.map(lexeme =>
+            lexeme.id === action.data.id
+                ? { ...lexeme, data: action.data.lexiconData }
+                : lexeme
+        )
     })
 });
 

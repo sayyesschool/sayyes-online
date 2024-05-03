@@ -16,6 +16,8 @@ export default context => {
 
     router.get('/search', controller.search);
 
+    router.put('/status/:lexemeId', controller.updateLexemeStatus);
+
     router.route('/:vocabularyId')
         .get(controller.getOne)
         .put(controller.update)

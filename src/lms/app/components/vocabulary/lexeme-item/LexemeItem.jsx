@@ -1,11 +1,13 @@
+import { useCallback } from 'react';
+
 import Typography from '@mui/joy/Typography';
 
 import { Checkbox, IconButton, ListItem, Surface } from 'shared/ui-components';
 
 import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 
-export default function LexemeItem({ lexeme, userId, handleDeleteLexeme, setCurrentLexeme, toggleEditModalOpen, togglePreviewModalOpen }) {
-    const { value, translations, data } = lexeme;
+export default function LexemeItem({ lexeme, userId, handleDeleteLexeme, setCurrentLexeme, toggleEditModalOpen, togglePreviewModalOpen, updateLexemeStatus }) {
+    const { id, value, translations, data } = lexeme;
     const translationsString = translations.join(', ');
     const isAuthor = userId !== lexeme?.createdBy;
 
@@ -23,7 +25,9 @@ export default function LexemeItem({ lexeme, userId, handleDeleteLexeme, setCurr
         handleDeleteLexeme(lexeme.id);
     };
 
-    console.log(111, { lexeme });
+    const updateStatus = useCallback(status => {
+        return updateLexemeStatus(id, status);
+    }, [id, updateLexemeStatus]);
 
     return (
         <ListItem className="LexemeItem">
@@ -45,7 +49,11 @@ export default function LexemeItem({ lexeme, userId, handleDeleteLexeme, setCurr
             —
             <Typography className="LexemeItemTranslation">{translationsString}</Typography>
             <Surface sx={{ background: 'transparent' }} className="LexemeItem__sheet" onClick={openPreviewModal}></Surface>
-            <LexemeStatus level={data?.status} />
+
+            <LexemeStatus
+                level={data?.status}
+                updateStatus={updateStatus}
+            />
 
             <IconButton
                 size="lg"

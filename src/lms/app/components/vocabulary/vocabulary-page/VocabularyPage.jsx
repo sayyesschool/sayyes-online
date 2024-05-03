@@ -30,6 +30,10 @@ export default function VocabularyPage({ match }) {
             .finally(() => toggleEditModalOpen(false));
     }, [actions, currentLexeme?.id, toggleEditModalOpen, vocabularyId]);
 
+    const handleUpdateLexemeStatus = useCallback((lexemeId, status) => {
+        return actions.updateLexemeStatus(lexemeId, status);
+    }, [actions]);
+
     if (!vocabulary) return <LoadingIndicator />;
 
     const { title, lexemes, numberOfLexemes } = vocabulary;
@@ -79,6 +83,7 @@ export default function VocabularyPage({ match }) {
                             setCurrentLexeme={setCurrentLexeme}
                             toggleEditModalOpen={toggleEditModalOpen}
                             togglePreviewModalOpen={togglePreviewModalOpen}
+                            updateLexemeStatus={handleUpdateLexemeStatus}
                         />)}
                 </List>
 

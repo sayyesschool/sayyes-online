@@ -18,5 +18,9 @@
     background-color: variables.$text-color;
     color: #fff;
     border-radius: 0;
+
+    &:disabled {
+      background-color: lighten(variables.$text-color, 5%);
+    }
   }
 }
