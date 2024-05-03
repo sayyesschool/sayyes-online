@@ -40,9 +40,9 @@ export default function VocabularyLexemes({
     }, [actions, vocabularyId, toggleEditModalOpen]);
 
     const handleUpdateLexeme = useCallback(data => {
-        return actions.updateLexeme(vocabularyId, currentLexemeId.id, data)
+        return actions.updateLexeme(vocabularyId, currentLexemeId, data)
             .finally(() => toggleEditModalOpen(false));
-    }, [actions, vocabularyId, currentLexemeId?.id, toggleEditModalOpen]);
+    }, [actions, vocabularyId, currentLexemeId, toggleEditModalOpen]);
 
     const handleDeleteLexeme = useCallback(lexemeId => {
         return actions.deleteLexeme(vocabularyId, lexemeId);
