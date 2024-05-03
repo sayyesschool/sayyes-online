@@ -92,6 +92,10 @@
             "error",
             "always"
         ],
+        "@stylistic/jsx-quotes": [
+            "warn",
+            "prefer-double"
+        ],
         "@stylistic/jsx/jsx-closing-bracket-location": [
             "warn",
             "tag-aligned"
