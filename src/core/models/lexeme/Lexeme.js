@@ -4,16 +4,10 @@ import Audio from '../audio';
 import { Level } from '../common';
 import Image from '../image';
 
-import { LexemeType } from './constants';
+import { LexemeKind, LexemeType } from './constants';
 
 export const Lexeme = new Schema({
     value: { type: String, required: true },
-    type: {
-        type: String,
-        enum: Object.values(LexemeType),
-        default: LexemeType.Word,
-        required: true
-    },
     definition: { type: String },
     translations: { type: [String] },
     examples: [{
@@ -23,6 +17,16 @@ export const Lexeme = new Schema({
     }],
     image: { type: Image },
     audio: { type: Audio },
+    type: {
+        type: String,
+        enum: Object.values(LexemeType),
+        default: LexemeType.Word,
+        required: true
+    },
+    kind: {
+        type: String,
+        enum: Object.values(LexemeKind)
+    },
     level: { type: Number, enum: Object.values(Level) },
     frequency: { type: Number, min: 0, max: 1 },
     approved: { type: Boolean, default: false },
