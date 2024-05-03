@@ -4,7 +4,7 @@ import { Grid } from 'shared/ui-components';
 
 import VocabularyCard from 'lms/components/vocabulary/vocabulary-card';
 
-export default function VocabularyGrid({ vocabularies }) {
+export default function VocabulariesGrid({ vocabularies }) {
     return (
         <Grid
             className="VocabularyGrid"

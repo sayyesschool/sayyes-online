@@ -6,7 +6,7 @@ import Sheet from '@mui/joy/Sheet';
 import { useForm } from 'shared/hooks/form';
 import { Button, Form, Popover } from 'shared/ui-components';
 
-import styles from './VocabularyAddButton.module.scss';
+import styles from './LexemeAddButton.module.scss';
 
 export default function VocabularyAddButton({
     numberOfLexemes,

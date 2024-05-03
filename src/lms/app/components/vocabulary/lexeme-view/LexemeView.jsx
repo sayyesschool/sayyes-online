@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { Avatar, Heading, Image, List, Text } from 'shared/ui-components';
 
 import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
@@ -5,10 +7,15 @@ import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 import styles from './LexemeView.module.scss';
 
 export default function LexemeView({
-    lexeme
+    lexeme,
+    onStatusUpdate
 }) {
     const { value, definition, translations, examples, image, data } = lexeme;
     const translationsString = translations.join(', ');
+
+    const handleStatusChange = useCallback(status => {
+        return onStatusUpdate(lexeme, status);
+    }, [lexeme, onStatusUpdate]);
 
     return (
         <div className={styles.root}>
@@ -27,7 +34,7 @@ export default function LexemeView({
                         content={value}
                         type="h1"
                         end={
-                            <LexemeStatus level={data?.status} />
+                            <LexemeStatus level={data?.status} onChange={handleStatusChange} />
                         }
                     />
 

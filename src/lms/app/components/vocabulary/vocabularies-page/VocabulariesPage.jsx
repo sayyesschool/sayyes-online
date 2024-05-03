@@ -2,7 +2,7 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { useVocabularies } from 'shared/hooks/vocabularies';
 
-import VocabularyGrid from 'lms/components/vocabulary/vocabulary-grid';
+import VocabulariesGrid from 'lms/components/vocabulary/vocabularies-grid';
 
 export default function VocabulariesPage() {
     const [vocabularies] = useVocabularies();
@@ -14,7 +14,7 @@ export default function VocabulariesPage() {
             <Page.Header title="Словари"/>
 
             <Page.Content>
-                <VocabularyGrid vocabularies={vocabularies} />
+                <VocabulariesGrid vocabularies={vocabularies} />
             </Page.Content>
         </Page>
     );

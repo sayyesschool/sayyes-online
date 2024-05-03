@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { useStore } from 'shared/hooks/store';
+import { useActions, useStore } from 'shared/hooks/store';
 import http from 'shared/services/http';
 import { actions as vocabulariesActions } from 'shared/store/modules/vocabularies';
 import { hasKey } from 'shared/utils/object';
@@ -69,4 +69,10 @@ export function useVocabulary(id) {
     }, [id]);
 
     return [vocabulary, actions];
+}
+
+export function useVocabularyActions() {
+    return useActions(
+        vocabulariesActions
+    );
 }

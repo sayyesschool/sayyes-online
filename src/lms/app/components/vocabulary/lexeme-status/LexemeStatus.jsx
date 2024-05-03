@@ -10,6 +10,22 @@ import {
 
 import styles from './LexemeStatus.module.scss';
 
+const StatusIcon = {
+    0: 'kid_star',
+    1: 'school',
+    2: 'school',
+    3: 'school',
+    4: 'done'
+};
+
+const StatusColor = {
+    0: 'neutral',
+    1: 'warning',
+    2: 'warning',
+    3: 'warning',
+    4: 'success'
+};
+
 export default function LexemeStatus({
     level = 0,
     onChange
@@ -30,20 +46,23 @@ export default function LexemeStatus({
     const isResetButtonDisabled = level === 0;
     const isSetLearningButtonDisabled = level === 2;
     const isSetLearnedButtonDisabled = level === 4;
+    const color = StatusColor[level];
+    const icon = StatusIcon[level];
 
     return (
         <MenuButton
             trigger={
-                <IconButton className={styles.icon}>
+                <IconButton className={styles.icon} color={color}>
                     <Tooltip content={`${value}%`} placement="left">
                         <CircularProgress
                             className={styles.progress}
                             value={value}
                             thickness={3}
+                            color={color}
                             size="sm"
                             determinate
                         >
-                            <Icon name="star" />
+                            <Icon name={icon} />
                         </CircularProgress>
                     </Tooltip>
                 </IconButton>

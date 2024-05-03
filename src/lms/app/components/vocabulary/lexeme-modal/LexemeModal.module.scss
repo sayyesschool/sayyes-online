@@ -1,0 +1,9 @@
+@use 'shared/styles/variables';
+
+.root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 450px;
+    padding: 0 30px;
+}

@@ -1,9 +1,7 @@
 import { Dialog } from 'shared/ui-components';
 
-import LexemeView from 'lms/components/vocabulary/lexeme-view';
-
-export default function VocabularyPreviewModal({
-    lexeme,
+export default function LexemeModal({
+    children,
     open,
     onClose
 }) {
@@ -12,7 +10,7 @@ export default function VocabularyPreviewModal({
             open={open}
             onClose={onClose}
         >
-            <LexemeView lexeme={lexeme} />
+            {children}
         </Dialog>
     );
 }
