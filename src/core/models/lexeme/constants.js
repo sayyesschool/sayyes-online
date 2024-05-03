@@ -11,7 +11,7 @@ export const LexemeKind = {
     Pronoun: 'pronoun',
     Preposition: 'preposition',
     Conjunction: 'conjunction',
-    Interjection: 'Interjection',
+    Interjection: 'interjection',
     Determiner: 'determiner',
     Article: 'article'
 };
