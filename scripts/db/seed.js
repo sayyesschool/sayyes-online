@@ -25,14 +25,14 @@ await Room.create([
 const learner = await User.create({
     firstname: 'Ученик',
     email: 'learner@sayyes.school',
-    password: '2406YiS2013',
+    password: '123456',
     role: 'learner'
 });
 
 const teacher = await User.create({
     firstname: 'Учитель',
     email: 'teacher@sayyes.school',
-    password: '2406YiS2013',
+    password: '123456',
     role: 'teacher'
 });
 
