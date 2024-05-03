@@ -13,11 +13,13 @@ export default function LexemeView({
     return (
         <div className={styles.root}>
             <section className={styles.content}>
-                <Image
-                    src={image.src}
-                    className={styles.image}
-                    alt={lexeme.value}
-                />
+                {image &&
+                    <Image
+                        className={styles.image}
+                        src={image.src}
+                        alt={lexeme.value}
+                    />
+                }
 
                 <div className={styles.text}>
                     <Heading
