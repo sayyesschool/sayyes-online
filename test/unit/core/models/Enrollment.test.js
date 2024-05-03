@@ -9,7 +9,7 @@ describe('Enrollment', () => {
             createLessons
         };
 
-        xit('should return an array', () => {
+        it('should return an array', () => {
             const lessons = enrollment.createLessons(5);
 
             expect(Array.isArray(lessons)).toBe(true);
@@ -22,7 +22,7 @@ describe('Enrollment', () => {
         });
     });
 
-    xdescribe('getStartDateForSchedule', () => {
+    describe('getStartDateForSchedule', () => {
         const schedule = [{ day: 3 }];
 
         it('should return the correct date', () => {
