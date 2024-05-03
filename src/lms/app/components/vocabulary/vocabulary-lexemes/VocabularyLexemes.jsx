@@ -26,7 +26,7 @@ export default function VocabularyLexemes({
     const actions = useVocabularyActions();
     const [user] =  useUser();
 
-    const [currentLexeme, setCurrentLexeme] = useState(null);
+    const [currentLexemeId, setCurrentLexemeId] = useState(null);
     const [selectedLexemeIds, setSelectedLexemeIds] = useState([]);
     const [filter, setFilter] = useState('all');
     const [isEditModalOpen, toggleEditModalOpen] = useBoolean(false);
@@ -40,16 +40,16 @@ export default function VocabularyLexemes({
     }, [actions, vocabularyId, toggleEditModalOpen]);
 
     const handleUpdateLexeme = useCallback(data => {
-        return actions.updateLexeme(vocabularyId, currentLexeme.id, data)
+        return actions.updateLexeme(vocabularyId, currentLexemeId.id, data)
             .finally(() => toggleEditModalOpen(false));
-    }, [actions, vocabularyId, currentLexeme?.id, toggleEditModalOpen]);
+    }, [actions, vocabularyId, currentLexemeId?.id, toggleEditModalOpen]);
 
     const handleDeleteLexeme = useCallback(lexemeId => {
         return actions.deleteLexeme(vocabularyId, lexemeId);
     }, [actions, vocabularyId]);
 
     const handleEditLexeme = useCallback(lexeme => {
-        setCurrentLexeme(lexeme);
+        setCurrentLexemeId(lexeme.id);
         toggleEditModalOpen(true);
     }, [toggleEditModalOpen]);
 
@@ -63,7 +63,7 @@ export default function VocabularyLexemes({
     }, []);
 
     const handleViewLexeme = useCallback(lexeme => {
-        setCurrentLexeme(lexeme);
+        setCurrentLexemeId(lexeme.id);
         toggleViewModalOpen(true);
     }, [toggleViewModalOpen]);
 
@@ -72,6 +72,7 @@ export default function VocabularyLexemes({
     }, [actions]);
 
     const lexemes = vocabulary.lexemes.filter(filters[filter]);
+    const currentLexeme = lexemes.find(lexeme => lexeme.id === currentLexemeId);
 
     return (
         <div className={styles.root}>
