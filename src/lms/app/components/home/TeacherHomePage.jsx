@@ -77,6 +77,11 @@ export default function TeacherHomePage() {
             });
     }, [actions, lesson]);
 
+    const handleLessonFormClose = useCallback(() => {
+        setLesson();
+        toggleFormDialogOpen(false);
+    }, [toggleFormDialogOpen]);
+
     if (!lessons) return <LoadingIndicator fullscreen />;
 
     const activeEnrollments = enrollments?.filter(({ status }) => status === 'active');
@@ -157,7 +162,7 @@ export default function TeacherHomePage() {
             <FormDialog
                 title={lesson ? 'Редактирование урока' : 'Новый урок'}
                 open={isFormDialogOpen}
-                onClose={toggleFormDialogOpen}
+                onClose={handleLessonFormClose}
             >
                 <LessonForm
                     id="lesson-form"
