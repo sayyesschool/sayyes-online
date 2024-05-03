@@ -12,6 +12,7 @@ export default function PageHeader({
     tabs,
     actions,
     start,
+    center,
     end,
     className,
     children
@@ -23,6 +24,12 @@ export default function PageHeader({
     return (
         <header className={classNames}>
             <div className="PageHeader__row">
+                {start &&
+                    <div className="PageHeader__start">
+                        {start}
+                    </div>
+                }
+
                 <div className="PageHeader__main">
                     {breadcrumbs?.length > 0 &&
                         <Breadcrumbs
@@ -72,6 +79,7 @@ export default function PageHeader({
                         :
                         <Text
                             className="PageHeader__description"
+                            color="neutral"
                             content={description}
                         />
                     )}
@@ -85,6 +93,12 @@ export default function PageHeader({
                         size="sm"
                         color="primary"
                     />
+                }
+
+                {center &&
+                    <div className="PageHeader__center">
+                        {center}
+                    </div>
                 }
 
                 {actions &&

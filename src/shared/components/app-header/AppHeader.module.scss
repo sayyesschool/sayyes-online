@@ -1,0 +1,17 @@
+@use 'shared/styles/variables';
+
+.root {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    background-color: variables.$primary-color;
+    color: variables.$on-primary-color;
+    border-bottom: 1px solid rgba(0,0,0,.12);
+    height: 56px;
+}
+
+.homeLink {
+    color: inherit;
+    font-size: 2rem;
+}

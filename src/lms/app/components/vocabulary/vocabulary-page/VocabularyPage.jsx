@@ -5,95 +5,96 @@ import Page from 'shared/components/page';
 import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
 import { useVocabulary } from 'shared/hooks/vocabularies';
-import { Checkbox, Flex, Form, Icon, List, Select } from 'shared/ui-components';
+import { getWordEnding } from 'shared/utils/format';
 
-import LexemeItem from 'lms/components/vocabulary/lexeme-item';
+import VocabularyAddButton from 'lms/components/vocabulary/vocabulary-add-button';
 import VocabularyEditModal from 'lms/components/vocabulary/vocabulary-edit-modal';
-import VocabularyPopover from 'lms/components/vocabulary/vocabulary-popover';
+import VocabularyLexemes from 'lms/components/vocabulary/vocabulary-lexemes';
 import VocabularyPreviewModal from 'lms/components/vocabulary/vocabulary-preview-modal';
 
+import styles from './VocabularyPage.module.scss';
+
 export default function VocabularyPage({ match }) {
-    const vocabularyId = match.params.vocabulary;
-    const [vocabulary, actions] = useVocabulary(vocabularyId);
+    const [vocabulary, actions] = useVocabulary(match.params.vocabulary);
+    const [user] =  useUser();
+
     const [currentLexeme, setCurrentLexeme] = useState(null);
     const [isEditModalOpen, toggleEditModalOpen] = useBoolean(false);
     const [isPreviewModalOpen, togglePreviewModalOpen] = useBoolean(false);
-    const [user] =  useUser();
-    const userId = user.id;
+
+    const vocabularyId = vocabulary?.id;
+
+    const handleAddLexeme = useCallback(data => {
+        return actions.addLexeme(vocabularyId, data)
+            .finally(() => toggleEditModalOpen(false));
+    }, [actions, vocabularyId, toggleEditModalOpen]);
+
+    const handleUpdateLexeme = useCallback(data => {
+        return actions.updateLexeme(vocabularyId, currentLexeme.id, data)
+            .finally(() => toggleEditModalOpen(false));
+    }, [actions, vocabularyId, currentLexeme?.id, toggleEditModalOpen]);
 
     const handleDeleteLexeme = useCallback(lexemeId => {
         return actions.deleteLexeme(vocabularyId, lexemeId);
     }, [actions, vocabularyId]);
 
-    const handleUpdateLexeme = useCallback(data => {
-        return actions.updateLexeme(vocabularyId, currentLexeme.id, data)
-            .finally(() => toggleEditModalOpen(false));
-    }, [actions, currentLexeme?.id, toggleEditModalOpen, vocabularyId]);
+    const handleEditLexeme = useCallback(lexeme => {
+        setCurrentLexeme(lexeme);
+        toggleEditModalOpen(true);
+    }, [toggleEditModalOpen]);
 
-    const handleUpdateLexemeStatus = useCallback((lexemeId, status) => {
-        return actions.updateLexemeStatus(lexemeId, status);
+    const handleSelectLexeme = useCallback(lexeme => {
+
+    }, [toggleEditModalOpen]);
+
+    const handleViewLexeme = useCallback(lexeme => {
+        setCurrentLexeme(lexeme);
+        togglePreviewModalOpen(true);
+    }, [togglePreviewModalOpen]);
+
+    const handleUpdateLexemeStatus = useCallback((lexeme, status) => {
+        return actions.updateLexemeStatus(lexeme.id, status);
     }, [actions]);
 
     if (!vocabulary) return <LoadingIndicator />;
 
-    const { title, lexemes, numberOfLexemes } = vocabulary;
-    const vocabularyTitle = `${title} (${numberOfLexemes})`;
+    const { title, numberOfLexemes } = vocabulary;
+    const pageTitle = `${title} (${numberOfLexemes})`;
+    const pageDescription = `${vocabulary.numberOfLexemes} ${getWordEnding('слов', vocabulary.numberOfLexemes, ['о', 'а', ''])}`;
 
     return (
-        <Page className="Vocabulary">
-            <Page.Content className="VocabularyPageContent">
-                <Flex className="Vocabulary__header">
-                    <Checkbox
-                        checked={false}
-                        onChange={() => console.log('check')}
+        <Page className={styles.root} title={pageTitle}>
+            <Page.Header
+                title={vocabulary.title}
+                description={pageDescription}
+                actions={[
+                    <VocabularyAddButton
+                        key="add"
+                        onAddLexeme={handleAddLexeme}
                     />
+                ]}
+            />
 
-                    <Form.Input
-                        endDecorator={<Icon>search</Icon>}
-                        placeholder="Поиск"
-                        className="Vocabulary__search"
-                        onChange={() => console.log('search')}
+            <Page.Content>
+                <Page.Section compact>
+                    <VocabularyLexemes
+                        userId={user.id}
+                        vocabulary={vocabulary}
+                        onEditLexeme={handleEditLexeme}
+                        onSelectLexeme={handleSelectLexeme}
+                        onViewLexeme={handleViewLexeme}
+                        onDeleteLexeme={handleDeleteLexeme}
+                        onUpdateLexemeStatus={handleUpdateLexemeStatus}
                     />
-
-                    <VocabularyPopover
-                        vocabularyId={vocabularyId}
-                        numberOfLexemes={numberOfLexemes}
-                        addLexeme={actions.addLexeme}
-                    />
-
-                    <Select
-                        name='VocabularySelect'
-                        className="Vocabulary__select"
-                        defaultValue="my-vocabulary"
-                        onChange={() => console.log('search')}
-                    >
-                        <Select.Option value="my-vocabulary">{vocabularyTitle}</Select.Option>
-                        <Select.Option value="course">Course vocabulary</Select.Option>
-                        <Select.Option value="extra">Extra vocabulary</Select.Option>
-                    </Select>
-                </Flex>
-
-                <List className="Vocabulary__body">
-                    {lexemes?.map(lexeme =>
-                        <LexemeItem
-                            key={lexeme.id}
-                            userId={userId}
-                            lexeme={lexeme}
-                            handleDeleteLexeme={handleDeleteLexeme}
-                            setCurrentLexeme={setCurrentLexeme}
-                            toggleEditModalOpen={toggleEditModalOpen}
-                            togglePreviewModalOpen={togglePreviewModalOpen}
-                            updateLexemeStatus={handleUpdateLexemeStatus}
-                        />)}
-                </List>
+                </Page.Section>
 
                 {(currentLexeme && isEditModalOpen) && (
                     <VocabularyEditModal
                         id="vocabulary-edit-form"
                         lexeme={currentLexeme}
                         open={isEditModalOpen}
-                        onClose={toggleEditModalOpen}
                         onSubmit={handleUpdateLexeme}
+                        onClose={toggleEditModalOpen}
                     />
                 )}
 

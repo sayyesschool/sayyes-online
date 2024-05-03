@@ -1,7 +1,6 @@
 import config from 'config';
-import db from 'db';
-
 import core from 'core';
+import db from 'db';
 
 import * as data from './seed-data';
 
@@ -37,7 +36,7 @@ const enrollment = await Enrollment.create({
     status: 'active',
     learnerId: learner.id,
     teacherId: teacher.id,
-    courseIds:[course.id]
+    courseIds: [course.id]
 });
 
 await Assignment.create({

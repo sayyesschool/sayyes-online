@@ -1,10 +1,9 @@
 import { useCallback, useState } from 'react';
 
-import Typography from '@mui/joy/Typography';
 import { v4 as uuid } from 'uuid';
 
 import FormDialog from 'shared/components/form-dialog';
-import { Accordion, Button, Flex, Form, IconButton, Surface } from 'shared/ui-components';
+import { Accordion, Avatar, Button, Flex, Form, Heading, IconButton } from 'shared/ui-components';
 
 import styles from './VocabularyEditModal.module.scss';
 
@@ -57,7 +56,11 @@ export default function VocabularyEditModal({ open, lexeme, onSubmit, onClose, .
     return (
         <FormDialog title="Редактирование" open={open} onClose={onClose}>
             <Form onSubmit={handleSubmit} {...props}>
-                <Typography className={styles.value}>{lexeme.value}</Typography>
+                <Heading
+                    className={styles.value}
+                    content={lexeme.value}
+                    type="h2"
+                />
 
                 <Accordion
                     items={[
@@ -86,40 +89,48 @@ export default function VocabularyEditModal({ open, lexeme, onSubmit, onClose, .
                             key: 'examples',
                             header: 'Примеры',
                             content: (
-                                <Surface>
-                                    {examples.map(({ id, text, translation }) => (
-                                        <Flex key={id} className={styles.example}>
-                                            <Surface className={styles.exampleInputs}>
-                                                <Form.Input
-                                                    value={text}
-                                                    required
-                                                    onChange={e =>
-                                                        handleExampleChange(id, 'text', e.target.value)
-                                                    }
-                                                />
-
-                                                <Form.Input
-                                                    value={translation}
-                                                    required
-                                                    onChange={e =>
-                                                        handleExampleChange(id, 'translation', e.target.value)
-                                                    }
-                                                />
-                                            </Surface>
-
-                                            <IconButton
-                                                size="lg"
+                                <Flex gap="small" column>
+                                    {examples.map(({ id, text, translation }, i) => (
+                                        <div key={id} className={styles.example}>
+                                            <Form.Input
+                                                value={text}
                                                 variant="plain"
-                                                color="neutral"
-                                                icon="delete"
-                                                title="Удалить пример"
-                                                onClick={() => handleDeleteExample(id)}
+                                                placeholder="Пример"
+                                                start={
+                                                    <Avatar content={i + 1} size="sm" />
+                                                }
+                                                end={
+                                                    <IconButton
+                                                        size="sm"
+                                                        variant="plain"
+                                                        color="neutral"
+                                                        icon="delete"
+                                                        title="Удалить пример"
+                                                        onClick={() => handleDeleteExample(id)}
+                                                    />
+                                                }
+                                                required
+                                                onChange={e =>
+                                                    handleExampleChange(id, 'text', e.target.value)
+                                                }
                                             />
-                                        </Flex>
+
+                                            <Form.Input
+                                                className={styles.exampleTranslation}
+                                                value={translation}
+                                                variant="plain"
+                                                size="sm"
+                                                placeholder="Перевод"
+                                                required
+                                                onChange={e =>
+                                                    handleExampleChange(id, 'translation', e.target.value)
+                                                }
+                                            />
+                                        </div>
                                     ))}
 
                                     <Button content="Добавить пример" onClick={handleAddExample} />
-                                </Surface>
+                                </Flex>
                             )
                         }
                     ]}

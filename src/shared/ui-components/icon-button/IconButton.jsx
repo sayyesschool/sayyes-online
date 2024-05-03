@@ -1,7 +1,7 @@
 import { forwardRef, isValidElement } from 'react';
-import classnames from 'classnames';
 
 import JoyIconButton from '@mui/joy/IconButton';
+import classnames from 'classnames';
 
 import Icon from '../icon/Icon';
 
@@ -11,6 +11,7 @@ const IconButton = forwardRef(({
 
     as,
     className,
+    children,
     ...props
 }, ref) => {
     const classNames = classnames('ui-IconButton', className);
@@ -28,6 +29,8 @@ const IconButton = forwardRef(({
             {isValidElement(icon) ? icon :
                 <Icon name={icon} size={size} />
             }
+
+            {children}
         </JoyIconButton>
     );
 });

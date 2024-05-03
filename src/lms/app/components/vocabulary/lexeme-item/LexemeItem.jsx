@@ -1,81 +1,89 @@
 import { useCallback } from 'react';
 
-import Typography from '@mui/joy/Typography';
-
-import { Checkbox, IconButton, ListItem, Surface } from 'shared/ui-components';
+import { Checkbox, IconButton, ListItem, Text } from 'shared/ui-components';
 
 import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 
-export default function LexemeItem({ lexeme, userId, handleDeleteLexeme, setCurrentLexeme, toggleEditModalOpen, togglePreviewModalOpen, updateLexemeStatus }) {
-    const { id, value, translations, data } = lexeme;
+import styles from './LexemeItem.module.scss';
+
+export default function LexemeItem({
+    lexeme,
+    userId,
+    onView,
+    onEdit,
+    onSelect,
+    onDelete,
+    onStatusUpdate
+}) {
+    const handleCheckboxChange = useCallback(() => {
+        return onSelect(lexeme);
+    }, [lexeme, onSelect]);
+
+    const handleContentClick = useCallback(() => {
+        return onView(lexeme);
+    }, [lexeme, onView]);
+
+    const handleEditButtonClick = useCallback(() => {
+        return onEdit(lexeme);
+    }, [lexeme, onEdit]);
+
+    const handleDeleteButtonClick = useCallback(() => {
+        return onDelete(lexeme);
+    }, [lexeme, onDelete]);
+
+    const handleStatusChange = useCallback(status => {
+        return onStatusUpdate(lexeme, status);
+    }, [lexeme, onStatusUpdate]);
+
+    const { value, translations, data } = lexeme;
     const translationsString = translations.join(', ');
+    // TODO: Move to the api ???
     const isAuthor = userId !== lexeme?.createdBy;
 
-    const openEditModal = () => {
-        toggleEditModalOpen();
-        setCurrentLexeme(lexeme);
-    };
-
-    const openPreviewModal = () => {
-        togglePreviewModalOpen();
-        setCurrentLexeme(lexeme);
-    };
-
-    const deleteLexeme = () => {
-        handleDeleteLexeme(lexeme.id);
-    };
-
-    const updateStatus = useCallback(status => {
-        return updateLexemeStatus(id, status);
-    }, [id, updateLexemeStatus]);
-
     return (
-        <ListItem className="LexemeItem">
+        <ListItem className={styles.root}>
             <Checkbox
                 checked={false}
-                onChange={() => console.log('check')}
+                onChange={handleCheckboxChange}
             />
 
-            <IconButton
-                size="lg"
-                variant="plain"
-                color="neutral"
-                icon="volume_up"
-                title='Воспроизвести слово'
-                onClick={() => console.log('audio')}
-            />
+            <div
+                className={styles.content}
+                onClick={handleContentClick}
+            >
+                <Text className={styles.value} color="primary" content={value} />
+                <Text content="—" />
+                <Text className={styles.translations}>{translationsString}</Text>
+            </div>
 
-            <Typography className="LexemeItemValue">{value}</Typography>
-            —
-            <Typography className="LexemeItemTranslation">{translationsString}</Typography>
-            <Surface sx={{ background: 'transparent' }} className="LexemeItem__sheet" onClick={openPreviewModal}></Surface>
+            <div className={styles.actions}>
+                <LexemeStatus
+                    level={data?.status}
+                    onChange={handleStatusChange}
+                />
 
-            <LexemeStatus
-                level={data?.status}
-                updateStatus={updateStatus}
-            />
+                {lexeme.audio &&
+                    <IconButton
+                        icon="volume_up"
+                        title="Воспроизвести слово"
+                        onClick={() => console.log('audio')}
+                    />
+                }
 
-            <IconButton
-                size="lg"
-                variant="plain"
-                color="neutral"
-                icon="edit_note"
-                title='Редактировать слово'
-                className="EditBtn"
-                disabled={isAuthor}
-                onClick={openEditModal}
-            />
+                <IconButton
+                    icon="edit"
+                    title="Редактировать слово"
+                    disabled={isAuthor}
+                    onClick={handleEditButtonClick}
+                />
 
-            <IconButton
-                size="lg"
-                variant="plain"
-                color="neutral"
-                icon="delete"
-                title='Архивировать слово'
-                className="DeleteBtn"
-                disabled={isAuthor}
-                onClick={deleteLexeme}
-            />
+                <IconButton
+                    icon="delete"
+                    title="Удалить слово"
+                    disabled={isAuthor}
+                    onClick={handleDeleteButtonClick}
+                />
+            </div>
         </ListItem>
     );
 }

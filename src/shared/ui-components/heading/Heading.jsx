@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyTypography from '@mui/joy/Typography';
+import classnames from 'classnames';
 
 const Heading = forwardRef(({
     type,

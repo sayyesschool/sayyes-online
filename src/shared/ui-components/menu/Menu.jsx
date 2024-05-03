@@ -1,8 +1,8 @@
 import { forwardRef, useCallback } from 'react';
-import classnames from 'classnames';
 
 import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 import MenuList from '@mui/joy/MenuList';
+import classnames from 'classnames';
 
 import { ListDivider } from '../list';
 import Popover from '../popover';

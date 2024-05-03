@@ -1,24 +1,33 @@
 import { NavLink } from 'react-router-dom';
 
-import { Icon, Text, Tabs, TabList, Tab } from 'shared/ui-components';
+import { Icon, Tab, TabList, Tabs, Text } from 'shared/ui-components';
 
-export default function NavBar({ items, ...props }) {
+export default function NavBar({ items, orientation, ...props }) {
     return (
         <Tabs
             className="NavBar"
-            orientation="vertical"
+            orientation={orientation}
             {...props}
         >
             <TabList disableUnderline>
                 {items.map(item =>
-                    <NavBarItem key={item.key} {...item} />
+                    <NavBarItem
+                        key={item.key}
+                        orientation={orientation}
+                        {...item}
+                    />
                 )}
             </TabList>
         </Tabs>
     );
 }
 
-function NavBarItem({ icon, text, to, exact }) {
+const IndicatorPlacementByOrientation = {
+    horizontal: 'bottom',
+    vertical: 'right'
+};
+
+function NavBarItem({ icon, text, to, exact, orientation, ...props }) {
     return (
         <Tab
             component={NavLink}
@@ -27,8 +36,9 @@ function NavBarItem({ icon, text, to, exact }) {
             value={to}
             className="NavBarItem"
             activeClassName="NavBarItem--active"
-            orientation="vertical"
-            indicatorPlacement="left"
+            orientation={orientation}
+            indicatorPlacement={IndicatorPlacementByOrientation[orientation]}
+            {...props}
         >
             <Icon
                 className="NavBarItem__icon"

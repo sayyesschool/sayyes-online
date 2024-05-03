@@ -1,6 +1,5 @@
-import classnames from 'classnames';
-
 import { Popper } from '@mui/base/Popper';
+import classnames from 'classnames';
 
 export default function Popover({ className, ...props }) {
     return (

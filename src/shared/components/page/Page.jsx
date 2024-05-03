@@ -15,7 +15,7 @@ const Page = forwardRef(({
     className,
     ...props
 }, ref) => {
-    const classNames = classnames('Page', className);
+    const classNames = classnames(className, 'Page');
 
     if (loading) return <LoadingIndicator />;
     if (notFound) return <NotFound />;

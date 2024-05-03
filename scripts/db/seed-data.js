@@ -9,37 +9,37 @@ export const assignment = {
 
 export const course = {
     _id: '5fb265487ef0653994e53a26',
-    title : 'Course',
-    description : '<p>Course description</p>',
-    units : [
+    title: 'Course',
+    description: '<p>Course description</p>',
+    units: [
         {
             _id: '64b6c779368b0620f32984ed',
-            title : 'Unit 1',
-            description : '<p>Unit 1 description</p>',
-            _lessons : [
+            title: 'Unit 1',
+            description: '<p>Unit 1 description</p>',
+            _lessons: [
                 '64b6c782368b0620f32984f2'
             ]
         }
     ],
-    lessons : [
+    lessons: [
         {
             _id: '64b6c782368b0620f32984f2',
-            title : 'Lesson 1',
-            description : '<p>Lesson 1 description</p>',
-            _unit : '64b6c779368b0620f32984ed',
-            _sections : [
+            title: 'Lesson 1',
+            description: '<p>Lesson 1 description</p>',
+            _unit: '64b6c779368b0620f32984ed',
+            _sections: [
                 '64b6c8b8368b0620f3298514'
             ]
         }
     ],
-    sections : [
+    sections: [
         {
-            _id : '64b6c8b8368b0620f3298514',
-            title : 'After you watch',
-            description : '<p>After you watch description</p>',
-            _unit : '64b6c779368b0620f32984ed',
-            _lesson : '64b6c782368b0620f32984f2',
-            _exercises : [
+            _id: '64b6c8b8368b0620f3298514',
+            title: 'After you watch',
+            description: '<p>After you watch description</p>',
+            _unit: '64b6c779368b0620f32984ed',
+            _lesson: '64b6c782368b0620f32984f2',
+            _exercises: [
                 '660af90c20a265092f53b487'
             ]
         }
@@ -48,17 +48,17 @@ export const course = {
 
 export const exercise = {
     _id: '660af90c20a265092f53b487',
-    courseId : '5fb265487ef0653994e53a26',
-    sectionId : '64b6c8b8368b0620f3298514',
-    description : '<p class="directions">Complete the conversations. Use the conversations above to help you. Then practice with a partner. Use your own names.</p><p>Заполните пропуски, используя диалоги выше. Затем попрактикуйте данные диалоги с партнёром, используя свои собственные имена.</p>',
-    items : [
+    courseId: '5fb265487ef0653994e53a26',
+    sectionId: '64b6c8b8368b0620f3298514',
+    description: '<p class="directions">Complete the conversations. Use the conversations above to help you. Then practice with a partner. Use your own names.</p><p>Заполните пропуски, используя диалоги выше. Затем попрактикуйте данные диалоги с партнёром, используя свои собственные имена.</p>',
+    items: [
         {
-            _id : 'a43ffd3b-0624-4c67-9b75-f04e45ddc80a',
-            type : 'fib',
-            version : 1,
-            props : {
-                'content' : '<p class="overline"><strong>These people are friends:</strong></p><blockquote class="dialog"><p><i>A</i> Hi, Pat. How are you?</p><p><i>B</i> I\'m fine. How are you?</p><p><i>A</i> Good, {thanks}:{c6acc252}.</p></blockquote><hr><p></p><blockquote class="dialog"><p><i>A</i> Good {morning}:{1531a523}, Anna.</p><p><i>B</i> Hi, Dan. {how}:{a3c657e4} are you?</p><p><i>A</i> I\'m {fine}:{2e061e31}, thanks.</p></blockquote><p></p><p class="overline"><strong>These people meet for the first time:</strong></p><blockquote class="dialog"><p><i>A</i> Hello. {i\'m}:{a64ac416} Chris Evans.</p><p><i>B</i> Hi. I\'m Grace Song.</p><p><i>A</i> {nice}:{8b698022} to meet you, Grace.</p></blockquote><hr><p></p><blockquote class="dialog"><p><i>A</i> Hello. I\'m Sarah.</p><p><i>B</i> Nice to meet {you}:{88f706f2}. I\'m Alan.</p><p><i>A</i> Nice to {meet}:{b5873c9e} you.</p></blockquote>',
-                'required' : false
+            _id: 'a43ffd3b-0624-4c67-9b75-f04e45ddc80a',
+            type: 'fib',
+            version: 1,
+            props: {
+                'content': '<p class="overline"><strong>These people are friends:</strong></p><blockquote class="dialog"><p><i>A</i> Hi, Pat. How are you?</p><p><i>B</i> I\'m fine. How are you?</p><p><i>A</i> Good, {thanks}:{c6acc252}.</p></blockquote><hr><p></p><blockquote class="dialog"><p><i>A</i> Good {morning}:{1531a523}, Anna.</p><p><i>B</i> Hi, Dan. {how}:{a3c657e4} are you?</p><p><i>A</i> I\'m {fine}:{2e061e31}, thanks.</p></blockquote><p></p><p class="overline"><strong>These people meet for the first time:</strong></p><blockquote class="dialog"><p><i>A</i> Hello. {i\'m}:{a64ac416} Chris Evans.</p><p><i>B</i> Hi. I\'m Grace Song.</p><p><i>A</i> {nice}:{8b698022} to meet you, Grace.</p></blockquote><hr><p></p><blockquote class="dialog"><p><i>A</i> Hello. I\'m Sarah.</p><p><i>B</i> Nice to meet {you}:{88f706f2}. I\'m Alan.</p><p><i>A</i> Nice to {meet}:{b5873c9e} you.</p></blockquote>',
+                'required': false
             }
         }
     ]
@@ -67,14 +67,14 @@ export const exercise = {
 export const learner = {
     firstname: 'Ученик',
     email: 'learner@sayyes.school',
-    password: 'learner@sayyes.school',
+    password: '123456',
     role: 'learner'
 };
 
 export const teacher = {
     firstname: 'Учитель',
     email: 'teacher@sayyes.school',
-    password: '2406YiS2013',
+    password: '123456',
     role: 'teacher'
 };
 
@@ -108,7 +108,10 @@ export const lexemes = [
                 text: 'The cat purred as I stroked its fur.',
                 translation: 'Кот замурлыкал, когда я погладил его по шерсти.'
             }
-        ]
+        ],
+        image: {
+            src: 'https://picsum.photos/200'
+        }
     },
     {
         value: 'dog',
@@ -143,7 +146,10 @@ export const lexemes = [
                 text: 'Please keep your dog on a lead when on the beach.',
                 translation: 'Пожалуйста, держите свою собаку на поводке, когда вы находитесь на пляже.'
             }
-        ]
+        ],
+        image: {
+            src: 'https://picsum.photos/200'
+        }
     }
 ];
 

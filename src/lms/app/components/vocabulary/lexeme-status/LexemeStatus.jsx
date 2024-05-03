@@ -1,94 +1,77 @@
-import { useCallback, useState } from 'react';
-
-import { ClickAwayListener } from '@mui/base/ClickAwayListener';
+import { useCallback } from 'react';
 
 import {
-    Button,
     CircularProgress,
-    Flex,
     Icon,
-    Popover,
-    Surface,
+    IconButton,
+    MenuButton,
     Tooltip
 } from 'shared/ui-components';
 
 import styles from './LexemeStatus.module.scss';
 
-export default function LexemeStatus({ level = 0, updateStatus }) {
-    const [anchorEl, setAnchorEl] = useState(null);
-    const value = (level ?? 0) * 25;
-    const percentageValue = `${value}%`;
-    const isResetBtnDisabled = level === 0;
-    const isSetLearnedBtnDisabled = level === 4;
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popper' : undefined;
+export default function LexemeStatus({
+    level = 0,
+    onChange
+}) {
+    const handleResetButtonClick = useCallback(() => {
+        onChange(0);
+    }, [onChange]);
 
-    const handleClickPopover = useCallback(
-        event => {
-            setAnchorEl(anchorEl ? null : event.currentTarget);
-        },
-        [anchorEl]
-    );
+    const handleLearningButtonClick = useCallback(() => {
+        onChange(2);
+    }, [onChange]);
 
-    const resetStatus = useCallback(() => {
-        updateStatus(0).then(() => handleClickPopover());
-    }, [handleClickPopover, updateStatus]);
+    const handleLearnedButtonClick = useCallback(() => {
+        onChange(4);
+    }, [onChange]);
 
-    const setLearned = useCallback(() => {
-        updateStatus(4).then(() => handleClickPopover());
-    }, [handleClickPopover, updateStatus]);
+    const value = level * 25;
+    const isResetButtonDisabled = level === 0;
+    const isSetLearningButtonDisabled = level === 2;
+    const isSetLearnedButtonDisabled = level === 4;
 
     return (
-        <>
-            <Tooltip content={percentageValue} placement="left">
-                <CircularProgress
-                    aria-describedby={id}
-                    value={value}
-                    sx={{
-                        '--CircularProgress-size': '25px',
-                        '--CircularProgress-trackThickness': '3px',
-                        '--CircularProgress-trackColor': 'silver',
-                        '--CircularProgress-progressThickness': '3px'
-                    }}
-                    className={styles.progress}
-                    thickness={3}
-                    determinate
-                    onClick={handleClickPopover}
-                >
-                    <Icon className={styles.icon} color="warning">
-            star
-                    </Icon>
-                </CircularProgress>
-            </Tooltip>
-
-            <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                className={styles.popover}
-                modifiers={[
-                    {
-                        name: 'offset',
-                        options: {
-                            offset: [0, 10]
-                        }
-                    }
-                ]}
-            >
-                <ClickAwayListener onClickAway={handleClickPopover}>
-                    <Surface>
-                        <Flex column>
-                            <Button disabled={isResetBtnDisabled} onClick={resetStatus}>
-                                Сбросить статус
-                            </Button>
-
-                            <Button disabled={isSetLearnedBtnDisabled} onClick={setLearned}>
-                                Перевести в изученные
-                            </Button>
-                        </Flex>
-                    </Surface>
-                </ClickAwayListener>
-            </Popover>
-        </>
+        <MenuButton
+            trigger={
+                <IconButton className={styles.icon}>
+                    <Tooltip content={`${value}%`} placement="left">
+                        <CircularProgress
+                            className={styles.progress}
+                            value={value}
+                            thickness={3}
+                            size="sm"
+                            determinate
+                        >
+                            <Icon name="star" />
+                        </CircularProgress>
+                    </Tooltip>
+                </IconButton>
+            }
+            items={[
+                {
+                    key: 'learning',
+                    content: 'Перевести в изучаемые',
+                    icon: 'school',
+                    disabled: isSetLearningButtonDisabled,
+                    onClick: handleLearningButtonClick
+                },
+                {
+                    key: 'learned',
+                    content: 'Перевести в изученные',
+                    icon: 'done',
+                    disabled: isSetLearnedButtonDisabled,
+                    onClick: handleLearnedButtonClick
+                },
+                {
+                    key: 'reset',
+                    content: 'Сбросить статус',
+                    icon: 'restart_alt',
+                    color: 'danger',
+                    disabled: isResetButtonDisabled,
+                    onClick: handleResetButtonClick
+                }
+            ]}
+        />
     );
 }

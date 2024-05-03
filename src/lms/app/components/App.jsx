@@ -27,7 +27,7 @@ export default function App() {
     return (
         <div className="App">
             <AppHeader user={user}>
-                <NavBar items={navItems} />
+                <NavBar items={navItems} orientation="horizontal" />
             </AppHeader>
 
             <AppContent>

@@ -1,4 +1,3 @@
-
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { useVocabularies } from 'shared/hooks/vocabularies';
@@ -12,8 +11,9 @@ export default function VocabulariesPage() {
 
     return (
         <Page className="VocabulariesPage">
+            <Page.Header title="Словари"/>
+
             <Page.Content>
-                <Page.Header title="Словари"/>
                 <VocabularyGrid vocabularies={vocabularies} />
             </Page.Content>
         </Page>
