@@ -63,7 +63,7 @@ export default function VocabularyPage({ match }) {
     const pageDescription = `${vocabulary.numberOfLexemes} ${getWordEnding('слов', vocabulary.numberOfLexemes, ['о', 'а', ''])}`;
 
     return (
-        <Page className={styles.root} title={pageTitle}>
+        <Page className={styles.root}>
             <Page.Header
                 title={vocabulary.title}
                 description={pageDescription}
