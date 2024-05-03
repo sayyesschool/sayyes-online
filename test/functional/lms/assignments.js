@@ -1,5 +1,5 @@
 export default (api, { models: { Comment } }) =>
-    xdescribe('/assignments', () => {
+    describe('/assignments', () => {
         describe('POST /', () => {
             it('should create a comment', async () => {
 

@@ -3,20 +3,27 @@ export default ({
 }) => ({
     async search(req, res) {
         const regex = req.query.q && new RegExp(req.query.q, 'i');
-        const page = req.query.p ?? 0;
-        const limit = req.query.c;
+        const batch = Number(req.query.p ?? 1);
+        const limit = Number(req.query.c ?? 0);
+        const skip = (batch - 1) * limit;
+        const query = { value: regex, approved: true };
 
         const [count, lexemes] = await Promise.all([
-            Lexeme.count(),
-            Lexeme.find({ value: regex })
-                .skip(page * limit)
+            Lexeme.count(query),
+            Lexeme.find(query)
+                .skip(skip)
                 .limit(limit)
         ]);
+
+        const more = skip + lexemes.length < count;
 
         res.json({
             ok: true,
             meta: {
-                more: page * limit + lexemes.length < count
+                totalCount: count,
+                count: lexemes.length,
+                batch,
+                more
             },
             data: lexemes
         });
