@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import ErrorBoundary from 'shared/components/error-boundary';
 import { StoreProvider } from 'shared/store';
 import { theme, ThemeProvider } from 'shared/theme';
-import 'shared/styles/index.scss';
+import 'shared/styles';
 
 import { App } from './components';
 import store from './store';
