@@ -19,9 +19,7 @@ export const Lexeme = new Schema({
     audio: { type: Audio },
     type: {
         type: String,
-        enum: Object.values(LexemeType),
-        default: LexemeType.Word,
-        required: true
+        enum: Object.values(LexemeType)
     },
     kind: {
         type: String,
@@ -30,6 +28,7 @@ export const Lexeme = new Schema({
     level: { type: Number, enum: Object.values(Level) },
     frequency: { type: Number, min: 0, max: 1 },
     approved: { type: Boolean, default: false },
+    public: { type: Boolean, default: false },
     createdBy: { type: Schema.Types.ObjectId }
 }, {
     timestamps: true
