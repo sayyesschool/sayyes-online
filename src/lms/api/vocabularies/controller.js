@@ -139,6 +139,12 @@ export default ({
             examples: req.body.examples
         }, {
             new: true
+        }).populate({
+            path: 'data',
+            transform: record => record && ({
+                status: record.status,
+                reviewDate: record.reviewDate
+            })
         });
 
         if (!lexeme) throw {
