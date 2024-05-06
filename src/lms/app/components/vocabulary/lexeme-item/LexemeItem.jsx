@@ -28,7 +28,7 @@ export default function LexemeItem({
     }, [lexeme, onEdit]);
 
     const handleDeleteButtonClick = useCallback(() => {
-        return onDelete(lexeme);
+        return onDelete(lexeme.id);
     }, [lexeme, onDelete]);
 
     const handleStatusChange = useCallback(status => {
@@ -38,7 +38,7 @@ export default function LexemeItem({
     const { value, translations, data } = lexeme;
     const translationsString = translations.join(', ');
     // TODO: Move to the api ???
-    const isAuthor = userId !== lexeme?.createdBy;
+    const isNotAuthor = userId !== lexeme?.createdBy;
 
     return (
         <ListItem className={styles.root}>
@@ -73,14 +73,14 @@ export default function LexemeItem({
                 <IconButton
                     icon="edit"
                     title="Редактировать слово"
-                    disabled={isAuthor}
+                    disabled={isNotAuthor}
                     onClick={handleEditButtonClick}
                 />
 
                 <IconButton
                     icon="delete"
                     title="Удалить слово"
-                    disabled={isAuthor}
+                    disabled={isNotAuthor}
                     onClick={handleDeleteButtonClick}
                 />
             </div>

@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import { v4 as uuid } from 'uuid';
 
-import { Avatar, Button, Flex, Form, Heading, IconButton } from 'shared/ui-components';
+import { Avatar, Button, Flex, Form, Heading, IconButton, Surface } from 'shared/ui-components';
 
 import styles from './LexemeExamplesForm.module.scss';
 
@@ -33,7 +33,7 @@ export default function LexemeExamplesForm({
     }, [examples, onChange]);
 
     return (
-        <Form className={styles.root} {...props}>
+        <Surface className={styles.root} {...props}>
             <Heading
                 content="Примеры"
                 type="title-sm"
@@ -81,6 +81,6 @@ export default function LexemeExamplesForm({
 
                 <Button icon="add" content="Добавить пример" variant="plain" onClick={handleAdd} />
             </Flex>
-        </Form>
+        </Surface>
     );
 }
