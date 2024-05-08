@@ -16,15 +16,15 @@ export default function LexemeItem({
     onStatusUpdate
 }) {
     const handleCheckboxChange = useCallback(() => {
-        return onSelect(lexeme);
+        return onSelect(lexeme.id);
     }, [lexeme, onSelect]);
 
     const handleContentClick = useCallback(() => {
-        return onView(lexeme);
+        return onView(lexeme.id);
     }, [lexeme, onView]);
 
     const handleEditButtonClick = useCallback(() => {
-        return onEdit(lexeme);
+        return onEdit(lexeme.id);
     }, [lexeme, onEdit]);
 
     const handleDeleteButtonClick = useCallback(() => {
@@ -32,7 +32,7 @@ export default function LexemeItem({
     }, [lexeme, onDelete]);
 
     const handleStatusChange = useCallback(status => {
-        return onStatusUpdate(lexeme, status);
+        return onStatusUpdate(lexeme.id, status);
     }, [lexeme, onStatusUpdate]);
 
     const { value, translations, data } = lexeme;

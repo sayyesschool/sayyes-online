@@ -48,27 +48,27 @@ export default function VocabularyLexemes({
         return actions.deleteLexeme(vocabularyId, lexemeId);
     }, [actions, vocabularyId]);
 
-    const handleEditLexeme = useCallback(lexeme => {
-        setCurrentLexemeId(lexeme.id);
+    const handleEditLexeme = useCallback(lexemeId => {
+        setCurrentLexemeId(lexemeId);
         toggleEditModalOpen(true);
     }, [toggleEditModalOpen]);
 
-    const handleSelectLexeme = useCallback(lexeme => {
+    const handleSelectLexeme = useCallback(lexemeId => {
         setSelectedLexemeIds(ids => {
-            const isSelected = ids.includes(lexeme.id);
+            const isSelected = ids.includes(lexemeId);
             return isSelected ?
-                ids.filter(id => id !== lexeme.id) :
-                ids.concat(lexeme.id);
+                ids.filter(id => id !== lexemeId) :
+                ids.concat(lexemeId);
         });
     }, []);
 
-    const handleViewLexeme = useCallback(lexeme => {
-        setCurrentLexemeId(lexeme.id);
+    const handleViewLexeme = useCallback(lexemeId => {
+        setCurrentLexemeId(lexemeId);
         toggleViewModalOpen(true);
     }, [toggleViewModalOpen]);
 
-    const handleUpdateLexemeStatus = useCallback((lexeme, status) => {
-        return actions.updateLexemeStatus(lexeme.id, status);
+    const handleUpdateLexemeStatus = useCallback((lexemeId, status) => {
+        return actions.updateLexemeStatus(lexemeId, status);
     }, [actions]);
 
     const lexemes = vocabulary.lexemes.filter(filters[filter]);
