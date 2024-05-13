@@ -6,7 +6,8 @@ export default ({
         const batch = Number(req.query.p ?? 1);
         const limit = Number(req.query.c ?? 0);
         const skip = (batch - 1) * limit;
-        const query = { value: regex, approved: true };
+        const query = { value: regex };
+        // const query = { value: regex, approved: true };
 
         const [count, lexemes] = await Promise.all([
             Lexeme.count(query),

@@ -4,12 +4,13 @@ import FormDialog from 'shared/components/form-dialog';
 import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
 import { useVocabularyActions } from 'shared/hooks/vocabularies';
-import { Checkbox, Dialog, Icon, Input, Select } from 'shared/ui-components';
+import {  Checkbox, Dialog  } from 'shared/ui-components';
 
 import LexemeAddButton from 'lms/components/vocabulary/lexeme-add-button';
 import LexemeForm from 'lms/components/vocabulary/lexeme-form';
 import LexemeView from 'lms/components/vocabulary/lexeme-view';
 import LexemesList from 'lms/components/vocabulary/lexemes-list';
+import VocabularySearch from 'lms/components/vocabulary/vocabulary-search';
 
 import styles from './VocabularyLexemes.module.scss';
 
@@ -82,28 +83,15 @@ export default function VocabularyLexemes({
                     onChange={() => console.log('check')}
                 />
 
-                <Input
-                    start={<Icon>search</Icon>}
-                    placeholder="Поиск"
-                    className={styles.search}
-                    onChange={() => console.log('search')}
+                <VocabularySearch
+                    lexemes={lexemes}
+                    deleteLexeme={handleDeleteLexeme}
+                    addLexeme={handleAddLexeme}
                 />
 
                 <LexemeAddButton
                     onAddLexeme={handleAddLexeme}
                 />
-
-                {/* <Select
-                    className={styles.select}
-                    defaultValue="all"
-                    options={[
-                        { value: 'all', content: 'Все слова' },
-                        { value: 'new', content: 'Новые' },
-                        { value: 'learning', content: 'Изучаемые' },
-                        { value: 'learned', content: 'Изученные' }
-                    ]}
-                    onChange={(event, value) => setFilter(value)}
-                /> */}
             </div>
 
             <LexemesList

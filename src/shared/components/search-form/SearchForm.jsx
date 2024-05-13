@@ -1,74 +1,64 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useCallback, useState } from 'react';
 
-import { Form, Icon, List, Popover } from 'shared/ui-components/form';
-import { throttle } from 'shared/utils/fn';
+import { useSearch } from 'shared/hooks/search';
+import { Autocomplete, Button, Icon, ListItem } from 'shared/ui-components';
 
-export default function SearchForm() {
-    const anchorRef = useRef();
+export default function SearchForm({
+    apiUrl,
+    limit,
+    withShowMoreBtn,
+    placeholder,
+    optionItem: OptionItem,
+    optionItemProps
+}) {
+    const { query, results, loading, showMore, handleInputChange, loadMore } =
+    useSearch({ apiUrl, limit });
+    const [open, setOpen] = useState(false);
+    const isOpen = open && !!query.length;
 
-    const [query, setQuery] = useState('');
-    const [isLoading, setLoading] = useState(false);
-    const [isMenuOpen, setMenuOpen] = useState(false);
-    const [results, setResults] = useState([]);
+    const handleOpen = () => setOpen(true);
+    const handleClose = (e, reason) => {
+        if (reason === 'selectOption') return;
+        setOpen(false);
+    };
 
-    const getResults = useMemo(() => throttle(query => {
-        setLoading(true);
-        fetch(`/admin/api/users?search=${query}`)
-            .then(res => res.json())
-            .then(res => {
-                setResults(res.data);
-                setMenuOpen(true);
-                setLoading(false);
-                anchorRef.current.control.focus();
-            });
-    }, 1000), []);
+    const renderOption = useCallback((props, option) => {
+        return (
+            <ListItem {...props}>
+                {option.type === 'showMoreBtn' ? (
+                    <Button className="autocomplete-show-more-btn" onClick={loadMore}>
+                        Показать ещё
+                    </Button>
+                ) : (
+                    <OptionItem option={option} {...optionItemProps} />
+                )}
+            </ListItem>
+        );
+    }, [loadMore, optionItemProps]);
 
-    const handleMenuClose = useCallback(() => setMenuOpen(false), []);
-
-    const handleChange = useCallback((event, value) => {
-        getResults(value);
-    }, []);
-
-    const handleInput = useCallback(event => {
-        setQuery(event.target.value);
-    }, []);
-
-    const handleClear = useCallback(() => {
-        setQuery('');
-        setMenuOpen(false);
-    }, []);
+    const filterOptions = useCallback(options => {
+        let result = [...options.sort((a, b) => b.value.localeCompare(a.value))];
+        if (showMore && withShowMoreBtn) {
+            result = [...result, { value: 'show more', type: 'showMoreBtn' }];
+        }
+        return result;
+    }, [showMore, withShowMoreBtn]);
 
     return (
-        <Form className="search-form">
-            <Form.Input
-                ref={anchorRef}
-                value={query}
-                icon={<Icon>search</Icon>}
-                placeholder="Поиск пользователя"
-                clearable
-                onInput={handleInput}
-                onChange={handleChange}
-            />
-
-            <Popover
-                open={isMenuOpen}
-                content={
-                    <List>
-                        {results.map(item =>
-                            <List.Item
-                                key={item.id}
-                                as={Link}
-                                to={item.url}
-                                header={item.fullname}
-                                content={item.roleLabel}
-                            />
-                        )}
-                    </List>
-                }
-                trapFocus
-                onOpenChange={(e, { open }) => setOpen(open)}
-            />
-        </Form>
+        <Autocomplete
+            open={isOpen}
+            options={results}
+            loading={loading}
+            placeholder={placeholder}
+            getOptionLabel={option => option.value}
+            clearOnBlur={false}
+            startDecorator={<Icon name="search" />}
+            noOptionsText="Ничего не найдено"
+            renderOption={renderOption}
+            filterOptions={filterOptions}
+            onInputChange={handleInputChange}
+            onOpen={handleOpen}
+            onClose={handleClose}
+        />
     );
 }

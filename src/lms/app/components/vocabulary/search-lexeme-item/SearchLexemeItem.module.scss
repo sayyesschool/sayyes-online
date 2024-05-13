@@ -1,0 +1,12 @@
+.lexeme {
+  width: 100%;
+  justify-content: space-between;
+  padding: 5px 10px;
+  cursor: default;
+}
+
+.text {
+  display: flex;
+  flex: 1;
+  gap: 8px;
+}
