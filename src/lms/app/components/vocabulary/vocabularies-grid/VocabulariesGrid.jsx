@@ -1,10 +1,8 @@
-import { Link } from 'react-router-dom';
-
 import { Grid } from 'shared/ui-components';
 
 import VocabularyCard from 'lms/components/vocabulary/vocabulary-card';
 
-export default function VocabulariesGrid({ vocabularies }) {
+export default function VocabulariesGrid({ vocabularies, onDeleteVocabulary, setCurrentVocabulary }) {
     return (
         <Grid
             className="VocabularyGrid"
@@ -17,9 +15,9 @@ export default function VocabulariesGrid({ vocabularies }) {
             {vocabularies.map(vocabulary =>
                 <VocabularyCard
                     key={vocabulary.id}
-                    as={Link}
-                    to={`vocabulary/${vocabulary.id}`}
                     vocabulary={vocabulary}
+                    setCurrentVocabulary={setCurrentVocabulary}
+                    onDeleteVocabulary={onDeleteVocabulary}
                 />
             )}
         </Grid>

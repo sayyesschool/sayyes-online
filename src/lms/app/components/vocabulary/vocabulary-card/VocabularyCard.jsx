@@ -1,9 +1,21 @@
+import { useCallback } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { Card, Image, Link } from 'shared/ui-components';
+import { Card, Flex, IconButton, Image, Link } from 'shared/ui-components';
+import { MenuButton } from 'shared/ui-components';
 
-export default function VocabularyCard({ vocabulary, ...props }) {
+import styles from './VocabularyCard.module.scss';
+
+export default function VocabularyCard({ vocabulary, onDeleteVocabulary, setCurrentVocabulary, ...props }) {
     const { title, subtitle, imageUrl, numberOfLexemes, coursePath } = vocabulary;
+
+    const onDelete = useCallback(() => {
+        return onDeleteVocabulary(vocabulary.id);
+    }, [onDeleteVocabulary, vocabulary.id]);
+
+    const onEdit = useCallback(() => {
+        return setCurrentVocabulary(vocabulary);
+    }, [setCurrentVocabulary, vocabulary]);
 
     return (
         <Card
@@ -17,7 +29,29 @@ export default function VocabularyCard({ vocabulary, ...props }) {
             }
 
             <Card.Content>
-                <Card.Text level="title-lg">{title}</Card.Text>
+                <Flex className={styles.header}>
+                    <Link component={RouterLink} to={`vocabulary/${vocabulary.id}`} level="title-lg">{title}</Link>
+
+                    <MenuButton
+                        className="UserMenu"
+                        trigger={
+                            <IconButton icon="more_vert" title="Подробнее" />
+                        }
+                        items={[
+                            {
+                                key: 'edit',
+                                content: 'Изменить',
+                                onClick: onEdit
+                            },
+                            {
+                                key: 'delete',
+                                content: 'Удалить',
+                                onClick: onDelete
+                            }
+                        ]}
+                    />
+                </Flex>
+
                 <Card.Text color="warning" level="body-sm">{subtitle}</Card.Text>
                 <Card.Text level="body-sm">Количество слов - {numberOfLexemes}</Card.Text>
 

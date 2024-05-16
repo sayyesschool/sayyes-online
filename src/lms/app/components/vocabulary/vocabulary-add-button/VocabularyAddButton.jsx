@@ -3,43 +3,47 @@ import { useCallback, useState } from 'react';
 import { useForm } from 'shared/hooks/form';
 import { Button, Form, PopoverBtn } from 'shared/ui-components';
 
-import styles from './LexemeAddButton.module.scss';
+import styles from './VocabularyAddButton.module.scss';
 
-export default function LexemeAddButton({
-    numberOfLexemes,
-    onAddLexeme
+export default function VocabularyAddButton({
+    numberOfVocabularies,
+    onAddVocabulary
 }) {
     const [anchorEl, setAnchorEl] = useState(null);
 
     const onSubmit = useCallback(data => {
-        onAddLexeme(data).finally(() => setAnchorEl(null));
-    }, [onAddLexeme]);
+        onAddVocabulary(data).finally(() => setAnchorEl(null));
+    }, [onAddVocabulary]);
 
     const { data, handleChange, handleSubmit } = useForm({
         values: {
-            'value*': '',
-            'translation*': ''
+            'title*': '',
+            'description*': ''
         },
         onSubmit
-    }, [numberOfLexemes]);
+    }, [numberOfVocabularies]);
 
     return (
-        <PopoverBtn anchorEl={anchorEl} setAnchorEl={setAnchorEl}>
+        <PopoverBtn
+            anchorEl={anchorEl}
+            setAnchorEl={setAnchorEl}
+            className={styles.root}
+        >
             <Form className={styles.form} onSubmit={handleSubmit}>
                 <Form.Input
                     className={styles.input}
-                    name="value"
-                    value={data.value.value}
-                    placeholder="Слово"
+                    name="title"
+                    value={data.title.value}
+                    placeholder="Словарь"
                     autoComplete="off"
                     onChange={handleChange}
                 />
 
                 <Form.Input
                     className={styles.input}
-                    name="translation"
-                    value={data.translation.value}
-                    placeholder="Перевод"
+                    name="description"
+                    value={data.description.value}
+                    placeholder="Описание"
                     autoComplete="off"
                     onChange={handleChange}
                 />

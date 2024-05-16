@@ -90,6 +90,7 @@ export default function VocabularyLexemes({
                 />
 
                 <LexemeAddButton
+                    numberOfLexemes={vocabulary.numberOfLexemes}
                     onAddLexeme={handleAddLexeme}
                 />
             </div>

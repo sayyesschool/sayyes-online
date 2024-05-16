@@ -4,6 +4,29 @@ import {
     createReducer
 } from 'shared/store/helpers';
 
+export const createVocabulary = createAction('CREATE_VOCABULARY', data => ({
+    request: {
+        method: 'post',
+        path: 'vocabularies',
+        body: data
+    }
+}));
+
+export const deleteVocabulary = createAction('DELETE_VOCABULARY', vocabularyId => ({
+    request: {
+        method: 'delete',
+        path: `vocabularies/${vocabularyId}`
+    }
+}));
+
+export const updateVocabulary = createAction('UPDATE_VOCABULARY', (vocabularyId, data) => ({
+    request: {
+        method: 'put',
+        path: `vocabularies/${vocabularyId}`,
+        body: data
+    }
+}));
+
 export const getVocabularies = createAction('GET_VOCABULARIES', query => ({
     request: {
         method: 'get',
@@ -62,6 +85,9 @@ export const updateLexemeStatus = createAction(
 );
 
 export const actions = {
+    createVocabulary,
+    updateVocabulary,
+    deleteVocabulary,
     getVocabularies,
     getVocabulary,
     unsetVocabulary,
@@ -72,6 +98,14 @@ export const actions = {
 };
 
 export const vocabulariesReducer = createReducer(null, {
+    [createVocabulary]: (state, action) => state && [...state, action.data],
+    [deleteVocabulary]: (state, action) =>
+        state && state.filter(vocabulary => vocabulary.id !== action.data.id),
+    [updateVocabulary]: (state, action) =>
+        state &&
+      state.map(vocabulary =>
+          vocabulary.id === action.data.id ? action.data : vocabulary
+      ),
     [getVocabularies]: (state, action) => action.data,
     [addLexeme]: (state, action) =>
         state &&

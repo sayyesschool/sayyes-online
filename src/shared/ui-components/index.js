@@ -27,6 +27,7 @@ export * from './link';
 export * from './list';
 export * from './menu';
 export * from './popover';
+export * from './popover-btn';
 export * from './radio';
 export * from './select';
 export * from './slider';

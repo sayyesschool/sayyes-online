@@ -79,8 +79,8 @@ export default ({
             description: req.body.description,
             image: req.body.image
         }, {
-            new: true,
-            select: Object.keys(req.body).join(' ')
+            new: true
+            // select: Object.keys(req.body).join(' ')
         });
 
         res.json({
