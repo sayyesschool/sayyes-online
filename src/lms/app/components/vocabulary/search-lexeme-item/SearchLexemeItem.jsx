@@ -10,6 +10,7 @@ const stopPropagation = e => {
 
 export default function SearchLexemeItem({ option, lexemes: mylexemes, addLexeme, deleteLexeme }) {
     const lexemeAlreadyExist = mylexemes.find(lexeme => lexeme.id === option.id);
+    const translations = option.translations.join(', ');
 
     const onAddBtn = useCallback(e => {
         stopPropagation(e);
@@ -22,11 +23,11 @@ export default function SearchLexemeItem({ option, lexemes: mylexemes, addLexeme
     }, [deleteLexeme, option.id]);
 
     return (
-        <Flex className={styles.lexeme} onClick={stopPropagation}>
+        <Flex className={styles.root} onClick={stopPropagation}>
             <div className={styles.text}>
                 <Text color="primary">{option.value}</Text>
                 <Text content="-" />
-                <Text >{option.translations}</Text>
+                <Text >{translations}</Text>
             </div>
 
             {lexemeAlreadyExist ? (
