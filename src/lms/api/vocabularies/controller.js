@@ -45,7 +45,7 @@ export default ({
         const vocabulary = await req.vocabulary.populate({
             path: 'lexemes',
             populate: {
-                path: 'data',
+                path: 'record',
                 transform: record => record && ({
                     status: record.status,
                     reviewDate: record.reviewDate
@@ -141,7 +141,7 @@ export default ({
         }, {
             new: true
         }).populate({
-            path: 'data',
+            path: 'record',
             transform: record => record && ({
                 status: record.status,
                 reviewDate: record.reviewDate
