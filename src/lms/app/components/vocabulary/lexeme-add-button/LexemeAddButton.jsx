@@ -12,7 +12,8 @@ export default function LexemeAddButton({
     const [anchorEl, setAnchorEl] = useState(null);
 
     const onSubmit = useCallback(data => {
-        onAddLexeme(data).finally(() => setAnchorEl(null));
+        const translations = data.translations.split(',').map(item => item.trim());
+        onAddLexeme({ ...data, translations }).finally(() => setAnchorEl(null));
     }, [onAddLexeme]);
 
     const { data, handleChange, handleSubmit } = useForm({
