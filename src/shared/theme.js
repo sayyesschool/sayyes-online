@@ -22,6 +22,28 @@ const theme = extendTheme({
                     700: '#400d69',
                     800: '#320a51',
                     900: '#26083e'
+                },
+                secondary: {
+                    50: '#fde8f3',
+                    100: '#f8b8d9',
+                    200: '#f495c7',
+                    300: '#ef65ad',
+                    400: '#ec479d',
+                    500: '#e71985',
+                    600: '#d21779',
+                    700: '#a4125e',
+                    800: '#7f0e49',
+                    900: '#610b38',
+                    solidBg: 'var(--joy-palette-secondary-400)',
+                    solidActiveBg: 'var(--joy-palette-secondary-500)',
+                    outlinedBorder: 'var(--joy-palette-secondary-500)',
+                    outlinedColor: 'var(--joy-palette-secondary-700)',
+                    outlinedActiveBg: 'var(--joy-palette-secondary-100)',
+                    softColor: 'var(--joy-palette-secondary-800)',
+                    softBg: 'var(--joy-palette-secondary-200)',
+                    softActiveBg: 'var(--joy-palette-secondary-300)',
+                    plainColor: 'var(--joy-palette-secondary-700)',
+                    plainActiveBg: 'var(--joy-palette-secondary-100)'
                 }
             }
         }
