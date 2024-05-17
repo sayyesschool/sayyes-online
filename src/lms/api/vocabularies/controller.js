@@ -105,7 +105,7 @@ export default ({
             Lexeme.findById(req.body.lexemeId) :
             Lexeme.create({
                 value: req.body.value,
-                translations: req.body.translation,
+                translations: req.body.translations,
                 definition: req.body.definition,
                 createdBy: req.user.id
             })

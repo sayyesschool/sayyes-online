@@ -18,7 +18,7 @@ export default function LexemeAddButton({
     const { data, handleChange, handleSubmit } = useForm({
         values: {
             'value*': '',
-            'translation*': ''
+            'translations*': ''
         },
         onSubmit
     }, [numberOfLexemes]);
@@ -37,8 +37,8 @@ export default function LexemeAddButton({
 
                 <Form.Input
                     className={styles.input}
-                    name="translation"
-                    value={data.translation.value}
+                    name="translations"
+                    value={data.translations.value}
                     placeholder="Перевод"
                     autoComplete="off"
                     onChange={handleChange}
