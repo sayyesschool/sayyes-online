@@ -1,56 +1,58 @@
 import { NavLink } from 'react-router-dom';
 
-import { Icon, Tab, TabList, Tabs, Text } from 'shared/ui-components';
+import { applySolidInversion } from '@mui/joy/colorInversion';
 
-export default function NavBar({ items, orientation, ...props }) {
-    return (
-        <Tabs
-            className="NavBar"
-            orientation={orientation}
-            {...props}
-        >
-            <TabList disableUnderline>
-                {items.map(item =>
-                    <NavBarItem
-                        key={item.key}
-                        orientation={orientation}
-                        {...item}
-                    />
-                )}
-            </TabList>
-        </Tabs>
-    );
-}
+import { Box, Icon, Tab, TabList, Tabs } from 'shared/ui-components';
+import cn from 'shared/utils/classnames';
+
+import styles from './NavBar.module.scss';
 
 const IndicatorPlacementByOrientation = {
     horizontal: 'bottom',
     vertical: 'right'
 };
 
-function NavBarItem({ icon, text, to, exact, orientation, ...props }) {
+export default function NavBar({
+    items,
+    selectedItemValue,
+    orientation,
+    invertedColors,
+    ...props
+}) {
     return (
-        <Tab
-            component={NavLink}
-            to={to}
-            exact={exact}
-            value={to}
-            className="NavBarItem"
-            activeClassName="NavBarItem--active"
-            orientation={orientation}
-            indicatorPlacement={IndicatorPlacementByOrientation[orientation]}
-            {...props}
+        <Box
+            className={cn(styles.root, styles.orientation)}
+            sx={invertedColors ? applySolidInversion('primary') : undefined}
         >
-            <Icon
-                className="NavBarItem__icon"
-                name={icon}
-            />
+            <Tabs
+                orientation={orientation}
+                defaultValue={selectedItemValue}
+            >
+                <TabList disableUnderline>
+                    {items.map(item =>
+                        <Tab
+                            key={item.to}
+                            component={NavLink}
+                            to={item.to}
+                            exact={item.exact}
+                            value={item.to}
+                            className="NavBarItem"
+                            activeClassName="NavBarItem--active"
+                            orientation={orientation}
+                            indicatorPlacement={IndicatorPlacementByOrientation[orientation]}
+                        >
+                            {item.icon &&
+                                <Icon
+                                    className="NavBarItem__icon"
+                                    name={item.icon}
+                                />
+                            }
 
-            <Text
-                className="NavBarItem__text"
-                type="body-xs"
-                content={text}
-                noWrap
-            />
-        </Tab>
+                            <span className="NavBarItem__text">{item.text}</span>
+                        </Tab>
+                    )}
+                </TabList>
+            </Tabs>
+        </Box>
     );
 }
