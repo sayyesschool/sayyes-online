@@ -43,7 +43,13 @@ export default ({
     async getOne(req, res) {
         const vocabulary = await req.vocabulary.populate({
             path: 'lexemes',
-            populate: { path: 'data' }
+            populate: {
+                path: 'record',
+                transform: record => record && ({
+                    status: record.status,
+                    reviewDate: record.reviewDate
+                })
+            }
         });
 
         res.json({

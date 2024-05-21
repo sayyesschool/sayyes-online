@@ -7,7 +7,7 @@ import Image from '../image';
 import { LexemeKind, LexemeType } from './constants';
 
 export const Lexeme = new Schema({
-    value: { type: String, required: true },
+    value: { type: String, required: true, index: true },
     definition: { type: String },
     translations: { type: [String] },
     examples: [{
@@ -34,7 +34,7 @@ export const Lexeme = new Schema({
     timestamps: true
 });
 
-Lexeme.virtual('data', {
+Lexeme.virtual('record', {
     ref: 'Record',
     localField: '_id',
     foreignField: 'lexemeId',

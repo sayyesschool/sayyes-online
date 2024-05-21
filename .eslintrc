@@ -63,6 +63,13 @@
                 "MemberExpression": 1
             }
         ],
+        "@stylistic/lines-between-class-members": [
+            "warn",
+            "always",
+            {
+                "exceptAfterSingleLine": true
+            }
+        ],
         "@stylistic/no-multiple-empty-lines": [
             "warn",
             {
@@ -84,6 +91,45 @@
             "warn",
             "never"
         ],
+        "@stylistic/padding-line-between-statements": [
+            "warn",
+            {
+                "blankLine": "always",
+                "prev": "*",
+                "next": [
+                    "multiline-block-like",
+                    "multiline-expression",
+                    "multiline-const"
+                ]
+            },
+            {
+                "blankLine": "always",
+                "prev": [
+                    "multiline-block-like",
+                    "multiline-expression",
+                    "multiline-const"
+                ],
+                "next": "*"
+            },
+            {
+                "blankLine": "any",
+                "prev": [
+                    "const",
+                    "let",
+                    "var"
+                ],
+                "next": [
+                    "const",
+                    "let",
+                    "var"
+                ]
+            },
+            {
+                "blankLine": "always",
+                "prev": "*",
+                "next": "return"
+            }
+        ],
         "@stylistic/quotes": [
             "error",
             "single"
@@ -96,6 +142,7 @@
             "warn",
             "prefer-double"
         ],
+        "@stylistic/space-infix-ops": "error",
         "@stylistic/jsx/jsx-closing-bracket-location": [
             "warn",
             "tag-aligned"
@@ -111,6 +158,14 @@
                 "allowMultilines": true
             }
         ],
+        "@stylistic/jsx/jsx-max-props-per-line": [
+            "warn",
+            {
+                "maximum": 1,
+                "when": "multiline"
+            }
+        ],
+        "@stylistic/jsx/jsx-props-no-multi-spaces": "warn",
         "@stylistic/jsx/jsx-sort-props": [
             "warn",
             {
