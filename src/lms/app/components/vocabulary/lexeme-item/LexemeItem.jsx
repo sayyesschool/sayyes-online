@@ -34,7 +34,7 @@ export default function LexemeItem({
         return onStatusUpdate(lexeme.id, status);
     }, [lexeme, onStatusUpdate]);
 
-    const { value, translations, data } = lexeme;
+    const { value, translations, record } = lexeme;
     const translationsString = translations.join(', ');
 
     return (
@@ -55,7 +55,7 @@ export default function LexemeItem({
 
             <div className={styles.actions}>
                 <LexemeStatus
-                    level={data?.status}
+                    level={record?.status}
                     onChange={handleStatusChange}
                 />
 

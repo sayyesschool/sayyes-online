@@ -10,8 +10,9 @@ import styles from './LexemeForm.module.scss';
 const getTranslationsString = translations => translations?.join(', ') ?? '';
 
 const getInitialData = lexeme => {
-    const { approved, data = {}, translations, definition, examples } = lexeme;
-    return approved ? data : { translations, definition, examples };
+    const { approved, record = {}, translations, definition, examples } = lexeme;
+
+    return approved ? record?.data : { translations, definition, examples };
 };
 
 const getLabels = approved => {
@@ -30,6 +31,7 @@ export default function LexemeForm({ lexeme, onSubmit, ...props }) {
 
     const handleSubmit = useCallback(e => {
         e.preventDefault();
+
         onSubmit({
             translations: translations.split(',').map(item => item.trim()),
             definition,

@@ -38,12 +38,12 @@ export default function LexemeView({
     lexeme,
     onStatusUpdate
 }) {
-    const { value, definition, translations, examples, image, data } = lexeme;
+    const { value, definition, translations, examples, image, record } = lexeme;
     const translationsString = translations.join(', ');
-    const myTranslationsString = data?.translations?.join(', ');
+    const myTranslationsString = record?.data?.translations?.join(', ');
 
     const handleStatusChange = useCallback(status => {
-        return onStatusUpdate(lexeme, status);
+        return onStatusUpdate(lexeme.id, status);
     }, [lexeme, onStatusUpdate]);
 
     return (
@@ -63,7 +63,7 @@ export default function LexemeView({
                         content={value}
                         type="h1"
                         end={
-                            <LexemeStatus level={data?.status} onChange={handleStatusChange} />
+                            <LexemeStatus level={record?.status} onChange={handleStatusChange} />
                         }
                     />
 
@@ -74,7 +74,7 @@ export default function LexemeView({
                         content={translationsString}
                     />
 
-                    {!!data?.translations?.length && <Text
+                    {!!record?.data?.translations?.length && <Text
                         className={styles.translations}
                         type="body-md"
                         color="warning"
@@ -87,16 +87,16 @@ export default function LexemeView({
                         content={definition}
                     />
 
-                    {data?.definition && <Text
+                    {record?.data?.definition && <Text
                         className={styles.definition}
                         type="body-lg"
                         color="warning"
-                        content={`Моё определение: ${data.definition}`}
+                        content={`Моё определение: ${record.data.definition}`}
                     />}
                 </div>
             </section>
 
-            {data?.examples?.length > 0 && <LexemeExamples examples={data.examples}  headingText="Мои примеры:" />}
+            {record?.data?.examples?.length > 0 && <LexemeExamples examples={record.data.examples} headingText="Мои примеры:" />}
             {examples.length > 0 && <LexemeExamples examples={examples} headingText="Примеры:" />}
         </div>
     );

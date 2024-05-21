@@ -1,3 +1,10 @@
+const transformRecord = record =>
+    record && {
+        data: record.data,
+        status: record.status,
+        reviewDate: record.reviewDate
+    };
+
 export default ({
     models: { Lexeme, LexiconRecord, Vocabulary }
 }) => ({
@@ -45,10 +52,7 @@ export default ({
             path: 'lexemes',
             populate: {
                 path: 'record',
-                transform: record => record && ({
-                    status: record.status,
-                    reviewDate: record.reviewDate
-                })
+                transform: transformRecord
             }
         });
 
@@ -100,14 +104,19 @@ export default ({
     },
 
     async addLexeme(req, res) {
-        let lexeme = await (req.body.lexemeId ?
-            Lexeme.findById(req.body.lexemeId).populate({ path: 'data' }) :
-            Lexeme.findOne({
+        let lexeme = await (req.body.lexemeId
+            ? Lexeme.findById(req.body.lexemeId).populate({
+                path: 'record',
+                transform: transformRecord
+            })
+            : Lexeme.findOne({
                 value: req.body.value,
                 translations: { $in: req.body.translations },
                 approved: true
-            }).populate({ path: 'data' })
-        );
+            }).populate({
+                path: 'record',
+                transform: transformRecord
+            }));
 
         if (!lexeme) {
             lexeme = await Lexeme.create({
@@ -145,29 +154,39 @@ export default ({
             examples: req.body.examples
         };
 
-        const lexeme = await Lexeme.findOneAndUpdate({
-            _id: req.params.lexemeId,
-            approved: false
-        },
-        updateData,
-        { new: true }).populate({ path: 'data' });
-
-        if (!lexeme) {
-            lexicon = await LexiconRecord.findOneAndUpdate({
-                lexemeId: req.params.lexemeId,
-                learnerId: req.user.id
+        const lexeme = await Lexeme.findOneAndUpdate(
+            {
+                _id: req.params.lexemeId,
+                approved: false
             },
             updateData,
-            {
-                new: true,
-                upsert: true
-            });
+            { new: true }
+        ).populate({
+            path: 'record',
+            transform: transformRecord
+        });
+
+        if (!lexeme) {
+            lexicon = await LexiconRecord.findOneAndUpdate(
+                {
+                    lexemeId: req.params.lexemeId,
+                    learnerId: req.user.id
+                },
+                {
+                    data: updateData
+                },
+                {
+                    new: true,
+                    upsert: true
+                }
+            );
         }
 
-        if (!lexeme && !lexicon) throw {
-            code: 404,
-            message: 'Не найдено'
-        };
+        if (!lexeme && !lexicon)
+            throw {
+                code: 404,
+                message: 'Не найдено'
+            };
 
         const data = {
             lexeme: lexeme?.toJSON(),
@@ -212,8 +231,9 @@ export default ({
         res.json({
             ok: true,
             data: {
-                id: req.params.lexemeId,
-                lexiconData: {
+                lexemeId: req.params.lexemeId,
+                record: {
+                    data: lexicon.data,
                     status: lexicon.status,
                     reviewDate: lexicon.reviewDate
                 }
