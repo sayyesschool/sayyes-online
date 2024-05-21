@@ -2,7 +2,6 @@ import { useCallback, useState } from 'react';
 
 import FormDialog from 'shared/components/form-dialog';
 import { useBoolean } from 'shared/hooks/state';
-import { useUser } from 'shared/hooks/user';
 import { useVocabularyActions } from 'shared/hooks/vocabularies';
 import {  Checkbox, Dialog  } from 'shared/ui-components';
 
@@ -25,7 +24,6 @@ export default function VocabularyLexemes({
     vocabulary
 }) {
     const actions = useVocabularyActions();
-    const [user] =  useUser();
 
     const [currentLexemeId, setCurrentLexemeId] = useState(null);
     const [selectedLexemeIds, setSelectedLexemeIds] = useState([]);
@@ -96,7 +94,6 @@ export default function VocabularyLexemes({
             </div>
 
             <LexemesList
-                userId={user.id}
                 lexemes={lexemes}
                 onViewLexeme={handleViewLexeme}
                 onEditLexeme={handleEditLexeme}

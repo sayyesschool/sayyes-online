@@ -6,7 +6,6 @@ import styles from './LexemesList.module.scss';
 
 export default function LexemesList({
     lexemes = [],
-    userId,
     onViewLexeme,
     onEditLexeme,
     onSelectLexeme,
@@ -18,7 +17,6 @@ export default function LexemesList({
             {lexemes?.map(lexeme =>
                 <LexemeItem
                     key={lexeme.id}
-                    userId={userId}
                     lexeme={lexeme}
                     onView={onViewLexeme}
                     onEdit={onEditLexeme}

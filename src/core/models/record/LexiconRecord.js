@@ -9,7 +9,14 @@ export const LexiconRecord = new Schema({
         max: 4 /* learned */,
         default: 0
     },
-    reviewDate: { type: Date, default: Date }
+    reviewDate: { type: Date, default: Date },
+    definition: { type: String },
+    translations: { type: [String] },
+    examples: [{
+        id: { type: Schema.Types.UUID },
+        text: { type: String, require: true },
+        translation: { type: String }
+    }]
 });
 
 export default LexiconRecord;

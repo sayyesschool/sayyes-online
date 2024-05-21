@@ -6,11 +6,9 @@ import { Avatar, Button, Flex, Form, Heading, IconButton, Surface } from 'shared
 
 import styles from './LexemeExamplesForm.module.scss';
 
-export default function LexemeExamplesForm({
-    examples,
-    onChange,
-    ...props
-}) {
+export default function LexemeExamplesForm({ approved, examples, onChange, ...props }) {
+    const headingText = approved ? 'Мои примеры' : 'Примеры';
+
     const handleAdd = useCallback(() => {
         const newExample = {
             id: uuid(),
@@ -34,10 +32,7 @@ export default function LexemeExamplesForm({
 
     return (
         <Surface className={styles.root} {...props}>
-            <Heading
-                content="Примеры"
-                type="title-sm"
-            />
+            <Heading content={headingText} type="title-sm" />
 
             <Flex gap="small" column>
                 {examples.map(({ id, text, translation }, i) => (
