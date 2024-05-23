@@ -57,6 +57,7 @@ export default function VocabularyLexemes({
     const handleSelectLexeme = useCallback(lexemeId => {
         setSelectedLexemeIds(ids => {
             const isSelected = ids.includes(lexemeId);
+
             return isSelected ?
                 ids.filter(id => id !== lexemeId) :
                 ids.concat(lexemeId);
@@ -84,9 +85,9 @@ export default function VocabularyLexemes({
                 />
 
                 <VocabularySearch
+                    className={styles.search}
                     lexemes={lexemes}
-                    deleteLexeme={handleDeleteLexeme}
-                    addLexeme={handleAddLexeme}
+                    onAddLexeme={handleAddLexeme}
                 />
 
                 <LexemeAddButton

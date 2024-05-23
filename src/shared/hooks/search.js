@@ -1,65 +1,88 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
-import { useDebounce } from 'shared/hooks/fn';
 import http from 'shared/services/http';
 
 export function useSearch({
-    initialQuery = '',
     apiUrl,
-    limit,
-    delay = 1000,
-    params = {}
+    defaultParams = {}
 }) {
-    const [query, setQuery] = useState(initialQuery);
+    const paramsRef = useRef(defaultParams);
+
+    const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
     const [meta, setMeta] = useState(null);
     const [loading, setLoading] = useState(false);
-    const showMore = meta?.more;
 
-    const debouncedSearch = useDebounce(async searchQuery => {
-        try {
-            const queryParams = new URLSearchParams({
-                q: searchQuery,
-                p: 1,
-                c: limit,
-                ...params
-            });
-            const response = await http.get(`${apiUrl}?${queryParams}`);
-            setResults(response.data);
-            setMeta(response.meta);
-        } catch (error) {
-            setResults([]);
-        } finally {
-            setLoading(false);
-        }
-    }, delay);
+    const _search = useCallback(async (params, options = { fresh: true }) => {
+        if (!params.query) return;
 
-    const handleInputChange = useCallback((e, inputValue) => {
+        paramsRef.current = params;
+        setQuery(params.query);
         setLoading(true);
-        setQuery(inputValue);
-        debouncedSearch(inputValue);
-    }, [debouncedSearch]);
 
-    const loadMore = useCallback(async e => {
-        e.stopPropagation();
-        if (!showMore) return;
+        const searchParams = new URLSearchParams({
+            q: params.query,
+            b: params.batch,
+            c: params.limit,
+            ...params
+        });
 
         try {
-            setLoading(true);
-            const nextPage = meta.batch + 1;
-            const queryParams = new URLSearchParams({
-                q: query,
-                p: nextPage,
-                c: limit,
-                ...params
-            });
-            const response = await http.get(`${apiUrl}?${queryParams}`);
-            setResults(prevResults => [...prevResults, ...response.data]);
+            const response = await http.get(`${apiUrl}?${searchParams}`);
+
+            setResults(results =>
+                options.fresh ?
+                    response.data :
+                    [...results, ...response.data]
+            );
+
             setMeta(response.meta);
+
+            return response;
+        } catch (error) {
+            paramsRef.current = {};
+            setResults([]);
+            setMeta(null);
         } finally {
             setLoading(false);
         }
-    }, [showMore, meta?.batch, query, limit, params, apiUrl]);
+    }, [apiUrl]);
 
-    return { query, results, showMore, loading, handleInputChange, loadMore };
+    const search = useCallback(async (arg = {}) => {
+        const params = typeof arg === 'string' ?
+            { query: arg } : arg;
+
+        const response = await _search(params);
+
+        return response;
+    }, [_search]);
+
+    const searchMore = useCallback(async () => {
+        if (!meta.more) return;
+
+        const response = await _search({
+            batch: meta.batch + 1,
+            ...paramsRef.current
+        }, {
+            fresh: false
+        });
+
+        return response;
+    }, [_search, meta]);
+
+    const reset = useCallback(() => {
+        setQuery('');
+        setResults([]);
+        setMeta(null);
+    }, []);
+
+    return {
+        query,
+        results,
+        meta,
+        loading,
+        search,
+        searchMore,
+        reset
+    };
 }

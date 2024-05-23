@@ -1,17 +1,33 @@
-
 import SearchForm from 'shared/components/search-form';
+import { LMS_URL } from 'shared/constants';
 
-import SearchLexemeItem from 'lms/components/vocabulary/search-lexeme-item';
+import VocabularySearchResultItem from './VocabularySearchResultItem';
 
-export default function VocabularySearch({ lexemes, addLexeme, deleteLexeme }) {
+const apiUrl = `${LMS_URL}/api/vocabularies/search`;
+
+export default function VocabularySearch({ lexemes, onAddLexeme, className }) {
+    function isOptionDisabled(option) {
+        return !!lexemes.find(lexeme => lexeme.id === option.id);
+    }
+
     return  (
-        <SearchForm
-            apiUrl="https://lms.sayyes.local/api/vocabularies/search"
-            limit={3}
-            placeholder="Поиск слов"
-            withShowMoreBtn={true}
-            optionItem={SearchLexemeItem}
-            optionItemProps={{ lexemes, deleteLexeme, addLexeme }}
-        />
+        <div className={className}>
+            <SearchForm
+                apiUrl={apiUrl}
+                placeholder="Поиск слов"
+                params={{
+                    limit: 3
+                }}
+                isResultDisabled={isOptionDisabled}
+                renderResult={result =>
+                    <VocabularySearchResultItem
+                        result={result}
+                        lexemes={lexemes}
+                        onAddLexeme={onAddLexeme}
+                    />
+                }
+                withShowMoreBtn
+            />
+        </div>
     );
 }

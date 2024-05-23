@@ -1,7 +1,8 @@
 import { forwardRef, useCallback } from 'react';
-import classnames from 'classnames';
 
 import JoyAutocomplete from '@mui/joy/Autocomplete';
+import JoyAutocompleteOption from '@mui/joy/AutocompleteOption';
+import classnames from 'classnames';
 
 const Autocomplete = forwardRef(({
     name,
@@ -41,5 +42,9 @@ const Autocomplete = forwardRef(({
 });
 
 Autocomplete.displayName = 'Autocomplete';
+Autocomplete.Option = JoyAutocompleteOption;
 
-export default Autocomplete;
+export {
+    JoyAutocompleteOption as AutocompleteOption,
+    Autocomplete as default
+};
