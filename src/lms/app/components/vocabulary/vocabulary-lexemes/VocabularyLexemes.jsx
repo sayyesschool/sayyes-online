@@ -2,7 +2,6 @@ import { useCallback, useState } from 'react';
 
 import FormDialog from 'shared/components/form-dialog';
 import { useBoolean } from 'shared/hooks/state';
-import { useUser } from 'shared/hooks/user';
 import { useVocabularyActions } from 'shared/hooks/vocabularies';
 import {  Checkbox, Dialog  } from 'shared/ui-components';
 
@@ -16,16 +15,15 @@ import styles from './VocabularyLexemes.module.scss';
 
 const filters = {
     all: () => true,
-    new: lexeme => lexeme.data?.status === 0,
-    learning: lexeme => lexeme.data?.status > 0 && lexeme.data?.status < 4,
-    learned: lexeme => lexeme.data?.status === 4
+    new: lexeme => lexeme.record?.status === 0,
+    learning: lexeme => lexeme.record?.status > 0 && lexeme.record?.status < 4,
+    learned: lexeme => lexeme.record?.status === 4
 };
 
 export default function VocabularyLexemes({
     vocabulary
 }) {
     const actions = useVocabularyActions();
-    const [user] =  useUser();
 
     const [currentLexemeId, setCurrentLexemeId] = useState(null);
     const [selectedLexemeIds, setSelectedLexemeIds] = useState([]);
@@ -57,6 +55,7 @@ export default function VocabularyLexemes({
     const handleSelectLexeme = useCallback(lexemeId => {
         setSelectedLexemeIds(ids => {
             const isSelected = ids.includes(lexemeId);
+
             return isSelected ?
                 ids.filter(id => id !== lexemeId) :
                 ids.concat(lexemeId);
@@ -96,7 +95,6 @@ export default function VocabularyLexemes({
             </div>
 
             <LexemesList
-                userId={user.id}
                 lexemes={lexemes}
                 onViewLexeme={handleViewLexeme}
                 onEditLexeme={handleEditLexeme}

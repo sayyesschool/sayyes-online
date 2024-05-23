@@ -6,26 +6,38 @@ import LexemeExamplesForm from 'lms/components/vocabulary/lexeme-examples-form';
 
 import styles from './LexemeForm.module.scss';
 
-export default function LexemeForm({
-    lexeme,
-    onSubmit,
-    ...props
-}) {
-    const [translations, setTranslations] = useState(lexeme.translations?.join(', ') ?? '');
-    const [definition, setDefinition] = useState(lexeme.definition ?? '');
-    const [examples, setExamples] = useState(lexeme.examples);
+// Move to utils???
+const getTranslationsString = translations => translations?.join(', ') ?? '';
 
-    const handleSubmit = e => {
+const getInitialData = lexeme => {
+    const { approved, record = {}, translations, definition, examples } = lexeme;
+
+    return approved ? record?.data : { translations, definition, examples };
+};
+
+const getLabels = approved => {
+    return approved
+        ? { translations: 'Мои переводы', definition: 'Моё определение' }
+        : { translations: 'Переводы', definition: 'Определение' };
+};
+
+export default function LexemeForm({ lexeme, onSubmit, ...props }) {
+    const initialData = getInitialData(lexeme);
+    const labels = getLabels(lexeme.approved);
+
+    const [translations, setTranslations] = useState(getTranslationsString(initialData.translations));
+    const [definition, setDefinition] = useState(initialData.definition ?? '');
+    const [examples, setExamples] = useState(initialData.examples ?? []);
+
+    const handleSubmit = useCallback(e => {
         e.preventDefault();
 
-        const formData = {
+        onSubmit({
             translations: translations.split(',').map(item => item.trim()),
-            definition: definition,
-            examples: examples
-        };
-
-        onSubmit(formData);
-    };
+            definition,
+            examples
+        });
+    }, [translations, definition, examples, onSubmit]);
 
     const handleTranslationChange = useCallback(e => {
         setTranslations(e.target.value);
@@ -41,27 +53,40 @@ export default function LexemeForm({
 
     return (
         <Form className={styles.root} onSubmit={handleSubmit} {...props}>
-            <Heading
-                className={styles.value}
-                content={lexeme.value}
-                type="h2"
-            />
+            <Heading className={styles.value} content={lexeme.value} type="h2" />
+
+            {lexeme.approved && (
+                <>
+                    <Form.Input
+                        label="Переводы"
+                        value={getTranslationsString(lexeme.translations)}
+                        disabled
+                    />
+
+                    <Form.Textarea
+                        label="Определение"
+                        value={lexeme.definition}
+                        disabled
+                    />
+                </>
+            )}
 
             <Form.Input
                 value={translations}
-                label="Перевод"
+                label={labels.translations}
                 required
                 onChange={handleTranslationChange}
             />
 
             <Form.Textarea
-                label="Объяснение"
+                label={labels.definition}
                 value={definition}
                 onChange={handleDefinitionChange}
             />
 
             <LexemeExamplesForm
                 as="div"
+                approved={lexeme.approved}
                 examples={examples}
                 onChange={handleExamplesChange}
             />

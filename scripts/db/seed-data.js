@@ -111,7 +111,8 @@ export const lexemes = [
         ],
         image: {
             src: 'https://picsum.photos/200'
-        }
+        },
+        approved: true
     },
     {
         value: 'dog',
@@ -149,7 +150,8 @@ export const lexemes = [
         ],
         image: {
             src: 'https://picsum.photos/200'
-        }
+        },
+        approved: true
     }
 ];
 
