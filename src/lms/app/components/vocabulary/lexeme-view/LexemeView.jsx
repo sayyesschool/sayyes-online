@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 
 import { Heading, Image, Text } from 'shared/ui-components';
 
-import LexemeExamples from 'lms/components/vocabulary/lexeme-examples';
 import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 
+import LexemeExamples from './LexemeExamples';
 import styles from './LexemeView.module.scss';
 
 export default function LexemeView({

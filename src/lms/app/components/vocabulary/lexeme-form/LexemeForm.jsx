@@ -2,9 +2,8 @@ import { useCallback, useState } from 'react';
 
 import { Form, Heading } from 'shared/ui-components';
 
-import LexemeExamplesForm from 'lms/components/vocabulary/lexeme-examples-form';
-
 import { getInitialData, getLabels, getTranslationsString } from './helpers';
+import LexemeExamplesForm from './LexemeExamplesForm';
 import styles from './LexemeForm.module.scss';
 
 export default function LexemeForm({ lexeme, onSubmit, ...props }) {
