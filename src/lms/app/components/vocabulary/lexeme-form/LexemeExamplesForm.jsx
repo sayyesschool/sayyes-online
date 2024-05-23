@@ -6,24 +6,25 @@ import { Avatar, Button, Flex, Form, Heading, IconButton, Surface } from 'shared
 
 import styles from './LexemeExamplesForm.module.scss';
 
-export default function LexemeExamplesForm({
-    examples,
-    onChange,
-    ...props
-}) {
+export default function LexemeExamplesForm({ approved, examples, onChange, ...props }) {
+    const headingText = approved ? 'Мои примеры' : 'Примеры';
+
     const handleAdd = useCallback(() => {
         const newExample = {
             id: uuid(),
             text: '',
             translation: ''
         };
+
         onChange(prevExamples => [...prevExamples, newExample]);
     }, [onChange]);
 
-    const handleChange = useCallback((id, field, value) => {
+    const handleChange = useCallback((id, { target }) => {
+        const { name, value } = target;
         const updatedExamples = examples.map(example =>
-            example.id === id ? { ...example, [field]: value } : example
+            example.id === id ? { ...example, [name]: value } : example
         );
+
         onChange(updatedExamples);
     }, [examples, onChange]);
 
@@ -34,16 +35,14 @@ export default function LexemeExamplesForm({
 
     return (
         <Surface className={styles.root} {...props}>
-            <Heading
-                content="Примеры"
-                type="title-sm"
-            />
+            <Heading content={headingText} type="title-sm" />
 
             <Flex gap="small" column>
                 {examples.map(({ id, text, translation }, i) => (
                     <div key={id} className={styles.example}>
                         <Form.Input
                             placeholder="Пример"
+                            name="text"
                             value={text}
                             variant="plain"
                             start={
@@ -60,26 +59,28 @@ export default function LexemeExamplesForm({
                                 />
                             }
                             required
-                            onChange={e =>
-                                handleChange(id, 'text', e.target.value)
-                            }
+                            onChange={e =>  handleChange(id, e)}
                         />
 
                         <Form.Input
                             className={styles.exampleTranslation}
                             placeholder="Перевод"
+                            name="translation"
                             value={translation}
                             variant="plain"
                             size="sm"
                             required
-                            onChange={e =>
-                                handleChange(id, 'translation', e.target.value)
-                            }
+                            onChange={e => handleChange(id, e)}
                         />
                     </div>
                 ))}
 
-                <Button icon="add" content="Добавить пример" variant="plain" onClick={handleAdd} />
+                <Button
+                    icon="add"
+                    content="Добавить пример"
+                    variant="plain"
+                    onClick={handleAdd}
+                />
             </Flex>
         </Surface>
     );

@@ -1,9 +1,9 @@
 import { model } from 'mongoose';
 
-import LexiconRecordSchema from './LexiconRecord';
+import LexemeRecordSchema from './LexemeRecord';
 import RecordSchema from './Record';
 
 export const Record = model('Record', RecordSchema);
-export const LexiconRecord = Record.discriminator('LexiconRecord', LexiconRecordSchema, 'lexicon');
+export const LexemeRecord = Record.discriminator('LexemeRecord', LexemeRecordSchema, 'lexicon');
 
 export default Record;

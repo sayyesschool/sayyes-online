@@ -14,7 +14,8 @@ const {
         Lexeme,
         Room,
         User,
-        Vocabulary
+        Vocabulary,
+        LexemeRecord
     }
 } = core(config);
 
@@ -54,6 +55,13 @@ await Comment.create({
 });
 
 const lexemes = await Lexeme.create(data.lexemes);
+
+lexemes.forEach(async lexeme => {
+    await LexemeRecord.create({
+        lexemeId: lexeme.id,
+        learnerId: learner.id
+    });
+});
 
 await Vocabulary.create({
     title: 'Мой словарь',

@@ -2,7 +2,7 @@ import { Schema } from 'mongoose';
 
 import { Lexeme } from '../lexeme';
 
-export const LexiconRecord = new Schema({
+export const LexemeRecord = new Schema({
     learnerId: { type: Schema.Types.ObjectId, required: true },
     lexemeId: { type: Schema.Types.ObjectId, required: true },
     status: {
@@ -19,4 +19,4 @@ export const LexiconRecord = new Schema({
     }
 });
 
-export default LexiconRecord;
+export default LexemeRecord;
