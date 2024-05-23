@@ -4,22 +4,8 @@ import { Form, Heading } from 'shared/ui-components';
 
 import LexemeExamplesForm from 'lms/components/vocabulary/lexeme-examples-form';
 
+import { getInitialData, getLabels, getTranslationsString } from './helpers';
 import styles from './LexemeForm.module.scss';
-
-// Move to utils???
-const getTranslationsString = translations => translations?.join(', ') ?? '';
-
-const getInitialData = lexeme => {
-    const { approved, record = {}, translations, definition, examples } = lexeme;
-
-    return approved ? record?.data : { translations, definition, examples };
-};
-
-const getLabels = approved => {
-    return approved
-        ? { translations: 'Мои переводы', definition: 'Моё определение' }
-        : { translations: 'Переводы', definition: 'Определение' };
-};
 
 export default function LexemeForm({ lexeme, onSubmit, ...props }) {
     const initialData = getInitialData(lexeme);
@@ -55,21 +41,19 @@ export default function LexemeForm({ lexeme, onSubmit, ...props }) {
         <Form className={styles.root} onSubmit={handleSubmit} {...props}>
             <Heading className={styles.value} content={lexeme.value} type="h2" />
 
-            {lexeme.approved && (
-                <>
-                    <Form.Input
-                        label="Переводы"
-                        value={getTranslationsString(lexeme.translations)}
-                        disabled
-                    />
+            {lexeme.approved && <>
+                <Form.Input
+                    label="Переводы"
+                    value={getTranslationsString(lexeme.translations)}
+                    disabled
+                />
 
-                    <Form.Textarea
-                        label="Определение"
-                        value={lexeme.definition}
-                        disabled
-                    />
-                </>
-            )}
+                <Form.Textarea
+                    label="Определение"
+                    value={lexeme.definition}
+                    disabled
+                />
+            </>}
 
             <Form.Input
                 value={translations}
@@ -86,8 +70,8 @@ export default function LexemeForm({ lexeme, onSubmit, ...props }) {
 
             <LexemeExamplesForm
                 as="div"
-                approved={lexeme.approved}
                 examples={examples}
+                approved={lexeme.approved}
                 onChange={handleExamplesChange}
             />
         </Form>
