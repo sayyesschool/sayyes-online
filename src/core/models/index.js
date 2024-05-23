@@ -12,7 +12,7 @@ import Meeting from './meeting';
 import Pack from './pack';
 import Payment from './payment';
 import Progress from './progress';
-import Record, { LexiconRecord } from './record';
+import Record, { LexemeRecord } from './record';
 import Request from './request';
 import Room from './room';
 import Task from './task';
@@ -40,7 +40,7 @@ export default () => ({
     Payment: model('Payment', Payment),
     Progress: model('Progress', Progress, 'progress'),
     Record,
-    LexiconRecord,
+    LexemeRecord,
     Request: model('Request', Request),
     Room: model('Room', Room),
     Task: model('Task', Task),

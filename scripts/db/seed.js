@@ -15,7 +15,7 @@ const {
         Room,
         User,
         Vocabulary,
-        LexiconRecord
+        LexemeRecord
     }
 } = core(config);
 
@@ -57,7 +57,7 @@ await Comment.create({
 const lexemes = await Lexeme.create(data.lexemes);
 
 lexemes.forEach(async lexeme => {
-    await LexiconRecord.create({
+    await LexemeRecord.create({
         lexemeId: lexeme.id,
         learnerId: learner.id
     });

@@ -103,24 +103,24 @@ export const vocabulariesReducer = createReducer(null, {
         state && state.filter(vocabulary => vocabulary.id !== action.data.id),
     [updateVocabulary]: (state, action) =>
         state &&
-      state.map(vocabulary =>
-          vocabulary.id === action.data.id ? action.data : vocabulary
-      ),
+        state.map(vocabulary =>
+            vocabulary.id === action.data.id ? action.data : vocabulary
+        ),
     [getVocabularies]: (state, action) => action.data,
     [addLexeme]: (state, action) =>
         state &&
-      state.map(vocabulary => {
-          return vocabulary.id === action.data.vocabularyId
-              ? { ...vocabulary, numberOfLexemes: ++vocabulary.numberOfLexemes }
-              : vocabulary;
-      }),
+        state.map(vocabulary => {
+            return vocabulary.id === action.data.vocabularyId
+                ? { ...vocabulary, numberOfLexemes: ++vocabulary.numberOfLexemes }
+                : vocabulary;
+        }),
     [deleteLexeme]: (state, action) =>
         state &&
-      state.map(vocabulary =>
-          vocabulary.id === action.data.vocabularyId
-              ? { ...vocabulary, numberOfLexemes: --vocabulary.numberOfLexemes }
-              : vocabulary
-      )
+        state.map(vocabulary =>
+            vocabulary.id === action.data.vocabularyId
+                ? { ...vocabulary, numberOfLexemes: --vocabulary.numberOfLexemes }
+                : vocabulary
+        )
 });
 
 export const vocabularyReducer = createReducer(null, {
@@ -134,9 +134,9 @@ export const vocabularyReducer = createReducer(null, {
     [updateLexeme]: (state, action) => ({
         ...state,
         lexemes: state.lexemes.map(lexeme => {
-            if (lexeme.id === action.data.lexemeId) {
+            if (lexeme.id === action.data.lexeme.id) {
                 return lexeme.approved
-                    ? { ...lexeme, record: action.data.lexicon }
+                    ? { ...lexeme, record: action.data.record }
                     : action.data.lexeme;
             }
 

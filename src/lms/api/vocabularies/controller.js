@@ -1,12 +1,5 @@
-const transformRecord = record =>
-    record && {
-        data: record.data,
-        status: record.status,
-        reviewDate: record.reviewDate
-    };
-
 export default ({
-    models: { Lexeme, LexiconRecord, Vocabulary }
+    models: { Lexeme, LexemeRecord, Vocabulary }
 }) => ({
     async search(req, res) {
         const regex = req.query.q && new RegExp(req.query.q, 'i');
@@ -127,7 +120,7 @@ export default ({
             });
         }
 
-        const record = await LexiconRecord.create({
+        const record = await LexemeRecord.create({
             lexemeId: lexeme.id,
             learnerId: req.user.id
         });
@@ -147,7 +140,7 @@ export default ({
     },
 
     async updateLexeme(req, res) {
-        let lexicon;
+        let record;
         const updateData = {
             definition: req.body.definition,
             translations: req.body.translations,
@@ -167,7 +160,7 @@ export default ({
         });
 
         if (!lexeme) {
-            lexicon = await LexiconRecord.findOneAndUpdate(
+            record = await LexemeRecord.findOneAndUpdate(
                 {
                     lexemeId: req.params.lexemeId,
                     learnerId: req.user.id
@@ -182,21 +175,18 @@ export default ({
             );
         }
 
-        if (!lexeme && !lexicon)
+        if (!lexeme && !record)
             throw {
                 code: 404,
                 message: 'Не найдено'
             };
 
-        const data = {
-            lexeme: lexeme?.toJSON(),
-            lexicon: lexicon?.toJSON(),
-            lexemeId: req.params.lexemeId
-        };
-
         res.json({
             ok: true,
-            data
+            data: {
+                lexeme,
+                record
+            }
         });
     },
 
@@ -213,7 +203,7 @@ export default ({
     },
 
     async updateLexemeStatus(req, res) {
-        const lexicon = await LexiconRecord.findOneAndUpdate({
+        const record = await LexemeRecord.findOneAndUpdate({
             lexemeId: req.params.lexemeId,
             learnerId: req.user.id
         }, {
@@ -223,7 +213,7 @@ export default ({
             upsert: true
         });
 
-        if (!lexicon) throw {
+        if (!record) throw {
             code: 404,
             message: 'Не найдено'
         };
@@ -233,11 +223,17 @@ export default ({
             data: {
                 lexemeId: req.params.lexemeId,
                 record: {
-                    data: lexicon.data,
-                    status: lexicon.status,
-                    reviewDate: lexicon.reviewDate
+                    data: record.data,
+                    status: record.status,
+                    reviewDate: record.reviewDate
                 }
             }
         });
     }
 });
+
+const transformRecord = record => record && {
+    data: record.data,
+    status: record.status,
+    reviewDate: record.reviewDate
+};
