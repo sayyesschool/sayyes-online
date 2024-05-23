@@ -1,38 +1,11 @@
 import { useCallback } from 'react';
 
-import { Avatar, Heading, Image, List, Text } from 'shared/ui-components';
+import { Heading, Image, Text } from 'shared/ui-components';
 
+import LexemeExamples from 'lms/components/vocabulary/lexeme-examples';
 import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 
 import styles from './LexemeView.module.scss';
-
-const LexemeExamples = ({ examples, headingText }) => {
-    return (
-        <section className={styles.examples}>
-            <Heading content={headingText} type="title-md" />
-
-            <List>
-                {examples.map((example, index) => (
-                    <List.Item
-                        key={index}
-                        className={styles.example}
-                        decorator={
-                            <Avatar
-                                content={index + 1}
-                                color="neutral"
-                                size="sm"
-                            />
-                        }
-                        content={{
-                            primary: example.text,
-                            secondary: example.translation
-                        }}
-                    />
-                ))}
-            </List>
-        </section>
-    );
-};
 
 export default function LexemeView({
     lexeme,
@@ -74,12 +47,14 @@ export default function LexemeView({
                         content={translationsString}
                     />
 
-                    {!!record?.data?.translations?.length && <Text
-                        className={styles.translations}
-                        type="body-md"
-                        color="warning"
-                        content={`Мои переводы: ${myTranslationsString}`}
-                    />}
+                    {!!record?.data?.translations?.length &&
+                        <Text
+                            className={styles.translations}
+                            type="body-md"
+                            color="warning"
+                            content={`Мои переводы: ${myTranslationsString}`}
+                        />
+                    }
 
                     <Text
                         className={styles.definition}
@@ -87,17 +62,24 @@ export default function LexemeView({
                         content={definition}
                     />
 
-                    {record?.data?.definition && <Text
-                        className={styles.definition}
-                        type="body-lg"
-                        color="warning"
-                        content={`Моё определение: ${record.data.definition}`}
-                    />}
+                    {record?.data?.definition &&
+                        <Text
+                            className={styles.definition}
+                            type="body-lg"
+                            color="warning"
+                            content={`Моё определение: ${record.data.definition}`}
+                        />
+                    }
                 </div>
             </section>
 
-            {record?.data?.examples?.length > 0 && <LexemeExamples examples={record.data.examples} headingText="Мои примеры:" />}
-            {examples.length > 0 && <LexemeExamples examples={examples} headingText="Примеры:" />}
+            {record?.data?.examples?.length > 0 &&
+                <LexemeExamples title="Мои примеры:" examples={record.data.examples} />
+            }
+
+            {examples.length > 0 &&
+                <LexemeExamples title="Примеры:" examples={examples} />
+            }
         </div>
     );
 }
