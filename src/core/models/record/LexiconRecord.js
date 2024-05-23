@@ -19,4 +19,10 @@ export const LexiconRecord = new Schema({
     }
 });
 
+Lexeme.virtual('lexeme', {
+    ref: 'Lexeme',
+    localField: 'lexemeId',
+    foreignField: '_id'
+});
+
 export default LexiconRecord;

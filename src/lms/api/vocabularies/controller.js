@@ -41,6 +41,30 @@ export default ({
         });
     },
 
+    async getMy(req, res) {
+        const records = await LexiconRecord.find({
+            learnerId: req.user.id
+        }).populate('lexeme');
+
+        const lexemes = records.map(record => ({
+            ...record.lexeme.toJSON(),
+            status: record.status,
+            reviewDate: record.reviewDate,
+            data: record.data
+        }));
+
+        res.json({
+            ok: true,
+            data: {
+                id: 'my',
+                title: 'Мой словарь',
+                lexemes,
+                lexemeIds: lexemes.map(lexeme => lexeme.id),
+                learnerId: req.user.id
+            }
+        });
+    },
+
     async getOne(req, res) {
         const vocabulary = await req.vocabulary.populate({
             path: 'lexemes',
@@ -116,13 +140,15 @@ export default ({
             learnerId: req.user.id
         });
 
-        await req.vocabulary.addLexeme(lexeme.id);
-
         const data = lexeme.toJSON();
 
-        data.vocabularyId = req.vocabulary.id;
         data.status = record.status;
         data.reviewDate = record.reviewDate;
+
+        if (req.params.id) {
+            await req.vocabulary.addLexeme(lexeme.id);
+            data.vocabularyId = req.vocabulary.id;
+        }
 
         res.json({
             ok: true,
@@ -155,7 +181,9 @@ export default ({
 
         const data = lexeme.toJSON();
 
-        data.vocabularyId = req.vocabulary.id;
+        if (req.params.vocabulary) {
+            data.vocabularyId = req.vocabulary.id;
+        }
 
         res.json({
             ok: true,
@@ -171,6 +199,20 @@ export default ({
             data: {
                 id: req.params.lexemeId,
                 vocabularyId: req.params.vocabularyId
+            }
+        });
+    },
+
+    async deleteLexeme(req, res) {
+        await LexiconRecord.deleteOne({
+            learnerId: req.user.id,
+            lexemeId: req.params.lexemeId
+        });
+
+        res.json({
+            ok: true,
+            data: {
+                id: req.params.lexemeId
             }
         });
     },
