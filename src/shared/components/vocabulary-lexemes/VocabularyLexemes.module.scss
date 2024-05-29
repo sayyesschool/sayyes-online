@@ -1,0 +1,18 @@
+.root {}
+
+.header {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 16px;
+    padding: 12px;
+    border-bottom: 1px solid var(--joy-palette-divider);
+}
+
+.search {
+    margin-left: auto;
+}
+
+.select {
+    flex-shrink: 0;
+}

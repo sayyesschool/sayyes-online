@@ -78,6 +78,13 @@ export const teacher = {
     role: 'teacher'
 };
 
+export const editor = {
+    firstname: 'Методист',
+    email: 'editor@sayyes.school',
+    password: '123456',
+    role: 'editor'
+};
+
 export const lexemes = [
     {
         value: 'cat',

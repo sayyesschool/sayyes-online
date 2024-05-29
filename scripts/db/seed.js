@@ -29,6 +29,8 @@ const learner = await User.create(data.learner);
 
 const teacher = await User.create(data.teacher);
 
+const editor = await User.create(data.editor);
+
 const exercise = await Exercise.create(data.exercise);
 
 const course = await Course.create(data.course);
