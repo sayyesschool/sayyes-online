@@ -1,4 +1,4 @@
-export default function noop() { }
+export function noop() { }
 
 /**
  * The `debounce` function delays the execution of a function until a certain amount of time has passed since it was last called.
