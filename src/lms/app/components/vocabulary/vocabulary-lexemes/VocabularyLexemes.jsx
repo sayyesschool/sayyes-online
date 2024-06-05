@@ -3,10 +3,10 @@ import { useCallback, useState } from 'react';
 import FormDialog from 'shared/components/form-dialog';
 import { useBoolean } from 'shared/hooks/state';
 import { useVocabularyActions } from 'shared/hooks/vocabularies';
-import {  Checkbox, Dialog  } from 'shared/ui-components';
+import { Checkbox, Dialog, PopoverButton } from 'shared/ui-components';
 
-import LexemeAddButton from 'lms/components/vocabulary/lexeme-add-button';
 import LexemeForm from 'lms/components/vocabulary/lexeme-form';
+import LexemeSimpleForm from 'lms/components/vocabulary/lexeme-simple-form';
 import LexemeView from 'lms/components/vocabulary/lexeme-view';
 import LexemesList from 'lms/components/vocabulary/lexemes-list';
 import VocabularySearch from 'lms/components/vocabulary/vocabulary-search';
@@ -88,10 +88,15 @@ export default function VocabularyLexemes({
                     onAddLexeme={handleAddLexeme}
                 />
 
-                <LexemeAddButton
-                    numberOfLexemes={vocabulary.numberOfLexemes}
-                    onAddLexeme={handleAddLexeme}
-                />
+                <PopoverButton
+                    content="Добавить слово"
+                    color="primary"
+                >
+                    <LexemeSimpleForm
+                        numberOfLexemes={vocabulary.numberOfLexemes}
+                        onAddLexeme={handleAddLexeme}
+                    />
+                </PopoverButton>
             </div>
 
             <LexemesList

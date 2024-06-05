@@ -5,10 +5,11 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { useUser } from 'shared/hooks/user';
 import { useVocabularies } from 'shared/hooks/vocabularies';
+import { PopoverButton } from 'shared/ui-components';
 
 import VocabulariesGrid from 'lms/components/vocabulary/vocabularies-grid';
-import VocabularyAddButton from 'lms/components/vocabulary/vocabulary-add-button';
 import VocabularyForm from 'lms/components/vocabulary/vocabulary-form';
+import VocabularySimpleForm from 'lms/components/vocabulary/vocabulary-simple-form';
 
 export default function VocabulariesPage() {
     const [user] = useUser();
@@ -38,14 +39,23 @@ export default function VocabulariesPage() {
 
     return (
         <Page className="VocabulariesPage">
-            <Page.Header title="Словари" />
+            <Page.Header
+                title="Словари"
+                actions={[
+                    <PopoverButton
+                        key="add-vocabulary"
+                        content="Добавить словарь"
+                        color="primary"
+                    >
+                        <VocabularySimpleForm
+                            numberOfVocabularies={numberOfVocabularies}
+                            onAddVocabulary={handleAddVocabulary}
+                        />
+                    </PopoverButton>
+                ]}
+            />
 
             <Page.Content>
-                <VocabularyAddButton
-                    numberOfVocabularies={numberOfVocabularies}
-                    onAddVocabulary={handleAddVocabulary}
-                />
-
                 <VocabulariesGrid
                     vocabularies={vocabularies}
                     setCurrentVocabulary={setCurrentVocabulary}
