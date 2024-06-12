@@ -14,6 +14,7 @@ export * from './dialog';
 export * from './divider';
 export * from './drawer';
 export * from './flex';
+export * from './flip-card';
 export * from './form';
 export * from './grid';
 export * from './heading';

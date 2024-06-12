@@ -1,0 +1,49 @@
+@use 'shared/styles/variables';
+
+.root {
+  width: 500px;
+  height: 500px;
+  padding: 20px;
+  border-radius: 40px;
+  border: 5px solid variables.$primary-color;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.status {
+  margin-bottom: 15px;
+}
+
+.value {
+  color: variables.$primary-color;
+}
+
+.translation {
+  color: variables.$microsoft-color;
+}
+
+.image {
+  width: 250px;
+  height: 250px;
+  border: 5px solid variables.$primary-color;
+  border-radius: 15px;
+  transition: 1s linear all;
+  perspective: 125px;
+
+  &:hover {
+    transform: rotateX(180deg);
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: auto;
+}
+
+.btn {
+  width: 200px !important;
+}
