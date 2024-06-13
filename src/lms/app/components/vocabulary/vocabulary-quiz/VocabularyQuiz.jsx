@@ -8,7 +8,7 @@ import VocabularyFlipCards from 'lms/components/vocabulary/vocabulary-flip-cards
 export default function VocabularyQuiz({ match }) {
     const [vocabulary, actions] = useVocabulary(match.params.vocabulary);
     const {
-        isQuizAvaiable,
+        isQuizNotAvaiable,
         lexeme,
         updateStatus,
         continueGame,
@@ -18,7 +18,7 @@ export default function VocabularyQuiz({ match }) {
 
     if (!vocabulary) return <LoadingIndicator />;
 
-    if (isQuizAvaiable) {
+    if (isQuizNotAvaiable) {
         return <h1>Для запуска тренажёра, необходимо иметь неизученные слова</h1>;
     }
 

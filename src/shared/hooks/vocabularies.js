@@ -5,69 +5,81 @@ import { useActions, useStore } from 'shared/hooks/store';
 import { actions as vocabulariesActions } from 'shared/store/modules/vocabularies';
 import { hasKey } from 'shared/utils/object';
 
-const SHOW_QUIZ_CARD_EVERY_NUMBER = 5;
+const STATISTIC_DISPLAY_INTERVAL = 5;
 
-// TODO: нужен рефактор и желательно добавить комменты какие кейсы тренажёра тут покрываются
+const calculateEveryCount = length => {
+    return length < STATISTIC_DISPLAY_INTERVAL
+        ? Math.ceil(length / 2)
+        : STATISTIC_DISPLAY_INTERVAL;
+};
+
+const shouldShowStatistic = (statisticLength, everyCount) => {
+    return !!(statisticLength % everyCount === 0 && statisticLength !== 0);
+};
+
 export function useVocabularyQuiz(listData, updateLexemeStatus) {
-    const [list, setList] = useState(listData);
+    const [list, setList] = useState(listData ?? []);
     const [count, setCount] = useState(0);
     const [statistic, setStatistic] = useState([]);
-    const everyCount =
-    list?.length < SHOW_QUIZ_CARD_EVERY_NUMBER
-        ? Math.ceil(list?.length / 2)
-        : SHOW_QUIZ_CARD_EVERY_NUMBER;
-    const showStatistic = !!(
-        statistic.length % everyCount === 0 && statistic.length !== 0
+    const statisticInterval = calculateEveryCount(list.length);
+    const showStatistic = shouldShowStatistic(
+        statistic.length,
+        statisticInterval
     );
     const lexeme = list?.[count];
-    const isQuizAvaiable = !list?.length;
+    const isQuizNotAvaiable = !list?.length;
+
+    const updateStatistics = useCallback(
+        (id, newStatus) => {
+            setStatistic(prevStatistic => {
+                const hasInStatistic = prevStatistic.find(item => item.id === id);
+
+                if (hasInStatistic) {
+                    return prevStatistic.map(item =>
+                        item.id === id ? { ...item, newStatus } : item
+                    );
+                } else {
+                    return [
+                        ...prevStatistic,
+                        {
+                            id: lexeme.id,
+                            value: lexeme.value,
+                            oldStatus: lexeme.record.status,
+                            newStatus
+                        }
+                    ];
+                }
+            });
+        },
+        [lexeme?.id, lexeme?.record.status, lexeme?.value]
+    );
+
+    const updateList = (id, newStatus) => {
+        setList(prevList =>
+            prevList
+                .map(item =>
+                    item.id === id
+                        ? { ...item, record: { ...item.record, status: newStatus } }
+                        : item
+                )
+                .filter(item => item.record.status < 4)
+        );
+    };
 
     const updateStatus = useCallback(
         async (id, newStatus) => {
             if (newStatus >= 0) {
                 await updateLexemeStatus(id, newStatus);
 
-                const updatedList = list
-                    .map(item => {
-                        if (item.id === id) {
-                            return { ...item, record: { ...item.record, status: newStatus } };
-                        }
-
-                        return item;
-                    })
-                    .filter(item => item.record.status < 4);
-
-                const status = list[count].record.status;
-                const hasInStatistic = statistic.find(item => item.id === id);
-                let actualStats;
-
-                if (hasInStatistic) {
-                    actualStats = statistic.map(item => {
-                        if (hasInStatistic.id === item.id) {
-                            return { ...hasInStatistic, newStatus };
-                        }
-
-                        return item;
-                    });
-                } else {
-                    actualStats = [
-                        ...statistic,
-                        {
-                            value: list[count].value,
-                            oldStatus: status,
-                            newStatus: newStatus,
-                            id: list[count].id
-                        }
-                    ];
-                }
-
-                setList(updatedList);
-                setStatistic(actualStats);
+                updateStatistics(id, newStatus);
+                updateList(id, newStatus);
             }
 
-            count < list.length - 1 ? setCount(last => last + 1) : setCount(0);
+            setCount(prevCount =>
+                prevCount < list.length - 1 ? prevCount + 1 : 0
+            );
         },
-        [count, list, statistic, updateLexemeStatus]
+        [list.length, updateLexemeStatus, updateStatistics]
     );
 
     const continueGame = () => {
@@ -79,13 +91,12 @@ export function useVocabularyQuiz(listData, updateLexemeStatus) {
 
     useEffect(() => {
         if (listData) {
-            console.log(222, 'useEffect');
             setList(shuffleAndFilter(listData));
         }
     }, [listData]);
 
     return {
-        isQuizAvaiable,
+        isQuizNotAvaiable,
         lexeme,
         updateStatus,
         continueGame,
