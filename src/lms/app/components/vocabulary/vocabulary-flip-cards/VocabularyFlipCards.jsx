@@ -1,14 +1,8 @@
 import { useState } from 'react';
 
-import { Button, FlipCard, Icon } from 'shared/ui-components';
+import { Button, FlipCard, StatusCircles } from 'shared/ui-components';
 
 import styles from './VocabularyFlipCards.module.scss';
-
-const renderStatusStars = number => {
-    return [...Array(5)].map((item, index) => (
-        <Icon key={index} size="large">new_releases</Icon>
-    ));
-};
 
 export default function VocabularyFlipCards({ lexeme, updateStatus }) {
     const [isCardFlip, setIsCardFlip] = useState(false);
@@ -32,8 +26,7 @@ export default function VocabularyFlipCards({ lexeme, updateStatus }) {
     return (
         <div className={styles.root}>
             <div className={styles.status}>
-                {renderStatusStars(record?.status)}
-                <div>{`${record?.status} из ${4}`}</div>
+                <StatusCircles status={record?.status} />
             </div>
 
             <FlipCard key={id} isCardFlip1={isCardFlip} frontText={value} backText={translationString} onFlip={() => setIsCardFlip(true)} />

@@ -33,6 +33,7 @@ export * from './radio';
 export * from './select';
 export * from './slider';
 export * from './snackbar';
+export * from './status-circles';
 export * from './surface';
 export * from './switch';
 export * from './table';
