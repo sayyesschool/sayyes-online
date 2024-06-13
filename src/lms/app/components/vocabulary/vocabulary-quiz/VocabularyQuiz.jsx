@@ -1,9 +1,10 @@
-
 import LoadingIndicator from 'shared/components/loading-indicator';
 import { useVocabulary, useVocabularyQuiz } from 'shared/hooks/vocabularies';
-import { Button } from 'shared/ui-components';
 
 import VocabularyFlipCards from 'lms/components/vocabulary/vocabulary-flip-cards';
+import VocabularyQuizStatistic from 'lms/components/vocabulary/vocabulary-quiz-statistic';
+
+import styles from './VocabularyQuiz.module.scss';
 
 export default function VocabularyQuiz({ match }) {
     const [vocabulary, actions] = useVocabulary(match.params.vocabulary);
@@ -18,33 +19,22 @@ export default function VocabularyQuiz({ match }) {
 
     if (!vocabulary) return <LoadingIndicator />;
 
-    if (isQuizNotAvaiable) {
-        return <h1>Для запуска тренажёра, необходимо иметь неизученные слова</h1>;
-    }
+    const renderContent = () => {
+        if (isQuizNotAvaiable) {
+            return <h1>Для запуска тренажёра, необходимо иметь неизученные слова</h1>;
+        }
 
-    if (showStatistic) {
-        return (
-            <div>
-                <p>Статистика</p>
+        if (showStatistic) {
+            return (
+                <VocabularyQuizStatistic
+                    statistic={statistic}
+                    continueGame={continueGame}
+                />
+            );
+        }
 
-                <ul>
-                    {statistic.map((item, index) => {
-                        return (
-                            <li key={index}>
-                                {item.value} - oldStatus: {item.oldStatus} - newStatus:{' '}
-                                {item.newStatus}
-                            </li>
-                        );
-                    })}
-                </ul>
+        return <VocabularyFlipCards lexeme={lexeme} updateStatus={updateStatus} />;
+    };
 
-                <Button content="Продолжить" onClick={continueGame} />
-                <Button content="Вернуться в словарь" />
-            </div>
-        );
-    }
-
-    return (
-        <VocabularyFlipCards lexeme={lexeme} updateStatus={updateStatus} />
-    );
+    return <div className={styles.root}>{renderContent()}</div>;
 }
