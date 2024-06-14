@@ -94,11 +94,11 @@
                     [
                         // Side effect imports.
                         "^\\u0000"
+                    ],
+                    [
+                        // Style imports.
+                        "^.+\\.s?css$"
                     ]
-                    // [
-                    //     // Style imports.
-                    //     "^.+\\.s?css$"
-                    // ]
                 ]
             }
         ],
