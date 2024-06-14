@@ -14,7 +14,7 @@ export default function VocabularyQuiz({ match }) {
 
     const [vocabulary, actions] = useVocabulary(match.params.vocabulary);
 
-    const { Component, getData } = getComponent(match.params.quiz);
+    const { Component: VocabularyQuizItem, getData } = getComponent(match.params.quiz);
     const lexemes = getData(vocabulary?.lexemes);
 
     const {
@@ -29,7 +29,7 @@ export default function VocabularyQuiz({ match }) {
 
     const handleBack = () => history.goBack();
 
-    if (!Component) throw new Error('No component for quiz');
+    if (!VocabularyQuizItem) throw new Error('No component for quiz');
 
     if (!vocabulary) return <LoadingIndicator />;
 
@@ -45,7 +45,7 @@ export default function VocabularyQuiz({ match }) {
                     onContinue={continueQuiz}
                     onBack={handleBack}
                 /> :
-                <Component
+                <VocabularyQuizItem
                     item={currentItem}
                     itemIndex={currentItemIndex}
                     numberOfItems={numberOfItems}
