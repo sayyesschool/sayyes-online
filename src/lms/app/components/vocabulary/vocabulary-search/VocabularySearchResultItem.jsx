@@ -30,7 +30,7 @@ export default function VocabularySearchResultItem({
             </div>
 
             <IconButton
-                icon="add"
+                icon="check"
                 title="Добавить слово"
                 disabled={result.disabled}
                 onClick={handleAddButtonClick}
