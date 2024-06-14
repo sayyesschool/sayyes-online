@@ -7,9 +7,23 @@ import Quiz from 'lms/components/vocabulary/vocabulary-quiz';
 export default function VocabularyRouter() {
     return (
         <Switch>
-            <Route path="/vocabulary" component={Vocabularies} exact />
-            <Route path="/vocabulary/:vocabulary" component={Vocabulary} exact />
-            <Route path="/vocabulary/:vocabulary/quiz/:trainer" component={Quiz} exact />
+            <Route
+                path="/vocabulary"
+                component={Vocabularies}
+                exact
+            />
+
+            <Route
+                path="/vocabulary/:vocabulary"
+                component={Vocabulary}
+                exact
+            />
+
+            <Route
+                path="/vocabulary/:vocabulary/quiz/:quiz"
+                component={Quiz}
+                exact
+            />
         </Switch>
     );
 }

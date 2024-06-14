@@ -2,23 +2,24 @@ import { Grid } from 'shared/ui-components';
 
 import VocabularyCard from 'lms/components/vocabulary/vocabulary-card';
 
-export default function VocabulariesGrid({ vocabularies, onDeleteVocabulary, setCurrentVocabulary }) {
+import styles from './VocabulariesGrid.module.scss';
+
+export default function VocabulariesGrid({
+    vocabularies,
+    onDeleteVocabulary,
+    setCurrentVocabulary
+}) {
     return (
-        <Grid
-            className="VocabularyGrid"
-            direction="row"
-            justifyContent="space-start"
-            alignItems="flex-start"
-            gap="10px"
-            container
-        >
+        <Grid className={styles.root}>
             {vocabularies.map(vocabulary =>
-                <VocabularyCard
-                    key={vocabulary.id}
-                    vocabulary={vocabulary}
-                    setCurrentVocabulary={setCurrentVocabulary}
-                    onDeleteVocabulary={onDeleteVocabulary}
-                />
+                <Grid.Item xs={3}>
+                    <VocabularyCard
+                        key={vocabulary.id}
+                        vocabulary={vocabulary}
+                        setCurrentVocabulary={setCurrentVocabulary}
+                        onDeleteVocabulary={onDeleteVocabulary}
+                    />
+                </Grid.Item>
             )}
         </Grid>
     );

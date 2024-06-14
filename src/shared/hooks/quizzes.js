@@ -2,18 +2,20 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { calculateEveryCount, shouldShowStatistic, shuffleAndFilter } from '@/shared/libs/quiz';
 
-export function useVocabularyQuiz(listData, updateLexemeStatus) {
-    const [list, setList] = useState(listData ?? []);
+export function useQuiz(_items, updateItemStatus) {
+    const [items, setItems] = useState(_items);
     const [count, setCount] = useState(0);
     const [statistic, setStatistic] = useState([]);
 
-    const lexeme = list?.[count];
-    const isQuizNotAvailable = !list?.length;
-    const statisticInterval = calculateEveryCount(list.length);
-    const showStatistic = shouldShowStatistic(
-        statistic.length,
-        statisticInterval
-    );
+    useEffect(() => {
+        if (items || !_items) return;
+
+        setItems(shuffleAndFilter(_items));
+    }, [items, _items]);
+
+    const currentItem = items?.[count];
+    const statisticInterval = calculateEveryCount(items?.length);
+    const showStatistic = shouldShowStatistic(statistic.length, statisticInterval);
 
     const updateStatistics = useCallback(
         (id, newStatus) => {
@@ -28,64 +30,65 @@ export function useVocabularyQuiz(listData, updateLexemeStatus) {
                     return [
                         ...prevStatistic,
                         {
-                            id: lexeme.id,
-                            value: lexeme.value,
-                            oldStatus: lexeme.record.status,
+                            id: currentItem.id,
+                            value: currentItem.value,
+                            oldStatus: currentItem.record.status,
                             newStatus
                         }
                     ];
                 }
             });
         },
-        [lexeme?.id, lexeme?.record.status, lexeme?.value]
+        [currentItem]
     );
 
-    const updateList = useCallback((id, newStatus) => {
-        setList(prevList =>
-            prevList
-                .map(item =>
-                    item.id === id
-                        ? { ...item, record: { ...item.record, status: newStatus } }
-                        : item
+    const updateList = useCallback((itemId, newStatus) => {
+        setItems(items =>
+            items
+                .map(item => item.id !== itemId ?
+                    item :
+                    {
+                        ...item,
+                        record: {
+                            ...item.record,
+                            status: newStatus
+                        }
+                    }
                 )
                 .filter(item => item.record.status < 4)
         );
     }, []);
 
     const updateStatus = useCallback(
-        async (id, newStatus) => {
+        async (itemId, newStatus) => {
             if (newStatus >= 0) {
-                await updateLexemeStatus(id, newStatus);
-
-                updateStatistics(id, newStatus);
-                updateList(id, newStatus);
+                await updateItemStatus(itemId, newStatus);
+                updateList(itemId, newStatus);
+                updateStatistics(itemId, newStatus);
             }
 
             setCount(prevCount =>
-                prevCount < list.length - 1 ? prevCount + 1 : 0
+                prevCount < items?.length - 1 ? prevCount + 1 : 0
             );
         },
-        [list.length, updateList, updateLexemeStatus, updateStatistics]
+        [items?.length, updateItemStatus, updateList, updateStatistics]
     );
 
-    const continueGame = useCallback(() => {
-        if (!list.length) return;
-        setList(list => shuffleAndFilter(list));
-        setStatistic([]);
-        setCount(0);
-    }, [list]);
+    const continueQuiz = useCallback(() => {
+        if (!items?.length) return;
 
-    useEffect(() => {
-        if (listData) {
-            setList(shuffleAndFilter(listData));
-        }
-    }, [listData]);
+        setItems(list => shuffleAndFilter(list));
+        setCount(0);
+        setStatistic([]);
+    }, [items]);
 
     return {
-        isQuizNotAvailable,
-        lexeme,
+        items,
+        numberOfItems: items?.length ?? 0,
+        currentItem,
+        currentItemIndex: count,
         updateStatus,
-        continueGame,
+        continueQuiz,
         statistic,
         showStatistic
     };

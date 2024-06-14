@@ -1,8 +1,9 @@
+import { Link } from 'react-router-dom';
+
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { useVocabulary } from 'shared/hooks/vocabularies';
-import { MenuButton } from 'shared/ui-components';
-import { IconButton } from 'shared/ui-components';
+import { Button, Menu } from 'shared/ui-components';
 import { getWordEnding } from 'shared/utils/format';
 
 import VocabularyLexemes from 'lms/components/vocabulary/vocabulary-lexemes';
@@ -15,36 +16,49 @@ export default function VocabularyPage({ match }) {
     if (!vocabulary) return <LoadingIndicator />;
 
     const { title, numberOfLexemes } = vocabulary;
-    const pageTitle = `${title} (${numberOfLexemes})`;
-    const pageDescription = `${vocabulary.numberOfLexemes} ${getWordEnding('слов', vocabulary.numberOfLexemes, ['о', 'а', ''])}`;
+    const description = `${numberOfLexemes} ${getWordEnding('слов', numberOfLexemes, ['о', 'а', ''])}`;
 
     return (
         <Page
             className={styles.root}
-            // title={pageTitle}
+            layout="narrow"
+            // title={`${title} (${numberOfLexemes})`}
         >
             <Page.Header
                 className={styles.header}
-                title={vocabulary.title}
-                description={pageDescription}
-                actions={[{
-                    key: 'flip-cards',
-                    icon: 'autorenew',
-                    title: 'Flip-Cards',
-                    as: 'a',
-                    href: `${vocabulary.id}/quiz/flip-cards`
-                },
-                {
-                    key: 'true-false',
-                    icon: 'question_mark',
-                    title: 'True-False',
-                    as: 'a',
-                    href: `${vocabulary.id}/quiz/true-false`
-                }]}
+                title={title}
+                description={description}
+                actions={[
+                    <Menu
+                        key="menu"
+                        trigger={
+                            <Button
+                                icon="exercise"
+                                color="primary"
+                                content="Тренировка"
+                                variant="soft"
+                            />
+                        }
+                        items={[{
+                            key: 'flip-cards',
+                            as: Link,
+                            to: `${vocabulary.id}/quiz/flip-cards`,
+                            icon: 'autorenew',
+                            content: 'Flip Cards'
+                        },
+                        {
+                            key: 'true-false',
+                            as: Link,
+                            to: `${vocabulary.id}/quiz/true-false`,
+                            icon: 'question_mark',
+                            content: 'True False'
+                        }]}
+                    />
+                ]}
             />
 
             <Page.Content className={styles.content}>
-                <Page.Section compact>
+                <Page.Section variant="outlined" compact>
                     <VocabularyLexemes
                         vocabulary={vocabulary}
                     />

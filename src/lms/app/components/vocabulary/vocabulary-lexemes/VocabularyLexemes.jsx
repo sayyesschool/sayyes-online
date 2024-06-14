@@ -99,14 +99,16 @@ export default function VocabularyLexemes({
                 </PopoverButton>
             </div>
 
-            <LexemesList
-                lexemes={lexemes}
-                onViewLexeme={handleViewLexeme}
-                onEditLexeme={handleEditLexeme}
-                onSelectLexeme={handleSelectLexeme}
-                onDeleteLexeme={handleDeleteLexeme}
-                onUpdateLexemeStatus={handleUpdateLexemeStatus}
-            />
+            <div className={styles.body}>
+                <LexemesList
+                    lexemes={lexemes}
+                    onViewLexeme={handleViewLexeme}
+                    onEditLexeme={handleEditLexeme}
+                    onSelectLexeme={handleSelectLexeme}
+                    onDeleteLexeme={handleDeleteLexeme}
+                    onUpdateLexemeStatus={handleUpdateLexemeStatus}
+                />
+            </div>
 
             {(currentLexeme && isEditModalOpen) &&
                 <FormDialog

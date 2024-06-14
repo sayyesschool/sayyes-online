@@ -1,4 +1,6 @@
-.root {}
+.root {
+    position: relative;
+}
 
 .header {
     display: flex;
@@ -7,6 +9,10 @@
     gap: 16px;
     padding: 12px;
     border-bottom: 1px solid var(--joy-palette-divider);
+}
+
+.body {
+    position: relative;
 }
 
 .search {

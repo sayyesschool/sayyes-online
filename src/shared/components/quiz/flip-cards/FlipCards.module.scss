@@ -1,0 +1,47 @@
+@use 'shared/styles/variables';
+
+.root {
+    width: 450px;
+    height: 450px;
+    padding: 20px;
+    border-radius: 40px;
+    border: 5px solid variables.$primary-color;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header {
+    
+}
+
+.value {
+    color: variables.$primary-color;
+}
+
+.translation {
+    color: variables.$microsoft-color;
+}
+
+.indicator {
+    width: 8px;
+    height: 8px;
+    border: 2px solid gray;
+    border-radius: 100%;
+
+    &.active {
+        background-color: gray;
+    }
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.button {
+    width: 200px !important;
+}

@@ -38,7 +38,7 @@ export default function VocabulariesPage() {
     if (!vocabularies) return <LoadingIndicator />;
 
     return (
-        <Page className="VocabulariesPage">
+        <Page className="VocabulariesPage" layout="narrow">
             <Page.Header
                 title="Словари"
                 actions={[

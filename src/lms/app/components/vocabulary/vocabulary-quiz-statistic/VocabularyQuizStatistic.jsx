@@ -24,6 +24,7 @@ export default function VocabularyQuizStatistic({ statistic, onContinue, onBack 
 
             <Button
                 content="Вернуться в словарь"
+                variant="plain"
                 onClick={onBack}
             />
         </div>

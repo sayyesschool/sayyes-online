@@ -1,40 +1,39 @@
 import { useHistory } from 'react-router-dom';
 
 import LoadingIndicator from 'shared/components/loading-indicator';
-import { useVocabularyQuiz } from 'shared/hooks/quizzes';
+import { getComponent } from 'shared/components/quiz';
+import { useQuiz } from 'shared/hooks/quizzes';
 import { useVocabulary } from 'shared/hooks/vocabularies';
 
 import VocabularyQuizStatistic from 'lms/components/vocabulary/vocabulary-quiz-statistic';
 
-import { getComponent } from './components';
 import styles from './VocabularyQuiz.module.scss';
 
 export default function VocabularyQuiz({ match }) {
     const history = useHistory();
 
-    const [vocabularyData, actions] = useVocabulary(match.vocabulary);
+    const [vocabulary, actions] = useVocabulary(match.params.vocabulary);
 
-    const { Component, getData } = getComponent(match.trainer);
-    const lexemes = getData(vocabularyData?.lexemes);
+    const { Component, getData } = getComponent(match.params.quiz);
+    const lexemes = getData(vocabulary?.lexemes);
 
     const {
-        isQuizNotAvailable,
-        lexeme,
+        numberOfItems,
+        currentItem,
+        currentItemIndex,
         updateStatus,
-        continueGame,
+        continueQuiz,
         statistic,
         showStatistic
-    } = useVocabularyQuiz(lexemes, actions.updateLexemeStatus);
+    } = useQuiz(lexemes, actions.updateLexemeStatus);
 
-    const handleBack = history.goBack();
+    const handleBack = () => history.goBack();
 
-    if (!vocabularyData) return <LoadingIndicator />;
+    if (!Component) throw new Error('No component for quiz');
 
-    if (!Component) return (
-        <h1>Неправильный тренажер</h1>
-    );
+    if (!vocabulary) return <LoadingIndicator />;
 
-    if (!isQuizNotAvailable) return (
+    if (!currentItem) return (
         <h1>Для запуска тренажёра, необходимо иметь неизученные слова</h1>
     );
 
@@ -43,13 +42,16 @@ export default function VocabularyQuiz({ match }) {
             {showStatistic ?
                 <VocabularyQuizStatistic
                     statistic={statistic}
-                    onContinue={continueGame}
+                    onContinue={continueQuiz}
                     onBack={handleBack}
                 /> :
                 <Component
-                    lexeme={lexeme}
+                    item={currentItem}
+                    itemIndex={currentItemIndex}
+                    numberOfItems={numberOfItems}
                     updateStatus={updateStatus}
-                />}
+                />
+            }
         </div>
     );
 }

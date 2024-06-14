@@ -1,0 +1,13 @@
+@use 'shared/styles/variables';
+
+.root {
+    display: flex;
+}
+
+.icon {
+    color: lightgray;
+}
+
+.filled {
+    color: variables.$secondary-color;
+}
