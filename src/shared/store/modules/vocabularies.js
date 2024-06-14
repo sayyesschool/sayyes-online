@@ -147,15 +147,16 @@ export const vocabularyReducer = createReducer(null, {
         ...state,
         lexemes: state.lexemes.filter(lexeme => lexeme.id !== action.data.id),
         numberOfLexemes: --state.numberOfLexemes
-    }),
-    [updateLexemeStatus]: (state, action) => ({
-        ...state,
-        lexemes: state.lexemes.map(lexeme =>
-            lexeme.id === action.data.lexemeId
-                ? { ...lexeme, record: action.data.record }
-                : lexeme
-        )
     })
+    // TODO: обсудить лишнее срабатывание useEffect в хуке useVocabularyQuiz и потом раскоментить
+    // [updateLexemeStatus]: (state, action) => state && ({
+    //     ...state,
+    //     lexemes: state.lexemes.map(lexeme =>
+    //         lexeme.id === action.data.lexemeId
+    //             ? { ...lexeme, record: action.data.record }
+    //             : lexeme
+    //     )
+    // })
 });
 
 export default combineReducers({

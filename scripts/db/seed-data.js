@@ -152,6 +152,465 @@ export const lexemes = [
             src: 'https://picsum.photos/200'
         },
         approved: true
+    },
+    {
+        value: 'car',
+        definition: 'a road vehicle, typically with four wheels, powered by an internal combustion engine and able to carry a small number of people',
+        translations: [
+            'автомобиль',
+            'voiture',
+            'Auto'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'She drives a red sports car.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'tree',
+        definition: 'a woody perennial plant, typically having a single stem or trunk growing to a considerable height and bearing lateral branches at some distance from the ground',
+        translations: [
+            'дерево',
+            'arbre',
+            'Baum'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'The children climbed the tree to pick apples.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'river',
+        definition: 'a large natural stream of water flowing in a channel to the sea, a lake, or another such stream',
+        translations: [
+            'река',
+            'rivière',
+            'Fluss'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'They went fishing in the river.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'computer',
+        definition: 'an electronic device for storing and processing data',
+        translations: [
+            'компьютер',
+            'ordinateur',
+            'Computer'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'I use my computer for work and entertainment.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'sun',
+        definition: 'the star that is the central body of the solar system, around which the planets orbit and from which they receive light and heat',
+        translations: [
+            'солнце',
+            'soleil',
+            'Sonne'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'The sun rises in the east and sets in the west.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'music',
+        definition: 'vocal or instrumental sounds (or both) combined in such a way as to produce beauty of form, harmony, and expression of emotion',
+        translations: [
+            'музыка',
+            'musique',
+            'Musik'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'Listening to music helps me relax.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'flower',
+        definition: 'the seed-bearing part of a plant, consisting of reproductive organs (stamens and carpels) that are typically surrounded by a brightly colored corolla (petals) and a green calyx (sepals)',
+        translations: [
+            'цветок',
+            'fleur',
+            'Blume'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'She received a bouquet of flowers on her birthday.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'friend',
+        definition: 'a person with whom one has a bond of mutual affection, typically one exclusive of sexual or family relations',
+        translations: [
+            'друг',
+            'ami',
+            'Freund'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'She\'s my best friend.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'beach',
+        definition: 'a pebbly or sandy shore, especially by the ocean between high- and low-water marks',
+        translations: [
+            'пляж',
+            'plage',
+            'Strand'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'They enjoyed walking along the beach at sunset.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'language',
+        definition: 'the method of human communication, either spoken or written, consisting of the use of words in a structured and conventional way',
+        translations: [
+            'язык',
+            'langue',
+            'Sprache'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'Learning a new language opens doors to new opportunities.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'mountain',
+        definition: 'a large natural elevation of the earth\'s surface rising abruptly from the surrounding level; a large steep hill',
+        translations: [
+            'гора',
+            'montagne',
+            'Berg'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'They climbed the mountain to reach the summit.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'food',
+        definition: 'any nutritious substance that people or animals eat or drink or that plants absorb in order to maintain life and growth',
+        translations: [
+            'еда',
+            'nourriture',
+            'Essen'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'We enjoyed delicious food at the restaurant.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'city',
+        definition: 'a large town',
+        translations: [
+            'город',
+            'ville',
+            'Stadt'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'New York City is known as "The Big Apple".',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'game',
+        definition: 'a form of play or sport, especially a competitive one played according to rules and decided by skill, strength, or luck',
+        translations: [
+            'игра',
+            'jeu',
+            'Spiel'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'We played a board game together.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'school',
+        definition: 'an institution for educating children',
+        translations: [
+            'школа',
+            'école',
+            'Schule'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'She teaches at a local elementary school.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'water',
+        definition: 'a colorless, transparent, odorless liquid that forms the seas, lakes, rivers, and rain and is the basis of the fluids of living organisms',
+        translations: [
+            'вода',
+            'eau',
+            'Wasser'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'They drank refreshing cold water after the hike.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'friendship',
+        definition: 'the emotions or conduct of friends; the state of being friends',
+        translations: [
+            'дружба',
+            'amitié',
+            'Freundschaft'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'Their friendship grew stronger over the years.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'phone',
+        definition: 'a device used for transmitting sound (typically speech) over distances',
+        translations: [
+            'телефон',
+            'téléphone',
+            'Telefon'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'She answered the phone and spoke to her friend.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'money',
+        definition: 'a current medium of exchange in the form of coins and banknotes; coins and banknotes collectively',
+        translations: [
+            'деньги',
+            'argent',
+            'Geld'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'She saved up her money to buy a new bicycle.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'sky',
+        definition: 'the region of the atmosphere and outer space seen from the earth',
+        translations: [
+            'небо',
+            'ciel',
+            'Himmel'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'The sky was clear and blue.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'city',
+        definition: 'a large town',
+        translations: [
+            'город',
+            'ville',
+            'Stadt'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'New York City is known as "The Big Apple".',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'country',
+        definition: 'a nation with its own government, occupying a particular territory',
+        translations: [
+            'страна',
+            'pays',
+            'Land'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'She traveled to a foreign country for vacation.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'family',
+        definition: 'a group consisting of parents and children living together in a household',
+        translations: [
+            'семья',
+            'famille',
+            'Familie'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'They have a large family with four children.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'game',
+        definition: 'a form of play or sport, especially a competitive one played according to rules and decided by skill, strength, or luck',
+        translations: [
+            'игра',
+            'jeu',
+            'Spiel'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'We played a board game together.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'movie',
+        definition: 'a story or event recorded by a camera as a set of moving images and shown in a theater or on television; a motion picture',
+        translations: [
+            'фильм',
+            'film',
+            'Film'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'They watched a great movie last night.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'sport',
+        definition: 'an activity involving physical exertion and skill in which an individual or team competes against another or others for entertainment',
+        translations: [
+            'спорт',
+            'sport',
+            'Sport'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'He plays soccer and tennis as his favorite sports.',
+                translation: ''
+            }
+        ],
+        approved: true
+    },
+    {
+        value: 'water',
+        definition: 'a colorless, transparent, odorless liquid that forms the seas, lakes, rivers, and rain and is the basis of the fluids of living organisms',
+        translations: [
+            'вода',
+            'eau',
+            'Wasser'
+        ],
+        examples: [
+            {
+                id: uuid(),
+                text: 'They drank refreshing cold water after the hike.',
+                translation: ''
+            }
+        ],
+        approved: true
     }
 ];
 

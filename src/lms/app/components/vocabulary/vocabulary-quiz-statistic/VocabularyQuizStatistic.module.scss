@@ -1,0 +1,24 @@
+.root {
+  width: 450px;
+  height: 350px;
+  padding: 20px;
+  border-radius: 40px;
+  border: 5px solid green;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.list {
+  padding: 0;
+  list-style-type: none;
+  font-size: 25px;
+}
+
+.listItem {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
