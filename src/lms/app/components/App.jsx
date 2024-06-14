@@ -14,6 +14,8 @@ import { LearnerHomePage, TeacherHomePage } from 'lms/components/home';
 import Vocabularies from 'lms/components/vocabulary';
 import navItems from 'lms/data/nav';
 
+import styles from './App.module.scss';
+
 const PageHomeByRole = {
     learner: LearnerHomePage,
     teacher: TeacherHomePage
@@ -25,7 +27,7 @@ export default function App() {
     if (!user) return <LoadingIndicator fullscreen />;
 
     return (
-        <div className="App">
+        <div className={styles.root}>
             <AppHeader user={user}>
                 <AppNav
                     items={navItems}
@@ -34,13 +36,34 @@ export default function App() {
                 />
             </AppHeader>
 
-            <AppContent>
+            <AppContent className={styles.content}>
                 <Switch>
-                    <Route path="/" component={PageHomeByRole[user.role]} exact />
-                    <Route path="/assignments" component={Assignments} />
-                    <Route path="/courses" component={Courses} />
-                    <Route path="/enrollments" component={Enrollments} />
-                    <Route path="/vocabulary" component={Vocabularies} />
+                    <Route
+                        path="/"
+                        component={PageHomeByRole[user.role]}
+                        exact
+                    />
+
+                    <Route
+                        path="/assignments"
+                        component={Assignments}
+                    />
+
+                    <Route
+                        path="/courses"
+                        component={Courses}
+                    />
+
+                    <Route
+                        path="/enrollments"
+                        component={Enrollments}
+                    />
+
+                    <Route
+                        path="/vocabulary"
+                        component={Vocabularies}
+                    />
+
                     {/* <Route path="/materials" component={Materials} /> */}
                 </Switch>
             </AppContent>
