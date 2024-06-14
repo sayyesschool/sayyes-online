@@ -3,9 +3,9 @@ import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import promise from 'redux-promise';
 
 import http from 'shared/services/http';
-import api from 'shared/store/middleware/api';
 import notification from 'shared/store/middleware/notification';
+import request from 'shared/store/middleware/request';
 
 export default composeWithDevTools(
-    applyMiddleware(api(http, '/api'), notification, promise.default)
+    applyMiddleware(request(http, '/api'), notification, promise.default)
 );
