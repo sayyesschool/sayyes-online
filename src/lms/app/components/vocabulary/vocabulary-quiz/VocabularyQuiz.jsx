@@ -5,7 +5,7 @@ import { getComponent } from 'shared/components/quiz';
 import { useQuiz } from 'shared/hooks/quizzes';
 import { useVocabulary } from 'shared/hooks/vocabularies';
 
-import VocabularyQuizStatistic from 'lms/components/vocabulary/vocabulary-quiz-statistic';
+import VocabularyQuizStatistic from './VocabularyQuizStatistic';
 
 import styles from './VocabularyQuiz.module.scss';
 
