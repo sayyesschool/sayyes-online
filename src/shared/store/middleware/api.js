@@ -7,13 +7,17 @@ export default (httpClient, baseUrl) => store => next => action => {
         FAILURE = `${action.type}_FAILURE`
     ] = action.types || [];
 
-    next({ ...action, type: REQUEST, request: undefined });
+    next({
+        ...action,
+        type: REQUEST,
+        request: undefined
+    });
 
-    const { method, path, query = '', body } = action.request;
-    const qs = new URLSearchParams(query).toString();
-    const url = (path.startsWith('http') || path.startsWith('/') ? path : `${baseUrl}/${path}`) + (qs ? `?${qs}` : '');
+    const promise = typeof request === 'function' ?
+        action.request(httpClient, store) :
+        sendRequest(httpClient, baseUrl, action.request);
 
-    return httpClient[method](url, body)
+    return promise
         .then(data => {
             next({
                 type: SUCCESS,
@@ -31,3 +35,16 @@ export default (httpClient, baseUrl) => store => next => action => {
             return Promise.reject(error);
         });
 };
+
+function sendRequest(httpClient, baseUrl, request) {
+    const { method, path, query = '', body } = request;
+    const url = getRequestUrl(baseUrl, path, query);
+
+    return httpClient[method](url, body);
+}
+
+function getRequestUrl(baseUrl, path, query) {
+    const qs = new URLSearchParams(query).toString();
+
+    return (path.startsWith('http') || path.startsWith('/') ? path : `${baseUrl}/${path}`) + (qs ? `?${qs}` : '');
+}
