@@ -1,13 +1,16 @@
 import LoadingIndicator from 'shared/components/loading-indicator';
 import { useVocabulary, useVocabularyQuiz } from 'shared/hooks/vocabularies';
 
-import VocabularyFlipCards from 'lms/components/vocabulary/vocabulary-flip-cards';
 import VocabularyQuizStatistic from 'lms/components/vocabulary/vocabulary-quiz-statistic';
 
+import { trainerComponents } from './trainer-components';
 import styles from './VocabularyQuiz.module.scss';
 
 export default function VocabularyQuiz({ match }) {
-    const [vocabulary, actions] = useVocabulary(match.params.vocabulary);
+    const { vocabulary, trainer } = match.params;
+    const [vocabularyData, actions] = useVocabulary(vocabulary);
+    const { component: TrainerComponent, dataParser } = trainerComponents[trainer] || {};
+    const parsedLexemes = dataParser ? dataParser(vocabularyData?.lexemes) : vocabularyData?.lexemes;
     const {
         isQuizNotAvaiable,
         lexeme,
@@ -15,11 +18,15 @@ export default function VocabularyQuiz({ match }) {
         continueGame,
         statistic,
         showStatistic
-    } = useVocabularyQuiz(vocabulary?.lexemes, actions.updateLexemeStatus);
+    } = useVocabularyQuiz(parsedLexemes, actions.updateLexemeStatus);
 
-    if (!vocabulary) return <LoadingIndicator />;
+    if (!vocabularyData) return <LoadingIndicator />;
 
     const renderContent = () => {
+        if (!TrainerComponent) {
+            return <h1>Неправильный тренажер</h1>;
+        }
+
         if (isQuizNotAvaiable) {
             return <h1>Для запуска тренажёра, необходимо иметь неизученные слова</h1>;
         }
@@ -33,7 +40,7 @@ export default function VocabularyQuiz({ match }) {
             );
         }
 
-        return <VocabularyFlipCards lexeme={lexeme} updateStatus={updateStatus} />;
+        return <TrainerComponent lexeme={lexeme} updateStatus={updateStatus} />;
     };
 
     return <div className={styles.root}>{renderContent()}</div>;

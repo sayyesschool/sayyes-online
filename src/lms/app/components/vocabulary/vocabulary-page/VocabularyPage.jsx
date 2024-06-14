@@ -27,11 +27,18 @@ export default function VocabularyPage({ match }) {
                 title={vocabulary.title}
                 description={pageDescription}
                 actions={[{
-                    key: 'add',
-                    icon: 'fitness_center',
-                    title: 'Создать',
+                    key: 'flip-cards',
+                    icon: 'autorenew',
+                    title: 'Flip-Cards',
                     as: 'a',
-                    href: `${vocabulary.id}/quiz`
+                    href: `${vocabulary.id}/quiz/flip-cards`
+                },
+                {
+                    key: 'true-false',
+                    icon: 'question_mark',
+                    title: 'True-False',
+                    as: 'a',
+                    href: `${vocabulary.id}/quiz/true-false`
                 }]}
             />
 
