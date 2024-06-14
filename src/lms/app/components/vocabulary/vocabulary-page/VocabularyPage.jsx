@@ -24,6 +24,7 @@ export default function VocabularyPage({ match }) {
             // title={pageTitle}
         >
             <Page.Header
+                className={styles.header}
                 title={vocabulary.title}
                 description={pageDescription}
                 actions={[{
@@ -42,7 +43,7 @@ export default function VocabularyPage({ match }) {
                 }]}
             />
 
-            <Page.Content>
+            <Page.Content className={styles.content}>
                 <Page.Section compact>
                     <VocabularyLexemes
                         vocabulary={vocabulary}
