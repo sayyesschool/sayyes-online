@@ -41,10 +41,6 @@
         "simple-import-sort"
     ],
     "rules": {
-        "arrow-body-style": [
-            "error",
-            "as-needed"
-        ],
         "func-style": [
             "warn",
             "declaration",
@@ -227,8 +223,10 @@
         "@stylistic/jsx/jsx-max-props-per-line": [
             "warn",
             {
-                "maximum": 1,
-                "when": "always"
+                "maximum": {
+                    "single": 2,
+                    "multiline": 1
+                }
             }
         ],
         "@stylistic/jsx/jsx-props-no-multi-spaces": "warn",
