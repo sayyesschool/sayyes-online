@@ -11,34 +11,42 @@
     white-space: nowrap;
     direction: ltr;
 
+    &--xxs,
     &--smallest {
         font-size: 14px;
     }
     
+    &--xs,
     &--smaller {
         font-size: 16px;
     }
     
-    &--sm,
+    &--s,
     &--small {
         font-size: 18px;
     }
     
-    &--md,
+    &--m,
     &--medium {
         font-size: 20px;
     }
     
-    &--lg,
+    &--l,
     &--large {
         font-size: 24px;
     }
     
+    &--xl,
     &--larger {
         font-size: 36px;
     }
     
+    &--xxl,
     &--largest {
         font-size: 48px;
+    }
+
+    &--filled {
+        font-variation-settings: 'FILL' 1;
     }
 }
