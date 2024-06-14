@@ -41,6 +41,72 @@
         "simple-import-sort"
     ],
     "rules": {
+        "arrow-body-style": [
+            "error",
+            "as-needed"
+        ],
+        "func-style": [
+            "warn",
+            "declaration",
+            {
+                "allowArrowFunctions": true
+            }
+        ],
+        "no-undef": "error",
+        "no-unused-vars": [
+            "warn",
+            {
+                "args": "none"
+            }
+        ],
+        "no-useless-escape": "warn",
+        "react/no-deprecated": "warn",
+        "react/no-unescaped-entities": "warn",
+        "react/prop-types": "off",
+        "react/react-in-jsx-scope": "off",
+        "simple-import-sort/imports": [
+            "error",
+            {
+                "groups": [
+                    [
+                        "^node:"
+                    ],
+                    [
+                        "^react"
+                    ],
+                    [
+                        "^@?\\w"
+                    ],
+                    [
+                        "^(@/shared|shared)(/.*|$)",
+                        "^\\u0000(@/shared|shared)"
+                    ],
+                    [
+                        "^(@|class|cms|config|core|db|crm|lk|lms)(/.*|$)"
+                    ],
+                    [
+                        // Parent imports. Put `..` last.
+                        "^\\.\\.(?!/?$)",
+                        "^\\.\\./?$"
+                    ],
+                    [
+                        // Other relative imports. Put same-folder imports and `.` last.
+                        "^\\./(?=.*/)(?!/?$)",
+                        "^\\.(?!/?$)",
+                        "^\\./?$"
+                    ],
+                    [
+                        // Side effect imports.
+                        "^\\u0000"
+                    ]
+                    // [
+                    //     // Style imports.
+                    //     "^.+\\.s?css$"
+                    // ]
+                ]
+            }
+        ],
+        "simple-import-sort/exports": "error",
         // https://eslint.style/packages/default#rules
         "@stylistic/arrow-parens": [
             "warn",
@@ -162,7 +228,7 @@
             "warn",
             {
                 "maximum": 1,
-                "when": "multiline"
+                "when": "always"
             }
         ],
         "@stylistic/jsx/jsx-props-no-multi-spaces": "warn",
@@ -176,62 +242,7 @@
                 "noSortAlphabetically": true,
                 "reservedFirst": true
             }
-        ],
-        "no-undef": "error",
-        "no-unused-vars": [
-            "warn",
-            {
-                "args": "none"
-            }
-        ],
-        "no-useless-escape": "warn",
-        "react/no-deprecated": "warn",
-        "react/no-unescaped-entities": "warn",
-        "react/prop-types": "off",
-        "react/react-in-jsx-scope": "off",
-        "simple-import-sort/imports": [
-            "error",
-            {
-                "groups": [
-                    [
-                        "^node:"
-                    ],
-                    [
-                        "^react"
-                    ],
-                    [
-                        "^@?\\w"
-                    ],
-                    [
-                        "^(@/shared|shared)(/.*|$)",
-                        "^\\u0000(@/shared|shared)"
-                    ],
-                    [
-                        "^(@|class|cms|config|core|db|crm|lk|lms)(/.*|$)"
-                    ],
-                    [
-                        // Parent imports. Put `..` last.
-                        "^\\.\\.(?!/?$)",
-                        "^\\.\\./?$"
-                    ],
-                    [
-                        // Other relative imports. Put same-folder imports and `.` last.
-                        "^\\./(?=.*/)(?!/?$)",
-                        "^\\.(?!/?$)",
-                        "^\\./?$"
-                    ],
-                    [
-                        // Side effect imports.
-                        "^\\u0000"
-                    ]
-                    // [
-                    //     // Style imports.
-                    //     "^.+\\.s?css$"
-                    // ]
-                ]
-            }
-        ],
-        "simple-import-sort/exports": "error"
+        ]
     },
     "overrides": [
         {
