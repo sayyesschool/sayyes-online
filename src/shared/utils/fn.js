@@ -61,19 +61,3 @@ export function delay(fn, ms = 0) {
         }, ms);
     });
 }
-
-// TODO: не лучшее место для этой функции, т.к. она работает исключительно с лексимами, нужно перенести в другое место
-export const shuffleAndFilter = lexemes => {
-    if (!lexemes) return [];
-
-    return Array(lexemes.length)
-        .fill(null)
-        .map((_, i) => [Math.random(), i])
-        .sort(([a], [b]) => a - b)
-        .map(([, i]) => lexemes[i])
-        .filter(lexeme => {
-            const status = lexeme.record.status;
-
-            return status < 4;
-        });
-};
