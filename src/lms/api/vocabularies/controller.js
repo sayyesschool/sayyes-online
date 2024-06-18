@@ -104,7 +104,7 @@ export default ({
             })
             : Lexeme.findOne({
                 value: req.body.value,
-                translations: { $in: req.body.translations },
+                translation: req.body.translation,
                 approved: true
             }).populate({
                 path: 'record',
@@ -114,7 +114,7 @@ export default ({
         if (!lexeme) {
             lexeme = await Lexeme.create({
                 value: req.body.value,
-                translations: req.body.translations,
+                translation: req.body.translation,
                 definition: req.body.definition,
                 createdBy: req.user.id
             });
@@ -143,7 +143,7 @@ export default ({
         let record;
         const updateData = {
             definition: req.body.definition,
-            translations: req.body.translations,
+            translation: req.body.translation,
             examples: req.body.examples
         };
 
@@ -185,7 +185,8 @@ export default ({
             ok: true,
             data: {
                 lexeme,
-                record
+                record,
+                lexemeId: req.params.lexemeId
             }
         });
     },

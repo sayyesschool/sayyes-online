@@ -1,16 +1,14 @@
 export const getInitialData = ({
     approved,
     record = {},
-    translations,
+    translation,
     definition, examples
 }) =>
     approved ?
         record?.data :
-        { translations, definition, examples };
+        { translation, definition, examples };
 
 export const getLabels = approved =>
     approved
-        ? { translations: 'Мои переводы', definition: 'Моё определение' }
-        : { translations: 'Переводы', definition: 'Определение' };
-
-export const getTranslationsString = translations => translations?.join(', ') ?? '';
+        ? { translation: 'Мои переводы', definition: 'Моё определение' }
+        : { translation: 'Переводы', definition: 'Определение' };

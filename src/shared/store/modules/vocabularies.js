@@ -134,7 +134,7 @@ export const vocabularyReducer = createReducer(null, {
     [updateLexeme]: (state, action) => ({
         ...state,
         lexemes: state.lexemes.map(lexeme => {
-            if (lexeme.id === action.data.lexeme.id) {
+            if (lexeme.id === action.data.lexemeId) {
                 return lexeme.approved
                     ? { ...lexeme, record: action.data.record }
                     : action.data.lexeme;

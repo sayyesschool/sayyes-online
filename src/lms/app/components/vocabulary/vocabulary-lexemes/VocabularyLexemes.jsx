@@ -94,7 +94,7 @@ export default function VocabularyLexemes({
                 >
                     <LexemeSimpleForm
                         numberOfLexemes={vocabulary.numberOfLexemes}
-                        onAddLexeme={handleAddLexeme}
+                        onSubmit={handleAddLexeme}
                     />
                 </PopoverButton>
             </div>

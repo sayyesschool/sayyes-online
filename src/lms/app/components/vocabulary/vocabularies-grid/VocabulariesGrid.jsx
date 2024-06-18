@@ -12,9 +12,8 @@ export default function VocabulariesGrid({
     return (
         <Grid className={styles.root}>
             {vocabularies.map(vocabulary =>
-                <Grid.Item xs={3}>
+                <Grid.Item key={vocabulary.id} xs={3}>
                     <VocabularyCard
-                        key={vocabulary.id}
                         vocabulary={vocabulary}
                         setCurrentVocabulary={setCurrentVocabulary}
                         onDeleteVocabulary={onDeleteVocabulary}

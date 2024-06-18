@@ -5,15 +5,14 @@ import { Heading, Image, Text } from 'shared/ui-components';
 import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 
 import LexemeExamples from './LexemeExamples';
+
 import styles from './LexemeView.module.scss';
 
 export default function LexemeView({
     lexeme,
     onStatusUpdate
 }) {
-    const { value, definition, translations, examples, image, record } = lexeme;
-    const translationsString = translations.join(', ');
-    const myTranslationsString = record?.data?.translations?.join(', ');
+    const { value, definition, translation, examples, image, record } = lexeme;
 
     const handleStatusChange = useCallback(status => {
         return onStatusUpdate(lexeme.id, status);
@@ -41,18 +40,18 @@ export default function LexemeView({
                     />
 
                     <Text
-                        className={styles.translations}
+                        className={styles.translation}
                         type="body-md"
                         color="neutral"
-                        content={translationsString}
+                        content={translation}
                     />
 
-                    {!!record?.data?.translations?.length &&
+                    {!!record?.data?.translation?.length &&
                         <Text
-                            className={styles.translations}
+                            className={styles.translation}
                             type="body-md"
                             color="warning"
-                            content={`Мои переводы: ${myTranslationsString}`}
+                            content={`Мои переводы: ${record.data.translation}`}
                         />
                     }
 

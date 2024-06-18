@@ -14,7 +14,7 @@ export const LexemeRecord = new Schema({
     reviewDate: { type: Date, default: Date },
     data: {
         definition: Lexeme.path('definition').options,
-        translations: Lexeme.path('translations').options,
+        translation: Lexeme.path('translation').options,
         examples: Lexeme.path('examples').options
     }
 });

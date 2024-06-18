@@ -16,8 +16,6 @@ export default function VocabularySearchResultItem({
         return addLexeme({ lexemeId: result.id });
     }, [addLexeme, result.id]);
 
-    const translations = result.translations.join(', ');
-
     return (
         <div
             className={cn(styles.root, styles.disabled)}
@@ -26,7 +24,7 @@ export default function VocabularySearchResultItem({
             <div className={styles.text}>
                 <Text color="primary">{result.value}</Text>
                 <Text content="-" />
-                <Text>{translations}</Text>
+                <Text>{result.translation}</Text>
             </div>
 
             <IconButton
