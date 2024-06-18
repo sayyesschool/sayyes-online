@@ -41,15 +41,15 @@ export default function VocabularyPage({ match }) {
                         }
                         items={[{
                             key: 'flip-cards',
-                            as: Link,
-                            to: `${vocabulary.id}/quiz/flip-cards`,
+                            as: 'a',
+                            href: `${vocabulary.id}/quiz/flip-cards`,
                             icon: 'autorenew',
                             content: 'Flip Cards'
                         },
                         {
                             key: 'true-false',
-                            as: Link,
-                            to: `${vocabulary.id}/quiz/true-false`,
+                            as: 'a',
+                            href: `${vocabulary.id}/quiz/true-false`,
                             icon: 'question_mark',
                             content: 'True False'
                         }]}
