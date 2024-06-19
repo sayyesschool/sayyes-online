@@ -4,7 +4,6 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 import { getComponent } from 'shared/components/quiz';
 import { useQuiz } from 'shared/hooks/quizzes';
 import { useVocabulary } from 'shared/hooks/vocabularies';
-import { Button } from 'shared/ui-components';
 
 import VocabularyQuizEmptyState from './VocabularyQuizEmptyState';
 import VocabularyQuizStatistic from './VocabularyQuizStatistic';
@@ -26,11 +25,12 @@ export default function VocabularyQuiz({ match }) {
         updateStatus,
         continueQuiz,
         statistic,
-        showStatistic,
-        isQuizNotAvailable
+        showStatistic
     } = useQuiz(lexemes, actions.updateLexemeStatus);
 
     const handleBack = () => history.goBack();
+
+    if (!vocabulary) return <LoadingIndicator />;
 
     if (!VocabularyQuizItem) throw new Error('No component for quiz');
 

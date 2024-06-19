@@ -89,6 +89,7 @@ export default function VocabularyLexemes({
                 />
 
                 <PopoverButton
+                    key={vocabulary.numberOfLexemes}
                     content="Добавить слово"
                     color="primary"
                 >
@@ -112,8 +113,11 @@ export default function VocabularyLexemes({
 
             {(currentLexeme && isEditModalOpen) &&
                 <FormDialog
-                    title="Редактирование"
+                    title={currentLexeme.value}
                     open={isEditModalOpen}
+                    titleProps={{
+                        level: 'h2'
+                    }}
                     onClose={toggleEditModalOpen}
                 >
                     <LexemeForm

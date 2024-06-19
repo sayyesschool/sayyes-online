@@ -15,7 +15,7 @@ export default function VocabularyPage({ match }) {
 
     if (!vocabulary) return <LoadingIndicator />;
 
-    const { title, numberOfLexemes } = vocabulary;
+    const { id, title, numberOfLexemes } = vocabulary;
     const description = `${numberOfLexemes} ${getWordEnding('слов', numberOfLexemes, ['о', 'а', ''])}`;
 
     return (
@@ -39,17 +39,18 @@ export default function VocabularyPage({ match }) {
                                 variant="soft"
                             />
                         }
+                        disabled={numberOfLexemes === 0}
                         items={[{
                             key: 'flip-cards',
-                            as: 'a',
-                            href: `${vocabulary.id}/quiz/flip-cards`,
+                            as: Link,
+                            to: `${id}/quiz/flip-cards`,
                             icon: 'autorenew',
                             content: 'Flip Cards'
                         },
                         {
                             key: 'true-false',
-                            as: 'a',
-                            href: `${vocabulary.id}/quiz/true-false`,
+                            as: Link,
+                            to: `${id}/quiz/true-false`,
                             icon: 'question_mark',
                             content: 'True False'
                         }]}
