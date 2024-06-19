@@ -3,8 +3,8 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import { bindActionCreators } from 'redux';
 
-export function useState(mapState = state => state) {
-    return useSelector(mapState, shallowEqual);
+export function useState(mapState = state => state, areEqual = shallowEqual) {
+    return useSelector(mapState, areEqual);
 }
 
 export function useActions(mapDispatch = Function.prototype) {
