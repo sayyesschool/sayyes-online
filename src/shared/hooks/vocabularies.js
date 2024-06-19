@@ -29,15 +29,14 @@ export function useVocabulary(id) {
         vocabulariesActions
     );
 
+    const vocabularyId = vocabulary?.id;
+
     useEffect(() => {
-        if (!id) return;
+        if (id === vocabularyId) return;
 
-        if (!vocabulary) {
-            actions.getVocabulary(id);
-        }
-
-        return () => actions.unsetVocabulary();
-    }, [id]);
+        actions.unsetVocabulary();
+        actions.getVocabulary(id);
+    }, [id, vocabularyId, actions]);
 
     return [vocabulary, actions];
 }
