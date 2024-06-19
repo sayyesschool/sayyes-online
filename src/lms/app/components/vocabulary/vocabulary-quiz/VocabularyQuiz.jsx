@@ -6,6 +6,7 @@ import { useQuiz } from 'shared/hooks/quizzes';
 import { useVocabulary } from 'shared/hooks/vocabularies';
 import { Button } from 'shared/ui-components';
 
+import VocabularyQuizEmptyState from './VocabularyQuizEmptyState';
 import VocabularyQuizStatistic from './VocabularyQuizStatistic';
 
 import styles from './VocabularyQuiz.module.scss';
@@ -33,19 +34,6 @@ export default function VocabularyQuiz({ match }) {
 
     if (!VocabularyQuizItem) throw new Error('No component for quiz');
 
-    if (!vocabulary) return <LoadingIndicator />;
-
-    if (isQuizNotAvailable) return (
-        <div className={styles.root}>
-            <h1>Для запуска тренажёра, необходимо иметь неизученные слова</h1>
-
-            <Button
-                content="Вернуться в словарь"
-                onClick={handleBack}
-            />
-        </div>
-    );
-
     return (
         <div className={styles.root}>
             {showStatistic ?
@@ -54,12 +42,15 @@ export default function VocabularyQuiz({ match }) {
                     onContinue={continueQuiz}
                     onBack={handleBack}
                 /> :
-                <VocabularyQuizItem
-                    item={currentItem}
-                    itemIndex={currentItemIndex}
-                    numberOfItems={numberOfItems}
-                    updateStatus={updateStatus}
-                />
+                (currentItem ?
+                    <VocabularyQuizItem
+                        item={currentItem}
+                        itemIndex={currentItemIndex}
+                        numberOfItems={numberOfItems}
+                        updateStatus={updateStatus}
+                    /> :
+                    <VocabularyQuizEmptyState onAction={handleBack} />
+                )
             }
         </div>
     );
