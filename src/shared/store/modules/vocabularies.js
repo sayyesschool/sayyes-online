@@ -158,14 +158,14 @@ export const vocabularyReducer = createReducer(null, {
         numberOfLexemes: --state.numberOfLexemes
     }),
 
-    // [updateLexemeStatus]: (state, action) => state && ({
-    //     ...state,
-    //     lexemes: state.lexemes.map(lexeme =>
-    //         lexeme.id === action.data.lexemeId
-    //             ? { ...lexeme, record: action.data.record }
-    //             : lexeme
-    //     )
-    // })
+    [updateLexemeStatus]: (state, action) => state && ({
+        ...state,
+        lexemes: state.lexemes.map(lexeme =>
+            lexeme.id === action.data.lexemeId
+                ? { ...lexeme, record: action.data.record }
+                : lexeme
+        )
+    })
 });
 
 export default combineReducers({

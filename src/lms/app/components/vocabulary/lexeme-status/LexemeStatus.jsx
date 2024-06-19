@@ -4,7 +4,7 @@ import {
     CircularProgress,
     Icon,
     IconButton,
-    MenuButton,
+    Menu,
     Tooltip
 } from 'shared/ui-components';
 
@@ -52,7 +52,7 @@ export default function LexemeStatus({
     const icon = StatusIcon[level];
 
     return (
-        <MenuButton
+        <Menu
             trigger={
                 <IconButton className={styles.icon} color={color}>
                     <Tooltip content={`${value}%`} placement="left">
