@@ -8,7 +8,7 @@ export default function LexemeExamples({ title, examples }) {
             <Heading content={title} type="title-md" />
 
             <List>
-                {examples.map((example, index) => (
+                {examples.map((example, index, array) => (<>
                     <List.Item
                         key={index}
                         className={styles.example}
@@ -24,7 +24,11 @@ export default function LexemeExamples({ title, examples }) {
                             secondary: example.translation
                         }}
                     />
-                ))}
+
+                    {index < array.length - 1 &&
+                        <List.Divider inset="startContent" />
+                    }
+                </>))}
             </List>
         </section>
     );
