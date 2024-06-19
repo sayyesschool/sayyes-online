@@ -22,3 +22,31 @@ export function shuffleAndFilter(lexemes) {
             return status < 5;
         });
 }
+
+function getCorrectLexemes(lexemes, count) {
+    return lexemes.slice(0, count).map(item => ({ ...item, isCorrect: true }));
+}
+
+function getIncorrectLexemes(lexemes, count) {
+    const correctLexemes = lexemes.slice(-count);
+
+    const incorrectLexemes = correctLexemes.map((element, index, arr) => ({
+        ...element,
+        translation: arr[(index + 1) % arr.length].translation,
+        isCorrect: false
+    }));
+
+    return incorrectLexemes;
+}
+
+export function shuffleTrueFalse(lexemes, incorrectLexemesProportion = 1) {
+    if (!lexemes) return undefined;
+
+    const incorrectLexemesCount = Math.floor((incorrectLexemesProportion / 3) * lexemes.length);
+    const correctLexemesCount = lexemes.length - incorrectLexemesCount;
+
+    const correctLexemes = getCorrectLexemes(lexemes, correctLexemesCount);
+    const incorrectLexemes = getIncorrectLexemes(lexemes, incorrectLexemesCount);
+
+    return [...correctLexemes, ...incorrectLexemes];
+}
