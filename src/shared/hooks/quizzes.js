@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { calculateEveryCount, shouldShowStatistic, shuffleAndFilter } from '@/shared/libs/quiz';
+import {
+    sessionCardsCount,
+    shouldShowStatistic,
+    shuffleAndFilter
+} from '@/shared/libs/quiz';
 
 export function useQuiz(_items, updateItemStatus) {
     const [items, setItems] = useState(_items);
@@ -14,29 +18,22 @@ export function useQuiz(_items, updateItemStatus) {
     }, [items, _items]);
 
     const currentItem = items?.[count];
-    const statisticInterval = calculateEveryCount(items?.length);
-    const showStatistic = shouldShowStatistic(statistic.length, statisticInterval);
+    const statisticInterval = sessionCardsCount(items?.length);
+    const showStatistic = shouldShowStatistic(count, statisticInterval);
+    const isQuizNotAvailable = !items?.length;
 
     const updateStatistics = useCallback(
-        (id, newStatus) => {
+        newStatus => {
             setStatistic(prevStatistic => {
-                const hasInStatistic = prevStatistic.find(item => item.id === id);
-
-                if (hasInStatistic) {
-                    return prevStatistic.map(item =>
-                        item.id === id ? { ...item, newStatus } : item
-                    );
-                } else {
-                    return [
-                        ...prevStatistic,
-                        {
-                            id: currentItem.id,
-                            value: currentItem.value,
-                            oldStatus: currentItem.record.status,
-                            newStatus
-                        }
-                    ];
-                }
+                return [
+                    ...prevStatistic,
+                    {
+                        id: currentItem.id,
+                        value: currentItem.value,
+                        oldStatus: currentItem.record.status,
+                        newStatus
+                    }
+                ];
             });
         },
         [currentItem]
@@ -44,18 +41,17 @@ export function useQuiz(_items, updateItemStatus) {
 
     const updateList = useCallback((itemId, newStatus) => {
         setItems(items =>
-            items
-                .map(item => item.id !== itemId ?
-                    item :
-                    {
+            items.map(item =>
+                item.id !== itemId
+                    ? item
+                    : {
                         ...item,
                         record: {
                             ...item.record,
                             status: newStatus
                         }
                     }
-                )
-                .filter(item => item.record.status < 4)
+            )
         );
     }, []);
 
@@ -64,14 +60,12 @@ export function useQuiz(_items, updateItemStatus) {
             if (newStatus >= 0) {
                 await updateItemStatus(itemId, newStatus);
                 updateList(itemId, newStatus);
-                updateStatistics(itemId, newStatus);
+                updateStatistics(newStatus);
             }
 
-            setCount(prevCount =>
-                prevCount < items?.length - 1 ? prevCount + 1 : 0
-            );
+            if (count < items?.length) setCount(prevCount => prevCount + 1);
         },
-        [items?.length, updateItemStatus, updateList, updateStatistics]
+        [count, items?.length, updateItemStatus, updateList, updateStatistics]
     );
 
     const continueQuiz = useCallback(() => {
@@ -90,6 +84,7 @@ export function useQuiz(_items, updateItemStatus) {
         updateStatus,
         continueQuiz,
         statistic,
-        showStatistic
+        showStatistic,
+        isQuizNotAvailable
     };
 }

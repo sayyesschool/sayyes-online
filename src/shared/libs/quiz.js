@@ -1,9 +1,7 @@
 const STATISTIC_DISPLAY_INTERVAL = 5;
 
-export function calculateEveryCount(length) {
-    return length < STATISTIC_DISPLAY_INTERVAL
-        ? Math.ceil(length / 2)
-        : STATISTIC_DISPLAY_INTERVAL;
+export function sessionCardsCount(length) {
+    return Math.min(length, STATISTIC_DISPLAY_INTERVAL);
 }
 
 export function shouldShowStatistic(statisticLength, everyCount) {
