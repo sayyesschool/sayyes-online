@@ -142,6 +142,7 @@ export default ({
     async updateLexeme(req, res) {
         let record;
         const updateData = {
+            image: req.body.image,
             definition: req.body.definition,
             translation: req.body.translation,
             examples: req.body.examples
@@ -175,11 +176,10 @@ export default ({
             );
         }
 
-        if (!lexeme && !record)
-            throw {
-                code: 404,
-                message: 'Не найдено'
-            };
+        if (!lexeme && !record) throw {
+            code: 404,
+            message: 'Не найдено'
+        };
 
         res.json({
             ok: true,
