@@ -20,7 +20,6 @@ export function useQuiz(_items, updateItemStatus) {
     const currentItem = items?.[count];
     const statisticInterval = sessionCardsCount(items?.length);
     const showStatistic = shouldShowStatistic(count, statisticInterval);
-    const isQuizNotAvailable = !items?.length;
 
     const updateStatistics = useCallback(
         newStatus => {
@@ -81,10 +80,9 @@ export function useQuiz(_items, updateItemStatus) {
         numberOfItems: items?.length ?? 0,
         currentItem,
         currentItemIndex: count,
+        statistic,
         updateStatus,
         continueQuiz,
-        statistic,
-        showStatistic,
-        isQuizNotAvailable
+        showStatistic
     };
 }
