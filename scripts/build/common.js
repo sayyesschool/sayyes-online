@@ -27,6 +27,7 @@ export default {
         'process.env': JSON.stringify({}),
         'env.APP_ENV': JSON.stringify(NODE_ENV || ''),
         'env.APP_URL': JSON.stringify(APP_URL || ''),
+        'env.API_URL': JSON.stringify(`//api.${APP_DOMAIN}`),
         'env.AUTH_URL': JSON.stringify(`//auth.${APP_DOMAIN}`),
         'env.CLASS_URL': JSON.stringify(`//class.${APP_DOMAIN}`),
         'env.CMS_URL': JSON.stringify(`//cms.${APP_DOMAIN}`),
