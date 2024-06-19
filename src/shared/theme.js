@@ -67,7 +67,8 @@ const theme = extendTheme({
         JoyListItemDecorator: {
             styleOverrides: {
                 root: {
-                    marginInlineEnd: 'unset'
+                    marginInlineEnd: 'unset',
+                    minInlineSize: '20px'
                 }
             }
         },
