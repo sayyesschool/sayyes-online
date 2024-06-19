@@ -1,9 +1,11 @@
 import { useCallback, useState } from 'react';
 
-import { Form, Heading } from 'shared/ui-components';
+import ImageField from 'shared/components/image-field';
+import Storage from 'shared/services/storage';
+import { Form } from 'shared/ui-components';
 
 import { getInitialData, getLabels } from './helpers';
-import LexemeExamplesForm from './LexemeExamplesForm';
+import LexemeExamples from './LexemeExamples';
 
 import styles from './LexemeForm.module.scss';
 
@@ -11,19 +13,40 @@ export default function LexemeForm({ lexeme, onSubmit, ...props }) {
     const initialData = getInitialData(lexeme);
     const labels = getLabels(lexeme.approved);
 
+    const [file, setFile] = useState();
     const [translation, setTranslation] = useState(initialData.translation);
     const [definition, setDefinition] = useState(initialData.definition ?? '');
     const [examples, setExamples] = useState(initialData.examples ?? []);
 
-    const handleSubmit = useCallback(e => {
+    const handleSubmit = useCallback(async e => {
         e.preventDefault();
 
-        onSubmit({
+        const data = {
             translation,
             definition,
             examples
-        });
-    }, [translation, definition, examples, onSubmit]);
+        };
+
+        if (file) {
+            const response = await Storage.upload(file, { path: 'lexemes' });
+
+            data.image = {
+                path: response.data.path
+            };
+        }
+
+        onSubmit(data);
+    }, [file, translation, definition, examples, onSubmit]);
+
+    const handleFileChange = useCallback((data, file) => {
+        setFile(file);
+    }, [setFile]);
+
+    const handleFileDelete = useCallback(async image => {
+        await Storage.delete(image.path).then(console.log);
+        setFile(undefined);
+        onSubmit({ image: undefined });
+    }, [onSubmit]);
 
     const handleTranslationChange = useCallback(e => {
         setTranslation(e.target.value);
@@ -42,9 +65,13 @@ export default function LexemeForm({ lexeme, onSubmit, ...props }) {
             className={styles.root} onSubmit={handleSubmit}
             {...props}
         >
-            <Heading
-                className={styles.value} content={lexeme.value}
-                type="h2"
+            <ImageField
+                className={styles.imageField}
+                label="Изображение"
+                image={lexeme.image}
+                disabled={lexeme.approved}
+                onChange={handleFileChange}
+                onDelete={handleFileDelete}
             />
 
             {lexeme.approved && <>
@@ -64,7 +91,6 @@ export default function LexemeForm({ lexeme, onSubmit, ...props }) {
             <Form.Input
                 value={translation}
                 label={labels.translation}
-                required
                 onChange={handleTranslationChange}
             />
 
@@ -74,8 +100,7 @@ export default function LexemeForm({ lexeme, onSubmit, ...props }) {
                 onChange={handleDefinitionChange}
             />
 
-            <LexemeExamplesForm
-                as="div"
+            <LexemeExamples
                 examples={examples}
                 approved={lexeme.approved}
                 onChange={handleExamplesChange}

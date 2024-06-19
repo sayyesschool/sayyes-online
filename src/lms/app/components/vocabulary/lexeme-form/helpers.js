@@ -2,7 +2,8 @@ export const getInitialData = ({
     approved,
     record = {},
     translation,
-    definition, examples
+    definition,
+    examples
 }) =>
     approved ?
         record?.data :

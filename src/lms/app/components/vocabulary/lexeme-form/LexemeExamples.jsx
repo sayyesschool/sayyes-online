@@ -4,9 +4,9 @@ import { v4 as uuid } from 'uuid';
 
 import { Avatar, Button, Flex, Form, Heading, IconButton, Surface } from 'shared/ui-components';
 
-import styles from './LexemeExamplesForm.module.scss';
+import styles from './LexemeExamples.module.scss';
 
-export default function LexemeExamplesForm({ approved, examples, onChange, ...props }) {
+export default function LexemeExamples({ approved, examples, onChange, ...props }) {
     const headingText = approved ? 'Мои примеры' : 'Примеры';
 
     const handleAdd = useCallback(() => {
@@ -78,7 +78,7 @@ export default function LexemeExamplesForm({ approved, examples, onChange, ...pr
                 <Button
                     icon="add"
                     content="Добавить пример"
-                    variant="plain"
+                    variant="outlined"
                     onClick={handleAdd}
                 />
             </Flex>
