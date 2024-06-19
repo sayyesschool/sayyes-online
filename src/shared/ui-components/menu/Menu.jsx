@@ -1,8 +1,8 @@
 import { cloneElement, forwardRef, isValidElement, useCallback, useState } from 'react';
 
 import { ClickAwayListener } from '@mui/base/ClickAwayListener';
-import MenuList from '@mui/joy/MenuList';
 import { Popper } from '@mui/base/Popper';
+import MenuList from '@mui/joy/MenuList';
 import classnames from 'classnames';
 
 import { ListDivider } from '../list';

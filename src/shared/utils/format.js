@@ -73,21 +73,21 @@ export function formatDuration(seconds = 0) {
 export function pluralize(word, count) {
     const lastDigit = count % 10;
 
-    if (lastDigit === 1) {
+    if (lastDigit === 1)
         return word;
-    } else if (lastDigit > 1 && lastDigit < 5) {
+    else if (lastDigit > 1 && lastDigit < 5)
         return word + 'а';
-    } else {
+    else
         return word + 'ов';
-    }
 }
 
 export function getWordEnding(root, quantity, endings) {
     if (quantity === 1)
         return root + endings[0];
-    if (quantity < 5)
+    else if (quantity > 1 && quantity < 5)
         return root + endings[1];
-    return root + endings[2];
+    else
+        return root + endings[2];
 }
 
 export function wordEnding(root, endings) {
@@ -96,6 +96,7 @@ export function wordEnding(root, endings) {
             return root + endings[0];
         if (quantity > 1 && quantity < 5)
             return root + endings[1];
+
         return root + endings[2];
     };
 }

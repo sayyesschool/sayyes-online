@@ -21,6 +21,7 @@ const storageMiddleware = store => next => action => {
             return next(action);
         }).catch(error => {
             next({ type: 'HIDE_NOTIFICATION' });
+
             next({
                 type: 'SHOW_NOTIFICATION',
                 notification: {
@@ -35,6 +36,7 @@ const storageMiddleware = store => next => action => {
             .then(() => next(action))
             .catch(error => {
                 next({ type: 'HIDE_NOTIFICATION' });
+
                 next({
                     type: 'SHOW_NOTIFICATION',
                     notification: {
