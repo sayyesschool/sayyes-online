@@ -12,6 +12,9 @@
         "plugin:react-hooks/recommended",
         "plugin:@stylistic/disable-legacy"
     ],
+    "globals": {
+        "env": "writable"
+    },
     "parser": "@babel/eslint-parser",
     "parserOptions": {
         "ecmaVersion": "latest",
