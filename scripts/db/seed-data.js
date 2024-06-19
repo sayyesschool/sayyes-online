@@ -303,32 +303,6 @@ export const lexemes = [
         approved: true
     },
     {
-        value: 'city',
-        definition: 'a large town',
-        translation: 'город',
-        examples: [
-            {
-                id: uuid(),
-                text: 'New York City is known as "The Big Apple".',
-                translation: ''
-            }
-        ],
-        approved: true
-    },
-    {
-        value: 'game',
-        definition: 'a form of play or sport, especially a competitive one played according to rules and decided by skill, strength, or luck',
-        translation: 'игра',
-        examples: [
-            {
-                id: uuid(),
-                text: 'We played a board game together.',
-                translation: ''
-            }
-        ],
-        approved: true
-    },
-    {
         value: 'school',
         definition: 'an institution for educating children',
         translation: 'школа',
@@ -479,19 +453,6 @@ export const lexemes = [
             {
                 id: uuid(),
                 text: 'He plays soccer and tennis as his favorite sports.',
-                translation: ''
-            }
-        ],
-        approved: true
-    },
-    {
-        value: 'water',
-        definition: 'a colorless, transparent, odorless liquid that forms the seas, lakes, rivers, and rain and is the basis of the fluids of living organisms',
-        translation: 'вода',
-        examples: [
-            {
-                id: uuid(),
-                text: 'They drank refreshing cold water after the hike.',
                 translation: ''
             }
         ],
