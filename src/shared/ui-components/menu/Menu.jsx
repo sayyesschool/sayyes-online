@@ -48,6 +48,7 @@ const Menu = forwardRef(({
 
         if (shouldClose) {
             onClose();
+            setOpen(false);
         }
     }, [onClose, onItemClick]);
 
