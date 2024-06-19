@@ -8,7 +8,7 @@ export const LexemeRecord = new Schema({
     status: {
         type: Number,
         min: 0 /* new */,
-        max: 4 /* learned */,
+        max: 5 /* learned */,
         default: 0
     },
     reviewDate: { type: Date, default: Date },

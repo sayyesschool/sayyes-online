@@ -19,6 +19,6 @@ export function shuffleAndFilter(lexemes) {
         .filter(lexeme => {
             const status = lexeme.record.status;
 
-            return status < 4;
+            return status < 5;
         });
 }
