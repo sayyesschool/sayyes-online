@@ -12,7 +12,7 @@ export default function LexemeView({
     lexeme,
     onStatusUpdate
 }) {
-    const { value, definition, translation, examples, image, record } = lexeme;
+    const { value, image, definition, translation, examples, record } = lexeme;
 
     const handleStatusChange = useCallback(status => {
         return onStatusUpdate(lexeme.id, status);
@@ -24,7 +24,7 @@ export default function LexemeView({
                 {image &&
                     <Image
                         className={styles.image}
-                        src={image.src}
+                        src={image.url}
                         alt={lexeme.value}
                     />
                 }
@@ -35,7 +35,10 @@ export default function LexemeView({
                         content={value}
                         type="h1"
                         end={
-                            <LexemeStatus level={record?.status} onChange={handleStatusChange} />
+                            <LexemeStatus
+                                level={record?.status}
+                                onChange={handleStatusChange}
+                            />
                         }
                     />
 
@@ -46,26 +49,26 @@ export default function LexemeView({
                         content={translation}
                     />
 
-                    {!!record?.data?.translation?.length &&
+                    {record?.data?.translation &&
                         <Text
                             className={styles.translation}
                             type="body-md"
-                            color="warning"
                             content={`Мои переводы: ${record.data.translation}`}
                         />
                     }
 
-                    <Text
-                        className={styles.definition}
-                        type="body-lg"
-                        content={definition}
-                    />
+                    {definition &&
+                        <Text
+                            className={styles.definition}
+                            type="body-lg"
+                            content={definition}
+                        />
+                    }
 
                     {record?.data?.definition &&
                         <Text
                             className={styles.definition}
                             type="body-lg"
-                            color="warning"
                             content={`Моё определение: ${record.data.definition}`}
                         />
                     }
