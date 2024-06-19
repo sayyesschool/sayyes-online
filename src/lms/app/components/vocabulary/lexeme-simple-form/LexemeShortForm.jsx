@@ -5,10 +5,10 @@ import styles from './LexemeShortForm.module.scss';
 
 const getDefaultData = ({
     value = '',
-    translations = []
+    translation = ''
 } = {}) => ({
     'value*': value,
-    'translations*': translations.join(', ')
+    'translation*': translation
 });
 
 export default function LexemeShortForm({
@@ -18,11 +18,7 @@ export default function LexemeShortForm({
 }) {
     const { data, handleChange, handleSubmit } = useForm({
         values: getDefaultData(lexeme),
-        onSubmit: data => {
-            const translations = data.translations.split(',').map(item => item.trim());
-
-            onSubmit({ ...data, translations });
-        }
+        onSubmit
     }, [numberOfLexemes]);
 
     return (
@@ -38,8 +34,8 @@ export default function LexemeShortForm({
 
             <Form.Input
                 className={styles.input}
-                name="translations"
-                value={data.translations.value}
+                name="translation"
+                value={data.translation.value}
                 placeholder="Перевод"
                 autoComplete="off"
                 onChange={handleChange}

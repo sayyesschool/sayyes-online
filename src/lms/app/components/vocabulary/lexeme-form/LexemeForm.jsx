@@ -2,15 +2,16 @@ import { useCallback, useState } from 'react';
 
 import { Form, Heading } from 'shared/ui-components';
 
-import { getInitialData, getLabels, getTranslationsString } from './helpers';
+import { getInitialData, getLabels } from './helpers';
 import LexemeExamplesForm from './LexemeExamplesForm';
+
 import styles from './LexemeForm.module.scss';
 
 export default function LexemeForm({ lexeme, onSubmit, ...props }) {
     const initialData = getInitialData(lexeme);
     const labels = getLabels(lexeme.approved);
 
-    const [translations, setTranslations] = useState(getTranslationsString(initialData.translations));
+    const [translation, setTranslation] = useState(initialData.translation);
     const [definition, setDefinition] = useState(initialData.definition ?? '');
     const [examples, setExamples] = useState(initialData.examples ?? []);
 
@@ -18,15 +19,15 @@ export default function LexemeForm({ lexeme, onSubmit, ...props }) {
         e.preventDefault();
 
         onSubmit({
-            translations: translations.split(',').map(item => item.trim()),
+            translation,
             definition,
             examples
         });
-    }, [translations, definition, examples, onSubmit]);
+    }, [translation, definition, examples, onSubmit]);
 
     const handleTranslationChange = useCallback(e => {
-        setTranslations(e.target.value);
-    }, [setTranslations]);
+        setTranslation(e.target.value);
+    }, [setTranslation]);
 
     const handleDefinitionChange = useCallback(e => {
         setDefinition(e.target.value);
@@ -37,13 +38,19 @@ export default function LexemeForm({ lexeme, onSubmit, ...props }) {
     }, [setExamples]);
 
     return (
-        <Form className={styles.root} onSubmit={handleSubmit} {...props}>
-            <Heading className={styles.value} content={lexeme.value} type="h2" />
+        <Form
+            className={styles.root} onSubmit={handleSubmit}
+            {...props}
+        >
+            <Heading
+                className={styles.value} content={lexeme.value}
+                type="h2"
+            />
 
             {lexeme.approved && <>
                 <Form.Input
-                    label="Переводы"
-                    value={getTranslationsString(lexeme.translations)}
+                    label="Перевод"
+                    value={lexeme.translation}
                     disabled
                 />
 
@@ -55,8 +62,8 @@ export default function LexemeForm({ lexeme, onSubmit, ...props }) {
             </>}
 
             <Form.Input
-                value={translations}
-                label={labels.translations}
+                value={translation}
+                label={labels.translation}
                 required
                 onChange={handleTranslationChange}
             />

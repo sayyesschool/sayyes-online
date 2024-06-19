@@ -9,7 +9,7 @@ import { LexemeKind, LexemeType } from './constants';
 export const Lexeme = new Schema({
     value: { type: String, required: true, index: true },
     definition: { type: String },
-    translations: { type: [String] },
+    translation: { type: String },
     examples: [{
         id: { type: Schema.Types.UUID },
         text: { type: String, require: true },

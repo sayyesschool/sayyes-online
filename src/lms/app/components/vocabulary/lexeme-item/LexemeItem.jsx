@@ -34,8 +34,7 @@ export default function LexemeItem({
         return onStatusUpdate(lexeme.id, status);
     }, [lexeme, onStatusUpdate]);
 
-    const { value, translations, record } = lexeme;
-    const translationsString = translations.join(', ');
+    const { value, translation, record } = lexeme;
 
     return (
         <ListItem className={styles.root}>
@@ -48,9 +47,13 @@ export default function LexemeItem({
                 className={styles.content}
                 onClick={handleContentClick}
             >
-                <Text className={styles.value} color="primary" content={value} />
+                <Text
+                    className={styles.value} color="primary"
+                    content={value}
+                />
+
                 <Text content="—" />
-                <Text className={styles.translations}>{translationsString}</Text>
+                <Text className={styles.translation} content={translation} />
             </div>
 
             <div className={styles.actions}>

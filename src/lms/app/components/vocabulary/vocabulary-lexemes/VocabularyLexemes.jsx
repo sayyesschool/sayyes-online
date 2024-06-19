@@ -16,8 +16,8 @@ import styles from './VocabularyLexemes.module.scss';
 const filters = {
     all: () => true,
     new: lexeme => lexeme.record?.status === 0,
-    learning: lexeme => lexeme.record?.status > 0 && lexeme.record?.status < 4,
-    learned: lexeme => lexeme.record?.status === 4
+    learning: lexeme => lexeme.record?.status > 0 && lexeme.record?.status < 5,
+    learned: lexeme => lexeme.record?.status === 5
 };
 
 export default function VocabularyLexemes({
@@ -94,7 +94,7 @@ export default function VocabularyLexemes({
                 >
                     <LexemeSimpleForm
                         numberOfLexemes={vocabulary.numberOfLexemes}
-                        onAddLexeme={handleAddLexeme}
+                        onSubmit={handleAddLexeme}
                     />
                 </PopoverButton>
             </div>

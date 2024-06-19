@@ -82,11 +82,7 @@ export const lexemes = [
     {
         value: 'cat',
         definition: 'a small animal with fur, four legs, and a tail that is kept as a pet',
-        translations: [
-            'кошка',
-            'кот',
-            'крот'
-        ],
+        translation: 'кошка',
         examples: [
             {
                 id: uuid(),
@@ -117,10 +113,7 @@ export const lexemes = [
     {
         value: 'dog',
         definition: 'a common animal with four legs, especially kept by people as a pet or to hunt or guard things',
-        translations: [
-            'собака',
-            'пёс'
-        ],
+        translation: 'собака',
         examples: [
             {
                 id: uuid(),
@@ -156,11 +149,7 @@ export const lexemes = [
     {
         value: 'car',
         definition: 'a road vehicle, typically with four wheels, powered by an internal combustion engine and able to carry a small number of people',
-        translations: [
-            'автомобиль',
-            'voiture',
-            'Auto'
-        ],
+        translation: 'автомобиль',
         examples: [
             {
                 id: uuid(),
@@ -173,11 +162,7 @@ export const lexemes = [
     {
         value: 'tree',
         definition: 'a woody perennial plant, typically having a single stem or trunk growing to a considerable height and bearing lateral branches at some distance from the ground',
-        translations: [
-            'дерево',
-            'arbre',
-            'Baum'
-        ],
+        translation: 'дерево',
         examples: [
             {
                 id: uuid(),
@@ -190,11 +175,7 @@ export const lexemes = [
     {
         value: 'river',
         definition: 'a large natural stream of water flowing in a channel to the sea, a lake, or another such stream',
-        translations: [
-            'река',
-            'rivière',
-            'Fluss'
-        ],
+        translation: 'река',
         examples: [
             {
                 id: uuid(),
@@ -207,11 +188,7 @@ export const lexemes = [
     {
         value: 'computer',
         definition: 'an electronic device for storing and processing data',
-        translations: [
-            'компьютер',
-            'ordinateur',
-            'Computer'
-        ],
+        translation: 'компьютер',
         examples: [
             {
                 id: uuid(),
@@ -224,11 +201,7 @@ export const lexemes = [
     {
         value: 'sun',
         definition: 'the star that is the central body of the solar system, around which the planets orbit and from which they receive light and heat',
-        translations: [
-            'солнце',
-            'soleil',
-            'Sonne'
-        ],
+        translation: 'солнце',
         examples: [
             {
                 id: uuid(),
@@ -241,11 +214,7 @@ export const lexemes = [
     {
         value: 'music',
         definition: 'vocal or instrumental sounds (or both) combined in such a way as to produce beauty of form, harmony, and expression of emotion',
-        translations: [
-            'музыка',
-            'musique',
-            'Musik'
-        ],
+        translation: 'музыка',
         examples: [
             {
                 id: uuid(),
@@ -258,11 +227,7 @@ export const lexemes = [
     {
         value: 'flower',
         definition: 'the seed-bearing part of a plant, consisting of reproductive organs (stamens and carpels) that are typically surrounded by a brightly colored corolla (petals) and a green calyx (sepals)',
-        translations: [
-            'цветок',
-            'fleur',
-            'Blume'
-        ],
+        translation: 'цветок',
         examples: [
             {
                 id: uuid(),
@@ -275,11 +240,7 @@ export const lexemes = [
     {
         value: 'friend',
         definition: 'a person with whom one has a bond of mutual affection, typically one exclusive of sexual or family relations',
-        translations: [
-            'друг',
-            'ami',
-            'Freund'
-        ],
+        translation: 'друг',
         examples: [
             {
                 id: uuid(),
@@ -292,11 +253,7 @@ export const lexemes = [
     {
         value: 'beach',
         definition: 'a pebbly or sandy shore, especially by the ocean between high- and low-water marks',
-        translations: [
-            'пляж',
-            'plage',
-            'Strand'
-        ],
+        translation: 'пляж',
         examples: [
             {
                 id: uuid(),
@@ -309,11 +266,7 @@ export const lexemes = [
     {
         value: 'language',
         definition: 'the method of human communication, either spoken or written, consisting of the use of words in a structured and conventional way',
-        translations: [
-            'язык',
-            'langue',
-            'Sprache'
-        ],
+        translation: 'язык',
         examples: [
             {
                 id: uuid(),
@@ -326,11 +279,7 @@ export const lexemes = [
     {
         value: 'mountain',
         definition: 'a large natural elevation of the earth\'s surface rising abruptly from the surrounding level; a large steep hill',
-        translations: [
-            'гора',
-            'montagne',
-            'Berg'
-        ],
+        translation: 'гора',
         examples: [
             {
                 id: uuid(),
@@ -343,11 +292,7 @@ export const lexemes = [
     {
         value: 'food',
         definition: 'any nutritious substance that people or animals eat or drink or that plants absorb in order to maintain life and growth',
-        translations: [
-            'еда',
-            'nourriture',
-            'Essen'
-        ],
+        translation: 'еда',
         examples: [
             {
                 id: uuid(),
@@ -358,47 +303,9 @@ export const lexemes = [
         approved: true
     },
     {
-        value: 'city',
-        definition: 'a large town',
-        translations: [
-            'город',
-            'ville',
-            'Stadt'
-        ],
-        examples: [
-            {
-                id: uuid(),
-                text: 'New York City is known as "The Big Apple".',
-                translation: ''
-            }
-        ],
-        approved: true
-    },
-    {
-        value: 'game',
-        definition: 'a form of play or sport, especially a competitive one played according to rules and decided by skill, strength, or luck',
-        translations: [
-            'игра',
-            'jeu',
-            'Spiel'
-        ],
-        examples: [
-            {
-                id: uuid(),
-                text: 'We played a board game together.',
-                translation: ''
-            }
-        ],
-        approved: true
-    },
-    {
         value: 'school',
         definition: 'an institution for educating children',
-        translations: [
-            'школа',
-            'école',
-            'Schule'
-        ],
+        translation: 'школа',
         examples: [
             {
                 id: uuid(),
@@ -411,11 +318,7 @@ export const lexemes = [
     {
         value: 'water',
         definition: 'a colorless, transparent, odorless liquid that forms the seas, lakes, rivers, and rain and is the basis of the fluids of living organisms',
-        translations: [
-            'вода',
-            'eau',
-            'Wasser'
-        ],
+        translation: 'вода',
         examples: [
             {
                 id: uuid(),
@@ -428,11 +331,7 @@ export const lexemes = [
     {
         value: 'friendship',
         definition: 'the emotions or conduct of friends; the state of being friends',
-        translations: [
-            'дружба',
-            'amitié',
-            'Freundschaft'
-        ],
+        translation: 'дружба',
         examples: [
             {
                 id: uuid(),
@@ -445,11 +344,7 @@ export const lexemes = [
     {
         value: 'phone',
         definition: 'a device used for transmitting sound (typically speech) over distances',
-        translations: [
-            'телефон',
-            'téléphone',
-            'Telefon'
-        ],
+        translation: 'телефон',
         examples: [
             {
                 id: uuid(),
@@ -462,11 +357,7 @@ export const lexemes = [
     {
         value: 'money',
         definition: 'a current medium of exchange in the form of coins and banknotes; coins and banknotes collectively',
-        translations: [
-            'деньги',
-            'argent',
-            'Geld'
-        ],
+        translation: 'деньги',
         examples: [
             {
                 id: uuid(),
@@ -479,11 +370,7 @@ export const lexemes = [
     {
         value: 'sky',
         definition: 'the region of the atmosphere and outer space seen from the earth',
-        translations: [
-            'небо',
-            'ciel',
-            'Himmel'
-        ],
+        translation: 'небо',
         examples: [
             {
                 id: uuid(),
@@ -496,11 +383,7 @@ export const lexemes = [
     {
         value: 'city',
         definition: 'a large town',
-        translations: [
-            'город',
-            'ville',
-            'Stadt'
-        ],
+        translation: 'город',
         examples: [
             {
                 id: uuid(),
@@ -513,11 +396,7 @@ export const lexemes = [
     {
         value: 'country',
         definition: 'a nation with its own government, occupying a particular territory',
-        translations: [
-            'страна',
-            'pays',
-            'Land'
-        ],
+        translation: 'страна',
         examples: [
             {
                 id: uuid(),
@@ -530,11 +409,7 @@ export const lexemes = [
     {
         value: 'family',
         definition: 'a group consisting of parents and children living together in a household',
-        translations: [
-            'семья',
-            'famille',
-            'Familie'
-        ],
+        translation: 'семья',
         examples: [
             {
                 id: uuid(),
@@ -547,11 +422,7 @@ export const lexemes = [
     {
         value: 'game',
         definition: 'a form of play or sport, especially a competitive one played according to rules and decided by skill, strength, or luck',
-        translations: [
-            'игра',
-            'jeu',
-            'Spiel'
-        ],
+        translation: 'игра',
         examples: [
             {
                 id: uuid(),
@@ -564,11 +435,7 @@ export const lexemes = [
     {
         value: 'movie',
         definition: 'a story or event recorded by a camera as a set of moving images and shown in a theater or on television; a motion picture',
-        translations: [
-            'фильм',
-            'film',
-            'Film'
-        ],
+        translation: 'фильм',
         examples: [
             {
                 id: uuid(),
@@ -581,32 +448,11 @@ export const lexemes = [
     {
         value: 'sport',
         definition: 'an activity involving physical exertion and skill in which an individual or team competes against another or others for entertainment',
-        translations: [
-            'спорт',
-            'sport',
-            'Sport'
-        ],
+        translation: 'спорт',
         examples: [
             {
                 id: uuid(),
                 text: 'He plays soccer and tennis as his favorite sports.',
-                translation: ''
-            }
-        ],
-        approved: true
-    },
-    {
-        value: 'water',
-        definition: 'a colorless, transparent, odorless liquid that forms the seas, lakes, rivers, and rain and is the basis of the fluids of living organisms',
-        translations: [
-            'вода',
-            'eau',
-            'Wasser'
-        ],
-        examples: [
-            {
-                id: uuid(),
-                text: 'They drank refreshing cold water after the hike.',
                 translation: ''
             }
         ],

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { sessionCardsCount } from '@/shared/libs/quiz';
 import FlipCard from 'shared/components/flip-card';
 import StatusCircles from 'shared/components/status-circles';
 import { Button, Stepper, Text } from 'shared/ui-components';
@@ -13,9 +14,8 @@ export function getData(items) {
 
 export default function FlipCards({ item, itemIndex, numberOfItems, updateStatus }) {
     const [isCardFlip, setIsCardFlip] = useState(false);
-
-    const { id, value, translations, record } = item;
-    const translationString = translations.join(', ');
+    const stepsCount = sessionCardsCount(numberOfItems);
+    const { id, value, translation, record } = item;
 
     const downStatus = () => {
         updateStatus(id, record?.status - 1);
@@ -36,16 +36,24 @@ export default function FlipCards({ item, itemIndex, numberOfItems, updateStatus
             <FlipCard
                 key={id}
                 front={<Text level="title-lg">{value}</Text>}
-                back={<Text level="title-lg">{translationString}</Text>}
+                back={<Text level="title-lg">{translation}</Text>}
                 isCardFlip1={isCardFlip}
                 onFlip={() => setIsCardFlip(true)}
             />
 
             <Stepper
-                steps={Array.from({ length: numberOfItems }).map((_, index) =>({
+                steps={Array.from({ length: stepsCount }).map((_, index) => ({
                     active: index === itemIndex,
                     orientation: 'vertical',
-                    indicator: <span className={cn(styles.indicator, index === itemIndex && styles.active)} />
+                    indicator: (
+                        <span
+                            className={cn(
+                                styles.indicator,
+                                index === itemIndex && styles.active,
+                                index < itemIndex && styles.prev
+                            )}
+                        />
+                    )
                 }))}
                 size="sm"
             />
