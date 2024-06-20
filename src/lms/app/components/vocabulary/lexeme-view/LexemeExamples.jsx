@@ -8,27 +8,25 @@ export default function LexemeExamples({ title, examples }) {
             <Heading content={title} type="title-md" />
 
             <List>
-                {examples.map((example, index, array) => (<>
-                    <List.Item
-                        key={index}
-                        className={styles.example}
-                        decorator={
-                            <Avatar
-                                content={index + 1}
-                                color="neutral"
-                                size="sm"
-                            />
-                        }
-                        content={{
-                            primary: example.text,
-                            secondary: example.translation
-                        }}
-                    />
+                {examples.map((example, index, array) => (
+                    <div key={example.id}>
+                        <List.Item
+                            className={styles.example}
+                            decorator={
+                                <Avatar
+                                    content={index + 1} color="neutral"
+                                    size="sm"
+                                />
+                            }
+                            content={{
+                                primary: example.text,
+                                secondary: example.translation
+                            }}
+                        />
 
-                    {index < array.length - 1 &&
-                        <List.Divider inset="startContent" />
-                    }
-                </>))}
+                        {index < array.length - 1 && <List.Divider inset="startContent" />}
+                    </div>
+                ))}
             </List>
         </section>
     );
