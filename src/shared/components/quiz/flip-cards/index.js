@@ -1,1 +1,1 @@
-export { default, getData } from './FlipCards';
+export { default, getCallback } from './FlipCards';

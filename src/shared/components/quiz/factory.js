@@ -1,20 +1,20 @@
-import FlipCards, { getData as getFlipCardsData } from './flip-cards';
-import TrueFalse, { getData as getTrueFalseData } from './true-false';
+import FlipCards, { getCallback as getFlipCardsCallback } from './flip-cards';
+import TrueFalse, { getCallback as getTrueFalseCallback } from './true-false';
 
 const components = {
     'flip-cards': {
         Component: FlipCards,
-        getData: getFlipCardsData
+        getCallback: getFlipCardsCallback
     },
     'true-false': {
         Component: TrueFalse,
-        getData: getTrueFalseData
+        getCallback: getTrueFalseCallback
     }
 };
 
 const defaultComponent = {
     Component: () => null,
-    getData: data => data
+    getCallback: data => data
 };
 
 export function getComponent(type) {

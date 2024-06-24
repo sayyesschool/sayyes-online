@@ -15,8 +15,7 @@ export default function VocabularyQuiz({ match }) {
 
     const [vocabulary, actions] = useVocabulary(match.params.vocabulary);
 
-    const { Component: VocabularyQuizItem, getData } = getComponent(match.params.quiz);
-    const lexemes = getData(vocabulary?.lexemes);
+    const { Component: VocabularyQuizItem, getCallback } = getComponent(match.params.quiz);
 
     const {
         numberOfItems,
@@ -26,7 +25,7 @@ export default function VocabularyQuiz({ match }) {
         continueQuiz,
         statistic,
         showStatistic
-    } = useQuiz(lexemes, actions.updateLexemeStatus);
+    } = useQuiz(vocabulary?.lexemes, getCallback, actions.updateLexemeStatus);
 
     const handleBack = () => history.goBack();
 

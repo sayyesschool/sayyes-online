@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { sessionCardsCount } from '@/shared/libs/quiz';
+import { shuffleAndFilter } from '@/shared/libs/quiz';
 import FlipCard from 'shared/components/flip-card';
 import StatusCircles from 'shared/components/status-circles';
 import { Button, Stepper, Text } from 'shared/ui-components';
@@ -8,8 +9,8 @@ import cn from 'shared/utils/classnames';
 
 import styles from './FlipCards.module.scss';
 
-export function getData(items) {
-    return items;
+export function getCallback(data) {
+    return shuffleAndFilter(data);
 }
 
 export default function FlipCards({ item, itemIndex, numberOfItems, updateStatus }) {

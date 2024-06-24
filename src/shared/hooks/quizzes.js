@@ -1,21 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import {
-    sessionCardsCount,
-    shouldShowStatistic,
-    shuffleAndFilter
-} from '@/shared/libs/quiz';
+import { sessionCardsCount, shouldShowStatistic } from '@/shared/libs/quiz';
 
-export function useQuiz(_items, updateItemStatus) {
-    const [items, setItems] = useState(_items);
+export function useQuiz(_items, callback, updateItemStatus) {
+    const [items, setItems] = useState(callback(_items));
     const [count, setCount] = useState(0);
     const [statistic, setStatistic] = useState([]);
 
     useEffect(() => {
         if (items || !_items) return;
-
-        setItems(shuffleAndFilter(_items));
-    }, [items, _items]);
+        setItems(callback(_items));
+    }, [_items, callback, items]);
 
     const currentItem = items?.[count];
     const statisticInterval = sessionCardsCount(items?.length);
@@ -69,11 +64,10 @@ export function useQuiz(_items, updateItemStatus) {
 
     const continueQuiz = useCallback(() => {
         if (!items?.length) return;
-
-        setItems(list => shuffleAndFilter(list));
+        setItems(list => callback(list));
         setCount(0);
         setStatistic([]);
-    }, [items]);
+    }, [callback, items?.length]);
 
     return {
         items,
