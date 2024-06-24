@@ -8,45 +8,66 @@ export function shouldShowStatistic(statisticLength, everyCount) {
     return !!(statisticLength % everyCount === 0 && statisticLength !== 0);
 }
 
-export function shuffleAndFilter(lexemes) {
-    if (!lexemes) return [];
+function shuffleArr(arr) {
+    if (!arr) return [];
 
-    return Array(lexemes.length)
+    return Array(arr.length)
         .fill(null)
         .map((_, i) => [Math.random(), i])
         .sort(([a], [b]) => a - b)
-        .map(([, i]) => lexemes[i])
-        .filter(lexeme => {
-            const status = lexeme.record.status;
+        .map(([, i]) => arr[i]);
+}
 
-            return status < 5;
-        });
+function filterLexemes(lexemes) {
+    if (!lexemes) return [];
+
+    return lexemes.filter(lexeme => {
+        const status = lexeme.record.status;
+
+        return status < 5;
+    });
+}
+
+export function shuffleAndFilter(lexemes) {
+    if (!lexemes) return;
+
+    return shuffleArr(filterLexemes(lexemes));
 }
 
 function getCorrectLexemes(lexemes, count) {
-    return lexemes.slice(0, count).map(item => ({ ...item, isCorrect: true }));
+    return lexemes
+        .slice(0, count)
+        .map(item => ({ ...item, incorrectTranslation: null }));
 }
 
 function getIncorrectLexemes(lexemes, count) {
     const correctLexemes = lexemes.slice(-count);
 
-    const incorrectLexemes = correctLexemes.map((element, index, arr) => ({
-        ...element,
-        translation: arr[(index + 1) % arr.length].translation,
-        isCorrect: false
-    }));
+    const incorrectLexemes = correctLexemes.map(element => {
+        const shuffledLexemes = shuffleArr(lexemes);
+        const incorrectTranslation = shuffledLexemes.find(
+            lexeme => lexeme.id !== element.id
+        ).translation;
+
+        return {
+            ...element,
+            incorrectTranslation
+        };
+    });
 
     return incorrectLexemes;
 }
 
 export function shuffleTrueFalse(lexemes, incorrectLexemesProportion = 1) {
-    if (!lexemes) return undefined;
+    if (!lexemes) return;
 
-    const incorrectLexemesCount = Math.floor((incorrectLexemesProportion / 3) * lexemes.length);
-    const correctLexemesCount = lexemes.length - incorrectLexemesCount;
+    const shuffledLexemes = filterLexemes(lexemes);
 
-    const correctLexemes = getCorrectLexemes(lexemes, correctLexemesCount);
-    const incorrectLexemes = getIncorrectLexemes(lexemes, incorrectLexemesCount);
+    const incorrectLexemesCount = Math.floor((incorrectLexemesProportion / 3) * shuffledLexemes.length);
+    const correctLexemesCount = shuffledLexemes.length - incorrectLexemesCount;
 
-    return [...correctLexemes, ...incorrectLexemes];
+    const correctLexemes = getCorrectLexemes(shuffledLexemes, correctLexemesCount);
+    const incorrectLexemes = getIncorrectLexemes(shuffledLexemes, incorrectLexemesCount);
+
+    return shuffleArr([...correctLexemes, ...incorrectLexemes]);
 }
