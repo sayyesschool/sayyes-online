@@ -1,0 +1,94 @@
+@use 'shared/styles/variables';
+
+// TODO: стили почти 1 в 1 как у FlipCards и TrueFalse нужно как-то разрулить дублирование
+.root {
+  width: 500px;
+  min-height: 500px;
+  padding: 20px;
+  border-radius: 40px;
+  border: 5px solid variables.$primary-color;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.value {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: variables.$primary-color;
+  margin-top: auto;
+  font-size: 30px;
+}
+
+.content {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  margin-bottom: auto;
+}
+
+.indicator {
+  width: 8px;
+  height: 8px;
+  border: 2px solid gray;
+  border-radius: 100%;
+
+  &.prev {
+      background-color: gray;
+  }
+
+  &.active {
+      width: 10px;
+      height: 10px;
+      background-color: gray;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.button {
+  width: 200px !important;
+}
+
+.chooseItem {
+  position: absolute;
+  min-width: 150px;
+
+  // TODO: думаю стоит переделать как-нибудь по-другому позже (мб цикл или миксины)
+  &:nth-of-type(1) {
+    top: 0;
+    left: 0;
+  }
+
+  &:nth-of-type(2) {
+    top: 0;
+    right: 0;
+  }
+
+  &:nth-of-type(3) {
+    bottom: 0;
+    left: 0;
+  }
+
+  &:nth-of-type(4) {
+    bottom: 0;
+    right: 0;
+  }
+}
+
+.chooseItemDrop {
+  position: absolute;
+  min-width: 150px;
+  border-color: orange;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

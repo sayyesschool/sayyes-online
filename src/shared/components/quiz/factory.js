@@ -1,3 +1,4 @@
+import ChooseCorrect, { getCallback as getChooseCorrectCallback } from './choose-correct';
 import FlipCards, { getCallback as getFlipCardsCallback } from './flip-cards';
 import TrueFalse, { getCallback as getTrueFalseCallback } from './true-false';
 
@@ -9,6 +10,10 @@ const components = {
     'true-false': {
         Component: TrueFalse,
         getCallback: getTrueFalseCallback
+    },
+    'choose-correct': {
+        Component: ChooseCorrect,
+        getCallback: getChooseCorrectCallback
     }
 };
 

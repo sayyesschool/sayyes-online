@@ -53,6 +53,13 @@ export default function VocabularyPage({ match }) {
                             to: `${id}/quiz/true-false`,
                             icon: 'question_mark',
                             content: 'True False'
+                        },
+                        {
+                            key: 'choose-correct',
+                            as: Link,
+                            to: `${id}/quiz/choose-correct`,
+                            icon: 'gesture_select',
+                            content: 'Choose Correct'
                         }]}
                     />
                 ]}

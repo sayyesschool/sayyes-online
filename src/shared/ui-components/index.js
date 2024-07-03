@@ -12,6 +12,7 @@ export * from './chip';
 export * from './circular-progress';
 export * from './dialog';
 export * from './divider';
+export * from './drag-item';
 export * from './drawer';
 export * from './flex';
 export * from './form';

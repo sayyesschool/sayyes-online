@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 
-import { shuffleTrueFalse } from '@/shared/libs/quiz';
-import { sessionCardsCount } from '@/shared/libs/quiz';
+import { sessionCardsCount, shuffleTrueFalse } from '@/shared/libs/quiz';
 import StatusCircles from 'shared/components/status-circles';
 import { Button, Stepper } from 'shared/ui-components';
 import cn from 'shared/utils/classnames';
@@ -31,8 +30,6 @@ export default function TrueFalse({
             } else {
                 newStatus = incorrectTranslation ? -1 : record?.status - 1;
             }
-
-            console.log(111, { newStatus, oldStatus: record?.status });
 
             updateStatus(id, newStatus);
         },

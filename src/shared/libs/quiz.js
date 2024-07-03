@@ -61,13 +61,37 @@ function getIncorrectLexemes(lexemes, count) {
 export function shuffleTrueFalse(lexemes, incorrectLexemesProportion = 1) {
     if (!lexemes) return;
 
-    const shuffledLexemes = filterLexemes(lexemes);
+    const filteredLexemes = filterLexemes(lexemes);
 
-    const incorrectLexemesCount = Math.floor((incorrectLexemesProportion / 3) * shuffledLexemes.length);
-    const correctLexemesCount = shuffledLexemes.length - incorrectLexemesCount;
+    const incorrectLexemesCount = Math.floor((incorrectLexemesProportion / 3) * filteredLexemes.length);
+    const correctLexemesCount = filteredLexemes.length - incorrectLexemesCount;
 
-    const correctLexemes = getCorrectLexemes(shuffledLexemes, correctLexemesCount);
-    const incorrectLexemes = getIncorrectLexemes(shuffledLexemes, incorrectLexemesCount);
+    const correctLexemes = getCorrectLexemes(filteredLexemes, correctLexemesCount);
+    const incorrectLexemes = getIncorrectLexemes(filteredLexemes, incorrectLexemesCount);
 
     return shuffleArr([...correctLexemes, ...incorrectLexemes]);
+}
+
+export function shuffleChooseCorrect(lexemes) {
+    if (!lexemes) return;
+
+    const filteredLexemes = filterLexemes(lexemes);
+
+    return shuffleArr(
+        filteredLexemes.map(lexeme => {
+            const shuffledTranslations = filteredLexemes.filter(
+                lexemeItem => lexemeItem.translation !== lexeme.translation
+            );
+            const translations = shuffleArr(
+                [
+                    lexeme,
+                    shuffledTranslations[0],
+                    shuffledTranslations[1],
+                    shuffledTranslations[2]
+                ].filter(Boolean)
+            );
+
+            return { ...lexeme, translations };
+        })
+    );
 }
