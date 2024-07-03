@@ -9,9 +9,7 @@ import cn from 'shared/utils/classnames';
 
 import styles from './FlipCards.module.scss';
 
-export function getCallback(data) {
-    return shuffleAndFilter(data);
-}
+export const getData = data => shuffleAndFilter(data);
 
 export default function FlipCards({ item, itemIndex, numberOfItems, updateStatus }) {
     const [isCardFlip, setIsCardFlip] = useState(false);

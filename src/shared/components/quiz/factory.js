@@ -1,25 +1,25 @@
-import ChooseCorrect, { getCallback as getChooseCorrectCallback } from './choose-correct';
-import FlipCards, { getCallback as getFlipCardsCallback } from './flip-cards';
-import TrueFalse, { getCallback as getTrueFalseCallback } from './true-false';
+import ChooseCorrect, { getData as getChooseCorrectData } from './choose-correct';
+import FlipCards, { getData as getFlipCardsData } from './flip-cards';
+import TrueFalse, { getData as getTrueFalseData } from './true-false';
 
 const components = {
     'flip-cards': {
         Component: FlipCards,
-        getCallback: getFlipCardsCallback
+        getData: getFlipCardsData
     },
     'true-false': {
         Component: TrueFalse,
-        getCallback: getTrueFalseCallback
+        getData: getTrueFalseData
     },
     'choose-correct': {
         Component: ChooseCorrect,
-        getCallback: getChooseCorrectCallback
+        getData: getChooseCorrectData
     }
 };
 
 const defaultComponent = {
     Component: () => null,
-    getCallback: data => data
+    getData: data => data
 };
 
 export function getComponent(type) {

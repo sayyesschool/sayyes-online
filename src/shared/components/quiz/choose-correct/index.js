@@ -1,1 +1,1 @@
-export { default, getCallback } from './ChooseCorrect';
+export { default, getData } from './ChooseCorrect';

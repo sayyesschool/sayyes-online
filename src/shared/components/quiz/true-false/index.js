@@ -1,1 +1,1 @@
-export { default, getCallback } from './TrueFalse';
+export { default, getData } from './TrueFalse';

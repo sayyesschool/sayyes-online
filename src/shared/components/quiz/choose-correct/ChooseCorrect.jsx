@@ -9,9 +9,7 @@ import Answer from './Answer';
 
 import styles from './ChooseCorrect.module.scss';
 
-export function getCallback(data) {
-    return shuffleChooseCorrect(data);
-}
+export const getData = data => shuffleChooseCorrect(data);
 
 export default function ChooseCorrect({
     item,

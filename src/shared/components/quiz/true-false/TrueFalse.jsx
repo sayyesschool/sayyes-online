@@ -7,9 +7,7 @@ import cn from 'shared/utils/classnames';
 
 import styles from './TrueFalse.module.scss';
 
-export function getCallback(data) {
-    return shuffleTrueFalse(data);
-}
+export const getData = data => shuffleTrueFalse(data);
 
 export default function TrueFalse({
     item,

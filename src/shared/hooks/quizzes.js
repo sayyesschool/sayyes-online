@@ -2,15 +2,15 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { sessionCardsCount, shouldShowStatistic } from '@/shared/libs/quiz';
 
-export function useQuiz(_items, callback, updateItemStatus) {
-    const [items, setItems] = useState(callback(_items));
+export function useQuiz(_items, getData, updateItemStatus) {
+    const [items, setItems] = useState(getData(_items));
     const [count, setCount] = useState(0);
     const [statistic, setStatistic] = useState([]);
 
     useEffect(() => {
         if (items || !_items) return;
-        setItems(callback(_items));
-    }, [_items, callback, items]);
+        setItems(getData(_items));
+    }, [_items, getData, items]);
 
     const currentItem = items?.[count];
     const statisticInterval = sessionCardsCount(items?.length);
@@ -64,10 +64,10 @@ export function useQuiz(_items, callback, updateItemStatus) {
 
     const continueQuiz = useCallback(() => {
         if (!items?.length) return;
-        setItems(list => callback(list));
+        setItems(list => getData(list));
         setCount(0);
         setStatistic([]);
-    }, [callback, items?.length]);
+    }, [getData, items?.length]);
 
     return {
         items,
