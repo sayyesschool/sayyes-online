@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 
 import ImageField from 'shared/components/image-field';
+import { useUser } from 'shared/hooks/user';
 import Storage from 'shared/services/storage';
 import { Form } from 'shared/ui-components';
 
@@ -10,8 +11,9 @@ import LexemeExamples from './LexemeExamples';
 import styles from './LexemeForm.module.scss';
 
 export default function LexemeForm({ lexeme, onSubmit, ...props }) {
+    const user = useUser();
+
     const initialData = getInitialData(lexeme);
-    const labels = getLabels(lexeme.approved);
 
     const [file, setFile] = useState();
     const [translation, setTranslation] = useState(initialData.translation);
@@ -43,10 +45,12 @@ export default function LexemeForm({ lexeme, onSubmit, ...props }) {
     }, [setFile]);
 
     const handleFileDelete = useCallback(async image => {
+        if (user.id !== lexeme.createdBy || lexeme.approved) return;
+
         await Storage.delete(image.path).then(console.log);
         setFile(undefined);
         onSubmit({ image: undefined });
-    }, [onSubmit]);
+    }, [lexeme, user, onSubmit]);
 
     const handleTranslationChange = useCallback(e => {
         setTranslation(e.target.value);
@@ -60,6 +64,9 @@ export default function LexemeForm({ lexeme, onSubmit, ...props }) {
         setExamples(examples);
     }, [setExamples]);
 
+    const createdByUser = lexeme.createdBy === user.id;
+    const labels = getLabels(lexeme.approved);
+
     return (
         <Form
             className={styles.root} onSubmit={handleSubmit}
@@ -69,7 +76,7 @@ export default function LexemeForm({ lexeme, onSubmit, ...props }) {
                 className={styles.imageField}
                 label="Изображение"
                 image={lexeme.image}
-                disabled={lexeme.approved}
+                disabled={!createdByUser || lexeme.approved}
                 onChange={handleFileChange}
                 onDelete={handleFileDelete}
             />
