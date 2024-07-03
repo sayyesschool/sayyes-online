@@ -1,3 +1,4 @@
+// TODO: Необходимо поправить логику шафла для TrueFalse и ChooseCorrect, чтобы в неправ ответы попадали и лексимы со статусом выучено
 const STATISTIC_DISPLAY_INTERVAL = 5;
 
 export function sessionCardsCount(length) {
@@ -75,7 +76,7 @@ export function shuffleTrueFalse(lexemes, incorrectLexemesProportion = 1) {
 export function shuffleChooseCorrect(lexemes) {
     if (!lexemes) return;
 
-    const filteredLexemes = filterLexemes(lexemes);
+    const filteredLexemes = shuffleAndFilter(lexemes);
 
     return shuffleArr(
         filteredLexemes.map(lexeme => {
