@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-export function useFileInput(options) {
+export function useFileInput(options = {}) {
     const optionsRef = useRef(options);
     const fileInputRef = useRef();
     const fileUrlRef = useRef();
 
     const [file, setFile] = useState();
+
+    optionsRef.current = options;
 
     useEffect(() => {
         if (!fileInputRef.current) {
@@ -15,6 +17,7 @@ export function useFileInput(options) {
             input.type = 'file';
             input.name = options.name;
             input.accept = options.accept;
+
             input.onchange = event => {
                 const file = event.target.files[0];
                 const fileUrl = fileUrlRef.current;
@@ -29,6 +32,7 @@ export function useFileInput(options) {
                     fileUrlRef.current = url;
                     file.url = url;
 
+                    optionsRef.current.onChange?.(file);
                     setFile(file);
                 }
             };
@@ -53,7 +57,9 @@ export function useFileInput(options) {
     }, []);
 
     const reset = useCallback(() => {
-        fileInputRef.current?.reset();
+        fileInputRef.current.value = '';
+        setFile(undefined);
+        optionsRef.current.onChange?.(undefined);
     }, []);
 
     return {

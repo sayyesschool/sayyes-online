@@ -1,35 +1,60 @@
 import { useCallback, useState } from 'react';
 
-import { Form, Heading } from 'shared/ui-components';
+import ImageField from 'shared/components/image-field';
+import { useUser } from 'shared/hooks/user';
+import Storage from 'shared/services/storage';
+import { Form } from 'shared/ui-components';
 
-import LexemeExamplesForm from 'lms/components/vocabulary/lexeme-examples-form';
+import { getInitialData, getLabels } from './helpers';
+import LexemeExamples from './LexemeExamples';
 
 import styles from './LexemeForm.module.scss';
 
-export default function LexemeForm({
-    lexeme,
-    onSubmit,
-    ...props
-}) {
-    const [translations, setTranslations] = useState(lexeme.translations?.join(', ') ?? '');
-    const [definition, setDefinition] = useState(lexeme.definition ?? '');
-    const [examples, setExamples] = useState(lexeme.examples);
+export default function LexemeForm({ lexeme, onSubmit, ...props }) {
+    const user = useUser();
 
-    const handleSubmit = e => {
+    const initialData = getInitialData(lexeme);
+
+    const [file, setFile] = useState();
+    const [translation, setTranslation] = useState(initialData.translation);
+    const [definition, setDefinition] = useState(initialData.definition ?? '');
+    const [examples, setExamples] = useState(initialData.examples ?? []);
+
+    const handleSubmit = useCallback(async e => {
         e.preventDefault();
 
-        const formData = {
-            translations: translations.split(',').map(item => item.trim()),
-            definition: definition,
-            examples: examples
+        const data = {
+            translation,
+            definition,
+            examples
         };
 
-        onSubmit(formData);
-    };
+        if (file) {
+            const response = await Storage.upload(file, { path: 'lexemes' });
+
+            data.image = {
+                path: response.data.path
+            };
+        }
+
+        onSubmit(data);
+    }, [file, translation, definition, examples, onSubmit]);
+
+    const handleFileChange = useCallback((data, file) => {
+        setFile(file);
+    }, [setFile]);
+
+    const handleFileDelete = useCallback(async image => {
+        if (user.id !== lexeme.createdBy || lexeme.approved) return;
+
+        await Storage.delete(image.path).then(console.log);
+        setFile(undefined);
+        onSubmit({ image: undefined });
+    }, [lexeme, user, onSubmit]);
 
     const handleTranslationChange = useCallback(e => {
-        setTranslations(e.target.value);
-    }, [setTranslations]);
+        setTranslation(e.target.value);
+    }, [setTranslation]);
 
     const handleDefinitionChange = useCallback(e => {
         setDefinition(e.target.value);
@@ -39,30 +64,52 @@ export default function LexemeForm({
         setExamples(examples);
     }, [setExamples]);
 
+    const createdByUser = lexeme.createdBy === user.id;
+    const labels = getLabels(lexeme.approved);
+
     return (
-        <Form className={styles.root} onSubmit={handleSubmit} {...props}>
-            <Heading
-                className={styles.value}
-                content={lexeme.value}
-                type="h2"
+        <Form
+            className={styles.root} onSubmit={handleSubmit}
+            {...props}
+        >
+            <ImageField
+                className={styles.imageField}
+                label="Изображение"
+                image={lexeme.image}
+                disabled={!createdByUser || lexeme.approved}
+                onChange={handleFileChange}
+                onDelete={handleFileDelete}
             />
 
+            {lexeme.approved && <>
+                <Form.Input
+                    label="Перевод"
+                    value={lexeme.translation}
+                    disabled
+                />
+
+                <Form.Textarea
+                    label="Определение"
+                    value={lexeme.definition}
+                    disabled
+                />
+            </>}
+
             <Form.Input
-                value={translations}
-                label="Перевод"
-                required
+                value={translation}
+                label={labels.translation}
                 onChange={handleTranslationChange}
             />
 
             <Form.Textarea
-                label="Объяснение"
+                label={labels.definition}
                 value={definition}
                 onChange={handleDefinitionChange}
             />
 
-            <LexemeExamplesForm
-                as="div"
+            <LexemeExamples
                 examples={examples}
+                approved={lexeme.approved}
                 onChange={handleExamplesChange}
             />
         </Form>

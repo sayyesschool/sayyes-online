@@ -1,17 +1,63 @@
+import { useCallback, useRef, useState } from 'react';
 
 import SearchForm from 'shared/components/search-form';
+import { LMS_URL } from 'shared/constants';
+import { Popover } from 'shared/ui-components';
 
-import SearchLexemeItem from 'lms/components/vocabulary/search-lexeme-item';
+import LexemeSimpleForm from 'lms/components/vocabulary/lexeme-simple-form';
 
-export default function VocabularySearch({ lexemes, addLexeme, deleteLexeme }) {
+import VocabularySearchResultItem from './VocabularySearchResultItem';
+
+const apiUrl = `${LMS_URL}/api/vocabularies/search`;
+
+export default function VocabularySearch({ lexemes, onAddLexeme, className }) {
+    const comboboxRef = useRef();
+
+    const [newLexeme, setNewLexeme] = useState();
+
+    const handleSubmit = useCallback(data => {
+        onAddLexeme(data).finally(() => setNewLexeme(null));
+    }, [onAddLexeme]);
+
+    const handleCreate = useCallback(value => {
+        setNewLexeme({ value });
+    }, []);
+
     return  (
-        <SearchForm
-            apiUrl="https://lms.sayyes.local/api/vocabularies/search"
-            limit={3}
-            placeholder="Поиск слов"
-            withShowMoreBtn={true}
-            optionItem={SearchLexemeItem}
-            optionItemProps={{ lexemes, deleteLexeme, addLexeme }}
-        />
+        <div className={className}>
+            <SearchForm
+                comboboxRef={comboboxRef}
+                apiUrl={apiUrl}
+                placeholder="Поиск слов"
+                params={{
+                    limit: 10
+                }}
+                isResultDisabled={option =>
+                    !!lexemes.find(lexeme => lexeme.id === option.id)
+                }
+                renderResult={result =>
+                    <VocabularySearchResultItem
+                        result={result}
+                        lexemes={lexemes}
+                        onAddLexeme={onAddLexeme}
+                    />
+                }
+                creatable
+                onCreate={handleCreate}
+            />
+
+            {newLexeme &&
+                <Popover
+                    anchor={comboboxRef.current}
+                    placement="bottom-start"
+                    open
+                >
+                    <LexemeSimpleForm
+                        lexeme={newLexeme}
+                        onSubmit={handleSubmit}
+                    />
+                </Popover>
+            }
+        </div>
     );
 }

@@ -1,4 +1,6 @@
-.root {}
+.root {
+    position: relative;
+}
 
 .header {
     display: flex;
@@ -9,8 +11,12 @@
     border-bottom: 1px solid var(--joy-palette-divider);
 }
 
+.body {
+    position: relative;
+}
+
 .search {
-    margin-left: auto;
+    flex: 1;
 }
 
 .select {

@@ -1,0 +1,52 @@
+@use 'shared/styles/variables';
+
+// TODO: стили почти 1 в 1 как у FlipCards нужно как-то разрулить дублирование
+.root {
+  width: 450px;
+  height: 450px;
+  padding: 20px;
+  border-radius: 40px;
+  border: 5px solid variables.$primary-color;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.value {
+  color: variables.$primary-color;
+  margin-top: auto;
+}
+
+.translation {
+  color: variables.$microsoft-color;
+  margin-bottom: auto;
+}
+
+.indicator {
+  width: 8px;
+  height: 8px;
+  border: 2px solid gray;
+  border-radius: 100%;
+
+  &.prev {
+      background-color: gray;
+  }
+
+  &.active {
+      width: 10px;
+      height: 10px;
+      background-color: gray;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.button {
+  width: 200px !important;
+}

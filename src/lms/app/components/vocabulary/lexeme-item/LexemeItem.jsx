@@ -8,7 +8,6 @@ import styles from './LexemeItem.module.scss';
 
 export default function LexemeItem({
     lexeme,
-    userId,
     onView,
     onEdit,
     onSelect,
@@ -35,10 +34,7 @@ export default function LexemeItem({
         return onStatusUpdate(lexeme.id, status);
     }, [lexeme, onStatusUpdate]);
 
-    const { value, translations, data } = lexeme;
-    const translationsString = translations.join(', ');
-    // TODO: Move to the api ???
-    const isNotAuthor = userId !== lexeme?.createdBy;
+    const { value, translation, record } = lexeme;
 
     return (
         <ListItem className={styles.root}>
@@ -51,14 +47,18 @@ export default function LexemeItem({
                 className={styles.content}
                 onClick={handleContentClick}
             >
-                <Text className={styles.value} color="primary" content={value} />
+                <Text
+                    className={styles.value} color="primary"
+                    content={value}
+                />
+
                 <Text content="—" />
-                <Text className={styles.translations}>{translationsString}</Text>
+                <Text className={styles.translation} content={translation} />
             </div>
 
             <div className={styles.actions}>
                 <LexemeStatus
-                    level={data?.status}
+                    level={record?.status}
                     onChange={handleStatusChange}
                 />
 
@@ -73,14 +73,12 @@ export default function LexemeItem({
                 <IconButton
                     icon="edit"
                     title="Редактировать слово"
-                    disabled={isNotAuthor}
                     onClick={handleEditButtonClick}
                 />
 
                 <IconButton
                     icon="delete"
                     title="Удалить слово"
-                    disabled={isNotAuthor}
                     onClick={handleDeleteButtonClick}
                 />
             </div>

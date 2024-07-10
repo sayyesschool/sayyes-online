@@ -4,6 +4,7 @@ export default class Storage {
     constructor({ accessKeyId, secretAccessKey, endpoint, region, bucket }) {
         this.endpoint = endpoint;
         this.bucket = bucket;
+
         this.storage = new S3Client({
             endpoint,
             region,

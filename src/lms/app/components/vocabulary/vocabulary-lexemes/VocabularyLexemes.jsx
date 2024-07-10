@@ -2,12 +2,11 @@ import { useCallback, useState } from 'react';
 
 import FormDialog from 'shared/components/form-dialog';
 import { useBoolean } from 'shared/hooks/state';
-import { useUser } from 'shared/hooks/user';
 import { useVocabularyActions } from 'shared/hooks/vocabularies';
-import {  Checkbox, Dialog  } from 'shared/ui-components';
+import { Checkbox, Dialog, PopoverButton } from 'shared/ui-components';
 
-import LexemeAddButton from 'lms/components/vocabulary/lexeme-add-button';
 import LexemeForm from 'lms/components/vocabulary/lexeme-form';
+import LexemeSimpleForm from 'lms/components/vocabulary/lexeme-simple-form';
 import LexemeView from 'lms/components/vocabulary/lexeme-view';
 import LexemesList from 'lms/components/vocabulary/lexemes-list';
 import VocabularySearch from 'lms/components/vocabulary/vocabulary-search';
@@ -16,16 +15,15 @@ import styles from './VocabularyLexemes.module.scss';
 
 const filters = {
     all: () => true,
-    new: lexeme => lexeme.data?.status === 0,
-    learning: lexeme => lexeme.data?.status > 0 && lexeme.data?.status < 4,
-    learned: lexeme => lexeme.data?.status === 4
+    new: lexeme => lexeme.record?.status === 0,
+    learning: lexeme => lexeme.record?.status > 0 && lexeme.record?.status < 5,
+    learned: lexeme => lexeme.record?.status === 5
 };
 
 export default function VocabularyLexemes({
     vocabulary
 }) {
     const actions = useVocabularyActions();
-    const [user] =  useUser();
 
     const [currentLexemeId, setCurrentLexemeId] = useState(null);
     const [selectedLexemeIds, setSelectedLexemeIds] = useState([]);
@@ -57,6 +55,7 @@ export default function VocabularyLexemes({
     const handleSelectLexeme = useCallback(lexemeId => {
         setSelectedLexemeIds(ids => {
             const isSelected = ids.includes(lexemeId);
+
             return isSelected ?
                 ids.filter(id => id !== lexemeId) :
                 ids.concat(lexemeId);
@@ -84,31 +83,41 @@ export default function VocabularyLexemes({
                 />
 
                 <VocabularySearch
+                    className={styles.search}
                     lexemes={lexemes}
-                    deleteLexeme={handleDeleteLexeme}
-                    addLexeme={handleAddLexeme}
+                    onAddLexeme={handleAddLexeme}
                 />
 
-                <LexemeAddButton
-                    numberOfLexemes={vocabulary.numberOfLexemes}
-                    onAddLexeme={handleAddLexeme}
+                <PopoverButton
+                    key={vocabulary.numberOfLexemes}
+                    content="Добавить слово"
+                    color="primary"
+                >
+                    <LexemeSimpleForm
+                        numberOfLexemes={vocabulary.numberOfLexemes}
+                        onSubmit={handleAddLexeme}
+                    />
+                </PopoverButton>
+            </div>
+
+            <div className={styles.body}>
+                <LexemesList
+                    lexemes={lexemes}
+                    onViewLexeme={handleViewLexeme}
+                    onEditLexeme={handleEditLexeme}
+                    onSelectLexeme={handleSelectLexeme}
+                    onDeleteLexeme={handleDeleteLexeme}
+                    onUpdateLexemeStatus={handleUpdateLexemeStatus}
                 />
             </div>
 
-            <LexemesList
-                userId={user.id}
-                lexemes={lexemes}
-                onViewLexeme={handleViewLexeme}
-                onEditLexeme={handleEditLexeme}
-                onSelectLexeme={handleSelectLexeme}
-                onDeleteLexeme={handleDeleteLexeme}
-                onUpdateLexemeStatus={handleUpdateLexemeStatus}
-            />
-
             {(currentLexeme && isEditModalOpen) &&
                 <FormDialog
-                    title="Редактирование"
+                    title={currentLexeme.value}
                     open={isEditModalOpen}
+                    titleProps={{
+                        level: 'h2'
+                    }}
                     onClose={toggleEditModalOpen}
                 >
                     <LexemeForm

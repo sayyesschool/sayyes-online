@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyButtonGroup from '@mui/joy/ButtonGroup';
+import classnames from 'classnames';
 
 import Button from './Button';
 
@@ -25,9 +25,7 @@ const ButtonGroup = forwardRef(({
                     key={button.key}
                     {...button}
                 />
-            )}
-
-            {children}
+            ) || children}
         </JoyButtonGroup>
     );
 });

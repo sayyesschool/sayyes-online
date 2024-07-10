@@ -4,7 +4,7 @@ import {
     CircularProgress,
     Icon,
     IconButton,
-    MenuButton,
+    Menu,
     Tooltip
 } from 'shared/ui-components';
 
@@ -15,7 +15,8 @@ const StatusIcon = {
     1: 'school',
     2: 'school',
     3: 'school',
-    4: 'done'
+    4: 'school',
+    5: 'done'
 };
 
 const StatusColor = {
@@ -23,7 +24,8 @@ const StatusColor = {
     1: 'warning',
     2: 'warning',
     3: 'warning',
-    4: 'success'
+    4: 'warning',
+    5: 'success'
 };
 
 export default function LexemeStatus({
@@ -35,14 +37,14 @@ export default function LexemeStatus({
     }, [onChange]);
 
     const handleLearningButtonClick = useCallback(() => {
-        onChange(2);
+        onChange(3);
     }, [onChange]);
 
     const handleLearnedButtonClick = useCallback(() => {
-        onChange(4);
+        onChange(5);
     }, [onChange]);
 
-    const value = level * 25;
+    const value = level * 20;
     const isResetButtonDisabled = level === 0;
     const isSetLearningButtonDisabled = level === 2;
     const isSetLearnedButtonDisabled = level === 4;
@@ -50,7 +52,7 @@ export default function LexemeStatus({
     const icon = StatusIcon[level];
 
     return (
-        <MenuButton
+        <Menu
             trigger={
                 <IconButton className={styles.icon} color={color}>
                     <Tooltip content={`${value}%`} placement="left">

@@ -4,7 +4,6 @@ import JoyCard from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import CardCover from '@mui/joy/CardCover';
 import CardOverflow from '@mui/joy/CardOverflow';
-import CardTypography from '@mui/joy/Typography';
 import classnames from 'classnames';
 
 const Card = forwardRef(({
@@ -26,7 +25,6 @@ const Card = forwardRef(({
 
 Card.displayName = 'Card';
 
-Card.Text = CardTypography;
 Card.Cover = CardCover;
 Card.Content = CardContent;
 Card.Overflow = CardOverflow;

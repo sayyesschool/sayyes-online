@@ -1,3 +1,5 @@
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { render } from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 
@@ -14,7 +16,10 @@ render(
         <StoreProvider store={store}>
             <ThemeProvider theme={theme}>
                 <Router>
-                    <App />
+                    {/* // TODO: Стоит ли оставить провайдер тут или луше убрать его в lms? */}
+                    <DndProvider backend={HTML5Backend}>
+                        <App />
+                    </DndProvider>
                 </Router>
             </ThemeProvider>
         </StoreProvider>

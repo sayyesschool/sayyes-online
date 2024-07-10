@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyBreadcrumbs from '@mui/joy/Breadcrumbs';
+import classnames from 'classnames';
 
 const Breadcrumbs = forwardRef(({
     className,

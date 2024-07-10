@@ -1,21 +1,27 @@
 import { useCallback } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { Card, Flex, IconButton, Image, Link } from 'shared/ui-components';
-import { MenuButton } from 'shared/ui-components';
+import { Card, IconButton, Image, Link, Menu, Text } from 'shared/ui-components';
+import { getWordEnding } from 'shared/utils/format';
 
 import styles from './VocabularyCard.module.scss';
 
-export default function VocabularyCard({ vocabulary, onDeleteVocabulary, setCurrentVocabulary, ...props }) {
-    const { title, subtitle, imageUrl, numberOfLexemes, coursePath } = vocabulary;
-
+export default function VocabularyCard({
+    vocabulary,
+    onDeleteVocabulary,
+    setCurrentVocabulary,
+    ...props
+}) {
     const onDelete = useCallback(() => {
         return onDeleteVocabulary(vocabulary.id);
     }, [onDeleteVocabulary, vocabulary.id]);
-
+    
     const onEdit = useCallback(() => {
         return setCurrentVocabulary(vocabulary);
     }, [setCurrentVocabulary, vocabulary]);
+    
+    const { title, subtitle, imageUrl, numberOfLexemes, coursePath } = vocabulary;
+    const description = `${numberOfLexemes} ${getWordEnding('слов', numberOfLexemes, ['о', 'а', ''])}`;
 
     return (
         <Card
@@ -29,13 +35,21 @@ export default function VocabularyCard({ vocabulary, onDeleteVocabulary, setCurr
             }
 
             <Card.Content>
-                <Flex className={styles.header}>
-                    <Link component={RouterLink} to={`vocabulary/${vocabulary.id}`} level="title-lg">{title}</Link>
+                <header className={styles.header}>
+                    <Link
+                        component={RouterLink}
+                        to={`vocabulary/${vocabulary.id}`}
+                        content={title}
+                        type="title-lg"
+                    />
 
-                    <MenuButton
-                        className="UserMenu"
+                    <Menu
                         trigger={
-                            <IconButton icon="more_vert" title="Подробнее" />
+                            <IconButton
+                                icon="more_vert"
+                                title="Подробнее"
+                                size="sm"
+                            />
                         }
                         items={[
                             {
@@ -50,15 +64,17 @@ export default function VocabularyCard({ vocabulary, onDeleteVocabulary, setCurr
                             }
                         ]}
                     />
-                </Flex>
+                </header>
 
-                <Card.Text color="warning" level="body-sm">{subtitle}</Card.Text>
-                <Card.Text level="body-sm">Количество слов - {numberOfLexemes}</Card.Text>
+                <Text type="body-md">{subtitle}</Text>
+
+                <Text type="body-sm">{description}</Text>
 
                 {coursePath &&
-                    <Card.Text level="body-sm">
-                        Из курса - <Link component={RouterLink} to={coursePath} color="success">General Eanglish</Link>
-                    </Card.Text>
+                    <Text type="body-sm">
+                        Из курса -
+                        <Link component={RouterLink} to={coursePath}>General English</Link>
+                    </Text>
                 }
             </Card.Content>
         </Card>

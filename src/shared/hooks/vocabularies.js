@@ -1,37 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { useActions, useStore } from 'shared/hooks/store';
-import http from 'shared/services/http';
 import { actions as vocabulariesActions } from 'shared/store/modules/vocabularies';
 import { hasKey } from 'shared/utils/object';
-
-export function useVocabularySearch(query) {
-    const [results, setResults] = useState();
-    const [isLoading, setLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(false);
-
-    const search = useCallback(() => {
-        setLoading(true);
-        const qs = new URLSearchParams(query).toString();
-        http.get('/vocabulary/search?' + qs)
-            .then(response => {
-                setResults(response.data);
-                setHasMore(response.meta.more);
-
-                return response;
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    }, [query]);
-
-    return {
-        search,
-        results,
-        isLoading,
-        hasMore
-    };
-}
 
 export function useVocabularies(query) {
     const [vocabularies, actions] = useStore(
@@ -58,15 +29,14 @@ export function useVocabulary(id) {
         vocabulariesActions
     );
 
+    const vocabularyId = vocabulary?.id;
+
     useEffect(() => {
-        if (!id) return;
+        if (id === vocabularyId) return;
 
-        if (!vocabulary) {
-            actions.getVocabulary(id);
-        }
-
-        return () => actions.unsetVocabulary();
-    }, [id]);
+        actions.unsetVocabulary();
+        actions.getVocabulary(id);
+    }, [id, vocabularyId, actions]);
 
     return [vocabulary, actions];
 }

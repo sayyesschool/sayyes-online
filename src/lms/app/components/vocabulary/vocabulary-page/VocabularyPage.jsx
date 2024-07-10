@@ -1,6 +1,9 @@
+import { Link } from 'react-router-dom';
+
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { useVocabulary } from 'shared/hooks/vocabularies';
+import { Button, Menu } from 'shared/ui-components';
 import { getWordEnding } from 'shared/utils/format';
 
 import VocabularyLexemes from 'lms/components/vocabulary/vocabulary-lexemes';
@@ -12,22 +15,58 @@ export default function VocabularyPage({ match }) {
 
     if (!vocabulary) return <LoadingIndicator />;
 
-    const { title, numberOfLexemes } = vocabulary;
-    const pageTitle = `${title} (${numberOfLexemes})`;
-    const pageDescription = `${vocabulary.numberOfLexemes} ${getWordEnding('слов', vocabulary.numberOfLexemes, ['о', 'а', ''])}`;
+    const { id, title, numberOfLexemes } = vocabulary;
+    const description = `${numberOfLexemes} ${getWordEnding('слов', numberOfLexemes, ['о', 'а', ''])}`;
 
     return (
         <Page
             className={styles.root}
-            // title={pageTitle}
+            layout="narrow"
+            // title={`${title} (${numberOfLexemes})`}
         >
             <Page.Header
-                title={vocabulary.title}
-                description={pageDescription}
+                className={styles.header}
+                title={title}
+                description={description}
+                actions={[
+                    <Menu
+                        key="menu"
+                        trigger={
+                            <Button
+                                icon="exercise"
+                                color="primary"
+                                content="Тренировка"
+                                variant="soft"
+                            />
+                        }
+                        disabled={numberOfLexemes === 0}
+                        items={[{
+                            key: 'flip-cards',
+                            as: Link,
+                            to: `${id}/quiz/flip-cards`,
+                            icon: 'autorenew',
+                            content: 'Flip Cards'
+                        },
+                        {
+                            key: 'true-false',
+                            as: Link,
+                            to: `${id}/quiz/true-false`,
+                            icon: 'question_mark',
+                            content: 'True False'
+                        },
+                        {
+                            key: 'choose-correct',
+                            as: Link,
+                            to: `${id}/quiz/choose-correct`,
+                            icon: 'gesture_select',
+                            content: 'Choose Correct'
+                        }]}
+                    />
+                ]}
             />
 
-            <Page.Content>
-                <Page.Section compact>
+            <Page.Content className={styles.content}>
+                <Page.Section variant="outlined" compact>
                     <VocabularyLexemes
                         vocabulary={vocabulary}
                     />

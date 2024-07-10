@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
-import MuiSnackbar from '@mui/joy/Snackbar';
+import JoySnackbar from '@mui/joy/Snackbar';
+import classnames from 'classnames';
 
 const Snackbar = forwardRef(({
     content,
@@ -15,7 +15,7 @@ const Snackbar = forwardRef(({
     const classNames = classnames('ui-Snackbar', className);
 
     return (
-        <MuiSnackbar
+        <JoySnackbar
             ref={ref}
             className={classNames}
             startDecorator={start}
@@ -23,7 +23,7 @@ const Snackbar = forwardRef(({
             {...props}
         >
             {children}
-        </MuiSnackbar>
+        </JoySnackbar>
     );
 });
 

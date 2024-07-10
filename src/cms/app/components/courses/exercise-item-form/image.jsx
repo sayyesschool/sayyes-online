@@ -1,7 +1,7 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 
 import { useFileInput } from 'shared/hooks/file';
-import { Button, Flex, Input, Image, Text } from 'shared/ui-components';
+import { Button, Flex, Image, Input, Text } from 'shared/ui-components';
 
 import './image.scss';
 
@@ -33,7 +33,11 @@ function ExerciseImageItem({
     }), [file]);
 
     return (
-        <Flex padding={1} gap="small" column>
+        <Flex
+            gap="small"
+            padding={1}
+            column
+        >
             {file && <>
                 <Text type="body2">Выбранное изображение:</Text>
 

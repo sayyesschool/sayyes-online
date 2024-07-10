@@ -1,6 +1,8 @@
-import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 
-import { Button, FormField, Icon, Image } from 'shared/ui-components';
+import { useFileInput } from 'shared/hooks/file';
+import { Button, ButtonGroup, Flex, FormField, Image, Text } from 'shared/ui-components';
+import cn from 'shared/utils/classnames';
 
 import './index.scss';
 
@@ -16,72 +18,131 @@ function ImageField({
     label,
     accept = 'image/jpeg,image/png,image/jpeg',
     image = defaultValue,
-    src = image.src,
+    src = image.src || image.url,
     alt: _alt = image.alt,
     error,
     errorMessage,
+    disabled,
     onChange,
+    onDelete,
+
+    className,
     ...props
 }, ref) {
-    const fileInputRef = useRef();
-    const altInputRef = useRef();
-
-    const [file, setFile] = useState();
     const [alt, setAlt] = useState(_alt);
 
+    const { file, pick, reset } = useFileInput({
+        name,
+        accept: 'image/jpeg,image/png,image/jpeg,image/webp',
+        onChange: file => {
+            onChange?.({ name }, file);
+        }
+    });
+
     useImperativeHandle(ref, () => ({
-        get input() { return fileInputRef.current; },
-        get file() { return fileInputRef.current.files[0]; },
-        reset: () => fileInputRef.current.reset()
+        get file() {
+            return file;
+        },
+        reset
     }));
 
-    const handleChoose = useCallback(() => {
-        fileInputRef.current.click();
-    }, []);
-
-    const handleChange = useCallback(event => {
-        const file = event.target.files[0];
-
-        if (file) {
-            onChange({ name }, file);
-        }
-    }, [name]);
-
-    const handleReset = useCallback(() => {
-
-    }, []);
+    const handleDelete = useCallback(() => {
+        onDelete?.(image);
+    }, [image, onDelete]);
 
     return (
-        <FormField className="image-field" label={label} {...props}>
-            <input
-                ref={fileInputRef}
-                type="file"
-                name={name}
-                accept={accept}
-                onChange={handleChange}
-            />
+        <FormField
+            className={cn(className, 'ImageField')}
+            label={label}
+            {...props}
+        >
+            {file &&
+                <Flex gap="small" column>
+                    <Image
+                        src={file.url}
+                        alt=""
+                    />
 
-            {src &&
-                <Image
-                    src={src}
-                    alt={alt}
-                />
+                    <Flex
+                        gap="smaller"
+                        column
+                    >
+                        <Text
+                            type="body-md"
+                            content={file.name}
+                            end={
+                                <Text as="span" type="body-xs">{Math.round(file.size / 1000)} КБ</Text>
+                            }
+                        />
+
+                        <ButtonGroup
+                            variant="plain"
+                            buttons={[
+                                {
+                                    key: 'pick',
+                                    icon: 'add_photo_alternate',
+                                    content: 'Выбрать другое',
+                                    variant: 'plain',
+                                    disabled,
+                                    onClick: pick
+                                },
+                                {
+                                    key: 'reset',
+                                    icon: 'clear',
+                                    color: 'danger',
+                                    variant: 'plain',
+                                    content: 'Отменить выбор',
+                                    disabled,
+                                    onClick: reset
+                                }
+                            ]}
+                            buttonFlex={1}
+                            spacing={1}
+                        />
+                    </Flex>
+                </Flex>
             }
 
-            {!file ?
+            {src && !file &&
+                <Flex gap="small" column>
+                    <Image
+                        src={src}
+                        alt={alt}
+                    />
+
+                    <ButtonGroup
+                        variant="plain"
+                        buttons={[
+                            {
+                                key: 'pick',
+                                icon: 'add_photo_alternate',
+                                content: 'Выбрать изображение',
+                                variant: 'plain',
+                                disabled,
+                                onClick: pick
+                            },
+                            {
+                                key: 'reset',
+                                icon: 'clear',
+                                color: 'danger',
+                                variant: 'plain',
+                                content: 'Удалить изображение',
+                                disabled,
+                                onClick: handleDelete
+                            }
+                        ]}
+                        buttonFlex={1}
+                        spacing={1}
+                    />
+                </Flex>
+            }
+
+            {!src && !file &&
                 <Button
-                    type="button"
-                    content="Выбрать файл"
-                    text
-                    onClick={handleChoose}
-                />
-                :
-                <Button
-                    type="button"
-                    icon={<Icon>clear</Icon>}
-                    iconOnly
-                    text
-                    onClick={handleReset}
+                    icon="add_photo_alternate"
+                    content="Выбрать изображение"
+                    variant="outlined"
+                    onClick={pick}
                 />
             }
         </FormField>
