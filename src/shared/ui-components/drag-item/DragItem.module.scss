@@ -13,7 +13,8 @@
   transition: background 0.2s linear;
 
   &:not(.isEmpty):not(.isDragging):hover {
-    background: lightgray;
+    // TODO: Есть баг в Match при драге, поэтому временно отключил обычный hover на DragItem
+    // background: lightgray;
   }
 }
 

@@ -1,5 +1,7 @@
 // TODO: Необходимо поправить логику шафла для TrueFalse и ChooseCorrect, чтобы в неправ ответы попадали и лексимы со статусом выучено
+//       А для match отбрасывать остаток, если на карточку осталось меньше 5 лексим
 const STATISTIC_DISPLAY_INTERVAL = 5;
+const MATCH_ITEM_COUNT = 5;
 
 export function sessionCardsCount(length) {
     return Math.min(length, STATISTIC_DISPLAY_INTERVAL);
@@ -9,7 +11,29 @@ export function shouldShowStatistic(statisticLength, everyCount) {
     return !!(statisticLength % everyCount === 0 && statisticLength !== 0);
 }
 
-function shuffleArr(arr) {
+function chunkArray(arr, n) {
+    return arr.reduce((acc, val, index) => {
+        if (index % n === 0) {
+            acc.push(arr.slice(index, index + n));
+        }
+
+        return acc;
+    }, []);
+}
+
+export function compareArrays(arr1, arr2) {
+    return arr1.map((obj1, index) => {
+        let obj2 = arr2[index];
+        let statusDiff = obj1.value === obj2.value ? 1 : -1;
+
+        return {
+            ...obj1,
+            newStatus: obj1.record.status + statusDiff
+        };
+    });
+}
+
+export function shuffleArr(arr) {
     if (!arr) return [];
 
     return Array(arr.length)
@@ -95,4 +119,14 @@ export function shuffleChooseCorrect(lexemes) {
             return { ...lexeme, translations };
         })
     );
+}
+
+export function shuffleMatch(lexemes) {
+    if (!lexemes) return;
+
+    const flatItems = Array.isArray(lexemes?.[0]) ? lexemes.flat() : lexemes;
+
+    const filteredLexemes = shuffleAndFilter(flatItems);
+
+    return chunkArray(filteredLexemes, MATCH_ITEM_COUNT);
 }

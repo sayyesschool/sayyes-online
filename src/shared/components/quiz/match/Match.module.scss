@@ -1,0 +1,69 @@
+@use 'shared/styles/variables';
+
+// TODO: стили почти 1 в 1 как у FlipCards и TrueFalse и ChooseCorrect нужно как-то разрулить дублирование
+.root {
+  width: 500px;
+  min-height: 500px;
+  padding: 20px;
+  border-radius: 40px;
+  border: 5px solid variables.$primary-color;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.values,
+.translations {
+  flex-basis: 50%;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  margin-bottom: auto;
+}
+
+.indicator {
+  width: 8px;
+  height: 8px;
+  border: 2px solid gray;
+  border-radius: 100%;
+
+  &.prev {
+      background-color: gray;
+  }
+
+  &.active {
+      width: 10px;
+      height: 10px;
+      background-color: gray;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.button {
+  width: 200px !important;
+}
+
+.matchItem,
+.matchItemDragging {
+  margin: 5px;
+  font-size: 20px;
+  color: variables.$microsoft-color;
+  gap: 10px;
+}
+
+.matchItemDragging {
+  opacity: 0;
+}
+
+.activeMatchItem {
+  background-color: silver;
+}

@@ -1,5 +1,6 @@
 import ChooseCorrect, { getData as getChooseCorrectData } from './choose-correct';
 import FlipCards, { getData as getFlipCardsData } from './flip-cards';
+import Match, { getData as getMatchData } from './match';
 import TrueFalse, { getData as getTrueFalseData } from './true-false';
 
 const components = {
@@ -14,6 +15,10 @@ const components = {
     'choose-correct': {
         Component: ChooseCorrect,
         getData: getChooseCorrectData
+    },
+    'match': {
+        Component: Match,
+        getData: getMatchData
     }
 };
 

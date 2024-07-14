@@ -28,6 +28,7 @@ export * from './link';
 export * from './list';
 export * from './menu';
 export * from './popover';
+export * from './progress-status';
 export * from './radio';
 export * from './select';
 export * from './slider';

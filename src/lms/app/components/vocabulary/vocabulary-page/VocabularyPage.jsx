@@ -60,6 +60,13 @@ export default function VocabularyPage({ match }) {
                             to: `${id}/quiz/choose-correct`,
                             icon: 'gesture_select',
                             content: 'Choose Correct'
+                        },
+                        {
+                            key: 'match',
+                            as: Link,
+                            to: `${id}/quiz/match`,
+                            icon: 'swap_vert',
+                            content: 'Match'
                         }]}
                     />
                 ]}

@@ -22,6 +22,7 @@ export default function VocabularyQuiz({ match }) {
         currentItem,
         currentItemIndex,
         updateStatus,
+        updateStatuses,
         continueQuiz,
         statistic,
         showStatistic
@@ -47,6 +48,7 @@ export default function VocabularyQuiz({ match }) {
                         itemIndex={currentItemIndex}
                         numberOfItems={numberOfItems}
                         updateStatus={updateStatus}
+                        updateStatuses={updateStatuses}
                     /> :
                     <VocabularyQuizEmptyState onAction={handleBack} />
                 )

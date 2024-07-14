@@ -12,55 +12,78 @@ export function useQuiz(_items, getData, updateItemStatus) {
         setItems(getData(_items));
     }, [_items, getData, items]);
 
+    const flatItems = Array.isArray(items?.[0]) ? items.flat() : items;
     const currentItem = items?.[count];
     const statisticInterval = sessionCardsCount(items?.length);
     const showStatistic = shouldShowStatistic(count, statisticInterval);
 
     const updateStatistics = useCallback(
-        newStatus => {
+        (itemId, newStatus) => {
             setStatistic(prevStatistic => {
+                const item = flatItems.find(i => i.id === itemId);
+
                 return [
                     ...prevStatistic,
                     {
-                        id: currentItem.id,
-                        value: currentItem.value,
-                        oldStatus: currentItem.record.status,
+                        id: item.id,
+                        value: item.value,
+                        oldStatus: item.record.status,
                         newStatus
                     }
                 ];
             });
         },
-        [currentItem]
+        [flatItems]
     );
 
     const updateList = useCallback((itemId, newStatus) => {
         setItems(items =>
-            items.map(item =>
-                item.id !== itemId
-                    ? item
-                    : {
-                        ...item,
-                        record: {
-                            ...item.record,
-                            status: newStatus
+            items.map(subArray =>
+                Array.isArray(subArray)
+                    ? subArray.map(item =>
+                        item.id !== itemId
+                            ? item
+                            : {
+                                ...item,
+                                record: {
+                                    ...item.record,
+                                    status: newStatus
+                                }
+                            }
+                    )
+                    : subArray.id !== itemId
+                        ? subArray
+                        : {
+                            ...subArray,
+                            record: {
+                                ...subArray.record,
+                                status: newStatus
+                            }
                         }
-                    }
             )
         );
     }, []);
 
     const updateStatus = useCallback(
-        async (itemId, newStatus) => {
+        async (itemId, newStatus, skipSetCount = false) => {
             if (newStatus >= 0) {
                 await updateItemStatus(itemId, newStatus);
                 updateList(itemId, newStatus);
-                updateStatistics(newStatus);
+                updateStatistics(itemId, newStatus);
             }
 
-            if (count < items?.length) setCount(prevCount => prevCount + 1);
+            if (skipSetCount) return;
+
+            if (count < flatItems?.length) setCount(prevCount => prevCount + 1);
         },
-        [count, items?.length, updateItemStatus, updateList, updateStatistics]
+        [count, flatItems?.length, updateItemStatus, updateList, updateStatistics]
     );
+
+    const updateStatuses = useCallback(arr => {
+        arr.forEach(item => updateStatus(item.id, item.newStatus, true));
+
+        if (count < flatItems?.length) setCount(prevCount => prevCount + 1);
+    }, [count, flatItems?.length, updateStatus]);
 
     const continueQuiz = useCallback(() => {
         if (!items?.length) return;
@@ -76,6 +99,7 @@ export function useQuiz(_items, getData, updateItemStatus) {
         currentItemIndex: count,
         statistic,
         updateStatus,
+        updateStatuses,
         continueQuiz,
         showStatistic
     };
