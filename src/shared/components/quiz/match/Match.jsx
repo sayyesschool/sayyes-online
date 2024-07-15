@@ -33,8 +33,6 @@ export default function Match({
     const [activeItems, setActiveItems] = useState({ first: null, second: null });
     const stepsCount = sessionCardsCount(numberOfItems);
 
-    console.log('activeItems', { activeItems }, { values, translations });
-
     const onMoveAnswer = useCallback(itemsSetter => (dragIndex, hoverIndex) => {
         itemsSetter(prevItems => {
             const newItems = [...prevItems];

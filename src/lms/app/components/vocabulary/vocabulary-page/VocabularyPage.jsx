@@ -67,6 +67,13 @@ export default function VocabularyPage({ match }) {
                             to: `${id}/quiz/match`,
                             icon: 'swap_vert',
                             content: 'Match'
+                        },
+                        {
+                            key: 'scrabble',
+                            as: Link,
+                            to: `${id}/quiz/scrabble`,
+                            icon: 'match_word',
+                            content: 'Scrabble'
                         }]}
                     />
                 ]}
