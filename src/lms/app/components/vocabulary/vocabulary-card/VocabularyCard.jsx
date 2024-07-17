@@ -8,18 +8,19 @@ import styles from './VocabularyCard.module.scss';
 
 export default function VocabularyCard({
     vocabulary,
+    readOnly,
+    onEditVocabulary,
     onDeleteVocabulary,
-    setCurrentVocabulary,
     ...props
 }) {
+    const onEdit = useCallback(() => {
+        return onEditVocabulary(vocabulary);
+    }, [vocabulary, onEditVocabulary]);
+
     const onDelete = useCallback(() => {
         return onDeleteVocabulary(vocabulary.id);
-    }, [onDeleteVocabulary, vocabulary.id]);
-    
-    const onEdit = useCallback(() => {
-        return setCurrentVocabulary(vocabulary);
-    }, [setCurrentVocabulary, vocabulary]);
-    
+    }, [vocabulary.id, onDeleteVocabulary]);
+
     const { title, subtitle, imageUrl, numberOfLexemes, coursePath } = vocabulary;
     const description = `${numberOfLexemes} ${getWordEnding('слов', numberOfLexemes, ['о', 'а', ''])}`;
 
@@ -43,31 +44,35 @@ export default function VocabularyCard({
                         type="title-lg"
                     />
 
-                    <Menu
-                        trigger={
-                            <IconButton
-                                icon="more_vert"
-                                title="Подробнее"
-                                size="sm"
-                            />
-                        }
-                        items={[
-                            {
-                                key: 'edit',
-                                content: 'Изменить',
-                                onClick: onEdit
-                            },
-                            {
-                                key: 'delete',
-                                content: 'Удалить',
-                                onClick: onDelete
+                    {!readOnly &&
+                        <Menu
+                            trigger={
+                                <IconButton
+                                    icon="more_vert"
+                                    title="Подробнее"
+                                    size="sm"
+                                />
                             }
-                        ]}
-                    />
+                            items={[
+                                {
+                                    key: 'edit',
+                                    icon: 'edit',
+                                    content: 'Изменить',
+                                    onClick: onEdit
+                                },
+                                {
+                                    key: 'delete',
+                                    icon: 'delete',
+                                    color: 'danger',
+                                    content: 'Удалить',
+                                    onClick: onDelete
+                                }
+                            ]}
+                        />
+                    }
                 </header>
 
                 <Text type="body-md">{subtitle}</Text>
-
                 <Text type="body-sm">{description}</Text>
 
                 {coursePath &&

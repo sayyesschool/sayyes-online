@@ -6,16 +6,19 @@ import styles from './VocabulariesGrid.module.scss';
 
 export default function VocabulariesGrid({
     vocabularies,
-    onDeleteVocabulary,
-    setCurrentVocabulary
+    onEditVocabulary,
+    onDeleteVocabulary
 }) {
     return (
-        <Grid className={styles.root}>
+        <Grid className={styles.root} gap="medium">
             {vocabularies.map(vocabulary =>
-                <Grid.Item key={vocabulary.id} xs={3}>
+                <Grid.Item
+                    key={vocabulary.id}
+                    xs={3}
+                >
                     <VocabularyCard
                         vocabulary={vocabulary}
-                        setCurrentVocabulary={setCurrentVocabulary}
+                        onEditVocabulary={onEditVocabulary}
                         onDeleteVocabulary={onDeleteVocabulary}
                     />
                 </Grid.Item>
