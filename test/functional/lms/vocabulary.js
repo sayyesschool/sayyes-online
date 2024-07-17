@@ -1,19 +1,21 @@
 import expect from 'expect';
 
-export default (api, { models: { Lexeme, Vocabulary }, user }) =>
+import { createId } from '../../helpers';
+
+export default (api, { models: { Lexeme, LexemeRecord, Vocabulary }, user }) =>
     describe('Vocabulary routes', () => {
         afterEach(async () => {
             await Lexeme.deleteMany({});
+            await LexemeRecord.deleteMany({});
             await Vocabulary.deleteMany({});
         });
 
         describe('Vocabularies', () => {
             describe('GET /', () => {
-                it('should get a vocabulary', async () => {
+                it('should get a list of vocabularies', async () => {
                     await Vocabulary.create([
                         { learnerId: user.id },
-                        { learnerId: user.id },
-                        {}
+                        { learnerId: user.id }
                     ]);
 
                     const { body } = await api.get('/vocabularies');
@@ -31,6 +33,102 @@ export default (api, { models: { Lexeme, Vocabulary }, user }) =>
                         type: 'default',
                         learnerId: /^\S+$/,
                         lexemeIds: []
+                    });
+                });
+            });
+        });
+
+        describe('My vocabulary', () => {
+            describe('GET /my', () => {
+                it('should get my vocabulary', async () => {
+                    const { body } = await api.get('/vocabularies/my');
+
+                    expect(body.data).toMatch({
+                        title: 'Мой словарь',
+                        learnerId: user.id
+                    });
+                });
+
+                it('should get my vocabulary with lexemes', async () => {
+                    const lexemes = await Lexeme.create([
+                        { value: 'cat', approved: true },
+                        { value: 'dog', approved: true },
+                        { value: 'fish', approved: true },
+                        { value: 'catnip', approved: true },
+                        { value: 'catdog', approved: false }
+                    ]);
+
+                    await LexemeRecord.create(lexemes.map(l => ({
+                        learnerId: user.id,
+                        lexemeId: l.id
+                    })));
+
+                    const { body } = await api.get('/vocabularies/my');
+
+                    expect(body.data).toMatch({
+                        title: 'Мой словарь',
+                        learnerId: user.id
+                    });
+
+                    expect(body.data.lexemes.length).toBe(lexemes.length);
+                });
+            });
+
+            describe('POST /my', () => {
+                it('should add a lexeme to my vocabulary', async () => {
+                    const data = {
+                        value: 'cat',
+                        definition: 'a furry animal'
+                    };
+
+                    const { body } = await api.post('/vocabularies/my').send(data);
+
+                    expect(body.data).toMatch({
+                        ...data,
+                        status: 0
+                    });
+
+                    expect(body.data).toIncludeKeys(['reviewDate']);
+                });
+            });
+
+            describe('PUT /my/:lexemeId', () => {
+                it('should update a lexeme', async () => {
+                    const data = {
+                        value: 'cat',
+                        definition: 'a furry animal'
+                    };
+
+                    const { body } = await api.post('/vocabularies/my').send(data);
+
+                    expect(body.data).toMatch({
+                        ...data,
+                        status: 0
+                    });
+
+                    expect(body.data).toIncludeKeys(['reviewDate']);
+                });
+            });
+
+            describe('DELETE /my/:lexemeId', () => {
+                it('should delete a lexeme from my vocabulary', async () => {
+                    const data = {
+                        value: 'cat',
+                        definition: 'a furry animal',
+                        createdBy: user.id
+                    };
+
+                    const lexeme = await Lexeme.create(data);
+
+                    await LexemeRecord.create({
+                        lexemeId: lexeme.id,
+                        learnerId: data.createdBy
+                    });
+
+                    const { body } = await api.delete(`/vocabularies/my/${lexeme.id}`);
+
+                    expect(body.data).toMatch({
+                        id: lexeme.id
                     });
                 });
             });
@@ -74,13 +172,15 @@ export default (api, { models: { Lexeme, Vocabulary }, user }) =>
 
                 it('should return lexemes with batching', async () => {
                     await Lexeme.deleteMany({});
+
                     const lexemes = Array.from({ length: 21 }, (_, i) => ({
                         value: `cat${i}`,
                         approved: true
                     }));
+
                     await Lexeme.create(lexemes);
 
-                    const { body } = await api.get('/vocabularies/search?q=cat&b=1&c=10');
+                    const { body } = await api.get('/vocabularies/search?q=cat&p=1&c=10');
                     const { body: body2 } = await api.get('/vocabularies/search?q=cat&p=2&c=10');
                     const { body: body3 } = await api.get('/vocabularies/search?q=cat&p=3&c=10');
 
@@ -161,24 +261,80 @@ export default (api, { models: { Lexeme, Vocabulary }, user }) =>
             });
 
             describe('PUT /:vocabularyId/:lexemeId', () => {
+                const initialData = {
+                    value: 'cat',
+                    definition: 'a furry animal',
+                    createdBy: user.id
+                };
+
+                const updateData = {
+                    definition: 'a furry animal with four legs and a tail'
+                };
+
                 it('should update the lexeme if it was created by the learner', async () => {
                     const lexeme = await Lexeme.create({
-                        value: 'cat',
-                        definition: 'a furry animal',
-                        createdBy: user.id
+                        ...initialData
                     });
                     const vocabulary = await Vocabulary.create({
                         lexemeIds: [lexeme.id],
                         learnerId: user.id
                     });
 
-                    const data = {
-                        definition: 'a furry animal with four legs and a tail'
-                    };
+                    const { body } = await api.put(`/vocabularies/${vocabulary.id}/${lexeme.id}`).send(updateData);
 
-                    const { body } = await api.put(`/vocabularies/${vocabulary.id}/${lexeme.id}`).send(data);
+                    expect(body.data).toMatch(updateData);
+                });
 
-                    expect(body.data).toMatch(data);
+                it('should not update the lexeme if it was created by another learner', async () => {
+                    const lexeme = await Lexeme.create({
+                        ...initialData,
+                        createdBy: createId()
+                    });
+                    const vocabulary = await Vocabulary.create({
+                        lexemeIds: [lexeme.id],
+                        learnerId: user.id
+                    });
+
+                    const { body, status } = await api.put(`/vocabularies/${vocabulary.id}/${lexeme.id}`).send(updateData);
+
+                    expect(body).toMatch({ ok: false });
+                    expect(status).toBe(403);
+                });
+
+                it('should update the lexeme if it has not yet been approved', async () => {
+                    const lexeme = await Lexeme.create({
+                        ...initialData,
+                        approved: false
+                    });
+                    const vocabulary = await Vocabulary.create({
+                        lexemeIds: [lexeme.id],
+                        learnerId: user.id
+                    });
+
+                    const { body } = await api.put(`/vocabularies/${vocabulary.id}/${lexeme.id}`).send(updateData);
+
+                    expect(body.data).toMatch(updateData);
+                });
+
+                it('should not update the lexeme if it has been approved', async () => {
+                    const lexeme = await Lexeme.create({
+                        ...initialData,
+                        approved: true
+                    });
+                    const vocabulary = await Vocabulary.create({
+                        lexemeIds: [lexeme.id],
+                        learnerId: user.id
+                    });
+
+                    const { body } = await api.put(`/vocabularies/${vocabulary.id}/${lexeme.id}`).send(updateData);
+
+                    expect(body.data).toNotMatch(updateData);
+
+                    expect(body.data).toMatch({
+                        record: {
+                            data: updateData
+                        }
+                    });
                 });
             });
 

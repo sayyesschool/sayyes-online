@@ -4,38 +4,47 @@ import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { useUser } from 'shared/hooks/user';
-import { useVocabularies } from 'shared/hooks/vocabularies';
-import { PopoverButton } from 'shared/ui-components';
+import { useVocabularies, useVocabulary } from 'shared/hooks/vocabularies';
+import { Flex, PopoverButton } from 'shared/ui-components';
 
 import VocabulariesGrid from 'lms/components/vocabulary/vocabularies-grid';
+import VocabularyCard from 'lms/components/vocabulary/vocabulary-card';
 import VocabularyForm from 'lms/components/vocabulary/vocabulary-form';
 import VocabularySimpleForm from 'lms/components/vocabulary/vocabulary-simple-form';
 
 export default function VocabulariesPage() {
     const [user] = useUser();
+    const [userVocabulary] = useVocabulary('my');
     const [vocabularies, actions] = useVocabularies();
+
     const [currentVocabulary, setCurrentVocabulary] = useState(null);
+
     const numberOfVocabularies = vocabularies?.length;
 
     const handleAddVocabulary = useCallback(data => {
         return actions.createVocabulary({ learnerId: user.id, ...data });
     }, [actions, user.id]);
 
+    const handleUpdateVocabulary = useCallback((vocabularyId, data) => {
+        return actions.updateVocabulary(vocabularyId, data)
+            .then(() => setCurrentVocabulary(null));
+    }, [actions]);
+
     const handleDeleteVocabulary = useCallback(vocabularyId => {
         return actions.deleteVocabulary(vocabularyId);
     }, [actions]);
 
-    const handleUpdateVocabulary = useCallback((vocabularyId, data) => {
-        return actions
-            .updateVocabulary(vocabularyId, data)
-            .then(() => onCloseFormModal());
-    }, [actions]);
+    const handleEditVocabulary = useCallback(vocabulary => {
+        setCurrentVocabulary(vocabulary);
+    }, []);
 
-    const onCloseFormModal = () => {
-        return setCurrentVocabulary(null);
-    };
+    const handleCloseFormDialog = useCallback(() => {
+        setCurrentVocabulary(null);
+    }, []);
 
     if (!vocabularies) return <LoadingIndicator />;
+
+    console.log({ userVocabulary });
 
     return (
         <Page className="VocabulariesPage" layout="narrow">
@@ -56,18 +65,27 @@ export default function VocabulariesPage() {
             />
 
             <Page.Content>
-                <VocabulariesGrid
-                    vocabularies={vocabularies}
-                    setCurrentVocabulary={setCurrentVocabulary}
-                    onDeleteVocabulary={handleDeleteVocabulary}
-                />
+                <Flex gap="medium" column>
+                    {userVocabulary &&
+                        <VocabularyCard
+                            vocabulary={userVocabulary}
+                            readOnly
+                        />
+                    }
+
+                    <VocabulariesGrid
+                        vocabularies={vocabularies}
+                        onEditVocabulary={handleEditVocabulary}
+                        onDeleteVocabulary={handleDeleteVocabulary}
+                    />
+                </Flex>
             </Page.Content>
 
             {currentVocabulary && (
                 <FormDialog
                     title="Редактирование"
                     open={!!currentVocabulary}
-                    onClose={onCloseFormModal}
+                    onClose={handleCloseFormDialog}
                 >
                     <VocabularyForm
                         id="vocabulary-edit-form"

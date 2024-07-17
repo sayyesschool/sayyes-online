@@ -460,6 +460,14 @@ export const lexemes = [
     }
 ];
 
+export const builtInVocabulary = {
+    title: 'Животные'
+};
+
+export const customVocabulary = {
+    title: 'Созданный словарь'
+};
+
 export const rooms = [
     { name: 'A', active: true },
     { name: 'B', active: true }

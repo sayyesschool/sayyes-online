@@ -46,11 +46,7 @@ export function shuffleArr(arr) {
 function filterLexemes(lexemes) {
     if (!lexemes) return [];
 
-    return lexemes.filter(lexeme => {
-        const status = lexeme.record.status;
-
-        return status < 5;
-    });
+    return lexemes.filter(lexeme => lexeme.status < 5);
 }
 
 export function shuffleAndFilter(lexemes) {

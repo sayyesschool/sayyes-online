@@ -56,18 +56,24 @@ await Comment.create({
 
 const lexemes = await Lexeme.create(data.lexemes);
 
-lexemes.forEach(async lexeme => {
-    await LexemeRecord.create({
+for await (const lexeme of lexemes) {
+    LexemeRecord.create({
         lexemeId: lexeme.id,
         learnerId: learner.id
     });
+}
+
+await Vocabulary.create({
+    ...data.builtInVocabulary,
+    published: true,
+    lexemeIds: lexemes.slice(0, 2).map(l => l.id)
 });
 
 await Vocabulary.create({
-    title: 'Мой словарь',
+    ...data.customVocabulary,
+    published: true,
     learnerId: learner.id,
-    teacherId: teacher.id,
-    lexemeIds: lexemes.map(l => l.id)
+    lexemeIds: lexemes.slice(3, 10).map(l => l.id)
 });
 
 console.log('DB seeded');

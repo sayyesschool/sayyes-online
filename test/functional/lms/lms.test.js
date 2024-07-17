@@ -20,11 +20,13 @@ const user = new User({ firstname: 'User' });
 global.$context.user = user;
 
 app.use(json());
+
 app.use((req, res, next) => {
     req.user = user;
     global.$context.user = user;
     next();
 });
+
 app.use(lms(global.$context));
 
 describe('LMS API', () => {

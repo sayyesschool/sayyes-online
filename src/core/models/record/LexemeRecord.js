@@ -19,4 +19,11 @@ export const LexemeRecord = new Schema({
     }
 });
 
+LexemeRecord.virtual('lexeme', {
+    ref: 'Lexeme',
+    localField: 'lexemeId',
+    foreignField: '_id',
+    justOne: true
+});
+
 export default LexemeRecord;

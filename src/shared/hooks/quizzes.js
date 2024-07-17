@@ -25,9 +25,9 @@ export function useQuiz(_items, getData, updateItemStatus) {
                 return [
                     ...prevStatistic,
                     {
-                        id: item.id,
-                        value: item.value,
-                        oldStatus: item.record.status,
+                        id: currentItem.id,
+                        value: currentItem.value,
+                        oldStatus: currentItem.status,
                         newStatus
                     }
                 ];
@@ -45,20 +45,14 @@ export function useQuiz(_items, getData, updateItemStatus) {
                             ? item
                             : {
                                 ...item,
-                                record: {
-                                    ...item.record,
-                                    status: newStatus
-                                }
+                                status: newStatus
                             }
                     )
                     : subArray.id !== itemId
                         ? subArray
                         : {
                             ...subArray,
-                            record: {
-                                ...subArray.record,
-                                status: newStatus
-                            }
+                            status: newStatus
                         }
             )
         );
@@ -74,7 +68,8 @@ export function useQuiz(_items, getData, updateItemStatus) {
 
             if (skipSetCount) return;
 
-            if (count < flatItems?.length) setCount(prevCount => prevCount + 1);
+            if (count < flatItems?.length)
+                setCount(prevCount => prevCount + 1);
         },
         [count, flatItems?.length, updateItemStatus, updateList, updateStatistics]
     );
@@ -87,6 +82,7 @@ export function useQuiz(_items, getData, updateItemStatus) {
 
     const continueQuiz = useCallback(() => {
         if (!items?.length) return;
+
         setItems(list => getData(list));
         setCount(0);
         setStatistic([]);

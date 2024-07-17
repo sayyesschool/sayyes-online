@@ -113,18 +113,24 @@ export const vocabulariesReducer = createReducer(null, {
 
     [addLexeme]: (state, action) =>
         state &&
-        state.map(vocabulary => {
-            return vocabulary.id === action.data.vocabularyId
-                ? { ...vocabulary, numberOfLexemes: ++vocabulary.numberOfLexemes }
-                : vocabulary;
-        }),
+        state.map(vocabulary =>
+            vocabulary.id === action.data.vocabularyId ?
+                {
+                    ...vocabulary,
+                    numberOfLexemes: vocabulary.numberOfLexemes + 1
+                } :
+                vocabulary
+        ),
 
     [deleteLexeme]: (state, action) =>
         state &&
         state.map(vocabulary =>
-            vocabulary.id === action.data.vocabularyId
-                ? { ...vocabulary, numberOfLexemes: --vocabulary.numberOfLexemes }
-                : vocabulary
+            vocabulary.id === action.data.vocabularyId ?
+                {
+                    ...vocabulary,
+                    numberOfLexemes: vocabulary.numberOfLexemes - 1
+                } :
+                vocabulary
         )
 });
 
@@ -136,34 +142,32 @@ export const vocabularyReducer = createReducer(null, {
     [addLexeme]: (state, action) => ({
         ...state,
         lexemes: [...state.lexemes, action.data],
-        numberOfLexemes: ++state.numberOfLexemes
+        numberOfLexemes: state.numberOfLexemes + 1
     }),
 
     [updateLexeme]: (state, action) => ({
         ...state,
-        lexemes: state.lexemes.map(lexeme => {
-            if (lexeme.id === action.data.lexemeId) {
-                return lexeme.approved
-                    ? { ...lexeme, record: action.data.record }
-                    : action.data.lexeme;
+        lexemes: state.lexemes.map(lexeme =>
+            lexeme.id !== action.data.id ? lexeme : {
+                ...lexeme,
+                ...action.data
             }
-
-            return lexeme;
-        })
+        )
     }),
 
     [deleteLexeme]: (state, action) => ({
         ...state,
         lexemes: state.lexemes.filter(lexeme => lexeme.id !== action.data.id),
-        numberOfLexemes: --state.numberOfLexemes
+        numberOfLexemes: state.numberOfLexemes - 1
     }),
 
     [updateLexemeStatus]: (state, action) => state && ({
         ...state,
         lexemes: state.lexemes.map(lexeme =>
-            lexeme.id === action.data.lexemeId
-                ? { ...lexeme, record: action.data.record }
-                : lexeme
+            lexeme.id !== action.data.id ? lexeme : {
+                ...lexeme,
+                ...action.data
+            }
         )
     })
 });
