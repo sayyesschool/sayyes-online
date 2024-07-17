@@ -31,7 +31,10 @@ export default ({
 
     async getMany(req, res) {
         const vocabularies = await Vocabulary.find({
-            learnerId: req.user.id
+            $or: [
+                { learnerId: req.user.id },
+                { learnerId: { $exists: false } }
+            ]
         });
 
         res.json({
@@ -59,6 +62,7 @@ export default ({
                 title: 'Мой словарь',
                 lexemes,
                 lexemeIds: lexemes.map(lexeme => lexeme.id),
+                numberOfLexemes: lexemes.length,
                 learnerId: req.user.id
             }
         });
@@ -121,18 +125,12 @@ export default ({
     },
 
     async addLexeme(req, res) {
-        let lexeme = await (req.body.lexemeId
-            ? Lexeme.findById(req.body.lexemeId).populate({
-                path: 'record',
-                transform: transformRecord
-            })
-            : Lexeme.findOne({
+        let lexeme = await (req.body.lexemeId ?
+            Lexeme.findById(req.body.lexemeId) :
+            Lexeme.findOne({
                 value: req.body.value,
                 translation: req.body.translation,
                 approved: true
-            }).populate({
-                path: 'record',
-                transform: transformRecord
             }));
 
         if (!lexeme) {
@@ -154,7 +152,7 @@ export default ({
         data.status = record.status;
         data.reviewDate = record.reviewDate;
 
-        if (req.params.id) {
+        if (req.params.vocabularyId) {
             await req.vocabulary.addLexeme(lexeme.id);
             data.vocabularyId = req.vocabulary.id;
         }
@@ -166,7 +164,13 @@ export default ({
     },
 
     async updateLexeme(req, res) {
-        let record;
+        const lexeme = await Lexeme.findById(req.params.lexemeId, 'approved');
+
+        if (!lexeme) throw {
+            code: 404,
+            message: 'Не найдено'
+        };
+
         const updateData = {
             image: req.body.image,
             definition: req.body.definition,
@@ -174,20 +178,21 @@ export default ({
             examples: req.body.examples
         };
 
-        const lexeme = await Lexeme.findOneAndUpdate(
-            {
-                _id: req.params.lexemeId,
-                approved: false
-            },
-            updateData,
-            { new: true }
-        ).populate({
-            path: 'record',
-            transform: transformRecord
-        });
-
-        if (!lexeme) {
-            record = await LexemeRecord.findOneAndUpdate(
+        const updatedLexeme = !lexeme.approved ?
+            await Lexeme.findOneAndUpdate(
+                {
+                    _id: req.params.lexemeId,
+                    createdBy: req.user.id
+                },
+                updateData,
+                { new: true }
+            ).populate({
+                path: 'record',
+                match: { learnerId: req.user.id },
+                transform: transformRecord
+            })
+            :
+            await LexemeRecord.findOneAndUpdate(
                 {
                     lexemeId: req.params.lexemeId,
                     learnerId: req.user.id
@@ -199,15 +204,22 @@ export default ({
                     new: true,
                     upsert: true
                 }
-            );
-        }
+            ).populate({
+                path: 'lexeme'
+            }).then(record => {
+                const lexeme = record.lexeme;
 
-        if (!lexeme && !record) throw {
-            code: 404,
-            message: 'Не найдено'
+                lexeme.record = transformRecord(record);
+
+                return lexeme;
+            });
+
+        if (!updatedLexeme) throw {
+            code: 403,
+            message: 'Данне нельзя обновить'
         };
 
-        const data = lexeme.toJSON();
+        const data = updatedLexeme.toJSON();
 
         if (req.params.vocabulary) {
             data.vocabularyId = req.vocabulary.id;
@@ -215,11 +227,7 @@ export default ({
 
         res.json({
             ok: true,
-            data: {
-                lexeme,
-                record,
-                lexemeId: req.params.lexemeId
-            }
+            data
         });
     },
 
@@ -236,15 +244,20 @@ export default ({
     },
 
     async deleteLexeme(req, res) {
-        await LexemeRecord.deleteOne({
-            learnerId: req.user.id,
-            lexemeId: req.params.lexemeId
+        const record = await LexemeRecord.findOneAndDelete({
+            lexemeId: req.params.lexemeId,
+            learnerId: req.user.id
         });
+
+        if (!record) throw {
+            code: 404,
+            message: 'Не найдено'
+        };
 
         res.json({
             ok: true,
             data: {
-                id: req.params.lexemeId
+                id: record.lexemeId
             }
         });
     },
