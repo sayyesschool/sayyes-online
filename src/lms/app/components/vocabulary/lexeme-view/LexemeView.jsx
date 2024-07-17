@@ -12,7 +12,7 @@ export default function LexemeView({
     lexeme,
     onStatusUpdate
 }) {
-    const { value, image, definition, translation, examples, record } = lexeme;
+    const { value, image, definition, translation, examples, status, data } = lexeme;
 
     const handleStatusChange = useCallback(status => {
         return onStatusUpdate(lexeme.id, status);
@@ -36,7 +36,7 @@ export default function LexemeView({
                         type="h1"
                         end={
                             <LexemeStatus
-                                level={record?.status}
+                                level={status}
                                 onChange={handleStatusChange}
                             />
                         }
@@ -49,11 +49,11 @@ export default function LexemeView({
                         content={translation}
                     />
 
-                    {record?.data?.translation &&
+                    {data?.translation &&
                         <Text
                             className={styles.translation}
                             type="body-md"
-                            content={`Мои переводы: ${record.data.translation}`}
+                            content={`Мои переводы: ${data.translation}`}
                         />
                     }
 
@@ -65,18 +65,18 @@ export default function LexemeView({
                         />
                     }
 
-                    {record?.data?.definition &&
+                    {data?.definition &&
                         <Text
                             className={styles.definition}
                             type="body-lg"
-                            content={`Моё определение: ${record.data.definition}`}
+                            content={`Моё определение: ${data.definition}`}
                         />
                     }
                 </div>
             </section>
 
-            {record?.data?.examples?.length > 0 &&
-                <LexemeExamples title="Мои примеры:" examples={record.data.examples} />
+            {data?.examples?.length > 0 &&
+                <LexemeExamples title="Мои примеры:" examples={data.examples} />
             }
 
             {examples.length > 0 &&

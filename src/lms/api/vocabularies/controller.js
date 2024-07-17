@@ -77,9 +77,17 @@ export default ({
             }
         });
 
+        const data = vocabulary.toJSON();
+
+        data.lexemes = data.lexemes.map(lexeme => ({
+            ...lexeme,
+            ...lexeme.record,
+            record: undefined
+        }));
+
         res.json({
             ok: true,
-            data: vocabulary
+            data
         });
     },
 
@@ -206,13 +214,10 @@ export default ({
                 }
             ).populate({
                 path: 'lexeme'
-            }).then(record => {
-                const lexeme = record.lexeme;
-
-                lexeme.record = transformRecord(record);
-
-                return lexeme;
-            });
+            }).then(record => ({
+                ...record.lexeme,
+                ...transformRecord(record)
+            }));
 
         if (!updatedLexeme) throw {
             code: 403,
@@ -281,12 +286,10 @@ export default ({
         res.json({
             ok: true,
             data: {
-                lexemeId: req.params.lexemeId,
-                record: {
-                    data: record.data,
-                    status: record.status,
-                    reviewDate: record.reviewDate
-                }
+                id: record.lexemeId,
+                data: record.data,
+                status: record.status,
+                reviewDate: record.reviewDate
             }
         });
     }

@@ -24,7 +24,7 @@ export function useQuiz(_items, getData, updateItemStatus) {
                     {
                         id: currentItem.id,
                         value: currentItem.value,
-                        oldStatus: currentItem.record.status,
+                        oldStatus: currentItem.status,
                         newStatus
                     }
                 ];
@@ -36,15 +36,10 @@ export function useQuiz(_items, getData, updateItemStatus) {
     const updateList = useCallback((itemId, newStatus) => {
         setItems(items =>
             items.map(item =>
-                item.id !== itemId
-                    ? item
-                    : {
-                        ...item,
-                        record: {
-                            ...item.record,
-                            status: newStatus
-                        }
-                    }
+                item.id !== itemId ? item : {
+                    ...item,
+                    status: newStatus
+                }
             )
         );
     }, []);
@@ -57,13 +52,15 @@ export function useQuiz(_items, getData, updateItemStatus) {
                 updateStatistics(newStatus);
             }
 
-            if (count < items?.length) setCount(prevCount => prevCount + 1);
+            if (count < items?.length)
+                setCount(prevCount => prevCount + 1);
         },
         [count, items?.length, updateItemStatus, updateList, updateStatistics]
     );
 
     const continueQuiz = useCallback(() => {
         if (!items?.length) return;
+
         setItems(list => getData(list));
         setCount(0);
         setStatistic([]);
