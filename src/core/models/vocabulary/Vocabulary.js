@@ -1,4 +1,4 @@
-import { Schema, Types } from 'mongoose';
+import { Schema } from 'mongoose';
 
 import Image from '../image';
 
@@ -18,6 +18,7 @@ export const Vocabulary = new Schema({
     title: { type: String },
     description: { type: String },
     image: { type: Image },
+    published: { type: Boolean, default: false },
     courseId: { type: Schema.Types.ObjectId },
     learnerId: { type: Schema.Types.ObjectId },
     teacherId: { type: Schema.Types.ObjectId },
