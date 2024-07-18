@@ -21,19 +21,19 @@ function chunkArray(arr, n) {
     }, []);
 }
 
-export function compareArrays(arr1, arr2) {
-    return arr1.map((obj1, index) => {
-        let obj2 = arr2[index];
-        let statusDiff = obj1.value === obj2.value ? 1 : -1;
+export function compareArrays(array1, array2) {
+    return array1.map((item1, index) => {
+        const item2 = array2[index];
+        const statusDiff = item1.value === item2.value ? 1 : -1;
 
         return {
-            ...obj1,
-            newStatus: obj1.record.status + statusDiff
+            ...item1,
+            newStatus: item1.status + statusDiff
         };
     });
 }
 
-export function shuffleArr(arr) {
+export function shuffleArray(arr) {
     if (!arr) return [];
 
     return Array(arr.length)
@@ -43,7 +43,19 @@ export function shuffleArr(arr) {
         .map(([, i]) => arr[i]);
 }
 
-function filterLexemes(lexemes) {
+export function shuffleLetters(word = '') {
+    if (word.length < 2) return word;
+
+    let shuffled;
+
+    do {
+        shuffled = shuffleArray(word.split('')).join('');
+    } while (shuffled === word);
+
+    return shuffled;
+}
+
+export function filterLexemes(lexemes) {
     if (!lexemes) return [];
 
     return lexemes.filter(lexeme => lexeme.status < 5);
@@ -52,7 +64,7 @@ function filterLexemes(lexemes) {
 export function shuffleAndFilter(lexemes) {
     if (!lexemes) return;
 
-    return shuffleArr(filterLexemes(lexemes));
+    return shuffleArray(filterLexemes(lexemes));
 }
 
 function getCorrectLexemes(lexemes, count) {
@@ -65,7 +77,7 @@ function getIncorrectLexemes(lexemes, count) {
     const correctLexemes = lexemes.slice(-count);
 
     const incorrectLexemes = correctLexemes.map(element => {
-        const shuffledLexemes = shuffleArr(lexemes);
+        const shuffledLexemes = shuffleArray(lexemes);
         const incorrectTranslation = shuffledLexemes.find(
             lexeme => lexeme.id !== element.id
         ).translation;
@@ -90,7 +102,7 @@ export function shuffleTrueFalse(lexemes, incorrectLexemesProportion = 1) {
     const correctLexemes = getCorrectLexemes(filteredLexemes, correctLexemesCount);
     const incorrectLexemes = getIncorrectLexemes(filteredLexemes, incorrectLexemesCount);
 
-    return shuffleArr([...correctLexemes, ...incorrectLexemes]);
+    return shuffleArray([...correctLexemes, ...incorrectLexemes]);
 }
 
 export function shuffleChooseCorrect(lexemes) {
@@ -98,12 +110,12 @@ export function shuffleChooseCorrect(lexemes) {
 
     const filteredLexemes = shuffleAndFilter(lexemes);
 
-    return shuffleArr(
+    return shuffleArray(
         filteredLexemes.map(lexeme => {
             const shuffledTranslations = filteredLexemes.filter(
                 lexemeItem => lexemeItem.translation !== lexeme.translation
             );
-            const translations = shuffleArr(
+            const translations = shuffleArray(
                 [
                     lexeme,
                     shuffledTranslations[0],
@@ -125,4 +137,11 @@ export function shuffleMatch(lexemes) {
     const filteredLexemes = shuffleAndFilter(flatItems);
 
     return chunkArray(filteredLexemes, MATCH_ITEM_COUNT);
+}
+
+export function getStatusDifference(oldStatus, newStatus) {
+    const difference = newStatus - oldStatus;
+    const sign = difference > 0 ? '+' : '';
+
+    return `${sign}${difference}`;
 }

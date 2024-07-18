@@ -1,8 +1,10 @@
 import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 
-import { DragItem, ProgressStatus } from 'shared/ui-components';
+import DragItem from 'shared/components/drag-item';
 import cn from 'shared/utils/classnames';
+
+import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 
 import styles from './Match.module.scss';
 
@@ -17,6 +19,7 @@ export default function Answer({
     onClickAnswer
 }) {
     const ref = useRef(null);
+
     const [{ isDragging }, drag] = useDrag({
         type,
         item: { id, index },
@@ -24,6 +27,7 @@ export default function Answer({
             isDragging: !!monitor.isDragging()
         })
     });
+
     const [{ handlerId }, drop] = useDrop({
         accept: type,
         hover(item, monitor) {
@@ -51,23 +55,28 @@ export default function Answer({
         })
     });
 
-    const className = isDragging ? styles.matchItemDragging : styles.matchItem;
+    const className = cn(styles.item, {
+        [styles.draggingItem]: isDragging,
+        [styles.activeItem]: isActive
+    });
 
     drag(drop(ref));
 
     return (
         <DragItem
             ref={ref}
+            className={className}
             data-handler-id={handlerId}
-            className={cn(className, {
-                [styles.activeMatchItem]: isActive
-            })}
             onClick={onClickAnswer}
         >
             {text}
 
             {Number.isInteger(status) && (
-                <ProgressStatus level={status} placement="right" />
+                <LexemeStatus
+                    level={status}
+                    tooltipPlacement="right"
+                    readOnly
+                />
             )}
         </DragItem>
     );

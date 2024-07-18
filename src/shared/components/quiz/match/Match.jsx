@@ -1,13 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import {
-    compareArrays,
-    sessionCardsCount,
-    shuffleMatch
-} from '@/shared/libs/quiz';
-import { shuffleArr } from '@/shared/libs/quiz';
-import { Button, Stepper } from 'shared/ui-components';
-import cn from 'shared/utils/classnames';
+import { compareArrays, shuffleArray, shuffleMatch } from 'shared/libs/quiz';
+import { Button } from 'shared/ui-components';
 
 import AnswerList from './AnswerList';
 
@@ -22,16 +16,15 @@ const isSameItem = (activeItem, item, type) => activeItem?.id === item.id && act
 
 export const getData = data => shuffleMatch(data);
 
-export default function Match({
-    item,
-    itemIndex,
-    numberOfItems,
-    updateStatuses
-}) {
+export default function Match({ item, updateStatuses }) {
     const [values, setValues] = useState(item);
-    const [translations, setTranslations] = useState(shuffleArr(item));
+    const [translations, setTranslations] = useState(shuffleArray(item));
     const [activeItems, setActiveItems] = useState({ first: null, second: null });
-    const stepsCount = sessionCardsCount(numberOfItems);
+
+    useEffect(() => {
+        setValues(item);
+        setTranslations(shuffleArray(item));
+    }, [item]);
 
     const onMoveAnswer = useCallback(itemsSetter => (dragIndex, hoverIndex) => {
         itemsSetter(prevItems => {
@@ -96,51 +89,25 @@ export default function Match({
         updateStatuses(result);
     }, [translations, updateStatuses, values]);
 
-    useEffect(() => {
-        setValues(item);
-        setTranslations(shuffleArr(item));
-    }, [item]);
-
     return (
         <div className={styles.root}>
             <div className={styles.content}>
-                <div className={styles.values}>
-                    <AnswerList
-                        answers={values}
-                        type={ItemTypes.VALUE}
-                        activeItems={activeItems}
-                        onClickAnswer={onClickAnswer}
-                        onMoveAnswer={onMoveAnswer(setValues)}
-                    />
-                </div>
+                <AnswerList
+                    answers={values}
+                    type={ItemTypes.VALUE}
+                    activeItems={activeItems}
+                    onClickAnswer={onClickAnswer}
+                    onMoveAnswer={onMoveAnswer(setValues)}
+                />
 
-                <div className={styles.translations}>
-                    <AnswerList
-                        answers={translations}
-                        type={ItemTypes.TRANSLATION}
-                        activeItems={activeItems}
-                        onClickAnswer={onClickAnswer}
-                        onMoveAnswer={onMoveAnswer(setTranslations)}
-                    />
-                </div>
+                <AnswerList
+                    answers={translations}
+                    type={ItemTypes.TRANSLATION}
+                    activeItems={activeItems}
+                    onClickAnswer={onClickAnswer}
+                    onMoveAnswer={onMoveAnswer(setTranslations)}
+                />
             </div>
-
-            <Stepper
-                steps={Array.from({ length: stepsCount }).map((_, index) => ({
-                    active: index === itemIndex,
-                    orientation: 'vertical',
-                    indicator: (
-                        <span
-                            className={cn(
-                                styles.indicator,
-                                index === itemIndex && styles.active,
-                                index < itemIndex && styles.prev
-                            )}
-                        />
-                    )
-                }))}
-                size="sm"
-            />
 
             <div className={styles.actions}>
                 <Button

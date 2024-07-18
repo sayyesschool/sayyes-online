@@ -1,13 +1,25 @@
+import cn from 'shared/utils/classnames';
+
 import Answer from './Answer';
 import { ItemTypes } from './Match';
 
 import styles from './Match.module.scss';
 
-export default function AnswerList({ answers, type, activeItems, onMoveAnswer, onClickAnswer }) {
+export default function AnswerList({
+    answers,
+    type,
+    activeItems,
+    onMoveAnswer,
+    onClickAnswer
+}) {
+    const classNames = cn(styles.list,
+        type === ItemTypes.VALUE ? styles.values : styles.translations
+    );
+
     return (
-        <div className={type === ItemTypes.VALUE ? styles.values : styles.translations}>
+        <div className={classNames}>
             {answers.map((answer, index) => {
-                const { id, value, translation, record: { status } } = answer;
+                const { id, value, translation, status } = answer;
                 const isValue = type === ItemTypes.VALUE;
                 const isActive =
                     (activeItems.first?.id === id && activeItems.first?.type === type) ||

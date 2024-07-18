@@ -1,9 +1,29 @@
 import { useCallback } from 'react';
 
-import { IconButton, Menu, ProgressStatus } from 'shared/ui-components';
+import { CircularProgress, Icon, IconButton, Menu, Tooltip } from 'shared/ui-components';
+
+const StatusIcon = {
+    0: 'kid_star',
+    1: 'school',
+    2: 'school',
+    3: 'school',
+    4: 'school',
+    5: 'done'
+};
+
+const StatusColor = {
+    0: 'neutral',
+    1: 'warning',
+    2: 'warning',
+    3: 'warning',
+    4: 'warning',
+    5: 'success'
+};
 
 export default function LexemeStatus({
     level = 0,
+    tooltipPlacement = 'left',
+    readOnly,
     onChange
 }) {
     const handleResetButtonClick = useCallback(() => {
@@ -22,13 +42,27 @@ export default function LexemeStatus({
     const isSetLearningButtonDisabled = level === 2;
     const isSetLearnedButtonDisabled = level === 4;
 
-    return (
+    const value = level * 20;
+    const color = StatusColor[level];
+    const icon = StatusIcon[level];
+
+    const content = (
+        <Tooltip content={`${value}%`} placement={tooltipPlacement}>
+            <CircularProgress
+                value={value}
+                thickness={3}
+                color={color}
+                size="sm"
+                determinate
+            >
+                <Icon name={icon} />
+            </CircularProgress>
+        </Tooltip>
+    );
+
+    return readOnly ? content : (
         <Menu
-            trigger={
-                <IconButton>
-                    <ProgressStatus level={level} />
-                </IconButton>
-            }
+            trigger={<IconButton>{content}</IconButton>}
             items={[
                 {
                     key: 'learning',
@@ -53,6 +87,7 @@ export default function LexemeStatus({
                     onClick: handleResetButtonClick
                 }
             ]}
+            disabled={readOnly}
         />
     );
 }

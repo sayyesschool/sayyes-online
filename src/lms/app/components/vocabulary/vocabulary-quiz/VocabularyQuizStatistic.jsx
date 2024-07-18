@@ -1,21 +1,36 @@
-import { Button } from 'shared/ui-components';
+import { getStatusDifference } from 'shared/libs/quiz';
+import { Button, Chip, List, Surface, Text } from 'shared/ui-components';
+
+import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 
 import styles from './VocabularyQuizStatistic.module.scss';
 
 export default function VocabularyQuizStatistic({ statistic, onContinue, onBack }) {
     return (
-        <div className={styles.root}>
-            <ul className={styles.list}>
+        <Surface className={styles.root} variant="outlined">
+            <List size="lg">
                 {statistic.map(({ id, value, oldStatus, newStatus }) => (
-                    <li
+                    <List.Item
                         key={id}
-                        className={styles.listItem}
-                    >
-                        <span>{value}:</span>
-                        <span>{getStatusDifference(oldStatus, newStatus)}</span>
-                    </li>
+                        decorator={
+                            <LexemeStatus
+                                level={newStatus}
+                                tooltipPlacement="left"
+                                readOnly
+                            />
+                        }
+                        content={value}
+                        end={
+                            <Chip
+                                content={getStatusDifference(oldStatus, newStatus)}
+                                size="sm"
+                                variant="soft"
+                                color={newStatus - oldStatus > 0 ? 'success' : 'danger'}
+                            />
+                        }
+                    />
                 ))}
-            </ul>
+            </List>
 
             <Button
                 content="Продолжить"
@@ -27,13 +42,6 @@ export default function VocabularyQuizStatistic({ statistic, onContinue, onBack 
                 variant="plain"
                 onClick={onBack}
             />
-        </div>
+        </Surface>
     );
-}
-
-function getStatusDifference(oldStatus, newStatus) {
-    const difference = newStatus - oldStatus;
-    const sign = difference > 0 ? '+' : '';
-
-    return `${sign}${difference}`;
 }

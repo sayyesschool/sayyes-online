@@ -1,0 +1,21 @@
+.root {
+  background-color: var(--joy-palette-neutral-100);
+
+  &:hover {
+    background-color: var(--joy-palette-neutral-200);
+  }
+
+  cursor: grab;
+}
+
+.drop {
+
+}
+
+.dragging {
+  cursor: grabbing;
+}
+
+.empty {
+  cursor: default;
+}

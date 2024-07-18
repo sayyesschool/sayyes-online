@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { sessionCardsCount, shuffleChooseCorrect } from '@/shared/libs/quiz';
-import StatusCircles from 'shared/components/status-circles';
-import { Button, Stepper } from 'shared/ui-components';
-import cn from 'shared/utils/classnames';
+import { shuffleChooseCorrect } from 'shared/libs/quiz';
+import { Button, Text } from 'shared/ui-components';
+
+import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 
 import Answer from './Answer';
 
@@ -11,17 +11,17 @@ import styles from './ChooseCorrect.module.scss';
 
 export const getData = data => shuffleChooseCorrect(data);
 
-export default function ChooseCorrect({
-    item,
-    itemIndex,
-    numberOfItems,
-    updateStatus
-}) {
-    const { id, value, translation, translations, record } = item;
-    const [currentAnswerId, setCurrentAnswerId] = useState(null);
+export default function ChooseCorrect({ item, updateStatus }) {
+    const { id, value, translation, translations, status } = item;
+
     const [answers, setAnswers] = useState(translations);
+    const [currentAnswerId, setCurrentAnswerId] = useState(null);
+
     const currentAnswer = answers.find(answer => answer.id === currentAnswerId);
-    const stepsCount = sessionCardsCount(numberOfItems);
+
+    useEffect(() => {
+        setAnswers(translations);
+    }, [translations]);
 
     const moveAnswer = useCallback(sourceId => {
         setAnswers(prevAnswers =>
@@ -38,55 +38,43 @@ export default function ChooseCorrect({
         if (!currentAnswer) return;
 
         const isCorrect = translation === currentAnswer.translation;
-        const newStatus = isCorrect ? record.status + 1 : record.status - 1;
+        const newStatus = isCorrect ? status + 1 : status - 1;
 
         updateStatus(id, newStatus);
         setCurrentAnswerId(null);
-    }, [currentAnswer, id, record.status, translation, updateStatus]);
-
-    useEffect(() => {
-        setAnswers(translations);
-    }, [translations]);
+    }, [currentAnswer, id, status, translation, updateStatus]);
 
     return (
         <div className={styles.root}>
-            <div className={styles.header}>
-                <StatusCircles status={record?.status} />
-            </div>
-
             <div className={styles.content}>
                 {answers.map(answer => (
                     <Answer
-                        key={answer.id} answer={answer}
+                        key={answer.id}
+                        answer={answer}
                         moveAnswer={moveAnswer}
                     />
                 ))}
 
-                <h1 className={styles.value}>{value}</h1>
+                <div className={styles.value}>
+                    <Text
+                        type="h3"
+                        content={value}
+                        end={
+                            <LexemeStatus
+                                level={status}
+                                tooltipPlacement="right"
+                                readOnly
+                            />
+                        }
+                    />
 
-                <Answer
-                    answer={currentAnswer}
-                    moveAnswer={moveAnswer}
-                    isDropZone={true}
-                />
+                    <Answer
+                        answer={currentAnswer}
+                        moveAnswer={moveAnswer}
+                        isDropZone
+                    />
+                </div>
             </div>
-
-            <Stepper
-                steps={Array.from({ length: stepsCount }).map((_, index) => ({
-                    active: index === itemIndex,
-                    orientation: 'vertical',
-                    indicator: (
-                        <span
-                            className={cn(
-                                styles.indicator,
-                                index === itemIndex && styles.active,
-                                index < itemIndex && styles.prev
-                            )}
-                        />
-                    )
-                }))}
-                size="sm"
-            />
 
             <div className={styles.actions}>
                 <Button

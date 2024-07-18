@@ -69,6 +69,7 @@ export default function VocabulariesPage() {
                     {userVocabulary &&
                         <VocabularyCard
                             vocabulary={userVocabulary}
+                            orientation="horizontal"
                             readOnly
                         />
                     }

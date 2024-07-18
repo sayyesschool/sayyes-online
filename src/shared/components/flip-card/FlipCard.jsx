@@ -1,4 +1,4 @@
-import { Card } from 'shared/ui-components';
+import { Box, Card, Surface } from 'shared/ui-components';
 import classnames from 'shared/utils/classnames';
 
 import styles from './FlipCard.module.scss';
@@ -9,9 +9,7 @@ TODO: переписать без использования joy, разрули
 export default function FlipCard({
     front,
     back,
-    width = '250px',
-    height = '250px',
-    isCardFlip1,
+    flipped,
     onFlip,
 
     children,
@@ -25,26 +23,33 @@ export default function FlipCard({
         onFlip?.();
     };
 
-    const classNames = classnames(styles.card, {
-        [styles.active]: isCardFlip1
+    const classNames = classnames(styles.root, {
+        [styles.flipped]: flipped
     });
 
     return (
-        <div className={styles.root} onClick={onClick}>
-            <Card
-                className={classNames} sx={{ width, height }}
-                {...props}
-            >
-                <div className={styles.front}>
+        <div
+            className={classNames}
+            onClick={onClick}
+            {...props}
+        >
+            <div className={styles.card}>
+                <Box
+                    className={styles.front}
+                    bgcolor="neutral.100"
+                >
                     {front}
-                </div>
+                </Box>
 
-                <div className={styles.back}>
+                <Box
+                    className={styles.back}
+                    bgcolor="primary.100"
+                >
                     {back}
-                </div>
+                </Box>
 
                 {children}
-            </Card>
+            </div>
         </div>
     );
 }

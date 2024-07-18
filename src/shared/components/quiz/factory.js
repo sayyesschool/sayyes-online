@@ -1,13 +1,13 @@
 import ChooseCorrect, { getData as getChooseCorrectData } from './choose-correct';
-import FlipCards, { getData as getFlipCardsData } from './flip-cards';
+import FlipCard, { getData as getFlipCardData } from './flip-card';
 import Match, { getData as getMatchData } from './match';
 import Scrabble, { getData as getScrabbleData } from './scrabble';
 import TrueFalse, { getData as getTrueFalseData } from './true-false';
 
 const components = {
-    'flip-cards': {
-        Component: FlipCards,
-        getData: getFlipCardsData
+    'flip-card': {
+        Component: FlipCard,
+        getData: getFlipCardData
     },
     'true-false': {
         Component: TrueFalse,

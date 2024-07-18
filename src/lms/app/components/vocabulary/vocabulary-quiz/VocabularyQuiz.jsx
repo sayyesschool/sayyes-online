@@ -6,6 +6,7 @@ import { useQuiz } from 'shared/hooks/quizzes';
 import { useVocabulary } from 'shared/hooks/vocabularies';
 
 import VocabularyQuizEmptyState from './VocabularyQuizEmptyState';
+import VocabularyQuizItem from './VocabularyQuizItem';
 import VocabularyQuizStatistic from './VocabularyQuizStatistic';
 
 import styles from './VocabularyQuiz.module.scss';
@@ -15,7 +16,7 @@ export default function VocabularyQuiz({ match }) {
 
     const [vocabulary, actions] = useVocabulary(match.params.vocabulary);
 
-    const { Component: VocabularyQuizItem, getData } = getComponent(match.params.quiz);
+    const { Component, getData } = getComponent(match.params.quiz);
 
     const {
         numberOfItems,
@@ -32,7 +33,11 @@ export default function VocabularyQuiz({ match }) {
 
     if (!vocabulary) return <LoadingIndicator />;
 
-    if (!VocabularyQuizItem) throw new Error('No component for quiz');
+    if (!Component) throw new Error('No component for quiz');
+
+    if (!currentItem) return (
+        <VocabularyQuizEmptyState onAction={handleBack} />
+    );
 
     return (
         <div className={styles.root}>
@@ -42,16 +47,21 @@ export default function VocabularyQuiz({ match }) {
                     onContinue={continueQuiz}
                     onBack={handleBack}
                 /> :
-                (currentItem ?
-                    <VocabularyQuizItem
+                <VocabularyQuizItem
+                    item={currentItem}
+                    itemIndex={currentItemIndex}
+                    numberOfItems={numberOfItems}
+                    updateStatus={updateStatus}
+                    updateStatuses={updateStatuses}
+                >
+                    <Component
                         item={currentItem}
                         itemIndex={currentItemIndex}
                         numberOfItems={numberOfItems}
                         updateStatus={updateStatus}
                         updateStatuses={updateStatuses}
-                    /> :
-                    <VocabularyQuizEmptyState onAction={handleBack} />
-                )
+                    />
+                </VocabularyQuizItem>
             }
         </div>
     );

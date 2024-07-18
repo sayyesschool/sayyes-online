@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { sessionCardsCount, shuffleAndFilter, shuffleArr } from '@/shared/libs/quiz';
-import StatusCircles from 'shared/components/status-circles';
-import { Button, Stepper } from 'shared/ui-components';
+import { shuffleAndFilter, shuffleLetters } from 'shared/libs/quiz';
+import { Button, Text } from 'shared/ui-components';
 import cn from 'shared/utils/classnames';
+
+import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 
 import styles from './Scrabble.module.scss';
 
@@ -11,58 +12,40 @@ export const getData = data => shuffleAndFilter(data);
 
 const displayChar = char => (char === ' ' ? '_' : char);
 
-const getShuffleLetters = word => {
-    if (word.length < 2) return word;
+export default function Scrabble({ item, updateStatus }) {
+    const { id, value, translation, status } = item;
 
-    let shuffled;
-
-    do {
-        shuffled = shuffleArr(word.split('')).join('');
-    } while (shuffled === word);
-
-    return shuffled;
-};
-
-export default function Scrabble({
-    item,
-    itemIndex,
-    numberOfItems,
-    updateStatus
-}) {
-    const { id, value, translation, record } = item;
-    const [shuffledWord, setShuffledWord] = useState(getShuffleLetters(value));
+    const [shuffledWord, setShuffledWord] = useState(shuffleLetters(value));
     const [userInput, setUserInput] = useState(Array(value.length).fill(null));
     const [availableChars, setAvailableChars] = useState(
         shuffledWord.split('').map((char, index) => ({ char, id: `${char}-${index}`, disabled: false }))
     );
     const isNextDisabled = availableChars.some(char => !char.disabled);
-    const stepsCount = sessionCardsCount(numberOfItems);
 
-    const resetGame = useCallback(() => {
-        const shuffled = getShuffleLetters(value);
+    const reset = useCallback(() => {
+        const shuffled = shuffleLetters(value);
         setShuffledWord(shuffled);
         setUserInput(Array(value.length).fill(null));
 
         setAvailableChars(
-            shuffled
-                .split('')
-                .map((char, index) => ({ char, id: `${char}-${index}`, disabled: false }))
+            shuffled.split('').map((char, index) => ({
+                char,
+                id: `${char}-${index}`,
+                disabled: false
+            }))
         );
     }, [value]);
 
     const next = useCallback(() => {
-        const oldStatus = record?.status;
         const newStatus =
           userInput.map(char => char?.char).join('') === value
-              ? oldStatus + 1
-              : oldStatus - 1;
+              ? status + 1
+              : status - 1;
 
         updateStatus(id, newStatus);
-    }, [id, record?.status, updateStatus, userInput, value]);
+    }, [id, status, updateStatus, userInput, value]);
 
-    const handleKeyPress = useCallback(event => {
-        const { key } = event;
-
+    const handleKeyPress = useCallback(({ key }) => {
         if (key === 'Backspace') {
             setUserInput(prev => {
                 const lastCharIndex = prev.findLastIndex(char => char !== null);
@@ -105,6 +88,18 @@ export default function Scrabble({
         }
     }, [availableChars, userInput]);
 
+    useEffect(() => {
+        window.addEventListener('keydown', handleKeyPress);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyPress);
+        };
+    }, [handleKeyPress]);
+
+    useEffect(() => {
+        reset();
+    }, [value, reset]);
+
     const handleClickChar = useCallback((charObj, index) => {
         setUserInput(prev => {
             const newUserInput = [...prev];
@@ -143,81 +138,69 @@ export default function Scrabble({
         }
     }, [availableChars, userInput]);
 
-    useEffect(() => {
-        window.addEventListener('keydown', handleKeyPress);
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyPress);
-        };
-    }, [handleKeyPress]);
-
-    useEffect(() => {
-        resetGame();
-    }, [value, resetGame]);
-
     return (
         <div className={styles.root}>
-            <div className={styles.header}>
-                <StatusCircles status={record?.status} />
-            </div>
-
-            <h1 className={styles.value}>{translation}</h1>
-
             <div className={styles.content}>
-                <div className={styles.availableChars}>
-                    {availableChars.map(charObj => {
-                        const onClick = () => handleClickAvailable(charObj);
-
-                        return (
-                            <button
-                                key={charObj.id}
-                                disabled={charObj.disabled}
-                                className={styles.availableChar}
-                                onClick={onClick}
-                            >
-                                {displayChar(charObj.char)}
-                            </button>
-                        );
-                    })}
-                </div>
+                <Text
+                    type="h2"
+                    content={translation}
+                    end={
+                        <LexemeStatus
+                            level={status}
+                            tooltipPlacement="right"
+                            readOnly
+                        />
+                    }
+                />
 
                 <div className={styles.userInputChars}>
                     {userInput.map((charObj, index) => {
                         const onClick = () => charObj && handleClickChar(charObj, index);
 
                         return (
-                            <button
+                            <Button
                                 key={index}
-                                className={cn(styles.userInputChar, { [styles.active]: charObj })}
+                                className={cn(styles.userInputChar, {
+                                    [styles.active]: charObj
+                                })}
+                                color="neutral"
+                                size="lg"
+                                variant="outlined"
                                 onClick={onClick}
                             >
                                 {charObj ? displayChar(charObj.char) : ''}
-                            </button>
+                            </Button>
                         );
                     })}
                 </div>
 
-                <div className={styles.resetGame} onClick={resetGame}>
-                    сбросить
-                </div>
-            </div>;
+                <div className={styles.availableChars}>
+                    {availableChars.map(charObj => {
+                        const onClick = () => handleClickAvailable(charObj);
 
-            <Stepper
-                steps={Array.from({ length: stepsCount }).map((_, index) => ({
-                    active: index === itemIndex,
-                    orientation: 'vertical',
-                    indicator: (
-                        <span
-                            className={cn(
-                                styles.indicator,
-                                index === itemIndex && styles.active,
-                                index < itemIndex && styles.prev
-                            )}
-                        />
-                    )
-                }))}
-                size="sm"
-            />
+                        return (
+                            <Button
+                                key={charObj.id}
+                                className={styles.availableChar}
+                                color="neutral"
+                                variant="soft"
+                                disabled={charObj.disabled}
+                                onClick={onClick}
+                            >
+                                {displayChar(charObj.char)}
+                            </Button>
+                        );
+                    })}
+                </div>
+
+                <Button
+                    content="Сбросить"
+                    color="danger"
+                    size="small"
+                    variant="plain"
+                    onClick={reset}
+                />
+            </div>
 
             <div className={styles.actions}>
                 <Button

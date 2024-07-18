@@ -81,6 +81,7 @@ export default ({
 
         data.lexemes = data.lexemes.map(lexeme => ({
             ...lexeme,
+            status: 0,
             ...lexeme.record,
             record: undefined
         }));

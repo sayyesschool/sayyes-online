@@ -1,37 +1,30 @@
 import { useCallback } from 'react';
 
-import { sessionCardsCount, shuffleTrueFalse } from '@/shared/libs/quiz';
-import StatusCircles from 'shared/components/status-circles';
-import { Button, Stepper } from 'shared/ui-components';
-import cn from 'shared/utils/classnames';
+import { shuffleTrueFalse } from 'shared/libs/quiz';
+import { Button, Text } from 'shared/ui-components';
+
+import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 
 import styles from './TrueFalse.module.scss';
 
 export const getData = data => shuffleTrueFalse(data);
 
-export default function TrueFalse({
-    item,
-    itemIndex,
-    numberOfItems,
-    updateStatus
-}) {
-    const stepsCount = sessionCardsCount(numberOfItems);
-    const { id, value, translation, record, incorrectTranslation } = item;
+export default function TrueFalse({ item, updateStatus }) {
+    const { id, value, translation, incorrectTranslation, status } = item;
 
-    // TODO: может стоит написать её как-то более лаконично с тернарником? С другой стороны можно оставить так как есть, так вроде более понятнее
     const handleAnswer = useCallback(
         isTrue => {
             let newStatus;
 
             if (isTrue) {
-                newStatus = incorrectTranslation ? record?.status - 1 : record?.status + 1;
+                newStatus = incorrectTranslation ? status - 1 : status + 1;
             } else {
-                newStatus = incorrectTranslation ? -1 : record?.status - 1;
+                newStatus = incorrectTranslation ? -1 : status - 1;
             }
 
             updateStatus(id, newStatus);
         },
-        [id, record?.status, incorrectTranslation, updateStatus]
+        [id, status, incorrectTranslation, updateStatus]
     );
 
     const handleTrueClick = useCallback(() => {
@@ -44,39 +37,32 @@ export default function TrueFalse({
 
     return (
         <div className={styles.root}>
-            <div className={styles.header}>
-                <StatusCircles status={record?.status} />
-            </div>
-
-            <h1 className={styles.value}>{value}</h1>
-
-            <h2 className={styles.translation}>
-                {incorrectTranslation ?? translation}
-            </h2>
-
-            <Stepper
-                steps={Array.from({ length: stepsCount }).map((_, index) => ({
-                    active: index === itemIndex,
-                    orientation: 'vertical',
-                    indicator: (
-                        <span
-                            className={cn(
-                                styles.indicator,
-                                index === itemIndex && styles.active,
-                                index < itemIndex && styles.prev
-                            )}
+            <div className={styles.content}>
+                <Text
+                    type="h3"
+                    content={value}
+                    end={
+                        <LexemeStatus
+                            level={status}
+                            tooltipPlacement="right"
+                            readOnly
                         />
-                    )
-                }))}
-                size="sm"
-            />
+                    }
+                />
+
+                <Text
+                    type="title-lg"
+                    content={incorrectTranslation ?? translation}
+                    color="neutral"
+                />
+            </div>
 
             <div className={styles.actions}>
                 <Button
                     className={styles.button}
                     content="FALSE"
                     color="danger"
-                    variant="soft"
+                    variant="solid"
                     onClick={handleFalseClick}
                 />
 
@@ -84,7 +70,7 @@ export default function TrueFalse({
                     className={styles.button}
                     content="TRUE"
                     color="success"
-                    variant="soft"
+                    variant="solid"
                     onClick={handleTrueClick}
                 />
             </div>

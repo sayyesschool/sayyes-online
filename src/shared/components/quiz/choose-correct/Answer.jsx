@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 
-import { DragItem } from 'shared/ui-components';
+import DragItem from 'shared/components/drag-item';
 
 import styles from './ChooseCorrect.module.scss';
 
@@ -17,6 +17,7 @@ export default function Answer({ answer, moveAnswer, isDropZone }) {
             isDragging: !!monitor.isDragging()
         })
     });
+
     const [{ isOver, canDrop }, drop] = useDrop({
         accept: ItemTypes.ANSWER,
         drop: item => moveAnswer(item.id),
@@ -31,22 +32,23 @@ export default function Answer({ answer, moveAnswer, isDropZone }) {
             canDrop: !!monitor.canDrop()
         })
     });
-    const isEmpty = !answer || (answer?.isHidden && !isDropZone);
-    const className = isDropZone ? styles.chooseItemDrop : styles.chooseItem;
 
     const onDrop = useCallback(
         () => moveAnswer(answer?.id),
         [answer?.id, moveAnswer]
     );
 
+    const isEmpty = !answer || (answer?.isHidden && !isDropZone);
+    const className = isDropZone ? styles.chooseItemDrop : styles.chooseItem;
+
     return (
         <DragItem
             ref={isEmpty ? drop : node => drag(drop(node))}
+            className={className}
+            canDrop={canDrop}
             isDragging={isDragging}
             isOver={isOver}
-            canDrop={canDrop}
             isEmpty={isEmpty}
-            className={className}
             onDrop={onDrop}
         >
             {answer?.translation}

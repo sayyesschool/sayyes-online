@@ -20,10 +20,10 @@ const DragItem = forwardRef(({
         className,
         styles.root,
         {
-            [styles.isDragging]: isDragging,
-            [styles.canDrop]: canDrop,
-            [styles.isEmpty]: isEmpty,
-            [styles.isOver]: isOver && canDrop
+            [styles.dragging]: isDragging,
+            [styles.drop]: canDrop,
+            [styles.empty]: isEmpty,
+            [styles.over]: isOver && canDrop
         }
     );
 
