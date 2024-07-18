@@ -46,7 +46,7 @@ export default ({
     async getMy(req, res) {
         const records = await LexemeRecord.find({
             learnerId: req.user.id
-        }).populate('lexeme');
+        }).populate('lexeme').sort({ createdAt: -1 });
 
         const lexemes = records.map(record => ({
             ...record.lexeme.toJSON(),
