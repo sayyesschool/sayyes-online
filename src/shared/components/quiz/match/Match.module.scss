@@ -37,7 +37,11 @@
 }
 
 .activeItem {
-    background-color: silver;
+    background-color: var(--joy-palette-primary-100);
+
+    &:hover {
+        background-color: var(--joy-palette-primary-200);
+    }
 }
 
 .actions {
