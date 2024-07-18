@@ -141,6 +141,7 @@
                 "max": 1
             }
         ],
+        "@stylistic/no-multi-spaces": "warn",
         "@stylistic/no-trailing-spaces": "warn",
         "@stylistic/object-curly-spacing": [
             "warn",
@@ -212,9 +213,25 @@
             "warn",
             "tag-aligned"
         ],
+        "@stylistic/jsx/jsx-curly-spacing": [
+            "warn",
+            {
+                "when": "never",
+                "attributes": true,
+                "children": true
+            }
+        ],
         "@stylistic/jsx/jsx-first-prop-new-line": [
             "warn",
             "multiline-multiprop"
+        ],
+        "@stylistic/jsx/jsx-indent": [
+            "warn",
+            4,
+            {
+                "checkAttributes": true,
+                "indentLogicalExpressions": true
+            }
         ],
         "@stylistic/jsx/jsx-newline": [
             "warn",
