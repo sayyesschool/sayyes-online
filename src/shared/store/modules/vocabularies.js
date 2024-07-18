@@ -141,7 +141,7 @@ export const vocabularyReducer = createReducer(null, {
 
     [addLexeme]: (state, action) => ({
         ...state,
-        lexemes: [...state.lexemes, action.data],
+        lexemes: [action.data, ...state.lexemes],
         numberOfLexemes: state.numberOfLexemes + 1
     }),
 
