@@ -12,6 +12,8 @@ export const getData = data => shuffleAndFilter(data);
 
 const displayChar = char => (char === ' ' ? '_' : char);
 
+// TODO добавить обработку регистра
+
 export default function Scrabble({ item, updateStatus }) {
     const { id, value, translation, status } = item;
 
