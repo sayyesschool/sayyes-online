@@ -20,6 +20,9 @@ export default function VocabularyQuizStatistic({ statistic, onContinue, onBack 
                             />
                         }
                         content={value}
+                        slotProps={{
+                            endAction: { sx: { position: 'static', transform: 'none' } }
+                        }}
                         end={
                             <Chip
                                 content={getStatusDifference(oldStatus, newStatus)}
