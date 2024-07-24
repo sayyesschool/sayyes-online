@@ -25,9 +25,9 @@ export function useQuiz(_items, getData, updateItemStatus) {
                 return [
                     ...prevStatistic,
                     {
-                        id: currentItem.id,
-                        value: currentItem.value,
-                        oldStatus: currentItem.status,
+                        id: item.id,
+                        value: item.value,
+                        oldStatus: item.status,
                         newStatus
                     }
                 ];
@@ -64,6 +64,8 @@ export function useQuiz(_items, getData, updateItemStatus) {
                 await updateItemStatus(itemId, newStatus);
                 updateList(itemId, newStatus);
                 updateStatistics(itemId, newStatus);
+            } else {
+                updateStatistics(itemId, 0);
             }
 
             if (skipSetCount) return;
