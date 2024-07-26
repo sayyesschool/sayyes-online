@@ -1,4 +1,4 @@
-// TODO: Необходимо поправить логику шафла для ChooseCorrect, а для match отбрасывать остаток, если на карточку осталось меньше 5 лексим
+// TODO: нужно поправить в некоторых шафлах (и в компонентах) сравнения, чтобы везде использовались id, а не value и translations
 const STATISTIC_DISPLAY_INTERVAL = 5;
 const MATCH_ITEM_COUNT = 5;
 
@@ -8,6 +8,10 @@ export function sessionCardsCount(length) {
 
 export function shouldShowStatistic(statisticLength, everyCount) {
     return !!(statisticLength % everyCount === 0 && statisticLength !== 0);
+}
+
+function getRandomBoolean() {
+    return Math.random() >= 0.5;
 }
 
 function chunkArray(arr, n) {
@@ -111,23 +115,24 @@ export function shuffleChooseCorrect(lexemes) {
 
     const filteredLexemes = shuffleAndFilter(lexemes);
 
-    return shuffleArray(
-        filteredLexemes.map(lexeme => {
-            const shuffledTranslations = filteredLexemes.filter(
-                lexemeItem => lexemeItem.translation !== lexeme.translation
-            );
-            const translations = shuffleArray(
-                [
-                    lexeme,
-                    shuffledTranslations[0],
-                    shuffledTranslations[1],
-                    shuffledTranslations[2]
-                ].filter(Boolean)
-            );
+    return filteredLexemes.map(lexeme => {
+        const isValue = getRandomBoolean();
 
-            return { ...lexeme, translations };
-        })
-    );
+        const lexemesWithoutCurrent = shuffleArray(lexemes).filter(
+            lexemeItem => lexemeItem.id !== lexeme.id
+        );
+
+        const randomLexemes = shuffleArray(
+            [
+                lexeme,
+                lexemesWithoutCurrent[0],
+                lexemesWithoutCurrent[1],
+                lexemesWithoutCurrent[2]
+            ].filter(Boolean)
+        );
+
+        return { ...lexeme, randomLexemes, isValue };
+    });
 }
 
 export function shuffleMatch(lexemes) {

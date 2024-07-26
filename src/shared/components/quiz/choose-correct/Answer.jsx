@@ -9,7 +9,7 @@ const ItemTypes = {
     ANSWER: 'answer'
 };
 
-export default function Answer({ answer, moveAnswer, isDropZone }) {
+export default function Answer({ answer, text, moveAnswer, isDropZone }) {
     const [{ isDragging }, drag] = useDrag({
         type: ItemTypes.ANSWER,
         item: { id: answer?.id },
@@ -51,7 +51,7 @@ export default function Answer({ answer, moveAnswer, isDropZone }) {
             isEmpty={isEmpty}
             onDrop={onDrop}
         >
-            {answer?.translation}
+            {text}
         </DragItem>
     );
 }
