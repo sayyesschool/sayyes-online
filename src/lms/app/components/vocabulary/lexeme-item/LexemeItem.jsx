@@ -38,10 +38,11 @@ export default function LexemeItem({
 
     return (
         <ListItem className={styles.root}>
-            <Checkbox
+            {/* Временно отключили */}
+            {/* <Checkbox
                 checked={false}
                 onChange={handleCheckboxChange}
-            />
+            /> */}
 
             <div
                 className={styles.content}

@@ -77,10 +77,11 @@ export default function VocabularyLexemes({
     return (
         <div className={styles.root}>
             <div className={styles.header}>
-                <Checkbox
+                {/* Временно отключили */}
+                {/* <Checkbox
                     checked={false}
                     onChange={() => console.log('check')}
-                />
+                /> */}
 
                 <VocabularySearch
                     className={styles.search}

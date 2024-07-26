@@ -47,18 +47,14 @@ export default function ChooseCorrect({ item, updateStatus }) {
     return (
         <div className={styles.root}>
             <div className={styles.content}>
-                {randomLexemes.map(answer => {
-                    const answerText = isValue ? answer.translation : answer.value;
-
-                    return (
-                        <Answer
-                            key={answer.id}
-                            text={answerText}
-                            answer={answer}
-                            moveAnswer={moveAnswer}
-                        />
-                    );
-                })}
+                {randomLexemes.map(answer =>
+                    <Answer
+                        key={answer.id}
+                        text={isValue ? answer.translation : answer.value}
+                        answer={answer}
+                        moveAnswer={moveAnswer}
+                    />
+                )}
 
                 <div className={styles.value}>
                     <Text
@@ -83,7 +79,7 @@ export default function ChooseCorrect({ item, updateStatus }) {
 
             <div className={styles.actions}>
                 <Button
-                    className={styles.button}
+                    className={styles.nextButton}
                     content="Далее"
                     disabled={!currentAnswerId}
                     onClick={next}

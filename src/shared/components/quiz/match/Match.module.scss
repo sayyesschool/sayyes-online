@@ -1,14 +1,10 @@
-.root {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-}
+@use '../common';
+
+@include common.root;
+@include common.actions;
+@include common.next-button;
 
 .content {
-    width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
@@ -30,26 +26,16 @@
     justify-content: center;
     gap: 4px;
     padding: .5rem 1rem;
-}
 
-.draggingItem {
-    opacity: 0;
-}
-
-.activeItem {
-    background-color: var(--joy-palette-primary-100);
-
-    &:hover {
-        background-color: var(--joy-palette-primary-200);
+    &.dragging {
+        opacity: 0;
     }
-}
 
-.actions {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-}
+    &.active {
+        background-color: var(--joy-palette-primary-100);
 
-.button {
-    width: 200px !important;
+        &:hover {
+            background-color: var(--joy-palette-primary-200);
+        }
+    }
 }

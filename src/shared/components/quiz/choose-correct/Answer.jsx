@@ -39,7 +39,7 @@ export default function Answer({ answer, text, moveAnswer, isDropZone }) {
     );
 
     const isEmpty = !answer || (answer?.isHidden && !isDropZone);
-    const className = isDropZone ? styles.chooseItemDrop : styles.chooseItem;
+    const className = isDropZone ? styles.itemDrop : styles.item;
 
     return (
         <DragItem

@@ -56,7 +56,7 @@ export default function Answer({
     });
 
     const className = cn(styles.item, {
-        [styles.draggingItem]: isDragging,
+        [styles.dragging]: isDragging,
         [styles.activeItem]: isActive
     });
 
@@ -71,13 +71,13 @@ export default function Answer({
         >
             {text}
 
-            {Number.isInteger(status) && (
+            {Number.isInteger(status) &&
                 <LexemeStatus
                     level={status}
                     tooltipPlacement="right"
                     readOnly
                 />
-            )}
+            }
         </DragItem>
     );
 }

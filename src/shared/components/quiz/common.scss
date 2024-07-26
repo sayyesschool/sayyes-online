@@ -1,0 +1,29 @@
+@mixin root {
+    .root {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        @content;
+    }
+}
+
+@mixin actions {
+    .actions {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+
+        @content;
+    }
+}
+
+@mixin next-button {
+    .nextButton {
+        width: 100%;
+        max-width: 200px;
+
+        @content;
+    }
+}

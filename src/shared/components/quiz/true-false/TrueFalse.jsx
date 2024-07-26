@@ -59,7 +59,7 @@ export default function TrueFalse({ item, updateStatus }) {
 
             <div className={styles.actions}>
                 <Button
-                    className={styles.button}
+                    className={styles.action}
                     content="FALSE"
                     color="danger"
                     variant="solid"
@@ -67,7 +67,7 @@ export default function TrueFalse({ item, updateStatus }) {
                 />
 
                 <Button
-                    className={styles.button}
+                    className={styles.action}
                     content="TRUE"
                     color="success"
                     variant="solid"

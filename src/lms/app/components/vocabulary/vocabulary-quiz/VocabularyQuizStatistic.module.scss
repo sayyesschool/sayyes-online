@@ -1,6 +1,7 @@
 .root {
-    width: 450px;
-    height: 350px;
+    width: 100%;
+    max-width: 450px;
+    max-height: 90%;
     padding: 20px;
     border-radius: var(--joy-radius-xl);
 
