@@ -47,7 +47,7 @@ export default function ChooseCorrect({ item, updateStatus }) {
     return (
         <div className={styles.root}>
             <div className={styles.content}>
-                {randomLexemes.map(answer =>
+                {answers.map(answer =>
                     <Answer
                         key={answer.id}
                         text={isValue ? answer.translation : answer.value}
