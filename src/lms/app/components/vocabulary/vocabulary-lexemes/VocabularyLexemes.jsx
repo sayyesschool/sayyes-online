@@ -91,6 +91,7 @@ export default function VocabularyLexemes({
 
                 <PopoverButton
                     key={vocabulary.numberOfLexemes}
+                    icon="add"
                     content="Добавить слово"
                     color="primary"
                 >
