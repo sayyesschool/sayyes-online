@@ -2,7 +2,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import Vocabularies from 'lms/components/vocabulary/vocabularies-page';
 import Vocabulary from 'lms/components/vocabulary/vocabulary-page';
-import Quiz from 'lms/components/vocabulary/vocabulary-quiz';
+import Quiz from 'lms/components/vocabulary/vocabulary-quiz-page';
 
 export default function VocabularyRouter() {
     return (
