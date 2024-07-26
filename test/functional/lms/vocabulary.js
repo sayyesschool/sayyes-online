@@ -92,37 +92,18 @@ export default (api, { models: { Lexeme, LexemeRecord, Vocabulary }, user }) =>
                 });
             });
 
-            describe('PUT /my/:lexemeId', () => {
-                it('should update a lexeme', async () => {
-                    const data = {
-                        value: 'cat',
-                        definition: 'a furry animal'
-                    };
-
-                    const { body } = await api.post('/vocabularies/my').send(data);
-
-                    expect(body.data).toMatch({
-                        ...data,
-                        status: 0
-                    });
-
-                    expect(body.data).toIncludeKeys(['reviewDate']);
-                });
-            });
-
             describe('DELETE /my/:lexemeId', () => {
                 it('should delete a lexeme from my vocabulary', async () => {
                     const data = {
                         value: 'cat',
-                        definition: 'a furry animal',
-                        createdBy: user.id
+                        definition: 'a furry animal'
                     };
 
                     const lexeme = await Lexeme.create(data);
 
                     await LexemeRecord.create({
                         lexemeId: lexeme.id,
-                        learnerId: data.createdBy
+                        learnerId: user.id
                     });
 
                     const { body } = await api.delete(`/vocabularies/my/${lexeme.id}`);
@@ -257,6 +238,30 @@ export default (api, { models: { Lexeme, LexemeRecord, Vocabulary }, user }) =>
                     expect(body.data).toMatch(data);
                     expect(body.data.status).toBe(0, 'The lexeme doesn\'t have a `status` field');
                     expect(body.data.reviewDate).toExist('The lexeme doesn\'t have a `reviewDate` field');
+                });
+
+                it('should NOT add a lexeme that already exists in the vocabulary', async () => {
+                    const vocabulary = await Vocabulary.create({});
+                    const url = `/vocabularies/${vocabulary.id}`;
+                    const data = {
+                        value: 'cat',
+                        definition: 'a furry animal'
+                    };
+
+                    const { body: body1 } = await api.post(url).send(data);
+                    const { body: body2 } = await api.post(url).send(data);
+
+                    expect(body1.ok).toBe(true),
+                    expect(body1.data).toExist();
+                    expect(body2.ok).toBe(false);
+                    expect(body2.error).toExist();
+
+                    const count = await LexemeRecord.countDocuments({
+                        lexemeId: body1.data.id,
+                        learnerId: user.id
+                    });
+
+                    expect(count).toBe(1);
                 });
             });
 
