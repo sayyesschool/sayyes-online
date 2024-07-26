@@ -8,17 +8,25 @@ import styles from './VocabularySearchResultItem.module.scss';
 
 export default function VocabularySearchResultItem({
     result,
-    addLexeme
+    lexemes,
+    onAddLexeme
 }) {
     const handleAddButtonClick = useCallback(e => {
         stopPropagation(e);
 
-        return addLexeme({ lexemeId: result.id });
-    }, [addLexeme, result.id]);
+        return onAddLexeme({ lexemeId: result.id });
+    }, [result.id, onAddLexeme]);
+
+    const className = cn(
+        styles.root,
+        result.disabled && styles.disabled
+    );
+
+    const isLexemePresent = lexemes.find(l => l.value === result.value);
 
     return (
         <div
-            className={cn(styles.root, styles.disabled)}
+            className={className}
             onClick={stopPropagation}
         >
             <div className={styles.text}>
@@ -28,9 +36,10 @@ export default function VocabularySearchResultItem({
             </div>
 
             <IconButton
-                icon="check"
-                title="Добавить слово"
-                disabled={result.disabled}
+                icon={isLexemePresent ? 'check' : 'add'}
+                title={isLexemePresent ? 'Слово уже добавлено' : 'Добавить слово'}
+                variant="soft"
+                disabled={isLexemePresent}
                 onClick={handleAddButtonClick}
             />
         </div>
