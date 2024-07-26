@@ -1,6 +1,7 @@
 import { useHistory } from 'react-router-dom';
 
 import LoadingIndicator from 'shared/components/loading-indicator';
+import Page from 'shared/components/page';
 import { getComponent } from 'shared/components/quiz';
 import { useQuiz } from 'shared/hooks/quizzes';
 import { useVocabulary } from 'shared/hooks/vocabularies';
@@ -16,7 +17,7 @@ export default function VocabularyQuiz({ match }) {
 
     const [vocabulary, actions] = useVocabulary(match.params.vocabulary);
 
-    const { Component, getData } = getComponent(match.params.quiz);
+    const { name, Component, getData } = getComponent(match.params.quiz);
 
     const {
         numberOfItems,
@@ -36,31 +37,44 @@ export default function VocabularyQuiz({ match }) {
     if (!Component) throw new Error('No component for quiz');
 
     return (
-        <div className={styles.root}>
-            {showStatistic ?
-                <VocabularyQuizStatistic
-                    statistic={statistic}
-                    onContinue={continueQuiz}
-                    onBack={handleBack}
-                /> :
-                <VocabularyQuizItem
-                    item={currentItem}
-                    itemIndex={currentItemIndex}
-                    numberOfItems={numberOfItems}
-                >
-                    {currentItem ? (
-                        <Component
+        <Page title="Тренажер слов" layout="narrow">
+            <Page.Header
+                title="Тренажер слов"
+                description={name}
+                breadcrumbs={[{
+                    content: 'Словарь',
+                    to: `/vocabulary/${vocabulary.id}`
+                }]}
+            />
+
+            <Page.Content>
+                <div className={styles.quiz}>
+                    {showStatistic ?
+                        <VocabularyQuizStatistic
+                            statistic={statistic}
+                            onContinue={continueQuiz}
+                            onBack={handleBack}
+                        /> :
+                        <VocabularyQuizItem
                             item={currentItem}
                             itemIndex={currentItemIndex}
                             numberOfItems={numberOfItems}
-                            updateStatus={updateStatus}
-                            updateStatuses={updateStatuses}
-                        />
-                    ) : (
-                        <VocabularyQuizEmptyState onAction={handleBack} />
-                    )}
-                </VocabularyQuizItem>
-            }
-        </div>
+                        >
+                            {currentItem ? (
+                                <Component
+                                    item={currentItem}
+                                    itemIndex={currentItemIndex}
+                                    numberOfItems={numberOfItems}
+                                    updateStatus={updateStatus}
+                                    updateStatuses={updateStatuses}
+                                />
+                            ) : (
+                                <VocabularyQuizEmptyState onAction={handleBack} />
+                            )}
+                        </VocabularyQuizItem>
+                    }
+                </div>
+            </Page.Content>
+        </Page>
     );
 }

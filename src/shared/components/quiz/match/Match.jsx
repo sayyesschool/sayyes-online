@@ -30,6 +30,7 @@ export default function Match({ item, updateStatuses }) {
         itemsSetter(prevItems => {
             const newItems = [...prevItems];
             const [draggedItem] = newItems.splice(dragIndex, 1);
+
             newItems.splice(hoverIndex, 0, draggedItem);
 
             return newItems;
@@ -111,8 +112,8 @@ export default function Match({ item, updateStatuses }) {
 
             <div className={styles.actions}>
                 <Button
+                    className={styles.nextButton}
                     content="Далее"
-                    className={styles.button}
                     onClick={next}
                 />
             </div>

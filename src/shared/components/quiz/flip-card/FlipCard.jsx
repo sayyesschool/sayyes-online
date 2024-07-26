@@ -58,7 +58,7 @@ export default function FlipCard({ item, updateStatus }) {
                 {isFlipped ? (
                     <>
                         <Button
-                            className={styles.button}
+                            className={styles.action}
                             content="Не помню"
                             color="danger"
                             variant="soft"
@@ -66,7 +66,7 @@ export default function FlipCard({ item, updateStatus }) {
                         />
 
                         <Button
-                            className={styles.button}
+                            className={styles.action}
                             content="Помню"
                             color="success"
                             variant="soft"
@@ -75,7 +75,6 @@ export default function FlipCard({ item, updateStatus }) {
                     </>
                 ) : (
                     <Button
-                        className={styles.button}
                         content="Перевернуть карточку"
                         onClick={() => setFlipped(true)}
                     />

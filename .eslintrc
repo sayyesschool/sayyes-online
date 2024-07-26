@@ -163,17 +163,13 @@
                 "blankLine": "always",
                 "prev": "*",
                 "next": [
-                    "multiline-block-like",
-                    "multiline-expression",
-                    "multiline-const"
+                    "multiline-block-like"
                 ]
             },
             {
                 "blankLine": "always",
                 "prev": [
-                    "multiline-block-like",
-                    "multiline-expression",
-                    "multiline-const"
+                    "multiline-block-like"
                 ],
                 "next": "*"
             },

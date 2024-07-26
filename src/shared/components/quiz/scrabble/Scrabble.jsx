@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { shuffleAndFilter, shuffleLetters } from 'shared/libs/quiz';
 import { Button, Text } from 'shared/ui-components';
-import cn from 'shared/utils/classnames';
 
 import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 
@@ -16,17 +15,20 @@ export default function Scrabble({ item, updateStatus }) {
     const { id, value, translation, status } = item;
 
     const [shuffledWord, setShuffledWord] = useState(shuffleLetters(value));
-    const [userInput, setUserInput] = useState(Array(value.length).fill(null));
+    const [selectedChars, setSelectedChars] = useState(Array(value.length).fill(null));
     const [availableChars, setAvailableChars] = useState(
-        shuffledWord.split('').map((char, index) => ({ char, id: `${char}-${index}`, disabled: false }))
+        shuffledWord.split('').map((char, index) => ({
+            id: `${char}-${index}`,
+            char,
+            disabled: false
+        }))
     );
-    const isNextDisabled = availableChars.some(char => !char.disabled);
 
     const reset = useCallback(() => {
         const shuffled = shuffleLetters(value);
-        setShuffledWord(shuffled);
-        setUserInput(Array(value.length).fill(null));
 
+        setShuffledWord(shuffled);
+        setSelectedChars(Array(value.length).fill(null));
         setAvailableChars(
             shuffled.split('').map((char, index) => ({
                 char,
@@ -38,16 +40,16 @@ export default function Scrabble({ item, updateStatus }) {
 
     const next = useCallback(() => {
         const newStatus =
-          userInput.map(char => char?.char).join('') === value
+          selectedChars.map(char => char?.char).join('') === value
               ? status + 1
               : status - 1;
 
         updateStatus(id, newStatus);
-    }, [id, status, updateStatus, userInput, value]);
+    }, [id, status, updateStatus, selectedChars, value]);
 
     const handleKeyPress = useCallback(({ key }) => {
         if (key === 'Backspace') {
-            setUserInput(prev => {
+            setSelectedChars(prev => {
                 const lastCharIndex = prev.findLastIndex(char => char !== null);
 
                 if (lastCharIndex !== -1) {
@@ -69,11 +71,11 @@ export default function Scrabble({ item, updateStatus }) {
             });
         } else {
             const charIndex = availableChars.findIndex(char => char.char === key && !char.disabled);
-            const firstEmptyIndex = userInput.findIndex(char => char === null);
+            const firstEmptyIndex = selectedChars.findIndex(char => char === null);
 
             if (charIndex === -1 || firstEmptyIndex === -1) return;
 
-            setUserInput(prev => {
+            setSelectedChars(prev => {
                 const newUserInput = [...prev];
                 newUserInput[firstEmptyIndex] = availableChars[charIndex];
 
@@ -86,7 +88,7 @@ export default function Scrabble({ item, updateStatus }) {
                 )
             );
         }
-    }, [availableChars, userInput]);
+    }, [availableChars, selectedChars]);
 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyPress);
@@ -100,43 +102,48 @@ export default function Scrabble({ item, updateStatus }) {
         reset();
     }, [value, reset]);
 
-    const handleClickChar = useCallback((charObj, index) => {
-        setUserInput(prev => {
-            const newUserInput = [...prev];
-            newUserInput[index] = null;
+    const handleClickSelectedChar = useCallback((charObj, index) => {
+        setSelectedChars(prev => {
+            const next = [...prev];
 
-            return newUserInput;
+            next[index] = null;
+
+            return next;
         });
 
-        setAvailableChars(chars =>
-            chars.map(char =>
+        setAvailableChars(prev =>
+            prev.map(char =>
                 char.id === charObj.id ? { ...char, disabled: false } : char
             )
         );
     }, []);
 
-    const handleClickAvailable = useCallback(charObj => {
+    const handleClickAvailableChar = useCallback(charObj => {
         const charIndex = availableChars.findIndex(char => char.id === charObj.id && !char.disabled);
 
         if (charIndex === -1) return;
 
-        const firstEmptyIndex = userInput.findIndex(char => char === null);
+        const firstEmptyIndex = selectedChars.findIndex(char => char === null);
 
-        if (firstEmptyIndex !== -1) {
-            setUserInput(prev => {
-                const newUserInput = [...prev];
-                newUserInput[firstEmptyIndex] = availableChars[charIndex];
+        if (firstEmptyIndex === -1) return;
 
-                return newUserInput;
-            });
+        setSelectedChars(prev => {
+            const next = [...prev];
 
-            setAvailableChars(prev =>
-                prev.map((char, index) =>
-                    index === charIndex ? { ...char, disabled: true } : char
-                )
-            );
-        }
-    }, [availableChars, userInput]);
+            next[firstEmptyIndex] = availableChars[charIndex];
+
+            return next;
+        });
+
+        setAvailableChars(prev =>
+            prev.map((char, index) =>
+                index === charIndex ? { ...char, disabled: true } : char
+            )
+        );
+    }, [availableChars, selectedChars]);
+
+    const isResetDisabled = selectedChars.every(char => char === null);
+    const isNextDisabled = availableChars.some(char => !char.disabled);
 
     return (
         <div className={styles.root}>
@@ -153,44 +160,33 @@ export default function Scrabble({ item, updateStatus }) {
                     }
                 />
 
-                <div className={styles.userInputChars}>
-                    {userInput.map((charObj, index) => {
-                        const onClick = () => charObj && handleClickChar(charObj, index);
-
-                        return (
-                            <Button
-                                key={index}
-                                className={cn(styles.userInputChar, {
-                                    [styles.active]: charObj
-                                })}
-                                color="neutral"
-                                size="lg"
-                                variant="outlined"
-                                onClick={onClick}
-                            >
-                                {charObj ? displayChar(charObj.char) : ''}
-                            </Button>
-                        );
-                    })}
+                <div className={styles.selectedChars}>
+                    {selectedChars.map((charObj, index) =>
+                        <Button
+                            key={index}
+                            className={styles.selectedChar}
+                            content={charObj ? displayChar(charObj.char) : ''}
+                            color="neutral"
+                            size="lg"
+                            variant="outlined"
+                            disabled={!charObj}
+                            onClick={charObj && (() => handleClickSelectedChar(charObj, index))}
+                        />
+                    )}
                 </div>
 
                 <div className={styles.availableChars}>
-                    {availableChars.map(charObj => {
-                        const onClick = () => handleClickAvailable(charObj);
-
-                        return (
-                            <Button
-                                key={charObj.id}
-                                className={styles.availableChar}
-                                color="neutral"
-                                variant="soft"
-                                disabled={charObj.disabled}
-                                onClick={onClick}
-                            >
-                                {displayChar(charObj.char)}
-                            </Button>
-                        );
-                    })}
+                    {availableChars.map(charObj =>
+                        <Button
+                            key={charObj.id}
+                            className={styles.availableChar}
+                            content={displayChar(charObj.char)}
+                            color="neutral"
+                            variant="soft"
+                            disabled={charObj.disabled}
+                            onClick={() => handleClickAvailableChar(charObj)}
+                        />
+                    )}
                 </div>
 
                 <Button
@@ -198,13 +194,14 @@ export default function Scrabble({ item, updateStatus }) {
                     color="danger"
                     size="small"
                     variant="plain"
+                    disabled={isResetDisabled}
                     onClick={reset}
                 />
             </div>
 
             <div className={styles.actions}>
                 <Button
-                    className={styles.button}
+                    className={styles.nextButton}
                     content="Далее"
                     disabled={isNextDisabled}
                     onClick={next}

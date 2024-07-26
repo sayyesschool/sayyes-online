@@ -6,22 +6,27 @@ import TrueFalse, { getData as getTrueFalseData } from './true-false';
 
 const components = {
     'flip-card': {
+        name: 'Flip Card',
         Component: FlipCard,
         getData: getFlipCardData
     },
     'true-false': {
+        name: 'True / False',
         Component: TrueFalse,
         getData: getTrueFalseData
     },
     'choose-correct': {
+        name: 'Choose Correct',
         Component: ChooseCorrect,
         getData: getChooseCorrectData
     },
     'match': {
+        name: 'Match',
         Component: Match,
         getData: getMatchData
     },
     'scrabble': {
+        name: 'Scrabble',
         Component: Scrabble,
         getData: getScrabbleData
     }
