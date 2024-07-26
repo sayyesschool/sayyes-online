@@ -37,7 +37,7 @@ export default function VocabularyQuiz({ match }) {
     if (!Component) throw new Error('No component for quiz');
 
     return (
-        <Page title="Тренажер слов" layout="narrow">
+        <Page layout="narrow">
             <Page.Header
                 title="Тренажер слов"
                 description={name}
