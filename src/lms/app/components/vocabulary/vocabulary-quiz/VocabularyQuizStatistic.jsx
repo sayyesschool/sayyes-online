@@ -1,5 +1,5 @@
 import { getStatusDifference } from 'shared/libs/quiz';
-import { Button, Chip, List, Surface, Text } from 'shared/ui-components';
+import { Button, Chip, List, Surface } from 'shared/ui-components';
 
 import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 
@@ -9,30 +9,40 @@ export default function VocabularyQuizStatistic({ statistic, onContinue, onBack 
     return (
         <Surface className={styles.root} variant="outlined">
             <List size="lg">
-                {statistic.map(({ id, value, oldStatus, newStatus }) => (
-                    <List.Item
-                        key={id}
-                        decorator={
-                            <LexemeStatus
-                                level={newStatus}
-                                tooltipPlacement="left"
-                                readOnly
-                            />
-                        }
-                        content={value}
-                        slotProps={{
-                            endAction: { sx: { position: 'static', transform: 'none' } }
-                        }}
-                        end={
-                            <Chip
-                                content={getStatusDifference(oldStatus, newStatus)}
-                                size="sm"
-                                variant="soft"
-                                color={newStatus - oldStatus > 0 ? 'success' : 'danger'}
-                            />
-                        }
-                    />
-                ))}
+                {statistic.map(({ id, value, oldStatus, newStatus }) => {
+                    const status = newStatus - oldStatus;
+                    const chipColor =
+                        status > 0
+                            ? 'success'
+                            : status < 0
+                                ? 'danger'
+                                : 'neutral';
+
+                    return (
+                        <List.Item
+                            key={id}
+                            decorator={
+                                <LexemeStatus
+                                    level={newStatus}
+                                    tooltipPlacement="left"
+                                    readOnly
+                                />
+                            }
+                            content={value}
+                            slotProps={{
+                                endAction: { sx: { position: 'static', transform: 'none' } }
+                            }}
+                            end={
+                                <Chip
+                                    content={getStatusDifference(oldStatus, newStatus)}
+                                    size="sm"
+                                    variant="soft"
+                                    color={chipColor}
+                                />
+                            }
+                        />
+                    );
+                })}
             </List>
 
             <Button
