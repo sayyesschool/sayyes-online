@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { sessionCardsCount, shouldShowStatistic } from '@/shared/libs/quiz';
 
+// Убрать отсюда костыли и отрефакторить
 export function useQuiz(_items, getData, updateItemStatus) {
     const [items, setItems] = useState(getData(_items));
     const [count, setCount] = useState(0);
@@ -85,7 +86,12 @@ export function useQuiz(_items, getData, updateItemStatus) {
     const continueQuiz = useCallback(() => {
         if (!items?.length) return;
 
-        setItems(list => getData(list));
+        setItems(list => {
+            const flatList = Array.isArray(list?.[0]) ? list.flat() : list;
+
+            getData(flatList);
+        });
+
         setCount(0);
         setStatistic([]);
     }, [getData, items?.length]);

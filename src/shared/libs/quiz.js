@@ -17,7 +17,9 @@ function getRandomBoolean() {
 function chunkArray(arr, n) {
     return arr.reduce((acc, val, index) => {
         if (index % n === 0) {
-            acc.push(arr.slice(index, index + n));
+            const chunk = arr.slice(index, index + n);
+
+            if (chunk.length === n) acc.push(chunk);
         }
 
         return acc;
