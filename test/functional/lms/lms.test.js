@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 app.use(lms(global.$context));
 
 describe('LMS API', () => {
-    // assignments(api, global.$context);
-    // lessons(api, global.$context);
+    assignments(api, global.$context);
+    lessons(api, global.$context);
     vocabularies(api, global.$context);
 });
