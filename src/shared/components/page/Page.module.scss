@@ -1,5 +1,5 @@
 .root {
-    --max-width: 1280px;
+    --page-max-width: 1280px;
 
     height: 100%;
     overflow: auto;
@@ -17,7 +17,7 @@
 }
 
 .container {
-    max-width: var(--max-width);
+    max-width: var(--page-max-width);
     margin: auto;
     padding: 2rem 1rem 6rem;
     display: flex;
@@ -25,10 +25,22 @@
     gap: 2rem;
 }
 
+.layout-wider {
+    --page-max-width: 1440px;
+}
+
+.layout-wide {
+    --page-max-width: 1440px;
+}
+
 .layout-narrow {
-    --max-width: 1024px;
+    --page-max-width: 1024px;
+}
+
+.layout-narrower {
+    --page-max-width: 720px;
 }
 
 .layout-full {
-    --max-width: 100%;
+    --page-max-width: 100%;
 }
