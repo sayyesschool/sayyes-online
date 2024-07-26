@@ -35,10 +35,6 @@ export default function VocabularyQuiz({ match }) {
 
     if (!Component) throw new Error('No component for quiz');
 
-    if (!currentItem) return (
-        <VocabularyQuizEmptyState onAction={handleBack} />
-    );
-
     return (
         <div className={styles.root}>
             {showStatistic ?
@@ -51,16 +47,18 @@ export default function VocabularyQuiz({ match }) {
                     item={currentItem}
                     itemIndex={currentItemIndex}
                     numberOfItems={numberOfItems}
-                    updateStatus={updateStatus}
-                    updateStatuses={updateStatuses}
                 >
-                    <Component
-                        item={currentItem}
-                        itemIndex={currentItemIndex}
-                        numberOfItems={numberOfItems}
-                        updateStatus={updateStatus}
-                        updateStatuses={updateStatuses}
-                    />
+                    {currentItem ? (
+                        <Component
+                            item={currentItem}
+                            itemIndex={currentItemIndex}
+                            numberOfItems={numberOfItems}
+                            updateStatus={updateStatus}
+                            updateStatuses={updateStatuses}
+                        />
+                    ) : (
+                        <VocabularyQuizEmptyState onAction={handleBack} />
+                    )}
                 </VocabularyQuizItem>
             }
         </div>
