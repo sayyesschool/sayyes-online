@@ -34,6 +34,7 @@ export default function SearchForm({
 
     const handleClose = useCallback((e, reason) => {
         if (reason === 'selectOption') return;
+
         setOpen(false);
         reset();
     }, [reset]);

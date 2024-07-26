@@ -23,7 +23,7 @@ export default function VocabularySearch({ lexemes, onAddLexeme, className }) {
         setNewLexeme({ value });
     }, []);
 
-    return  (
+    return (
         <div className={className}>
             <SearchForm
                 comboboxRef={comboboxRef}
