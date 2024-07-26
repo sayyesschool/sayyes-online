@@ -1,5 +1,4 @@
-// TODO: Необходимо поправить логику шафла для TrueFalse и ChooseCorrect, чтобы в неправ ответы попадали и лексимы со статусом выучено
-//       А для match отбрасывать остаток, если на карточку осталось меньше 5 лексим
+// TODO: Необходимо поправить логику шафла для ChooseCorrect, а для match отбрасывать остаток, если на карточку осталось меньше 5 лексим
 const STATISTIC_DISPLAY_INTERVAL = 5;
 const MATCH_ITEM_COUNT = 5;
 
@@ -73,8 +72,10 @@ function getCorrectLexemes(lexemes, count) {
         .map(item => ({ ...item, incorrectTranslation: null }));
 }
 
-function getIncorrectLexemes(lexemes, count) {
-    const correctLexemes = lexemes.slice(-count);
+function getIncorrectLexemes(filteredLexemes, lexemes, count) {
+    if (count === 0) return [];
+
+    const correctLexemes = filteredLexemes.slice(-count);
 
     const incorrectLexemes = correctLexemes.map(element => {
         const shuffledLexemes = shuffleArray(lexemes);
@@ -100,7 +101,7 @@ export function shuffleTrueFalse(lexemes, incorrectLexemesProportion = 1) {
     const correctLexemesCount = filteredLexemes.length - incorrectLexemesCount;
 
     const correctLexemes = getCorrectLexemes(filteredLexemes, correctLexemesCount);
-    const incorrectLexemes = getIncorrectLexemes(filteredLexemes, incorrectLexemesCount);
+    const incorrectLexemes = getIncorrectLexemes(filteredLexemes, lexemes, incorrectLexemesCount);
 
     return shuffleArray([...correctLexemes, ...incorrectLexemes]);
 }
