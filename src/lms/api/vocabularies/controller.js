@@ -46,7 +46,9 @@ export default ({
     async getMy(req, res) {
         const records = await LexemeRecord.find({
             learnerId: req.user.id
-        }).populate('lexeme').sort({ createdAt: -1 });
+        })
+            .sort({ createdAt: -1 })
+            .populate('lexeme');
 
         const lexemes = records.map(record => ({
             ...record.lexeme.toJSON(),
@@ -138,8 +140,7 @@ export default ({
             Lexeme.findById(req.body.lexemeId) :
             Lexeme.findOne({
                 value: req.body.value,
-                translation: req.body.translation,
-                approved: true
+                translation: req.body.translation
             }));
 
         if (!lexeme) {
@@ -151,7 +152,19 @@ export default ({
             });
         }
 
-        const record = await LexemeRecord.create({
+        let record = await LexemeRecord.findOne({
+            lexemeId: lexeme.id,
+            learnerId: req.user.id
+        });
+
+        if (lexeme && record) {
+            throw {
+                code: 403,
+                message: 'Слово уже имеется в словаре'
+            };
+        }
+
+        record = await LexemeRecord.create({
             lexemeId: lexeme.id,
             learnerId: req.user.id
         });
@@ -199,8 +212,7 @@ export default ({
                 path: 'record',
                 match: { learnerId: req.user.id },
                 transform: transformRecord
-            })
-            :
+            }) :
             await LexemeRecord.findOneAndUpdate(
                 {
                     lexemeId: req.params.lexemeId,
@@ -215,10 +227,13 @@ export default ({
                 }
             ).populate({
                 path: 'lexeme'
-            }).then(record => ({
-                ...record.lexeme,
-                ...transformRecord(record)
-            }));
+            }).then(record => {
+                const lexeme = record.lexeme;
+
+                lexeme.record = transformRecord(record);
+
+                return lexeme;
+            });
 
         if (!updatedLexeme) throw {
             code: 403,
