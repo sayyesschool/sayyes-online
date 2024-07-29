@@ -101,7 +101,7 @@ function getIncorrectLexemes(filteredLexemes, lexemes, count) {
 export function shuffleTrueFalse(lexemes, incorrectLexemesProportion = 1) {
     if (!lexemes) return;
 
-    const filteredLexemes = filterLexemes(lexemes);
+    const filteredLexemes = shuffleAndFilter(lexemes);
 
     const incorrectLexemesCount = Math.floor((incorrectLexemesProportion / 3) * filteredLexemes.length);
     const correctLexemesCount = filteredLexemes.length - incorrectLexemesCount;
