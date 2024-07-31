@@ -57,7 +57,7 @@ export default function Answer({
 
     const className = cn(styles.item, {
         [styles.dragging]: isDragging,
-        [styles.activeItem]: isActive
+        [styles.active]: isActive
     });
 
     drag(drop(ref));
