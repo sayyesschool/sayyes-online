@@ -19,10 +19,10 @@ export default function TrueFalse({ item, updateStatus }) {
             if (isTrue) {
                 newStatus = incorrectTranslation ? status - 1 : status + 1;
             } else {
-                newStatus = incorrectTranslation ? -1 : status - 1;
+                newStatus = incorrectTranslation ? status : status - 1;
             }
 
-            updateStatus(id, newStatus);
+            updateStatus([{ id, newStatus }]);
         },
         [id, status, incorrectTranslation, updateStatus]
     );

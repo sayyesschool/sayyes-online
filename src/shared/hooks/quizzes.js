@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { sessionCardsCount, shouldShowStatistic } from '@/shared/libs/quiz';
 
-// Убрать отсюда костыли и отрефакторить
 export function useQuiz(_items, getData, updateItemStatus) {
     const [items, setItems] = useState(getData(_items));
     const [count, setCount] = useState(0);
@@ -18,83 +17,46 @@ export function useQuiz(_items, getData, updateItemStatus) {
     const statisticInterval = sessionCardsCount(items?.length);
     const showStatistic = shouldShowStatistic(count, statisticInterval);
 
-    const updateStatistics = useCallback(
-        (itemId, newStatus) => {
-            setStatistic(prevStatistic => {
-                const item = flatItems.find(i => i.id === itemId);
+    const updateStatistics = useCallback((itemId, newStatus) => {
+        const newStatusPositive = Math.max(0, newStatus);
+        const item = flatItems.flat().find(i => i.id === itemId);
+        const areStatusesDifferent = item.status !== newStatusPositive;
 
-                return [
-                    ...prevStatistic,
-                    {
-                        id: item.id,
-                        value: item.value,
-                        oldStatus: item.status,
-                        newStatus
-                    }
-                ];
-            });
-        },
-        [flatItems]
-    );
+        setStatistic(prevStatistic => {
+            return [
+                ...prevStatistic,
+                {
+                    id: item.id,
+                    value: item.value,
+                    oldStatus: item.status,
+                    newStatus: newStatusPositive
+                }
+            ];
+        });
 
-    const updateList = useCallback((itemId, newStatus) => {
-        setItems(items =>
-            items.map(subArray =>
-                Array.isArray(subArray)
-                    ? subArray.map(item =>
-                        item.id !== itemId
-                            ? item
-                            : {
-                                ...item,
-                                status: newStatus
-                            }
-                    )
-                    : subArray.id !== itemId
-                        ? subArray
-                        : {
-                            ...subArray,
-                            status: newStatus
-                        }
-            )
-        );
-    }, []);
+        return areStatusesDifferent;
+    }, [flatItems]);
 
-    const updateStatus = useCallback(
-        async (itemId, newStatus, skipSetCount = false) => {
-            if (newStatus >= 0) {
-                await updateItemStatus(itemId, newStatus);
-                updateList(itemId, newStatus);
-                updateStatistics(itemId, newStatus);
-            } else {
-                updateStatistics(itemId, 0);
+    const updateStatus = useCallback(arr => {
+        arr.forEach(async ({ id, newStatus }) => {
+            const areStatusesDifferent = updateStatistics(id, newStatus);
+
+            if (areStatusesDifferent) {
+                await updateItemStatus(id, newStatus);
             }
+        });
 
-            if (skipSetCount) return;
-
-            if (count < flatItems?.length)
-                setCount(prevCount => prevCount + 1);
-        },
-        [count, flatItems?.length, updateItemStatus, updateList, updateStatistics]
-    );
-
-    const updateStatuses = useCallback(arr => {
-        arr.forEach(item => updateStatus(item.id, item.newStatus, true));
-
-        if (count < flatItems?.length) setCount(prevCount => prevCount + 1);
-    }, [count, flatItems?.length, updateStatus]);
+        if (count < items?.length)
+            setCount(prevCount => prevCount + 1);
+    }, [count, items?.length, updateItemStatus, updateStatistics]);
 
     const continueQuiz = useCallback(() => {
         if (!items?.length) return;
 
-        setItems(list => {
-            const flatList = Array.isArray(list?.[0]) ? list.flat() : list;
-
-            getData(flatList);
-        });
-
+        setItems(getData(_items));
         setCount(0);
         setStatistic([]);
-    }, [getData, items?.length]);
+    }, [_items, getData, items?.length]);
 
     return {
         items,
@@ -103,7 +65,6 @@ export function useQuiz(_items, getData, updateItemStatus) {
         currentItemIndex: count,
         statistic,
         updateStatus,
-        updateStatuses,
         continueQuiz,
         showStatistic
     };

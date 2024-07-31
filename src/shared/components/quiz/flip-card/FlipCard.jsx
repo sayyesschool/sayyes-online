@@ -16,12 +16,12 @@ export default function FlipCard({ item, updateStatus }) {
     const [isFlipped, setFlipped] = useState(false);
 
     const downStatus = () => {
-        updateStatus(id, status - 1);
+        updateStatus([{ id, newStatus: status - 1 }]);
         setFlipped(false);
     };
 
     const upStatus = () => {
-        updateStatus(id, status + 1);
+        updateStatus([{ id, newStatus: status + 1 }]);
         setFlipped(false);
     };
 

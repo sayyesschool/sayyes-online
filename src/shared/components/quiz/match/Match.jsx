@@ -16,7 +16,7 @@ const isSameItem = (activeItem, item, type) => activeItem?.id === item.id && act
 
 export const getData = data => shuffleMatch(data);
 
-export default function Match({ item, updateStatuses }) {
+export default function Match({ item, updateStatus }) {
     const [values, setValues] = useState(item);
     const [translations, setTranslations] = useState(shuffleArray(item));
     const [activeItems, setActiveItems] = useState({ first: null, second: null });
@@ -87,8 +87,8 @@ export default function Match({ item, updateStatuses }) {
     const next = useCallback(() => {
         const result = compareArrays(values, translations);
 
-        updateStatuses(result);
-    }, [translations, updateStatuses, values]);
+        updateStatus(result);
+    }, [translations, updateStatus, values]);
 
     return (
         <div className={styles.root}>

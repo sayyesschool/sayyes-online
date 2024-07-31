@@ -40,7 +40,7 @@ export default function ChooseCorrect({ item, updateStatus }) {
         const isCorrect = id === currentAnswer.id;
         const newStatus = isCorrect ? status + 1 : status - 1;
 
-        updateStatus(id, newStatus);
+        updateStatus([{ id, newStatus }]);
         setCurrentAnswerId(null);
     }, [currentAnswer, id, status, updateStatus]);
 

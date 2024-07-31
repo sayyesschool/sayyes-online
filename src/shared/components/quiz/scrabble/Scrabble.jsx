@@ -44,7 +44,7 @@ export default function Scrabble({ item, updateStatus }) {
               ? status + 1
               : status - 1;
 
-        updateStatus(id, newStatus);
+        updateStatus([{ id, newStatus }]);
     }, [id, status, updateStatus, selectedChars, value]);
 
     const handleKeyPress = useCallback(({ key }) => {
