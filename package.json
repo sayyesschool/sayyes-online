@@ -7,6 +7,7 @@
   "scripts": {
     "build": "node ./scripts/build/prod.js",
     "build-dev": "node -r dotenv/config ./scripts/build/dev.js",
+    "container": "docker compose up --build --detach",
     "cron": "node --import ./loaders/register.cjs ./src/cron.js",
     "cron-dev": "nodemon --import ./loaders/register.cjs -r dotenv/config ./src/cron.js",
     "db-backup": "node -r dotenv/config ./scripts/db/backup.js",

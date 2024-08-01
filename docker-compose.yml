@@ -3,6 +3,10 @@ version: '3.7'
 services:
   node:
     image: node
+    build:
+      context: .
+    depends_on:
+      - mongodb
     environment:
       - NODE_ENV=${NODE_ENV}
       - APP_DOMAIN=${APP_DOMAIN}
@@ -13,7 +17,7 @@ services:
       - DB_NAME=${DB_NAME}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
-      - DB_CONNECTION_STRING=${DB_CONNECTION_STRING}
+      - DB_CONNECTION_STRING=mongodb://mongodb:27017/sayyes
       - IMGBB_API_KEY=${IMGBB_API_KEY}
       - FACEBOOK_PIXEL_ID=${FACEBOOK_PIXEL_ID}
       - GOOGLE_ANALYTICS_ID=${GOOGLE_ANALYTICS_ID}
@@ -24,6 +28,8 @@ services:
       - MIRO_ACCESS_TOKEN=${MIRO_ACCESS_TOKEN}
       - SENTRY_DSN=${SENTRY_DSN}
       - SENTRY_AUTH_TOKEN=${SENTRY_AUTH_TOKEN}
+      - SSL_CERT_PATH=${SSL_CERT_PATH}
+      - SSL_KEY_PATH=${SSL_KEY_PATH}
       - STATIC_URL=${STATIC_URL}
       - STORAGE_URL=${STORAGE_URL}
       - TWILIO_ACCOUNT_ID=${TWILIO_ACCOUNT_ID}
@@ -48,16 +54,13 @@ services:
       - YOOKASSA_SECRET_KEY=${YOOKASSA_SECRET_KEY}
       - ZOOM_API_KEY=${ZOOM_API_KEY}
       - ZOOM_API_SECRET=${ZOOM_API_SECRET}
-    build:
-      context: .
     ports:
       - ${APP_PORT}:3000
-    expose:
-      - 3000
     networks:
       - local-network
-    depends_on:
-      - mongodb
+    volumes:
+      - ./public:/app/public
+      - /etc/ssl:/etc/ssl
 
   mongodb:
     image: mongo
