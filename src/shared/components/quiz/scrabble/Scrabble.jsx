@@ -9,7 +9,7 @@ import styles from './Scrabble.module.scss';
 
 export const getData = data => shuffleAndFilter(data);
 
-const displayChar = char => (char === ' ' ? '_' : char.toLowerCase());
+const displayChar = char => (char === ' ' ? '_' : char);
 
 export default function Scrabble({ item, updateStatus }) {
     const { id, value, translation, status } = item;
