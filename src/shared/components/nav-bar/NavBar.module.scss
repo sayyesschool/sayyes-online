@@ -1,0 +1,23 @@
+.root {
+
+}
+
+.item {
+    
+}
+
+.vertical {
+    .item {
+        padding-left: 4px;
+        padding-right: 4px;
+        text-align: center;
+
+        &-icon {
+            font-size: 1.5rem;
+        }
+
+        &-text {
+            width: 100%;
+        }
+    }
+}

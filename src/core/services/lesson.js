@@ -1,7 +1,6 @@
-const { Types: { ObjectId } } = require('mongoose');
-const moment = require('moment');
+import moment from 'moment';
 
-module.exports = (Lesson, Mail) => ({
+export default (Lesson, Mail) => ({
     notifyStudents() {
         const inAnHour = moment().utc().minutes(0).seconds(0).milliseconds(0).add(1, 'hour');
 

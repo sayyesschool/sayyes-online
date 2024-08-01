@@ -1,7 +1,7 @@
 import { createContext, useReducer, useState } from 'react';
 
-import { initialSettings } from 'app/data/settings';
-import useActiveSinkId from 'app/hooks/useActiveSinkId';
+import { initialSettings } from 'class/data/settings';
+import useActiveSinkId from 'class/hooks/useActiveSinkId';
 
 import settingsReducer from './settingsReducer';
 

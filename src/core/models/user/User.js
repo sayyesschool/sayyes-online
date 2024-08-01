@@ -1,10 +1,11 @@
-const crypto = require('crypto');
-const bcrypt = require('bcryptjs');
-const { Schema, models } = require('mongoose');
+import { randomBytes } from 'node:crypto';
 
-const Person = require('./Person');
+import bcryptjs from 'bcryptjs';
+import mongoose, { Schema } from 'mongoose';
 
-const UserRole = {
+import Person from './Person';
+
+export const UserRole = {
     Admin: 'admin',
     Editor: 'editor',
     Learner: 'learner',
@@ -13,14 +14,14 @@ const UserRole = {
 };
 
 function hashPassword(password) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync());
+    return bcryptjs.hashSync(password, bcryptjs.genSaltSync());
 }
 
 function generateToken() {
-    return crypto.randomBytes(20).toString('hex');
+    return randomBytes(20).toString('hex');
 }
 
-const User = new Schema([Person, {
+export const User = new Schema([Person, {
     password: {
         type: String,
         trim: true,
@@ -29,7 +30,7 @@ const User = new Schema([Person, {
     role: {
         type: String,
         enum: Object.values(UserRole),
-        default: UserRole.Customer 
+        default: UserRole.Customer
     },
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
     activated: { type: Boolean, default: false, alias: 'isActivated' },
@@ -72,7 +73,7 @@ User.virtual('url').get(function() {
 User.methods.validatePassword = function(password) {
     if (!this.password) throw new Error('Необходимо сбросить пароль.');
 
-    return bcrypt.compareSync(password, this.password);
+    return bcryptjs.compareSync(password, this.password);
 };
 
 User.methods.resetPassword = function(password) {
@@ -140,7 +141,7 @@ User.methods.removeAccount = function(accountId) {
 User.pre('save', function(next) {
     if (!this.isModified('email') || this.email === '') return next();
 
-    models.User.findOne({ email: this.email })
+    mongoose.models.User.findOne({ email: this.email })
         .then(user => {
             if (user) next(new Error('Пользователь с таким адресом электронной почты уже зарегистрирован'));
             else next();
@@ -167,4 +168,4 @@ User.post('save', function(error, user, next) {
     }
 });
 
-module.exports = User;
+export default User;

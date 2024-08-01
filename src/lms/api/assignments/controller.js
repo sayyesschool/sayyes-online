@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     models: { Assignment }
 }) => ({
     async getMany(req, res) {
@@ -13,7 +13,8 @@ module.exports = ({
     async getOne(req, res, next) {
         const assignment = await Assignment.findById(req.params.id)
             .populate('enrollment', 'domain')
-            .populate('exercises');
+            .populate('exercises')
+            .populate('comments');
 
         if (!assignment) {
             const error = new Error('Задание не найдена');

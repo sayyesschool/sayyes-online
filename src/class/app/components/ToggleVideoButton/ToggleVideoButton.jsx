@@ -2,8 +2,8 @@ import { useCallback, useRef } from 'react';
 
 import { IconButton, Tooltip } from 'shared/ui-components';
 
-import { useHasVideoInputDevices } from 'app/hooks/useDevices';
-import useLocalVideoToggle from 'app/hooks/useLocalVideoToggle';
+import { useHasVideoInputDevices } from 'class/hooks/useDevices';
+import useLocalVideoToggle from 'class/hooks/useLocalVideoToggle';
 
 export default function ToggleVideoButton({ disabled }) {
     const [isVideoEnabled, toggleVideoEnabled] = useLocalVideoToggle();

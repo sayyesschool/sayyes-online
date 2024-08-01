@@ -1,13 +1,13 @@
-import Home from 'app/components/home';
-import Learners from 'app/components/learners';
-import Enrollments from 'app/components/enrollments';
-import Lessons from 'app/components/lessons';
-import Managers from 'app/components/managers';
-// import Meetings from 'app/components/meetings';
-import Payments from 'app/components/payments';
-import Requests from 'app/components/requests';
-import Teachers from 'app/components/teachers';
-import Settings from 'app/components/settings';
+import Enrollments from 'crm/components/enrollments';
+import Home from 'crm/components/home';
+import Learners from 'crm/components/learners';
+import Lessons from 'crm/components/lessons';
+import Managers from 'crm/components/managers';
+// import Meetings from 'crm/components/meetings';
+import Payments from 'crm/components/payments';
+import Requests from 'crm/components/requests';
+import Settings from 'crm/components/settings';
+import Teachers from 'crm/components/teachers';
 
 export default [
     { id: 'home', name: 'Главная', path: '/', exact: true, component: Home, icon: 'dashboard' },

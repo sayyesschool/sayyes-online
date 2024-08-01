@@ -1,8 +1,8 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Image = require('../image');
+import Image from '../image';
 
-const Lesson = new Schema({
+export const Lesson = new Schema({
     title: { type: String, required: true },
     description: { type: String, default: '' },
     image: { type: Image },
@@ -34,4 +34,4 @@ Lesson.virtual('imageUrl').get(function() {
     return this.image?.url || `${process.env.STORAGE_URL}/courses/${this.courseId}/images/${this.id}.jpg`;
 });
 
-module.exports = Lesson;
+export default Lesson;

@@ -1,15 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
-import Button from 'shared/ui-components/button';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import PageSection from 'shared/components/page-section';
+import { useBoolean } from 'shared/hooks/state';
 
-import { useStore } from 'app/store';
-import PacksTable from 'app/components/packs/packs-table';
-import PackForm from 'app/components/packs/pack-form';
+import PackForm from 'crm/components/packs/pack-form';
+import PacksTable from 'crm/components/packs/packs-table';
+import { useStore } from 'crm/store';
 
 export default function Packs() {
     const [packs, actions] = useStore('packs.list');

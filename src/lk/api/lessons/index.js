@@ -1,9 +1,9 @@
-const { Router } = require('express');
+import { Router } from 'express';
 
-const Controller = require('./controller');
-const mappers = require('./mappers');
+import Controller from './controller';
+import * as mappers from './mappers';
 
-module.exports = context => {
+export default context => {
     const router = Router();
     const controller = Controller(context, mappers);
 

@@ -1,13 +1,13 @@
 import { useCallback, useEffect } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useBoolean } from 'shared/hooks/state';
 
-import { useStore } from 'app/store';
-import CourseForm from 'app/components/courses/course-form';
-import CoursesTable from 'app/components/courses/courses-table';
+import CourseForm from 'cms/components/courses/course-form';
+import CoursesTable from 'cms/components/courses/courses-table';
+import { useStore } from 'cms/store';
 
 export default function CoursesPage() {
     const [courses, actions] = useStore('courses.list');

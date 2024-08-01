@@ -1,1 +1,1 @@
-module.exports = require('./Material');
+export { default, Material } from './Material';

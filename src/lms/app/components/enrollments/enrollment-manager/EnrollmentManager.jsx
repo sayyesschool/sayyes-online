@@ -34,7 +34,8 @@ export default function EnrollmentManager({ enrollment }) {
                                 {
                                     key: 'whatsapp',
                                     element: 'a',
-                                    href: `https://wa.me/${manager.phone}`, target: '_blank',
+                                    href: `https://wa.me/${manager.phone}`,
+                                    target: '_blank',
                                     content: 'Написать в What\'s App'
                                 },
                                 {

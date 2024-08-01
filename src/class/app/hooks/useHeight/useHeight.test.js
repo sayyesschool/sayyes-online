@@ -20,7 +20,7 @@ describe('the useHeight hook', () => {
         window.innerHeight = 100;
 
         window.visualViewport = {
-            scale: 2,
+            scale: 2
         };
 
         const { result } = renderHook(useHeight);

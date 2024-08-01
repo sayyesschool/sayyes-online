@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-import Whiteboard from 'app/lib/whiteboard';
-import useDataTrack from 'app/hooks/useDataTrack';
+import useDataTrack from 'class/hooks/useDataTrack';
+import Whiteboard from 'class/lib/whiteboard';
 
 import './index.scss';
 
@@ -48,7 +48,6 @@ export default function Canvas({ type, imageSrc, ...props }) {
     return (
         <div className="canvas">
             <img ref={imageRef} src={imageSrc} onLoad={handleImageLoad} />
-
             <canvas ref={canvasRef} {...props} />
         </div>
     );

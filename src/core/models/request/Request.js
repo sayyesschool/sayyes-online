@@ -1,9 +1,9 @@
-const { Schema } = require('mongoose');
-const moment = require('moment');
+import moment from 'moment';
+import { Schema } from 'mongoose';
 
-const { RequestChannel, RequestSource, RequestStatus } = require('./constants');
+import { RequestChannel, RequestSource, RequestStatus } from './constants';
 
-const Request = new Schema({
+export const Request = new Schema({
     status: {
         type: String,
         enum: Object.values(RequestStatus),
@@ -82,4 +82,4 @@ Request.virtual('manager', {
     justOne: true
 });
 
-module.exports = Request;
+export default Request;

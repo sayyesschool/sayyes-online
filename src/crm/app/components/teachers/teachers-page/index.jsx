@@ -1,14 +1,14 @@
 import { useCallback, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
-import LoadingIndicator from 'shared/components/loading-indicator';
 import FormDialog from 'shared/components/form-dialog';
+import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useBoolean } from 'shared/hooks/state';
 
-import { useStore } from 'app/store';
-import TeachersTable from 'app/components/teachers/teachers-table';
-import TeacherForm from 'app/components/teachers/teacher-form';
+import TeacherForm from 'crm/components/teachers/teacher-form';
+import TeachersTable from 'crm/components/teachers/teachers-table';
+import { useStore } from 'crm/store';
 
 export default function TeachersPage({ history }) {
     const [teachers, actions] = useStore('teachers.list');

@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     Course
 }) => ({
     getOne: (req, res, next) => {

@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     config,
     models: { User }
 }) => ({
@@ -15,7 +15,7 @@ module.exports = ({
 
     authorize: (req, res, next) => {
         req.user ?
-            next() : 
+            next() :
             res.redirect(`//auth.${config.APP_DOMAIN}`);
     },
 

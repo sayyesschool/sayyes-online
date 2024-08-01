@@ -1,12 +1,8 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 
-import { Status } from 'core/models/enrollment/constants';
-
-import { useFormData } from 'shared/hooks/form';
 // import ScheduleSelect from 'shared/components/schedule-select';
 // import DateTimeSelect from 'shared/components/datetime-select';
 import UserSelect from 'shared/components/user-select';
-import { Form } from 'shared/ui-components';
 import {
     ageGroupOptions,
     domainOptions,
@@ -16,11 +12,14 @@ import {
     teacherTypeOptions
 } from 'shared/data/common';
 import { typeOptions } from 'shared/data/enrollment';
+import { useFormData } from 'shared/hooks/form';
+import { Form } from 'shared/ui-components';
 
-import { useStore } from 'app/store';
+import { EnrollmentStatus } from 'core/models/enrollment/constants';
+import { useStore } from 'crm/store';
 
 const defaultEnrollment = {
-    status: Status.Processing,
+    status: EnrollmentStatus.Processing,
     domain: '',
     type: '',
     format: '',

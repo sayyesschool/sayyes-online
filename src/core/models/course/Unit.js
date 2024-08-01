@@ -1,8 +1,8 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Image = require('../image');
+import Image from '../image';
 
-const Unit = new Schema({
+export const Unit = new Schema({
     title: { type: String, required: true },
     description: { type: String, default: '' },
     image: { type: Image },
@@ -25,4 +25,4 @@ Unit.virtual('imageUrl').get(function() {
     return this.image?.url || `${process.env.STORAGE_URL}/courses/${this.courseId}/images/${this.id}.webp`;
 });
 
-module.exports = Unit;
+export default Unit;

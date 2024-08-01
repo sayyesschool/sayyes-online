@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+
 import {
     Banner,
     Button,
@@ -7,14 +8,15 @@ import {
     Typography
 } from 'mdc-react';
 
-import { useMeetings } from 'shared/hooks/meetings';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
-import MeetingCard from 'app/components/meetings/meeting-card';
-import MeetingRegisterDialog from 'app/components/meetings/meeting-register-dialog';
-import MeetingLevelDialog from 'app/components/meetings/meeting-level-dialog';
+import PageHeader from 'shared/components/page-header';
+import { useMeetings } from 'shared/hooks/meetings';
+
+import MeetingCard from 'lk/components/meetings/meeting-card';
+import MeetingLevelDialog from 'lk/components/meetings/meeting-level-dialog';
+import MeetingRegisterDialog from 'lk/components/meetings/meeting-register-dialog';
 
 import './index.scss';
 

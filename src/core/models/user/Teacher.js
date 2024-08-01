@@ -1,6 +1,6 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Teacher = new Schema({
+export const Teacher = new Schema({
     type: { type: String },
     levels: { type: [String] },
     formats: { type: [String] },
@@ -26,4 +26,4 @@ Teacher.virtual('meetings', {
     foreignField: 'hostId'
 });
 
-module.exports = Teacher;
+export default Teacher;

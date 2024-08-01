@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     models: { Assignment }
 }) => ({
     async getMany(req, res) {

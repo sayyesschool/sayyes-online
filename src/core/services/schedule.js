@@ -1,22 +1,22 @@
-const moment = require('moment');
+import moment from 'moment';
 
-module.exports = ({ models: {
+export default ({ models: {
     Lesson,
     Room
 } }) => ({
     async scheduleLesson({ id, ...data }) {
         const room = await this.getAvailableRoom(data);
 
-        this.checkConflictingLesson({
+        await this.checkConflictingLesson({
             ...data,
             roomId: room.id
         });
 
         data.roomId = room.id;
 
-        return id ? 
+        return id ?
             Lesson.findByIdAndUpdate(id, data, {
-                new: true,
+                new: true
             }) :
             Lesson.create(data);
     },
@@ -29,7 +29,7 @@ module.exports = ({ models: {
             message: 'Время уже занято.'
         };
     },
-    
+
     async getAvailableRoom({ date, duration }) {
         const endDate = moment(date).add(duration, 'minutes').toDate();
 

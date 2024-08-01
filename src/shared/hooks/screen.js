@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useMounted, useUpdated } from 'shared/hooks/lifecycle';
 import { useBoolean } from 'shared/hooks/state';

@@ -10,7 +10,7 @@ export default function useParticipants(room, dominantSpeaker) {
         if (dominantSpeaker) {
             setParticipants(prevParticipants => [
                 dominantSpeaker,
-                ...prevParticipants.filter(participant => participant !== dominantSpeaker),
+                ...prevParticipants.filter(participant => participant !== dominantSpeaker)
             ]);
         }
     }, [dominantSpeaker]);

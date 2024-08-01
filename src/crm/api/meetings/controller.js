@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     services: { Club }
 }) => ({
     get: (req, res, next) => {

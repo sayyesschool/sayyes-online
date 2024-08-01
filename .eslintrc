@@ -36,12 +36,24 @@
     },
     "plugins": [
         "@stylistic",
-        "react"
+        "@stylistic/jsx",
+        "react",
+        "simple-import-sort"
     ],
     "rules": {
+        // https://eslint.style/packages/default#rules
         "@stylistic/arrow-parens": [
             "warn",
             "as-needed"
+        ],
+        "@stylistic/comma-dangle": [
+            "warn",
+            "never"
+        ],
+        "@stylistic/comma-spacing": "warn",
+        "@stylistic/eol-last": [
+            "warn",
+            "never"
         ],
         "@stylistic/indent": [
             "warn",
@@ -51,11 +63,20 @@
                 "MemberExpression": 1
             }
         ],
-        "@stylistic/semi": [
-            "error",
-            "always"
+        "@stylistic/lines-between-class-members": [
+            "warn",
+            "always",
+            {
+                "exceptAfterSingleLine": true
+            }
         ],
-        "@stylistic/comma-spacing": "warn",
+        "@stylistic/no-multiple-empty-lines": [
+            "warn",
+            {
+                "max": 1
+            }
+        ],
+        "@stylistic/no-trailing-spaces": "warn",
         "@stylistic/object-curly-spacing": [
             "warn",
             "always"
@@ -66,32 +87,147 @@
                 "allowAllPropertiesOnSameLine": true
             }
         ],
-        "@stylistic/no-trailing-spaces": "warn",
+        "@stylistic/padded-blocks": [
+            "warn",
+            "never"
+        ],
+        "@stylistic/padding-line-between-statements": [
+            "warn",
+            {
+                "blankLine": "always",
+                "prev": "*",
+                "next": [
+                    "multiline-block-like",
+                    "multiline-expression",
+                    "multiline-const"
+                ]
+            },
+            {
+                "blankLine": "always",
+                "prev": [
+                    "multiline-block-like",
+                    "multiline-expression",
+                    "multiline-const"
+                ],
+                "next": "*"
+            },
+            {
+                "blankLine": "any",
+                "prev": [
+                    "const",
+                    "let",
+                    "var"
+                ],
+                "next": [
+                    "const",
+                    "let",
+                    "var"
+                ]
+            },
+            {
+                "blankLine": "always",
+                "prev": "*",
+                "next": "return"
+            }
+        ],
         "@stylistic/quotes": [
             "error",
             "single"
         ],
-        "no-undef": "error",
-        "no-unused-vars": "warn",
-        "no-useless-escape": "warn",
-        "sort-imports": [
+        "@stylistic/semi": [
+            "error",
+            "always"
+        ],
+        "@stylistic/space-infix-ops": "error",
+        "@stylistic/jsx/jsx-closing-bracket-location": [
+            "warn",
+            "tag-aligned"
+        ],
+        "@stylistic/jsx/jsx-first-prop-new-line": [
+            "warn",
+            "multiline-multiprop"
+        ],
+        "@stylistic/jsx/jsx-newline": [
             "warn",
             {
-                "ignoreCase": false,
-                "ignoreDeclarationSort": true,
-                "ignoreMemberSort": false,
-                "memberSyntaxSortOrder": [
-                    "all",
-                    "single",
-                    "multiple",
-                    "none"
-                ],
-                "allowSeparatedGroups": true
+                "prevent": true,
+                "allowMultilines": true
             }
         ],
-        "react/react-in-jsx-scope": "off",
+        "@stylistic/jsx/jsx-max-props-per-line": [
+            "warn",
+            {
+                "maximum": 1,
+                "when": "multiline"
+            }
+        ],
+        "@stylistic/jsx/jsx-props-no-multi-spaces": "warn",
+        "@stylistic/jsx/jsx-sort-props": [
+            "warn",
+            {
+                "callbacksLast": true,
+                "shorthandLast": true,
+                "multiline": "ignore",
+                "ignoreCase": true,
+                "noSortAlphabetically": true,
+                "reservedFirst": true
+            }
+        ],
+        "no-undef": "error",
+        "no-unused-vars": [
+            "warn",
+            {
+                "args": "none"
+            }
+        ],
+        "no-useless-escape": "warn",
+        "react/no-deprecated": "warn",
+        "react/no-unescaped-entities": "warn",
         "react/prop-types": "off",
-        "react/no-unescaped-entities": "warn"
+        "react/react-in-jsx-scope": "off",
+        "simple-import-sort/imports": [
+            "error",
+            {
+                "groups": [
+                    [
+                        "^node:"
+                    ],
+                    [
+                        "^react"
+                    ],
+                    [
+                        "^@?\\w"
+                    ],
+                    [
+                        "^(@/shared|shared)(/.*|$)",
+                        "^\\u0000(@/shared|shared)"
+                    ],
+                    [
+                        "^(@|class|cms|config|core|db|crm|lk|lms)(/.*|$)"
+                    ],
+                    [
+                        // Parent imports. Put `..` last.
+                        "^\\.\\.(?!/?$)",
+                        "^\\.\\./?$"
+                    ],
+                    [
+                        // Other relative imports. Put same-folder imports and `.` last.
+                        "^\\./(?=.*/)(?!/?$)",
+                        "^\\.(?!/?$)",
+                        "^\\./?$"
+                    ],
+                    [
+                        // Side effect imports.
+                        "^\\u0000"
+                    ]
+                    // [
+                    //     // Style imports.
+                    //     "^.+\\.s?css$"
+                    // ]
+                ]
+            }
+        ],
+        "simple-import-sort/exports": "error"
     },
     "overrides": [
         {

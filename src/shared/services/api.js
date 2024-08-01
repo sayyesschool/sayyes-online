@@ -1,3 +1,46 @@
+export default {
+    async get(url = '') {
+        return fetch(url, options())
+            .then(handleFetchResponse)
+            .then(handleApiResponse);
+    },
+
+    async post(url, body) {
+        return fetch(url, options({
+            method: 'POST',
+            body
+        }))
+            .then(handleFetchResponse)
+            .then(handleApiResponse);
+    },
+
+    async put(url, body) {
+        return fetch(url, options({
+            method: 'PUT',
+            body
+        }))
+            .then(handleFetchResponse)
+            .then(handleApiResponse);
+    },
+
+    async patch(url, body) {
+        return fetch(url, options({
+            method: 'PATCH',
+            body
+        }))
+            .then(handleFetchResponse)
+            .then(handleApiResponse);
+    },
+
+    async delete(url) {
+        return fetch(url, options({
+            method: 'DELETE'
+        }))
+            .then(handleFetchResponse)
+            .then(handleApiResponse);
+    }
+};
+
 function handleFetchResponse(response) {
     return response.json();
 }
@@ -21,7 +64,7 @@ function options({ headers = {}, body, ...rest } = {}) {
         headers: {
             'CSRF-Token': window.CSRF_TOKEN,
             'X-Requested-With': 'XMLHttpRequest',
-            ...headers,
+            ...headers
         },
         body,
         ...rest
@@ -34,48 +77,3 @@ function options({ headers = {}, body, ...rest } = {}) {
 
     return options;
 }
-
-const api = {
-    get: (url = '') => {
-        return fetch(url, options())
-            .then(handleFetchResponse)
-            .then(handleApiResponse);
-    },
-
-    post: (url, body) => {
-        return fetch(url, options({
-            method: 'POST',
-            body
-        }))
-            .then(handleFetchResponse)
-            .then(handleApiResponse);
-    },
-
-    put: (url, body) => {
-        return fetch(url, options({
-            method: 'PUT',
-            body
-        }))
-            .then(handleFetchResponse)
-            .then(handleApiResponse);
-    },
-
-    patch: (url, body) => {
-        return fetch(url, options({
-            method: 'PATCH',
-            body
-        }))
-            .then(handleFetchResponse)
-            .then(handleApiResponse);
-    },
-
-    delete: url => {
-        return fetch(url, options({
-            method: 'DELETE'
-        }))
-            .then(handleFetchResponse)
-            .then(handleApiResponse);
-    }
-};
-
-export default api;

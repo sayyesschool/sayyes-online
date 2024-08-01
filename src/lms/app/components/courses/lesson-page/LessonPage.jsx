@@ -1,13 +1,13 @@
 import { useCallback, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
-import { useAssignments } from 'shared/hooks/assignments';
-import { useCourse } from 'shared/hooks/courses';
-import { useEnrollment } from 'shared/hooks/enrollments';
-import { useUser } from 'shared/hooks/user';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useAssignments } from 'shared/hooks/assignments';
+import { useCourse } from 'shared/hooks/courses';
+import { useEnrollment } from 'shared/hooks/enrollments';
+import { useBoolean } from 'shared/hooks/state';
+import { useUser } from 'shared/hooks/user';
 import { Text } from 'shared/ui-components';
 
 import AssignmentForm from 'lms/components/assignments/assignment-form';
@@ -78,8 +78,7 @@ export default function LessonPage({ match, location }) {
                 title={lesson.title}
                 description={lesson.description &&
                     <Text type="body-md">
-                        <span
-                            dangerouslySetInnerHTML={{ __html: lesson.description }}
+                        <span dangerouslySetInnerHTML={{ __html: lesson.description }}
                         />
                     </Text>
                 }

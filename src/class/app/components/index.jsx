@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 
-import { RoomProvider } from 'app/contexts/RoomContext';
-import useAppState from 'app/hooks/useAppState';
-import App from 'app/components/App';
-import ErrorDialog from 'app/components/ErrorDialog';
-import UnsupportedBrowserWarning from 'app/components/UnsupportedBrowserWarning';
+import App from 'class/components/App';
+import ErrorDialog from 'class/components/ErrorDialog';
+import UnsupportedBrowserWarning from 'class/components/UnsupportedBrowserWarning';
+import { RoomProvider } from 'class/contexts/RoomContext';
+import useAppState from 'class/hooks/useAppState';
 
 export default function Root() {
     const { error, setError } = useAppState();

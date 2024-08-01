@@ -1,9 +1,9 @@
-const expect = require('expect');
-const express = require('express');
-const { stub } = require('sinon');
-const test = require('supertest');
+import expect from 'expect';
+import express, { json } from 'express';
+import { stub } from 'sinon';
+import test from 'supertest';
 
-const router = require('./router');
+import router from './router';
 
 const context = global.$context;
 const Assignment = stub(context.models.Assignment);
@@ -12,86 +12,90 @@ context.models.Assignment = Assignment;
 
 const app = test(
     express()
-        .use(express.json())
+        .use(json())
         .use(router(context))
 );
+
+const mockData = {
+    assignment: {
+        _id: 1,
+        id: 1,
+        title: 'Assignment 1',
+        enrollment: {
+            domain: 'domain'
+        },
+        exercises: []
+    },
+    assignments: [
+        { _id: 1, title: 'Assignment 1' }
+    ]
+};
 
 describe('Assignment router', () => {
     describe('GET /', () => {
         it('should return a list of assignments', async () => {
-            const assignments = [{ _id: 1, title: 'Assignment 1' }];
-            Assignment.find.resolves(assignments);
+            Assignment.find.resolves(mockData.assignments);
 
             const response = await app.get('/');
 
             expect(response.status).toBe(200);
             expect(response.body).toMatch({
                 ok: true,
-                data: assignments
+                data: mockData.assignments
             });
         });
     });
 
     describe('POST /', () => {
         it('should create a new assignment', async () => {
-            const data = { title: 'Assignment 1' };
-            const assignment = { _id: 1, title: 'Assignment 1' };
-            Assignment.create.resolves(assignment);
+            Assignment.create.resolves(mockData.assignment);
 
-            const response = await app.post('/').send(data);
+            const response = await app.post('/').send({ title: 'Assignment 1' });
 
             expect(response.status).toBe(200);
             expect(response.body).toMatch({
                 ok: true,
                 message: 'Задание создано',
-                data: assignment
+                data: mockData.assignment
             });
         });
     });
 
     describe('GET /:id', () => {
         it('should get an assignment', async () => {
-            const assignment = {
-                _id: 1,
-                title: 'Assignment 1',
-                enrollment: {
-                    domain: 'domain'
-                },
-                exercises: []
-            };
-            Assignment.findById.returnsQuery(assignment);
+            Assignment.findById.returnsQuery(mockData.assignment);
 
             const response = await app.get('/1');
 
             expect(response.status).toBe(200);
             expect(response.body).toMatch({
                 ok: true,
-                data: assignment
+                data: mockData.assignment
             });
         });
     });
 
     describe('PUT /:id', () => {
         it('should update an assignment', async () => {
-            const data = { title: 'Assignment 2' };
-            const assignment = { _id: 1, title: 'Assignment 2' };
-            Assignment.findOneAndUpdate.resolves(assignment);
+            Assignment.findOneAndUpdate.resolves(mockData.assignment);
 
-            const response = await app.put('/1').send(data);
+            const response = await app.put('/1').send({ title: 'Assignment 2' });
 
             expect(response.status).toBe(200);
             expect(response.body).toMatch({
                 ok: true,
                 message: 'Задание обновлено',
-                data: assignment
+                data: {
+                    ...mockData.assignment,
+                    title: 'Assignment 2'
+                }
             });
         });
     });
 
     describe('DELETE /:id', () => {
-        it('should deletes an assignment', async () => {
-            const assignment = { _id: 1, id: 1, title: 'Assignment 1' };
-            Assignment.findOneAndDelete.resolves(assignment);
+        it('should delete an assignment', async () => {
+            Assignment.findOneAndDelete.resolves(mockData.assignment);
 
             const response = await app.delete('/1');
 
@@ -100,7 +104,7 @@ describe('Assignment router', () => {
                 ok: true,
                 message: 'Задание удалено',
                 data: {
-                    id: assignment._id
+                    id: mockData.assignment._id
                 }
             });
         });

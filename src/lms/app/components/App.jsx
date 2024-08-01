@@ -1,18 +1,17 @@
 import { Route, Switch } from 'react-router-dom';
 
-import { useUser } from 'shared/hooks/user';
-import AppHeader from 'shared/components/app-header';
 import AppContent from 'shared/components/app-content';
+import AppHeader from 'shared/components/app-header';
+import AppNav from 'shared/components/app-nav';
 import AppNotification from 'shared/components/app-notification';
 import LoadingIndicator from 'shared/components/loading-indicator';
-import NavBar from 'shared/components/nav-bar';
+import { useUser } from 'shared/hooks/user';
 
-import Assignments from 'app/components/assignments';
-import Courses from 'app/components/courses';
-import Enrollments from 'app/components/enrollments';
-import { LearnerHomePage, TeacherHomePage } from 'app/components/home';
-import Materials from 'app/components/materials';
-import navItems from 'app/data/nav';
+import Assignments from 'lms/components/assignments';
+import Courses from 'lms/components/courses';
+import Enrollments from 'lms/components/enrollments';
+import { LearnerHomePage, TeacherHomePage } from 'lms/components/home';
+import navItems from 'lms/data/nav';
 
 const PageHomeByRole = {
     learner: LearnerHomePage,
@@ -26,15 +25,17 @@ export default function App() {
 
     return (
         <div className="App">
-            <AppHeader
-                user={user}
-            >
-                <NavBar items={navItems} />
+            <AppHeader user={user}>
+                <AppNav
+                    items={navItems}
+                    orientation="horizontal"
+                    invertedColors
+                />
             </AppHeader>
 
             <AppContent>
                 <Switch>
-                    <Route exact path="/" component={PageHomeByRole[user.role]} />
+                    <Route path="/" component={PageHomeByRole[user.role]} exact />
                     <Route path="/assignments" component={Assignments} />
                     <Route path="/courses" component={Courses} />
                     <Route path="/enrollments" component={Enrollments} />
@@ -43,6 +44,6 @@ export default function App() {
             </AppContent>
 
             <AppNotification />
-        </div>
+        </div >
     );
 }

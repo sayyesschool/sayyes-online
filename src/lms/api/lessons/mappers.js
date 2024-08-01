@@ -1,4 +1,4 @@
-function mapLesson(lesson) {
+export function mapLesson(lesson) {
     const data = lesson.toJSON();
 
     data.learner = lesson.learner && {
@@ -12,7 +12,3 @@ function mapLesson(lesson) {
 
     return data;
 }
-
-module.exports = {
-    mapLesson
-};

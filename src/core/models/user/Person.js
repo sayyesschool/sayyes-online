@@ -1,13 +1,13 @@
-const { Schema } = require('mongoose');
-const moment = require('moment');
+import moment from 'moment';
+import { Schema } from 'mongoose';
 
-const Gender = {
+export const Gender = {
     Female: 'female',
     Male: 'male',
     Unknown: ''
 };
 
-const Person = new Schema({
+export const Person = new Schema({
     firstname: {
         type: String,
         trim: true,
@@ -78,4 +78,4 @@ Person.virtual('age').get(function() {
     return this.dob && moment().diff(this.dob, 'years');
 });
 
-module.exports = Person;
+export default Person;

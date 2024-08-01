@@ -1,4 +1,4 @@
-module.exports = MailJet => ({
+export default MailJet => ({
     subscribe: ({ name, email, action = 'addforce' }) => {
         return MailJet
             .post('contactslist', { version: 'v3' })

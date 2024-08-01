@@ -1,7 +1,7 @@
-const passport = require('passport');
-const VKontakteStrategy = require('passport-vkontakte').Strategy;
+import passport from 'passport';
+import { Strategy } from 'passport-vkontakte';
 
-module.exports = (Auth, { VKONTAKTE_CLIENT_ID, VKONTAKTE_CLIENT_SECRET, VKONTAKTE_CALLBACK_URL }) => {
+export default (Auth, { VKONTAKTE_CLIENT_ID, VKONTAKTE_CLIENT_SECRET, VKONTAKTE_CALLBACK_URL }) => {
     const config = {
         clientID: VKONTAKTE_CLIENT_ID,
         clientSecret: VKONTAKTE_CLIENT_SECRET,
@@ -10,7 +10,7 @@ module.exports = (Auth, { VKONTAKTE_CLIENT_ID, VKONTAKTE_CLIENT_SECRET, VKONTAKT
         passReqToCallback: true
     };
 
-    passport.use(new VKontakteStrategy(config, (req, token, refreshToken, params, profile, done) => {
+    passport.use(new Strategy(config, (req, token, refreshToken, params, profile, done) => {
         const account = {
             _id: 'vkontakte',
             title: 'ВКонтакте',

@@ -1,11 +1,11 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Subtask = new Schema({
+export const Subtask = new Schema({
     title: String,
     completed: Boolean
 });
 
-const Task = new Schema({
+export const Task = new Schema({
     title: { type: String, required: true },
     completed: { type: Boolean, default: false },
     dueAt: { type: Date },
@@ -18,4 +18,4 @@ const Task = new Schema({
     timestamps: true
 });
 
-module.exports = Task;
+export default Task;

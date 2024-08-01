@@ -1,1 +1,1 @@
-export { default, default as ConnectedTime } from './ConnectedTime';
+export { default as ConnectedTime, default } from './ConnectedTime';

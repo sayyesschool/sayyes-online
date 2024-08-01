@@ -1,12 +1,12 @@
-const express = require('express');
-const vhost = require('vhost');
+import express from 'express';
+import vhost from 'vhost';
 
-const storage = require('./storage');
-const twilio = require('./twilio');
-const yookassa = require('./yookassa');
-const zoom = require('./zoom');
+import storage from './storage';
+import twilio from './twilio';
+import yookassa from './yookassa';
+import zoom from './zoom';
 
-module.exports = context => {
+export default context => {
     const api = express();
 
     api.use('/storage', context.middleware.auth.authenticatedRoute, storage(context));

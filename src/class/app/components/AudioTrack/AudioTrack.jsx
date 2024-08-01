@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import useAppState from 'app/hooks/useAppState';
+import useAppState from 'class/hooks/useAppState';
 
 export default function AudioTrack({ track }) {
     const { activeSinkId } = useAppState();

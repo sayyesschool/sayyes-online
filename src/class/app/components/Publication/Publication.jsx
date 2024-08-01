@@ -1,5 +1,5 @@
-import useTrack from 'app/hooks/useTrack';
-import VideoTrack from 'app/components/VideoTrack';
+import VideoTrack from 'class/components/VideoTrack';
+import useTrack from 'class/hooks/useTrack';
 
 export default function Publication({
     publication,

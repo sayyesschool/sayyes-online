@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     models: { Teacher }
 }) => ({
     get: (req, res, next) => {

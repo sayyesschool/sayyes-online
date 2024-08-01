@@ -1,38 +1,38 @@
-const { Status, Type } = require('../../core/models/enrollment/constants');
+import { EnrollmentStatus, EnrollmentType } from 'core/models/enrollment/constants';
 
-const StatusIcon = {
-    [Status.Active]: 'school',
-    [Status.Canceled]: 'cancel',
-    [Status.Completed]: 'check_circle',
-    [Status.Payment]: 'payment',
-    [Status.Postponed]: 'next_plan',
-    [Status.Processing]: 'pending',
-    [Status.Trial]: 'event_available'
+export const StatusIcon = {
+    [EnrollmentStatus.Active]: 'school',
+    [EnrollmentStatus.Canceled]: 'cancel',
+    [EnrollmentStatus.Completed]: 'check_circle',
+    [EnrollmentStatus.Payment]: 'payment',
+    [EnrollmentStatus.Postponed]: 'next_plan',
+    [EnrollmentStatus.Processing]: 'pending',
+    [EnrollmentStatus.Trial]: 'event_available'
 };
 
-const StatusLabel = {
-    [Status.Active]: 'Активное',
-    [Status.Canceled]: 'Отменено',
-    [Status.Completed]: 'Завершено',
-    [Status.Payment]: 'Оплата',
-    [Status.Postponed]: 'Отложено',
-    [Status.Processing]: 'В обработке',
-    [Status.Trial]: 'Пробный урок'
+export const StatusLabel = {
+    [EnrollmentStatus.Active]: 'Активное',
+    [EnrollmentStatus.Canceled]: 'Отменено',
+    [EnrollmentStatus.Completed]: 'Завершено',
+    [EnrollmentStatus.Payment]: 'Оплата',
+    [EnrollmentStatus.Postponed]: 'Отложено',
+    [EnrollmentStatus.Processing]: 'В обработке',
+    [EnrollmentStatus.Trial]: 'Пробный урок'
 };
 
-const TypeLabel = {
-    [Type.Individual]: 'Индивидуально',
-    [Type.Group]: 'В группе'
+export const TypeLabel = {
+    [EnrollmentType.Individual]: 'Индивидуально',
+    [EnrollmentType.Group]: 'В группе'
 };
 
-const statusOptions = Object.entries(StatusLabel).map(([key, value]) => ({
+export const statusOptions = Object.entries(StatusLabel).map(([key, value]) => ({
     key,
     value: key,
     label: value,
     content: value
 }));
 
-const typeOptions = [
+export const typeOptions = [
     { key: 'null', value: '', label: '', content: '' },
     ...Object.entries(TypeLabel).map(([key, value]) => ({
         key,
@@ -41,13 +41,3 @@ const typeOptions = [
         content: value
     }))
 ];
-
-module.exports = {
-    Status,
-    StatusIcon,
-    StatusLabel,
-    Type,
-    TypeLabel,
-    statusOptions,
-    typeOptions,
-};

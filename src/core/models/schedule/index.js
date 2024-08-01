@@ -1,1 +1,1 @@
-module.exports = require('./Schedule');
+export { default, Schedule } from './Schedule';

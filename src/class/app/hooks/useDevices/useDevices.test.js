@@ -12,7 +12,7 @@ const mockRemoveEventListener = jest.fn();
 
 navigator.mediaDevices = {
     addEventListener: mockAddEventListener,
-    removeEventListener: mockRemoveEventListener,
+    removeEventListener: mockRemoveEventListener
 };
 
 describe('the useDevices hook', () => {

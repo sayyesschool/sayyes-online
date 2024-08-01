@@ -1,5 +1,6 @@
-module.exports = ({
-    models: { Payment }
+export default ({
+    models: { Payment },
+    services: { Checkout }
 }) => ({
     getMany: (req, res, next) => {
         return Payment.find({ user: req.user })
@@ -45,7 +46,7 @@ module.exports = ({
                 test: payment.test,
                 operator: 'yookassa',
                 user: req.user.id,
-                enrollment: enrollment.id
+                enrollment: req.enrollment.id
             });
         }).then(payment => {
             res.json({

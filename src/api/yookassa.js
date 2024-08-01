@@ -1,8 +1,10 @@
-const router = require('express').Router();
+import { Router } from 'express';
 
-module.exports = ({
+export default ({
     models: { Client, Enrollment, Lesson, Pack, Payment, Transaction }
 }) => {
+    const router = Router();
+
     router.post('/payments', async (req, res) => {
         try {
             const { type, event, object } = req.body;
@@ -73,12 +75,13 @@ module.exports = ({
             } else if (event === 'payment.canceled') {
                 await Payment.updateOne({ uuid: object.id }, {
                     status: object.status,
-                    method: paymentMethod,
+                    // method: paymentMethod,
                     cancellationDetails: object.cancellation_details
                 });
-            } else if (event === 'refund.succeeded') {
-
             }
+            // else if (event === 'refund.succeeded') {
+
+            // }
 
             res.sendStatus(200);
         } catch (error) {

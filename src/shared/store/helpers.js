@@ -2,6 +2,15 @@ export { combineReducers } from 'redux';
 
 import * as store from 'shared/hooks/store';
 
+export function createActions(actions, prefix = '') {
+    return Object.entries(actions)
+        .reduce((acc, [name, action]) => {
+            acc[name] = createAction(prefix + name, action);
+
+            return acc;
+        }, {});
+}
+
 export function createAction(type, fn) {
     function actionCreator(...args) {
         if (!fn) return { type };

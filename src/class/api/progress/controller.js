@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     models: { Progress }
 }) => ({
     get: (req, res, next) => {

@@ -1,23 +1,38 @@
 {
     "include": [
-        "./src/**/*"
+        "./src/**/*",
+        "./test/**/*"
     ],
     "exclude": [
         "node_modules",
         "dist"
     ],
     "compilerOptions": {
-        "baseUrl": "./src/",
         "paths": {
             "@/*": [
                 "./src/*"
             ],
+            "class/*": [
+                "./src/class/app/*"
+            ],
+            "cms/*": [
+                "./src/cms/app/*"
+            ],
+            "core/*": [
+                "./src/core/*"
+            ],
+            "crm/*": [
+                "./src/crm/app/*"
+            ],
+            "lk/*": [
+                "./src/lk/app/*"
+            ],
             "lms/*": [
-                "./src/lms/*"
+                "./src/lms/app/*"
             ],
             "shared/*": [
                 "./src/shared/*"
-            ],
+            ]
         },
         "target": "es2020"
     }

@@ -1,1 +1,1 @@
-module.exports = require('./Task');
+export { default, Task } from './Task';

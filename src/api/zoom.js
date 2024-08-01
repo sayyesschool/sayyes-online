@@ -1,6 +1,6 @@
-const { Router } = require('express');
+import { Router } from 'express';
 
-module.exports = ({ models: { Meeting } }) => {
+export default ({ models: { Meeting } }) => {
     const router = Router();
 
     router.post('/meetings', (req, res, next) => {

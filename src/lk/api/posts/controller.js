@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     models: { Post }
 }) => ({
     getMany: (req, res, next) => {
@@ -146,7 +146,7 @@ module.exports = ({
             }
         }, {
             projection: {
-                comments: { $elemMatch: { _id: req.params.commentId } },
+                comments: { $elemMatch: { _id: req.params.commentId } }
             }
         }).then(post => {
             const data = post.comments[0].toObject();
@@ -159,5 +159,5 @@ module.exports = ({
                 data
             });
         }).catch(next);
-    },
+    }
 });

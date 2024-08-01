@@ -1,15 +1,15 @@
 import { useCallback, useEffect, } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import PageHeader from 'shared/components/page-header';
 import PageContent from 'shared/components/page-content';
+import PageHeader from 'shared/components/page-header';
+import { useBoolean } from 'shared/hooks/state';
 
-import { useStore } from 'app/store';
-import MaterialsGridList from 'app/components/materials/materials-grid-list';
-import MaterialForm from 'app/components/materials/material-form';
+import MaterialForm from 'cms/components/materials/material-form';
+import MaterialsGridList from 'cms/components/materials/materials-grid-list';
+import { useStore } from 'cms/store';
 
 export default function Materials() {
     const [materials, actions] = useStore('materials.list');

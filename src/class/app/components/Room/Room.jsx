@@ -1,23 +1,23 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 
-import { useBoolean } from 'shared/hooks/state';
-import { useFullScreen, useScrollClassName } from 'shared/hooks/screen';
 import Chat from 'shared/components/chat';
+import { useFullScreen, useScrollClassName } from 'shared/hooks/screen';
+import { useBoolean } from 'shared/hooks/state';
 import { Alert, Icon } from 'shared/ui-components';
 import classnames from 'shared/utils/classnames';
 
-import useRoomContext from 'app/hooks/useRoomContext';
-import useSharedState from 'app/hooks/useSharedState';
-import Content from 'app/components/Content';
-import MainParticipant from 'app/components/MainParticipant';
-import ParticipantAudioTracks from 'app/components/ParticipantAudioTracks';
-import ParticipantList from 'app/components/ParticipantList';
-import RoomHeader from 'app/components/RoomHeader';
-import RoomContent from 'app/components/RoomContent';
-import RoomSidePanel from 'app/components/RoomSidePanel';
-import ScreenShareAlert from 'app/components/ScreenShareAlert';
-import MiroWhiteboard from 'app/components/MiroWhiteboard';
+import Content from 'class/components/Content';
+import MainParticipant from 'class/components/MainParticipant';
+import MiroWhiteboard from 'class/components/MiroWhiteboard';
+import ParticipantAudioTracks from 'class/components/ParticipantAudioTracks';
+import ParticipantList from 'class/components/ParticipantList';
+import RoomContent from 'class/components/RoomContent';
+import RoomHeader from 'class/components/RoomHeader';
+import RoomSidePanel from 'class/components/RoomSidePanel';
+import ScreenShareAlert from 'class/components/ScreenShareAlert';
+import useRoomContext from 'class/hooks/useRoomContext';
+import useSharedState from 'class/hooks/useSharedState';
 
 export default function Room({ user, enrollment }) {
     const {
@@ -33,7 +33,7 @@ export default function Room({ user, enrollment }) {
 
     const rootRef = useRef();
     const contentRef = useRef();
-    
+
     const participantsById = useMemo(() => ({
         [enrollment.learner.id]: enrollment.learner.fullname,
         [enrollment.teacher.id]: enrollment.teacher.fullname
@@ -102,10 +102,12 @@ export default function Room({ user, enrollment }) {
     }, [room]);
 
     return (
-        <div ref={rootRef} className={classnames('Room', {
-            'Room--fullscreen': isFullscreen,
-            'Room--showing-content': location.pathname !== '/'
-        })}>
+        <div
+            ref={rootRef} className={classnames('Room', {
+                'Room--fullscreen': isFullscreen,
+                'Room--showing-content': location.pathname !== '/'
+            })}
+        >
             <RoomHeader
                 user={user}
                 location={location}
@@ -133,9 +135,9 @@ export default function Room({ user, enrollment }) {
             </RoomSidePanel>
 
             <RoomContent ref={contentRef}>
-                {/* 
+                {/*
                     This ParticipantAudioTracks component will render the audio track for all participants in the room.
-                    It is in a separate component so that the audio tracks will always be rendered, and that they will never be 
+                    It is in a separate component so that the audio tracks will always be rendered, and that they will never be
                     unnecessarily unmounted/mounted as the user switches between Gallery View and speaker View.
                 */}
                 <ParticipantAudioTracks />

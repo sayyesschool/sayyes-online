@@ -1,1 +1,1 @@
-module.exports = require('./Meeting');
+export { default, Meeting } from './Meeting';

@@ -1,12 +1,12 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const AssignmentStatus = {
+export const AssignmentStatus = {
     Assigned: 'assigned',
     Submitted: 'submitted',
     Completed: 'completed'
 };
 
-const Assignment = new Schema({
+export const Assignment = new Schema({
     title: { type: String },
     content: { type: String },
     status: { type: String, enum: Object.values(AssignmentStatus) },
@@ -27,13 +27,19 @@ Assignment.virtual('enrollment', {
     ref: 'Enrollment',
     localField: 'enrollmentId',
     foreignField: '_id',
-    justOne: true,
+    justOne: true
 });
 
 Assignment.virtual('exercises', {
     ref: 'Exercise',
     localField: 'exerciseIds',
     foreignField: '_id'
+});
+
+Assignment.virtual('comments', {
+    ref: 'Comment',
+    localField: '_id',
+    foreignField: 'itemId'
 });
 
 Assignment.virtual('hasExercises').get(function() {
@@ -44,4 +50,4 @@ Assignment.virtual('numberOfExercises').get(function() {
     return this.exerciseIds && this.exerciseIds.length;
 });
 
-module.exports = Assignment;
+export default Assignment;

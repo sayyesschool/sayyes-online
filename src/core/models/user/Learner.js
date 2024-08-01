@@ -1,8 +1,8 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Contact = require('./Contact');
+import Contact from './Contact';
 
-const Learner = new Schema({
+export const Learner = new Schema({
     level: { type: String },
     info: {
         address: { type: String },
@@ -20,8 +20,8 @@ Learner.virtual('status').get(function() {
     return this.enrollments?.some(enrollment => enrollment.isActive)?.status;
 });
 
-Learner.virtual('requests', {
-    ref: 'Request',
+Learner.virtual('assignments', {
+    ref: 'Assignment',
     localField: '_id',
     foreignField: 'learnerId'
 });
@@ -44,10 +44,16 @@ Learner.virtual('payments', {
     foreignField: 'userId'
 });
 
+Learner.virtual('requests', {
+    ref: 'Request',
+    localField: '_id',
+    foreignField: 'learnerId'
+});
+
 Learner.virtual('transactions', {
     ref: 'Transaction',
     localField: '_id',
     foreignField: 'userId'
 });
 
-module.exports = Learner;
+export default Learner;

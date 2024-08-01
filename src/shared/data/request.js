@@ -1,6 +1,6 @@
-const { RequestChannel, RequestSource, RequestStatus } = require('../../core/models/request/constants');
+import { RequestChannel, RequestSource, RequestStatus } from '../../core/models/request/constants';
 
-const RequestStatusLabel = {
+export const RequestStatusLabel = {
     [RequestStatus.New]: 'Новая',
     [RequestStatus.Processing]: 'В обработке',
     [RequestStatus.Postponed]: 'В обработке',
@@ -8,7 +8,7 @@ const RequestStatusLabel = {
     [RequestStatus.Canceled]: 'Отменена'
 };
 
-const RequestStatusIcon = {
+export const RequestStatusIcon = {
     [RequestStatus.New]: 'new_releases',
     [RequestStatus.Processing]: 'edit',
     [RequestStatus.Postponed]: 'hourglass_empty',
@@ -16,7 +16,7 @@ const RequestStatusIcon = {
     [RequestStatus.Canceled]: 'cancel'
 };
 
-const RequestChannelLabel = {
+export const RequestChannelLabel = {
     [RequestChannel.None]: '',
     [RequestChannel.Call]: 'Звонок',
     [RequestChannel.Site]: 'Сайт',
@@ -24,7 +24,7 @@ const RequestChannelLabel = {
     [RequestChannel.Instagram]: 'Instagram'
 };
 
-const RequestSourceLabel = {
+export const RequestSourceLabel = {
     [RequestSource.None]: '',
     [RequestSource.Instagram]: 'Instagram',
     [RequestSource.WhatsApp]: 'WhatsApp',
@@ -33,36 +33,26 @@ const RequestSourceLabel = {
     [RequestSource.Recommendation]: 'Рекомендация'
 };
 
-const requestStatusMenuItems = Object.entries(RequestStatusLabel).map(([key, value]) => ({
+export const requestStatusMenuItems = Object.entries(RequestStatusLabel).map(([key, value]) => ({
     key: key,
     value: key,
     content: value
 }));
 
-const requestStatusOptions = Object.entries(RequestStatusLabel).map(([key, value]) => ({
+export const requestStatusOptions = Object.entries(RequestStatusLabel).map(([key, value]) => ({
     key: key,
     value: key,
     label: value
 }));
 
-const requestChannelOptions = Object.entries(RequestChannelLabel).map(([key, value]) => ({
+export const requestChannelOptions = Object.entries(RequestChannelLabel).map(([key, value]) => ({
     key: key,
     value: key,
     label: value
 }));
 
-const requestSourceOptions = Object.entries(RequestSourceLabel).map(([key, value]) => ({
+export const requestSourceOptions = Object.entries(RequestSourceLabel).map(([key, value]) => ({
     key: key,
     value: key,
     label: value
 }));
-
-module.exports = {
-    RequestStatus,
-    RequestStatusLabel,
-    RequestStatusIcon,
-    requestStatusMenuItems,
-    requestChannelOptions,
-    requestSourceOptions,
-    requestStatusOptions
-};

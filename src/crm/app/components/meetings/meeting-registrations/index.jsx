@@ -1,15 +1,17 @@
 import { useCallback, useContext, useState } from 'react';
+
 import {
     Card,
     Icon,
     IconButton,
-    List, ListItem, ListItemGraphic, ListItemText, ListItemMeta,
-    ListGroup, ListGroupSubheader,
-    TextField
+    List, ListGroup, ListGroupSubheader,
+    ListItem, ListItemGraphic, ListItemMeta,
+    ListItemText, TextField
 } from 'mdc-react';
 
 import { useBoolean } from 'shared/hooks/state';
-import UIContext from 'app/contexts/ui';
+
+import UIContext from 'crm/contexts/ui';
 
 export default function MeetingRegistrations({
     registrations,

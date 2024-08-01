@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { SharedStateContext } from 'app/contexts/SharedStateContext';
+import { SharedStateContext } from 'class/contexts/SharedStateContext';
 
 export default function useSharedStateContext() {
     const context = useContext(SharedStateContext);

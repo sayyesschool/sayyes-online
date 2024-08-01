@@ -16,6 +16,8 @@ const ListItem = forwardRef(({
     interactive,
     selected,
     to,
+    color,
+    variant,
 
     as,
     children,
@@ -52,6 +54,8 @@ const ListItem = forwardRef(({
             className={classNames}
             startAction={start}
             endAction={end}
+            color={color}
+            variant={variant}
             {...props}
         >
             {(interactive || to) ?
@@ -59,6 +63,8 @@ const ListItem = forwardRef(({
                     component={as}
                     to={to}
                     selected={selected}
+                    color={color}
+                    variant={variant}
                 >
                     {listItemContent}
                 </JoyListItemButton>
