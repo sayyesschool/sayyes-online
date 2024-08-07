@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
 
+import moment from 'moment';
+
 import { timezones } from 'shared/data';
 import useForm from 'shared/hooks/form';
 import Form from 'shared/ui-components/form';
@@ -24,7 +26,10 @@ export default function ProfileForm({ profile, onSubmit, ...props }) {
     }, []);
 
     return (
-        <Form id="profile-form" onSubmit={handleSubmit} {...props}>
+        <Form
+            id="profile-form" onSubmit={handleSubmit}
+            {...props}
+        >
             <Form.Input
                 name="firstname"
                 value={data.firstname}

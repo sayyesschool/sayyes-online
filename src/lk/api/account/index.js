@@ -8,7 +8,6 @@ export default context => {
     const controller = Controller(context);
     const upload = multer();
 
-    router.get('/', controller.getUser);
     router.put('/profile', upload.single('avatar'), controller.updateProfile);
     router.put('/password', controller.updatePassword);
 

@@ -1,11 +1,4 @@
 export default () => ({
-    getUser: (req, res, next) => {
-        res.json({
-            ok: true,
-            data: map(req.user)
-        });
-    },
-
     updateProfile: (req, res, next) => {
         req.user.firstname = req.body.firstname;
         req.user.lastname = req.body.lastname;
