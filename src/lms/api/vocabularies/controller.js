@@ -45,7 +45,7 @@ export default ({
 
     async getMy(req, res) {
         const records = await LexemeRecord.find({
-            learnerId: req.user.id
+            learnerId: req.query.learnerId || req.user.id
         })
             .sort({ createdAt: -1 })
             .populate('lexeme');
