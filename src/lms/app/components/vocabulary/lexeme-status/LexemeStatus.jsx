@@ -22,7 +22,7 @@ const StatusColor = {
 
 export default function LexemeStatus({
     level = 0,
-    tooltipPlacement = 'left',
+    tooltipPlacement = 'auto',
     readOnly,
     onChange
 }) {

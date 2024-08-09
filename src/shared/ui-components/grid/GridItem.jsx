@@ -10,4 +10,6 @@ const GridItem = forwardRef(({
     );
 });
 
+GridItem.displayName = 'GridItem';
+
 export default GridItem;

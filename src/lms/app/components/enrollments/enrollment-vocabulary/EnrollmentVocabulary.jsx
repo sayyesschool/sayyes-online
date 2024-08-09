@@ -33,7 +33,7 @@ export default function EnrollmentVocabulary({
                 vocabulary={vocabulary}
                 user={user}
                 learnerId={enrollment.learner?.id}
-                isDrawer
+                inline
             />
         </PageSection>
     );

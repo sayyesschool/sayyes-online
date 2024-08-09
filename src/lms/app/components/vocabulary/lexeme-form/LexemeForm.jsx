@@ -3,14 +3,18 @@ import { useCallback, useState } from 'react';
 import ImageField from 'shared/components/image-field';
 import { useUser } from 'shared/hooks/user';
 import Storage from 'shared/services/storage';
-import { Button, Form, Heading } from 'shared/ui-components';
+import { Form, Heading } from 'shared/ui-components';
 
 import { getInitialData, getLabels } from './helpers';
 import LexemeExamples from './LexemeExamples';
 
 import styles from './LexemeForm.module.scss';
 
-export default function LexemeForm({ lexeme, onSubmit, onClose, ...props }) {
+export default function LexemeForm({
+    lexeme,
+    onSubmit,
+    ...props
+}) {
     const user = useUser();
 
     const initialData = getInitialData(lexeme);
@@ -69,22 +73,14 @@ export default function LexemeForm({ lexeme, onSubmit, onClose, ...props }) {
 
     return (
         <Form
-            className={styles.root} onSubmit={handleSubmit}
+            className={styles.root}
+            onSubmit={handleSubmit}
             {...props}
         >
-            {onClose &&
-                <>
-                    <Button
-                        content="Назад"
-                        variant="soft"
-                        onClick={onClose}
-                    />
-
-                    <Heading
-                        content={lexeme.value}
-                        type="h1"
-                    />
-                </>}
+            <Heading
+                content={lexeme.value}
+                type="h1"
+            />
 
             <ImageField
                 className={styles.imageField}
@@ -95,19 +91,21 @@ export default function LexemeForm({ lexeme, onSubmit, onClose, ...props }) {
                 onDelete={handleFileDelete}
             />
 
-            {lexeme.approved && <>
-                <Form.Input
-                    label="Перевод"
-                    value={lexeme.translation}
-                    disabled
-                />
+            {lexeme.approved &&
+                <>
+                    <Form.Input
+                        label="Перевод"
+                        value={lexeme.translation}
+                        disabled
+                    />
 
-                <Form.Textarea
-                    label="Определение"
-                    value={lexeme.definition}
-                    disabled
-                />
-            </>}
+                    <Form.Textarea
+                        label="Определение"
+                        value={lexeme.definition}
+                        disabled
+                    />
+                </>
+            }
 
             <Form.Input
                 value={translation}

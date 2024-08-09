@@ -32,11 +32,15 @@ export default function EnrollmentPage({ match }) {
     const openChat = useCallback(() => {
         toggleChatOpen(true);
         toggleVocabularyOpen(false);
-    }, []);
+    }, [/* empty */]);
 
     const openVocabulary = useCallback(() => {
         toggleChatOpen(false);
         toggleVocabularyOpen(true);
+    }, [/* empty */]);
+
+    const handleChatJoined = useCallback(() => {
+        setUnreadMessagesCount(0);
     }, []);
 
     if (!enrollment) return <LoadingIndicator fullscreen />;
@@ -51,6 +55,8 @@ export default function EnrollmentPage({ match }) {
                 <EnrollmentChat
                     enrollment={enrollment}
                     user={user}
+                    onJoined={handleChatJoined}
+                    onClose={toggleChatOpen}
                 />
             </Page.Drawer>
 
@@ -58,6 +64,7 @@ export default function EnrollmentPage({ match }) {
                 <EnrollmentVocabulary
                     enrollment={enrollment}
                     user={user}
+                    onClose={toggleVocabularyOpen}
                 />
             </Page.Drawer>
 
@@ -119,10 +126,7 @@ export default function EnrollmentPage({ match }) {
 
             <Page.Content>
                 <Grid spacing={2}>
-                    <Grid.Item
-                        lg={8} md={8}
-                        sm={8} xs={12}
-                    >
+                    <Grid.Item sm={8} xs={12}>
                         <Flex gap="medium" column>
                             <EnrollmentLessons
                                 enrollment={enrollment}
@@ -136,10 +140,7 @@ export default function EnrollmentPage({ match }) {
                         </Flex>
                     </Grid.Item>
 
-                    <Grid.Item
-                        lg={4} md={4}
-                        sm={4} xs={12}
-                    >
+                    <Grid.Item sm={4} xs={12}>
                         <Flex gap="medium" column>
                             {(isTeacher || enrollment.courses?.length > 0) &&
                                 <EnrollmentCourses
