@@ -25,9 +25,15 @@ await db.drop();
 
 await Room.create(data.rooms);
 
-const learner = await User.create(data.learner);
-
-const teacher = await User.create(data.teacher);
+const [
+    learner,
+    manager,
+    teacher
+] = await User.create([
+    data.learner,
+    data.manager,
+    data.teacher
+]);
 
 const exercise = await Exercise.create(data.exercise);
 
@@ -36,6 +42,7 @@ const course = await Course.create(data.course);
 const enrollment = await Enrollment.create({
     status: 'active',
     learnerId: learner.id,
+    managerId: manager.id,
     teacherId: teacher.id,
     courseIds: [course.id]
 });
@@ -56,25 +63,24 @@ await Comment.create({
 
 const lexemes = await Lexeme.create(data.lexemes);
 
-for await (const lexeme of lexemes) {
-    LexemeRecord.create({
-        lexemeId: lexeme.id,
-        learnerId: learner.id
-    });
-}
+await LexemeRecord.create(lexemes.map(lexeme => ({
+    lexemeId: lexeme.id,
+    learnerId: learner.id
+})));
 
-await Vocabulary.create({
-    ...data.builtInVocabulary,
-    published: true,
-    lexemeIds: lexemes.slice(0, 2).map(l => l.id)
-});
-
-await Vocabulary.create({
-    ...data.customVocabulary,
-    published: true,
-    learnerId: learner.id,
-    lexemeIds: lexemes.slice(3, 10).map(l => l.id)
-});
+await Vocabulary.create([
+    {
+        ...data.builtInVocabulary,
+        published: true,
+        lexemeIds: lexemes.slice(0, 2).map(l => l.id)
+    },
+    {
+        ...data.customVocabulary,
+        published: true,
+        learnerId: learner.id,
+        lexemeIds: lexemes.slice(3, 10).map(l => l.id)
+    }
+]);
 
 console.log('DB seeded');
 
