@@ -55,13 +55,12 @@ export default function PageSection({
                                         variant="plain"
                                         color="neutral"
                                         {...action}
-                                    />
+                                />
                             ) : actions
                         }
                     </div>
                 }
             </div>
-
 
             <div className="PageSection__content">
                 {children}

@@ -19,7 +19,12 @@ const filters = {
     learned: lexeme => lexeme.status === 5
 };
 
-export default function VocabularyLexemes({ vocabulary, user, learnerId, isDrawer = false }) {
+export default function VocabularyLexemes({
+    vocabulary,
+    user,
+    learnerId,
+    isDrawer
+}) {
     const actions = useVocabularyActions();
 
     const [currentLexemeId, setCurrentLexemeId] = useState(null);
@@ -117,13 +122,9 @@ export default function VocabularyLexemes({ vocabulary, user, learnerId, isDrawe
                 <PopoverButton
                     key={vocabulary.numberOfLexemes}
                     icon="add"
-                    content={isDrawer ? '' : 'Добавить слово'}
-                    // TODO: т.к. внутри PopoverButton рендерится Button, то у icon внутри Button есть margin-right из-за этого пришлось добавить slotProps
-                    // Стоит ли оставлять так? По-сложному тогда нужно будет переписывать PopoverButton, чтобы по условию тригером было либо Button либо IconButton
-                    slotProps={isDrawer ? {
-                        startDecorator: { sx: { marginRight: 0 } }
-                    } : {}}
+                    content={isDrawer ? undefined : 'Добавить слово'}
                     color="primary"
+                    variant="solid"
                 >
                     <LexemeSimpleForm
                         numberOfLexemes={vocabulary.numberOfLexemes}

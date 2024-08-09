@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyDrawer from '@mui/joy/Drawer';
+import classnames from 'classnames';
 
 const Drawer = forwardRef(({
     content,

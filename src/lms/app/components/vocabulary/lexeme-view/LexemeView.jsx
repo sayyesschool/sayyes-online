@@ -23,9 +23,12 @@ export default function LexemeView({
         <div className={styles.root}>
             {onClose &&
                 <Button
-                    content="Назад" variant="soft"
+                    icon="back"
+                    content="Назад"
+                    variant="plain"
                     onClick={onClose}
-                />}
+                />
+            }
 
             <section className={styles.content}>
                 {image &&
