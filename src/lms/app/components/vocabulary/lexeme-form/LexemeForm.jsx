@@ -3,14 +3,14 @@ import { useCallback, useState } from 'react';
 import ImageField from 'shared/components/image-field';
 import { useUser } from 'shared/hooks/user';
 import Storage from 'shared/services/storage';
-import { Form } from 'shared/ui-components';
+import { Button, Form, Heading } from 'shared/ui-components';
 
 import { getInitialData, getLabels } from './helpers';
 import LexemeExamples from './LexemeExamples';
 
 import styles from './LexemeForm.module.scss';
 
-export default function LexemeForm({ lexeme, onSubmit, ...props }) {
+export default function LexemeForm({ lexeme, onSubmit, onClose, ...props }) {
     const user = useUser();
 
     const initialData = getInitialData(lexeme);
@@ -72,6 +72,20 @@ export default function LexemeForm({ lexeme, onSubmit, ...props }) {
             className={styles.root} onSubmit={handleSubmit}
             {...props}
         >
+            {onClose &&
+                <>
+                    <Button
+                        content="Назад"
+                        variant="soft"
+                        onClick={onClose}
+                    />
+
+                    <Heading
+                        content={lexeme.value}
+                        type="h1"
+                    />
+                </>}
+
             <ImageField
                 className={styles.imageField}
                 label="Изображение"

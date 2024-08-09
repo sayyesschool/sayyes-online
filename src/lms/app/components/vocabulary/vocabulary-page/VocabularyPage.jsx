@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useUser } from 'shared/hooks/user';
 import { useVocabulary } from 'shared/hooks/vocabularies';
 import { Button, Menu } from 'shared/ui-components';
 import { getWordEnding } from 'shared/utils/format';
@@ -11,6 +12,7 @@ import VocabularyLexemes from 'lms/components/vocabulary/vocabulary-lexemes';
 import styles from './VocabularyPage.module.scss';
 
 export default function VocabularyPage({ match }) {
+    const [user] = useUser();
     const [vocabulary] = useVocabulary(match.params.vocabulary);
 
     if (!vocabulary) return <LoadingIndicator />;
@@ -85,6 +87,7 @@ export default function VocabularyPage({ match }) {
                 <Page.Section variant="outlined" compact>
                     <VocabularyLexemes
                         vocabulary={vocabulary}
+                        user={user}
                     />
                 </Page.Section>
             </Page.Content>

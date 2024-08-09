@@ -1,9 +1,8 @@
 import { useCallback, useState } from 'react';
 
 import FormDialog from 'shared/components/form-dialog';
-import { useBoolean } from 'shared/hooks/state';
 import { useVocabularyActions } from 'shared/hooks/vocabularies';
-import { Checkbox, Dialog, PopoverButton } from 'shared/ui-components';
+import { Dialog, PopoverButton } from 'shared/ui-components';
 
 import LexemeForm from 'lms/components/vocabulary/lexeme-form';
 import LexemeSimpleForm from 'lms/components/vocabulary/lexeme-simple-form';
@@ -20,37 +19,64 @@ const filters = {
     learned: lexeme => lexeme.status === 5
 };
 
-export default function VocabularyLexemes({
-    vocabulary
-}) {
+export default function VocabularyLexemes({ vocabulary, user, learnerId, isDrawer = false }) {
     const actions = useVocabularyActions();
 
     const [currentLexemeId, setCurrentLexemeId] = useState(null);
     const [selectedLexemeIds, setSelectedLexemeIds] = useState([]);
     const [filter, setFilter] = useState('all');
-    const [isEditModalOpen, toggleEditModalOpen] = useBoolean(false);
-    const [isViewModalOpen, toggleViewModalOpen] = useBoolean(false);
+    const [showViewModal, setShowViewModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+
+    const isLearner = user.role === 'learner';
+    const isTeacher = user.role === 'teacher';
 
     const vocabularyId = vocabulary?.id;
 
+    // TODO: Возможно, стоит ещё подумать над функциями и модалками, а то их ту мач
+    const openModal = useCallback((lexemeId, setShowModal) => {
+        setCurrentLexemeId(lexemeId);
+        setShowModal(true);
+    }, []);
+
+    const closeModal = useCallback(setShowModal => {
+        setCurrentLexemeId(null);
+        setShowModal(false);
+    }, []);
+
+    const openViewModal = useCallback(lexemeId => {
+        openModal(lexemeId, setShowViewModal);
+    }, [openModal]);
+
+    const closeViewModal = useCallback(() => {
+        closeModal(setShowViewModal);
+    }, [closeModal]);
+
+    const openEditLexeme = useCallback(lexemeId => {
+        openModal(lexemeId, setShowEditModal);
+    }, [openModal]);
+
+    const closeEditLexeme = useCallback(() => {
+        closeModal(setShowEditModal);
+    }, [closeModal]);
+
     const handleAddLexeme = useCallback(data => {
+        if (isTeacher && isDrawer) {
+            data = { ...data, learnerId };
+        }
+
         return actions.addLexeme(vocabularyId, data)
-            .finally(() => toggleEditModalOpen(false));
-    }, [actions, vocabularyId, toggleEditModalOpen]);
+            .finally(closeEditLexeme);
+    }, [actions, closeEditLexeme, isDrawer, isTeacher, learnerId, vocabularyId]);
 
     const handleUpdateLexeme = useCallback(data => {
         return actions.updateLexeme(vocabularyId, currentLexemeId, data)
-            .finally(() => toggleEditModalOpen(false));
-    }, [actions, vocabularyId, currentLexemeId, toggleEditModalOpen]);
+            .finally(closeEditLexeme);
+    }, [actions, closeEditLexeme, currentLexemeId, vocabularyId]);
 
     const handleDeleteLexeme = useCallback(lexemeId => {
         return actions.deleteLexeme(vocabularyId, lexemeId);
     }, [actions, vocabularyId]);
-
-    const handleEditLexeme = useCallback(lexemeId => {
-        setCurrentLexemeId(lexemeId);
-        toggleEditModalOpen(true);
-    }, [toggleEditModalOpen]);
 
     const handleSelectLexeme = useCallback(lexemeId => {
         setSelectedLexemeIds(ids => {
@@ -62,21 +88,20 @@ export default function VocabularyLexemes({
         });
     }, []);
 
-    const handleViewLexeme = useCallback(lexemeId => {
-        setCurrentLexemeId(lexemeId);
-        toggleViewModalOpen(true);
-    }, [toggleViewModalOpen]);
-
     const handleUpdateLexemeStatus = useCallback((lexemeId, status) => {
         return actions.updateLexemeStatus(lexemeId, status);
     }, [actions]);
 
     const lexemes = vocabulary.lexemes.filter(filters[filter]);
     const currentLexeme = lexemes.find(lexeme => lexeme.id === currentLexemeId);
+    const showLexemeView = currentLexeme && showViewModal;
+    const showLexemeForm = currentLexeme && showEditModal;
+    const isModalDrawer = currentLexeme && isDrawer;
 
+    // TODO: возможно, стоит отрефакторить или декомпозировать, т.к. слишком много условий
     return (
         <div className={styles.root}>
-            <div className={styles.header}>
+            {!isModalDrawer && <div className={styles.header}>
                 {/* Временно отключили */}
                 {/* <Checkbox
                     checked={false}
@@ -92,7 +117,12 @@ export default function VocabularyLexemes({
                 <PopoverButton
                     key={vocabulary.numberOfLexemes}
                     icon="add"
-                    content="Добавить слово"
+                    content={isDrawer ? '' : 'Добавить слово'}
+                    // TODO: т.к. внутри PopoverButton рендерится Button, то у icon внутри Button есть margin-right из-за этого пришлось добавить slotProps
+                    // Стоит ли оставлять так? По-сложному тогда нужно будет переписывать PopoverButton, чтобы по условию тригером было либо Button либо IconButton
+                    slotProps={isDrawer ? {
+                        startDecorator: { sx: { marginRight: 0 } }
+                    } : {}}
                     color="primary"
                 >
                     <LexemeSimpleForm
@@ -100,47 +130,67 @@ export default function VocabularyLexemes({
                         onSubmit={handleAddLexeme}
                     />
                 </PopoverButton>
-            </div>
+            </div>}
 
             <div className={styles.body}>
-                <LexemesList
-                    lexemes={lexemes}
-                    onViewLexeme={handleViewLexeme}
-                    onEditLexeme={handleEditLexeme}
-                    onSelectLexeme={handleSelectLexeme}
-                    onDeleteLexeme={handleDeleteLexeme}
-                    onUpdateLexemeStatus={handleUpdateLexemeStatus}
-                />
+                {!isModalDrawer &&
+                    <LexemesList
+                        lexemes={lexemes}
+                        isLearner={isLearner}
+                        isTeacher={isTeacher}
+                        isDrawer={isDrawer}
+                        onViewLexeme={openViewModal}
+                        onEditLexeme={openEditLexeme}
+                        onSelectLexeme={handleSelectLexeme}
+                        onDeleteLexeme={handleDeleteLexeme}
+                        onUpdateLexemeStatus={handleUpdateLexemeStatus}
+                    />}
+
+                {showLexemeView && (
+                    <>
+                        {isDrawer ? (
+                            <LexemeView
+                                lexeme={currentLexeme}
+                                onStatusUpdate={handleUpdateLexemeStatus}
+                                onClose={closeViewModal}
+                            />
+                        ) : (
+                            <Dialog open={showViewModal} onClose={closeViewModal}>
+                                <LexemeView
+                                    lexeme={currentLexeme}
+                                    onStatusUpdate={handleUpdateLexemeStatus}
+                                />
+                            </Dialog>
+                        )}
+                    </>
+                )}
+
+                {showLexemeForm && (
+                    <>
+                        {isDrawer ? (
+                            <LexemeForm
+                                id="lexeme-edit-form"
+                                lexeme={currentLexeme}
+                                onSubmit={handleUpdateLexeme}
+                                onClose={closeEditLexeme}
+                            />
+                        ) : (
+                            <FormDialog
+                                title={currentLexeme.value}
+                                open={showEditModal}
+                                titleProps={{ level: 'h2' }}
+                                onClose={closeEditLexeme}
+                            >
+                                <LexemeForm
+                                    id="lexeme-edit-form"
+                                    lexeme={currentLexeme}
+                                    onSubmit={handleUpdateLexeme}
+                                />
+                            </FormDialog>
+                        )}
+                    </>
+                )}
             </div>
-
-            {(currentLexeme && isEditModalOpen) &&
-                <FormDialog
-                    title={currentLexeme.value}
-                    open={isEditModalOpen}
-                    titleProps={{
-                        level: 'h2'
-                    }}
-                    onClose={toggleEditModalOpen}
-                >
-                    <LexemeForm
-                        id="lexeme-edit-form"
-                        lexeme={currentLexeme}
-                        onSubmit={handleUpdateLexeme}
-                    />
-                </FormDialog>
-            }
-
-            {(currentLexeme && isViewModalOpen) &&
-                <Dialog
-                    open={isViewModalOpen}
-                    onClose={toggleViewModalOpen}
-                >
-                    <LexemeView
-                        lexeme={currentLexeme}
-                        onStatusUpdate={handleUpdateLexemeStatus}
-                    />
-                </Dialog>
-            }
         </div>
     );
 }

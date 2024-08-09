@@ -21,7 +21,7 @@ export function useVocabularies(query) {
     return [vocabularies, actions];
 }
 
-export function useVocabulary(id) {
+export function useVocabulary(id, { learnerId } = {}) {
     const [vocabulary, actions] = useStore(
         state => state && hasKey(state.vocabularies, 'single') ?
             state.vocabularies.single :
@@ -32,11 +32,11 @@ export function useVocabulary(id) {
     const vocabularyId = vocabulary?.id;
 
     useEffect(() => {
-        if (id === vocabularyId) return;
+        if (id === vocabularyId || learnerId === '') return;
 
         actions.unsetVocabulary();
-        actions.getVocabulary(id);
-    }, [id, vocabularyId, actions]);
+        actions.getVocabulary(id, learnerId ? { learnerId } : undefined);
+    }, [id, vocabularyId, actions, learnerId]);
 
     return [vocabulary, actions];
 }

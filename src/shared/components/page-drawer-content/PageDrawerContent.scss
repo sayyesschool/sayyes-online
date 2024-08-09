@@ -1,0 +1,9 @@
+.PageDrawerContent {
+  height: 100%;
+
+  .PageSection {
+    &__content {
+        height: calc(100% - 48px);
+    }
+  }
+}

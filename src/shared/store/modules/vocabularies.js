@@ -35,10 +35,11 @@ export const getVocabularies = createAction('GET_VOCABULARIES', query => ({
     }
 }));
 
-export const getVocabulary = createAction('GET_VOCABULARY', id => ({
+export const getVocabulary = createAction('GET_VOCABULARY', (id, query) => ({
     request: {
         method: 'get',
-        path: `vocabularies/${id}`
+        path: `vocabularies/${id}`,
+        query
     }
 }));
 
