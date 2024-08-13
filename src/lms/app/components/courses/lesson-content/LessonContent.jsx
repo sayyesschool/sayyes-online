@@ -40,9 +40,9 @@ export default function LessonContent({
                     {currentSection?.exercises?.map((exercise, index) =>
                         <Exercise
                             key={exercise.id}
+                            id={exercise.id}
                             index={index}
                             user={user}
-                            exercise={exercise}
                             assignments={assignments}
                             showMenu={user.role === 'teacher'}
                             onProgressChange={onExerciseProgressChange}

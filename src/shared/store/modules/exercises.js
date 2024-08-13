@@ -83,10 +83,15 @@ export const actions = {
     createExercise,
     updateExercise,
     deleteExercise,
+    unsetExercise,
 
     createExerciseItem,
     updateExerciseItem,
     deleteExerciseItem,
+
+    createComment,
+    updateComment,
+    deleteComment,
 
     updateExerciseProgress
 };
@@ -117,7 +122,7 @@ export const exerciseReducer = createReducer(null, {
 
     [createComment]: (state, action) => ({
         ...state,
-        comments: state.comments.concat(action.data)
+        comments: state.comments?.concat(action.data)
     }),
 
     [updateComment]: (state, action) => ({

@@ -20,7 +20,7 @@ export function useExercise(id) {
         }
 
         return () => actions.unsetExercise();
-    }, [id, exercise, actions]);
+    }, [id]);
 
     return [exercise, actions];
 }
