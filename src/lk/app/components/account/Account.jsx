@@ -1,27 +1,26 @@
-import { useState } from 'react';
+import { useCallback } from 'react';
 
 import Page from 'shared/components/page';
 import { useStore } from 'shared/hooks/store';
 import { actions as userActions } from 'shared/store/modules/user';
 
-import Profile from 'lk/components/account/profile';
+import Profile from 'lk/components/profile';
 
-import './Account.scss';
+import styles from './Account.module.scss';
 
 export default function AccountPage() {
     const [user, actions] = useStore(state => state.user, userActions);
-    const [activeTab, setActiveTab] = useState('profile');
+
+    const updateProfile = useCallback(data => {
+        return actions.updateProfile(user.id, data);
+    }, [actions, user.id]);
 
     return (
-        <Page layout="narrower">
+        <Page>
             <Page.Header title="Личный кабинет" />
 
-            <Page.Content>
-                {activeTab === 'profile' &&
-                    <Profile
-                        user={user}
-                    />
-                }
+            <Page.Content className={styles.content}>
+                <Profile user={user} updateProfile={updateProfile} />
             </Page.Content>
         </Page>
     );

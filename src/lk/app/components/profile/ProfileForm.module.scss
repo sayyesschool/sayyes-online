@@ -1,0 +1,18 @@
+.root {
+  width: 100%;
+}
+
+.formData {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.personal,
+.social {
+  width: 50%;
+}
+
+.save {
+  margin-top: 15px !important;
+}

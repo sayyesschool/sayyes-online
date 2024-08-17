@@ -2,7 +2,14 @@ export default () => ({
     updateProfile: (req, res, next) => {
         req.user.firstname = req.body.firstname;
         req.user.lastname = req.body.lastname;
-        req.user.email = req.body.email;
+        req.user.patronym = req.body.patronym;
+        req.user.phone = req.body.phone;
+        req.user.dob = req.body.dob;
+        req.user.timezone = req.body.timezone;
+        req.user.zoom = req.body.zoom;
+        req.user.skype = req.body.skype;
+        req.user.telegram = req.body.telegram;
+
         //req.user.avatar = req.file.buffer;
 
         req.user.save()

@@ -11,6 +11,7 @@ const getDefaultData = ({
     'translation*': translation
 });
 
+// TODO: этот компонент очень похож на VocabularySimpleForm, возможно, стоит их объединить
 export default function LexemeShortForm({
     lexeme,
     numberOfLexemes,

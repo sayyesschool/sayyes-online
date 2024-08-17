@@ -8,10 +8,20 @@ export const getUser = createAction('GET_USER', () => ({
     }
 }));
 
+export const updateProfile = createAction('UPDATE_USER', (userId, data) => ({
+    request: {
+        method: 'put',
+        path: AUTH_URL + `/user/${userId}`,
+        body: data
+    }
+}));
+
 export const actions = {
-    getUser
+    getUser,
+    updateProfile
 };
 
 export default createReducer(null, {
-    [getUser]: (state, action) => action.data
+    [getUser]: (state, action) => action.data,
+    [updateProfile]: (state, action) => state && ({ ...state, ...action.data })
 });
