@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { Heading, Image, Text } from 'shared/ui-components';
+import { Button, Heading, Image, Text } from 'shared/ui-components';
 
 import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 
@@ -10,7 +10,8 @@ import styles from './LexemeView.module.scss';
 
 export default function LexemeView({
     lexeme,
-    onStatusUpdate
+    onStatusUpdate,
+    onClose
 }) {
     const { value, image, definition, translation, examples, status, data } = lexeme;
 
@@ -20,6 +21,12 @@ export default function LexemeView({
 
     return (
         <div className={styles.root}>
+            {onClose &&
+                <Button
+                    content="Назад" variant="soft"
+                    onClick={onClose}
+                />}
+
             <section className={styles.content}>
                 {image &&
                     <Image

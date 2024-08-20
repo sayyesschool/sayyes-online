@@ -8,33 +8,37 @@ import styles from './LexemeItem.module.scss';
 
 export default function LexemeItem({
     lexeme,
+    isLearner,
+    isTeacher,
+    isDrawer,
     onView,
     onEdit,
     onSelect,
     onDelete,
     onStatusUpdate
 }) {
+    const { id, value, translation, status } = lexeme;
+    const isTeacherInDrawer = isDrawer && isTeacher;
+
     const handleCheckboxChange = useCallback(() => {
-        return onSelect(lexeme.id);
-    }, [lexeme, onSelect]);
+        return onSelect(id);
+    }, [id, onSelect]);
 
     const handleContentClick = useCallback(() => {
-        return onView(lexeme.id);
-    }, [lexeme, onView]);
+        return onView(id);
+    }, [id, onView]);
 
     const handleEditButtonClick = useCallback(() => {
-        return onEdit(lexeme.id);
-    }, [lexeme, onEdit]);
+        return onEdit(id);
+    }, [id, onEdit]);
 
     const handleDeleteButtonClick = useCallback(() => {
-        return onDelete(lexeme.id);
-    }, [lexeme, onDelete]);
+        return onDelete(id);
+    }, [id, onDelete]);
 
     const handleStatusChange = useCallback(status => {
-        return onStatusUpdate(lexeme.id, status);
-    }, [lexeme, onStatusUpdate]);
-
-    const { value, translation, status } = lexeme;
+        return onStatusUpdate(id, status);
+    }, [id, onStatusUpdate]);
 
     return (
         <ListItem className={styles.root}>
@@ -60,6 +64,7 @@ export default function LexemeItem({
             <div className={styles.actions}>
                 <LexemeStatus
                     level={status}
+                    readOnly={isTeacherInDrawer}
                     onChange={handleStatusChange}
                 />
 
@@ -71,17 +76,21 @@ export default function LexemeItem({
                     />
                 }
 
-                <IconButton
-                    icon="edit"
-                    title="Редактировать слово"
-                    onClick={handleEditButtonClick}
-                />
+                {!isTeacherInDrawer && (
+                    <>
+                        <IconButton
+                            icon="edit"
+                            title="Редактировать слово"
+                            onClick={handleEditButtonClick}
+                        />
 
-                <IconButton
-                    icon="delete"
-                    title="Удалить слово"
-                    onClick={handleDeleteButtonClick}
-                />
+                        <IconButton
+                            icon="delete"
+                            title="Удалить слово"
+                            onClick={handleDeleteButtonClick}
+                        />
+                    </>
+                )}
             </div>
         </ListItem>
     );

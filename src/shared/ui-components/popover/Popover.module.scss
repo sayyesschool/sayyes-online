@@ -1,7 +1,8 @@
 @use 'shared/styles/variables';
 
+// TODO: тут переменная --joy-zIndex-modal нужна, пока добавил цифрами просто
 .root {
-    z-index: 100;
+    z-index: 1300;
 }
 
 .surface {

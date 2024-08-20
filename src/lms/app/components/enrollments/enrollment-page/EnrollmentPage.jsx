@@ -5,12 +5,11 @@ import Page from 'shared/components/page';
 import { CLASS_URL } from 'shared/constants';
 import { DomainLabel } from 'shared/data/common';
 import { useEnrollment } from 'shared/hooks/enrollments';
-import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
+import { useVocabulary } from 'shared/hooks/vocabularies';
 import { Badge, Button, Flex, Grid, IconButton, MenuButton } from 'shared/ui-components';
 
 import EnrollmentAssignments from 'lms/components/enrollments/enrollment-assignments';
-import EnrollmentChat from 'lms/components/enrollments/enrollment-chat';
 import EnrollmentCourses from 'lms/components/enrollments/enrollment-courses';
 import EnrollmentDetails from 'lms/components/enrollments/enrollment-details';
 import EnrollmentLearner from 'lms/components/enrollments/enrollment-learner';
@@ -20,16 +19,21 @@ import EnrollmentMaterials from 'lms/components/enrollments/enrollment-materials
 import EnrollmentSchedule from 'lms/components/enrollments/enrollment-schedule';
 import EnrollmentTeacher from 'lms/components/enrollments/enrollment-teacher';
 
+import EnrollmentDrawer, { DRAWER_CONTENT } from './EnrollmentDrawer';
+
 export default function EnrollmentPage({ match }) {
-    const [enrollment] = useEnrollment(match.params.id);
     const [user] = useUser();
-
+    const [enrollment] = useEnrollment(match.params.id);
+    const [vocabulary] = useVocabulary('my', { learnerId: enrollment?.learner.id || '' });
     const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
-    const [isDrawerOpen, toggleDrawerOpen] = useBoolean(false);
+    const [drawerContent, setDrawerContent] = useState(null);
 
-    const handleChatJoined = useCallback(data => {
-        console.log(data);
-        setUnreadMessagesCount(data.unreadMessagesCount);
+    const openChat = useCallback(() => {
+        setDrawerContent(DRAWER_CONTENT.chat);
+    }, []);
+
+    const openVocabulary = useCallback(() => {
+        setDrawerContent(DRAWER_CONTENT.vocabulary);
     }, []);
 
     if (!enrollment) return <LoadingIndicator fullscreen />;
@@ -37,19 +41,21 @@ export default function EnrollmentPage({ match }) {
     const isLearner = user.role === 'learner';
     const isTeacher = user.role === 'teacher';
     const hasChat = enrollment.learner && enrollment.teacher;
+    const hasVocabulary = !!vocabulary;
 
     return (
         <Page className="EnrollmentPage">
-            {hasChat &&
-                <Page.Drawer open={isDrawerOpen}>
-                    <EnrollmentChat
-                        enrollment={enrollment}
-                        user={user}
-                        onJoined={handleChatJoined}
-                        onClose={toggleDrawerOpen}
-                    />
-                </Page.Drawer>
-            }
+            <EnrollmentDrawer
+                vocabulary={vocabulary}
+                enrollment={enrollment}
+                drawerContent={drawerContent}
+                user={user}
+                learnerId={enrollment.learner.id}
+                hasChat={hasChat}
+                hasVocabulary={hasVocabulary}
+                setDrawerContent={setDrawerContent}
+                setUnreadMessagesCount={setUnreadMessagesCount}
+            />
 
             <Page.Header
                 title={DomainLabel[enrollment.domain]}
@@ -62,19 +68,28 @@ export default function EnrollmentPage({ match }) {
                         content="Перейти в класс"
                         variant="soft"
                     />,
-                    hasChat && <Badge
-                        key="chat"
-                        badgeContent={unreadMessagesCount}
-                        showZero={false}
-                        size="sm"
-                    >
+                    hasChat &&
+                        <Badge
+                            key="chat"
+                            badgeContent={unreadMessagesCount}
+                            showZero={false}
+                            size="sm"
+                        >
+                            <IconButton
+                                icon="chat"
+                                title="Чат"
+                                variant="soft"
+                                onClick={openChat}
+                            />
+                        </Badge>,
+                    hasVocabulary &&
                         <IconButton
-                            icon="chat"
-                            title="Чат"
+                            key="dictionary"
+                            icon="dictionary"
+                            title="Словарь"
                             variant="soft"
-                            onClick={toggleDrawerOpen}
-                        />
-                    </Badge>,
+                            onClick={openVocabulary}
+                        />,
                     (enrollment.teacher?.zoomUrl &&
                         <MenuButton
                             key="menu"
@@ -101,7 +116,10 @@ export default function EnrollmentPage({ match }) {
 
             <Page.Content>
                 <Grid spacing={2}>
-                    <Grid.Item lg={8} md={8} sm={8} xs={12}>
+                    <Grid.Item
+                        lg={8} md={8}
+                        sm={8} xs={12}
+                    >
                         <Flex gap="medium" column>
                             <EnrollmentLessons
                                 enrollment={enrollment}
@@ -115,7 +133,10 @@ export default function EnrollmentPage({ match }) {
                         </Flex>
                     </Grid.Item>
 
-                    <Grid.Item lg={4} md={4} sm={4} xs={12}>
+                    <Grid.Item
+                        lg={4} md={4}
+                        sm={4} xs={12}
+                    >
                         <Flex gap="medium" column>
                             {(isTeacher || enrollment.courses?.length > 0) &&
                                 <EnrollmentCourses

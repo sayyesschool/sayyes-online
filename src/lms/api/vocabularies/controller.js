@@ -44,8 +44,16 @@ export default ({
     },
 
     async getMy(req, res) {
+        // TODO: убрать костыль
+        if (req.query.learnerId === '') {
+            throw {
+                code: 404,
+                message: 'Словарь не найден'
+            };
+        }
+
         const records = await LexemeRecord.find({
-            learnerId: req.query.learnerId || req.user.id
+            learnerId:  req.query.learnerId || req.user.id
         })
             .sort({ createdAt: -1 })
             .populate('lexeme');
@@ -154,7 +162,7 @@ export default ({
 
         let record = await LexemeRecord.findOne({
             lexemeId: lexeme.id,
-            learnerId: req.user.id
+            learnerId: req.body.learnerId || req.user.id
         });
 
         if (lexeme && record) {
@@ -166,7 +174,7 @@ export default ({
 
         record = await LexemeRecord.create({
             lexemeId: lexeme.id,
-            learnerId: req.user.id
+            learnerId: req.body.learnerId || req.user.id
         });
 
         const data = lexeme.toJSON();

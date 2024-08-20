@@ -1,12 +1,12 @@
 export const getInitialData = ({
     approved,
-    record = {},
+    data = {},
     translation,
     definition,
     examples
 }) =>
     approved ?
-        record?.data :
+        data :
         { translation, definition, examples };
 
 export const getLabels = approved =>
