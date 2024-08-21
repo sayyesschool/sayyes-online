@@ -8,9 +8,7 @@ import styles from './LexemeItem.module.scss';
 
 export default function LexemeItem({
     lexeme,
-    isLearner,
-    isTeacher,
-    isDrawer,
+    readOnly,
     onView,
     onEdit,
     onSelect,
@@ -18,7 +16,6 @@ export default function LexemeItem({
     onStatusUpdate
 }) {
     const { id, value, translation, status } = lexeme;
-    const isTeacherInDrawer = isDrawer && isTeacher;
 
     const handleCheckboxChange = useCallback(() => {
         return onSelect(id);
@@ -64,7 +61,7 @@ export default function LexemeItem({
             <div className={styles.actions}>
                 <LexemeStatus
                     level={status}
-                    readOnly={isTeacherInDrawer}
+                    readOnly={readOnly}
                     onChange={handleStatusChange}
                 />
 
@@ -76,7 +73,7 @@ export default function LexemeItem({
                     />
                 }
 
-                {!isTeacherInDrawer && (
+                {!readOnly && (
                     <>
                         <IconButton
                             icon="edit"

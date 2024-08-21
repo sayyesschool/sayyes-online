@@ -4,7 +4,6 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 import NotFound from 'shared/components/not-found';
 import PageContent from 'shared/components/page-content';
 import PageDrawer from 'shared/components/page-drawer';
-import PageDrawerContent from 'shared/components/page-drawer-content';
 import PageHeader from 'shared/components/page-header';
 import PageSection from 'shared/components/page-section';
 import cn from 'shared/utils/classnames';
@@ -47,7 +46,6 @@ Page.displayName = 'Page';
 
 Page.Content = PageContent;
 Page.Drawer = PageDrawer;
-Page.DrawerContent = PageDrawerContent;
 Page.Header = PageHeader;
 Page.Section = PageSection;
 
@@ -56,7 +54,6 @@ export {
     Page,
     PageContent,
     PageDrawer,
-    PageDrawerContent,
     PageHeader,
     PageSection
 };

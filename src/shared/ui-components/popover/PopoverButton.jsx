@@ -1,7 +1,8 @@
-import { Button, Popover } from 'shared/ui-components';
+import { Button, IconButton, Popover } from 'shared/ui-components';
 import cn from 'shared/utils/classnames';
 
 export default function PopoverButton({
+    content,
     className,
     children,
     popoverProps,
@@ -11,8 +12,13 @@ export default function PopoverButton({
 
     return (
         <Popover
-            trigger={
+            trigger={content ?
                 <Button
+                    className={classNames}
+                    content={content}
+                    {...props}
+                /> :
+                <IconButton
                     className={classNames}
                     {...props}
                 />

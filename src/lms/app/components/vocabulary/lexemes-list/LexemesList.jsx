@@ -6,9 +6,7 @@ import styles from './LexemesList.module.scss';
 
 export default function LexemesList({
     lexemes = [],
-    isLearner,
-    isTeacher,
-    isDrawer,
+    readOnly,
     onViewLexeme,
     onEditLexeme,
     onSelectLexeme,
@@ -21,9 +19,7 @@ export default function LexemesList({
                 <LexemeItem
                     key={lexeme.id}
                     lexeme={lexeme}
-                    isLearner={isLearner}
-                    isTeacher={isTeacher}
-                    isDrawer={isDrawer}
+                    readOnly={readOnly}
                     onView={onViewLexeme}
                     onEdit={onEditLexeme}
                     onSelect={onSelectLexeme}

@@ -1,11 +1,15 @@
 import { Avatar, Heading, List } from 'shared/ui-components';
 
-import styles from './LexemeView.module.scss';
+import styles from './LexemeExamples.module.scss';
 
 export default function LexemeExamples({ title, examples }) {
     return (
-        <section className={styles.examples}>
-            <Heading content={title} type="title-md" />
+        <section className={styles.root}>
+            <Heading
+                content={title}
+                color="neutral"
+                type="title-md"
+            />
 
             <List>
                 {examples.map((example, index, array) => (
@@ -24,7 +28,9 @@ export default function LexemeExamples({ title, examples }) {
                             }}
                         />
 
-                        {index < array.length - 1 && <List.Divider inset="startContent" />}
+                        {index < array.length - 1 &&
+                            <List.Divider inset="startContent" />
+                        }
                     </div>
                 ))}
             </List>

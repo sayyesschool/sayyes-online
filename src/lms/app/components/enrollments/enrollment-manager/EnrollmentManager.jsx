@@ -1,5 +1,5 @@
 import PageSection from 'shared/components/page-section';
-import { Avatar, IconButton, List, MenuButton } from 'shared/ui-components';
+import { Avatar, IconButton, List, Menu } from 'shared/ui-components';
 
 export default function EnrollmentManager({ enrollment }) {
     const { manager } = enrollment;
@@ -21,7 +21,7 @@ export default function EnrollmentManager({ enrollment }) {
                     }
                     content={manager.fullname}
                     endAction={
-                        <MenuButton
+                        <Menu
                             trigger={
                                 <IconButton
                                     icon="more_vert"

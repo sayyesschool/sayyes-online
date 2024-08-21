@@ -71,6 +71,13 @@ export const learner = {
     role: 'learner'
 };
 
+export const manager = {
+    firstname: 'Менеджер',
+    email: 'manager@sayyes.school',
+    password: '123456',
+    role: 'manager'
+};
+
 export const teacher = {
     firstname: 'Учитель',
     email: 'teacher@sayyes.school',
