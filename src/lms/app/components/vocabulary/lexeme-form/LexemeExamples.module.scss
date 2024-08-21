@@ -1,0 +1,13 @@
+@use 'shared/styles/variables';
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.exampleText {}
+
+.exampleTranslation {
+    margin-left: 2.7rem;
+}

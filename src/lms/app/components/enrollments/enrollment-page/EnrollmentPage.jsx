@@ -19,17 +19,28 @@ import EnrollmentManager from 'lms/components/enrollments/enrollment-manager';
 import EnrollmentMaterials from 'lms/components/enrollments/enrollment-materials';
 import EnrollmentSchedule from 'lms/components/enrollments/enrollment-schedule';
 import EnrollmentTeacher from 'lms/components/enrollments/enrollment-teacher';
+import EnrollmentVocabulary from 'lms/components/enrollments/enrollment-vocabulary';
 
 export default function EnrollmentPage({ match }) {
-    const [enrollment] = useEnrollment(match.params.id);
     const [user] = useUser();
+    const [enrollment] = useEnrollment(match.params.id);
 
     const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
-    const [isDrawerOpen, toggleDrawerOpen] = useBoolean(false);
+    const [isChatOpen, toggleChatOpen] = useBoolean(false);
+    const [isVocabularyOpen, toggleVocabularyOpen] = useBoolean(false);
 
-    const handleChatJoined = useCallback(data => {
-        console.log(data);
-        setUnreadMessagesCount(data.unreadMessagesCount);
+    const openChat = useCallback(() => {
+        toggleChatOpen(true);
+        toggleVocabularyOpen(false);
+    }, [/* empty */]);
+
+    const openVocabulary = useCallback(() => {
+        toggleChatOpen(false);
+        toggleVocabularyOpen(true);
+    }, [/* empty */]);
+
+    const handleChatJoined = useCallback(() => {
+        setUnreadMessagesCount(0);
     }, []);
 
     if (!enrollment) return <LoadingIndicator fullscreen />;
@@ -40,16 +51,22 @@ export default function EnrollmentPage({ match }) {
 
     return (
         <Page className="EnrollmentPage">
-            {hasChat &&
-                <Page.Drawer open={isDrawerOpen}>
-                    <EnrollmentChat
-                        enrollment={enrollment}
-                        user={user}
-                        onJoined={handleChatJoined}
-                        onClose={toggleDrawerOpen}
-                    />
-                </Page.Drawer>
-            }
+            <Page.Drawer open={isChatOpen} onClose={toggleChatOpen}>
+                <EnrollmentChat
+                    enrollment={enrollment}
+                    user={user}
+                    onJoined={handleChatJoined}
+                    onClose={toggleChatOpen}
+                />
+            </Page.Drawer>
+
+            <Page.Drawer open={isVocabularyOpen} onClose={toggleVocabularyOpen}>
+                <EnrollmentVocabulary
+                    enrollment={enrollment}
+                    user={user}
+                    onClose={toggleVocabularyOpen}
+                />
+            </Page.Drawer>
 
             <Page.Header
                 title={DomainLabel[enrollment.domain]}
@@ -62,19 +79,27 @@ export default function EnrollmentPage({ match }) {
                         content="Перейти в класс"
                         variant="soft"
                     />,
-                    hasChat && <Badge
-                        key="chat"
-                        badgeContent={unreadMessagesCount}
-                        showZero={false}
-                        size="sm"
-                    >
-                        <IconButton
-                            icon="chat"
-                            title="Чат"
-                            variant="soft"
-                            onClick={toggleDrawerOpen}
-                        />
-                    </Badge>,
+                    hasChat &&
+                        <Badge
+                            key="chat"
+                            badgeContent={unreadMessagesCount}
+                            showZero={false}
+                            size="sm"
+                        >
+                            <IconButton
+                                icon="chat"
+                                title="Чат"
+                                variant="soft"
+                                onClick={openChat}
+                            />
+                        </Badge>,
+                    <IconButton
+                        key="dictionary"
+                        icon="dictionary"
+                        title="Словарь"
+                        variant="soft"
+                        onClick={openVocabulary}
+                    />,
                     (enrollment.teacher?.zoomUrl &&
                         <MenuButton
                             key="menu"
@@ -101,7 +126,7 @@ export default function EnrollmentPage({ match }) {
 
             <Page.Content>
                 <Grid spacing={2}>
-                    <Grid.Item lg={8} md={8} sm={8} xs={12}>
+                    <Grid.Item sm={8} xs={12}>
                         <Flex gap="medium" column>
                             <EnrollmentLessons
                                 enrollment={enrollment}
@@ -115,7 +140,7 @@ export default function EnrollmentPage({ match }) {
                         </Flex>
                     </Grid.Item>
 
-                    <Grid.Item lg={4} md={4} sm={4} xs={12}>
+                    <Grid.Item sm={4} xs={12}>
                         <Flex gap="medium" column>
                             {(isTeacher || enrollment.courses?.length > 0) &&
                                 <EnrollmentCourses

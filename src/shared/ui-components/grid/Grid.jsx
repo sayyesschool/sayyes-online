@@ -5,13 +5,13 @@ import JoyGrid from '@mui/joy/Grid';
 import GridItem from './GridItem';
 
 const Gap = {
-    smallest: '.25rem',
-    smaller: '.5rem',
-    small: '.75rem',
-    medium: '1rem',
-    large: '1.25rem',
-    larger: '1.5rem',
-    largest: '1.75rem'
+    smallest: .5,
+    smaller: 1,
+    small: 1.5,
+    medium: 2,
+    large: 3,
+    larger: 4,
+    largest: 5
 };
 
 const Grid = forwardRef(({
@@ -22,13 +22,15 @@ const Grid = forwardRef(({
     return (
         <JoyGrid
             ref={ref}
+            spacing={Gap[gap] || Number(gap)}
             container
-            gap={Gap[gap] || gap}
             {...props}
         />
     );
 });
 
 Grid.Item = GridItem;
+
+Grid.displayName = 'Grid';
 
 export default Grid;

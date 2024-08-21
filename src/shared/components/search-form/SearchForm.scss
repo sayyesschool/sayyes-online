@@ -1,3 +1,14 @@
-.SearchForm {
+.ui-Autocomplete-listbox {
+  li {
+    padding: 0;
 
+    .autocomplete-show-more-btn {
+      width: 100%;
+    }
+  }
+
+  .ui-Autocomplete-noOptions,
+  .ui-Autocomplete-loading {
+    padding: 5px 10px;
+  }
 }

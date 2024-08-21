@@ -22,7 +22,7 @@ export const Level = {
     Intermediate: 3,
     UpperIntermediate: 4,
     Advanced: 5,
-    Proficiency: 6
+    Proficient: 6
 };
 
 export const Purpose = {

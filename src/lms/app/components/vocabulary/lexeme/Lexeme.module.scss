@@ -1,0 +1,36 @@
+@use 'shared/styles/variables';
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-height: 640px;
+}
+
+.content {
+    display: flex;
+    gap: 20px;
+}
+
+.image {
+    max-width: 200px;
+    flex-shrink: 0;
+    border: 4px solid var(--joy-palette-divider);
+    border-radius: 10px;
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.value {
+
+}
+
+.definition {
+}
+
+.translation {
+}

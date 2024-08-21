@@ -1,10 +1,10 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import Sheet from '@mui/joy/Sheet';
+import classnames from 'classnames';
 
 const Surface = forwardRef(({ className, ...props }, ref) => {
-    const classNames = classnames('ui-Surface', className);
+    const classNames = classnames(className, 'ui-Surface');
 
     return (
         <Sheet

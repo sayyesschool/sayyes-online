@@ -4,14 +4,6 @@
 .PageHeader {
     position: relative;
     overflow: hidden;
-    max-width: 1280px;
-    position: relative;
-    margin: 0 auto;
-    padding: 1rem;
-
-    @include breakpoint(lt-md) {
-        padding: 1rem;
-    }
 
     &__row {
         display: flex;
@@ -19,7 +11,11 @@
     }
 
     &__main {
+        margin-right: auto;
+    }
 
+    &__center {
+        margin: 0 auto;
     }
 
     &__tabs {

@@ -1,11 +1,11 @@
 import { useCallback, useRef, useState } from 'react';
 
-import storage from 'shared/services/storage';
-import { useBoolean } from 'shared/hooks/state';
-import { Button, Dialog, Icon, Image, Input, Text } from 'shared/ui-components';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import PageSection from 'shared/components/page-section';
+import { useBoolean } from 'shared/hooks/state';
+import storage from 'shared/services/storage';
+import { Button, Dialog, Icon, Image, Input, Text } from 'shared/ui-components';
 import classnames from 'shared/utils/classnames';
 
 import './index.scss';
@@ -150,6 +150,7 @@ export default function ImageSection({ className, image, uploadPath, onUpdate, o
                             src={file.url}
                             fluid
                         />
+
                         <Text as="p">Название: <Text temporary>{file.name}</Text></Text>
                         <Text as="p">Размер: <Text temporary>{Math.round(file.size / 1000)} КБ</Text></Text>
                     </>

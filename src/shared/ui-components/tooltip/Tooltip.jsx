@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyTooltip from '@mui/joy/Tooltip';
+import classnames from 'classnames';
 
 const Tooltip = forwardRef(({
     anchor,

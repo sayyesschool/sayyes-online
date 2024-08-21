@@ -1,0 +1,11 @@
+@use 'shared/styles/variables';
+
+// TODO: тут переменная --joy-zIndex-modal нужна, пока добавил цифрами просто
+.root {
+    z-index: 1300;
+}
+
+.surface {
+    border: 1px solid lighten(variables.$text-color, 50%);
+    border-radius: 10px;
+}

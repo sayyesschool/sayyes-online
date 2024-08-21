@@ -1,12 +1,13 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyLink from '@mui/joy/Link';
+import classnames from 'classnames';
 
 const Link = forwardRef(({
     content,
 
     as,
+    type,
     children = content,
     className,
     ...props
@@ -17,6 +18,7 @@ const Link = forwardRef(({
         <JoyLink
             ref={ref}
             component={as}
+            level={type}
             className={classNames}
             {...props}
         >

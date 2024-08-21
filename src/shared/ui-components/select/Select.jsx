@@ -1,7 +1,7 @@
 import { forwardRef, useCallback } from 'react';
-import classnames from 'classnames';
 
 import JoySelect from '@mui/joy/Select';
+import classnames from 'classnames';
 
 import Option from './Option';
 
@@ -39,7 +39,7 @@ const Select = forwardRef(({
         >
             {options?.map(option =>
                 <Option
-                    key={option.key}
+                    key={option.key || option.value}
                     label={option.label || option.content}
                     {...option}
                 />

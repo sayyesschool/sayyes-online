@@ -1,4 +1,4 @@
-import { Avatar, MenuButton } from 'shared/ui-components';
+import { Avatar, Menu } from 'shared/ui-components';
 
 import './index.scss';
 
@@ -8,7 +8,7 @@ export default function UserMenu({
     ...props
 }) {
     return (
-        <MenuButton
+        <Menu
             className="UserMenu"
             trigger={
                 <Avatar

@@ -1,0 +1,1 @@
+export { default, Vocabulary } from './Vocabulary';

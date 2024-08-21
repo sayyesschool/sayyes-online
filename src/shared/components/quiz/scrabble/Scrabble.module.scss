@@ -1,0 +1,31 @@
+@use '../common';
+
+@include common.root;
+@include common.actions;
+@include common.next-button;
+
+.content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.selectedChars,
+.availableChars {
+    display: flex;
+    gap: 4px;
+}
+
+.availableChar,
+.selectedChar {
+    flex: 1;
+}
+
+.selectedChar {
+    padding: .5rem !important;
+    min-width: 2.75rem !important;
+}

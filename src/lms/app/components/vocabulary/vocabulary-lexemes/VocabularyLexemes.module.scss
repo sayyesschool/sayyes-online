@@ -1,0 +1,24 @@
+.root {
+    position: relative;
+}
+
+.header {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 16px;
+    padding: 12px;
+    border-bottom: 1px solid var(--joy-palette-divider);
+}
+
+.body {
+    position: relative;
+}
+
+.search {
+    flex: 1;
+}
+
+.select {
+    flex-shrink: 0;
+}

@@ -12,6 +12,9 @@
         "plugin:react-hooks/recommended",
         "plugin:@stylistic/disable-legacy"
     ],
+    "globals": {
+        "env": "writable"
+    },
     "parser": "@babel/eslint-parser",
     "parserOptions": {
         "ecmaVersion": "latest",
@@ -41,136 +44,11 @@
         "simple-import-sort"
     ],
     "rules": {
-        // https://eslint.style/packages/default#rules
-        "@stylistic/arrow-parens": [
+        "func-style": [
             "warn",
-            "as-needed"
-        ],
-        "@stylistic/comma-dangle": [
-            "warn",
-            "never"
-        ],
-        "@stylistic/comma-spacing": "warn",
-        "@stylistic/eol-last": [
-            "warn",
-            "never"
-        ],
-        "@stylistic/indent": [
-            "warn",
-            4,
+            "declaration",
             {
-                "SwitchCase": 1,
-                "MemberExpression": 1
-            }
-        ],
-        "@stylistic/lines-between-class-members": [
-            "warn",
-            "always",
-            {
-                "exceptAfterSingleLine": true
-            }
-        ],
-        "@stylistic/no-multiple-empty-lines": [
-            "warn",
-            {
-                "max": 1
-            }
-        ],
-        "@stylistic/no-trailing-spaces": "warn",
-        "@stylistic/object-curly-spacing": [
-            "warn",
-            "always"
-        ],
-        "@stylistic/object-property-newline": [
-            "warn",
-            {
-                "allowAllPropertiesOnSameLine": true
-            }
-        ],
-        "@stylistic/padded-blocks": [
-            "warn",
-            "never"
-        ],
-        "@stylistic/padding-line-between-statements": [
-            "warn",
-            {
-                "blankLine": "always",
-                "prev": "*",
-                "next": [
-                    "multiline-block-like",
-                    "multiline-expression",
-                    "multiline-const"
-                ]
-            },
-            {
-                "blankLine": "always",
-                "prev": [
-                    "multiline-block-like",
-                    "multiline-expression",
-                    "multiline-const"
-                ],
-                "next": "*"
-            },
-            {
-                "blankLine": "any",
-                "prev": [
-                    "const",
-                    "let",
-                    "var"
-                ],
-                "next": [
-                    "const",
-                    "let",
-                    "var"
-                ]
-            },
-            {
-                "blankLine": "always",
-                "prev": "*",
-                "next": "return"
-            }
-        ],
-        "@stylistic/quotes": [
-            "error",
-            "single"
-        ],
-        "@stylistic/semi": [
-            "error",
-            "always"
-        ],
-        "@stylistic/space-infix-ops": "error",
-        "@stylistic/jsx/jsx-closing-bracket-location": [
-            "warn",
-            "tag-aligned"
-        ],
-        "@stylistic/jsx/jsx-first-prop-new-line": [
-            "warn",
-            "multiline-multiprop"
-        ],
-        "@stylistic/jsx/jsx-newline": [
-            "warn",
-            {
-                "prevent": true,
-                "allowMultilines": true
-            }
-        ],
-        "@stylistic/jsx/jsx-max-props-per-line": [
-            "warn",
-            {
-                "maximum": 1,
-                "when": "multiline"
-            }
-        ],
-        "@stylistic/jsx/jsx-props-no-multi-spaces": "warn",
-        "@stylistic/jsx/jsx-sort-props": [
-            "warn",
-            {
-                "callbacksLast": true,
-                "shorthandLast": true,
-                "multiline": "ignore",
-                "ignoreCase": true,
-                "noSortAlphabetically": true,
-                "reservedFirst": true
+                "allowArrowFunctions": true
             }
         ],
         "no-undef": "error",
@@ -219,15 +97,166 @@
                     [
                         // Side effect imports.
                         "^\\u0000"
+                    ],
+                    [
+                        // Style imports.
+                        "^.+\\.s?css$"
                     ]
-                    // [
-                    //     // Style imports.
-                    //     "^.+\\.s?css$"
-                    // ]
                 ]
             }
         ],
-        "simple-import-sort/exports": "error"
+        "simple-import-sort/exports": "error",
+        // https://eslint.style/packages/default#rules
+        "@stylistic/arrow-parens": [
+            "warn",
+            "as-needed"
+        ],
+        "@stylistic/comma-dangle": [
+            "warn",
+            "never"
+        ],
+        "@stylistic/comma-spacing": "warn",
+        "@stylistic/eol-last": [
+            "warn",
+            "never"
+        ],
+        "@stylistic/indent": [
+            "warn",
+            4,
+            {
+                "SwitchCase": 1,
+                "MemberExpression": 1
+            }
+        ],
+        "@stylistic/lines-between-class-members": [
+            "warn",
+            "always",
+            {
+                "exceptAfterSingleLine": true
+            }
+        ],
+        "@stylistic/no-multiple-empty-lines": [
+            "warn",
+            {
+                "max": 1
+            }
+        ],
+        "@stylistic/no-multi-spaces": "warn",
+        "@stylistic/no-trailing-spaces": "warn",
+        "@stylistic/object-curly-spacing": [
+            "warn",
+            "always"
+        ],
+        "@stylistic/object-property-newline": [
+            "warn",
+            {
+                "allowAllPropertiesOnSameLine": true
+            }
+        ],
+        "@stylistic/padded-blocks": [
+            "warn",
+            "never"
+        ],
+        "@stylistic/padding-line-between-statements": [
+            "warn",
+            {
+                "blankLine": "always",
+                "prev": "*",
+                "next": [
+                    "multiline-block-like"
+                ]
+            },
+            {
+                "blankLine": "always",
+                "prev": [
+                    "multiline-block-like"
+                ],
+                "next": "*"
+            },
+            {
+                "blankLine": "any",
+                "prev": [
+                    "const",
+                    "let",
+                    "var"
+                ],
+                "next": [
+                    "const",
+                    "let",
+                    "var"
+                ]
+            },
+            {
+                "blankLine": "always",
+                "prev": "*",
+                "next": "return"
+            }
+        ],
+        "@stylistic/quotes": [
+            "error",
+            "single"
+        ],
+        "@stylistic/semi": [
+            "error",
+            "always"
+        ],
+        "@stylistic/jsx-quotes": [
+            "warn",
+            "prefer-double"
+        ],
+        "@stylistic/space-infix-ops": "error",
+        "@stylistic/jsx/jsx-closing-bracket-location": [
+            "warn",
+            "tag-aligned"
+        ],
+        "@stylistic/jsx/jsx-curly-spacing": [
+            "warn",
+            {
+                "when": "never",
+                "attributes": true,
+                "children": true
+            }
+        ],
+        "@stylistic/jsx/jsx-first-prop-new-line": [
+            "warn",
+            "multiline-multiprop"
+        ],
+        "@stylistic/jsx/jsx-indent": [
+            "warn",
+            4,
+            {
+                "checkAttributes": true,
+                "indentLogicalExpressions": true
+            }
+        ],
+        "@stylistic/jsx/jsx-newline": [
+            "warn",
+            {
+                "prevent": true,
+                "allowMultilines": true
+            }
+        ],
+        "@stylistic/jsx/jsx-max-props-per-line": [
+            "warn",
+            {
+                "maximum": {
+                    "single": 2,
+                    "multiline": 1
+                }
+            }
+        ],
+        "@stylistic/jsx/jsx-props-no-multi-spaces": "warn",
+        "@stylistic/jsx/jsx-sort-props": [
+            "warn",
+            {
+                "callbacksLast": true,
+                "shorthandLast": true,
+                "multiline": "ignore",
+                "ignoreCase": true,
+                "noSortAlphabetically": true,
+                "reservedFirst": true
+            }
+        ]
     },
     "overrides": [
         {
