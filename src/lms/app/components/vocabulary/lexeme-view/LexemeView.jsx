@@ -9,7 +9,7 @@ export default function LexemeView({
     ...props
 }) {
     return Component ? (
-        <Component {...props}>
+        <Component onClose={onClose} {...props}>
             {children}
         </Component>
     ) : (

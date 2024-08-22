@@ -37,18 +37,15 @@ export default function VocabularyLexemes({
     const vocabularyId = vocabulary?.id;
     const isTeacher = user.role === 'teacher';
 
-    const closeModal = useCallback(setShowModal => {
+    const closeViewModal = useCallback(() => {
         setCurrentLexemeId(null);
-        setShowModal(false);
+        setShowViewModal(false);
     }, []);
 
-    const closeViewModal = useCallback(() => {
-        closeModal(setShowViewModal);
-    }, [closeModal]);
-
-    const closeEditLexeme = useCallback(() => {
-        closeModal(setShowEditModal);
-    }, [closeModal]);
+    const closeEditModal = useCallback(() => {
+        setCurrentLexemeId(null);
+        setShowEditModal(false);
+    }, []);
 
     const handleAddLexeme = useCallback(data => {
         if (isTeacher) {
@@ -100,8 +97,6 @@ export default function VocabularyLexemes({
     const currentLexeme = lexemes.find(lexeme => lexeme.id === currentLexemeId);
     const showHeader = !inline || !currentLexeme;
     const showList = showHeader;
-    const showView = currentLexeme && showViewModal;
-    const showForm = currentLexeme && showEditModal;
     const readOnly = isTeacher;
 
     return (
@@ -148,9 +143,10 @@ export default function VocabularyLexemes({
                     />
                 }
 
-                {showView && (
+                {currentLexeme && (
                     <LexemeView
                         as={inline ? undefined : Dialog}
+                        open={showViewModal}
                         onClose={closeViewModal}
                     >
                         <Lexeme
@@ -162,17 +158,17 @@ export default function VocabularyLexemes({
                     </LexemeView>
                 )}
 
-                {showForm && (
+                {currentLexeme && (
                     <LexemeView
                         as={inline ? undefined : FormDialog}
-                        modal={!inline}
+                        open={showEditModal}
                         onClose={closeViewModal}
                     >
                         <LexemeForm
                             id="lexeme-edit-form"
                             lexeme={currentLexeme}
                             onSubmit={handleUpdateLexeme}
-                            onClose={closeEditLexeme}
+                            onClose={closeEditModal}
                         />
                     </LexemeView>
                 )}
