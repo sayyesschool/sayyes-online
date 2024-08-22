@@ -13,6 +13,7 @@ export const LexemeRecord = new Schema({
     },
     reviewDate: { type: Date, default: Date },
     data: {
+        image: Lexeme.path('image').options,
         definition: Lexeme.path('definition').options,
         translation: Lexeme.path('translation').options,
         examples: Lexeme.path('examples').options

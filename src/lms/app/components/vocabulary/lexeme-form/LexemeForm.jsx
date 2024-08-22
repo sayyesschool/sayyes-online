@@ -24,8 +24,8 @@ export default function LexemeForm({
     const [definition, setDefinition] = useState(initialData.definition ?? '');
     const [examples, setExamples] = useState(initialData.examples ?? []);
 
-    const handleSubmit = useCallback(async e => {
-        e.preventDefault();
+    const handleSubmit = useCallback(async event => {
+        event.preventDefault();
 
         const data = {
             translation,
@@ -85,7 +85,7 @@ export default function LexemeForm({
             <ImageField
                 className={styles.imageField}
                 label="Изображение"
-                image={lexeme.image}
+                image={lexeme.image || lexeme.data.image}
                 disabled={!createdByUser || lexeme.approved}
                 onChange={handleFileChange}
                 onDelete={handleFileDelete}

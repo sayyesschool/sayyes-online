@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { Heading, Image, Text } from 'shared/ui-components';
+import { Flex, Heading, Image, Text } from 'shared/ui-components';
 
 import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 
@@ -28,6 +28,23 @@ export default function LexemeView({
                         src={image.url}
                         alt={lexeme.value}
                     />
+                }
+
+                {data.image &&
+                    <Flex dir="column" gap="smallest">
+                        <Text
+                            className={styles.translation}
+                            content="Ваше изображение:"
+                            color="neutral"
+                            type="body-sm"
+                        />
+
+                        <Image
+                            className={styles.image}
+                            src={data.image.url}
+                            alt={data.image.alt}
+                        />
+                    </Flex>
                 }
 
                 <div className={styles.text}>
