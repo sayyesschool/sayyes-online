@@ -256,7 +256,7 @@ export default ({
 
         res.json({
             ok: true,
-            data
+            data: transformLexeme(data)
         });
     },
 
@@ -319,8 +319,18 @@ export default ({
     }
 });
 
-const transformRecord = record => record && {
-    data: record.data,
-    status: record.status,
-    reviewDate: record.reviewDate
-};
+const transformLexeme = lexeme => ({
+    ...lexeme,
+    ...lexeme.record,
+    record: undefined
+});
+
+const transformRecord = ({
+    data,
+    status,
+    reviewDate
+} = {}) => ({
+    data,
+    status,
+    reviewDate
+});
