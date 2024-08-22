@@ -142,6 +142,7 @@ function ImageField({
                     icon="add_photo_alternate"
                     content="Выбрать изображение"
                     variant="outlined"
+                    disabled={disabled}
                     onClick={pick}
                 />
             }
