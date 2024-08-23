@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+
 import { useForm } from 'shared/hooks/form';
 import { Button, Form } from 'shared/ui-components';
 
@@ -22,9 +24,16 @@ export default function LexemeShortForm({
         onSubmit
     }, [numberOfLexemes]);
 
+    const valueInputRef = useRef();
+
+    useEffect(() => {
+        valueInputRef.current?.firstChild?.focus();
+    }, []);
+
     return (
         <Form className={styles.root} onSubmit={handleSubmit}>
             <Form.Input
+                ref={valueInputRef}
                 className={styles.input}
                 name="value"
                 value={data.value.value}

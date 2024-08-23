@@ -113,11 +113,9 @@ export default function SearchForm({
     return (
         <Autocomplete
             ref={comboboxRef}
-            open={isOpen}
             options={options}
-            loading={loading}
             placeholder={placeholder}
-            getOptionLabel={option => option.label}
+            getOptionLabel={option => option?.label ?? ''}
             getOptionDisabled={isResultDisabled}
             startDecorator={<Icon name="search" />}
             endDecorator={loading &&
@@ -126,6 +124,8 @@ export default function SearchForm({
             noOptionsText="Ничего не найдено"
             renderOption={renderOption}
             filterOptions={filterOptions}
+            open={isOpen}
+            loading={loading}
             clearOnBlur
             freeSolo
             onInputChange={handleInputChange}
