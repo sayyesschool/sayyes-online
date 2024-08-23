@@ -3,6 +3,8 @@ import { randomBytes } from 'node:crypto';
 import bcryptjs from 'bcryptjs';
 import mongoose, { Schema } from 'mongoose';
 
+import Image from '../image';
+
 import Person from './Person';
 
 export const UserRole = {
@@ -35,7 +37,7 @@ export const User = new Schema([Person, {
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
     activated: { type: Boolean, default: false, alias: 'isActivated' },
     timezone: { type: String },
-    imageUrl: { type: String },
+    image: { type: Image },
     accounts: [{
         provider: { type: 'String' },
         value: { type: 'String' }
@@ -51,6 +53,7 @@ export const User = new Schema([Person, {
     toJSON: {
         transform: (doc, obj, options) => {
             delete obj.password;
+
             return obj;
         }
     }
