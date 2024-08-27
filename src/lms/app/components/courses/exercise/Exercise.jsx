@@ -33,7 +33,7 @@ export default function Exercise({
 }) {
     const [exercise, actions] = useExercise(id);
 
-    const [state, setState] = useState(exercise.state || {});
+    const [state, setState] = useState(exercise?.state || {});
     const [isCollapsed, toggleCollapsed] = useBoolean(true);
     const [isCommenting, toggleCommenting] = useBoolean(false);
     const [isChecked, setChecked] = useBoolean(false);
@@ -92,7 +92,9 @@ export default function Exercise({
         return actions.deleteComment(commentId);
     }, [actions]);
 
-    const hasSaveableItems = user.role === 'learner' && exercise.items.some(item =>
+    if (!exercise) return null;
+
+    const hasSaveableItems = user?.role === 'learner' && exercise.items.some(item =>
         item.type === 'essay' ||
         item.type === 'fib' ||
         item.type === 'input'
@@ -117,7 +119,10 @@ export default function Exercise({
                     html
                 />
 
-                <Flex alignItems="center" alignSelf="start" gap="small">
+                <Flex
+                    alignItems="center" alignSelf="start"
+                    gap="small"
+                >
                     {assignments?.length > 0 && (
                         <Flex alignItems="center" gap="smaller">
                             {assignments
