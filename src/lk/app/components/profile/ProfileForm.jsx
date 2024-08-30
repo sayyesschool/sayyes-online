@@ -41,8 +41,6 @@ export default function ProfileForm({ profile, updateProfile, ...props }) {
         updateProfile(data);
     }, [updateProfile]);
 
-    console.log(111, { initialValues });
-
     const { data, handleChange, handleSubmit } = useForm({
         values: initialValues,
         onSubmit

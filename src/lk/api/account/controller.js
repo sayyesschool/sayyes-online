@@ -6,11 +6,9 @@ export default () => ({
         req.user.phone = req.body.phone;
         req.user.dob = req.body.dob;
         req.user.timezone = req.body.timezone;
-        req.user.zoom = req.body.zoom;
-        req.user.skype = req.body.skype;
-        req.user.telegram = req.body.telegram;
-
-        //req.user.avatar = req.file.buffer;
+        // req.user.accounts.zoom = req.body.zoom;
+        // req.user.accounts.skype = req.body.skype;
+        // req.user.accounts.telegram = req.body.telegram;
 
         req.user.save()
             .then(user => {
@@ -18,6 +16,20 @@ export default () => ({
                     ok: true,
                     message: 'Профиль изменен',
                     data: map(user)
+                });
+            })
+            .catch(next);
+    },
+
+    updateAvatar: (req, res, next) => {
+        req.user.image = req.body.image;
+
+        req.user.save()
+            .then(user => {
+                res.json({
+                    ok: true,
+                    message: 'Аватар обновлён',
+                    data: { image: user.image }
                 });
             })
             .catch(next);
@@ -50,6 +62,7 @@ function map(user) {
         email: user.email,
         initials: user.initials,
         balance: user.balance,
-        role: user.role
+        role: user.role,
+        image: user.image
     };
 }

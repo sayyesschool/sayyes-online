@@ -1,17 +1,27 @@
-import { Avatar, Button } from 'shared/ui-components';
+import { useCallback } from 'react';
+
+import ImageFieldCropper from 'shared/components/image-field-cropper';
+import Storage from 'shared/services/storage';
 
 import styles from './ProfileAvatar.module.scss';
 
-export default function ProfileAvatar() {
+export default function ProfileAvatar({ profile, updateAvatar }) {
+    const handleFileChange = useCallback(image => {
+        updateAvatar({ image });
+    }, [updateAvatar]);
+
+    const handleFileDelete = useCallback(async path => {
+        await Storage.delete(path).then(console.log);
+    }, []);
+
     return (
         <div className={styles.root}>
-            <Avatar
-                variant="outlined"
-                imageUrl="https://cdn-icons-png.flaticon.com/512/3270/3270919.png"
-                sx={{ width: '200px', height: '200px' }}
+            <ImageFieldCropper
+                className={styles.imageField}
+                image={profile.image}
+                onChange={handleFileChange}
+                onDelete={handleFileDelete}
             />
-
-            <Button content="Редактировать" variant="soft" />
         </div>
     );
 }

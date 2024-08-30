@@ -16,7 +16,8 @@ export default ({
                 email: user.email,
                 initials: user.initials,
                 balance: user.balance,
-                role: user.role
+                role: user.role,
+                image: user.image
             } : null
         });
     },
