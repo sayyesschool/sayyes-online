@@ -67,6 +67,10 @@ function ImageField({
             });
     }, [image, onDelete, reset]);
 
+    const handleCancel = useCallback(() => {
+        reset();
+    }, [reset]);
+
     return (
         <FormField
             className={cn(className, styles.root)}
@@ -175,7 +179,7 @@ function ImageField({
                     open={isCropperOpen}
                     disabled={disabled}
                     onSave={handleSave}
-                    onCancel={toggleCropperOpen}
+                    onCancel={handleCancel}
                     onClose={toggleCropperOpen}
                 />
             }
