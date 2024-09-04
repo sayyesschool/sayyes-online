@@ -37,7 +37,8 @@ export const User = new Schema([Person, {
     image: { type: Image },
     accounts: {
         type: Map,
-        of: String
+        of: String,
+        default: {}
     },
     timezone: { type: String },
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
