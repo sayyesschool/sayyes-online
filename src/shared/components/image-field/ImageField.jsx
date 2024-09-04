@@ -1,10 +1,12 @@
 import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 
+import ImageCropper from 'shared/components/image-cropper';
 import { useFileInput } from 'shared/hooks/file';
+import { useBoolean } from 'shared/hooks/state';
 import { Button, ButtonGroup, Flex, FormField, Image, Text } from 'shared/ui-components';
 import cn from 'shared/utils/classnames';
 
-import './index.scss';
+import styles from './ImageField.module.scss';
 
 export default forwardRef(ImageField);
 
@@ -15,11 +17,11 @@ const defaultValue = {
 
 function ImageField({
     name,
-    label,
-    accept = 'image/jpeg,image/png,image/jpeg',
+    accept = 'image/jpeg,image/png,image/jpeg,image/webp',
     image = defaultValue,
     src = image.src || image.url,
     alt: _alt = image.alt,
+    noImage,
     error,
     errorMessage,
     disabled,
@@ -30,38 +32,54 @@ function ImageField({
     ...props
 }, ref) {
     const [alt, setAlt] = useState(_alt);
+    const [isCropperOpen, toggleCropperOpen] = useBoolean(false);
 
     const { file, pick, reset } = useFileInput({
         name,
-        accept: 'image/jpeg,image/png,image/jpeg,image/webp',
-        onChange: file => {
-            onChange?.({ name }, file);
-        }
+        accept,
+        onChange: () => toggleCropperOpen(true)
     });
 
     useImperativeHandle(ref, () => ({
-        get file() {
-            return file;
-        },
+        get file() { return file; },
+        getFile: () => file,
+        pick,
         reset
     }));
 
+    const handlePick = useCallback(() => {
+        pick();
+        toggleCropperOpen(true);
+    }, [pick, toggleCropperOpen]);
+
+    const handleSave = useCallback(file => {
+        onChange?.(file)
+            .finally(() => {
+                toggleCropperOpen(false);
+                reset();
+            });
+    }, [name, onChange, toggleCropperOpen]);
+
     const handleDelete = useCallback(() => {
-        onDelete?.(image);
-    }, [image, onDelete]);
+        onDelete?.(image)
+            .finally(() => {
+                reset();
+            });
+    }, [image, onDelete, reset]);
 
     return (
         <FormField
-            className={cn(className, 'ImageField')}
-            label={label}
+            className={cn(className, styles.root)}
             {...props}
         >
             {file &&
                 <Flex gap="small" column>
-                    <Image
-                        src={file.url}
-                        alt=""
-                    />
+                    {!noImage &&
+                        <Image
+                            src={file.url}
+                            alt=""
+                        />
+                    }
 
                     <Flex
                         gap="smaller"
@@ -76,6 +94,7 @@ function ImageField({
                         />
 
                         <ButtonGroup
+                            className={styles.buttons}
                             variant="plain"
                             buttons={[
                                 {
@@ -84,7 +103,7 @@ function ImageField({
                                     content: 'Выбрать другое',
                                     variant: 'plain',
                                     disabled,
-                                    onClick: pick
+                                    onClick: handlePick
                                 },
                                 {
                                     key: 'reset',
@@ -105,18 +124,21 @@ function ImageField({
 
             {src && !file &&
                 <Flex gap="small" column>
-                    <Image
-                        src={src}
-                        alt={alt}
-                    />
+                    {!noImage &&
+                        <Image
+                            src={src}
+                            alt={alt}
+                        />
+                    }
 
                     <ButtonGroup
+                        className={styles.buttons}
                         variant="plain"
                         buttons={[
                             {
                                 key: 'pick',
                                 icon: 'add_photo_alternate',
-                                content: 'Выбрать изображение',
+                                content: 'Изменить',
                                 variant: 'plain',
                                 disabled,
                                 onClick: pick
@@ -126,7 +148,7 @@ function ImageField({
                                 icon: 'clear',
                                 color: 'danger',
                                 variant: 'plain',
-                                content: 'Удалить изображение',
+                                content: 'Удалить',
                                 disabled,
                                 onClick: handleDelete
                             }
@@ -141,9 +163,20 @@ function ImageField({
                 <Button
                     icon="add_photo_alternate"
                     content="Выбрать изображение"
-                    variant="outlined"
+                    variant="plain"
                     disabled={disabled}
                     onClick={pick}
+                />
+            }
+
+            {file &&
+                <ImageCropper
+                    image={file}
+                    open={isCropperOpen}
+                    disabled={disabled}
+                    onSave={handleSave}
+                    onCancel={toggleCropperOpen}
+                    onClose={toggleCropperOpen}
                 />
             }
         </FormField>

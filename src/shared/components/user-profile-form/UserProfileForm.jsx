@@ -1,12 +1,10 @@
-import { useCallback } from 'react';
-
 import moment from 'moment';
 
 import { timezones } from 'shared/data';
 import { useForm } from 'shared/hooks/form';
 import { Button, Form, Select } from 'shared/ui-components';
 
-import styles from './ProfileForm.module.scss';
+import styles from './UserProfileForm.module.scss';
 
 const timezoneOptions = timezones.map(item => ({
     key: item.value,
@@ -18,28 +16,27 @@ const fields = [
     { name: 'firstname', label: 'Имя', required: true },
     { name: 'lastname', label: 'Фамилия', required: true },
     { name: 'patronym', label: 'Отчество' },
+    { name: 'email', label: 'Электронная почта', type: 'email', required: true },
     { name: 'phone', label: 'Телефон', type: 'phone', required: true },
-    { name: 'email', label: 'Электронная почта', type: 'email' },
     { name: 'dob', label: 'Дата рождения', type: 'date', format: 'YYYY-MM-DD' },
     { name: 'timezone', label: 'Часовой пояс', type: 'select', options: timezoneOptions },
     { name: 'zoom', label: 'Zoom' },
     { name: 'skype', label: 'Skype' },
     { name: 'telegram', label: 'Telegram' }
 ];
+const personalFields = fields.slice(0, 6);
+const socialFields = fields.slice(7);
 
-export default function ProfileForm({ profile, updateProfile, ...props }) {
-    const personalInputForms = fields.slice(0, 6);
-    const socialInputForms = fields.slice(7);
-
+export default function UserProfileForm({
+    user,
+    onSubmit,
+    ...props
+}) {
     const initialValues = fields.reduce((acc, field) => {
-        acc[field.name] = profile[field.name] || '';
+        acc[field.name] = user[field.name] || '';
 
         return acc;
     }, {});
-
-    const onSubmit = useCallback(data => {
-        updateProfile(data);
-    }, [updateProfile]);
 
     const { data, handleChange, handleSubmit } = useForm({
         values: initialValues,
@@ -48,15 +45,15 @@ export default function ProfileForm({ profile, updateProfile, ...props }) {
 
     return (
         <Form
-            className={styles.root}
             id="profile-form"
+            className={styles.root}
             sx={{ display: 'flex', flexDirection: 'column' }}
             onSubmit={handleSubmit}
             {...props}
         >
-            <div className={styles.formData}>
+            <div className={styles.container}>
                 <div className={styles.personal}>
-                    {personalInputForms.map(({ name, label, type, required, format }) => {
+                    {personalFields.map(({ name, label, type, required, format }) => {
                         const value = format
                             ? moment(data[name]).format(format)
                             : data[name].value;
@@ -81,7 +78,7 @@ export default function ProfileForm({ profile, updateProfile, ...props }) {
                         defaultValue="Europe/Moscow"
                         onChange={handleChange}
                     >
-                        {timezoneOptions.map(option => (
+                        {timezoneOptions.map(option =>
                             <Select.Option
                                 key={option.value}
                                 value={option.value}
@@ -89,12 +86,12 @@ export default function ProfileForm({ profile, updateProfile, ...props }) {
                             >
                                 {option.label}
                             </Select.Option>
-                        ))}
+                        )}
                     </Form.Select>
                 </div>
 
                 <div className={styles.social}>
-                    {socialInputForms.map(({ name, label, type, required }) => (
+                    {socialFields.map(({ name, label, type, required }) =>
                         <Form.Input
                             key={name}
                             name={name}
@@ -103,15 +100,15 @@ export default function ProfileForm({ profile, updateProfile, ...props }) {
                             label={label}
                             required={required}
                             onChange={handleChange}
-                        />)
+                        />
                     )}
                 </div>
             </div>
 
             <Button
+                className={styles.save}
                 type="submit"
                 content="Сохранить"
-                className={styles.save}
             />
         </Form>
     );

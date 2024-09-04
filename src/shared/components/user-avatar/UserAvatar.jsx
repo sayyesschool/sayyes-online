@@ -1,188 +1,66 @@
-import cn from 'classnames';
-import { InputHTMLAttributes, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 
-import { Button, Spinner } from '@famiryui/components';
+import ImageField from 'shared/components/image-field';
+import Storage from 'shared/services/storage';
+import { Avatar, Skeleton } from 'shared/ui-components';
 
-import { EntryAccessState, EntryElement } from '@/hooks/access/types';
-import useElementAccessCallback from '@/hooks/access/useElementAccessCallback';
-import { useClickOutside } from '@/hooks/useClickOutside';
-import { ReactComponent as WarningIcon } from '@/images/icons/warning.svg';
-import { noop } from '@/utils';
+import styles from './UserAvatar.module.scss';
 
-import './UploadPhotoInput.css';
+const emptyAvatarSrc = 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg';
 
-interface ClassNamesProps {
-  label: string;
-  input: string;
-}
+export default function UserAvatar({ user, onChange }) {
+    const [isLoading, setLoading] = useState(false);
 
-export interface UploadPhotoInputProps extends InputHTMLAttributes<HTMLInputElement> {
-  imageSrc?: string;
-  classNames?: Partial<ClassNamesProps>;
-  onDelete?: () => void;
-  onCrop?: () => void;
-  isLoading?: boolean;
-  hasError?: boolean;
-}
+    const handleChange = useCallback(file => {
+        if (!(file instanceof File)) return;
 
-export const UploadPhotoInput = ({
-  imageSrc,
-  classNames,
-  onDelete,
-  onCrop = noop,
-  ...props
-}: UploadPhotoInputProps) => {
-  const [isActionsOpen, setIsActionsOpen] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
+        setLoading(true);
 
-  const accessMode = useElementAccessCallback()(EntryElement.SmallPersonCard_UploadAvatar);
+        return Storage.upload(file, { path: `avatars/${user.id}.${file.extension}` })
+            .then(response => {
+                onChange({
+                    image: { path: response.data.path }
+                });
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }, [user.id, onChange]);
 
-  useClickOutside([menuRef], () => {
-    setIsActionsOpen(false);
-  });
+    const handleDelete = useCallback(image => {
+        if (!image.path) return;
 
-  const onDeleteClick = () => {
-    onDelete && onDelete();
-    inputRef.current!.value = '';
-    setIsActionsOpen(false);
-  };
-  const onChangeClick = () => {
-    inputRef.current?.click();
-    setIsActionsOpen(false);
-  };
+        setLoading(true);
 
-  const onCropClick = () => {
-    onCrop && onCrop();
-    setIsActionsOpen(false);
-  };
+        return Storage.delete(image.path).then(response => {
+            onChange({ image: {} });
+        }).finally(() => {
+            setLoading(false);
+        });
+    }, [onChange]);
 
-  const { isLoading, hasError, ...otherProps } = props;
+    const image = user.image;
 
-  props.disabled = accessMode !== EntryAccessState.Available;
+    return (
+        <div className={styles.root}>
+            <div className={styles.main}>
+                <Avatar
+                    key={isLoading}
+                    className={styles.avatar}
+                    imageUrl={isLoading ? '' : (image?.url || image?.src || emptyAvatarSrc)}
+                >
+                    <Skeleton loading={isLoading} />
+                </Avatar>
+            </div>
 
-  return (
-    <div
-      className={cn('upload-photo', classNames?.label, { 'upload-photo_disabled': props.disabled })}
-    >
-      <input
-        type="file"
-        className={cn('upload-photo__input', classNames?.input)}
-        ref={inputRef}
-        {...otherProps}
-      />
-
-      {props.isLoading && (
-        <div
-          className="upload-photo__loading"
-          onClick={() => setIsActionsOpen(!isActionsOpen)}
-        >
-          <Spinner />
-          Импорт...
-        </div>
-      )}
-
-      {props.hasError && (
-        <div
-          className="upload-photo__error"
-          onClick={() => setIsActionsOpen(!isActionsOpen)}
-        >
-          <WarningIcon />
-          Ошибка импорта
-          <Button onClick={onChangeClick}>Загрузить фото вручную</Button>
-        </div>
-      )}
-
-      {!props.isLoading &&
-        !props.hasError &&
-        (imageSrc ? (
-          <>
-            <img
-              className="upload-photo__image"
-              src={imageSrc}
-              alt="Фотография персоны"
+            <ImageField
+                className={styles.field}
+                image={image}
+                disabled={isLoading}
+                noImage
+                onChange={handleChange}
+                onDelete={handleDelete}
             />
-
-            {!props.disabled && (
-              <button
-                className="upload-photo__actions-button"
-                type="button"
-                onClick={() => setIsActionsOpen(!isActionsOpen)}
-              />
-            )}
-
-            {isActionsOpen && (
-              <div
-                className="upload-photo__actions-menu"
-                ref={menuRef}
-              >
-                {!props.isLoading && !props.hasError && (
-                  <>
-                    <div
-                      className="upload-photo__actions-menu-item"
-                      onClick={onDeleteClick}
-                    >
-                      Удалить фото
-                    </div>
-                    <div
-                      className="upload-photo__actions-menu-item"
-                      onClick={onChangeClick}
-                    >
-                      Заменить фото
-                    </div>
-                    <div
-                      className="upload-photo__actions-menu-item"
-                      onClick={onCropClick}
-                    >
-                      Обрезать фото
-                    </div>
-                  </>
-                )}
-
-                {props.isLoading && (
-                  <>
-                    <div
-                      className="upload-photo__actions-menu-item"
-                      onClick={onDeleteClick}
-                    >
-                      Возобновить импорт
-                    </div>
-                  </>
-                )}
-
-                {props.hasError && (
-                  <>
-                    <div
-                      className="upload-photo__actions-menu-item"
-                      onClick={onDeleteClick}
-                    >
-                      Отменить импорт
-                    </div>
-                  </>
-                )}
-
-                {props.isLoading ||
-                  (props.hasError && (
-                    <>
-                      <div
-                        className="upload-photo__actions-menu-item"
-                        onClick={() => inputRef.current?.click()}
-                      >
-                        Загрузить фото вручную
-                      </div>
-                    </>
-                  ))}
-              </div>
-            )}
-          </>
-        ) : (
-          <label
-            className="upload-photo__empty"
-            onClick={() => inputRef.current?.click()}
-          />
-        ))}
-    </div>
-  );
-};
-
-export default UploadPhotoInput;
+        </div>
+    );
+}

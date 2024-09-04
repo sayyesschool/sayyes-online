@@ -1,8 +1,9 @@
-import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
+
 import moment from 'moment';
 
-import { useFormData } from 'shared/hooks/form';
 import TimeZoneSelect from 'shared/components/timezone-select';
+import { useFormData } from 'shared/hooks/form';
 import { Form, IconButton } from 'shared/ui-components';
 import { generatePassword } from 'shared/utils/password';
 

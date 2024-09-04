@@ -1,0 +1,24 @@
+.root {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.personal,
+.social {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.save {
+    align-self: flex-end;
+}

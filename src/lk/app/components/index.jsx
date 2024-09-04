@@ -9,7 +9,6 @@ import Account from 'lk/components/account';
 
 import './index.scss';
 
-// TODO: в папке shared находятся компоненты которые не используются, можно их удалить?
 export default function App() {
     const [user] = useUser();
 
@@ -24,7 +23,8 @@ export default function App() {
             <AppContent>
                 <Switch>
                     <Route
-                        path="/" component={Account}
+                        path="/"
+                        component={Account}
                         exact
                     />
                 </Switch>

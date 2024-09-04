@@ -12,14 +12,14 @@ import styles from './Account.module.scss';
 
 export default function AccountPage() {
     const [user] = useUser(state => state.user, userActions);
-    const [account, actions] = useAccount(state => state.user, userActions);
+    const [,actions] = useAccount(state => state.user, userActions);
 
-    const updateProfile = useCallback(data => {
-        return actions.updateProfile(data);
+    const handleAvatarChange = useCallback(data => {
+        return actions.updateAvatar(data);
     }, [actions]);
 
-    const updateAvatar = useCallback(data => {
-        return actions.updateAvatar(data);
+    const handleProfileChange = useCallback(data => {
+        return actions.updateProfile(data);
     }, [actions]);
 
     if (!user) return <LoadingIndicator />;
@@ -31,8 +31,8 @@ export default function AccountPage() {
             <Page.Content className={styles.content}>
                 <Profile
                     user={user}
-                    updateProfile={updateProfile}
-                    updateAvatar={updateAvatar}
+                    onAvatarChange={handleAvatarChange}
+                    onProfileChange={handleProfileChange}
                 />
             </Page.Content>
         </Page>

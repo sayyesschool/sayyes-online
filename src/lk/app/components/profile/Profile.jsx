@@ -1,14 +1,24 @@
-
-import ProfileAvatar from './ProfileAvatar';
-import ProfileForm from './ProfileForm';
+import UserAvatar from 'shared/components/user-avatar';
+import UserProfileForm from 'shared/components/user-profile-form';
 
 import styles from './Profile.module.scss';
 
-export default function Profile({ user, updateProfile, updateAvatar }) {
+export default function Profile({
+    user,
+    onAvatarChange,
+    onProfileChange
+}) {
     return (
         <div className={styles.root}>
-            <ProfileAvatar profile={user} updateAvatar={updateAvatar} />
-            <ProfileForm profile={user} updateProfile={updateProfile} />
+            <UserAvatar
+                user={user}
+                onChange={onAvatarChange}
+            />
+
+            <UserProfileForm
+                user={user}
+                onSubmit={onProfileChange}
+            />
         </div>
     );
 }
