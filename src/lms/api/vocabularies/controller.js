@@ -325,12 +325,8 @@ const transformLexeme = lexeme => ({
     record: undefined
 });
 
-const transformRecord = ({
-    data,
-    status,
-    reviewDate
-} = {}) => ({
-    data,
-    status,
-    reviewDate
-});
+const transformRecord = record => record && {
+    data: record.data,
+    status: record.status,
+    reviewDate: record.reviewDate
+};
