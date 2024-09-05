@@ -2,7 +2,7 @@ import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import Cropper from 'react-cropper';
 
 import { ButtonGroup, Dialog, Text } from 'shared/ui-components';
-import { getFileFromURL } from 'shared/utils/file';
+import { getFileFromBlob } from 'shared/utils/file';
 
 import 'cropperjs/dist/cropper.css';
 import styles from './ImageCropper.module.scss';
@@ -31,13 +31,15 @@ function ImageCropper({
         }
     }));
 
-    const handleSave = useCallback(async () => {
-        const cropperUrl = cropperRef.current?.cropper.getCroppedCanvas().toDataURL();
-        const file = await getFileFromURL(cropperUrl);
+    const handleSave = useCallback(() => {
+        cropperRef.current?.cropper.getCroppedCanvas()
+            .toBlob(blob => {
+                const file = getFileFromBlob(blob, { name: 'image' });
 
-        onSave(file);
-        onClose();
-    }, [onSave, onClose]);
+                onSave(file);
+                onClose();
+            }, image?.type);
+    }, [image, onSave, onClose]);
 
     return (
         <Dialog
