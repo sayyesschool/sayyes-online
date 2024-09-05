@@ -165,17 +165,12 @@ export default ({
             learnerId: req.body.learnerId || req.user.id
         });
 
-        if (lexeme && record) {
-            throw {
-                code: 403,
-                message: 'Слово уже имеется в словаре'
-            };
+        if (lexeme && !record) {
+            record = await LexemeRecord.create({
+                lexemeId: lexeme.id,
+                learnerId: req.body.learnerId || req.user.id
+            });
         }
-
-        record = await LexemeRecord.create({
-            lexemeId: lexeme.id,
-            learnerId: req.body.learnerId || req.user.id
-        });
 
         const data = lexeme.toJSON();
 
