@@ -12,11 +12,15 @@ const defaultMeta = {
 
 export default useFormData;
 
-export function useForm({ values, fields = values, onSubmit } = {}, deps = []) {
-    const [state, setState] = useState({
+export function useForm({
+    values,
+    fields = values,
+    onSubmit
+} = {}, deps = []) {
+    const [state, setState] = useState(() => ({
         data: toData(fields),
         meta: defaultMeta
-    });
+    }));
 
     useEffect(() => {
         setState({

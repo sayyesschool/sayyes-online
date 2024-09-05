@@ -1,55 +1,60 @@
 export default () => ({
-    getUser: (req, res, next) => {
+    async updateProfile(req, res) {
+        const { firstname, lastname, patronym, phone, dob, timezone, accounts } = req.body;
+
+        if (firstname)
+            req.user.firstname = firstname;
+        if (lastname)
+            req.user.lastname = lastname;
+        if (patronym)
+            req.user.patronym = patronym;
+        if (phone)
+            req.user.phone = phone;
+        if (dob)
+            req.user.dob = dob;
+        if (timezone)
+            req.user.timezone = timezone;
+        if (accounts)
+            req.user.accounts = accounts;
+
+        const user = await req.user.save();
+
         res.json({
             ok: true,
-            data: map(req.user)
+            message: 'Профиль сохранен',
+            data: user.toData()
         });
     },
 
-    updateProfile: (req, res, next) => {
-        req.user.firstname = req.body.firstname;
-        req.user.lastname = req.body.lastname;
-        req.user.email = req.body.email;
-        //req.user.avatar = req.file.buffer;
+    async updateAvatar(req, res) {
+        req.user.image = req.body.image;
 
-        req.user.save()
-            .then(user => {
-                res.json({
-                    ok: true,
-                    message: 'Профиль изменен',
-                    data: map(user)
-                });
-            })
-            .catch(next);
+        const user = await req.user.save();
+
+        res.json({
+            ok: true,
+            message: 'Аватар обновлён',
+            data: {
+                image: user.image
+            }
+        });
     },
 
-    updatePassword: (req, res, next) => {
-        if (!req.body.currentPassword) return next(new Error('Не указан текущий пароль'));
-        if (!req.body.newPassword) return next(new Error('Не указан новый пароль'));
-        if (!req.user.validatePassword(req.body.currentPassword)) return next(new Error('Неверный текущий пароль'));
+    async updatePassword(req, res) {
+        if (!req.body.currentPassword)
+            throw new Error('Не указан текущий пароль');
+        if (!req.body.newPassword)
+            throw new Error('Не указан новый пароль');
+        if (!req.user.validatePassword(req.body.currentPassword))
+            throw new Error('Неверный текущий пароль');
 
         req.user.password = req.body.newPassword;
 
-        req.user.save()
-            .then(() => {
-                res.json({
-                    ok: true,
-                    message: 'Пароль изменен'
-                });
-            })
-            .catch(next);
+        await req.user.save();
+
+        res.json({
+            ok: true,
+            message: 'Пароль изменен'
+        });
     }
 });
-
-function map(user) {
-    return {
-        id: user.id,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        fullname: user.fullname,
-        email: user.email,
-        initials: user.initials,
-        balance: user.balance,
-        role: user.role
-    };
-}

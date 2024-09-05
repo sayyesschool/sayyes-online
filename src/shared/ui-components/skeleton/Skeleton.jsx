@@ -1,16 +1,16 @@
 import { forwardRef } from 'react';
 
-import JoySlider from '@mui/joy/Slider';
+import JoySkeleton from '@mui/joy/Skeleton';
 import classnames from 'classnames';
 
-const Slider = forwardRef(({
+const Skeleton = forwardRef(({
     className,
     ...props
 }, ref) => {
-    const classNames = classnames('ui-Slider', className);
+    const classNames = classnames('ui-Skeleton', className);
 
     return (
-        <JoySlider
+        <JoySkeleton
             ref={ref}
             className={classNames}
             {...props}
@@ -18,6 +18,6 @@ const Slider = forwardRef(({
     );
 });
 
-Slider.displayName = 'Slider';
+Skeleton.displayName = 'Skeleton';
 
-export default Slider;
+export default Skeleton;

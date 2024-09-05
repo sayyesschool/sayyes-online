@@ -8,6 +8,7 @@ import config from './config';
 import core from './core';
 import crm from './crm';
 import db from './db';
+import lk from './lk';
 import lms from './lms';
 import server from './server';
 
@@ -35,6 +36,7 @@ server(context, options)
     .use(authorize, classroom(context))
     .use(authorize, cms(context))
     .use(authorize, crm(context))
+    .use(authorize, lk(context))
     .use(authorize, lms(context))
     .use(redirect)
     .start();

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import useForm from 'shared/hooks/form';
 import { Button, Flex, Form, Input, List, Radio, Text } from 'shared/ui-components/Form';
 
-import { types, packages } from './data';
+import { packages, types } from './data';
 
 export default function PaymentForm({ }) {
     const { data, onChange } = useForm({
@@ -26,7 +26,7 @@ export default function PaymentForm({ }) {
                 <section>
                     <List>
                         <List.Item
-                            as='label'
+                            as="label"
                             media={
                                 <Radio
                                     name="type"
@@ -40,7 +40,7 @@ export default function PaymentForm({ }) {
                         />
 
                         <List.Item
-                            as='label'
+                            as="label"
                             media={
                                 <Radio
                                     name="type"
@@ -54,7 +54,7 @@ export default function PaymentForm({ }) {
                         />
 
                         <List.Item
-                            as='label'
+                            as="label"
                             media={
                                 <Radio
                                     name="type"
@@ -68,7 +68,10 @@ export default function PaymentForm({ }) {
                         />
                     </List>
 
-                    <Button type="button" disabled={!data.type} outlined onClick={() => setActiveTab('package')}>Далее</Button>
+                    <Button
+                        type="button" disabled={!data.type}
+                        outlined onClick={() => setActiveTab('package')}
+                    >Далее</Button>
                 </section>
             }
 
@@ -81,7 +84,7 @@ export default function PaymentForm({ }) {
                         {Object.entries(packages[data.type]).map(([key, value]) =>
                             <List.Item
                                 key={key}
-                                as='label'
+                                as="label"
                                 media={
                                     <Radio
                                         name="package"
@@ -104,13 +107,16 @@ export default function PaymentForm({ }) {
                             name="amount"
                             value={data.amount}
                             placeholder="Произвольная сумма"
-                            onChange={onChange}
                             fluid
+                            onChange={onChange}
                         />
                     </Flex>
 
                     <Flex>
-                        <Button type="button" disabled={!data.package && !data.amount} onClick={() => setActiveTab('checkout')}>Далее</Button>
+                        <Button
+                            type="button" disabled={!data.package && !data.amount}
+                            onClick={() => setActiveTab('checkout')}
+                        >Далее</Button>
                     </Flex>
                 </section>
             }
@@ -119,11 +125,8 @@ export default function PaymentForm({ }) {
                 <section>
                     <Text as="h3" type="headline6">{types[data.type]}</Text>
                     <Text as="p" type="subtitle1">{packages[data.type][data.package]} руб.</Text>
-
                     <Text type="body1">При нажатии на кнопку <strong>Оплатить</strong> вы будете перенаправлены на сайт платежной системы, где сможете выбрать способ оплаты (Банковские карты, Яндекс.Деньги, Qiwi, Сбербанк, Альфа-Банк, Тинькофф, Apple Pay).</Text>
-
                     <Text type="body2">Нажимая на кропку <strong>Оплатить</strong> вы принимаете условия <a href="/offer" target="_blank">договора-оферты</a>.</Text>
-
                     <Button type="submit" disabled={!data.type && (!data.package || !data.amount)}>Оплатить</Button>
                 </section>
             }

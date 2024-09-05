@@ -29,6 +29,7 @@ export * from './menu';
 export * from './popover';
 export * from './radio';
 export * from './select';
+export * from './skeleton';
 export * from './slider';
 export * from './snackbar';
 export * from './stepper';

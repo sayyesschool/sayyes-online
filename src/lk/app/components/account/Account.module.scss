@@ -1,0 +1,8 @@
+
+@use 'shared/styles/variables';
+
+.content {
+    width: 100%;
+    background-color: variables.$background-color;
+    border-radius: 15px;
+}

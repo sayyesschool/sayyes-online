@@ -37,14 +37,12 @@ export const Person = new Schema({
     phone: {
         type: String,
         trim: true,
-        minlength: 8,
         maxlength: 12,
         set: value => value.trim().replace(/[\s()\-+]+/g, '')
     },
     phones: [{
         type: String,
         trim: true,
-        minlength: 8,
         maxlength: 12,
         set: value => value.trim().replace(/[\s()\-+]+/g, '')
     }],

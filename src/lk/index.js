@@ -1,6 +1,7 @@
 import { resolve } from 'node:path';
 
 import express from 'express';
+import vhost from 'vhost';
 
 import api from './api';
 
@@ -17,11 +18,8 @@ export default context => {
         Object.assign(app.locals, parent.locals);
     });
 
-    app.use((req, res, next) =>
-        req.user?.role === 'learner' ? next() : next('router')
-    );
     app.use('/api', api(context));
     app.use((req, res) => res.render('index'));
 
-    return app;
+    return vhost(`lk.${context.config.APP_DOMAIN}`, app);
 };

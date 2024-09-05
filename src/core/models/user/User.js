@@ -34,14 +34,15 @@ export const User = new Schema([Person, {
         enum: Object.values(UserRole),
         default: UserRole.Customer
     },
+    image: { type: Image },
+    accounts: {
+        type: Map,
+        of: String,
+        default: {}
+    },
+    timezone: { type: String },
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
     activated: { type: Boolean, default: false, alias: 'isActivated' },
-    timezone: { type: String },
-    image: { type: Image },
-    accounts: [{
-        provider: { type: 'String' },
-        value: { type: 'String' }
-    }],
     note: { type: String, trim: true },
     activationToken: String,
     activationTokenExpiresAt: Date,
@@ -127,6 +128,23 @@ User.methods.removeAccount = function(accountId) {
     account.remove();
 
     return this.save().then(() => account);
+};
+
+User.methods.toData = function() {
+    return {
+        id: this.id,
+        firstname: this.firstname,
+        lastname: this.lastname,
+        fullname: this.fullname,
+        email: this.email,
+        dob: this.dob,
+        image: this.image,
+        initials: this.initials,
+        balance: this.balance,
+        role: this.role,
+        timezone: this.timezone,
+        accounts: this.accounts
+    };
 };
 
 /* Middleware */

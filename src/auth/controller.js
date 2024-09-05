@@ -8,16 +8,7 @@ export default ({
 
         res.json({
             ok: true,
-            data: user ? {
-                id: user.id,
-                firstname: user.firstname,
-                lastname: user.lastname,
-                fullname: user.fullname,
-                email: user.email,
-                initials: user.initials,
-                balance: user.balance,
-                role: user.role
-            } : null
+            data: user?.toData()
         });
     },
 
@@ -96,6 +87,7 @@ export default ({
 
         if (!password) {
             req.flash('error', 'Пароль не указан');
+
             return res.redirect('back');
         }
 
