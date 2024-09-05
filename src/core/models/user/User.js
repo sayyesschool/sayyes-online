@@ -130,6 +130,23 @@ User.methods.removeAccount = function(accountId) {
     return this.save().then(() => account);
 };
 
+User.methods.toData = function() {
+    return {
+        id: this.id,
+        firstname: this.firstname,
+        lastname: this.lastname,
+        fullname: this.fullname,
+        email: this.email,
+        dob: this.dob,
+        image: this.image,
+        initials: this.initials,
+        balance: this.balance,
+        role: this.role,
+        timezone: this.timezone,
+        accounts: this.accounts
+    };
+};
+
 /* Middleware */
 
 // Generate password
