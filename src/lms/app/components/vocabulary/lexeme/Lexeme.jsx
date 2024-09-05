@@ -30,7 +30,7 @@ export default function LexemeView({
                     />
                 }
 
-                {data.image &&
+                {data?.image &&
                     <Flex dir="column" gap="smallest">
                         <Text
                             className={styles.translation}

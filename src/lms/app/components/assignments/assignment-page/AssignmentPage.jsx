@@ -8,6 +8,7 @@ import Page from 'shared/components/page';
 import { StatusColor, StatusLabel } from 'shared/data/assignment';
 import { DomainLabel } from 'shared/data/common';
 import { useAssignment } from 'shared/hooks/assignments';
+import { useExerciseActions } from 'shared/hooks/exercises';
 import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
 import datetime from 'shared/libs/datetime';
@@ -17,6 +18,7 @@ import Exercise from 'lms/components/courses/exercise';
 
 export default function AssignmentPage({ match, location, history }) {
     const [assignment, actions] = useAssignment(match.params.id, location.search);
+    const exerciseActions = useExerciseActions();
     const [user] = useUser();
 
     const editorRef = useRef();
@@ -24,13 +26,13 @@ export default function AssignmentPage({ match, location, history }) {
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     const handleExerciseProgressChange = useCallback((exercise, data) => {
-        return actions.updateExerciseProgress(exercise.progressId, {
+        return exerciseActions.updateExerciseProgress(exercise.progressId, {
             ...data,
             enrollmentId: assignment.enrollmentId,
             courseId: exercise.courseId,
             exerciseId: exercise.id
         });
-    }, [assignment, actions]);
+    }, [assignment, exerciseActions]);
 
     const updateAssignmentStatus = useCallback(status => {
         return actions.updateAssignment(assignment.id, { status });
@@ -138,6 +140,7 @@ export default function AssignmentPage({ match, location, history }) {
                 {assignment.exercises.length > 0 ? assignment.exercises.map((exercise, index) =>
                     <Exercise
                         key={exercise.id}
+                        id={exercise.id}
                         index={index}
                         user={user}
                         exercise={exercise}

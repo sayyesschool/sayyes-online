@@ -85,7 +85,7 @@ export default function LexemeForm({
             <ImageField
                 className={styles.imageField}
                 label="Изображение"
-                image={lexeme.image || lexeme.data.image}
+                image={lexeme.image || lexeme.data?.image}
                 disabled={!createdByUser || lexeme.approved}
                 onChange={handleFileChange}
                 onDelete={handleFileDelete}
