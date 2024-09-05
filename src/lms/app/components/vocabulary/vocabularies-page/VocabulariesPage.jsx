@@ -44,8 +44,6 @@ export default function VocabulariesPage() {
 
     if (!vocabularies) return <LoadingIndicator />;
 
-    console.log({ userVocabulary });
-
     return (
         <Page className="VocabulariesPage" layout="narrow">
             <Page.Header

@@ -12,15 +12,14 @@ export function useExercise(id) {
         exerciseActions
     );
 
+    const exerciseId = exercise?.id;
+
     useEffect(() => {
-        if (!id) return;
+        if (id === exerciseId) return;
 
-        if (!exercise) {
-            actions.getExercise(id);
-        }
-
-        return () => actions.unsetExercise();
-    }, [id, exercise, actions]);
+        actions.unsetExercise();
+        actions.getExercise(id);
+    }, [exerciseId, id, actions]);
 
     return [exercise, actions];
 }

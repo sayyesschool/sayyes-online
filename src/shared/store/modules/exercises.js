@@ -83,6 +83,7 @@ export const actions = {
     createExercise,
     updateExercise,
     deleteExercise,
+    unsetExercise,
 
     createExerciseItem,
     updateExerciseItem,
