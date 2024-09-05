@@ -129,7 +129,6 @@ export default function SearchForm({
             clearOnBlur
             freeSolo
             onInputChange={handleInputChange}
-            onChange={console.log}
             onOpen={handleOpen}
             onClose={handleClose}
         />

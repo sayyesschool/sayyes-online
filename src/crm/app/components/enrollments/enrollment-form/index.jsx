@@ -53,8 +53,6 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
         payments: undefined
     });
 
-    console.log('DATA', data);
-
     useImperativeHandle(ref, () => ({
         get form() { return formRef.current; },
         get data() { return data; }
@@ -68,7 +66,10 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
     const teachersMap = new Map(teachers.map(teacher => [teacher.id, teacher]));
 
     return (
-        <Form ref={formRef} className="EnrollmentForm" onSubmit={handleSubmit} {...props}>
+        <Form
+            ref={formRef} className="EnrollmentForm"
+            onSubmit={handleSubmit} {...props}
+        >
             <Form.Select
                 name="domain"
                 value={data.domain}

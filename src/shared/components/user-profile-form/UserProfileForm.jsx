@@ -44,8 +44,6 @@ export default function UserProfileForm({
         onSubmit
     });
 
-    console.log({ user, data });
-
     return (
         <Form
             className={styles.root}
