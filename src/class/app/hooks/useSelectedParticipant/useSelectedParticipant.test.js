@@ -1,4 +1,5 @@
-import { EventEmitter } from 'events';
+import { EventEmitter } from 'node:events';
+
 import { act, renderHook } from '@testing-library/react-hooks';
 
 import useSelectedParticipant, { SelectedParticipantProvider } from './useSelectedParticipant';
@@ -11,7 +12,7 @@ describe('the useSelectedParticipant hook', () => {
 
     beforeEach(() => {
         ({ result } = renderHook(useSelectedParticipant, {
-            wrapper: ({ children }) => <SelectedParticipantProvider room={mockRoom}>{children}</SelectedParticipantProvider>,
+            wrapper: ({ children }) => <SelectedParticipantProvider room={mockRoom}>{children}</SelectedParticipantProvider>
         }));
     });
 

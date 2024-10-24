@@ -12,7 +12,7 @@ export default function LessonsList({ lessons, onItemClick }) {
                         type="title-md"
                         content={getLessonDateTimeString(lesson)}
                     />
-                    
+
                     {lesson.room &&
                         <Text type="body-md">{lesson.room.name}</Text>
                     }

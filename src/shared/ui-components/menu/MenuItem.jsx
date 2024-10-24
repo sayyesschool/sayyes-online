@@ -1,9 +1,10 @@
 import { forwardRef, useCallback, useState } from 'react';
-import classnames from 'classnames';
 
 import JoyMenuItem from '@mui/joy/MenuItem';
 import MenuList from '@mui/joy/MenuList';
+import classnames from 'classnames';
 
+import Icon from '../icon';
 import { ListDivider, ListItemDecorator } from '../list';
 import Popover from '../popover';
 
@@ -11,6 +12,7 @@ const MenuItem = forwardRef(({
     value,
     content,
     decorator,
+    icon,
     items,
     color,
     onClick = Function.prototype,
@@ -19,6 +21,7 @@ const MenuItem = forwardRef(({
     onMenuClose = Function.prototype,
 
     as,
+    className,
     children = content,
     ...props
 }, ref) => {
@@ -45,12 +48,12 @@ const MenuItem = forwardRef(({
         onMenuClose();
     }, [onItemClick, onMenuClose]);
 
-    const classNames = classnames('ui-MenuItem');
+    const classNames = classnames('ui-MenuItem', className);
 
     return (
         <JoyMenuItem
-            component={as}
             ref={ref}
+            component={as}
             className={classNames}
             color={color}
             onClick={handleClick}
@@ -59,6 +62,12 @@ const MenuItem = forwardRef(({
             {decorator &&
                 <ListItemDecorator key="decorator" sx={color ? { color: 'inherit' } : undefined}>
                     {decorator}
+                </ListItemDecorator>
+            }
+
+            {icon &&
+                <ListItemDecorator key="decorator" sx={color ? { color: 'inherit' } : undefined}>
+                    <Icon name={icon} />
                 </ListItemDecorator>
             }
 
@@ -85,6 +94,7 @@ const MenuItem = forwardRef(({
                                 <ListDivider key={item.key} />
                                 :
                                 <MenuItem
+                                    key={item.key}
                                     {...item}
                                     onClick={handleClick}
                                     onClicked={handleSubItemClicked}
@@ -96,5 +106,7 @@ const MenuItem = forwardRef(({
         </JoyMenuItem>
     );
 });
+
+MenuItem.displayName = 'MenuItem';
 
 export default MenuItem;

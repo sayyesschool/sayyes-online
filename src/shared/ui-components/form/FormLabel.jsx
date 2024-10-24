@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyFormLabel from '@mui/joy/FormLabel';
+import classnames from 'classnames';
 
 const FormLabel = forwardRef(({
     className,
@@ -17,5 +17,7 @@ const FormLabel = forwardRef(({
         />
     );
 });
+
+FormLabel.displayName = 'FormLabel';
 
 export default FormLabel;

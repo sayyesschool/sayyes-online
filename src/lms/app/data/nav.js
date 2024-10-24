@@ -1,7 +1,7 @@
 export default [
-    { key: 'home', url: '/', text: 'Главная', icon: 'home', exact: true },
-    { key: 'students', url: '/enrollments', text: 'Ученики', icon: 'people', exact: false },
-    //{ key: 'groups', url: '/groups', text: 'Группы', icon: 'groups', exact: false },
-    { key: 'courses', url: '/courses', text: 'Курсы', icon: 'web', exact: false },
-    { key: 'materials', url: '/materials', text: 'Материалы', icon: 'book', exact: false }
+    { key: 'home', to: '/', text: 'Главная', icon: 'home', exact: true },
+    // { key: 'students', to: '/enrollments', text: 'Ученики', icon: 'people', exact: false },
+    { key: 'vocabulary', to: '/vocabulary', text: 'Словарь', icon: 'dictionary', exact: false }
+    // { key: 'courses', to: '/courses', text: 'Курсы', icon: 'web', exact: false },
+    // { key: 'materials', to: '/materials', text: 'Материалы', icon: 'book', exact: false }
 ];

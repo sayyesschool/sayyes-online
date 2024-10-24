@@ -25,4 +25,6 @@ const Label = forwardRef(({
     );
 });
 
+Label.displayName = 'Label';
+
 export default Label;

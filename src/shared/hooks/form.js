@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const ErrorMessages = {
     REQUIRED: 'Поле обязательно для заполнения'
@@ -10,86 +10,94 @@ const defaultMeta = {
     valid: true
 };
 
-function isObject(value) {
-    return value !== null && typeof value === 'object';
-}
-
 export default useFormData;
 
-export function useForm({ values, fields = values, onSubmit } = {}, deps = []) {
-    const [data, setData] = useState(() => toData(fields));
-    const [meta, setMeta] = useState(defaultMeta);
+export function useForm({
+    values,
+    fields = values,
+    onSubmit
+} = {}, deps = []) {
+    const [state, setState] = useState(() => ({
+        data: toData(fields),
+        meta: defaultMeta
+    }));
 
     useEffect(() => {
-        setData(toData(fields));
-        setMeta(defaultMeta);
+        setState({
+            data: toData(fields),
+            meta: defaultMeta
+        });
     }, deps);
 
     const handleChange = useCallback(({ target } = {}) => {
         const { name, value } = target;
 
-        setMeta(meta => ({ ...meta, touched: true }));
-
-        setData(data => {
-            if (isArrayField(data, name)) {
-                return updateArrayField(data, name, value);
-            } else if (isObjectField(data, name)) {
-                return updateObjectField(data, name, value);
-            } else {
-                return updatePrimitiveField(data, name, value);
+        setState(({ data, meta }) => ({
+            data: getUpdateFieldData(data, name, value),
+            meta: {
+                ...meta,
+                touched: true
             }
-        });
-    }, deps);
+        }));
+    }, []);
 
     const handleSubmit = useCallback(event => {
         event.preventDefault();
         event.stopPropagation();
 
-        setData(data => {
+        setState(({ data, meta }) => {
+            const newState = { data, meta };
+
             const [valid, validatedData] = validate(data);
 
             if (valid) {
-                setMeta(meta => ({
+                newState.meta = {
                     ...meta,
                     valid,
                     submitting: true
-                }));
+                };
 
-                onSubmit(dataToValues(validatedData));
+                onSubmit?.(dataToValues(validatedData, meta));
             } else {
-                setMeta(meta => ({
+                newState.meta = {
                     ...meta,
                     valid: false
-                }));
+                };
             }
 
-            return validatedData;
+            return newState;
         });
 
         return false;
     }, [onSubmit]);
 
-    const setValues = useCallback(values => {
-        setData(data => {
-            const newData = Object.entries(typeof values === 'function' ? values(dataToValues(data)) : values).reduce((result, [key, value]) => {
-                result[key] = {
-                    ...data[key],
-                    value
-                };
+    const setValues = useCallback(arg => {
+        setState(({ data, meta }) => {
+            const values = typeof arg === 'function' ?
+                arg(dataToValues(data)) : arg;
 
-                return result;
-            }, {});
+            const newData = Object.entries(values)
+                .reduce((result, [key, value]) => {
+                    result[key] = {
+                        ...data[key],
+                        value
+                    };
+
+                    return result;
+                }, {});
 
             return {
-                ...data,
-                ...newData
+                data: {
+                    ...data,
+                    ...newData
+                },
+                meta
             };
         });
     }, []);
 
     return {
-        data,
-        meta,
+        ...state,
         setValues,
         handleChange,
         handleSubmit
@@ -138,6 +146,7 @@ export function useFormData(initialData, deps = []) {
     const getData = useCallback(fn => {
         setData(data => {
             fn(data);
+
             return data;
         });
     });
@@ -148,6 +157,20 @@ export function useFormData(initialData, deps = []) {
         getData,
         handleChange
     };
+}
+
+function isObject(value) {
+    return value !== null && typeof value === 'object';
+}
+
+function getUpdateFieldData(data, name, value) {
+    if (isArrayField(data, name)) {
+        return updateArrayField(data, name, value);
+    } else if (isObjectField(data, name)) {
+        return updateObjectField(data, name, value);
+    } else {
+        return updatePrimitiveField(data, name, value);
+    }
 }
 
 function toData(arg) {
@@ -163,6 +186,7 @@ function toData(arg) {
 function fieldsToData(fields) {
     return fields.reduce((data, field) => {
         data[field.name] = field;
+
         return data;
     }, {});
 }
@@ -185,6 +209,7 @@ function valuesToData(values) {
 function dataToValues(data) {
     return Object.entries(data).reduce((result, [key, field]) => {
         result[key] = field.value;
+
         return result;
     }, {});
 }
@@ -196,6 +221,7 @@ function validate(data) {
     for (const [key, field] of Object.entries(data)) {
         if (field.required && !field.value) {
             valid = false;
+
             validatedData[key] = {
                 ...field,
                 error: true,

@@ -1,45 +1,43 @@
-const { basename, extname, join } = require('path/posix');
-const { Router } = require('express');
-const upload = require('multer')();
-const { v4: uuidv4 } = require('uuid');
+import { basename, extname, join } from 'node:path/posix';
 
-const router = Router();
+import { Router } from 'express';
+import multer from 'multer';
+import { v4 as uuid } from 'uuid';
 
-module.exports = ({ services: { Storage } }) => {
-    router.post('/', upload.single('file'), (req, res, next) => {
-        if (!req.file) return next(new Error('No file'));
-        if (!req.body.path) return next(new Error('No path'));
+export default ({ config: { STORAGE_URL }, services: { Storage } }) => {
+    const router = Router();
+    const upload = multer();
+
+    router.post('/', upload.single('file'), async (req, res) => {
+        if (!req.file) throw new Error('No file');
+        if (!req.body.path) throw new Error('No path');
 
         const file = req.file;
-        const path = getNormalizedPath(req.body.path, file);
+        const path = getNormalizedPath(STORAGE_URL, req.body.path, file);
 
-        Storage.put(path, file.buffer)
-            .then(response => {
-                res.json({
-                    ok: true,
-                    data: {
-                        url: response.url,
-                        path: response.path
-                    }
-                });
-            })
-            .catch(next);
+        const response = await Storage.put(path, file.buffer);
+
+        res.json({
+            ok: true,
+            data: {
+                url: response.url,
+                path: response.path
+            }
+        });
     });
 
-    router.delete('/', (req, res, next) => {
-        const key = req.path.slice(1);
+    router.delete('/', async (req, res) => {
+        if (!req.body.path) throw new Error('No path');
 
-        Storage.delete(key)
-            .then(response => {
-                res.json({
-                    ok: true,
-                    data: {
-                        url: response.url,
-                        path: response.path
-                    }
-                });
-            })
-            .catch(next);
+        const response = await Storage.delete(req.body.path);
+
+        res.json({
+            ok: true,
+            data: {
+                url: response.url,
+                path: response.path
+            }
+        });
     });
 
     return router;
@@ -49,10 +47,26 @@ function isFilename(path) {
     return basename(path).includes('.');
 }
 
-function getUniqueFilename(file) {
-    return uuidv4() + extname(file.originalname);
+const extensions = {
+    'image/png': 'png',
+    'image/jpeg': 'jpeg',
+    'image/jpg': 'jpg'
+};
+
+function getFilename(value, type) {
+    const [name, extension = extensions[type]] = value.split('.');
+
+    return `${name}.${extension}`;
 }
 
-function getNormalizedPath(path, file) {
+function getUniqueFilename(file) {
+    return uuid() + extname(file.originalname);
+}
+
+function getNormalizedPath(basePath, path, file) {
+    if (path.includes(basePath)) {
+        path = new URL(path).pathname.split('/').slice(2).join('/');
+    }
+
     return isFilename(path) ? path : join(path, getUniqueFilename(file));
 }

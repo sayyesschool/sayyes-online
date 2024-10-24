@@ -1,12 +1,12 @@
 import { useCallback, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
+import { useBoolean } from 'shared/hooks/state';
 
-import UnitForm from 'app/components/courses/unit-form';
-import UnitsList from 'app/components/courses/units-list';
+import UnitForm from 'cms/components/courses/unit-form';
+import UnitsList from 'cms/components/courses/units-list';
 
 export default function CourseUnits({ course, onCreate, onDelete }) {
     const [unit, setUnit] = useState();

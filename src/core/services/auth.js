@@ -1,10 +1,11 @@
-const crypto = require('crypto');
+import { randomBytes } from 'node:crypto';
 
-module.exports = ({
+export default ({
     User
 }, {
     onRegister,
-    onResetPasswordTokenSent
+    onResetPasswordTokenSent,
+    onResetPassword
 }) => ({
     options: {
         //successRedirect: '/home',
@@ -13,10 +14,25 @@ module.exports = ({
         failureFlash: true
     },
 
-    async register({ password = crypto.randomBytes(12).toString('base64'), ...data }) {
-        const user = await User.create({ password, ...data });
+    async register({
+        email,
+        password = randomBytes(12).toString('base64'),
+        firstname,
+        lastname
+    } = {}) {
+        if (!email) throw {
+            code: 403,
+            message: 'Для регистрации необходимо указать адрес электронной почты'
+        };
 
-        onRegister(user, password);
+        const user = await User.create({
+            email,
+            password,
+            firstname,
+            lastname
+        });
+
+        onRegister?.(user, password);
 
         return user;
     },
@@ -24,14 +40,14 @@ module.exports = ({
     async login(email, password) {
         const user = await User.findOne({ email });
 
-        if (!user || !user.validatePassword(password)) {
+        if (!user?.validatePassword(password)) {
             throw new Error('Неверный логин или пароль');
         } else {
             return user;
         }
     },
 
-    authorize: (account, done) => {
+    authorize(account, done) {
         User.findOne({ 'accounts.userId': account.userId })
             .then(user => {
                 if (!user) {
@@ -41,40 +57,31 @@ module.exports = ({
                 }
             })
             .catch(error => {
-                logError(error);
                 done(error, null, { message: error.message });
             });
     },
 
-    connect: (currentUser, account, done) => {
+    connect(currentUser, account, done) {
         User.findOne({ 'accounts.userId': account.userId })
             .then(user => {
-                if (user && (user.id === currentUser.id)) throw new Error('Данный аккаунт уже привязан');
-                if (user) throw new Error('Данный аккаунт уже привязан к другой учетной записи');
+                if (user && (user.id === currentUser.id))
+                    throw new Error('Данный аккаунт уже привязан');
 
-                currentUser.accounts.push(account);
+                if (user)
+                    throw new Error('Данный аккаунт уже привязан к другой учетной записи');
 
-                return currentUser.save();
+                return user.addAccount(account);
             })
-            .then(() => done(null, currentUser, { message: `${account.title} подключен` }))
+            .then(() => {
+                done(null, currentUser, { message: `${account.title} подключен` });
+            })
             .catch(error => {
-                logError(error);
                 done(error, null, { message: error.message });
             });
     },
 
-    disconnect: (user, providerId) => {
-        const account = user.accounts.id(providerId);
-
-        if (!account) {
-            const error = new Error('Аккаунт не найден');
-            error.status = 404;
-            throw error;
-        }
-
-        account.remove();
-
-        return user.save().then(() => account);
+    disconnect(user, accountId) {
+        return user.removeAccount(accountId);
     },
 
     sendResetPasswordToken(email) {
@@ -82,9 +89,12 @@ module.exports = ({
             .then(user => {
                 if (!user) throw new Error('Пользователь не найден');
 
-                onResetPasswordTokenSent(user);
-
                 return user.generateResetPasswordToken();
+            })
+            .then(user => {
+                onResetPasswordTokenSent?.(user);
+
+                return user;
             });
     },
 
@@ -96,12 +106,13 @@ module.exports = ({
                 } else if (!user.isResetPasswordTokenValid(resetPasswordToken)) {
                     throw new Error('Неверный токен для сброса пароля');
                 } else {
-                    user.resetPasswordToken = undefined;
-                    user.resetPasswordTokenExpiresAt = undefined;
-                    user.password = password;
-
-                    return user.save();
+                    return user.resetPassword(password);
                 }
+            })
+            .then(user => {
+                onResetPassword?.(user);
+
+                return user;
             });
     }
 });

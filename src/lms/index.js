@@ -1,15 +1,20 @@
-const express = require('express');
-const vhost = require('vhost');
+import { resolve } from 'node:path';
 
-const api = require('./api');
+import express from 'express';
+import vhost from 'vhost';
+
+import api from './api';
 
 const ALLOWED_ROLES = ['learner', 'teacher'];
 
-module.exports = context => {
+export { api };
+
+export default context => {
     const app = express();
 
+    app.set('trust proxy', true);
     app.set('view engine', 'pug');
-    app.set('views', __dirname);
+    app.set('views', resolve(context.config.APP_PATH, 'lms'));
 
     app.locals.basedir = context.config.APP_PATH;
 
@@ -17,9 +22,9 @@ module.exports = context => {
         Object.assign(app.locals, parent.locals);
     });
 
-    // app.use((req, res, next) => {
-    //     ALLOWED_ROLES.includes(req.user?.role) ? next() : next('router');
-    // });
+    app.use((req, res, next) => {
+        ALLOWED_ROLES.includes(req.user?.role) ? next() : next('router');
+    });
     app.use('/api', api(context));
     app.use((req, res, next) => {
         const twilio = context.libs.twilio;

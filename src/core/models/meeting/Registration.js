@@ -1,4 +1,4 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
 const Status = {
     Pending: 'pending',
@@ -28,4 +28,4 @@ Registration.virtual('isCanceled').get(function() {
     return this.status === Status.Canceled;
 });
 
-module.exports = Registration;
+export default Registration;

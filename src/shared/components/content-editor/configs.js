@@ -1,5 +1,5 @@
-import { UploadAdapterPlugin } from 'shared/libs/editor/upload-adapter';
 import ImageRemoveEventPlugin from 'shared/libs/editor/image-remove-event';
+import { UploadAdapterPlugin } from 'shared/libs/editor/upload-adapter';
 
 export const defaultConfig = {
     mediaEmbed: {
@@ -115,7 +115,7 @@ export const defaultConfig = {
                 const filename = pathSegments[pathSegments.length - 1];
 
                 return fetch(`/api/storage/images/${filename}`, {
-                    method: 'DELETE',
+                    method: 'DELETE'
                 })
                     .then(res => res.json())
                     .then(res => console.log(res));

@@ -14,16 +14,16 @@ export function ChatProvider({ children }) {
     const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
     const [chatClient, setChatClient] = useState();
 
-    const connect = useCallback((token) => {
+    const connect = useCallback(token => {
         const client = new Client(token);
 
-        const handleClientInitialized = (state) => {
+        const handleClientInitialized = state => {
             if (state === 'initialized') {
                 // @ts-ignore
                 window.chatClient = client;
                 setChatClient(client);
             } else if (state === 'failed') {
-                onError(new Error("There was a problem connecting to Twilio's conversation service."));
+                onError(new Error('There was a problem connecting to Twilio\'s conversation service.'));
             }
         };
 
@@ -32,13 +32,11 @@ export function ChatProvider({ children }) {
         return () => {
             client.off('stateChanged', handleClientInitialized);
         };
-    },
-        [onError]
-    );
+    }, [onError]);
 
     useEffect(() => {
         if (conversation) {
-            const handleMessageAdded = (message) => setMessages(oldMessages => [...oldMessages, message]);
+            const handleMessageAdded = message => setMessages(oldMessages => [...oldMessages, message]);
             conversation.getMessages().then(newMessages => setMessages(newMessages.items));
             conversation.on('messageAdded', handleMessageAdded);
             return () => {
@@ -82,4 +80,4 @@ export function ChatProvider({ children }) {
             {children}
         </ChatContext.Provider>
     );
-};
+}

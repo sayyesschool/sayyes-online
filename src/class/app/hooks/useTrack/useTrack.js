@@ -7,11 +7,11 @@ export default function useTrack(publication) {
         // Reset the track when the 'publication' variable changes.
         setTrack(publication && publication.track);
 
-        if (publication) {
-            function removeTrack() {
-                setTrack(null);
-            }
+        function removeTrack() {
+            setTrack(null);
+        }
 
+        if (publication) {
             publication.on('subscribed', setTrack);
             publication.on('unsubscribed', removeTrack);
 

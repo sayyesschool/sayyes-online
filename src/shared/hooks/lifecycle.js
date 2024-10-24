@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 export function useCreated(fn) {
     const [created, setCreated] = useState(false);
@@ -22,20 +22,6 @@ export function useUpdated(fn, deps) {
 
         return fn();
     }, deps);
-}
-
-export function onUpdatedLayout(fn, deps) {
-    const [mounted, setMounted] = useState(false);
-
-    useLayoutEffect(() => {
-        if (!mounted) return setMounted(true);
-
-        return fn();
-    }, deps);
-}
-
-export function onLayout(fn, deps) {
-    useLayoutEffect(() => fn(), deps);
 }
 
 export function useRendered(fn, deps) {

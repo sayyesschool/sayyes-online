@@ -9,8 +9,12 @@
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended",
-        "plugin:react-hooks/recommended"
+        "plugin:react-hooks/recommended",
+        "plugin:@stylistic/disable-legacy"
     ],
+    "globals": {
+        "env": "writable"
+    },
     "parser": "@babel/eslint-parser",
     "parserOptions": {
         "ecmaVersion": "latest",
@@ -33,41 +37,227 @@
             ]
         }
     },
+    "plugins": [
+        "@stylistic",
+        "@stylistic/jsx",
+        "react",
+        "simple-import-sort"
+    ],
     "rules": {
-        "arrow-parens": [
+        "func-style": [
+            "warn",
+            "declaration",
+            {
+                "allowArrowFunctions": true
+            }
+        ],
+        "no-undef": "error",
+        "no-unused-vars": [
+            "warn",
+            {
+                "args": "none"
+            }
+        ],
+        "no-useless-escape": "warn",
+        "react/no-deprecated": "warn",
+        "react/no-unescaped-entities": "warn",
+        "react/prop-types": "off",
+        "react/react-in-jsx-scope": "off",
+        "simple-import-sort/imports": [
+            "error",
+            {
+                "groups": [
+                    [
+                        "^node:"
+                    ],
+                    [
+                        "^react"
+                    ],
+                    [
+                        "^@?\\w"
+                    ],
+                    [
+                        "^(@/shared|shared)(/.*|$)",
+                        "^\\u0000(@/shared|shared)"
+                    ],
+                    [
+                        "^(@|class|cms|config|core|db|crm|lk|lms)(/.*|$)"
+                    ],
+                    [
+                        // Parent imports. Put `..` last.
+                        "^\\.\\.(?!/?$)",
+                        "^\\.\\./?$"
+                    ],
+                    [
+                        // Other relative imports. Put same-folder imports and `.` last.
+                        "^\\./(?=.*/)(?!/?$)",
+                        "^\\.(?!/?$)",
+                        "^\\./?$"
+                    ],
+                    [
+                        // Side effect imports.
+                        "^\\u0000"
+                    ],
+                    [
+                        // Style imports.
+                        "^.+\\.s?css$"
+                    ]
+                ]
+            }
+        ],
+        "simple-import-sort/exports": "error",
+        // https://eslint.style/packages/default#rules
+        "@stylistic/arrow-parens": [
             "warn",
             "as-needed"
         ],
-        "indent": [
-            "error",
+        "@stylistic/comma-dangle": [
+            "warn",
+            "never"
+        ],
+        "@stylistic/comma-spacing": "warn",
+        "@stylistic/eol-last": [
+            "warn",
+            "never"
+        ],
+        "@stylistic/indent": [
+            "warn",
             4,
             {
                 "SwitchCase": 1,
                 "MemberExpression": 1
             }
         ],
-        "object-curly-spacing": [
+        "@stylistic/lines-between-class-members": [
+            "warn",
+            "always",
+            {
+                "exceptAfterSingleLine": true
+            }
+        ],
+        "@stylistic/no-multiple-empty-lines": [
+            "warn",
+            {
+                "max": 1
+            }
+        ],
+        "@stylistic/no-multi-spaces": "warn",
+        "@stylistic/no-trailing-spaces": "warn",
+        "@stylistic/object-curly-spacing": [
             "warn",
             "always"
         ],
-        "no-undef": "error",
-        "no-unused-vars": "warn",
-        "no-useless-escape": "warn",
-        "quotes": [
+        "@stylistic/object-property-newline": [
+            "warn",
+            {
+                "allowAllPropertiesOnSameLine": true
+            }
+        ],
+        "@stylistic/padded-blocks": [
+            "warn",
+            "never"
+        ],
+        "@stylistic/padding-line-between-statements": [
+            "warn",
+            {
+                "blankLine": "always",
+                "prev": "*",
+                "next": [
+                    "multiline-block-like"
+                ]
+            },
+            {
+                "blankLine": "always",
+                "prev": [
+                    "multiline-block-like"
+                ],
+                "next": "*"
+            },
+            {
+                "blankLine": "any",
+                "prev": [
+                    "const",
+                    "let",
+                    "var"
+                ],
+                "next": [
+                    "const",
+                    "let",
+                    "var"
+                ]
+            },
+            {
+                "blankLine": "always",
+                "prev": "*",
+                "next": "return"
+            }
+        ],
+        "@stylistic/quotes": [
             "error",
             "single"
         ],
-        "semi": [
+        "@stylistic/semi": [
             "error",
             "always"
         ],
-        "react/react-in-jsx-scope": "off",
-        "react/prop-types": "off",
-        "react/no-unescaped-entities": "warn"
+        "@stylistic/jsx-quotes": [
+            "warn",
+            "prefer-double"
+        ],
+        "@stylistic/space-infix-ops": "error",
+        "@stylistic/jsx/jsx-closing-bracket-location": [
+            "warn",
+            "tag-aligned"
+        ],
+        "@stylistic/jsx/jsx-curly-spacing": [
+            "warn",
+            {
+                "when": "never",
+                "attributes": true,
+                "children": true
+            }
+        ],
+        "@stylistic/jsx/jsx-first-prop-new-line": [
+            "warn",
+            "multiline-multiprop"
+        ],
+        "@stylistic/jsx/jsx-indent": [
+            "warn",
+            4,
+            {
+                "checkAttributes": true,
+                "indentLogicalExpressions": true
+            }
+        ],
+        "@stylistic/jsx/jsx-newline": [
+            "warn",
+            {
+                "prevent": true,
+                "allowMultilines": true
+            }
+        ],
+        "@stylistic/jsx/jsx-max-props-per-line": [
+            "warn",
+            {
+                "maximum": {
+                    "single": 2,
+                    "multiline": 1
+                }
+            }
+        ],
+        "@stylistic/jsx/jsx-props-no-multi-spaces": "warn",
+        "@stylistic/jsx/jsx-sort-props": [
+            "warn",
+            {
+                "callbacksLast": true,
+                "shorthandLast": true,
+                "multiline": "ignore",
+                "ignoreCase": true,
+                "noSortAlphabetically": true,
+                "reservedFirst": true
+            }
+        ]
     },
-    "plugins": [
-        "react"
-    ],
     "overrides": [
         {
             "files": [

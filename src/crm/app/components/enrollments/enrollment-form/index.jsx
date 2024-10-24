@@ -1,39 +1,38 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 
-import { useFormData } from 'shared/hooks/form';
 // import ScheduleSelect from 'shared/components/schedule-select';
 // import DateTimeSelect from 'shared/components/datetime-select';
 import UserSelect from 'shared/components/user-select';
-import { Form } from 'shared/ui-components';
 import {
+    ageGroupOptions,
     domainOptions,
     formatOptions,
-    ageOptions,
-    teacherTypeOptions,
     levelOptions,
-    purposeOptions
+    purposeOptions,
+    teacherTypeOptions
 } from 'shared/data/common';
 import { typeOptions } from 'shared/data/enrollment';
+import { useFormData } from 'shared/hooks/form';
+import { Form } from 'shared/ui-components';
 
-import { useStore } from 'app/store';
+import { EnrollmentStatus } from 'core/models/enrollment/constants';
+import { useStore } from 'crm/store';
 
 const defaultEnrollment = {
-    status: 'processing',
-    domain: 'general',
+    status: EnrollmentStatus.Processing,
+    domain: '',
     type: '',
     format: '',
-    age: '',
+    ageGroup: '',
     teacherType: '',
     level: '',
     purpose: '',
     experience: '',
     preferences: '',
     lessonDuration: 50,
-    trialLessonSchedule: [],
     schedule: [],
-    note: '',
-    teachers: [],
-    managers: []
+    trialLessonSchedule: [],
+    note: ''
 };
 
 function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
@@ -45,10 +44,11 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
     const { data, handleChange } = useFormData({
         ...defaultEnrollment,
         ...enrollment,
-        learnerId: enrollment.learner?.id || '',
-        teacherId: enrollment.teacher?.id,
-        managerId: enrollment.manager?.id,
-        courses: undefined,
+        learnerId: enrollment.learnerId || '',
+        managerId: enrollment.managerId,
+        teacherId: enrollment.teacherId,
+        courseIds: undefined,
+        materialIds: undefined,
         lessons: undefined,
         payments: undefined
     });
@@ -66,7 +66,10 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
     const teachersMap = new Map(teachers.map(teacher => [teacher.id, teacher]));
 
     return (
-        <Form ref={formRef} className="EnrollmentForm" onSubmit={handleSubmit} {...props}>
+        <Form
+            ref={formRef} className="EnrollmentForm"
+            onSubmit={handleSubmit} {...props}
+        >
             <Form.Select
                 name="domain"
                 value={data.domain}
@@ -98,7 +101,7 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                 name="age"
                 value={data.age}
                 label="Возрастная группа"
-                options={ageOptions}
+                options={ageGroupOptions}
                 onChange={handleChange}
             />
 
@@ -172,28 +175,26 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
             {enrollment.id &&
                 <>
                     <UserSelect
-                        name="managers"
-                        value={data.managers}
+                        name="managerId"
+                        value={data.managerId}
                         label="Менеджеры"
                         options={managers.map(manager => ({
                             key: manager.id,
                             value: manager.id,
                             label: manager.fullname
                         }))}
-                        multiple
                         onChange={handleChange}
                     />
 
                     <UserSelect
-                        name="teachers"
-                        value={data.teachers}
+                        name="teacherId"
+                        value={data.teacherId}
                         label="Преподаватели"
                         options={teachers.map(teacher => ({
                             key: teacher.id,
                             value: teacher.id,
                             label: teacher.fullname
                         }))}
-                        multiple
                         onChange={handleChange}
                     />
                 </>

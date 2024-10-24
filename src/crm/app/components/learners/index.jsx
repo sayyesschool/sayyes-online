@@ -1,15 +1,24 @@
-import { Switch, Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
-import Clients from './clients-page';
-import Client from './client-page';
 import Enrollment from '../enrollments/enrollment-page';
 
-export default function ClientsRouter() {
+import Learner from './learner-page';
+import Learners from './learners-page';
+
+export default function LearnersRouter() {
     return (
         <Switch>
-            <Route exact path="/clients" component={Clients} />
-            <Route exact path="/clients/:id" component={Client} />
-            <Route path="/clients/:clientId/enrollments/:enrollmentId" component={Enrollment} />
+            <Route
+                path="/learners" component={Learners}
+                exact
+            />
+
+            <Route
+                path="/learners/:id" component={Learner}
+                exact
+            />
+
+            <Route path="/learners/:learnerId/enrollments/:enrollmentId" component={Enrollment} />
         </Switch>
     );
 }

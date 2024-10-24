@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
+
 import moment from 'moment';
 
-import { scheduleLessons } from 'shared/libs/enrollment';
-import { useFormData } from 'shared/hooks/form';
-import UserSelect from 'shared/components/user-select';
 import LessonsPillGroup from 'shared/components/lessons-pill-group';
+import UserSelect from 'shared/components/user-select';
+import { useFormData } from 'shared/hooks/form';
+import { scheduleLessons } from 'shared/libs/enrollment';
 import { Form, Text } from 'shared/ui-components';
 
-import { useStore } from 'app/hooks/store';
+import { useStore } from 'crm/hooks/store';
 
 export default function LessonsForm({ enrollment, onSubmit, ...props }) {
     const [teachers] = useStore('teachers.list');

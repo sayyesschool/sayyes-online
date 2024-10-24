@@ -39,12 +39,12 @@ export default function PaymentsTable({ payments, onEdit, onDelete }) {
                         <Table.Cell content={payment.date} />
 
                         <Table.Cell>
-                            {payment.client &&
+                            {payment.learner &&
                                 <PersonChip
                                     as={Link}
-                                    to={`/clients/${payment.client.id}`}
-                                    imageSrc={payment.client.imageUrl}
-                                    content={payment.client.fullname}
+                                    to={`/learners/${payment.learner.id}`}
+                                    imageSrc={payment.learner.imageUrl}
+                                    content={payment.learner.fullname}
                                 />
                             }
                         </Table.Cell>

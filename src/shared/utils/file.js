@@ -1,15 +1,26 @@
-export function upload(file, options) {
-    const formData = new FormData();
-    const [name, extension] = file.name.split('.');
+export function getExtensionFromUrl(url) {
+    return url.slice(url.lastIndexOf('.') + 1, url.length);
+}
 
-    formData.append('file', file, `${options.filename || name}.${extension}`);
+export function getExtensionFromType(type) {
+    return type.slice(type.lastIndexOf('/') + 1, type.length);
+}
 
-    if (options.folder) {
-        formData.append('folder', options.folder);
-    }
+export function getFileFromBlob(blob, { name = 'file' } = {}) {
+    const type = blob.type;
+    const extension = getExtensionFromType(type);
+    const file = new File([blob], `${name}.${extension}`, {
+        type
+    });
 
-    return fetch('https://static.sayes.ru/upload.php', {
-        method: 'POST',
-        body: formData
-    }).then(response => response.json());
+    file.extension = extension;
+
+    return file;
+}
+
+export async function getFileFromURL(url, options) {
+    const res = await fetch(url);
+    const blob = await res.blob();
+
+    return getFileFromBlob(blob, options);
 }

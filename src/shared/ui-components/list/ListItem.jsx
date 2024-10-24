@@ -1,10 +1,10 @@
-import { isValidElement, forwardRef } from 'react';
-import classnames from 'classnames';
+import { forwardRef, isValidElement } from 'react';
 
 import JoyListItem from '@mui/joy/ListItem';
 import JoyListItemButton from '@mui/joy/ListItemButton';
 import JoyListItemContent from '@mui/joy/ListItemContent';
 import JoyListItemDecorator from '@mui/joy/ListItemDecorator';
+import classnames from 'classnames';
 
 import Icon from '../icon/Icon';
 import Text from '../text/Text';
@@ -18,13 +18,15 @@ const ListItem = forwardRef(({
     interactive,
     selected,
     to,
+    color,
+    variant,
 
     as,
     children,
     className,
     ...props
 }, ref) => {
-    const classNames = classnames(className, 'ui-ListItem');
+    const classNames = classnames('ui-ListItem', className);
 
     const listItemContent = (<>
         {decorator &&
@@ -38,8 +40,14 @@ const ListItem = forwardRef(({
                 {isValidElement(content) ? content : (
                     typeof content === 'object' ? (<>
                         <Text type="body-md">{content.primary}</Text>
-                        <Text type="body-sm">{content.secondary}</Text>
-                        <Text type="body-xs">{content.tertiary}</Text>
+
+                        {content.secondary &&
+                            <Text type="body-sm">{content.secondary}</Text>
+                        }
+
+                        {content.tertiary &&
+                            <Text type="body-xs">{content.tertiary}</Text>
+                        }
                     </>) : content
                 )}
             </JoyListItemContent>
@@ -54,6 +62,8 @@ const ListItem = forwardRef(({
             className={classNames}
             startAction={start}
             endAction={end}
+            color={color}
+            variant={variant}
             {...props}
         >
             {(interactive || to) ?
@@ -61,6 +71,8 @@ const ListItem = forwardRef(({
                     component={as}
                     to={to}
                     selected={selected}
+                    color={color}
+                    variant={variant}
                 >
                     {listItemContent}
                 </JoyListItemButton>

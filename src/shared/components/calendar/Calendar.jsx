@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classnames from 'shared/utils/classnames';
 
 import MonthView from './MonthView';
 import WeekView from './WeekView';

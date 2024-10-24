@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import Plyr from 'plyr';
-import classnames from 'classnames';
+
+import classnames from 'shared/utils/classnames';
 
 import './index.scss';
 
@@ -90,6 +91,7 @@ function VideoPlayer({
                         src={src}
                         allow="autoplay"
                         allowFullScreen
+                        // eslint-disable-next-line react/no-unknown-property
                         allowTransparency
                     />
                 </div>

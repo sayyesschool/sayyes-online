@@ -4,7 +4,6 @@ import classnames from 'classnames';
 import JoyTab from '@mui/joy/Tab';
 
 import Icon from '../icon/Icon';
-import Text from '../text/Text';
 
 const Tab = forwardRef(({
     icon,

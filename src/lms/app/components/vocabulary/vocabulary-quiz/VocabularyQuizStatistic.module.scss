@@ -1,0 +1,13 @@
+.root {
+    width: 100%;
+    max-width: 450px;
+    max-height: 90%;
+    padding: 20px;
+    border-radius: var(--joy-radius-xl);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    overflow: auto;
+}

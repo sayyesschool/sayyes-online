@@ -21,8 +21,8 @@ export default function MaterialsList({ materials, onRemove }) {
                         <Image src={material.imageUrl} alt="" />
                     }
                     content={<>
-                        <Text type="body1">{material.subtitle}</Text>
-                        <Text type="body2">{material.title}</Text>
+                        <Text type="body-md">{material.title}</Text>
+                        <Text type="body-sm">{material.subtitle}</Text>
                     </>}
                     endAction={onRemove &&
                         <IconButton

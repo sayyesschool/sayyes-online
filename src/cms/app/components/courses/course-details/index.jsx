@@ -1,6 +1,6 @@
 import PageSection from 'shared/components/page-section';
 
-import CourseForm from 'app/components/courses/course-form';
+import CourseForm from 'cms/components/courses/course-form';
 
 export default function CourseDetails({ course, onUpdate, ...props }) {
     return (

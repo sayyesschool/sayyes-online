@@ -1,16 +1,19 @@
-const express = require('express');
-const jwt = require('jsonwebtoken');
-const vhost = require('vhost');
+import { resolve } from 'node:path';
 
-const api = require('./api');
+import express from 'express';
+import jwt from 'jsonwebtoken';
+import vhost from 'vhost';
+
+import api from './api';
 
 const ALLOWED_ROLES = ['learner', 'teacher'];
 
-module.exports = context => {
+export default context => {
     const app = express();
 
+    app.set('trust proxy', true);
     app.set('view engine', 'pug');
-    app.set('views', __dirname);
+    app.set('views', resolve(context.config.APP_PATH, 'class'));
 
     app.locals.basedir = context.config.APP_PATH;
 

@@ -1,8 +1,8 @@
 import { useCallback, useMemo } from 'react';
-import classnames from 'classnames';
 
 import Content from 'shared/components/content';
 import { Checkbox, List, Radio } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 
 import './Choice.scss';
 

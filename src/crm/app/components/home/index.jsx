@@ -1,11 +1,10 @@
-import { useTodaysLessons } from 'shared/hooks/lessons';
 import Page from 'shared/components/page';
+import { useTodaysLessons } from 'shared/hooks/lessons';
 import { Grid } from 'shared/ui-components';
 
-import { useStore } from 'app/hooks/store';
-import LessonsList from 'app/components/lessons/lessons-list';
-import MeetingsList from 'app/components/meetings/meetings-list';
-import RequestsList from 'app/components/requests/requests-list';
+import LessonsList from 'crm/components/lessons/lessons-list';
+import RequestsList from 'crm/components/requests/requests-list';
+import { useStore } from 'crm/hooks/store';
 
 export default function HomePage() {
     const [requests] = useStore('requests.list');

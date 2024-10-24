@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyButton from '@mui/joy/Button';
+import classnames from 'classnames';
 
 import Icon from 'shared/ui-components/icon';
 
@@ -17,7 +17,7 @@ const Button = forwardRef(({
     children = content,
     ...props
 }, ref) => {
-    const classNames = classnames('ui-Button', className);
+    const classNames = classnames(className, 'ui-Button');
 
     return (
         <JoyButton
@@ -36,5 +36,7 @@ const Button = forwardRef(({
         </JoyButton>
     );
 });
+
+Button.displayName = 'Button';
 
 export default Button;

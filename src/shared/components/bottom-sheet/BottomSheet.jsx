@@ -1,7 +1,6 @@
-import classnames from 'classnames';
+import { Button, Icon } from 'shared/ui-components';
 
-import Button from 'shared/ui-components/button';
-import Icon from 'shared/ui-components/icon';
+import classnames from 'shared/utils/classnames';
 
 export default function BottomSheet({
     open = false,

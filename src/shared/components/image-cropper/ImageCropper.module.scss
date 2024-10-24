@@ -1,0 +1,10 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cropper {
+    position: relative;
+    max-height: 640px;
+}

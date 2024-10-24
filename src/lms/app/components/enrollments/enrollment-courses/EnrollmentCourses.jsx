@@ -1,13 +1,13 @@
 import { useCallback, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
-import { useCourses } from 'shared/hooks/courses';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import CoursesList from 'shared/components/courses-list';
 import PageSection from 'shared/components/page-section';
+import { useCourses } from 'shared/hooks/courses';
+import { useBoolean } from 'shared/hooks/state';
 import { IconButton, MenuButton } from 'shared/ui-components';
 
-import { useActions } from 'app/store/hooks';
+import { useActions } from 'lms/store/hooks';
 
 export default function EnrollmentCourses({ enrollment, readonly }) {
     const [courses] = useCourses();

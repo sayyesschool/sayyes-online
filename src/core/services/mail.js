@@ -1,9 +1,9 @@
 const FROM = {
-    email: 'club@sayes.ru',
-    name: 'Разговорный клуб SAY YES'
+    email: 'online@sayyes.school',
+    name: 'SAY YES English School'
 };
 
-module.exports = mailClient => ({
+export default mailClient => ({
     send({ from = FROM, to, subject, text, html, templateId, variables }) {
         return mailClient
             .post('send', { 'version': 'v3.1' })

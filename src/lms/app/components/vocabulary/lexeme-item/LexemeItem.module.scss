@@ -1,0 +1,28 @@
+@use 'shared/styles/variables';
+
+.root {
+    &:not(:last-of-type) {
+        border-bottom: 1px solid var(--joy-palette-divider);
+    }
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    gap: 8px;
+    cursor:pointer;
+}
+
+.value {
+    font-weight: 900;
+}
+
+.translation {
+    
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import classnames from 'classnames';
 
 import { useBoolean } from 'shared/hooks/state';
 import { ButtonGroup, IconButton, Text } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 
 export default function EditableText({
     content,

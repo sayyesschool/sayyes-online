@@ -1,7 +1,7 @@
-import classnames from 'classnames';
+import classnames from 'shared/utils/classnames';
 
-import useRoomContext from 'app/hooks/useRoomContext';
-import Participant from 'app/components/Participant';
+import Participant from 'class/components/Participant';
+import useRoomContext from 'class/hooks/useRoomContext';
 
 export default function ParticipantList() {
     const {

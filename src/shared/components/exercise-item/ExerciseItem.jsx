@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import classnames from 'classnames';
 
+import classnames from 'shared/utils/classnames';
 import { capitalize } from 'shared/utils/string';
 
 import AudioItem from './Audio';

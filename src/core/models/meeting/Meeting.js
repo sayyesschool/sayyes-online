@@ -1,7 +1,7 @@
-const { Schema, model } = require('mongoose');
-const moment = require('moment');
+import moment from 'moment';
+import { Schema } from 'mongoose';
 
-const Registration = require('./Registration');
+import Registration from './Registration';
 
 const Level = {
     Elementary: 'elementary',
@@ -122,4 +122,4 @@ Meeting.methods.getRegistrationByUser = function(user) {
     return this.registrations.find(r => r.user == (user?.id || user));
 };
 
-module.exports = Meeting;
+export default Meeting;

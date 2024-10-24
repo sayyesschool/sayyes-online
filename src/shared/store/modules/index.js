@@ -1,7 +1,7 @@
-export * as clients from './clients';
 export * as comments from './comments';
 export * as courses from './courses';
 export * as enrollments from './enrollments';
+export * as learners from './learners';
 export * as lessons from './lessons';
 export * as managers from './managers';
 export * as materials from './materials';

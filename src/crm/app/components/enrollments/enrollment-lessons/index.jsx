@@ -1,16 +1,16 @@
 import { useCallback, useState } from 'react';
 
-import http from 'shared/services/http';
-import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LessonPillGroup from 'shared/components/lessons-pill-group';
 import PageSection from 'shared/components/page-section';
+import { useBoolean } from 'shared/hooks/state';
+import http from 'shared/services/http';
 import { Alert, IconButton, MenuButton, Text } from 'shared/ui-components';
 
-import { useActions } from 'app/store';
-import LessonForm from 'app/components/lessons/lesson-form';
-import LessonsForm from 'app/components/lessons/lessons-form';
+import LessonForm from 'crm/components/lessons/lesson-form';
+import LessonsForm from 'crm/components/lessons/lessons-form';
+import { useActions } from 'crm/store';
 
 export default function EnrollmentLessons({ enrollment }) {
     const lessonActions = useActions('lessons');
@@ -147,8 +147,8 @@ export default function EnrollmentLessons({ enrollment }) {
                     id="create-lesson-form"
                     lesson={{
                         duration: enrollment.lessonDuration,
-                        client: enrollment?.client,
-                        teacher: enrollment?.teachers[0]
+                        learner: enrollment?.Learner,
+                        teacher: enrollment?.teacher
                     }}
                     onSubmit={createLesson}
                 />

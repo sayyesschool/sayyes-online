@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import useRoomContext from 'app/hooks/useRoomContext';
+import useRoomContext from 'class/hooks/useRoomContext';
 
 export default function useLocalVideoToggle() {
     const {
@@ -8,7 +8,7 @@ export default function useLocalVideoToggle() {
         videoTrack,
         getLocalVideoTrack,
         removeLocalVideoTrack,
-        onError,
+        onError
     } = useRoomContext();
 
     const [isPublishing, setIsPublishing] = useState(false);

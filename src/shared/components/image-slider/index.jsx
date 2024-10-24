@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
-import classnames from 'classnames';
 
 import IconButton from 'shared/ui-components/icon-button';
+import classnames from 'shared/utils/classnames';
 
 import './index.scss';
 

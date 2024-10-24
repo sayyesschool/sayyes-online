@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 
 import { useFormData } from 'shared/hooks/form';
-import Form from 'shared/ui-components/form';
 import datetime from 'shared/libs/datetime';
+import Form from 'shared/ui-components/form';
 
 const statusOptions = [
     { key: 'scheduled', value: 'scheduled', content: 'Запланирован' },
@@ -31,7 +31,7 @@ export default function LessonForm({ lesson, onSubmit, ...props }) {
                 date: new Date(data.date).toISOString()
             });
         });
-    }, [onSubmit]);
+    }, [getData, onSubmit]);
 
     return (
         <Form
@@ -53,7 +53,7 @@ export default function LessonForm({ lesson, onSubmit, ...props }) {
                 type="datetime-local"
                 name="date"
                 value={datetime(data.date).format('YYYY-MM-DDTHH:mm')}
-                min={data.status === 'scheduled' && minDate.format('YYYY-MM-DDTHH:mm')}
+                min={data.status === 'scheduled' ? minDate.format('YYYY-MM-DDTHH:mm') : undefined}
                 message={`Московское время: ${datetime(data.date).utc().add(3, 'hours').format('HH:mm')}`}
                 required
                 onChange={handleChange}

@@ -1,12 +1,12 @@
 import { useCallback, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
+import { useBoolean } from 'shared/hooks/state';
 
-import ExerciseForm from 'app/components/courses/exercise-form';
-import ExercisesList from 'app/components/courses/exercises-list';
+import ExerciseForm from 'cms/components/courses/exercise-form';
+import ExercisesList from 'cms/components/courses/exercises-list';
 
 export default function LessonExercises({
     lesson,

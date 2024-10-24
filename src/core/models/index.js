@@ -1,45 +1,51 @@
-const { model } = require('mongoose');
+import { model } from 'mongoose';
 
-const Assignment = require('./assignment');
-const Comment = require('./comment');
-const Course = require('./course');
-const Enrollment = require('./enrollment');
-const Exercise = require('./exercise');
-const Lesson = require('./lesson');
-const Material = require('./material');
-const Meeting = require('./meeting');
-const Pack = require('./pack');
-const Payment = require('./payment');
-const Progress = require('./progress');
-const Request = require('./request');
-const Room = require('./room');
-const Task = require('./task');
-const Transaction = require('./transaction');
-const UserSchema = require('./user');
+import Assignment from './assignment';
+import Comment from './comment';
+import Course from './course';
+import Enrollment from './enrollment';
+import Exercise from './exercise';
+import Lesson from './lesson';
+import Lexeme from './lexeme';
+import Material from './material';
+import Meeting from './meeting';
+import Pack from './pack';
+import Payment from './payment';
+import Progress from './progress';
+import Record, { LexemeRecord } from './record';
+import Request from './request';
+import Room from './room';
+import Task from './task';
+import Transaction from './transaction';
+import User, {
+    Admin,
+    Editor,
+    Learner,
+    Manager,
+    Teacher
+} from './user';
+import Vocabulary from './vocabulary';
 
-const User = model('User', UserSchema);
-const Admin = User.discriminator('Admin', UserSchema.Admin, 'admin');
-const Editor = User.discriminator('Editor', UserSchema.Editor, 'editor');
-const Learner = User.discriminator('Learner', UserSchema.Learner, 'learner');
-const Manager = User.discriminator('Manager', UserSchema.Manager, 'manager');
-const Teacher = User.discriminator('Teacher', UserSchema.Teacher, 'teacher');
-
-module.exports = () => ({
+export default () => ({
     Assignment: model('Assignment', Assignment),
     Comment: model('Comment', Comment),
     Course: model('Course', Course),
     Enrollment: model('Enrollment', Enrollment),
     Exercise: model('Exercise', Exercise),
+    Lexeme: model('Lexeme', Lexeme),
     Lesson: model('Lesson', Lesson),
     Material: model('Material', Material),
     Meeting: model('Meeting', Meeting),
     Pack: model('Pack', Pack),
     Payment: model('Payment', Payment),
     Progress: model('Progress', Progress, 'progress'),
+    Record,
+    LexemeRecord,
     Request: model('Request', Request),
     Room: model('Room', Room),
     Task: model('Task', Task),
     Transaction: model('Transaction', Transaction),
+    Vocabulary: model('Vocabulary', Vocabulary),
     User,
     Admin,
     Editor,

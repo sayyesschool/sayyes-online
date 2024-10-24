@@ -1,7 +1,8 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyList from '@mui/joy/List';
+import ListDivider from '@mui/joy/ListDivider';
+import classnames from 'classnames';
 
 import ListItem from './ListItem';
 
@@ -37,5 +38,6 @@ const List = forwardRef(({
 List.displayName = 'List';
 
 List.Item = ListItem;
+List.Divider = ListDivider;
 
 export default List;

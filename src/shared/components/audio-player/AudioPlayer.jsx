@@ -1,6 +1,7 @@
 import { forwardRef, useImperativeHandle, useEffect, useRef, useState } from 'react';
 import Plyr from 'plyr';
-import classnames from 'classnames';
+
+import classnames from 'shared/utils/classnames';
 
 import { defaultI18n } from './constants';
 

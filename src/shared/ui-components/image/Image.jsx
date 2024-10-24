@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import AspectRatio from '@mui/joy/AspectRatio';
+import classnames from 'classnames';
 
 const Image = forwardRef(({
     src,

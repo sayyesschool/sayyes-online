@@ -1,26 +1,28 @@
 import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useBoolean } from 'shared/hooks/state';
 import Content from 'shared/components/content';
+import LoadingIndicator from 'shared/components/loading-indicator';
+import { useExercise } from 'shared/hooks/exercises';
+import { useBoolean } from 'shared/hooks/state';
 import {
     Avatar,
     Button,
     Card,
     Chip,
+    Flex,
     Icon,
     IconButton,
-    Flex,
     MenuButton
 } from 'shared/ui-components';
 
+import ExerciseComments from 'lms/components/courses/exercise-comments';
 import ExerciseContent from 'lms/components/courses/exercise-content';
-// import ExerciseComments from 'app/components/courses/exercise-comments';
 
 export default function Exercise({
     index,
     user,
-    exercise,
+    id,
     assignments,
     showMenu,
     showRemoveFromAssignment,
@@ -30,9 +32,11 @@ export default function Exercise({
     onRemoveFromAssignment,
     onComplete
 }) {
-    const [state, setState] = useState(exercise.state || {});
+    const [exercise] = useExercise(id);
+
+    const [state, setState] = useState(exercise?.state || {});
     const [isCollapsed, toggleCollapsed] = useBoolean(true);
-    const [isCommenting, toggleCommenting] = useBoolean(false);
+    // const [isCommenting, toggleCommenting] = useBoolean(false);
     const [isChecked, setChecked] = useBoolean(false);
     const [isSaving, setSaving] = useBoolean(false);
 
@@ -77,28 +81,30 @@ export default function Exercise({
     }, [exercise, onRemoveFromAssignment]);
 
     // const handleCreateComment = useCallback((_, data) => {
-    //     return onCreateComment(exercise.id, data)
+    //     return actions.createComment({...data, itemId: exercise?.id})
     //         .then(() => toggleCommenting(false));
-    // }, [exercise]);
+    // }, [actions, exercise, toggleCommenting]);
 
     // const handleUpdateComment = useCallback((commentId, data) => {
-    //     return onUpdateComment(exercise.id, commentId, data);
-    // }, [exercise]);
+    //     return actions.updateComment(commentId, data);
+    // }, [actions]);
 
     // const handleDeleteComment = useCallback(commentId => {
-    //     return onDeleteComment(exercise.id, commentId);
-    // }, [exercise]);
+    //     return actions.deleteComment(commentId);
+    // }, [actions]);
 
-    const hasSaveableItems = user.role === 'learner' && exercise.items.some(item =>
+    const hasSaveableItems = user.role === 'learner' && exercise?.items.some(item =>
         item.type === 'essay' ||
         item.type === 'fib' ||
         item.type === 'input'
     );
 
-    const hasCheckableItems = exercise.items.some(item =>
+    const hasCheckableItems = exercise?.items.some(item =>
         item.type === 'fib' ||
         (item.type === 'input' && item.items?.length > 0)
     );
+
+    if (!exercise) return <LoadingIndicator />;
 
     return (
         <Card className="Exercise">
@@ -114,7 +120,10 @@ export default function Exercise({
                     html
                 />
 
-                <Flex alignItems="center" alignSelf="start" gap="small">
+                <Flex
+                    alignItems="center" alignSelf="start"
+                    gap="small"
+                >
                     {assignments?.length > 0 && (
                         <Flex alignItems="center" gap="smaller">
                             {assignments
@@ -228,6 +237,7 @@ export default function Exercise({
                     }
                 </footer>
 
+                {/* TODO: решили убрать коментарии из упражнений и оставить для задания */}
                 {/* <ExerciseComments
                     exercise={exercise}
                     onCreate={handleCreateComment}

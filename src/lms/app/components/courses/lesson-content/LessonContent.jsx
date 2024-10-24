@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { Chip, Flex, Tabs } from 'shared/ui-components';
+import { Flex, Tabs } from 'shared/ui-components';
 
 import Exercise from 'lms/components/courses/exercise';
 
@@ -40,6 +40,7 @@ export default function LessonContent({
                     {currentSection?.exercises?.map((exercise, index) =>
                         <Exercise
                             key={exercise.id}
+                            id={exercise.id}
                             index={index}
                             user={user}
                             exercise={exercise}

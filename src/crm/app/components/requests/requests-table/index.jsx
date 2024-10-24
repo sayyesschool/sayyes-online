@@ -58,11 +58,11 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                         </Table.Cell>
 
                         <Table.Cell>
-                            {request.client ?
+                            {request.learner ?
                                 <PersonChip
                                     as={Link}
-                                    to={`/clients/${request.client.id}`}
-                                    text={request.client.fullname}
+                                    to={`/learners/${request.learner.id}`}
+                                    text={request.learner.fullname}
                                 />
                                 :
                                 '[Отсутствует]'

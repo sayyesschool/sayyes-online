@@ -1,4 +1,2 @@
-module.exports = {
-    data: require('./data'),
-    utils: require('./utils')
-};
+export * as data from './data';
+export * as utils from './utils';

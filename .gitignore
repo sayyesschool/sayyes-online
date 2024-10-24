@@ -9,9 +9,7 @@ node_modules
 # Optional npm cache directory
 .npm
 
-.vscode
 .env
-cert/
-backups/
-public/
-ssl/
+backups
+public
+ssl

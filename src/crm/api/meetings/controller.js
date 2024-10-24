@@ -1,6 +1,6 @@
-module.exports = ({
+export default ({
     models: { User },
-    services: { Meeting }
+    services: { Club, Meeting }
 }) => ({
     get: (req, res, next) => {
         Meeting.get(req.query)

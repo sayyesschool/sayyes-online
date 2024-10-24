@@ -1,0 +1,13 @@
+@use '../common';
+
+@include common.root;
+@include common.actions;
+@include common.next-button;
+
+.content {
+    margin: auto;
+}
+
+.action {
+    flex: 1;
+}

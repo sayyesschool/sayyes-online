@@ -1,8 +1,7 @@
 import { Redirect } from 'react-router-dom';
 
-import { useEnrollments } from 'shared/hooks/enrollments';
 import LoadingIndicator from 'shared/components/loading-indicator';
-import Page from 'shared/components/page';
+import { useEnrollments } from 'shared/hooks/enrollments';
 
 export default function EnrollmentsPage() {
     const [enrollments] = useEnrollments();

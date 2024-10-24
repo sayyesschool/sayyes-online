@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
-import { bindActionCreators } from 'redux';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
-export function useState(mapState = state => state) {
-    return useSelector(mapState, shallowEqual);
+import { bindActionCreators } from 'redux';
+
+export function useState(mapState = state => state, areEqual = shallowEqual) {
+    return useSelector(mapState, areEqual);
 }
 
 export function useActions(mapDispatch = Function.prototype) {

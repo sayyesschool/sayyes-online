@@ -1,29 +1,27 @@
-const { Router } = require('express');
+import { Router } from 'express';
 
-const clients = require('./clients');
-const comments = require('./comments');
-const courses = require('./courses');
-const enrollments = require('./enrollments');
-const lessons = require('./lessons');
-const managers = require('./managers');
-const materials = require('./materials');
-const meetings = require('./meetings');
-const packs = require('./packs');
-const payments = require('./payments');
-const requests = require('./requests');
-const rooms = require('./rooms');
-const teachers = require('./teachers');
-const tickets = require('./tickets');
-const user = require('./user');
-const users = require('./users');
+import comments from './comments';
+import courses from './courses';
+import enrollments from './enrollments';
+import learners from './learners';
+import lessons from './lessons';
+import managers from './managers';
+import materials from './materials';
+import meetings from './meetings';
+import packs from './packs';
+import payments from './payments';
+import requests from './requests';
+import rooms from './rooms';
+import teachers from './teachers';
+import users from './users';
 
-module.exports = context => {
+export default context => {
     const router = Router();
 
-    router.use('/clients', clients(context));
     router.use('/comments', comments(context));
     router.use('/courses', courses(context));
     router.use('/enrollments', enrollments(context));
+    router.use('/learners', learners(context));
     router.use('/lessons', lessons(context));
     router.use('/managers', managers(context));
     router.use('/materials', materials(context));
@@ -33,13 +31,11 @@ module.exports = context => {
     router.use('/requests', requests(context));
     router.use('/rooms', rooms(context));
     router.use('/teachers', teachers(context));
-    router.use('/tickets', tickets(context));
-    router.use('/user', user(context));
     router.use('/users', users(context));
 
     router.use((error, req, res, next) => {
         console.error(error);
-        res.status(error.status || 500).send({ ok: false, error: error.message || error });
+        res.status(error.code || error.status || 500).send({ ok: false, error: error.message || error });
     });
 
     return router;

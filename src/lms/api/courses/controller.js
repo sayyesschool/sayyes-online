@@ -1,5 +1,5 @@
-module.exports = ({
-    models: { Course, Exercise }
+export default ({
+    models: { Course }
 }) => ({
     async getCourses(req, res) {
         const courses = await Course.find(req.query)
@@ -28,15 +28,6 @@ module.exports = ({
         res.json({
             ok: true,
             data
-        });
-    },
-
-    async getExercise(req, res) {
-        const exercise = await Exercise.findById(req.params.exercise);
-
-        res.json({
-            ok: true,
-            data: exercise
         });
     }
 });

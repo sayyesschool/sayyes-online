@@ -1,17 +1,16 @@
 import { memo } from 'react';
-import classnames from 'classnames';
 
 import { Avatar, Icon, Text } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 
-import useIsTrackSwitchedOff from 'app/hooks/useIsTrackSwitchedOff';
-import useParticipantIsReconnecting from 'app/hooks/useParticipantIsReconnecting';
-import useParticipantNetworkQualityLevel from 'app/hooks/useParticipantNetworkQualityLevel';
-import usePublications from 'app/hooks/usePublications';
-import useTrack from 'app/hooks/useTrack';
-
-import AudioLevelIndicator from 'app/components/AudioLevelIndicator';
-import NetworkQualityIndicator from 'app/components/NetworkQualityIndicator';
-import ParticipantTracks from 'app/components/ParticipantTracks';
+import AudioLevelIndicator from 'class/components/AudioLevelIndicator';
+import NetworkQualityIndicator from 'class/components/NetworkQualityIndicator';
+import ParticipantTracks from 'class/components/ParticipantTracks';
+import useIsTrackSwitchedOff from 'class/hooks/useIsTrackSwitchedOff';
+import useParticipantIsReconnecting from 'class/hooks/useParticipantIsReconnecting';
+import useParticipantNetworkQualityLevel from 'class/hooks/useParticipantNetworkQualityLevel';
+import usePublications from 'class/hooks/usePublications';
+import useTrack from 'class/hooks/useTrack';
 
 export default memo(function Participant({
     participant,

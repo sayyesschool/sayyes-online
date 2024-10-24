@@ -1,14 +1,15 @@
 import { render } from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider as StoreProvider } from 'react-redux';
-import { CssVarsProvider as ThemeProvider } from '@mui/joy/styles';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-import './index.scss';
+import { CssVarsProvider as ThemeProvider } from '@mui/joy/styles';
 
 import theme from 'shared/theme';
 
-import store from './store';
 import App from './components';
+import store from './store';
+
+import './index.scss';
 
 render(
     <StoreProvider store={store}>

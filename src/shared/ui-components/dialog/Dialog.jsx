@@ -1,14 +1,14 @@
 import { isValidElement } from 'react';
-import classnames from 'classnames';
 
+import DialogActions from '@mui/joy/DialogActions';
+import DialogContent from '@mui/joy/DialogContent';
+import DialogTitle from '@mui/joy/DialogTitle';
 import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
 import ModalDialog from '@mui/joy/ModalDialog';
+import classnames from 'classnames';
 
-import Box from '../box/Box';
 import Button from '../button/Button';
-import Flex from '../flex/Flex';
-import Heading from '../heading/Heading';
 
 export default function Dialog({
     title,
@@ -21,6 +21,9 @@ export default function Dialog({
     variant,
     scrollableContent = true,
     closable = true,
+    titleProps,
+    contentProps,
+    actionsProps,
     sx,
     onClose,
 
@@ -28,9 +31,9 @@ export default function Dialog({
     className,
     ...props
 }) {
-    const classNames = classnames(className, 'ui-Dialog', {
+    const classNames = classnames('ui-Dialog', {
         'ui-Dialog--scrollable': scrollableContent
-    });
+    }, className);
 
     return (
         <Modal
@@ -46,25 +49,30 @@ export default function Dialog({
                 variant={variant}
                 sx={sx}
             >
+                {title &&
+                    <DialogTitle className="ui-Dialog__title" {...titleProps}>
+                        {title}
+                    </DialogTitle>
+                }
+
+                <DialogContent className="ui-Dialog__content" {...contentProps}>
+                    {children}
+                </DialogContent>
+
+                {isValidElement(actions) ? actions : (Array.isArray(actions) &&
+                    <DialogActions className="ui-Dialog__actions" {...actionsProps}>
+                        {actions?.map(action => isValidElement(action) ? action :
+                            <Button
+                                key={action.key}
+                                {...action}
+                            />
+                        )}
+                    </DialogActions>
+                )}
+
                 {closable &&
                     <ModalClose size="sm" />
                 }
-
-                {title &&
-                    <Heading className="ui-Dialog__title" type="title-lg" content={title} />
-                }
-
-                <div className="ui-Dialog__content">
-                    {children}
-                </div>
-
-                {isValidElement(actions) ? actions : (Array.isArray(actions) &&
-                    <Flex gap="smaller" justifyContent="flex-end">
-                        {actions?.map(action => isValidElement(action) ? action :
-                            <Button {...action} />
-                        )}
-                    </Flex>
-                )}
             </ModalDialog>
         </Modal>
     );

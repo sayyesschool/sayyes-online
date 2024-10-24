@@ -1,5 +1,6 @@
-const { Schema } = require('mongoose');
-const { randomUUID } = require('crypto');
+import { randomUUID } from 'node:crypto';
+
+import { Schema } from 'mongoose';
 
 const BlockType = {
     Audio: 'audio',
@@ -14,7 +15,7 @@ const BlockType = {
     Video: 'video'
 };
 
-const Item = new Schema({
+export const Item = new Schema({
     _id: { type: Schema.Types.UUID, default: () => randomUUID() },
     type: { type: String, enum: Object.values(BlockType), required: true },
     props: { type: Object, default: {} },
@@ -35,4 +36,4 @@ Item.virtual('props.url').get(function() {
     return this.props && this.props.path ? `${process.env.STORAGE_URL}/${this.props.path}` : this.src;
 });
 
-module.exports = Item;
+export default Item;

@@ -1,3 +1,3 @@
-const morgan = require('morgan');
+import morgan from 'morgan';
 
-module.exports = morgan('dev');
+export default morgan('dev');

@@ -1,5 +1,5 @@
-module.exports = ({
-    models: { Enrollment },
+export default ({
+    models: { Enrollment }
 }) => ({
     async getMany(req, res) {
         const query = { ...req.query };

@@ -1,20 +1,18 @@
-const { Router } = require('express');
+import { Router } from 'express';
 
-const Controller = require('./controller');
-const Middleware = require('./middleware');
+import Controller from './controller';
 
-module.exports = context => {
+export default context => {
     const router = Router();
     const controller = Controller(context);
-    const { resolveScheduleConflict } = Middleware(context);
 
     router.route('/')
         .get(controller.get)
-        .post(resolveScheduleConflict, controller.create);
+        .post(controller.create);
 
     router.route('/:lessonId')
         .get(controller.getOne)
-        .put(resolveScheduleConflict, controller.update)
+        .put(controller.update)
         .delete(controller.delete);
 
     return router;

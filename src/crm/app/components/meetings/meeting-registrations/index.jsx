@@ -1,14 +1,16 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
+
 import {
     Card,
     IconButton,
-    TextField
+    List, ListGroup, ListGroupSubheader,
+    ListItem, ListItemGraphic, ListItemMeta,
+    ListItemText, TextField
 } from 'mdc-react';
 
-import FormDialog from 'app/components/shared/form-dialog';
+import { useBoolean } from 'shared/hooks/state';
 
-import MeetingRegistrationsList from 'app/components/meetings/meeting-registrations-list';
-import MeetingRegistrationForm from 'app/components/meetings/meeting-registration-form';
+import UIContext from 'crm/contexts/ui';
 
 export default function MeetingRegistrations({
     registrations,
@@ -28,6 +30,7 @@ export default function MeetingRegistrations({
         setSearching(isSearching => {
             if (isSearching) {
                 setQuery('');
+
                 return false;
             } else {
                 return true;

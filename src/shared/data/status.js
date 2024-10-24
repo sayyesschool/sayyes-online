@@ -1,4 +1,4 @@
-const Status = {
+export const Status = {
     Active: 'active',
     Canceled: 'canceled',
     Completed: 'completed',
@@ -11,7 +11,7 @@ const Status = {
     Succeeded: 'succeeded'
 };
 
-const StatusColor = {
+export const StatusColor = {
     [Status.Active]: 'primary',
     [Status.Canceled]: 'danger',
     [Status.Completed]: 'success',
@@ -24,7 +24,7 @@ const StatusColor = {
     [Status.Succeeded]: 'success'
 };
 
-const StatusIcon = {
+export const StatusIcon = {
     [Status.Active]: 'pending',
     [Status.Canceled]: 'cancel',
     [Status.Completed]: 'circle_check',
@@ -37,17 +37,10 @@ const StatusIcon = {
     [Status.Succeeded]: 'done'
 };
 
-const StatusLabel = {
+export const StatusLabel = {
     [Status.Canceled]: 'Отменен',
     [Status.Ended]: 'Завершен',
     [Status.Missed]: 'Пропущен',
     [Status.Scheduled]: 'Запланирован',
     [Status.Started]: 'Начался'
-};
-
-module.exports = {
-    Status,
-    StatusColor,
-    StatusIcon,
-    StatusLabel
 };

@@ -1,7 +1,7 @@
-import classnames from 'classnames';
 import { isValidElement } from 'react';
 
 import { Heading, Icon, IconButton, Surface, Text } from 'shared/ui-components';
+import cn from 'shared/utils/classnames';
 
 export default function PageSection({
     title,
@@ -16,7 +16,7 @@ export default function PageSection({
     className,
     ...props
 }) {
-    const classNames = classnames(className, 'PageSection', {
+    const classNames = cn(className, 'PageSection', {
         'PageSection--compact': compact,
         'PageSection--plain': plain
     });
@@ -55,13 +55,12 @@ export default function PageSection({
                                         variant="plain"
                                         color="neutral"
                                         {...action}
-                                    />
+                                />
                             ) : actions
                         }
                     </div>
                 }
             </div>
-
 
             <div className="PageSection__content">
                 {children}

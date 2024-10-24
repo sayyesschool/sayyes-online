@@ -1,6 +1,5 @@
-import classnames from 'classnames';
-
 import { Dialog, Image, Text } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 
 import './index.scss';
 

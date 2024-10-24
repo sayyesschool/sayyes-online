@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
-import LoadingIndicator from 'shared/components/loading-indicator';
 import FormDialog from 'shared/components/form-dialog';
+import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { Grid } from 'shared/ui-components';
 
-import { useStore } from 'app/hooks/store';
-import MeetingForm from 'app/components/meetings/meeting-form';
-import MeetingDetails from 'app/components/meetings/meeting-details';
-import MeetingRegistrations from 'app/components/meetings/meeting-registrations';
-import MeetingRegistrationForm from 'app/components/meetings/meeting-registration-Form';
-import MeetingParticipants from 'app/components/meetings/meeting-participants';
+import MeetingDetails from 'crm/components/meetings/meeting-details';
+import MeetingForm from 'crm/components/meetings/meeting-form';
+import MeetingParticipants from 'crm/components/meetings/meeting-participants';
+import MeetingRegistrationForm from 'crm/components/meetings/meeting-registration-Form';
+import MeetingRegistrations from 'crm/components/meetings/meeting-registrations';
+import { useStore } from 'crm/hooks/store';
 
 import './index.scss';
 

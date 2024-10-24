@@ -10,7 +10,7 @@ const FormField = forwardRef(({
     message,
 
     className,
-    children = content,
+    children,
     ...props
 }, ref) => {
     const classNames = classnames('ui-FormField', className);
@@ -29,5 +29,7 @@ const FormField = forwardRef(({
         </FormControl>
     );
 });
+
+FormField.displayName = 'FormField';
 
 export default FormField;

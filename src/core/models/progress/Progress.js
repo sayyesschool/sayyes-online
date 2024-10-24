@@ -1,8 +1,8 @@
-const { Schema } = require('mongoose');
+import { Schema, Types } from 'mongoose';
 
-const ObjectId = Schema.Types.ObjectId;
+const { ObjectId } = Types;
 
-const Progress = new Schema({
+export const Progress = new Schema({
     enrollmentId: { type: ObjectId, required: true },
     courseId: { type: ObjectId, required: true },
     exerciseId: { type: ObjectId, required: true },
@@ -12,4 +12,4 @@ const Progress = new Schema({
     timestamps: true
 });
 
-module.exports = Progress;
+export default Progress;

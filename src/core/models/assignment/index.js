@@ -1,1 +1,1 @@
-module.exports = require('./Assignment');
+export { Assignment, AssignmentStatus, default } from './Assignment';

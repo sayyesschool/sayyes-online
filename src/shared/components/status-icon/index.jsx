@@ -1,7 +1,6 @@
-import classnames from 'classnames';
-
-import { Icon } from 'shared/ui-components';
 import { StatusIcon as StatusIconMap } from 'shared/data/status';
+import { Icon } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 
 export default function StatusIcon({ status, className, ...props }) {
     const classNames = classnames('StatusIcon', {

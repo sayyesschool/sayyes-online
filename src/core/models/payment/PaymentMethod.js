@@ -1,6 +1,6 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const PaymentMethod = new Schema({
+export const PaymentMethod = new Schema({
     id: { type: String, required: true },
     type: { type: String, required: true },
     title: { type: String },
@@ -27,4 +27,4 @@ PaymentMethod.virtual('card.number').get(function() {
     return `**** **** **** ${this.card.last4}`;
 });
 
-module.exports = PaymentMethod;
+export default PaymentMethod;

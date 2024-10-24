@@ -1,15 +1,14 @@
 import { useCallback, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
-import AppHeader from 'shared/components/app-header';
 import AppBar from 'shared/components/app-bar';
 import AppContent from 'shared/components/app-content';
 import AppNotification from 'shared/components/app-notification';
 import LoadingIndicator from 'shared/components/loading-indicator';
-// import SearchForm from 'shared/components/search-form';
 
-import UI from 'app/contexts/ui';
-import { useStore, useActions } from 'app/hooks/store';
+// import SearchForm from 'shared/components/search-form';
+import UI from 'crm/contexts/ui';
+import { useActions, useStore } from 'crm/hooks/store';
 
 import './App.scss';
 
@@ -44,7 +43,8 @@ export default function App({ routes }) {
             <UI.Provider value={{
                 showNotification: notificationActions.showNotification,
                 hideNotification: notificationActions.hideNotification
-            }}>
+            }}
+            >
                 {/* <AppHeader
                     user={user}
                 /> */}

@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import moment from 'moment';
-import classnames from 'classnames';
 
 import { getMonthData } from 'shared/libs/calendar';
 import { Button, Select, Text } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 
 export default function MonthView({
     selectedDate,

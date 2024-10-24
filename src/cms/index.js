@@ -1,15 +1,18 @@
-const express = require('express');
-const vhost = require('vhost');
+import { resolve } from 'node:path';
 
-const api = require('./api');
+import express from 'express';
+import vhost from 'vhost';
+
+import api from './api';
 
 const ALLOWED_ROLES = ['editor', 'learner', 'manager', 'teacher'];
 
-module.exports = context => {
+export default context => {
     const app = express();
 
+    app.set('trust proxy', true);
     app.set('view engine', 'pug');
-    app.set('views', __dirname);
+    app.set('views', resolve(context.config.APP_PATH, 'cms'));
 
     app.locals.basedir = context.config.APP_PATH;
 

@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoySlider from '@mui/joy/Slider';
+import classnames from 'classnames';
 
 const Slider = forwardRef(({
     className,
@@ -17,5 +17,7 @@ const Slider = forwardRef(({
         />
     );
 });
+
+Slider.displayName = 'Slider';
 
 export default Slider;

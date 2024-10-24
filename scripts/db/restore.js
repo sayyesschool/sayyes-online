@@ -1,4 +1,4 @@
-const { execSync } = require('node:child_process');
+import { execSync } from 'node:child_process';
 
 const {
     DB_CONNECTION_STRING,
@@ -19,6 +19,6 @@ const command = [
 
 console.log(command);
 
-// execSync(command);
+execSync(command);
 
 // // mongorestore --host 11b.mongo.evennode.com --port 27018 --username c9b42705615495952426f3af0e1510f9 --password 4R*I78UXfKscHvIk --authenticationDatabase c9b42705615495952426f3af0e1510f9 --nsFrom='1fad2999e128c7779c8692d685e5eaad.*' --nsTo='c9b42705615495952426f3af0e1510f9.*'

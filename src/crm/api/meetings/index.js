@@ -1,10 +1,10 @@
-const { Router } = require('express');
+import { Router } from 'express';
 
-const Controller = require('./controller');
+import Controller from './controller';
 
-module.exports = core => {
+export default context => {
     const router = Router();
-    const controller = Controller(core);
+    const controller = Controller(context);
 
     router.route('/')
         .get(controller.get)

@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
     models: { Comment }
 }) => ({
     get: (req, res, next) => {

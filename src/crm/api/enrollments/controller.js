@@ -1,11 +1,11 @@
-module.exports = ({
+export default ({
     models: { Enrollment, Lesson, Transaction }
 }) => ({
     get: (req, res, next) => {
         Enrollment.find(req.query)
             .select('-messages')
             .populate('learner', 'firstname lastname')
-            .populate('managers', 'firstname lastname')
+            .populate('manager', 'firstname lastname')
             .populate('lessons', 'status')
             .sort({ createdAt: 1 })
             .then(enrollments => {
@@ -20,8 +20,8 @@ module.exports = ({
     getOne: (req, res, next) => {
         Enrollment.findById(req.params.id)
             .populate('learner', 'hhid firstname lastname imageUrl')
-            .populate('managers', 'firstname lastname imageUrl')
-            .populate('teachers', 'firstname lastname imageUrl')
+            .populate('manager', 'firstname lastname imageUrl')
+            .populate('teacher', 'firstname lastname imageUrl')
             .populate('payments')
             .populate('lessons')
             .populate({

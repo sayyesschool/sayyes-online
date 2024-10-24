@@ -1,11 +1,11 @@
-const cors = require('cors');
-const express = require('express');
-const https = require('https');
+import { createServer } from 'node:https';
 
-const middleware = require('./middleware');
-const pages = require('./pages');
+import cors from 'cors';
+import express from 'express';
 
-module.exports = ({ config, db }, options) => {
+import { flash, logger, session } from './middleware';
+
+export default ({ config, db }, options) => {
     const server = express();
 
     server.set('trust proxy', true);
@@ -13,7 +13,6 @@ module.exports = ({ config, db }, options) => {
     server.set('views', config.APP_PATH);
 
     server.locals.ENV = server.get('env');
-    server.locals.VERSION = config.APP_VERSION;
     server.locals.YANDEX_METRIKA_ID = config.YANDEX_METRIKA_ID;
     server.locals.GOOGLE_ANALYTICS_ID = config.GOOGLE_ANALYTICS_ID;
     server.locals.FACEBOOK_PIXEL_ID = config.FACEBOOK_PIXEL_ID;
@@ -26,16 +25,15 @@ module.exports = ({ config, db }, options) => {
     }));
 
     server.use(express.static('public'));
-    server.use('/lib', express.static('node_modules'));
     server.use(express.json());
     server.use(express.urlencoded({ extended: true }));
-    server.use(middleware.logger);
-    server.use(middleware.session(config, db.connection));
-    server.use(...middleware.flash);
-    //server.use(pages); 
+    server.use(session(config, db.connection));
+    server.use(logger);
+    server.use(...flash);
+    //server.use(pages);
 
     process.on('SIGTERM', () => {
-        console.info('SIGTERM signal received.');
+        console.log('SIGTERM signal received.');
         console.log('Closing http server.');
 
         server.close(() => {
@@ -49,15 +47,15 @@ module.exports = ({ config, db }, options) => {
             server.use(...args);
             return this;
         },
-        listen(port, ...rest) {
-            db.connect(config.MONGODB_URI);
-
+        start(...args) {
             if (options) {
-                https.createServer(options, server)
-                    .listen(port, config.APP_DOMAIN, ...rest);
+                createServer(options, server)
+                    .listen(config.APP_PORT, config.APP_DOMAIN, ...args);
             } else {
-                server.listen(port, ...rest);
+                server.listen(config.APP_PORT, ...args);
             }
+
+            console.log('Server started');
         }
     };
 };

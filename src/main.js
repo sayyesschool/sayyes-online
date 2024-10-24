@@ -1,31 +1,33 @@
-const fs = require('fs');
+import { readFileSync } from 'node:fs';
 
-const config = require('./config');
-const db = require('./db');
-const core = require('./core');
-const api = require('./api');
-const auth = require('./auth');
-const authMiddleware = require('./auth/middleware');
-const classroom = require('./class');
-const club = require('./club');
-const cms = require('./cms');
-const crm = require('./crm');
-const lms = require('./lms');
-const server = require('./server');
+import api from './api';
+import auth, { Middleware as AuthMiddleware } from './auth';
+import classroom from './class';
+import cms from './cms';
+import config from './config';
+import core from './core';
+import crm from './crm';
+import db from './db';
+import lk from './lk';
+import lms from './lms';
+import server from './server';
 
 const context = core(config);
+const authMiddleware = AuthMiddleware(context);
+
+const { authenticate, authorize, redirect } = authMiddleware;
+
+const options = config.APP_ENV === 'production' ? null : {
+    cert: readFileSync(config.SSL_CERT_PATH),
+    key: readFileSync(config.SSL_KEY_PATH)
+};
 
 context.db = db;
 context.middleware = {
-    auth: authMiddleware(context)
+    auth: authMiddleware
 };
 
-const options = config.APP_ENV === 'production' ? null : {
-    key: fs.readFileSync('./ssl/privatekey.pem'),
-    cert: fs.readFileSync('./ssl/certificate.pem')
-};
-
-const { authenticate, authorize, redirect } = context.middleware.auth;
+db.connect(config.MONGODB_URI);
 
 server(context, options)
     .use(authenticate)
@@ -35,8 +37,7 @@ server(context, options)
     .use(authorize, club(context))
     .use(authorize, cms(context))
     .use(authorize, crm(context))
+    .use(authorize, lk(context))
     .use(authorize, lms(context))
     .use(redirect)
-    .listen(config.APP_PORT, () => {
-        console.log('Server started');
-    });
+    .start();

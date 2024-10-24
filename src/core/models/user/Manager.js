@@ -1,6 +1,6 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const Manager = new Schema({});
+export const Manager = new Schema({});
 
 Manager.virtual('enrollments', {
     ref: 'Enrollment',
@@ -8,4 +8,4 @@ Manager.virtual('enrollments', {
     foreignField: 'managerId'
 });
 
-module.exports = Manager;
+export default Manager;

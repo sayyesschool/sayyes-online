@@ -2,12 +2,12 @@ import { useCallback } from 'react';
 
 import { FormSelect, Text } from 'shared/ui-components';
 
-import { SELECTED_AUDIO_INPUT_KEY } from 'app/constants';
-// import useAppState from 'app/hooks/useAppState';
-import { useAudioInputDevices } from 'app/hooks/useDevices';
-import useRoomContext from 'app/hooks/useRoomContext';
-import useMediaStreamTrack from 'app/hooks/useMediaStreamTrack';
-import AudioLevelIndicator from 'app/components/AudioLevelIndicator';
+import AudioLevelIndicator from 'class/components/AudioLevelIndicator';
+import { SELECTED_AUDIO_INPUT_KEY } from 'class/constants';
+// import useAppState from 'class/hooks/useAppState';
+import { useAudioInputDevices } from 'class/hooks/useDevices';
+import useMediaStreamTrack from 'class/hooks/useMediaStreamTrack';
+import useRoomContext from 'class/hooks/useRoomContext';
 
 export default function AudioInputList() {
     // const { isKrispEnabled, isKrispInstalled } = useAppState();

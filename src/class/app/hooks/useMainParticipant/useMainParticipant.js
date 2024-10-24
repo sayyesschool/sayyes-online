@@ -1,4 +1,4 @@
-import useRoomContext from 'app/hooks/useRoomContext';
+import useRoomContext from 'class/hooks/useRoomContext';
 
 /**
  * Returns the participant that is displayed in the main video area.

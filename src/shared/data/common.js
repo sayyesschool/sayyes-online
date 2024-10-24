@@ -1,32 +1,33 @@
-const { AgeGroup, Domain, Level, Format, TeacherType } = require('../../core/models/common/constants');
+import { AgeGroup, Domain, Format, Level, TeacherType } from '../../core/models/common';
 
-const AgeGroupLabel = {
+export const AgeGroupLabel = {
     [AgeGroup.Adults]: 'Взрослые',
     [AgeGroup.Teenagers]: 'Подростки',
     [AgeGroup.Children]: 'Дети'
 };
 
-const DomainLabel = {
+export const DomainLabel = {
     [Domain.Business]: 'Деловой английский',
     [Domain.General]: 'Общий разговорный курс',
     [Domain.Prep]: 'Подготовка к экзаменам'
 };
 
-const FormatLabel = {
+export const FormatLabel = {
     [Format.Offline]: 'Оффлайн',
     [Format.Online]: 'Онлайн'
 };
 
-const LevelLabel = {
+export const LevelLabel = {
     [Level.Beginner]: 'Beginner',
-    [Level.Elementary]: 'Elementary',
-    [Level.PreIntermediate]: 'Pre-Intermediate',
-    [Level.Intermediate]: 'Intermediate',
-    [Level.UpperIntermediate]: 'Upper-Intermediate',
-    [Level.Advanced]: 'Advanced'
+    [Level.Elementary]: 'Elementary (A1)',
+    [Level.PreIntermediate]: 'Pre-Intermediate (A2)',
+    [Level.Intermediate]: 'Intermediate (B1)',
+    [Level.UpperIntermediate]: 'Upper-Intermediate (B2)',
+    [Level.Advanced]: 'Advanced (C1)',
+    [Level.Proficiency]: 'Proficiency (C2)'
 };
 
-const PurposeLabel = {
+export const PurposeLabel = {
     work: 'Для работы',
     study: 'Для учебы',
     interview: 'Для собеседования',
@@ -36,20 +37,20 @@ const PurposeLabel = {
     immigration: 'Иммиграция'
 };
 
-const RoleLabel = {
+export const RoleLabel = {
     admin: 'Администратор',
     editor: 'Редактор',
     learner: 'Ученик',
     teacher: 'Преподаватель'
 };
 
-const TeacherTypeLabel = {
+export const TeacherTypeLabel = {
     [TeacherType.Bilingual]: 'Билингва',
     [TeacherType.Native]: 'Носитель',
     [TeacherType.Russian]: 'Русскоговорящий'
 };
 
-const ageGroupOptions = [
+export const ageGroupOptions = [
     { key: 'null', value: '', label: '', content: '' },
     ...Object.entries(AgeGroupLabel).map(([key, value]) => ({
         key,
@@ -59,7 +60,7 @@ const ageGroupOptions = [
     }))
 ];
 
-const domainOptions = [
+export const domainOptions = [
     { key: 'null', value: '', label: '', content: '' },
     ...Object.entries(DomainLabel).map(([key, value]) => ({
         key,
@@ -69,7 +70,7 @@ const domainOptions = [
     }))
 ];
 
-const formatOptions = [
+export const formatOptions = [
     { key: 'null', value: '', label: '', content: '' },
     ...Object.entries(FormatLabel).map(([key, value]) => ({
         key,
@@ -79,7 +80,7 @@ const formatOptions = [
     }))
 ];
 
-const levelOptions = [
+export const levelOptions = [
     { key: 'null', value: '', label: '', content: '' },
     ...Object.entries(LevelLabel).map(([key, value]) => ({
         key,
@@ -89,7 +90,7 @@ const levelOptions = [
     }))
 ];
 
-const purposeOptions = [
+export const purposeOptions = [
     { key: 'null', value: '', label: '', content: '' },
     ...Object.entries(PurposeLabel).map(([key, value]) => ({
         key,
@@ -99,7 +100,7 @@ const purposeOptions = [
     }))
 ];
 
-const teacherTypeOptions = [
+export const teacherTypeOptions = [
     { key: 'null', value: '', label: '', content: '' },
     ...Object.entries(TeacherTypeLabel).map(([key, value]) => ({
         key,
@@ -108,19 +109,3 @@ const teacherTypeOptions = [
         content: value
     }))
 ];
-
-module.exports = {
-    AgeGroupLabel,
-    DomainLabel,
-    FormatLabel,
-    LevelLabel,
-    PurposeLabel,
-    RoleLabel,
-    TeacherTypeLabel,
-    ageGroupOptions,
-    domainOptions,
-    formatOptions,
-    levelOptions,
-    purposeOptions,
-    teacherTypeOptions
-};

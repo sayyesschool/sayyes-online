@@ -1,7 +1,7 @@
 import { createElement, useCallback, useRef, useState } from 'react';
-import classnames from 'classnames';
 
-import { IconButton, Flex, Text } from 'shared/ui-components';
+import { Flex, IconButton, Text } from 'shared/ui-components';
+import classnames from 'shared/utils/classnames';
 import { capitalize } from 'shared/utils/string';
 
 import AudioItem from './audio';
@@ -91,7 +91,12 @@ export default function ExerciseItemForm({
             onSubmit={handleSubmit}
             {...props}
         >
-            <Flex space="between" alignItems="center" justifyContent="space-between" sx={{ padding: '4px 4px 4px 8px' }}>
+            <Flex
+                space="between"
+                alignItems="center"
+                justifyContent="space-between"
+                sx={{ padding: '4px 4px 4px 8px' }}
+            >
                 <Text>{labelsByType[item.type]}</Text>
 
                 <IconButton.Group

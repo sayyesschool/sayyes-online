@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyButtonGroup from '@mui/joy/ButtonGroup';
+import classnames from 'classnames';
 
 import Button from './Button';
 
@@ -21,13 +21,16 @@ const ButtonGroup = forwardRef(({
             {...props}
         >
             {buttons?.map(button =>
-                <Button {...button} />
-            )}
-
-            {children}
+                <Button
+                    key={button.key}
+                    {...button}
+                />
+            ) || children}
         </JoyButtonGroup>
     );
 });
+
+ButtonGroup.displayName = 'ButtonGroup';
 
 Button.Group = ButtonGroup;
 

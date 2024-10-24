@@ -1,13 +1,20 @@
-const { Schema } = require('mongoose');
-const moment = require('moment');
+import moment from 'moment';
+import { Schema } from 'mongoose';
 
-const Person = new Schema({
+export const Gender = {
+    Female: 'female',
+    Male: 'male',
+    Unknown: ''
+};
+
+export const Person = new Schema({
     firstname: {
         type: String,
         trim: true,
         minlength: [2, 'Имя слишком короткое.'],
         maxlength: [64, 'Имя слишком длинное.'],
-        match: [/^[^0-9 ]+$/, 'В имени не должно быть пробелов и цифр.']
+        match: [/^[^0-9 ]+$/, 'В имени не должно быть пробелов и цифр.'],
+        required: true
     },
     lastname: {
         type: String,
@@ -30,27 +37,35 @@ const Person = new Schema({
     phone: {
         type: String,
         trim: true,
-        minlength: 8,
         maxlength: 12,
         set: value => value.trim().replace(/[\s()\-+]+/g, '')
     },
     phones: [{
         type: String,
         trim: true,
-        minlength: 8,
         maxlength: 12,
         set: value => value.trim().replace(/[\s()\-+]+/g, '')
     }],
-    gender: { type: String, enum: ['', 'male', 'female'], default: '' },
+    gender: {
+        type: String,
+        enum: Object.values(Gender),
+        default: Gender.Unknown
+    },
     dob: { type: Date }
 });
 
 Person.virtual('fullname').get(function() {
-    return `${this.firstname} ${this.lastname}`;
+    return [
+        this.firstname,
+        this.lastname
+    ].filter(Boolean).join(' ');
 });
 
 Person.virtual('initials').get(function() {
-    return `${this.firstname[0]}${this.lastname[0]}`;
+    return [
+        this.firstname?.at(0),
+        this.lastname?.at(0)
+    ].filter(Boolean).join('');
 });
 
 Person.virtual('birthdate').get(function() {
@@ -61,4 +76,4 @@ Person.virtual('age').get(function() {
     return this.dob && moment().diff(this.dob, 'years');
 });
 
-module.exports = Person;
+export default Person;

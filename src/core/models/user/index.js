@@ -1,14 +1,26 @@
-const Admin = require('./Admin');
-const Editor = require('./Editor');
-const Learner = require('./Learner');
-const Manager = require('./Manager');
-const Teacher = require('./Teacher');
-const User = require('./User');
+import { model } from 'mongoose';
 
-User.Admin = Admin;
-User.Editor = Editor;
-User.Manager = Manager;
-User.Learner = Learner;
-User.Teacher = Teacher;
+import AdminSchema from './Admin';
+import EditorSchema from './Editor';
+import LearnerSchema from './Learner';
+import ManagerSchema from './Manager';
+import TeacherSchema from './Teacher';
+import UserSchema from './User';
 
-module.exports = User;
+export {
+    AdminSchema,
+    EditorSchema,
+    LearnerSchema,
+    ManagerSchema,
+    TeacherSchema,
+    UserSchema
+};
+
+export const User = model('User', UserSchema);
+export const Admin = User.discriminator('Admin', AdminSchema, 'admin');
+export const Editor = User.discriminator('Editor', EditorSchema, 'editor');
+export const Learner = User.discriminator('Learner', LearnerSchema, 'learner');
+export const Manager = User.discriminator('Manager', ManagerSchema, 'manager');
+export const Teacher = User.discriminator('Teacher', TeacherSchema, 'teacher');
+
+export default User;

@@ -1,6 +1,6 @@
 import PageSection from 'shared/components/page-section';
 
-import SectionForm from 'app/components/courses/section-form';
+import SectionForm from 'cms/components/courses/section-form';
 
 export default function SectionDetails({
     course,

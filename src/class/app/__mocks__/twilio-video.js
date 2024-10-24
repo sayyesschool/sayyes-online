@@ -1,11 +1,11 @@
-import { EventEmitter } from 'events';
+import { EventEmitter } from 'node:events';
 
 class MockRoom extends EventEmitter {
     state = 'connected';
     disconnect = jest.fn();
     localParticipant = {
         publishTrack: jest.fn(),
-        videoTracks: [{ setPriority: jest.fn() }],
+        videoTracks: [{ setPriority: jest.fn() }]
     };
 }
 
@@ -30,8 +30,8 @@ const mockPreflightTest = new MockPreflightTest();
 const twilioVideo = {
     connect: jest.fn(() => Promise.resolve(mockRoom)),
     createLocalTracks: jest.fn(() => Promise.resolve([new MockTrack('video'), new MockTrack('audio')])),
-    testPreflight: jest.fn(() => mockPreflightTest),
+    testPreflight: jest.fn(() => mockPreflightTest)
 };
 
-export { mockRoom, mockPreflightTest };
+export { mockPreflightTest, mockRoom };
 export default twilioVideo;

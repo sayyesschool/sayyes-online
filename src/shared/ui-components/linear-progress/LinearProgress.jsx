@@ -18,4 +18,6 @@ const LinearProgress = forwardRef(({
     );
 });
 
+LinearProgress.displayName = 'LinearProgress';
+
 export default LinearProgress;

@@ -26,12 +26,12 @@ export default function PaymentsTable({ payments, onEdit, onDelete }) {
                     <Table.Cell content={payment.date} />
 
                     <Table.Cell
-                        content={payment.client &&
+                        content={payment.learner &&
                             <Pill
                                 as={Link}
-                                to={`/clients/${payment.client.id}`}
-                                image={payment.client.imageUrl}
-                                content={payment.client.fullname}
+                                to={`/learners/${payment.learner.id}`}
+                                image={payment.learner.imageUrl}
+                                content={payment.learner.fullname}
                                 appearance="inverted"
                             />
                         }

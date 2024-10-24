@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 
 import { useStore } from 'shared/hooks/store';
-import { actions as enrollmentActions } from 'shared/store/modules/enrollments';
 import { createAssignment } from 'shared/store/modules/assignments';
+import { actions as enrollmentActions } from 'shared/store/modules/enrollments';
 import { createPost } from 'shared/store/modules/posts';
 
 const actionsToBind = {
@@ -16,7 +16,7 @@ export function useEnrollments() {
         (state.enrollments && 'list' in state.enrollments) ?
             state.enrollments.list :
             state.enrollments,
-        actionsToBind
+    actionsToBind
     );
 
     useEffect(() => {
@@ -33,7 +33,7 @@ export function useEnrollment(id) {
         (state.enrollments && 'single' in state.enrollments) ?
             state.enrollments.single :
             state.enrollment,
-        actionsToBind
+    actionsToBind
     );
 
     useEffect(() => {

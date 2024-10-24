@@ -3,8 +3,8 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useUser } from 'shared/hooks/user';
 import { Button, Icon } from 'shared/ui-components';
 
-import Whiteboard from 'app/lib/Whiteboard';
-import useDataTrack from 'app/hooks/useDataTrack';
+import useDataTrack from 'class/hooks/useDataTrack';
+import Whiteboard from 'class/lib/Whiteboard';
 
 import './index.scss';
 

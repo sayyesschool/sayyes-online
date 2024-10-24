@@ -1,6 +1,6 @@
 import PageSection from 'shared/components/page-section';
 
-import EnrollmentsList from 'app/components/enrollments/enrollments-list';
+import EnrollmentsList from 'crm/components/enrollments/enrollments-list';
 
 export default function ManagerEnrollments({ manager }) {
     return (

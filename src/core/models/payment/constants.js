@@ -1,4 +1,4 @@
-const Status = {
+export const PaymentStatus = {
     pending: 'pending',
     waiting_for_capture: 'waiting_for_capture',
     succeeded: 'succeeded',
@@ -6,7 +6,7 @@ const Status = {
     refunded: 'refunded'
 };
 
-const StatusLabel = {
+export const PaymentStatusLabel = {
     pending: 'В обработке',
     waiting_for_capture: 'В ожидании',
     succeeded: 'Завершен',
@@ -14,7 +14,7 @@ const StatusLabel = {
     refunded: 'Возвращен'
 };
 
-const StatusIcon = {
+export const PaymentStatusIcon = {
     pending: 'hourglass_empty',
     waiting_for_capture: 'warning',
     succeeded: 'done',
@@ -22,7 +22,7 @@ const StatusIcon = {
     refunded: 'clear'
 };
 
-const PaymentMethod = {
+export const PaymentMethod = {
     cash: 'Наличные',
     transfer: 'Перевод',
     bank_card: 'Банковская карта',
@@ -37,16 +37,8 @@ const PaymentMethod = {
     b2b_sberbank: 'Сбербанк Бизнес Онлайн'
 };
 
-const Operator = {
+export const PaymentOperator = {
     '': '',
     yookassa: 'YooKassa',
     tochka: 'Точка'
-};
-
-module.exports = {
-    Status,
-    StatusLabel,
-    StatusIcon,
-    PaymentMethod,
-    Operator
 };

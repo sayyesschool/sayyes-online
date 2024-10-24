@@ -1,8 +1,8 @@
 import { Avatar, Text } from 'shared/ui-components';
 
-import useRoomContext from 'app/hooks/useRoomContext';
-import VideoTrack from 'app/components/VideoTrack';
-import LocalAudioLevelIndicator from 'app/components/LocalAudioLevelIndicator';
+import LocalAudioLevelIndicator from 'class/components/LocalAudioLevelIndicator';
+import VideoTrack from 'class/components/VideoTrack';
+import useRoomContext from 'class/hooks/useRoomContext';
 
 export default function LocalVideoPreview({ identity }) {
     const { localTracks } = useRoomContext();

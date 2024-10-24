@@ -14,12 +14,22 @@ export default {
         single: null
     },
 
+    exercises: {
+        list: null,
+        single: null
+    },
+
     materials: {
         list: null,
         single: null
     },
 
     posts: {
+        list: null,
+        single: null
+    },
+
+    vocabularies: {
         list: null,
         single: null
     },

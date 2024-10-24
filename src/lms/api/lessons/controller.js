@@ -1,5 +1,6 @@
-module.exports = ({
-    models: { Lesson }
+export default ({
+    models: { Lesson },
+    services: { Schedule }
 }) => ({
     async get(req, res) {
         const lessons = await Lesson.find({
@@ -28,7 +29,7 @@ module.exports = ({
     },
 
     async create(req, res) {
-        const lesson = await Lesson.create(req.body);
+        const lesson = await Schedule.scheduleLesson(req.body);
 
         lesson.room = req.room;
 
@@ -40,10 +41,19 @@ module.exports = ({
     },
 
     async update(req, res) {
-        const lesson = await Lesson.findByIdAndUpdate(req.params.lessonId, req.body, {
-            new: true,
-            select: Object.keys(req.body).join(' ')
-        });
+        let lesson;
+
+        if (req.body.date && req.body.duration) {
+            lesson = await Schedule.scheduleLesson({
+                id: req.params.lessonId,
+                ...req.body
+            });
+        } else {
+            lesson = await Lesson.findByIdAndUpdate(req.params.lessonId, req.body, {
+                new: true,
+                select: Object.keys(req.body).join(' ')
+            });
+        }
 
         res.json({
             ok: true,

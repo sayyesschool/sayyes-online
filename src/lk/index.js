@@ -1,12 +1,16 @@
-const express = require('express');
+import { resolve } from 'node:path';
 
-const api = require('./api');
+import express from 'express';
+import vhost from 'vhost';
 
-module.exports = context => {
+import api from './api';
+
+export default context => {
     const app = express();
 
+    app.set('trust proxy', true);
     app.set('view engine', 'pug');
-    app.set('views', __dirname);
+    app.set('views', resolve(context.config.APP_PATH, 'lk'));
 
     app.locals.basedir = context.config.APP_PATH;
 
@@ -14,11 +18,8 @@ module.exports = context => {
         Object.assign(app.locals, parent.locals);
     });
 
-    app.use((req, res, next) =>
-        req.user?.role === 'learner' ? next() : next('router')
-    );
     app.use('/api', api(context));
     app.use((req, res) => res.render('index'));
 
-    return app;
+    return vhost(`lk.${context.config.APP_DOMAIN}`, app);
 };

@@ -1,15 +1,15 @@
 import { useCallback, useEffect } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
-import { useExercise } from 'shared/hooks/courses';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useExercise } from 'shared/hooks/courses';
+import { useBoolean } from 'shared/hooks/state';
 import { Flex, Grid } from 'shared/ui-components';
 
-import ExerciseDescription from 'app/components/courses/exercise-description';
-import ExerciseItems from 'app/components/courses/exercise-items';
-import ExerciseNotes from 'app/components/courses/exercise-notes';
+import ExerciseDescription from 'cms/components/courses/exercise-description';
+import ExerciseItems from 'cms/components/courses/exercise-items';
+import ExerciseNotes from 'cms/components/courses/exercise-notes';
 
 export default function ExercisePage({ match, history }) {
     const { course, exercise, actions } = useExercise(match.params);

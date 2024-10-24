@@ -1,50 +1,70 @@
 import { useCallback, useState } from 'react';
 
-import { CLASS_URL } from 'shared/constants';
-import { useBoolean } from 'shared/hooks/state';
-import { useEnrollment } from 'shared/hooks/enrollments';
-import { useUser } from 'shared/hooks/user';
-import { Badge, Button, Flex, IconButton, Grid, MenuButton } from 'shared/ui-components';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { CLASS_URL } from 'shared/constants';
 import { DomainLabel } from 'shared/data/common';
+import { useEnrollment } from 'shared/hooks/enrollments';
+import { useBoolean } from 'shared/hooks/state';
+import { useUser } from 'shared/hooks/user';
+import { Badge, Button, Flex, Grid, IconButton, MenuButton } from 'shared/ui-components';
 
-import EnrollmentAssignments from 'app/components/enrollments/enrollment-assignments';
-import EnrollmentChat from 'app/components/enrollments/enrollment-chat';
-import EnrollmentCourses from 'app/components/enrollments/enrollment-courses';
-import EnrollmentDetails from 'app/components/enrollments/enrollment-details';
-import EnrollmentLessons from 'app/components/enrollments/enrollment-lessons';
-import EnrollmentLearner from 'app/components/enrollments/enrollment-learner';
-import EnrollmentManager from 'app/components/enrollments/enrollment-manager';
-import EnrollmentMaterials from 'app/components/enrollments/enrollment-materials';
-import EnrollmentSchedule from 'app/components/enrollments/enrollment-schedule';
-import EnrollmentTeacher from 'app/components/enrollments/enrollment-teacher';
+import EnrollmentAssignments from 'lms/components/enrollments/enrollment-assignments';
+import EnrollmentChat from 'lms/components/enrollments/enrollment-chat';
+import EnrollmentCourses from 'lms/components/enrollments/enrollment-courses';
+import EnrollmentDetails from 'lms/components/enrollments/enrollment-details';
+import EnrollmentLearner from 'lms/components/enrollments/enrollment-learner';
+import EnrollmentLessons from 'lms/components/enrollments/enrollment-lessons';
+import EnrollmentManager from 'lms/components/enrollments/enrollment-manager';
+import EnrollmentMaterials from 'lms/components/enrollments/enrollment-materials';
+import EnrollmentSchedule from 'lms/components/enrollments/enrollment-schedule';
+import EnrollmentTeacher from 'lms/components/enrollments/enrollment-teacher';
+import EnrollmentVocabulary from 'lms/components/enrollments/enrollment-vocabulary';
 
 export default function EnrollmentPage({ match }) {
-    const [enrollment] = useEnrollment(match.params.id);
     const [user] = useUser();
+    const [enrollment] = useEnrollment(match.params.id);
 
     const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
-    const [isDrawerOpen, toggleDrawerOpen] = useBoolean(false);
+    const [isChatOpen, toggleChatOpen] = useBoolean(false);
+    const [isVocabularyOpen, toggleVocabularyOpen] = useBoolean(false);
 
-    const handleChatJoined = useCallback(data => {
-        console.log(data);
-        setUnreadMessagesCount(data.unreadMessagesCount);
+    const openChat = useCallback(() => {
+        toggleChatOpen(true);
+        toggleVocabularyOpen(false);
+    }, [/* empty */]);
+
+    const openVocabulary = useCallback(() => {
+        toggleChatOpen(false);
+        toggleVocabularyOpen(true);
+    }, [/* empty */]);
+
+    const handleChatJoined = useCallback(() => {
+        setUnreadMessagesCount(0);
     }, []);
 
     if (!enrollment) return <LoadingIndicator fullscreen />;
 
     const isLearner = user.role === 'learner';
     const isTeacher = user.role === 'teacher';
+    const hasChat = enrollment.learner && enrollment.teacher;
 
     return (
         <Page className="EnrollmentPage">
-            <Page.Drawer open={isDrawerOpen}>
+            <Page.Drawer open={isChatOpen} onClose={toggleChatOpen}>
                 <EnrollmentChat
                     enrollment={enrollment}
                     user={user}
                     onJoined={handleChatJoined}
-                    onClose={toggleDrawerOpen}
+                    onClose={toggleChatOpen}
+                />
+            </Page.Drawer>
+
+            <Page.Drawer open={isVocabularyOpen} onClose={toggleVocabularyOpen}>
+                <EnrollmentVocabulary
+                    enrollment={enrollment}
+                    user={user}
+                    onClose={toggleVocabularyOpen}
                 />
             </Page.Drawer>
 
@@ -59,19 +79,27 @@ export default function EnrollmentPage({ match }) {
                         content="Перейти в класс"
                         variant="soft"
                     />,
-                    <Badge
-                        key="chat"
-                        badgeContent={unreadMessagesCount}
-                        showZero={false}
-                        size="sm"
-                    >
-                        <IconButton
-                            icon="chat"
-                            title="Чат"
-                            variant="soft"
-                            onClick={toggleDrawerOpen}
-                        />
-                    </Badge>,
+                    hasChat &&
+                        <Badge
+                            key="chat"
+                            badgeContent={unreadMessagesCount}
+                            showZero={false}
+                            size="sm"
+                        >
+                            <IconButton
+                                icon="chat"
+                                title="Чат"
+                                variant="soft"
+                                onClick={openChat}
+                            />
+                        </Badge>,
+                    <IconButton
+                        key="dictionary"
+                        icon="dictionary"
+                        title="Словарь"
+                        variant="soft"
+                        onClick={openVocabulary}
+                    />,
                     (enrollment.teacher?.zoomUrl &&
                         <MenuButton
                             key="menu"
@@ -98,7 +126,7 @@ export default function EnrollmentPage({ match }) {
 
             <Page.Content>
                 <Grid spacing={2}>
-                    <Grid.Item lg={8} md={8} sm={8} xs={12}>
+                    <Grid.Item sm={8} xs={12}>
                         <Flex gap="medium" column>
                             <EnrollmentLessons
                                 enrollment={enrollment}
@@ -112,7 +140,7 @@ export default function EnrollmentPage({ match }) {
                         </Flex>
                     </Grid.Item>
 
-                    <Grid.Item lg={4} md={4} sm={4} xs={12}>
+                    <Grid.Item sm={4} xs={12}>
                         <Flex gap="medium" column>
                             {(isTeacher || enrollment.courses?.length > 0) &&
                                 <EnrollmentCourses
@@ -132,7 +160,7 @@ export default function EnrollmentPage({ match }) {
                                 enrollment={enrollment}
                             />
 
-                            {isLearner &&
+                            {enrollment.teacher && isLearner &&
                                 <EnrollmentTeacher
                                     enrollment={enrollment}
                                 />
@@ -144,15 +172,17 @@ export default function EnrollmentPage({ match }) {
                                 />
                             }
 
-                            {isTeacher &&
+                            {enrollment.learner && isTeacher &&
                                 <EnrollmentLearner
                                     enrollment={enrollment}
                                 />
                             }
 
-                            <EnrollmentManager
-                                enrollment={enrollment}
-                            />
+                            {enrollment.manager &&
+                                <EnrollmentManager
+                                    enrollment={enrollment}
+                                />
+                            }
                         </Flex>
                     </Grid.Item>
                 </Grid>

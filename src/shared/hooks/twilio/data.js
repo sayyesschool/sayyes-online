@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
 import { connect, LocalDataTrack } from 'twilio-video';
 
 export function useData(token, options) {

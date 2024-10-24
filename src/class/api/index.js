@@ -1,11 +1,11 @@
-const { Router } = require('express');
+import { Router } from 'express';
 
-const assignments = require('./assignments');
-const courses = require('./courses');
-const enrollments = require('./enrollments');
-const progress = require('./progress');
+import assignments from './assignments';
+import courses from './courses';
+import enrollments from './enrollments';
+import progress from './progress';
 
-module.exports = context => {
+export default context => {
     const router = Router();
 
     router.use('/assignments', assignments(context));
@@ -15,7 +15,7 @@ module.exports = context => {
     router.use('/user*', (req, res) => res.redirect(req.originalUrl.replace('class', req.user.role)));
 
     router.use((error, req, res, next) => {
-        res.status(error.status || 500).send({
+        res.status(error.code || error.status || 500).send({
             ok: false,
             error: typeof error === 'object' ? error.message : undefined
         });

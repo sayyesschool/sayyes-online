@@ -1,5 +1,13 @@
 import DetailsList from 'shared/components/details-list';
 import PageSection from 'shared/components/page-section';
+import { TypeLabel } from 'shared/data/enrollment';
+import {
+    AgeGroupLabel,
+    FormatLabel,
+    LevelLabel,
+    PurposeLabel,
+    TeacherTypeLabel
+} from 'shared/data/common';
 
 export default function EnrollmentDetails({ enrollment }) {
     return (
@@ -12,61 +20,61 @@ export default function EnrollmentDetails({ enrollment }) {
                 items={[
                     {
                         key: 'type',
-                        media: 'people',
+                        icon: 'people',
                         header: 'Тип',
-                        content: enrollment.typeLabel
+                        content: TypeLabel[enrollment.type]
                     },
                     {
                         key: 'format',
-                        media: 'home_work',
+                        icon: 'home_work',
                         header: 'Формат',
-                        content: enrollment.formatLabel
+                        content: FormatLabel[enrollment.format]
                     },
                     {
                         key: 'age',
-                        media: 'portrait',
+                        icon: 'portrait',
                         header: 'Возрастная группа',
-                        content: enrollment.ageLabel
+                        content: AgeGroupLabel[enrollment.ageGroup]
                     },
                     {
                         key: 'teacherType',
-                        media: 'person',
+                        icon: 'person',
                         header: 'Тип преподавателя',
-                        content: enrollment.teacherTypeLabel
+                        content: TeacherTypeLabel[enrollment.teacherType]
                     },
                     {
                         key: 'lessonDuration',
-                        media: 'timelapse',
+                        icon: 'timelapse',
                         header: 'Продолжительность урока',
                         content: enrollment.lessonDuration + ' мин.'
                     },
                     {
                         key: 'level',
-                        media: 'signal_cellular_alt',
+                        icon: 'signal_cellular_alt',
                         header: 'Уровень',
-                        content: enrollment.levelLabel
+                        content: LevelLabel[enrollment.level]
                     },
                     {
                         key: 'purpose',
-                        media: 'flag',
+                        icon: 'flag',
                         header: 'Цель',
-                        content: enrollment.purposeLabel
+                        content: PurposeLabel[enrollment.purpose]
                     },
                     {
                         key: 'experience',
-                        media: 'star',
+                        icon: 'star',
                         header: 'Опыт',
                         content: enrollment.experience,
                     },
                     {
                         key: 'preferences',
-                        media: 'checklist',
+                        icon: 'checklist',
                         header: 'Предпочтения',
                         content: enrollment.preferences
                     },
                     enrollment.note && {
                         key: 'note',
-                        media: 'notes',
+                        icon: 'notes',
                         header: 'Примечание',
                         content: enrollment.note
                     }

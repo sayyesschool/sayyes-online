@@ -1,10 +1,10 @@
-const { Router } = require('express');
+import { Router } from 'express';
 
-const courses = require('./courses');
-const materials = require('./materials');
-const user = require('./user');
+import courses from './courses';
+import materials from './materials';
+import user from './user';
 
-module.exports = context => {
+export default context => {
     const router = Router();
 
     router.use('/courses', courses(context));
@@ -13,7 +13,10 @@ module.exports = context => {
 
     router.use((error, req, res, next) => {
         console.error(error);
-        res.status(error.status || 500).send({ ok: false, error: error.message || error });
+        res.status(error.code || error.status || 500).send({
+            ok: false,
+            error: error.message || error
+        });
     });
 
     return router;

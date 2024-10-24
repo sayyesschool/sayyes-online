@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
-import classnames from 'classnames';
+
+import classnames from 'shared/utils/classnames';
 
 import './index.scss';
 

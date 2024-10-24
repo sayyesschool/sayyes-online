@@ -21,7 +21,7 @@ export default function RequestDetails({ request }) {
                                     icon={<Icon>edit</Icon>}
                                 />
                             }
-                            menu={statusMenuItems}
+                            // menu={statusMenuItems}
                         />
                     }
                 />
@@ -34,7 +34,7 @@ export default function RequestDetails({ request }) {
 
                 <List.Item
                     icon="person"
-                    header={request.client.fullname}
+                    header={request.learner.fullname}
                     content="Клиент"
                     trailingIcon={
                         <Button

@@ -1,0 +1,20 @@
+@use '../common';
+
+@include common.root;
+@include common.actions;
+@include common.next-button;
+
+.content {
+    margin: auto;
+}
+
+.actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.action {
+    flex: 1;
+}

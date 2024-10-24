@@ -1,18 +1,18 @@
 import { useCallback, useEffect } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useBoolean } from 'shared/hooks/state';
 import { Flex, Grid } from 'shared/ui-components';
 
-import { useStore } from 'app/hooks/store';
-import ManagerForm from 'app/components/managers/manager-form';
-import ManagerDetails from 'app/components/managers/manager-details';
-import ManagerEnrollments from 'app/components/managers/manager-enrollments';
-import ManagerRequests from 'app/components/managers/manager-requests';
-import PasswordForm from 'app/components/shared/password-form';
+import ManagerDetails from 'crm/components/managers/manager-details';
+import ManagerEnrollments from 'crm/components/managers/manager-enrollments';
+import ManagerForm from 'crm/components/managers/manager-form';
+import ManagerRequests from 'crm/components/managers/manager-requests';
+import PasswordForm from 'crm/components/shared/password-form';
+import { useStore } from 'crm/hooks/store';
 
 export default function ManagerPage({ match, location, history }) {
     const [manager, managerActions] = useStore('managers.single');
@@ -43,7 +43,7 @@ export default function ManagerPage({ match, location, history }) {
     }, [manager]);
 
     const deleteManager = useCallback(() => {
-        return managerActions.deleteClient(manager.id)
+        return managerActions.deleteManager(manager.id)
             .then(() => history.push('/managers'));
     }, [manager]);
 

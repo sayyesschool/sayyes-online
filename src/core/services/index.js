@@ -1,12 +1,13 @@
-const Auth = require('./auth');
-const Checkout = require('./checkout');
-const Club = require('./club');
-const File = require('./file');
-const Mail = require('./mail');
-const Newsletter = require('./newsletter');
-const Storage = require('./storage');
+import Auth from './auth';
+import Checkout from './checkout';
+import Club from './club';
+import File from './file';
+import Mail from './mail';
+import Newsletter from './newsletter';
+import Schedule from './schedule';
+import Storage from './storage';
 
-module.exports = (config, lib, models) => {
+export default (config, lib, models) => {
     const mail = Mail(lib.mailjet);
     const newsletter = Newsletter(lib.mailjet);
     const auth = Auth(models, {
@@ -31,13 +32,14 @@ module.exports = (config, lib, models) => {
             templateId: 5329582,
             variables: {
                 firstname: user.firstname,
-                resetUrl: `${config.APP_URL}/reset/${user.resetPasswordToken}`
+                resetUrl: `https://auth.${config.APP_DOMAIN}/reset/${user.resetPasswordToken}`
             }
         })
     });
     const checkout = Checkout(config, models);
     const club = Club(lib.zoom, models, { mail: Mail, newsletter: Newsletter, checkout: Checkout });
     const file = File();
+    const schedule = Schedule({ models });
     const storage = new Storage({
         accessKeyId: config.YANDEX_CLOUD_ACCESS_KEY_ID,
         secretAccessKey: config.YANDEX_CLOUD_SECRET_ACCESS_KEY,
@@ -53,6 +55,7 @@ module.exports = (config, lib, models) => {
         File: file,
         Mail: mail,
         Newsletter: newsletter,
+        Schedule: schedule,
         Storage: storage
     };
 };

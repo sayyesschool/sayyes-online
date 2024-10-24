@@ -1,8 +1,9 @@
-import EventEmitter from 'events';
 import { useCallback, useEffect, useRef, useState } from 'react';
+
+import EventEmitter from 'events';
 import Video from 'twilio-video';
 
-import { isMobile } from 'app/utils';
+import { isMobile } from 'class/utils';
 
 export default function useRoom(localTracks, options, onError) {
     const optionsRef = useRef(options);
@@ -43,7 +44,6 @@ export default function useRoom(localTracks, options, onError) {
                         window.removeEventListener('pagehide', disconnect);
                     }
                 });
-
 
                 // Add a listener to disconnect from the room when a user closes their browser
                 window.addEventListener('beforeunload', disconnect);

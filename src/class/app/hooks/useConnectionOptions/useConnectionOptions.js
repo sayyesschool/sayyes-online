@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
-import useAppState from 'app/hooks/useAppState';
-import { isMobile, removeUndefineds } from 'app/utils';
+import useAppState from 'class/hooks/useAppState';
+import { isMobile, removeUndefineds } from 'class/utils';
 
 export default function useConnectionOptions() {
     const { roomType, settings } = useAppState();

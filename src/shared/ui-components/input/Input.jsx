@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyInput from '@mui/joy/Input';
+import classnames from 'classnames';
 
 const Input = forwardRef(({
     start,
@@ -28,5 +28,7 @@ const Input = forwardRef(({
         />
     );
 });
+
+Input.displayName = 'Input';
 
 export default Input;

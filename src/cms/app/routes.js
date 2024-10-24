@@ -1,6 +1,6 @@
-import Home from 'app/components/home';
-import Courses from 'app/components/courses';
-import Materials from 'app/components/materials';
+import Courses from 'cms/components/courses';
+import Home from 'cms/components/home';
+import Materials from 'cms/components/materials';
 
 export default [
     { id: 'home', title: 'Главная', path: '/', exact: true, component: Home, icon: 'dashboard' },

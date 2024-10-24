@@ -1,9 +1,9 @@
 import { Route, Switch } from 'react-router-dom';
 
-import Courses from 'app/components/courses/courses-page';
-import Course from 'app/components/courses/course-page';
-import Unit from 'app/components/courses/unit-page';
-import Lesson from 'app/components/courses/lesson-page';
+import Course from 'lms/components/courses/course-page';
+import Courses from 'lms/components/courses/courses-page';
+import Lesson from 'lms/components/courses/lesson-page';
+import Unit from 'lms/components/courses/unit-page';
 
 import './index.scss';
 

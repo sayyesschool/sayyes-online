@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 /*
  * This hook allows components to reliably use the 'mediaStreamTrack' property of
@@ -13,11 +13,11 @@ export default function useMediaStreamTrack(track) {
     useEffect(() => {
         setMediaStreamTrack(track?.mediaStreamTrack);
 
-        if (track) {
-            function handleStarted() {
-                setMediaStreamTrack(track.mediaStreamTrack);
-            }
+        function handleStarted() {
+            setMediaStreamTrack(track.mediaStreamTrack);
+        }
 
+        if (track) {
             track.on('started', handleStarted);
 
             return () => {

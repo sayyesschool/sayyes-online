@@ -23,4 +23,6 @@ const Option = forwardRef(({
     );
 });
 
+Option.displayName = 'Option';
+
 export default Option;

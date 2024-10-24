@@ -1,0 +1,19 @@
+.root {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: default;
+}
+
+.text {
+    display: flex;
+    flex: 1;
+    gap: 8px;
+}
+
+.disabled {
+    .text {
+        opacity: 0.5;
+    }
+}

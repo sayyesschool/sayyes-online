@@ -1,6 +1,6 @@
 import PageSection from 'shared/components/page-section';
 
-import LessonsList from 'app/components/lessons/lessons-list';
+import LessonsList from 'crm/components/lessons/lessons-list';
 
 export default function TeacherLessons({ teacher }) {
     return (
