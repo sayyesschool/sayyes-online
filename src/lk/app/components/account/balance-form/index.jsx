@@ -1,4 +1,5 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
+
 import {
     Checkbox,
     FormField,
@@ -21,6 +22,7 @@ export default function BalanceForm({ onSubmit, onClose, ...props }) {
     const handleSubmit = useCallback(event => {
         if (!value) {
             event.preventDefault();
+
             return;
         }
 
@@ -36,7 +38,11 @@ export default function BalanceForm({ onSubmit, onClose, ...props }) {
     }, [value]);
 
     return (
-        <form id="balance-form" method="post" action="/api/account/balance" onSubmit={handleSubmit} {...props}>
+        <form
+            id="balance-form" method="post"
+            action="/api/account/balance" onSubmit={handleSubmit}
+            {...props}
+        >
             <TextField
                 type="number"
                 name="amount"

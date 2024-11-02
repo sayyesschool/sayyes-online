@@ -7,7 +7,7 @@ const Status = {
     Denied: 'denied'
 };
 
-const Registration = new Schema({
+export const Registration = new Schema({
     userId: { type: Schema.Types.ObjectId },
     registrant: {
         email: { type: String, required: true, trim: true, lowercase: true },

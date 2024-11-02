@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import { Checkbox, Flex, Form, Input } from 'shared/components/ui';
 
@@ -20,9 +20,15 @@ export default function MeetingRegistrationForm({
     const amount = (meeting?.price - user?.balance) || undefined;
 
     return (
-        <Form id="balance-form"  onSubmit={handleSubmit} {...props}>
+        <Form
+            id="balance-form" onSubmit={handleSubmit}
+            {...props}
+        >
             {meeting &&
-                <input type="hidden" name="meetingId" defaultValue={meeting.id} />
+                <input
+                    type="hidden" name="meetingId"
+                    defaultValue={meeting.id}
+                />
             }
 
             <Flex dir="column" gap="medium">

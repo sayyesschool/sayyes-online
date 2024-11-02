@@ -22,6 +22,7 @@ const Flex = forwardRef(({
             ref={ref}
             className={classNames}
             direction={column ? 'column' : row ? 'row' : dir}
+            useFlexGap
             {...props}
         />
     );

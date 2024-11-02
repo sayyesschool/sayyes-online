@@ -1,15 +1,15 @@
 import { Route, Switch } from 'react-router-dom';
 
-import { useUser } from 'shared/hooks/user';
-import AppHeader from 'shared/components/app-header';
 import AppContent from 'shared/components/app-content';
+import AppHeader from 'shared/components/app-header';
 import AppNotification from 'shared/components/app-notification';
 import LoadingIndicator from 'shared/components/loading-indicator';
+import { useUser } from 'shared/hooks/user';
 
-import LearnerPage from 'app/components/learner/learner-page';
-import ManagerPage from 'app/components/manager/manager-page';
-import MeetingPage from 'app/components/meetings/meeting-page';
-import TeacherPage from 'app/components/teacher/teacher-page';
+import LearnerPage from 'club/components/learner/learner-page';
+import ManagerPage from 'club/components/manager/manager-page';
+import MeetingPage from 'club/components/meetings/meeting-page';
+import TeacherPage from 'club/components/teacher/teacher-page';
 
 const PageByRole = {
     learner: LearnerPage,
@@ -19,8 +19,6 @@ const PageByRole = {
 
 export default function App() {
     const [user] = useUser();
-
-    console.log(user);
 
     if (!user) return <LoadingIndicator fullscreen />;
 
@@ -34,7 +32,11 @@ export default function App() {
 
             <AppContent>
                 <Switch>
-                    <Route exact path="/" component={HomePage} />
+                    <Route
+                        path="/" component={HomePage}
+                        exact
+                    />
+
                     <Route path="/meetings/:meetingId" component={MeetingPage} />
                 </Switch>
             </AppContent>

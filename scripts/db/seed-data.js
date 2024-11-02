@@ -479,3 +479,36 @@ export const rooms = [
     { name: 'A', active: true },
     { name: 'B', active: true }
 ];
+
+export const meetings = [
+    {
+        title: 'Meeting',
+        description: 'Meeting description',
+        status: 'scheduled',
+        price: 0,
+        date: new Date('2025-01-01T10:00'),
+        duration: 60,
+        level: 'beginner',
+        capacity: 10,
+        published: true,
+        zoomId: '1234567890',
+        startUrl: 'https://zoom.us/start',
+        joinUrl: 'https://zoom.us/join',
+        materialsUrl: 'https://zoom.us/materials',
+        thumbnailUrl: 'https://picsum.photos/200',
+        notes: 'Meeting notes',
+        host: null,
+        registrations: [{
+            userId: learner.id,
+            registrant: {
+                email: learner.email,
+                firstname: learner.firstname
+            },
+            zoomId: '1234567890',
+            status: 'approved',
+            joinUrl: 'https://zoom.us/join',
+            participated: false
+        }],
+        participants: []
+    }
+];

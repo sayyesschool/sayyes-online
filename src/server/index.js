@@ -45,6 +45,7 @@ export default ({ config, db }, options) => {
     return {
         use(...args) {
             server.use(...args);
+
             return this;
         },
         start(...args) {

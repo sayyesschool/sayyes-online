@@ -15,6 +15,9 @@
             "class/*": [
                 "./src/class/app/*"
             ],
+            "club/*": [
+                "./src/club/app/*"
+            ],
             "cms/*": [
                 "./src/cms/app/*"
             ],

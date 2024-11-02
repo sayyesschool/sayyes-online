@@ -1,8 +1,8 @@
-const { Router } = require('express');
+import { Router } from 'express';
 
-const meetings = require('./meetings');
+import meetings from './meetings';
 
-module.exports = context => {
+export default context => {
     const router = Router();
 
     router.use('/meetings', meetings(context));

@@ -1,7 +1,5 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
-import { useMeeting } from 'shared/hooks/meetings';
-import { useUser } from 'shared/hooks/user';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
@@ -11,15 +9,16 @@ import {
     Card,
     Chip,
     Flex,
-    Heading,
+    Grid,
     Icon,
     Image,
-    Grid,
-    Text,
-    Surface
-} from 'shared/components/ui';
+    Text } from 'shared/components/ui';
+import { useMeeting } from 'shared/hooks/meetings';
+import { useUser } from 'shared/hooks/user';
 
-import RegistrationForm from 'app/components/meetings/meeting-registration-form';
+import RegistrationForm from 'club/components/meetings/meeting-registration-form';
+
+import styles from './MeetingPage.module.scss';
 
 export default function MeetingPage({ match }) {
     const [user] = useUser();
@@ -35,18 +34,18 @@ export default function MeetingPage({ match }) {
         } else {
             setRegisterDialogOpen(true);
         }
-    }, [meeting]);
+    }, [meeting, user.balance, actions]);
 
     const handleCancel = useCallback(() => {
         if (meeting.isRegistered || meeting.isPending) {
             setLoading(true);
             actions.unregisterFromMeeting(meeting.id).finally(() => setLoading(false));
         }
-    }, [meeting]);
+    }, [meeting, actions]);
 
     const handleSubmit = useCallback(() => {
         setRegisterDialogOpen(false).finally(() => setLoading(false));
-    }, [meeting]);
+    }, []);
 
     const handleDialogClose = useCallback(() => {
         setRegisterDialogOpen(false);
@@ -59,49 +58,42 @@ export default function MeetingPage({ match }) {
     const canUnregister = meetingStartsIn > 2;
 
     return (
-        <Page className="MeetingPage">
+        <Page className={styles.root}>
             <Page.Header
                 breadcrumbs={[
                     { to: '/', content: 'Назад' }
                 ]}
                 title={meeting.title}
             >
-                <Flex gap="small">
+                <Flex dir="column" gap="small">
                     <Text
-                        content={meeting.datetime}
+                        content={`${meeting.online ? 'Онлайн' : 'Офлайн'} · ${meeting.datetime}`}
                     />
 
-                    <Chip
-                        content={meeting.online ? 'Онлайн' : 'Офлайн'}
-                        color="primary"
-                    />
+                    <Flex gap="small">
+                        {meeting.host &&
+                            <Chip
+                                start={meeting.host.avatarUrl ?
+                                    <Avatar src={meeting.host.avatarUrl} /> :
+                                    <Icon>person</Icon>
+                                }
+                                content={meeting.host.fullname}
+                                title="Ведущий"
+                            />
+                        }
 
-                    {/* <Chip
-                            leadingIcon={<Icon>{meeting.online ? 'laptop' : 'business'}</Icon>}
-                            text={meeting.online ? 'Онлайн' : 'Офлайн'}
-                            title="Формат"
-                            outlined
-                        /> */}
-
-                    {meeting.host &&
                         <Chip
-                            start={meeting.host.avatarUrl ? <Avatar src={meeting.host.avatarUrl} /> : <Icon>person</Icon>}
-                            content={meeting.host.fullname}
-                            title="Ведущий"
+                            start={<Icon>timelapse</Icon>}
+                            content={`${meeting.duration} мин.`}
+                            title="Продолжительность"
                         />
-                    }
 
-                    <Chip
-                        start={<Icon>timelapse</Icon>}
-                        content={`${meeting.duration} мин.`}
-                        title="Продолжительность"
-                    />
-
-                    <Chip
-                        start={<Icon>star</Icon>}
-                        content={meeting.level}
-                        title="Уровень"
-                    />
+                        <Chip
+                            start={<Icon>star</Icon>}
+                            content={meeting.level}
+                            title="Уровень"
+                        />
+                    </Flex>
                 </Flex>
             </Page.Header>
 
@@ -138,32 +130,36 @@ export default function MeetingPage({ match }) {
                                     <Text type="subtitle1" display="block">Вы зарегистрированы на встречу.</Text>
 
                                     {!meeting.isEnded &&
-                                    <Button
-                                        element="a"
-                                        className="join-button"
-                                        href={meeting.joinUrl}
-                                        target="_blank"
-                                        label="Подключиться"
-                                        unelevated
-                                    />
+                                        <Button
+                                            element="a"
+                                            className="join-button"
+                                            href={meeting.joinUrl}
+                                            target="_blank"
+                                            label="Подключиться"
+                                            unelevated
+                                        />
                                     }
 
                                     {canUnregister &&
-                                    <>
-                                        <Text type="body2">Отменить участие можно за 2 часа до начала.</Text>
+                                        <>
+                                            <Text type="body2">Отменить участие можно за 2 часа до начала.</Text>
 
-                                        <Button
-                                            label="Отменить регистрацию"
-                                            disabled={isLoading}
-                                            outlined
-                                            onClick={handleCancel}
-                                        />
-                                    </>
+                                            <Button
+                                                label="Отменить регистрацию"
+                                                disabled={isLoading}
+                                                outlined
+                                                onClick={handleCancel}
+                                            />
+                                        </>
                                     }
                                 </Card.Content>
                                 :
                                 <Card.Content>
-                                    <Text type="overline" display="block" align="center">Стоимость участия</Text>
+                                    <Text
+                                        type="overline" display="block"
+                                        align="center"
+                                    >Стоимость участия</Text>
+
                                     <Text type="headline5" align="center">{meeting.price} руб.</Text>
 
                                     <Button

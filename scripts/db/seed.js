@@ -12,6 +12,7 @@ const {
         Exercise,
         Course,
         Lexeme,
+        Meeting,
         Room,
         User,
         Vocabulary,
@@ -81,6 +82,23 @@ await Vocabulary.create([
         lexemeIds: lexemes.slice(3, 10).map(l => l.id)
     }
 ]);
+
+await Meeting.create(data.meetings.map(meeting => ({
+    ...meeting,
+    host: teacher.id,
+    registrations: [{
+        userId: learner.id,
+        registrant: {
+            email: learner.email,
+            firstname: learner.firstname,
+            lastname: 'Lastname'
+        },
+        zoomId: meeting.zoomId,
+        status: 'approved',
+        joinUrl: meeting.joinUrl,
+        participated: false
+    }]
+})));
 
 console.log('DB seeded');
 

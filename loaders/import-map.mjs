@@ -7,6 +7,7 @@ const imports = {
     'core': `${ROOT_PATH}/src/core/index.js`,
     'db': `${ROOT_PATH}/src/db.js`,
     'auth': `${ROOT_PATH}/src/auth/index.js`,
+    'club': `${ROOT_PATH}/src/club/index.js`,
     'cms': `${ROOT_PATH}/src/cms/index.js`,
     'crm': `${ROOT_PATH}/src/crm/index.js`,
     'lms': `${ROOT_PATH}/src/lms/index.js`

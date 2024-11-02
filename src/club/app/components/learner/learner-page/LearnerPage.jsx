@@ -1,21 +1,21 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
-import { useMeetings } from 'shared/hooks/meetings';
-import { useUser } from 'shared/hooks/user';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import { Alert, Button, Flex, Grid, Text } from 'shared/components/ui';
+import { Alert, Button, Grid, Text } from 'shared/components/ui';
+import { useMeetings } from 'shared/hooks/meetings';
+import { useUser } from 'shared/hooks/user';
 
-import MeetingCard from 'app/components/learner/meeting-card';
-import LevelDialog from 'app/components/learner/level-dialog';
-import MeetingRegistrationForm from 'app/components/meetings/meeting-registration-form/index';
+import LevelDialog from 'club/components/learner/level-dialog';
+import MeetingCard from 'club/components/learner/meeting-card';
+import MeetingRegistrationForm from 'club/components/meetings/meeting-registration-form/index';
 
 export default function LearnerPage() {
     const [user] = useUser();
     const [meetings, actions] = useMeetings();
 
-    const [meeting, setMeeting] = useState(meeting);
+    const [meeting, setMeeting] = useState();
     const [isLevelDialogOpen, setLevelDialogOpen] = useState(false);
 
     const handleRegister = useCallback(meeting => {
@@ -63,7 +63,7 @@ export default function LearnerPage() {
                         </Text>
                     </Alert>
                 }
-                        
+
                 {registeredMeetings.length > 0 &&
                     <Page.Section title="Мои встречи">
                         <Grid spacing={2}>

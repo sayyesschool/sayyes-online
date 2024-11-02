@@ -5,8 +5,8 @@ import { Grid } from 'shared/components/ui';
 import { useMeetings } from 'shared/hooks/meetings';
 import datetime from 'shared/libs/datetime';
 
-import MeetingCard from 'app/components/teacher/meeting-card';
-import HelpDialog from 'app/components/teacher/help-dialog';
+import HelpDialog from 'club/components/teacher/help-dialog';
+import MeetingCard from 'club/components/teacher/meeting-card';
 
 export default function TeacherPage() {
     const [meetings] = useMeetings();

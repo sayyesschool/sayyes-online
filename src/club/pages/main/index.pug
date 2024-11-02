@@ -1,0 +1,204 @@
+extends /shared/layouts/base
+
+append head
+    link(rel="preconnect" href="https://fonts.googleapis.com")
+    link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=Shantell+Sans:ital,wght@1,300..400&display=swap")
+    link(rel="stylesheet" href="/css/club.css")
+
+block body
+    div.container
+        header.header
+            img.logo(src="https://static.sayes.ru/images/speaking-club/logo.svg" alt="")
+
+            nav.nav
+                a.link(href="#about") О клубе
+                a.link(href="#schedule") Расписание
+                a.link(href="#hosts") Ведущие
+                a.link(href="#testimonials") Отзывы
+                a.link(href="#faq") FAQ
+
+            button.button Войти
+
+        div.hero
+            h1.heading
+                span.yellow Разговорный клуб
+                |  по цене чашки кофе
+            p.text
+                | Практикуй английский онлайн
+                span.yellow с носителями языка
+                |  и улучшай свои разговорные навыки!
+
+            button.button Записаться
+
+        section#about.section
+            h2.heading Коротко о разговорном клубе SAY YES!
+
+            div.grid
+                div.card
+                    h3.heading Уровни
+                    p.text От Elementary до Advanced
+
+                div.card
+                    h3.heading Темы
+                    p.text Актуальные, «на злобу дня»
+
+                div.card
+                    h3.heading Ведущие
+                    p.text Русскоязычные и носители языка
+
+                div.card
+                    h3.heading Формат
+                    p.text Онлайн-встречи в Zoom
+
+        section.section
+            h2 Почему вам стоит посещать разговорные клубы?
+
+            div.grid
+                div.card
+                    h3.heading Practice makes perfect!
+                    p.text Чтобы заговорить на языке свободно, нужно много его практиковать. Разговорный клуб онлайн – легкий способ внедрить в свою жизнь английский, не выходя из дома!
+
+                div.card
+                    h3.heading 70 % встречи говорите ВЫ!
+                    p.text Благодаря ZOOM, где есть отдельные кабинеты для общения с напарником, вы будете говорить бОльшую часть времени! Попробуйте и оцените, как много вы успели обсудить на встрече!
+
+                div.card
+                    h3.heading Общение с носителями языка
+                    p.text Наш разговорный клуб — прекрасная возможность пообщаться с теми, для кого английский — родной язык. Слушая и копируя красивую речь носителей языка, вы преобразите свое произношение.
+
+                div.card
+                    h3.heading Встречи под ваш уровень знаний
+                    p.text Чтобы вам было интересно, выбирайте встречи вашего уровня, и общайтесь со всеми без стеснения!
+
+                div.card
+                    h3.heading Самые харизматичные ведущие EVER!
+                    p.text Обещаем, наши ведущие будут самыми позитивными и профессиональными, что вы встречали в мире онлайн клубов! Приходите на первую встречу, и вы захотите еще и еще! ;)
+
+                div.card
+                    h3.heading Пополнение словарного запаса
+                    p.text Для каждой встречи преподаватель готовит список новых полезных выражений для обсуждении применения в диалогах. Также вы получаете этот список с заданиями на закрепление дома.
+
+        section.section
+            h2.heading Как проходит встреча разговорного клуба в SAY YES?
+
+            div.grid
+                div.card
+                    span Шаг 1
+                    h3.heading Регистрация
+                    p.text Выбирайте встречу вашего уровня и оплачивайте участие. Данные для входа вам придут на почту.
+
+                div.card
+                    span Шаг 2
+                    h3.heading Подготовка
+                    p.text Чтобы встреча прошла еще эффективнее, мы пришлем вам на почту материалы для ознакомления.
+
+                div.card
+                    span Шаг 3
+                    h3.heading Знакомство
+                    p.text Выходите в онлайн в установленное время, по ссылке в письме.
+
+                div.card
+                    span Шаг 4
+                    h3.heading Общение
+                    p.text Благодаря «кабинетам» в ZOOM вы будете много общаться и получите много практики языка.
+
+        section.section
+            h2.heading Ближайшие встречи
+            p.text Не упустите возможность попрактиковать свой английский в кругу единомышленников — записывайтесь на ближайшую встречу прямо сейчас!
+
+            div.slider
+                div.card.meeting-card
+                    h3 12.12.2020
+                    p Elementary
+                    a(href="/club/event") Подробнее
+
+                div.card.meeting-card
+                    h3 15.12.2020
+                    p Intermediate
+                    a(href="/club/event") Подробнее
+
+                div.card.meeting-card
+                    h3 18.12.2020
+                    p Advanced
+                    a(href="/club/event") Подробнее
+
+        section.section
+            h2.heading Разговорный клуб проводят ТОП преподаватели SAY YES!
+
+            div.text
+                p Ведущие нашего онлайн клуба — самые опытные и харизматичные преподаватели SAY YES! и носители языка из Англии и США.
+                p Наши ведущие прошли обучение формату ведения уроков онлайн и могут разговорить любого, даже самого интровертного участника.
+
+        section.section
+            h2 Посмотрите, как проходят встречи нашего разговорного клуба
+
+            div.video
+
+        section.section
+            h2 Отзывы участников
+
+            p Мы готовы вкладываться в ваше развитие, но базовый опыт и знания необходимы уже со старта работы у нас в школе.
+
+            div.slider
+                div.card.testimonial-card
+                    p Все очень понравилось! Очень интересные темы, хорошие ведущие, удобное время проведения встреч. Спасибо!
+                    p Ирина, 25 лет
+
+                div.card.testimonial-card
+                    p Очень понравилось общение с носителями языка. Язык стал звучать более правильно и плавно. Спасибо!
+                    p Алексей, 30 лет
+
+                div.card.testimonial-card
+                    p Очень понравилось общение с носителями языка. Язык стал звучать более правильно и плавно. Спасибо!
+                    p Алексей, 30 лет
+
+        section.section
+            h2 Часто задаваемые вопросы
+
+            div.tabs
+
+            div.accordion
+                div.card.accordion-card
+                    h3 Как часто проходят встречи?
+                    p Встречи проходят 2 раза в неделю по 1,5 часа.
+
+                div.card.accordion-card
+                    h3 Какие уровни встреч есть?
+                    p Встречи проходят на уровнях Elementary, Intermediate, Advanced.
+
+                div.card.accordion-card
+                    h3 Какие темы обсуждаются?
+                    p Темы обсуждаются актуальные, «на злобу дня».
+
+                div.card.accordion-card
+                    h3 Как проходит оплата?
+                    p Оплата проходит через платежные системы.
+
+                div.card.accordion-card
+                    h3 Какие у вас ведущие?
+                    p Ведущие нашего онлайн клуба — самые опытные и харизматичные преподаватели SAY YES! и носители языка из Англии и США.
+
+                div.card.accordion-card
+                    h3 Как проходит встреча?
+                    p Встреча проходит в онлайн-формате в ZOOM.
+            
+            p Не нашли ответ на свой вопрос? Напишите нам на почту, и мы ответим вам в течение 24 часов!
+
+            button Задать вопрос
+
+        section.section
+            h2 Мероприятия клуба
+            p Подпишитесь на рассылку и первым узнавайте о предстоящих мероприятиях разговорного клуба!
+
+            form
+                input(type="text" placeholder="Ваше имя")
+                input(type="email" placeholder="Ваш email")
+                input(type="tel" placeholder="Ваш телефон")
+                select
+                    option(value="elementary") Elementary
+                    option(value="intermediate") Intermediate
+                    option(value="advanced") Advanced
+                button Записаться
+
+        footer.footer
+            p © 2020 SAY YES! Все права защищены

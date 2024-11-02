@@ -19,7 +19,7 @@ const Status = {
     Canceled: 'canceled'
 };
 
-const Meeting = new Schema({
+export const Meeting = new Schema({
     title: { type: String, required: true, trim: true },
     description: { type: String, trim: true },
     status: { type: String, enum: Object.values(Status), default: Status.Scheduled },

@@ -7,7 +7,6 @@ export default function MeetingCard({ meeting }) {
     return (
         <Card>
             {meetingTime} (Moscow)
-
             {meeting.registrations.length} registrants
 
             <Button

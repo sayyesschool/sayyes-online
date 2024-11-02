@@ -16,6 +16,7 @@ export default {
     outdir: 'public',
     entryPoints: [
         { in: './src/class/app/index.js', out: 'class' },
+        { in: './src/club/app/index.js', out: 'club' },
         { in: './src/cms/app/index.js', out: 'cms' },
         { in: './src/crm/app/index.js', out: 'crm' },
         { in: './src/front/index.js', out: 'front' },
@@ -30,6 +31,7 @@ export default {
         'env.API_URL': JSON.stringify(`//api.${APP_DOMAIN}`),
         'env.AUTH_URL': JSON.stringify(`//auth.${APP_DOMAIN}`),
         'env.CLASS_URL': JSON.stringify(`//class.${APP_DOMAIN}`),
+        'env.CLUB_URL': JSON.stringify(`//club.${APP_DOMAIN}`),
         'env.CMS_URL': JSON.stringify(`//cms.${APP_DOMAIN}`),
         'env.CRM_URL': JSON.stringify(`//crm.${APP_DOMAIN}`),
         'env.GOOGLE_ANALYTICS_ID': JSON.stringify(GOOGLE_ANALYTICS_ID || ''),

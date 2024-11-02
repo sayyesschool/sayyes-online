@@ -1,15 +1,16 @@
-const express = require('express');
-const vhost = require('vhost');
+import { resolve } from 'node:path';
 
-const api = require('./api');
+import express from 'express';
+import vhost from 'vhost';
 
-const ALLOWED_ROLES = ['learner', 'teacher'];
+import api from './api';
+import pages from './pages';
 
-module.exports = context => {
+export default context => {
     const app = express();
 
     app.set('view engine', 'pug');
-    app.set('views', __dirname);
+    app.set('views', resolve(context.config.APP_PATH, 'club'));
 
     app.locals.basedir = context.config.APP_PATH;
 
@@ -17,24 +18,12 @@ module.exports = context => {
         Object.assign(app.locals, parent.locals);
     });
 
-    // app.use((req, res, next) => {
-    //     ALLOWED_ROLES.includes(req.user?.role) ? next() : next('router');
-    // });
+    app.use(pages(context));
     app.use('/api', api(context));
-    app.use((req, res, next) => {
-        const twilio = context.libs.twilio;
-        const options = {
-            identity: req.user.id,
-            friendlyName: req.user.fullname,
-            room: req.params.id
-        };
-
-        res.locals.TWILIO_CHAT_TOKEN = twilio.generateChatToken(options);
-
-        next();
-    }, (req, res) => {
-        res.render('index');
-    });
+    app.use(
+        context.middleware.auth.authorize,
+        (req, res) => res.render('app')
+    );
 
     return vhost(`club.${context.config.APP_DOMAIN}`, app);
 };
