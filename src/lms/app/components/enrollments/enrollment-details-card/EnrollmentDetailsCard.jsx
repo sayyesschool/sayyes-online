@@ -29,7 +29,7 @@ export default function EnrollmentDetailsCard({
             {...props}
         >
             <Surface
-                className="EnrollmentDetailsCard__main-section"
+                className="EnrollmentDetailsCard__main-section EnrollmentDetailsCard__item"
                 color="primary"
                 variant="soft"
             >
@@ -55,7 +55,7 @@ export default function EnrollmentDetailsCard({
             </Surface>
 
             <Surface
-                className="EnrollmentDetailsCard__person-section"
+                className="EnrollmentDetailsCard__person-section EnrollmentDetailsCard__item"
                 color="neutral"
                 variant="plain"
             >
@@ -80,9 +80,9 @@ export default function EnrollmentDetailsCard({
                 </Flex>
             </Surface>
 
-            <Divider orientation="vertical" />
+            <Divider orientation="vertical" className="EnrollmentDetailsCard__divider" />
 
-            <Surface className="EnrollmentDetailsCard__schedule-section">
+            <Surface className="EnrollmentDetailsCard__schedule-section EnrollmentDetailsCard__item">
                 <Heading
                     as="h3"
                     content="Расписание"
@@ -120,7 +120,7 @@ export default function EnrollmentDetailsCard({
             </Surface>
 
             <Surface
-                className="EnrollmentDetailsCard__payment-section"
+                className="EnrollmentDetailsCard__payment-section EnrollmentDetailsCard__item"
                 color="primary"
                 variant="solid"
             >

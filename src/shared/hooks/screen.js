@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 
 import { useMounted, useUpdated } from 'shared/hooks/lifecycle';
 import { useBoolean } from 'shared/hooks/state';
+
+export { useMediaQuery };
 
 export function useScreenSize() {
     const [screenSize, setScreenSize] = useState();

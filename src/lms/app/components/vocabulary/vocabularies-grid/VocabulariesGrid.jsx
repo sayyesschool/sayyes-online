@@ -14,7 +14,7 @@ export default function VocabulariesGrid({
             {vocabularies.map(vocabulary =>
                 <Grid.Item
                     key={vocabulary.id}
-                    xs={3}
+                    className={styles.item}
                 >
                     <VocabularyCard
                         vocabulary={vocabulary}

@@ -59,4 +59,24 @@
             line-height: 42px;
         }
     }
+
+    @media #{variables.$new-lg} {
+        flex-wrap: wrap;
+
+        &__divider {
+            display: none;
+        }
+
+        &__item {
+            width: 50%;
+            min-height: 250px;
+        }
+    }
+
+    @media #{variables.$new-sm} {
+        &__item {
+            width: 100%;
+            min-height: 150px;
+        }
+    }
 }

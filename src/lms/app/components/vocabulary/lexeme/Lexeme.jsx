@@ -22,7 +22,7 @@ export default function LexemeView({
     return (
         <div className={styles.root}>
             <section className={styles.content}>
-                {image &&
+                {image.url &&
                     <Image
                         className={styles.image}
                         src={image.url}

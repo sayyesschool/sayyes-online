@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 
 import FormDialog from 'shared/components/form-dialog';
+import { useMediaQuery } from 'shared/hooks/screen';
 import { useVocabularyActions } from 'shared/hooks/vocabularies';
 import { Dialog, PopoverButton } from 'shared/ui-components';
 
@@ -33,6 +34,8 @@ export default function VocabularyLexemes({
     const [filter, setFilter] = useState('all');
     const [showViewModal, setShowViewModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
+    const isMobile = useMediaQuery({ query: '(max-width: 540px)' });
+    const popoverButtonText = isMobile ? undefined : 'Добавить слово';
 
     const vocabularyId = vocabulary?.id;
     const isTeacher = user.role === 'teacher';
@@ -118,9 +121,10 @@ export default function VocabularyLexemes({
                     <PopoverButton
                         key={vocabulary.numberOfLexemes}
                         icon="add"
-                        content={inline ? undefined : 'Добавить слово'}
+                        content={inline ? undefined : popoverButtonText}
                         color="primary"
                         variant="solid"
+                        className={styles.addBtn}
                     >
                         <LexemeSimpleForm
                             numberOfLexemes={vocabulary.numberOfLexemes}

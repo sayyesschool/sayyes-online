@@ -1,10 +1,12 @@
+
 import { Link } from 'react-router-dom';
 
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useMediaQuery } from 'shared/hooks/screen';
 import { useUser } from 'shared/hooks/user';
 import { useVocabulary } from 'shared/hooks/vocabularies';
-import { Button, Menu } from 'shared/ui-components';
+import { Button, IconButton, Menu } from 'shared/ui-components';
 import { getWordEnding } from 'shared/utils/format';
 
 import VocabularyLexemes from 'lms/components/vocabulary/vocabulary-lexemes';
@@ -14,6 +16,7 @@ import styles from './VocabularyPage.module.scss';
 export default function VocabularyPage({ match }) {
     const [user] = useUser();
     const [vocabulary] = useVocabulary(match.params.vocabulary);
+    const isMobile = useMediaQuery({ query: '(max-width: 540px)' });
 
     if (!vocabulary) return <LoadingIndicator />;
 
@@ -34,12 +37,15 @@ export default function VocabularyPage({ match }) {
                     <Menu
                         key="menu"
                         trigger={
-                            <Button
-                                icon="exercise"
-                                color="primary"
-                                content="Тренировка"
-                                variant="soft"
-                            />
+                            isMobile ? (
+                                <IconButton icon="exercise" variant="outlined" />
+                            ) : (
+                                <Button
+                                    icon="exercise"
+                                    color="primary"
+                                    content="Тренировка"
+                                    variant="soft"
+                                />)
                         }
                         disabled={numberOfLexemes === 0}
                         items={[

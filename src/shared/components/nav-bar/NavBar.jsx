@@ -48,7 +48,7 @@ export default function NavBar({
                                 />
                             }
 
-                            <span className="NavBarItem__text">{item.text}</span>
+                            <span className={styles.text}>{item.text}</span>
                         </Tab>
                     )}
                 </TabList>

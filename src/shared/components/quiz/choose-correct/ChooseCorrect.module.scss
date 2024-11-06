@@ -58,3 +58,22 @@
         right: 0;
     }
 }
+
+
+@media #{variables.$new-sm} {
+    .content {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .value,
+    .item {
+        position: static;
+    }
+
+    .value {
+        transform: none;
+        margin-bottom: auto;
+    }
+}
