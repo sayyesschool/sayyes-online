@@ -49,6 +49,7 @@
     "express-session": "^1.17.2",
     "form-data": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
+    "jstransformer-scss": "^2.0.0",
     "linkify-it": "^4.0.1",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",

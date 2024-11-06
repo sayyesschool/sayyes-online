@@ -1,204 +1,655 @@
 extends /shared/layouts/base
 
+include ../shared/modal
+
 append head
     link(rel="preconnect" href="https://fonts.googleapis.com")
     link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=Shantell+Sans:ital,wght@1,300..400&display=swap")
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/css/intlTelInput.css")
+    link(rel="stylesheet" href="https://static.sayes.ru/css/shared.css")
     link(rel="stylesheet" href="/css/club.css")
 
 block body
-    div.container
-        header.header
-            img.logo(src="https://static.sayes.ru/images/speaking-club/logo.svg" alt="")
+    header.header
+        div.header__main
+            div.header__container
+                img.header__logo.logo(src="https://static.sayes.ru/images/speaking-club/logo.svg" alt="")
 
-            nav.nav
-                a.link(href="#about") О клубе
-                a.link(href="#schedule") Расписание
-                a.link(href="#hosts") Ведущие
-                a.link(href="#testimonials") Отзывы
-                a.link(href="#faq") FAQ
+                div.header__buttons
+                    button.btn.btn--sm.btn--transparent.btn--uppercase(href="#about") О клубе
+                    button.btn.btn--sm.btn--transparent.btn--uppercase(href="#schedule") Расписание
+                    button.btn.btn--sm.btn--transparent.btn--uppercase(href="#hosts") Ведущие
+                    button.btn.btn--sm.btn--transparent.btn--uppercase(href="#testimonials") Отзывы
+                    button.btn.btn--sm.btn--transparent.btn--uppercase(href="#faq") FAQ
 
-            button.button Войти
+                div.header__menu
+                    button.btn.btn--sm.btn--transparent.btn--uppercase Войти
 
+    main.main
         div.hero
-            h1.heading
-                span.yellow Разговорный клуб
-                |  по цене чашки кофе
-            p.text
-                | Практикуй английский онлайн
-                span.yellow с носителями языка
-                |  и улучшай свои разговорные навыки!
+            div.hero__content
+                h1.hero__title
+                    span.yellow Разговорный клуб
+                    |  по цене чашки кофе
+                p.hero__description
+                    | Практикуй английский онлайн
+                    span.yellow  с носителями языка
+                    |  и улучшай свои разговорные навыки!
 
-            button.button Записаться
+                button.btn.btn--yellow Записаться
+
+            div.hero__image
+                img.image(src="https://static.sayes.ru/images/speaking-club/hero-image.png" alt="")
 
         section#about.section
-            h2.heading Коротко о разговорном клубе SAY YES!
+            div.section__container
+                div.section__header
+                    h2.section__title Коротко о разговорном клубе SAY YES!
 
-            div.grid
-                div.card
-                    h3.heading Уровни
-                    p.text От Elementary до Advanced
+                div.section__content
+                    div.grid.grid-4-lg.grid-2-sm
+                        -
+                            const features = [
+                                { title: 'Уровни', description: 'От Elementary до Advanced', icon: 'levels' },
+                                { title: 'Темы', description: 'Актуальные, «на злобу дня»', icon: 'fire' },
+                                { title: 'Ведущие', description: 'Русскоязычные и носители языка', icon: 'webcam-2' },
+                                { title: 'Формат', description: 'Онлайн-встречи в Zoom', icon: 'format' }]
+                        
+                        for item in features
+                            div.text-card.card.card--yellow.card--sm(class=`text-card--${item.icon}-bg`)
+                                h3.card__title= item.title
+                                p.card__description= item.description
 
-                div.card
-                    h3.heading Темы
-                    p.text Актуальные, «на злобу дня»
+        section.section.section--purple.section--padded
+            div.section__container
+                div.section__header
+                    h2.section__title Почему вам стоит посещать разговорные клубы?
 
-                div.card
-                    h3.heading Ведущие
-                    p.text Русскоязычные и носители языка
+                div.section__content
+                    div.grid.grid.grid-2-sm.grid-3-lg
+                        -
+                            const reasons = [
+                                { title: 'Practice makes perfect!', description: 'Чтобы заговорить на языке свободно, нужно много его практиковать. Разговорный клуб онлайн – легкий способ внедрить в свою жизнь английский, не выходя из дома!' },
+                                { title: '70 % встречи говорите ВЫ!', description: 'Благодаря ZOOM, где есть отдельные кабинеты для общения с напарником, вы будете говорить бОльшую часть времени! Попробуйте и оцените, как много вы успели обсудить на встрече!' },
+                                { title: 'Общение с носителями языка', description: 'Наш разговорный клуб — прекрасная возможность пообщаться с теми, для кого английский — родной язык. Слушая и копируя красивую речь носителей языка, вы преобразите свое произношение.' },
+                                { title: 'Встречи под ваш уровень знаний', description: 'Чтобы вам было интересно, выбирайте встречи вашего уровня, и общайтесь со всеми без стеснения!' },
+                                { title: 'Самые харизматичные ведущие EVER!', description: 'Обещаем, наши ведущие будут самыми позитивными и профессиональными, что вы встречали в мире онлайн клубов! Приходите на первую встречу, и вы захотите еще и еще! ;)' },
+                                { title: 'Пополнение словарного запаса', description: 'Для каждой встречи преподаватель готовит список новых полезных выражений для обсуждении применения в диалогах. Также вы получаете этот список с заданиями на закрепление дома.' }]
+                        
+                        for item in reasons
+                            div.text-card.card.card--sm
+                                h3.card__title= item.title
+                                p.card__description= item.description
 
-                div.card
-                    h3.heading Формат
-                    p.text Онлайн-встречи в Zoom
+        section.section.section--horizontal
+            div.section__container
+                div.section__header
+                    h2.section__title Как проходит встреча разговорного клуба в SAY YES?
+
+                div.section__content
+                    div.grid.grid-2-sm
+                        -
+                            const steps = [
+                                { title: 'Регистрация', description: 'Выбирайте встречу вашего уровня и оплачивайте участие. Данные для входа вам придут на почту.' },
+                                { title: 'Подготовка', description: 'Чтобы встреча прошла еще эффективнее, мы пришлем вам на почту материалы для ознакомления.' },
+                                { title: 'Знакомство', description: 'Выходите в онлайн в установленное время, по ссылке в письме.' },
+                                { title: 'Общение', description: 'Благодаря «кабинетам» в ZOOM вы будете много общаться и получите много практики языка.' }]
+
+                        for step, i in steps
+                            div.text-card.card
+                                span.card__subtitle Шаг #{i + 1}
+                                h3.card__title= step.title
+                                p.card__description= step.description
+
+        section.section.section--yellow.section--padded
+            div.section__container
+                div.section__header
+                    h2.section__title Ближайшие встречи
+                    p.section__description Не упустите возможность попрактиковать свой английский в кругу единомышленников — записывайтесь на ближайшую встречу прямо сейчас!
+
+                div.section__content
+                    div.meetings-slider.slider
+                        div.slider__arrows
+                            button.slider__left-arrow(type="button")
+                            button.slider__right-arrow(type="button")
+                        
+                        div.swiper-wrapper.slider__wrapper
+                            div.swiper-slide
+                                div.card.meeting-card
+                                    div.card__media
+                                        img(src="https://static.sayes.ru/images/speaking-club/meeting-1.jpg" alt="")
+                                    
+                                    div.card__header
+                                        p.card__subtitle 28 мая в 15:00 МСК
+                                        h3.card__title Friends: a legendary sitcom.
+                                    
+                                    div.card__body
+                                        ul.list
+                                            li.list-item
+                                                span.list-item__content Анастасия Стецюк
+                                            li.list-item
+                                                span.list-item__content 90 минут
+                                    
+                                    div.card__footer
+                                        button.btn.btn--full Подробнее
+                        
+                        div.slider__pagination
+
+        section.section.section--horizontal
+            div.section__container
+                div.section__header
+                    h2.section__title Разговорный клуб проводят ТОП преподаватели SAY YES!
+
+                    div.section__description
+                        p Ведущие нашего онлайн клуба — самые опытные и харизматичные преподаватели SAY YES! и носители языка из Англии и США.
+                        p Наши ведущие прошли обучение формату ведения уроков онлайн и могут разговорить любого, даже самого интровертного участника.
+
+                div.section__media
+                    img(src="https://static.sayes.ru/images/speaking-club/hosts.jpg" alt="" width="360" height="480")
+
+        section.video-section.section.section--horizontal.section--white
+            div.section__container
+                div.section__header
+                    h2.section__title Посмотрите, как проходят встречи нашего разговорного клуба
+
+                div.section__media
+                    div.video.video--modal.video--framed
+                        div.video__media
+                            img(src="https://sayes.ru/wp-content/themes/sayyes/static/images/thumbnails/video-section-1.jpg" alt="")
+        
+                        button.video__btn(
+                            type="button"
+                            data-modal-trigger="video-modal"
+                            data-embed-url="https://www.youtube.com/embed/f3cBgWC2ljM"
+                        )
 
         section.section
-            h2 Почему вам стоит посещать разговорные клубы?
+            div.section__container
+                div.section__header
+                    h2.section__title Title
+                    p.section__description Description
 
-            div.grid
-                div.card
-                    h3.heading Practice makes perfect!
-                    p.text Чтобы заговорить на языке свободно, нужно много его практиковать. Разговорный клуб онлайн – легкий способ внедрить в свою жизнь английский, не выходя из дома!
+                div.section__content
+                    div.grid.grid-2
+                        div.text-card.card.card--yellow
 
-                div.card
-                    h3.heading 70 % встречи говорите ВЫ!
-                    p.text Благодаря ZOOM, где есть отдельные кабинеты для общения с напарником, вы будете говорить бОльшую часть времени! Попробуйте и оцените, как много вы успели обсудить на встрече!
+                        div.flex.flex-column.gap-m
+                            div.text-card.card.card--sm
+                                h3.card__title 4 занятия
+                                p.card__description 1,5 часа каждое
+                                button.btn Записаться
 
-                div.card
-                    h3.heading Общение с носителями языка
-                    p.text Наш разговорный клуб — прекрасная возможность пообщаться с теми, для кого английский — родной язык. Слушая и копируя красивую речь носителей языка, вы преобразите свое произношение.
+                            div.text-card.card.card--sm
+                                h3.card__title 8 занятий
+                                p.card__description 1,5 часа каждое
+                                button.btn Записаться
 
-                div.card
-                    h3.heading Встречи под ваш уровень знаний
-                    p.text Чтобы вам было интересно, выбирайте встречи вашего уровня, и общайтесь со всеми без стеснения!
-
-                div.card
-                    h3.heading Самые харизматичные ведущие EVER!
-                    p.text Обещаем, наши ведущие будут самыми позитивными и профессиональными, что вы встречали в мире онлайн клубов! Приходите на первую встречу, и вы захотите еще и еще! ;)
-
-                div.card
-                    h3.heading Пополнение словарного запаса
-                    p.text Для каждой встречи преподаватель готовит список новых полезных выражений для обсуждении применения в диалогах. Также вы получаете этот список с заданиями на закрепление дома.
+                            div.text-card.card.card--sm
+                                h3.card__title 16 занятий
+                                p.card__description 1,5 часа каждое
+                                button.btn Записаться
 
         section.section
-            h2.heading Как проходит встреча разговорного клуба в SAY YES?
+            div.section__container
+                div.section__header
+                    h2.section__title Отзывы участников
 
-            div.grid
-                div.card
-                    span Шаг 1
-                    h3.heading Регистрация
-                    p.text Выбирайте встречу вашего уровня и оплачивайте участие. Данные для входа вам придут на почту.
+                    p.section__description Мы готовы вкладываться в ваше развитие, но базовый опыт и знания необходимы уже со старта работы у нас в школе.
 
-                div.card
-                    span Шаг 2
-                    h3.heading Подготовка
-                    p.text Чтобы встреча прошла еще эффективнее, мы пришлем вам на почту материалы для ознакомления.
+                div.section__content
+                    div.testimonials-slider.slider
+                        div.slider__arrows
+                            button.slider__left-arrow(type="button")
+                            button.slider__right-arrow(type="button")
+                        
+                        div.swiper-wrapper.slider__wrapper
+                            -
+                                const testimonials = [
+                                    { name: 'Ирина', text: 'Я давно искала подходящий разговорный клуб, и вот наконец нашла! Спасибо SAY YES! за такую возможность практиковать английский с носителями языка!' },
+                                    { name: 'Алексей', text: 'Спасибо за встречу! Очень понравилось общение и новые знания. Жду следующей встречи!' },
+                                    { name: 'Елена', text: 'Спасибо за встречу! Очень понравилось общение и новые знания. Жду следующей встречи!' }]
+                            
+                            for testimonial in testimonials
+                                div.swiper-slide
+                                    div.testimonial-card.card
+                                        div.text= testimonial.text
+                                        p.text.bold Ирина
 
-                div.card
-                    span Шаг 3
-                    h3.heading Знакомство
-                    p.text Выходите в онлайн в установленное время, по ссылке в письме.
-
-                div.card
-                    span Шаг 4
-                    h3.heading Общение
-                    p.text Благодаря «кабинетам» в ZOOM вы будете много общаться и получите много практики языка.
-
-        section.section
-            h2.heading Ближайшие встречи
-            p.text Не упустите возможность попрактиковать свой английский в кругу единомышленников — записывайтесь на ближайшую встречу прямо сейчас!
-
-            div.slider
-                div.card.meeting-card
-                    h3 12.12.2020
-                    p Elementary
-                    a(href="/club/event") Подробнее
-
-                div.card.meeting-card
-                    h3 15.12.2020
-                    p Intermediate
-                    a(href="/club/event") Подробнее
-
-                div.card.meeting-card
-                    h3 18.12.2020
-                    p Advanced
-                    a(href="/club/event") Подробнее
+                        div.slider__pagination
 
         section.section
-            h2.heading Разговорный клуб проводят ТОП преподаватели SAY YES!
+            div.section__container
+                div.section__header
+                    h2.section__title Часто задаваемые вопросы
 
-            div.text
-                p Ведущие нашего онлайн клуба — самые опытные и харизматичные преподаватели SAY YES! и носители языка из Англии и США.
-                p Наши ведущие прошли обучение формату ведения уроков онлайн и могут разговорить любого, даже самого интровертного участника.
+                div.section__content
+                    div.tabs.tabs--pills.tabs--purple
+                        div.tabs__nav
+                            -
+                                const tabs = [
+                                    { content: 'О встречах', value: 'meetings' },
+                                    { content: 'Об оплатах', value: 'payments' },
+                                    { content: 'О технических проблемах', values: 'issues' }]
 
-        section.section
-            h2 Посмотрите, как проходят встречи нашего разговорного клуба
+                            for tab, i in tabs
+                                button.tab(
+                                    class=`${i === 0 ? 'tab--active' : ''}`
+                                    type="button"
+                                    value=tab.value
+                                    data-tab-target=tab.value
+                                )= tab.content
 
-            div.video
+                        div.tabs__content
+                            div.accordion(data-tab-panel="meetings")
+                                -
+                                    const faqs = [
+                                        { title: 'Как часто проходят встречи?', content: 'Встречи проходят 2 раза в неделю по 1,5 часа.' },
+                                        { title: 'Какие уровни встреч есть?', content: 'Встречи проходят на уровнях Elementary, Intermediate, Advanced.' },
+                                        { title: 'Какие темы обсуждаются?', content: 'Темы обсуждаются актуальные, «на злобу дня».' },
+                                        { title: 'Как проходит оплата?', content: 'Оплата проходит через платежные системы.' },
+                                        { title: 'Какие у вас ведущие?', content: 'Ведущие нашего онлайн клуба — самые опытные и харизматичные преподаватели SAY YES! и носители языка из Англии и США.' },
+                                        { title: 'Как проходит встреча?', content: 'Встреча проходит в онлайн-формате в ZOOM.' }]
 
-        section.section
-            h2 Отзывы участников
-
-            p Мы готовы вкладываться в ваше развитие, но базовый опыт и знания необходимы уже со старта работы у нас в школе.
-
-            div.slider
-                div.card.testimonial-card
-                    p Все очень понравилось! Очень интересные темы, хорошие ведущие, удобное время проведения встреч. Спасибо!
-                    p Ирина, 25 лет
-
-                div.card.testimonial-card
-                    p Очень понравилось общение с носителями языка. Язык стал звучать более правильно и плавно. Спасибо!
-                    p Алексей, 30 лет
-
-                div.card.testimonial-card
-                    p Очень понравилось общение с носителями языка. Язык стал звучать более правильно и плавно. Спасибо!
-                    p Алексей, 30 лет
-
-        section.section
-            h2 Часто задаваемые вопросы
-
-            div.tabs
-
-            div.accordion
-                div.card.accordion-card
-                    h3 Как часто проходят встречи?
-                    p Встречи проходят 2 раза в неделю по 1,5 часа.
-
-                div.card.accordion-card
-                    h3 Какие уровни встреч есть?
-                    p Встречи проходят на уровнях Elementary, Intermediate, Advanced.
-
-                div.card.accordion-card
-                    h3 Какие темы обсуждаются?
-                    p Темы обсуждаются актуальные, «на злобу дня».
-
-                div.card.accordion-card
-                    h3 Как проходит оплата?
-                    p Оплата проходит через платежные системы.
-
-                div.card.accordion-card
-                    h3 Какие у вас ведущие?
-                    p Ведущие нашего онлайн клуба — самые опытные и харизматичные преподаватели SAY YES! и носители языка из Англии и США.
-
-                div.card.accordion-card
-                    h3 Как проходит встреча?
-                    p Встреча проходит в онлайн-формате в ZOOM.
+                                for faq in faqs
+                                    div.accordion-item
+                                        h3.accordion-item__title= faq.title
+                                        p.accordion-item__content= faq.content
             
-            p Не нашли ответ на свой вопрос? Напишите нам на почту, и мы ответим вам в течение 24 часов!
+            p.text Не нашли ответ на свой вопрос? Напишите нам на почту, и мы ответим вам в течение 24 часов!
 
-            button Задать вопрос
+            button.btn.btn--purple Задать вопрос
 
-        section.section
-            h2 Мероприятия клуба
-            p Подпишитесь на рассылку и первым узнавайте о предстоящих мероприятиях разговорного клуба!
+        section.section.section--yellow.section--horizontal
+            div.section__container
+                div.section__header
+                    h2.section__title Мероприятия клуба
 
-            form
-                input(type="text" placeholder="Ваше имя")
-                input(type="email" placeholder="Ваш email")
-                input(type="tel" placeholder="Ваш телефон")
-                select
-                    option(value="elementary") Elementary
-                    option(value="intermediate") Intermediate
-                    option(value="advanced") Advanced
-                button Записаться
+                    p.section__description Подпишитесь на рассылку и первым узнавайте о предстоящих мероприятиях разговорного клуба!
 
-        footer.footer
-            p © 2020 SAY YES! Все права защищены
+                div.section__content
+                    form.form
+                        input.input(type="text" placeholder="Ваше имя")
+                        input.input(type="email" placeholder="Ваш email")
+                        button.btn.btn--full Записаться
+                        small.text.text--small
+                            | Нажимая «Записаться», я принимаю
+                            a.link.link--underlined(href="/agreement") Пользовательское соглашение
+                            |  и даю согласие на обработку своих персональных данных на условиях
+                            a.link.link--underlined(href="/policy") Политики конфиденциальности.
+
+        +modal('Заголовок модального окна', 'Описание модального окна')(id="payment-modal")
+            div#app
+
+    include ../shared/footer
+
+    script(src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js")
+    script(src="https://unpkg.com/preact@10.24.3/dist/preact.min.js")
+    script(src="https://unpkg.com/preact@10.24.3/hooks/dist/hooks.umd.js")
+    script(src="https://unpkg.com/htm@3.1.1/dist/htm.umd.js")
+    script(src="https://unpkg.com/htm@3.1.1/preact/index.umd.js")
+    script(src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/js/intlTelInput.min.js")
+    script(src="https://static.sayes.ru/js/shared.js")
+    script.
+        ui.Accordion.init();
+        ui.Tabs.init();
+
+        window.paymentModal = new ui.Modal('#payment-modal');
+
+        new ui.Slider('.meetings-slider', {
+            breakpoints: {
+                768: {
+                    enabled: true,
+                    slidesPerView: 3
+                },
+                360: {
+                    enabled: false
+                }
+            }
+        });
+
+        new ui.Slider('.testimonials-slider', {
+            breakpoints: {
+                1024: {
+                    slidesPerView: 3
+                },
+                768: {
+                    slidesPerView: 2
+                },
+                360: {
+                    slidesPerView: 'auto',
+                    centeredSlides: true
+                }
+            }
+        });
+
+    script.
+        const { render } = preact;
+        const { useEffect, useRef, useState } = preactHooks;
+        const { html } = htmPreact;
+
+        const packs = [{
+            id: 1,
+            description: '4 занятия',
+            price: 1990
+        },
+        {
+            id: 2,
+            description: '8 занятий',
+            price: 4990
+        },
+        {
+            id: 3,
+            description: '16 занятий',
+            price: 7990
+        }];
+
+        function cn(...classes) {
+            return classes.reduce((acc, c) => {
+                if (typeof c === 'string') {
+                    acc.push(c);
+                } else if (typeof c === 'object') {
+                    Object.entries(c).forEach(([key, value]) => {
+                        if (value) {
+                            acc.push(key);
+                        }
+                    });
+                }
+
+                return acc;
+            }, []).join(' ');
+        }
+
+        const Button = ({ className, content, ...props }) => html`
+            <button class="btn${className ? ` ${className}` : ''}" ...${props}>
+                ${content}
+            </button>
+        `;
+
+        const Checkbox = ({ name, value, id = `${name}_${value}`, label, onChange, ...props }) => html`
+            <div class="checkbox">
+                <input
+                    id=${id}
+                    class="checkbox__input"
+                    type="checkbox"
+                    name=${name}
+                    value=${value}
+                    onInput=${onChange}
+                    ...${props}
+                />
+
+                <span class="checkbox__checkmark" />
+
+                ${label && html`
+                    <label class="checkbox__label" for="${id}">
+                        ${label}
+                    </label>
+                `}
+            </div>
+        `;
+
+        const Input = ({ invalid, ...props }) => html`
+            <input class=${cn('input', {'input--invalid': invalid})} ...${props} />
+        `;
+
+        const Item = ({ icon, content, meta, children = content, ...props }) => html`
+            <li class="list-item" ...${props}>
+                ${icon && html`
+                    <span class="list-item__icon">${icon}</span>
+                `}
+
+                <span class="list-item__content">${children}</span>
+            </li>
+        `;
+
+        const Radio = ({ name, value, id = `${name}_${value}`, label, onChange, ...props }) => html`
+            <div class="radio">
+                <input
+                    id=${id}
+                    class="radio__input"
+                    type="radio"
+                    name=${name}
+                    value=${value}
+                    ...${props}
+                />
+
+                ${label && html`
+                    <label class="radio__label" for="${id}">${label}</label>
+                `}
+            </div>
+        `;
+
+        const Tab = ({ content, icon, active, onClick }) => html`
+            <button class=${cn('tab', {'tab--active': active})} onClick=${onClick} role="tab">
+                ${icon && html`
+                    <span class="tab__icon icon material-icons" aria-hidden="true">${icon}</span>
+                `}
+
+                <span class="tab__content">${content}</span>
+            </button>
+        `;
+
+        const Tabs = ({ children }) => html`
+            <div class="tabs tabs--centered tabs--pills tabs--violet">
+                <div class="tabs__nav">
+                    ${children}
+                </div>
+            </div>
+        `;
+
+        const Packs = ({ packs, selectedPack, onChange, onNext }) => html`
+            <div id="packs" class="flex column gap-l">
+                <ul class="list gap-s">
+                    ${packs?.map(p => html`
+                        <${Item} key=${p.id}>
+                            <${Radio}
+                                name="pack"
+                                value=${p.id}
+                                checked=${selectedPack?.id === p.id}
+                                label=${html`
+                                    <div class="flex fill align-center justify-between">
+                                        <span class="text">${p.description}</span>
+                                        <span class="heading-5">${p.price} руб.</span>
+                                    </div>
+                                `}
+                                onInput=${() => onChange(p)}
+                            />
+                        <//>
+                    `)}
+                </ul>
+
+                <div class="flex justify-center">
+                    <${Button}
+                        content="Далее"
+                        disabled=${!selectedPack}
+                        onClick=${onNext}
+                    />
+                </div>
+            </div>
+        `;
+
+        const Contact = ({ contact, onChange, onNext }) => {
+            const [consent, setConsent] = useState(false);
+
+            const isValid = contact.name && contact.email && contact.phone && consent;
+
+            return html`
+                <div id="contact" class="flex flex-column align-center gap-s">
+                    <${Input}
+                        placeholder="Имя"
+                        name="name"
+                        value=${contact.name}
+                        onInput=${event => onChange(prev => ({ ...prev, [event.target.name]: event.target.value }))}
+                    />
+                    
+                    <${Input}
+                        placeholder="Email"
+                        name="email"
+                        value=${contact.email}
+                        onInput=${event => onChange(prev => ({ ...prev, [event.target.name]: event.target.value }))}
+                    />
+
+                    <${Input}
+                        placeholder="Телефон"
+                        name="phone"
+                        value=${contact.phone}
+                        onInput=${event => onChange(prev => ({ ...prev, [event.target.name]: event.target.value }))}
+                    />
+
+                    <${Checkbox}
+                        id="consent"
+                        checked=${consent}
+                        label="Я согласен/на на обработку персональных данных"
+                        onChange=${() => setConsent(v => !v)}
+                    />
+
+                    <${Button}
+                        content="Далее"
+                        disabled=${!isValid}
+                        outlined onClick=${onNext}
+                    />
+                </div>
+            `;
+        };
+
+        const Payment = ({ contact, pack, onComplete }) => {
+            const checkoutRef = useRef();
+
+            useEffect(() => {
+                fetch('/pay', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        contact,
+                        pack
+                    })
+                }).then(res => res.json())
+                .then(data => {
+                    const checkout = new window.YooMoneyCheckoutWidget({
+                        confirmation_token: data.confirmation.confirmation_token,
+                        customization: {
+                            colors: {
+                                control_primary: '#6c167b',
+                                background: '#ffffff'
+                            }
+                        },
+                        error_callback: (error) => {
+                            console.log(error)
+                        }
+                    });
+
+                    checkout.render("payment");
+
+                    checkout.on('complete', () => {
+                        checkout.destroy();
+                        onComplete();
+                    });
+
+                    checkoutRef.current = checkout;
+                });
+
+                return () => {
+                    checkoutRef.current?.destroy();
+                };
+            }, []);
+
+            return html`
+                <div id="payment" />
+            `;
+        };
+
+        const Success = ({ contact, pack }) => {
+            useEffect(() => {
+                fetch('/pay', {
+                    method: 'put',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: contact.name,
+                        email: contact.email,
+                        phone: contact.phone,
+                        pack: pack.description,
+                        price: pack.price
+                    })
+                });
+            }, []);
+
+            return html`
+                <div id="success" class="flex column align-center">
+                    <img src="https://static.sayes.ru/images/cat/cat-thumbup.png" alt="" />
+
+                    <h2 class="heading-3">Оплата прошла успешно</h2>
+
+                    <h3 class="heading-4">Спасибо за покупку!</h3>
+
+                    <p class="text--body1">Вам на почту отправлено письмо с дальнейшими инструкциями.</p>
+                </div>
+            `;
+        };
+
+        const App = ({ confirmationToken }) => {
+            const ref = useRef();
+
+            const [view, setView] = useState(0);
+            const [pack, setPack] = useState();
+            const [contact, setContact] = useState({});
+
+            return html`
+                <div class="flex column gap-l">
+                    <${Tabs}>
+                        <${Tab}
+                            content="Пакет"
+                            active=${view >= 0}
+                        />
+
+                        <${Tab}
+                            content="Контактная информация"
+                            active=${view >= 1}
+                        />
+
+                        <${Tab}
+                            content="Оплата"
+                            active=${view >= 2}
+                        />
+                    <//>
+
+                    ${view === 0 && html`
+                        <${Packs}
+                            packs=${packs}
+                            selectedPack=${pack}
+                            onChange=${setPack}
+                            onNext=${() => setView(1)}
+                        />
+                    `}
+
+                    ${view === 1 && html`
+                        <${Contact}
+                            contact=${contact}
+                            onChange=${setContact}
+                            onNext=${() => setView(2)}
+                        />
+                    `}
+
+                    ${view === 2 && html`
+                        <${Payment}
+                            contact=${contact}
+                            pack=${pack}
+                            onComplete=${() => setView(3)}
+                        />
+                    `}
+
+                    ${view === 3 && html`
+                        <${Success}
+                            contact=${contact}
+                            pack=${pack}
+                        />
+                    `}
+                </div>
+            `;
+        };
+
+        render(html`
+            <${App} />
+        `, document.querySelector('#app'));
