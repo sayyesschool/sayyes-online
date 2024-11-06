@@ -1,0 +1,41 @@
+#app {
+    max-width: 640px;
+    margin: 0 auto;
+
+    &:empty:before {
+        content: 'Загрузка...';
+        display: block;
+        text-align: center;
+    }
+}
+
+.flex { display: flex; }
+.column { flex-direction: column;}
+.align-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-start { justify-content: flex-start; }
+.justify-end { justify-content: flex-end; }
+.justify-between { justify-content: space-between; }
+.fill { flex: 1; }
+.position-center {  margin: auto; }
+
+.radio {
+    &__label {
+        display: flex;;
+    }
+}
+
+.main {
+    flex: 1;
+}
+
+#payment:empty:before {
+    content: 'Загрузка...';
+    display: block;
+    text-align: center;
+}
+
+#success img {
+    max-width: 200px;
+    margin-bottom: 2rem;
+}
