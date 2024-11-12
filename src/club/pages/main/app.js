@@ -107,7 +107,7 @@ const Tab = ({ content, icon, active, onClick }) => html`
 `;
 
 const Tabs = ({ children }) => html`
-    <div class="tabs tabs--centered tabs--pills tabs--violet">
+    <div class="tabs tabs--centered tabs--pills tabs--violet modal-tabs">
         <div class="tabs__nav">
             ${children}
         </div>
@@ -256,7 +256,7 @@ const Success = ({ contact, pack }) => {
 
     return html`
         <div id="success" class="flex column align-center">
-            <img src="https://static.sayes.ru/images/cat/cat-thumbup.png" alt="" />
+            <img src="https://static.sayes.ru/images/cat/cat-thumbup.png" class="success-img" alt="" />
 
             <h2 class="heading-3">Оплата прошла успешно</h2>
 
@@ -267,65 +267,61 @@ const Success = ({ contact, pack }) => {
     `;
 };
 
-const App = () => {
+const App = ({ packIndex }) => {
     const [view, setView] = useState(0);
-    const [pack, setPack] = useState();
     const [contact, setContact] = useState({});
+
+    const currentPack = packs.find(item => item.id === packIndex);
 
     return html`
         <div class="flex column gap-l">
+            <div class="pack-info">
+                <span class="card__title primary-color">${currentPack.description}</span>
+                <span class="card__title primary-color">${currentPack.price}</span>
+            </div>
+
             <${Tabs}>
                 <${Tab}
-                    content="Пакет"
+                    content="Контактная информация"
                     active=${view >= 0}
                 />
 
                 <${Tab}
-                    content="Контактная информация"
-                    active=${view >= 1}
-                />
-
-                <${Tab}
                     content="Оплата"
-                    active=${view >= 2}
+                    active=${view >= 1}
                 />
             <//>
 
             ${view === 0 && html`
-                <${Packs}
-                    packs=${packs}
-                    selectedPack=${pack}
-                    onChange=${setPack}
+                <${Contact}
+                    contact=${contact}
+                    onChange=${setContact}
                     onNext=${() => setView(1)}
                 />
             `}
 
             ${view === 1 && html`
-                <${Contact}
+                <${Payment}
                     contact=${contact}
-                    onChange=${setContact}
-                    onNext=${() => setView(2)}
+                    pack=${currentPack}
+                    onComplete=${() => setView(2)}
                 />
             `}
 
             ${view === 2 && html`
-                <${Payment}
-                    contact=${contact}
-                    pack=${pack}
-                    onComplete=${() => setView(3)}
-                />
-            `}
-
-            ${view === 3 && html`
                 <${Success}
                     contact=${contact}
-                    pack=${pack}
+                    pack=${currentPack}
                 />
             `}
         </div>
     `;
 };
 
-render(html`
-    <${App} />
-`, document.querySelector('#app'));
+const Meeting = () => {
+    return html`
+        <div class="flex column gap-l">
+            Meeting
+        </div>
+    `;
+};

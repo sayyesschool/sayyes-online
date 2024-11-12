@@ -38,7 +38,7 @@ block body
                     span.yellow  с носителями языка
                     |  и улучшай свои разговорные навыки!
 
-                button.btn.btn--yellow Записаться
+                button.btn.btn--yellow.scroll-btn Записаться
 
             div.hero__image
                 img.image(src="https://static.sayes.ru/images/speaking-club/hero-image.png" alt="")
@@ -134,8 +134,8 @@ block body
                                                     span.list-item__content 90 минут
                                         
                                         div.card__footer
-                                            button.btn.btn--full(data-meeting-id=`${meeting.id}`) Подробнее
-                        
+                                            button.btn.btn--full.meeting-btn(data-meeting-id=`${meeting.id}`) Подробнее
+
                         div.slider__pagination
 
         section.section.section--horizontal
@@ -166,31 +166,51 @@ block body
                             data-embed-url="https://www.youtube.com/embed/f3cBgWC2ljM"
                         )
 
-        section.section
+        section.section.tariffs
             div.section__container
                 div.section__header
-                    h2.section__title Title
+                    h2.section__title Тарифы
                     p.section__description Description
 
                 div.section__content
                     div.grid.grid-2
-                        div.text-card.card.card--yellow
+                        div.text--center.text-card.card.card--yellow.padding-top-xxxl
+                            h3.primary-color.heading-2.margin-bottom-xl Пробная подписка Skills на 3 дня
+                            p.text--semibold.margin-bottom-xl Безлимитный доступ ко всем занятиям без ограничений на 3 дня
+                            h4.heading-1.primary-color.margin-bottom-xl 390 ₽
+                            button.btn.btn--lg.margin-auto Попробовать
 
-                        div.flex.flex-column.gap-m
-                            div.text-card.card.card--sm
-                                h3.card__title 4 занятия
-                                p.card__description 1,5 часа каждое
-                                button.btn Записаться
+                        div.flex.flex-column.gap-m.tariffs
+                            div.club-card.text-card.card.card--sm.flex
+                                div.col
+                                    h3.card__title.primary-color 4 занятия
+                                    p.card__description 160 ₽ за урок при ежедневных занятиях
+                                    button.btn.btn--sm.btn--outlined.btn-tariff Записаться
+                                div.col
+                                    h3.card__title 4 800 ₽
+                                    span.tag.tag--yellow -10%
+                                    p.card__description 4 800 ₽ / МЕСЯЦ
 
-                            div.text-card.card.card--sm
-                                h3.card__title 8 занятий
-                                p.card__description 1,5 часа каждое
-                                button.btn Записаться
+                            div.club-card.text-card.card.card--sm.flex
+                                div.col
+                                    h3.card__title.primary-color 8 занятия
+                                    p.card__description 160 ₽ за урок при ежедневных занятиях
+                                    button.btn.btn--sm.btn--outlined.btn-tariff Записаться
+                                div.col
+                                    h3.card__title 4 800 ₽
+                                    span.tag.tag--yellow -10%
+                                    p.card__description 4 800 ₽ / МЕСЯЦ
 
-                            div.text-card.card.card--sm
-                                h3.card__title 16 занятий
-                                p.card__description 1,5 часа каждое
-                                button.btn Записаться
+                            div.club-card.text-card.card.card--sm.flex
+                                div.col
+                                    h3.card__title.primary-color 16 занятий
+                                    p.card__description 160 ₽ за урок при ежедневных занятиях
+                                    button.btn.btn--sm.btn--outlined.btn-tariff Записаться
+                                div.col
+                                    h3.card__title 4 800 ₽
+                                    span.tag.tag--yellow -10%
+                                    p.card__description 4 800 ₽ / МЕСЯЦ
+
 
         section.section
             div.section__container
@@ -257,7 +277,7 @@ block body
                                     div.accordion-item
                                         h3.accordion-item__title= faq.title
                                         p.accordion-item__content= faq.content
-            
+
             p.text Не нашли ответ на свой вопрос? Напишите нам на почту, и мы ответим вам в течение 24 часов!
 
             button.btn.btn--purple Задать вопрос
@@ -300,6 +320,48 @@ block body
         ui.Tabs.init();
 
         window.paymentModal = new ui.Modal('#payment-modal');
+
+        // Scroll
+
+        const tariffs = document.querySelector('.tariffs');
+        const scrollBtn = document.querySelector('.scroll-btn');
+
+        scrollBtn.addEventListener('click', () => {
+            const elementPosition = tariffs.getBoundingClientRect().top + window.scrollY
+
+            window.scrollTo({
+                top: elementPosition - 100,
+                behavior: 'smooth',
+            })
+        })
+
+        // Modal
+
+        const cardBtns = tariffs.querySelectorAll('.btn-tariff')
+
+        cardBtns.forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                render(html`
+                    <${App} packIndex=${index + 1} />
+                `, document.querySelector('#app'));
+
+                window.paymentModal.open()
+            })
+        })
+
+        const meetingBtn = document.querySelector('.meeting-btn');
+
+        meetingBtn.addEventListener('click', () => {
+            const currentMeeting = window.meetings.find(item => item.id === meetingBtn.dataset.meetingId)
+
+            render(html`
+                <${Meeting} pack=${1} />
+            `, document.querySelector('#app'));
+
+            window.paymentModal.open()
+        })
+
+        // Slider
 
         new ui.Slider('.meetings-slider', {
             breakpoints: {
