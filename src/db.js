@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { isValidObjectId } from 'mongoose';
 
 mongoose.set('toObject', {
     virtuals: true,
@@ -25,6 +25,34 @@ mongoose.set('toJSON', {
 
         return object;
     }
+});
+
+mongoose.plugin(function addResolve(schema) {
+    schema.statics.resolve = async function resolve(arg) {
+        if (typeof arg === 'object' && isValidObjectId(arg.id)) return arg;
+
+        const document = await (isValidObjectId(arg) ?
+            this.findById(arg) :
+            this.findOne(arg)
+        );
+
+        if (!document)
+            throw new Error(`${this.constructor.modelName} not found`);
+
+        return document;
+    };
+
+    schema.statics.update = async function update(query, ...args) {
+        return isValidObjectId(query) ?
+            this.findByIdAndUpdate(query, ...args) :
+            this.findOneAndUpdate(query, ...args);
+    };
+
+    schema.statics.delete = async function remove(query, ...args) {
+        return isValidObjectId(query) ?
+            this.findByIdAndDelete(query, ...args) :
+            this.findOneAndDelete(query, ...args);
+    };
 });
 
 mongoose.connection.on('connected', () => console.log('Connected to DB'));
