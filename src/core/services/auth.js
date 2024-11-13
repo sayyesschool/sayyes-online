@@ -1,12 +1,12 @@
 import { randomBytes } from 'node:crypto';
 
 export default ({
-    User
+    models: { User }
 }, {
     onRegister,
     onResetPasswordTokenSent,
     onResetPassword
-}) => ({
+} = {}) => ({
     options: {
         //successRedirect: '/home',
         failureRedirect: '/',
@@ -18,7 +18,10 @@ export default ({
         email,
         password = randomBytes(12).toString('base64'),
         firstname,
-        lastname
+        lastname,
+        role
+    } = {}, {
+        notify = true
     } = {}) {
         if (!email) throw {
             code: 403,
@@ -29,10 +32,13 @@ export default ({
             email,
             password,
             firstname,
-            lastname
+            lastname,
+            role
         });
 
-        onRegister?.(user, password);
+        if (notify) {
+            onRegister?.(user, password);
+        }
 
         return user;
     },
