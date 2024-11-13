@@ -8,16 +8,21 @@ const Status = {
 };
 
 export const Registration = new Schema({
-    userId: { type: Schema.Types.ObjectId },
     registrant: {
         email: { type: String, required: true, trim: true, lowercase: true },
         firstname: { type: String, required: true, trim: true },
         lastname: { type: String, required: true, trim: true }
     },
+    userId: { type: Schema.Types.ObjectId },
+    ticketId: { type: Schema.Types.ObjectId },
     zoomId: { type: String },
     status: { type: String, enum: Object.values(Status), default: Status.Pending },
     joinUrl: { type: String },
     participated: { type: Boolean, default: false }
+});
+
+Registration.virtual('meetingId').get(function() {
+    return this.parent()._id;
 });
 
 Registration.virtual('isApproved').get(function() {

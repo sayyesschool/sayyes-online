@@ -4,6 +4,7 @@ import { Schema } from 'mongoose';
 import Registration from './Registration';
 
 const Level = {
+    Any: 'any',
     Elementary: 'elementary',
     Beginner: 'beginner',
     PreIntermediate: 'pre-intermediate',
@@ -22,11 +23,20 @@ const Status = {
 export const Meeting = new Schema({
     title: { type: String, required: true, trim: true },
     description: { type: String, trim: true },
-    status: { type: String, enum: Object.values(Status), default: Status.Scheduled },
+    status: {
+        type: String,
+        enum: Object.values(Status),
+        default: Status.Scheduled
+    },
     price: { type: Number, min: 0, default: 0 },
     date: { type: Date },
     duration: { type: Number, default: 60 },
-    level: { type: String, lowercase: true, enum: Object.values(Level), get: value => value[0].toUpperCase() + value.slice(1) },
+    level: {
+        type: String,
+        lowercase: true,
+        enum: Object.values(Level),
+        default: Level.Any
+    },
     capacity: { type: Number },
     published: { type: Boolean, default: false },
     zoomId: { type: String },
@@ -35,12 +45,22 @@ export const Meeting = new Schema({
     materialsUrl: { type: String },
     thumbnailUrl: { type: String },
     notes: { type: String, trim: true, default: '' },
-    host: { type: Schema.Types.ObjectId, ref: 'User' },
-    registrations: [Registration],
-    participants: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+    registrations: { type: [Registration] },
+    hostId: { type: Schema.Types.ObjectId, ref: 'User' },
+    participantIds: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 }, {
     timestamps: true
 });
+
+Meeting.statics.getScheduled = async function() {
+    return Meeting.find({
+        date: { $gte: new Date() },
+        status: 'scheduled',
+        published: true
+    })
+        .sort({ date: 1 })
+        .populate('host', 'firstname lastname avatarUrl');
+};
 
 Meeting.virtual('url').get(function() {
     return `/meetings/${this.id}`;
@@ -98,6 +118,19 @@ Meeting.virtual('numberOfParticipants').get(function() {
     return this.registrations?.filter(r => r.participated).length;
 });
 
+Meeting.virtual('host', {
+    ref: 'User',
+    localField: 'hostId',
+    foreignField: '_id',
+    justOne: true
+});
+
+Meeting.virtual('participants', {
+    ref: 'User',
+    localField: 'participantIds',
+    foreignField: '_id'
+});
+
 Meeting.methods.canRegister = function(user) {
     return this.free || user.balance >= this.price;
 };
@@ -114,12 +147,16 @@ Meeting.methods.isRegistered = function(user) {
     return this.registrations.includes(r => r.user == (user?.id || user));
 };
 
-Meeting.methods.getRegistrationById = function(id) {
+Meeting.methods.createRegistration = function(user, ticket) {
+
+};
+
+Meeting.methods.findRegistrationById = function(id) {
     return this.registrations.find(r => r.id == id);
 };
 
-Meeting.methods.getRegistrationByUser = function(user) {
-    return this.registrations.find(r => r.user == (user?.id || user));
+Meeting.methods.findRegistrationByUser = function(user) {
+    return this.registrations.find(r => r.userId == (user?.id || user));
 };
 
 export default Meeting;
