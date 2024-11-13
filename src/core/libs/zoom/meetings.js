@@ -1,11 +1,11 @@
-export default request => ({
+export default (userId, request) => ({
     list: () => request({
-        path: '/meetings',
+        path: `/users/${userId}/meetings`,
         method: 'GET'
     }),
 
     create: data => request({
-        path: '/users/me/meetings',
+        path: `/users/${userId}/meetings`,
         method: 'POST',
         body: data
     }),
@@ -22,8 +22,8 @@ export default request => ({
     }),
 
     updateStatus: meetingId => request({
-        path: `/meetings/${meetingId}`,
-        method: 'PATCH',
+        path: `/meetings/${meetingId}/status`,
+        method: 'PUT',
         body: {
             action: 'end'
         }
@@ -35,14 +35,14 @@ export default request => ({
     }),
 
     addRegistrant: (meetingId, body) => request({
-        path: `meetings/${meetingId}/registrants`,
+        path: `/meetings/${meetingId}/registrants`,
         method: 'POST',
         body
     }),
 
     removeRegistrant: (meetingId, registrantId) => request({
-        path: `meetings/${meetingId}/registrants/status`,
-        method: 'PUT',
+        path: `/meetings/${meetingId}/registrants/${registrantId}`,
+        method: 'DELETE',
         body: {
             action: 'cancel',
             registrants: [{ id: registrantId }]
@@ -50,7 +50,7 @@ export default request => ({
     }),
 
     updateRegistrantStatus: (meetingId, data) => request({
-        path: `meetings/${meetingId}/registrants/status`,
+        path: `/meetings/${meetingId}/registrants/status`,
         method: 'PUT',
         body: {
             action: data.action,
