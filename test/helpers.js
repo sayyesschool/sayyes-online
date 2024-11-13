@@ -1,3 +1,4 @@
+import expect from 'expect';
 import { Types } from 'mongoose';
 import sinon from 'sinon';
 
@@ -9,10 +10,16 @@ sinon.addBehavior('returnsQuery', (fake, value) => {
     });
 });
 
+export { mock } from 'node:test';
+
 export function at(time = '00:00') {
     return `2022-01-01T${time}:00Z`;
 }
 
 export function createId() {
     return new Types.ObjectId();
+}
+
+export function spy(...args) {
+    return expect.createSpy(...args);
 }
