@@ -286,12 +286,9 @@ block body
     include ../shared/footer
 
     script(src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js")
-    script(src="https://unpkg.com/preact@10.24.3/dist/preact.min.js")
-    script(src="https://unpkg.com/preact@10.24.3/hooks/dist/hooks.umd.js")
-    script(src="https://unpkg.com/htm@3.1.1/dist/htm.umd.js")
-    script(src="https://unpkg.com/htm@3.1.1/preact/index.umd.js")
     script(src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/js/intlTelInput.min.js")
     script(src="https://static.sayes.ru/js/shared.js")
+    script(src="/js/club-island.js")
 
     script.
         window.meetings = [!{JSON.stringify(meetings)}];
@@ -327,6 +324,3 @@ block body
                 }
             }
         });
-
-    script
-        include ./app.js
