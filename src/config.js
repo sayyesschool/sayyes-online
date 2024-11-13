@@ -51,6 +51,8 @@ export default {
     YOOKASSA_SHOP_ID: process.env.YOOKASSA_SHOP_ID,
     YOOKASSA_SECRET_KEY: process.env.YOOKASSA_SECRET_KEY,
 
-    ZOOM_API_KEY: process.env.ZOOM_API_KEY,
-    ZOOM_API_SECRET: process.env.ZOOM_API_SECRET
+    ZOOM_ACCOUNT_ID: process.env.ZOOM_ACCOUNT_ID,
+    ZOOM_CLIENT_ID: process.env.ZOOM_CLIENT_ID,
+    ZOOM_CLIENT_SECRET: process.env.ZOOM_CLIENT_SECRET,
+    ZOOM_USER_ID: process.env.ZOOM_USER_ID
 };
