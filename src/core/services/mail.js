@@ -27,6 +27,9 @@ export default mailClient => ({
     },
 
     sendMany(messages) {
+        if (messages.length === 0)
+            return Promise.resolve();
+
         return mailClient
             .post('send', { 'version': 'v3.1' })
             .request({
