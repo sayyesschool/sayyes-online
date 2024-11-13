@@ -12,17 +12,8 @@ const {
     YANDEX_METRIKA_ID
 } = process.env;
 
-export default {
+const common = {
     outdir: 'public',
-    entryPoints: [
-        { in: './src/class/app/index.js', out: 'class' },
-        { in: './src/club/app/index.js', out: 'club' },
-        { in: './src/cms/app/index.js', out: 'cms' },
-        { in: './src/crm/app/index.js', out: 'crm' },
-        { in: './src/front/index.js', out: 'front' },
-        { in: './src/lk/app/index.js', out: 'lk' },
-        { in: './src/lms/app/index.js', out: 'lms' }
-    ],
     entryNames: '[dir]/[ext]/[name]',
     define: {
         'process.env': JSON.stringify({}),
@@ -45,6 +36,8 @@ export default {
     jsx: 'automatic',
     loader: { '.js': 'jsx' },
     bundle: true,
+    minify: NODE_ENV === 'production',
+    sourcemap: NODE_ENV === 'development',
     logLevel: 'info',
     plugins: [
         sassPlugin({
@@ -64,4 +57,25 @@ export default {
             ]
         })
     ]
+};
+
+export const apps = {
+    ...common,
+    entryPoints: [
+        { in: './src/class/app/index.js', out: 'class' },
+        { in: './src/club/app/index.js', out: 'club' },
+        { in: './src/cms/app/index.js', out: 'cms' },
+        { in: './src/crm/app/index.js', out: 'crm' },
+        { in: './src/front/index.js', out: 'front' },
+        { in: './src/lk/app/index.js', out: 'lk' },
+        { in: './src/lms/app/index.js', out: 'lms' }
+    ]
+};
+
+export const islands = {
+    ...common,
+    entryPoints: [
+        { in: './src/club/pages/main/island.js', out: 'club-island' }
+    ],
+    jsxImportSource: 'preact'
 };
