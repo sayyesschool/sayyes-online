@@ -45,14 +45,6 @@ export default ({
                     enrollment: object.metadata.enrollmentId
                 });
 
-                if (payment?.paid) {
-                    await User.increaseBalance(payment.user, payment.amount, true);
-
-                    if (payment.meeting) {
-                        await Meeting.register(payment.meeting, payment.user);
-                    }
-                }
-
                 await Client.updateOne({
                     _id: transaction.user
                 }, {
@@ -77,7 +69,11 @@ export default ({
                             user: transaction.user,
                             enrollment: transaction.enrollment
                         }),
-                        Enrollment.updateOne({ _id: enrollment.id }, { lessonPrice: pack.lessonPrice }),
+                        Enrollment.updateOne({
+                            _id: enrollment.id
+                        }, {
+                            lessonPrice: pack.lessonPrice
+                        }),
                         Lesson.insertMany(lessons)
                     ]);
                 }
