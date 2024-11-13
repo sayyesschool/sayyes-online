@@ -15,6 +15,9 @@
     "globals": {
         "env": "writable"
     },
+    "ignorePatterns": [
+        "public/"
+    ],
     "parser": "@babel/eslint-parser",
     "parserOptions": {
         "ecmaVersion": "latest",
@@ -71,7 +74,8 @@
                         "^node:"
                     ],
                     [
-                        "^react"
+                        "^react",
+                        "^preact"
                     ],
                     [
                         "^@?\\w"
