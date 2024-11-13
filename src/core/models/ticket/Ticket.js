@@ -1,84 +1,47 @@
-const { Schema, model } = require('mongoose');
-const moment = require('moment');
-
-const plans = {
-    single: {
-        id: 'single',
-        title: 'Единоразовое посещение',
-        price: 300,
-        features: [
-            'Тест-драйв формата',
-            'Выгодно при редких посещениях'
-        ]
-    },
-
-    month: {
-        id: 'month',
-        title: 'Билет на 1 месяц',
-        price: 1400,
-        duration: [1, 'months'],
-        features: [
-            'Регулярные занятия',
-            'Безлимитное посещение'
-        ]
-    },
-
-    quarter: {
-        id: 'quarter',
-        title: 'Билет на 3 месяца',
-        price: 3780,
-        duration: [3, 'months'],
-        features: [
-            'Максимальное погружение',
-            'Безлимитное посещение',
-            'Скидка 10%'
-        ]
-    }
-};
+import moment from 'moment';
+import { Schema } from 'mongoose';
 
 const Ticket = new Schema({
-    type: { type: String, enum: ['single', 'month', 'quarter'], default: 'single', alias: 'plan' },
-    user: { type: Schema.Types.ObjectId, ref: 'User' },
-    meeting: { type: Schema.Types.ObjectId, ref: 'Meeting' },
-    payment: { type: Schema.Types.ObjectId, ref: 'Payment' }
+    limit: { type: Number, default: 1 },
+    price: { type: Number, default: 0 },
+    purchasedAt: { type: Date },
+    expiresAt: { type: Date },
+    userId: { type: Schema.Types.ObjectId, ref: 'User' },
+    paymentId: { type: Schema.Types.ObjectId, ref: 'Payment' },
+    meetingIds: [{ type: Schema.Types.ObjectId, ref: 'Meeting' }]
 }, {
     timestamps: true
 });
 
-Ticket.statics.plans = plans;
+Ticket.statics.getSoldByMonth = async function() {
+    const today = new Date();
 
-Ticket.virtual('title').get(function() {
-    return plans[this.plan].title;
-});
+    return this.aggregate()
+        .match({
+            paidAt: {
+                $gt: new Date(today.getFullYear() - 1, 11, 31),
+                $lt: new Date(today.getFullYear() + 1, 0)
+            }
+        })
+        .group({
+            _id: { $month: '$paidAt' },
+            count: { $sum: 1 },
+            amount: { $sum: '$price' }
+        });
+};
 
-Ticket.virtual('price').get(function() {
-    return this.payment?.amount;
-});
+Ticket.statics.getExpiration = function(date, pack) {
+    if (!pack.duration) return;
 
-Ticket.virtual('paidAt').get(function() {
-    return this.payment?.datetime;
-});
-
-Ticket.virtual('expiresAt').get(function() {
-    if (this.plan === 'single') return;
-
-    const plan = plans[this.plan];
-
-    return moment(this.paidAt).add(...plan.duration).toDate();
-});
-
-Ticket.virtual('isActive').get(function() {
-    if (this.plan === 'single') {
-        return !this.meeting;
-    } else {
-        return moment().isSameOrBefore(this.expiresAt);
-    }
-});
+    return moment(date).add(...pack.duration).toDate();
+};
 
 Ticket.virtual('isExpired').get(function() {
-    if (this.plan === 'single') return;
-
-    return moment().isSameOrBefore(this.expiresAt);
+    return this.expiresAt && moment().add(1, 'day').isAfter(this.expiresAt);
 });
 
-module.exports = model('Ticket', Ticket);
+Ticket.virtual('isValid').get(function() {
+    return !this.isExpired && this.meetingIds.length < this.limit;
+});
+
+export default Ticket;
