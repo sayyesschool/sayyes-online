@@ -9,20 +9,52 @@ export const Payment = new Schema({
     amount: { type: Number, default: 0, min: 0, required: true },
     currency: { type: String, default: 'RUB' },
     status: { type: String, required: true, enum: Object.keys(PaymentStatus) },
+    paid: { type: Boolean, default: false },
+    refundable: { type: Boolean, default: false },
+    refunded: { type: Boolean, default: false },
+    test: { type: Boolean },
     operator: { type: String, enum: Object.keys(PaymentOperator) },
     description: { type: String, trim: true },
-    confirmationUrl: { type: String },
+    confirmation: {
+        type: {
+            type: String,
+            enum: ['embedded', 'redirect']
+        },
+        confirmationToken: { type: String },
+        confirmationUrl: { type: String },
+        returnUrl: { type: String }
+    },
+    cancelation: {
+        party: { type: String },
+        reason: { type: String }
+    },
     method: PaymentMethod,
-    dueAt: { type: Date },
+    metadata: { type: Object },
     expiresAt: { type: Date },
     paidAt: { type: Date },
-    test: { type: Boolean },
-    metadata: { type: Object }
+    userId: { type: Schema.Types.ObjectId }
 }, {
     timestamps: true,
     toObject: { getters: true, virtuals: true },
     toJSON: { getters: true, virtuals: true }
 });
+
+Payment.statics.getByMonth = async function() {
+    const today = new Date();
+
+    return this.aggregate()
+        .match({
+            date: {
+                $gt: new Date(today.getFullYear() - 1, 11, 31),
+                $lt: new Date(today.getFullYear() + 1, 0)
+            }
+        })
+        .group({
+            _id: { $month: '$paidAt' },
+            count: { $sum: 1 },
+            amount: { $sum: '$price' }
+        });
+};
 
 Payment.virtual('url').get(function() {
     return `/payments/${this.id}`;
@@ -64,7 +96,7 @@ Payment.virtual('isResolved').get(function() {
 });
 
 Payment.virtual('isStuck').get(function() {
-    return this.isPending && !this.confirmationUrl;
+    return this.isPending && !this.confirmation;
 });
 
 Payment.methods.getResolveUrl = function(paymentId) {
