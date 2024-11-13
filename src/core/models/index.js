@@ -12,18 +12,12 @@ import Meeting from './meeting';
 import Pack from './pack';
 import Payment from './payment';
 import Progress from './progress';
-import Record, { LexemeRecord } from './record';
+import Record from './record';
 import Request from './request';
 import Room from './room';
 import Task from './task';
 import Transaction from './transaction';
-import User, {
-    Admin,
-    Editor,
-    Learner,
-    Manager,
-    Teacher
-} from './user';
+import User from './user';
 import Vocabulary from './vocabulary';
 
 export default () => ({
@@ -39,17 +33,11 @@ export default () => ({
     Pack: model('Pack', Pack),
     Payment: model('Payment', Payment),
     Progress: model('Progress', Progress, 'progress'),
-    Record,
-    LexemeRecord,
+    ...Record(),
     Request: model('Request', Request),
     Room: model('Room', Room),
     Task: model('Task', Task),
     Transaction: model('Transaction', Transaction),
     Vocabulary: model('Vocabulary', Vocabulary),
-    User,
-    Admin,
-    Editor,
-    Learner,
-    Manager,
-    Teacher
+    ...User()
 });
