@@ -12,7 +12,7 @@ export default context => {
         .put(controller.updateExercise)
         .delete(controller.deleteExercise);
 
-    router.route('/:exercise/items/:item?')
+    router.route('/:exercise/items/{:item}')
         .post(controller.createItem)
         .put(controller.updateItem)
         .delete(controller.deleteItem);

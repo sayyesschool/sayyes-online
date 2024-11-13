@@ -14,7 +14,7 @@ export default context => {
         .get(controller.getMany)
         .post(controller.create);
 
-    router.route('/my/:lexemeId?')
+    router.route('/my/{:lexemeId}')
         .get(controller.getMy)
         .post(controller.addLexeme)
         .put(controller.updateLexeme)
@@ -29,7 +29,7 @@ export default context => {
         .put(controller.update)
         .delete(controller.delete);
 
-    router.route('/:vocabularyId/:lexemeId?')
+    router.route('/:vocabularyId/{:lexemeId}')
         .post(controller.addLexeme)
         .put(controller.updateLexeme)
         .delete(controller.removeLexeme);

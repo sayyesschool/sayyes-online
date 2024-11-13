@@ -6,7 +6,7 @@ export default context => {
     const router = Router();
     const controller = Controller(context);
 
-    router.route('/:id?')
+    router.route('/{:id}')
         .get(controller.get)
         .post(controller.create)
         .put(controller.update)

@@ -15,28 +15,28 @@ export default context => {
         .put(controller.updateCourse)
         .delete(controller.deleteCourse);
 
-    router.route('/:course/units/:unit?')
+    router.route('/:course/units/{:unit}')
         .post(controller.createUnit)
         .put(controller.updateUnit)
         .delete(controller.deleteUnit);
 
-    router.route('/:course/lessons/:lesson?')
+    router.route('/:course/lessons/{:lesson}')
         .post(controller.createLesson)
         .put(controller.updateLesson)
         .delete(controller.deleteLesson);
 
-    router.route('/:course/sections/:section?')
+    router.route('/:course/sections/{:section}')
         .post(controller.createSection)
         .put(controller.updateSection)
         .delete(controller.deleteSection);
 
-    router.route('/:course/exercises/:exercise?')
+    router.route('/:course/exercises/{:exercise}')
         .get(controller.getExercise)
         .post(controller.createExercise)
         .put(controller.updateExercise)
         .delete(controller.deleteExercise);
 
-    router.route('/:course/:exercises/:exercise/items/:item?')
+    router.route('/:course/:exercises/:exercise/items/{:item}')
         .post(controller.createItem)
         .put(controller.updateItem)
         .delete(controller.deleteItem);
