@@ -1,3 +1,4 @@
+import Account from './account';
 import Auth from './auth';
 import Checkout from './checkout';
 import Club from './club';
@@ -10,7 +11,8 @@ import Storage from './storage';
 export default (config, lib, models) => {
     const mail = Mail(lib.mailjet);
     const newsletter = Newsletter(lib.mailjet);
-    const auth = Auth(models, {
+
+    const auth = Auth({ models }, {
         onRegister: (user, password) => mail.send({
             subject: 'Добро пожаловать в SAY YES Online!',
             to: [{
@@ -36,10 +38,22 @@ export default (config, lib, models) => {
             }
         })
     });
-    const checkout = Checkout(config, models);
-    const club = Club(lib.zoom, models, { mail: Mail, newsletter: Newsletter, checkout: Checkout });
+
+    const checkout = Checkout({ config, models });
+
+    const club = Club({
+        lib,
+        models,
+        services: {
+            Mail,
+            Newsletter
+        }
+    });
+
     const file = File();
+
     const schedule = Schedule({ models });
+
     const storage = new Storage({
         accessKeyId: config.YANDEX_CLOUD_ACCESS_KEY_ID,
         secretAccessKey: config.YANDEX_CLOUD_SECRET_ACCESS_KEY,
@@ -48,7 +62,25 @@ export default (config, lib, models) => {
         bucket: config.YANDEX_CLOUD_STORAGE_BUCKET
     });
 
+    const account = Account({
+        models,
+        events: {
+            onIncreaseBalance: (user, amount) => mail.send({
+                to: [{
+                    name: user.fullname,
+                    email: user.email
+                }],
+                subject: 'Успешное пополнение баланса',
+                templateId: 1348783,
+                variables: {
+                    firstname: user.firstname
+                }
+            })
+        }
+    });
+
     return {
+        Account: account,
         Auth: auth,
         Checkout: checkout,
         Club: club,
