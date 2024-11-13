@@ -18,6 +18,7 @@ export default ({
         if (!assignment) {
             const error = new Error('Задание не найдена');
             error.status = 404;
+
             return next(error);
         }
 

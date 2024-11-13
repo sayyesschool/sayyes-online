@@ -12,7 +12,7 @@ export default context => {
     router.use('/courses', courses(context));
     router.use('/enrollments', enrollments(context));
     router.use('/progress', progress(context));
-    router.use('/user*', (req, res) => res.redirect(req.originalUrl.replace('class', req.user.role)));
+    router.use('/*user', (req, res) => res.redirect(req.originalUrl.replace('class', req.user.role)));
 
     router.use((error, req, res, next) => {
         res.status(error.code || error.status || 500).send({
