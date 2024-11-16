@@ -66,7 +66,6 @@ export const apps = {
         { in: './src/club/app/index.js', out: 'club' },
         { in: './src/cms/app/index.js', out: 'cms' },
         { in: './src/crm/app/index.js', out: 'crm' },
-        { in: './src/front/index.js', out: 'front' },
         { in: './src/lk/app/index.js', out: 'lk' },
         { in: './src/lms/app/index.js', out: 'lms' }
     ]
@@ -75,7 +74,7 @@ export const apps = {
 export const islands = {
     ...common,
     entryPoints: [
-        { in: './src/club/pages/main/island.js', out: 'club-island' }
+        { in: './src/club/pages/main/islands.js', out: 'club-islands' }
     ],
     jsxImportSource: 'preact'
 };
