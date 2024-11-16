@@ -1,7 +1,7 @@
 import * as strategies from './strategies';
 
 export default ({
-    services: { Auth }
+    services: { Auth, Mail }
 }) => ({
     user(req, res) {
         const user = req.user;
@@ -13,9 +13,29 @@ export default ({
     },
 
     register(req, res, next) {
-        Auth.register(req.body)
+        const password = Auth.generatePassword();
+        const data = {
+            ...req.body,
+            password
+        };
+
+        Auth.register(data)
             .then(user => {
                 req.session.userId = user.id;
+
+                Mail.send({
+                    subject: 'Добро пожаловать в SAY YES Online!',
+                    to: [{
+                        email: user.email
+                    }],
+                    templateId: 1486677,
+                    variables: {
+                        firstname: user.firstname,
+                        email: user.email,
+                        password
+                    }
+                });
+
                 next();
             })
             .catch(error => {

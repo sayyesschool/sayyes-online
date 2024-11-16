@@ -36,6 +36,8 @@ export default ({
     redirect: (req, res, next) => {
         if (!req.user)
             res.redirect(`//auth.${config.APP_DOMAIN}`);
+        else if (req.user.role === 'member')
+            res.redirect(`//club.${config.APP_DOMAIN}`);
         else if (req.user.role === 'editor')
             res.redirect(`//cms.${config.APP_DOMAIN}`);
         else if (req.user.role === 'manager')

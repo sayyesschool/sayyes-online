@@ -1,6 +1,10 @@
 extends /shared/layouts/page
 
 append head
+    link(rel="preconnect" href="https://fonts.googleapis.com")
+    link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=Shantell+Sans:ital,wght@1,300..400&display=swap")
+    link(rel="stylesheet" href="https://static.sayes.ru/css/shared.css")
+
     style.
         .flash {
             border-radius: 0;
@@ -32,45 +36,43 @@ block body
     main
         include /shared/includes/flash
 
-        +form#login-form(method='post' action='/login')
+        +form.form#login-form(method='post' action='/login')
             div
                 img(src="https://static.sayes.ru/images/logos/sayyes-purple.png")
 
-            div.form-floating
-                input.form-control(
-                    id="email-input"
-                    type="email"
-                    name="email"
-                    placeholder="name@example.com"
-                    autocomplete="email"
-                    required
-                )
-                label(for="email-input") Электронная почта
+            input.input(
+                id="email-input"
+                type="email"
+                name="email"
+                placeholder="Электронная почта"
+                autocomplete="email"
+                required
+            )
 
-            div.form-floating
-                input.form-control(
-                    id="password-input"
-                    type="password"
-                    name="password"
-                    minlength="6"
-                    maxlength="128"
-                    placeholder=" "
-                    autocomplete="current-password"
-                    required
-                )
-                label(for="password-input") Пароль
+            input.input(
+                id="password-input"
+                type="password"
+                name="password"
+                minlength="6"
+                maxlength="128"
+                placeholder="Пароль"
+                autocomplete="current-password"
+                required
+            )
 
-            button.btn.btn-primary.btn-lg(type="submit") Войти
+            button.btn.btn--purple(type="submit") Войти
 
-            button.btn.btn-link(type="button" data-bs-toggle="modal" data-bs-target="#password-modal") Забыли пароль?
+            button.link(type="button" data-bs-toggle="modal" data-bs-target="#password-modal") Забыли пароль?
 
         include ./includes/password-dialog
 
     script.
         document.querySelectorAll('.form').forEach(form => {
-            form.addEventListener('submit', function() {
+            form.addEventListener('submit', () => {
                 const submitButton = this.querySelector('button[type="submit"]');
-                if (submitButton)
+
+                if (submitButton) {
                     submitButton.disabled = true;
+                }
             });
         });
