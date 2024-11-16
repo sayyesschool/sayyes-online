@@ -1,4 +1,4 @@
-import mongoose, { isValidObjectId } from 'mongoose';
+import mongoose, { Document, isObjectIdOrHexString, isValidObjectId } from 'mongoose';
 
 mongoose.set('toObject', {
     virtuals: true,
@@ -29,26 +29,28 @@ mongoose.set('toJSON', {
 
 mongoose.plugin(function addResolve(schema) {
     schema.statics.resolve = async function resolve(arg) {
-        if (typeof arg === 'object' && isValidObjectId(arg.id)) return arg;
+        if (!arg)
+            return null;
 
-        const document = await (isValidObjectId(arg) ?
-            this.findById(arg) :
-            this.findOne(arg)
-        );
+        if (arg instanceof Document)
+            return arg;
 
-        if (!document)
-            throw new Error(`${this.constructor.modelName} not found`);
+        else if (isObjectIdOrHexString(arg))
+            return this.findById(arg);
 
-        return document;
+        else if (typeof arg === 'object')
+            return this.hydrate(arg);
+
+        else return null;
     };
 
-    schema.statics.update = async function update(query, ...args) {
+    schema.statics.update = function update(query, ...args) {
         return isValidObjectId(query) ?
             this.findByIdAndUpdate(query, ...args) :
             this.findOneAndUpdate(query, ...args);
     };
 
-    schema.statics.delete = async function remove(query, ...args) {
+    schema.statics.delete = function remove(query, ...args) {
         return isValidObjectId(query) ?
             this.findByIdAndDelete(query, ...args) :
             this.findOneAndDelete(query, ...args);
