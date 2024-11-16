@@ -78,6 +78,13 @@ export const manager = {
     role: 'manager'
 };
 
+export const member = {
+    firstname: 'Участник',
+    email: 'member@sayyes.school',
+    password: '123456',
+    role: 'member'
+};
+
 export const teacher = {
     firstname: 'Учитель',
     email: 'teacher@sayyes.school',
@@ -491,24 +498,12 @@ export const meetings = [
         level: 'beginner',
         capacity: 10,
         published: true,
-        zoomId: '1234567890',
-        startUrl: 'https://zoom.us/start',
-        joinUrl: 'https://zoom.us/join',
+        online: false,
         materialsUrl: 'https://zoom.us/materials',
         thumbnailUrl: 'https://picsum.photos/200',
         notes: 'Meeting notes',
-        host: null,
-        registrations: [{
-            userId: learner.id,
-            registrant: {
-                email: learner.email,
-                firstname: learner.firstname
-            },
-            zoomId: '1234567890',
-            status: 'approved',
-            joinUrl: 'https://zoom.us/join',
-            participated: false
-        }],
+        hostId: null,
+        registrations: [],
         participants: []
     }
 ];

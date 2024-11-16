@@ -29,10 +29,12 @@ await Room.create(data.rooms);
 const [
     learner,
     manager,
+    member,
     teacher
 ] = await User.create([
     data.learner,
     data.manager,
+    data.member,
     data.teacher
 ]);
 
@@ -85,19 +87,11 @@ await Vocabulary.create([
 
 await Meeting.create(data.meetings.map(meeting => ({
     ...meeting,
-    host: teacher.id,
-    registrations: [{
-        userId: learner.id,
-        registrant: {
-            email: learner.email,
-            firstname: learner.firstname,
-            lastname: 'Lastname'
-        },
-        zoomId: meeting.zoomId,
-        status: 'approved',
-        joinUrl: meeting.joinUrl,
-        participated: false
-    }]
+    hostId: teacher.id,
+    registrations: meeting.registrations.map(registration => ({
+        ...registration,
+        userId: member.id
+    }))
 })));
 
 console.log('DB seeded');
