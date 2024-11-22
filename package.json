@@ -16,7 +16,6 @@
     "deploy": "git push prod master",
     "deploy-dev": "git push dev dev:master",
     "lint": "eslint ./src",
-    "prestart": "npm run build",
     "start": "node --import ./loaders/register.cjs src/main.js",
     "start-dev": "nodemon --import=./loaders/register.cjs -r dotenv/config ./src/main.js",
     "test": "mocha -r dotenv/config",
