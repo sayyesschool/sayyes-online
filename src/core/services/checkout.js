@@ -15,7 +15,7 @@ export default ({
 
     return {
         async createPayment({ amount, description, method, returnUrl, email, metadata, ...override }) {
-            return kassa.createPayment({
+            const payment = await kassa.createPayment({
                 amount: {
                     value: Number(amount).toFixed(2),
                     currency: 'RUB'
@@ -48,43 +48,43 @@ export default ({
                 },
                 metadata,
                 ...override
-            }).then(payment => {
-                return Payment.create({
-                    uuid: payment.id,
-                    status: payment.status,
-                    amount: payment.amount.value,
-                    date: payment.captured_at,
-                    paid: payment.paid,
-                    description: payment.description,
-                    confirmation: payment.confirmation && {
-                        type: payment.confirmation.type,
-                        confirmationToken: payment.confirmation.confirmation_token,
-                        confirmationUrl: payment.confirmation.confirmation_url,
-                        returnUrl: payment.confirmation.return_url
-                    },
-                    method: payment.payment_method && {
-                        id: payment.payment_method.id,
-                        type: payment.payment_method.type,
-                        saved: payment.payment_method.saved,
-                        card: payment.payment_method.card && {
-                            type: payment.payment_method.card.card_type,
-                            last4: payment.payment_method.card.last4,
-                            month: payment.payment_method.card.expiry_month,
-                            year: payment.payment_method.card.expiry_year,
-                            country: payment.payment_method.card.issuer_country,
-                            issuer: payment.payment_method.card.issuer_name
-                        }
-                    },
-                    customer: payment.metadata.customer,
-                    metadata: {
-                        ...payment.metadata,
-                        customer: undefined
-                    },
-                    test: payment.test,
-                    createdAt: payment.created_at,
-                    expiresAt: payment.expires_at,
-                    paidAt: payment.captured_at
-                });
+            });
+
+            return Payment.create({
+                uuid: payment.id,
+                status: payment.status,
+                amount: payment.amount.value,
+                date: payment.captured_at,
+                paid: payment.paid,
+                description: payment.description,
+                confirmation: payment.confirmation && {
+                    type: payment.confirmation.type,
+                    confirmationToken: payment.confirmation.confirmation_token,
+                    confirmationUrl: payment.confirmation.confirmation_url,
+                    returnUrl: payment.confirmation.return_url
+                },
+                method: payment.payment_method && {
+                    id: payment.payment_method.id,
+                    type: payment.payment_method.type,
+                    saved: payment.payment_method.saved,
+                    card: payment.payment_method.card && {
+                        type: payment.payment_method.card.card_type,
+                        last4: payment.payment_method.card.last4,
+                        month: payment.payment_method.card.expiry_month,
+                        year: payment.payment_method.card.expiry_year,
+                        country: payment.payment_method.card.issuer_country,
+                        issuer: payment.payment_method.card.issuer_name
+                    }
+                },
+                customer: payment.metadata.customer,
+                metadata: {
+                    ...payment.metadata,
+                    customer: undefined
+                },
+                test: payment.test,
+                createdAt: payment.created_at,
+                expiresAt: payment.expires_at,
+                paidAt: payment.captured_at
             });
         },
 
