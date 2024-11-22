@@ -23,3 +23,11 @@ export function createId() {
 export function spy(...args) {
     return expect.createSpy(...args);
 }
+
+export function spyOn(obj, method) {
+    return expect.spyOn(obj, method);
+}
+
+export function toJSON(arg) {
+    return JSON.parse(JSON.stringify(arg?.toJSON ? arg.toJSON() : arg));
+}

@@ -77,7 +77,7 @@ describe('ClubService', () => {
             it('should create a new user with the member role', async () => {
                 const email = 'bob@sayyes.school';
                 const user = await club.registerMember({
-                    firstname: 'Bob',
+                    name: 'Bob',
                     email
                 });
 
@@ -125,6 +125,28 @@ describe('ClubService', () => {
         beforeEach(async () => {
             meeting = await club.createMeeting({
                 title: 'Test Meeting'
+            });
+        });
+
+        describe('getMeeting', () => {
+            it('should return a meeting by id', async () => {
+                const foundMeeting = await club.getMeeting(meeting._id);
+
+                expect(foundMeeting._id).toEqual(meeting._id);
+            });
+
+            it('should return a meeting by object', async () => {
+                const foundMeeting = await club.getMeeting(meeting);
+
+                expect(foundMeeting._id).toMatch(meeting._id);
+            });
+
+            it('should reject if the meeting is not found', async () => {
+                await rejects(async () => {
+                    await club.getMeeting('000000000000000000000000');
+                }, {
+                    message: 'Встреча не найдена'
+                });
             });
         });
 
@@ -177,7 +199,7 @@ describe('ClubService', () => {
                 });
                 const ticket = await club.createTicket(user, packsMap[1]);
 
-                const [updatedMeeting, updatedTicket] = await club.registerForMeeting(user, ticket, meeting);
+                const [updatedMeeting, updatedTicket] = await club.registerForMeeting(user, meeting, ticket);
                 const registration = updatedMeeting.findRegistrationByUser(user);
 
                 expect(registration).toExist();
@@ -191,10 +213,10 @@ describe('ClubService', () => {
                 });
                 const ticket = await club.createTicket(user, packsMap[1]);
 
-                await club.registerForMeeting(user, ticket, meeting);
+                await club.registerForMeeting(user, meeting, ticket);
 
                 await rejects(async () => {
-                    await club.registerForMeeting(user, ticket, meeting);
+                    await club.registerForMeeting(user, meeting, ticket);
                 }, {
                     message: 'Пользователь уже зарегистрирован на встречу'
                 });
@@ -206,9 +228,9 @@ describe('ClubService', () => {
                 });
 
                 await rejects(async () => {
-                    await club.registerForMeeting(user, null, meeting);
+                    await club.registerForMeeting(user, meeting);
                 }, {
-                    message: 'Для регистрации на встречу необходимо купить билет'
+                    message: 'Билет не найден'
                 });
             });
 
@@ -223,9 +245,9 @@ describe('ClubService', () => {
                 await ticket.save();
 
                 await rejects(async () => {
-                    await club.registerForMeeting(user, ticket, meeting);
+                    await club.registerForMeeting(user, meeting, ticket);
                 }, {
-                    message: 'Для регистрации на встречу необходимо купить билет'
+                    message: 'Для регистрации на встречу необходимо купить новый билет'
                 });
             });
         });
@@ -233,10 +255,11 @@ describe('ClubService', () => {
         describe('unregisterFromMeeting', () => {
             it('should unregister a user from a meeting', async () => {
                 const meeting = await club.createMeeting({
-                    title: 'Test Meeting'
+                    title: 'Test Meeting',
+                    date: moment().add(1, 'day').toDate()
                 });
                 const ticket = await club.createTicket(user, packsMap[1]);
-                await club.registerForMeeting(user, ticket, meeting);
+                await club.registerForMeeting(user, meeting, ticket);
 
                 const [updatedMeeting, updatedTicket] = await club.unregisterFromMeeting(user, meeting);
                 const registration = updatedMeeting.findRegistrationByUser(user);
