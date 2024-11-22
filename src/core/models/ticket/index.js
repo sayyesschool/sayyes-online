@@ -1,1 +1,1 @@
-module.exports = require('./Ticket');
+export { default } from './Ticket';

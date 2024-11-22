@@ -16,6 +16,7 @@ import Record from './record';
 import Request from './request';
 import Room from './room';
 import Task from './task';
+import Ticket from './ticket';
 import Transaction from './transaction';
 import User from './user';
 import Vocabulary from './vocabulary';
@@ -37,6 +38,7 @@ export default () => ({
     Request: model('Request', Request),
     Room: model('Room', Room),
     Task: model('Task', Task),
+    Ticket: model('Ticket', Ticket),
     Transaction: model('Transaction', Transaction),
     Vocabulary: model('Vocabulary', Vocabulary),
     ...User()
