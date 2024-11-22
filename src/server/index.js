@@ -13,10 +13,8 @@ export default ({ config, db }, options) => {
     server.set('views', config.APP_PATH);
 
     server.locals.ENV = server.get('env');
-    server.locals.YANDEX_METRIKA_ID = config.YANDEX_METRIKA_ID;
-    server.locals.GOOGLE_ANALYTICS_ID = config.GOOGLE_ANALYTICS_ID;
-    server.locals.FACEBOOK_PIXEL_ID = config.FACEBOOK_PIXEL_ID;
     server.locals.basedir = config.APP_PATH;
+    Object.assign(server.locals, config);
 
     server.use(cors({
         // origin: '*',
