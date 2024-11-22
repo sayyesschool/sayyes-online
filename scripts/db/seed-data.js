@@ -490,7 +490,7 @@ export const rooms = [
 export const meetings = [
     {
         title: 'Meeting',
-        description: 'Meeting description',
+        description: '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui magnam, veniam voluptatibus alias cumque libero quia ab. Odio quis quaerat cupiditate consequatur totam? Tempora ab iste commodi laboriosam, saepe officiis.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, quo distinctio! Natus vel voluptas nemo eum consectetur officiis, sit laboriosam sapiente delectus nihil illum est quaerat corporis commodi quo debitis!</p>',
         status: 'scheduled',
         price: 0,
         date: new Date('2025-01-01T10:00'),
