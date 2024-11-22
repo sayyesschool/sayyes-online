@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { Schema } from 'mongoose';
+import { isValidObjectId, Schema } from 'mongoose';
 
 import Registration from './Registration';
 
@@ -11,6 +11,16 @@ const Level = {
     Intermediate: 'intermediate',
     UpperIntermediate: 'upper-intermediate',
     Advanced: 'advanced'
+};
+
+const LevelLabels = {
+    [Level.Any]: 'Любой',
+    [Level.Elementary]: 'Elementary',
+    [Level.Beginner]: 'Beginner',
+    [Level.PreIntermediate]: 'Pre-Intermediate',
+    [Level.Intermediate]: 'Intermediate',
+    [Level.UpperIntermediate]: 'Upper-Intermediate',
+    [Level.Advanced]: 'Advanced'
 };
 
 const Status = {
@@ -39,6 +49,7 @@ export const Meeting = new Schema({
     },
     capacity: { type: Number },
     published: { type: Boolean, default: false },
+    online: { type: Boolean, default: false },
     zoomId: { type: String },
     startUrl: { type: String },
     joinUrl: { type: String },
@@ -78,12 +89,16 @@ Meeting.virtual('timeLabel').get(function() {
     return moment(this.date).tz('Europe/Moscow').format('H:mm МСК');
 });
 
-Meeting.virtual('free').get(function() {
-    return this.price === 0;
+Meeting.virtual('durationLabel').get(function() {
+    return `${this.duration} минут`;
 });
 
-Meeting.virtual('online').get(function() {
-    return Boolean(this.zoomId);
+Meeting.virtual('levelLabel').get(function() {
+    return LevelLabels[this.level];
+});
+
+Meeting.virtual('isFree').get(function() {
+    return this.price === 0;
 });
 
 Meeting.virtual('isToday').get(function() {
@@ -100,6 +115,10 @@ Meeting.virtual('isStarted').get(function() {
 
 Meeting.virtual('isEnded').get(function() {
     return this.status === Status.Ended;
+});
+
+Meeting.virtual('isZoom').get(function() {
+    return Boolean(this.zoomId);
 });
 
 Meeting.virtual('hasRegistrations').get(function() {
@@ -155,8 +174,10 @@ Meeting.methods.findRegistrationById = function(id) {
     return this.registrations.find(r => r.id == id);
 };
 
-Meeting.methods.findRegistrationByUser = function(user) {
-    return this.registrations.find(r => r.userId == (user?.id || user));
+Meeting.methods.findRegistrationByUser = function($user) {
+    const userId = isValidObjectId($user) ? $user : $user?.id;
+
+    return this.registrations.find(r => r.userId == userId);
 };
 
 export default Meeting;
