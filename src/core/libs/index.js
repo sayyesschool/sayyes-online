@@ -3,7 +3,10 @@ import Twilio from './twilio';
 import Zoom from './zoom';
 
 export default config => ({
-    mailjet: MailJet(config),
+    mailjet: MailJet({
+        apiKey: config.MAILJET_API_KEY,
+        apiSecret: config.MAILJET_API_SECRET
+    }),
     twilio: Twilio(config),
     zoom: Zoom({
         accountId: config.ZOOM_ACCOUNT_ID,
