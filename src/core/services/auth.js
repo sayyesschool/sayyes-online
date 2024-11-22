@@ -1,5 +1,9 @@
 import { randomBytes } from 'node:crypto';
 
+function generatePassword(length = 12) {
+    return randomBytes(length).toString('base64');
+}
+
 export default ({
     models: { User }
 }, {
@@ -14,14 +18,14 @@ export default ({
         failureFlash: true
     },
 
+    generatePassword,
+
     async register({
         email,
-        password = randomBytes(12).toString('base64'),
+        password = generatePassword(),
         firstname,
         lastname,
         role
-    } = {}, {
-        notify = true
     } = {}) {
         if (!email) throw {
             code: 403,
@@ -36,9 +40,7 @@ export default ({
             role
         });
 
-        if (notify) {
-            onRegister?.(user, password);
-        }
+        onRegister?.(user, password);
 
         return user;
     },
@@ -53,7 +55,7 @@ export default ({
         }
     },
 
-    authorize(account, done) {
+    async authorize(account, done) {
         User.findOne({ 'accounts.userId': account.userId })
             .then(user => {
                 if (!user) {
@@ -67,7 +69,7 @@ export default ({
             });
     },
 
-    connect(currentUser, account, done) {
+    async connect(currentUser, account, done) {
         User.findOne({ 'accounts.userId': account.userId })
             .then(user => {
                 if (user && (user.id === currentUser.id))
@@ -86,11 +88,11 @@ export default ({
             });
     },
 
-    disconnect(user, accountId) {
+    async disconnect(user, accountId) {
         return user.removeAccount(accountId);
     },
 
-    sendResetPasswordToken(email) {
+    async sendResetPasswordToken(email) {
         return User.findOne({ email })
             .then(user => {
                 if (!user) throw new Error('Пользователь не найден');
@@ -104,7 +106,7 @@ export default ({
             });
     },
 
-    resetPassword(resetPasswordToken, password) {
+    async resetPassword(resetPasswordToken, password) {
         return User.findOne({ resetPasswordToken })
             .then(user => {
                 if (!user) {
