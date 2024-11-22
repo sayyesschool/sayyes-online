@@ -1,5 +1,24 @@
 import { isValidObjectId } from 'mongoose';
 
+const CLUB_EMAIL = 'club@sayyes.school';
+const CLUB_NAME = 'SAY YES Speaking Club';
+
+const FROM = {
+    email: CLUB_EMAIL,
+    name: CLUB_NAME
+};
+
+const emailTemplates = {
+    MEMBER_REGISTRATION: 6476492,
+    MEETING_REGISTRATION_ONLINE: 6476555,
+    MEETING_REGISTRATION_OFFLINE: 6476558,
+    MEETING_REGISTRATION_DENIED: 6476560,
+    MEETING_REMINDER_24H: 6476571,
+    MEETING_REMINDER_1H: 6476573,
+    MEETING_FEEDBACK: 6476574,
+    TICKET_PURCHASE: 6476579
+};
+
 export const packs = [
     {
         id: '21dec724-4a40-48ef-9cf7-89f0fb3c4d07',
@@ -12,6 +31,7 @@ export const packs = [
         id: '3f7eb11c-12c5-4631-af4a-39855ca17810',
         visits: 4,
         price: 2990,
+        discount: 0,
         duration: [1, 'month'],
         title: '4 занятия'
     },
@@ -19,6 +39,7 @@ export const packs = [
         id: '3d678c9b-632d-492a-aaad-e1ced4f35255',
         visits: 8,
         price: 4990,
+        discount: 1000,
         duration: [3, 'month'],
         title: '8 занятий'
     },
@@ -26,6 +47,7 @@ export const packs = [
         id: '8012db3e-b720-48ea-95a9-ba42772da33d',
         visits: 16,
         price: 7990,
+        discount: 2000,
         duration: [6, 'month'],
         title: '16 занятий'
     }
@@ -42,8 +64,17 @@ export default ({
     models: { Meeting, Ticket, User },
     services: { Auth, Checkout, Mail, Newsletter }
 }) => ({
+    emailTemplates,
+
     async getPacks() {
-        return packs;
+        return packs.map(pack => ({
+            ...pack,
+            description: pack.duration ?
+                `Срок действия ${pack.duration[0]} мес.` :
+                'Срок действия неограничен',
+            priceWithoutDiscount: pack.discount && pack.price + pack.discount,
+            pricePerMonth: pack.duration && Math.round(pack.price / pack.duration[0])
+        }));
     },
 
     async getPack(arg) {
@@ -51,7 +82,10 @@ export default ({
 
         const pack = packs.find(pack => pack.id === arg);
 
-        if (!pack) throw new Error('Пакет не найден');
+        if (!pack) throw {
+            status: 404,
+            message: 'Пакет не найден'
+        };
 
         return pack;
     },
@@ -59,28 +93,56 @@ export default ({
     async getMember($user) {
         const user = await User.resolve($user);
 
-        if (!user)
-            throw new Error('Пользователь не найден.');
+        if (!user) throw {
+            status: 404,
+            message: 'Пользователь не найден'
+        };
 
         return user;
     },
 
-    async registerMember(data) {
-        const member = await Auth.register({
-            ...data,
+    async registerMember({ name = '', email } = { }) {
+        const [firstname, lastname] = name.split(' ');
+        const password = Auth.generatePassword();
+        const user = await Auth.register({
+            firstname,
+            lastname,
+            email,
+            password,
             role: 'member'
-        }, { notify: false });
+        });
 
-        // Newsletter.subscribe({
-        //     name: user.firstname,
-        //     email: user.email,
-        //     action: 'addnoforce'
-        // });
+        Mail.send({
+            subject: 'Добро пожаловать в Разговорный клуб SAY YES!',
+            to: {
+                name: user.fullname,
+                email: user.email
+            },
+            from: FROM,
+            templateId: emailTemplates.MEMBER_REGISTRATION,
+            variables: {
+                firstname: user.firstname,
+                email: user.email,
+                password
+            }
+        });
 
-        return member;
+        Mail.send({
+            subject: 'Пользователь зарегистрировался в разговорном клубе',
+            to: CLUB_EMAIL,
+            html: `Имя: ${user.firstname}\nEmail: ${user.email}`
+        });
+
+        Newsletter.subscribe({
+            name: user.firstname,
+            email: user.email,
+            action: 'addnoforce'
+        });
+
+        return user;
     },
 
-    async createTicket($user, $pack) {
+    async createTicket($user, $pack, paymentId) {
         const user = await this.getMember($user);
         const pack = await this.getPack($pack);
 
@@ -88,7 +150,8 @@ export default ({
         const ticket = new Ticket({
             limit: pack.visits,
             price: pack.price,
-            userId: user.id
+            userId: user.id,
+            paymentId
         });
 
         ticket.purchasedAt = date;
@@ -97,16 +160,29 @@ export default ({
         return ticket.save();
     },
 
+    async findValidTicket($user) {
+        const userId = isValidObjectId($user) ? $user : $user?.id;
+        const tickets = await Ticket.find({ userId });
+
+        return tickets.find(ticket => ticket.isValid);
+    },
+
     async getTicket($ticket) {
         const ticket = await Ticket.resolve($ticket);
 
-        if (!ticket) throw new Error('Билет не найден');
+        if (!ticket) throw {
+            status: 404,
+            message: 'Билет не найден'
+        };
 
         return ticket;
     },
 
     async purchaseTicket(user, planId, meeting = {}) {
-        if (!user) throw new Error('Для приобретения билета необходимо указать пользователя.');
+        if (!user) throw {
+            status: 400,
+            message: 'Для приобретения билета необходимо указать пользователя.'
+        };
 
         const plan = Ticket.plans[planId] || {};
 
@@ -131,7 +207,8 @@ export default ({
 
     findMeetings(...args) {
         return Meeting.find(...args)
-            .populate('host', 'firstname lastname avatarUrl');
+            .populate('host', 'firstname lastname avatarUrl')
+            .sort({ date: -1 });
     },
 
     findScheduledMeetings(...args) {
@@ -146,15 +223,19 @@ export default ({
             Meeting.findOne(...args)
         )
             .populate('host', 'firstname lastname avatarUrl')
+            .populate('registrations.user')
             .populate('participants');
     },
 
     async getMeeting($meeting) {
         const meeting = await Meeting.resolve($meeting);
 
-        if (!meeting) throw new Error('Встреча не найдена');
+        if (!meeting) throw {
+            status: 404,
+            message: 'Встреча не найдена'
+        };
 
-        return meeting;
+        return meeting.populate('host', 'firstname lastname avatarUrl');
     },
 
     async createMeeting(data, ...args) {
@@ -178,9 +259,9 @@ export default ({
             Object.assign(meetingData, zoomMeetingData);
         }
 
-        const meeting = await Meeting.create(data, ...args).populate('host');
+        const meeting = await Meeting.create(data, ...args);
 
-        return meeting;
+        return meeting.populate('host');
     },
 
     async updateMeeting(id, data, ...args) {
@@ -214,72 +295,87 @@ export default ({
     async deleteMeeting(id, ...args) {
         const meeting = await Meeting.findByIdAndDelete(id, ...args);
 
-        if (meeting.hasRegistrants || meeting.hasParticipants) {
-            throw new Error('Невозможно удалить встречу, т.к. в ней есть зарегистрировавшиеся или участники.');
-        }
+        if (meeting.hasRegistrants || meeting.hasParticipants) throw {
+            status: 400,
+            message: 'Невозможно удалить встречу, т.к. в ней есть зарегистрировавшиеся или участники.'
+        };
 
-        if (meeting.zoomId) {
+        if (meeting.zoomId)
             await zoom.meetings.delete(meeting.zoomId);
-        }
 
         return meeting;
     },
 
-    async registerForMeeting($user, $ticket, $meeting) {
+    async registerForMeeting($user, $meeting, $ticket, { force, notify } = { force: false, notify: true }) {
         const user = await this.getMember($user);
-        const ticket = await this.getTicket($ticket);
         const meeting = await this.getMeeting($meeting);
+        const ticket = await ($ticket ?
+            this.getTicket($ticket) :
+            this.findValidTicket(user)
+        );
 
-        if (this.isRegisteredForMeeting(user, meeting))
-            throw new Error('Пользователь уже зарегистрирован на встречу');
+        if (this.isRegisteredForMeeting(user, meeting)) throw {
+            status: 400,
+            message: 'Пользователь уже зарегистрирован на встречу'
+        };
 
-        if (!ticket || !ticket.isValid)
-            throw new Error('Для регистрации на встречу необходимо купить билет');
+        if (!force && !meeting.isFree && ticket && !ticket.isValid) throw {
+            status: 400,
+            message: 'Для регистрации на встречу необходимо купить новый билет'
+        };
 
-        const registration = await this.createRegistration(user, ticket, meeting);
+        const registration = await this.createRegistration(meeting, user, ticket);
 
         meeting.registrations.addToSet(registration);
-        ticket.meetingIds.addToSet(meeting.id);
 
-        // Mail.send({
-        //     to: [{
-        //         name: `${user.firstname} ${user.lastname}`,
-        //         email: user.email
-        //     }],
-        //     subject: `Спасибо за регистрацию на встречу "${meeting.title}"`,
-        //     templateId: meeting.online ? 1348593 : 3188274,
-        //     variables: {
-        //         firstname: user.firstname,
-        //         title: meeting.title,
-        //         datetime: meeting.datetime,
-        //         host: `${meeting.host.firstname} ${meeting.host.lastname}`,
-        //         level: meeting.level,
-        //         thumbnailUrl: meeting.thumbnailUrl,
-        //         joinUrl: meeting.joinUrl
-        //     }
-        // });
+        if (ticket) {
+            ticket.meetingIds.addToSet(meeting.id);
+            await ticket.save();
+        }
 
-        return Promise.all([
-            meeting.save(),
-            ticket.save()
-        ]);
+        await meeting.save();
+
+        if (notify) {
+            Mail.send({
+                to: {
+                    name: user.fullname,
+                    email: user.email
+                },
+                subject: `Спасибо за регистрацию на встречу "${meeting.title}"`,
+                templateId: meeting.online ?
+                    emailTemplates.MEETING_REGISTRATION_ONLINE :
+                    emailTemplates.MEETING_REGISTRATION_OFFLINE,
+                variables: {
+                    firstname: user.firstname,
+                    title: meeting.title,
+                    datetime: meeting.datetime,
+                    host: meeting.host?.fullname,
+                    level: meeting.level,
+                    thumbnailUrl: meeting.thumbnailUrl,
+                    joinUrl: meeting.joinUrl
+                }
+            });
+        }
+
+        return registration;
     },
 
     async unregisterFromMeeting($user, $meeting) {
         const user = await this.getMember($user);
         const meeting = await this.getMeeting($meeting);
-        const registration = this.getRegistrationByUserId(meeting, user.id);
+        const registration = this.getRegistrationByUser(meeting, user);
 
-        if (!meeting.canUnregister(registration))
-            throw new Error('Отменить регистрацию нельзя');
+        if (!meeting.canUnregister(registration)) throw {
+            status: 400,
+            message: 'Отменить регистрацию нельзя'
+        };
 
-        if (meeting.zoomId && registration.zoomId) {
+        if (meeting.zoomId && registration.zoomId)
             await zoom.meetings.removeRegistrant(meeting.zoomId, registration.zoomId);
-        }
 
         meeting.registrations.remove(registration);
 
-        return Promise.all([
+        const [savedMeeting] = await Promise.all([
             meeting.save(),
             Ticket.findOneAndUpdate(
                 {
@@ -290,6 +386,8 @@ export default ({
                 { new: true }
             )
         ]);
+
+        return savedMeeting;
     },
 
     isRegisteredForMeeting(user, meeting) {
@@ -299,21 +397,28 @@ export default ({
     getRegistration(meeting, registrationId) {
         const registration = meeting.findRegistrationById(registrationId);
 
-        if (!registration) throw new Error('Регистрация на встречу не найдена');
+        if (!registration) throw {
+            status: 404,
+            message: 'Регистрация на встречу не найдена'
+        };
 
         return registration;
     },
 
-    getRegistrationByUserId(meeting, userId) {
-        const registration = meeting.findRegistrationByUser(userId);
+    getRegistrationByUser(meeting, $user) {
+        const registration = meeting.findRegistrationByUser($user);
 
-        if (!registration) return Promise.reject('Регистрация на встречу на найдена');
+        if (!registration) throw {
+            status: 404,
+            message: 'Регистрация на встречу не найдена'
+        };
 
         return registration;
     },
 
-    async createRegistration(user, ticket, $meeting, { status } = { status: 'pending' }) {
+    async createRegistration($meeting, $user, ticket, { status } = { status: 'pending' }) {
         const meeting = await this.getMeeting($meeting);
+        const user = await this.getMember($user);
         const registration = meeting.registrations.create({
             registrant: {
                 email: user.email,
@@ -322,7 +427,7 @@ export default ({
             },
             status,
             userId: user.id,
-            ticketId: ticket.id
+            ticketId: ticket?.id
         });
 
         if (meeting.zoomId) {
@@ -335,10 +440,6 @@ export default ({
             registration.joinUrl = join_url;
             registration.zoomId = registrant_id;
         }
-
-        meeting.registrations.addToSet(registration);
-
-        await meeting.save();
 
         return registration;
     },
@@ -385,24 +486,26 @@ export default ({
             status: 'approved'
         });
 
-        // Mail.send({
-        //     to: [{
-        //         name: `${registration.registrant.firstname} ${registration.registrant.lastname}`,
-        //         email: registration.registrant.email
-        //     }],
-        //     subject: `Спасибо за регистрацию на встречу "${meeting.title}"`,
-        //     templateId: 1348593,
-        //     variables: {
-        //         firstname: registration.registrant.firstname,
-        //         title: meeting.title,
-        //         datetime: meeting.datetime,
-        //         host: `${meeting.host.firstname} ${meeting.host.lastname}`,
-        //         level: meeting.level,
-        //         materialsUrl: meeting.materialsUrl || '',
-        //         thumbnailUrl: meeting.thumbnailUrl || '',
-        //         joinUrl: meeting.joinUrl
-        //     }
-        // });
+        const registrant = registration.registrant;
+
+        Mail.send({
+            to: {
+                name: `${registrant.firstname} ${registrant.lastname}`,
+                email: registrant.email
+            },
+            subject: `Спасибо за регистрацию на встречу "${meeting.title}"`,
+            templateId: 1348593,
+            variables: {
+                firstname: registrant.firstname,
+                title: meeting.title,
+                datetime: meeting.datetime,
+                host: meeting.host?.fullname,
+                level: meeting.level,
+                materialsUrl: meeting.materialsUrl || '',
+                thumbnailUrl: meeting.thumbnailUrl || '',
+                joinUrl: meeting.joinUrl
+            }
+        });
 
         return registration;
     },
@@ -482,10 +585,10 @@ export default ({
             ...meeting.registrations
                 .filter(registration => registration.status === 'approved')
                 .map(registration => ({
-                    to: [{
+                    to: {
                         name: `${registration.registrant.firstname} ${registration.registrant.lastname}`,
                         email: registration.registrant.email
-                    }],
+                    },
                     subject: 'Напоминание о встрече',
                     templateId,
                     variables: {
