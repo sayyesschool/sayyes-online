@@ -20,7 +20,8 @@ export const Person = new Schema({
         type: String,
         trim: true,
         maxlength: [64, 'Фамилия слишком длинная.'],
-        match: [/^[^0-9 ]+$/, 'В фамилии не должно быть пробелов и цифр.']
+        match: [/^[^0-9 ]+$/, 'В фамилии не должно быть пробелов и цифр.'],
+        default: '―'
     },
     patronym: {
         type: String,
