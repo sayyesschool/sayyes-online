@@ -3,10 +3,7 @@ export default ({
     services: { Schedule }
 }) => ({
     async get(req, res) {
-        const lessons = await Lesson.find({
-            teacherId: req.user.id,
-            ...req.query
-        })
+        const lessons = await Lesson.find(req.query)
             .sort({ date: 1 })
             .populate('learner', 'firstname lastname email')
             .populate('room', 'title login password');
