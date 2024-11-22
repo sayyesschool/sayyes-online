@@ -1,5 +1,8 @@
 export default {
     user: null,
-    tickets: [],
-    meetings: []
+    // tickets: [],
+    meetings: {
+        list: null,
+        single: null
+    }
 };

@@ -12,7 +12,7 @@ import MeetingPage from 'club/components/meetings/meeting-page';
 import TeacherPage from 'club/components/teacher/teacher-page';
 
 const PageByRole = {
-    learner: LearnerPage,
+    member: LearnerPage,
     manager: ManagerPage,
     teacher: TeacherPage
 };
