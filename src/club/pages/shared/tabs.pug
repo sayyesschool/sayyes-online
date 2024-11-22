@@ -1,0 +1,27 @@
+mixin tabs(tabs)
+    div.tabs(id=attributes.id class={
+        'tabs--pills': attributes.pills,
+        [`tabs--${attributes.color}`]: attributes.color
+    })&attributes(Object.assign({}, attributes, {
+        id: null,
+        horizontal: null,
+        padded: null,
+        color: null
+    }))
+        div.tabs__nav
+            for tab, i in tabs
+                +tab()(active=(tab.active || i === 0))&attributes(tab)
+
+        div.tabs__content
+            block
+
+mixin tab(content)
+    button.tab(
+        class={'tab--active': attributes.active}
+        type="button"
+        value=attributes.value
+        data-tab-target=attributes.value
+    )&attributes(Object.assign({}, attributes, {
+        active: null,
+        value: null
+    }))= content || attributes.content
