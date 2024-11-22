@@ -1,8 +1,10 @@
+const LIST_ID = 10477504;
+
 export default MailJet => ({
     subscribe: ({ name, email, action = 'addforce' }) => {
         return MailJet
             .post('contactslist', { version: 'v3' })
-            .id('18064')
+            .id(LIST_ID)
             .action('managecontact')
             .request({
                 Action: action,
@@ -16,7 +18,7 @@ export default MailJet => ({
     unsubscribe: email => {
         return MailJet
             .post('contactslist', { version: 'v3' })
-            .id('18064')
+            .id(LIST_ID)
             .action('managecontact')
             .request({
                 Action: 'unsub',
