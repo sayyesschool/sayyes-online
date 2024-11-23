@@ -76,5 +76,12 @@ export default {
         autoIndex: false
     }),
     disconnect: () => mongoose.disconnect(),
-    drop: () => mongoose.connection.dropDatabase()
+    drop: () => {
+        return mongoose.connection.dropDatabase()
+            .catch(() => {
+                for (const name in mongoose.connection.collections) {
+                    mongoose.connection.dropCollection(name);
+                }
+            });
+    }
 };
