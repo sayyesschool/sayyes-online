@@ -20,7 +20,7 @@ const {
     }
 } = core(config);
 
-await db.connect('mongodb://localhost:27017/sayyes');
+await db.connect(process.env.DB_CONNECTION_STRING);
 
 await db.drop();
 
