@@ -489,7 +489,25 @@ export const rooms = [
 
 export const meetings = [
     {
-        title: 'Meeting',
+        title: 'Online Meeting',
+        description: '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui magnam, veniam voluptatibus alias cumque libero quia ab. Odio quis quaerat cupiditate consequatur totam? Tempora ab iste commodi laboriosam, saepe officiis.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, quo distinctio! Natus vel voluptas nemo eum consectetur officiis, sit laboriosam sapiente delectus nihil illum est quaerat corporis commodi quo debitis!</p>',
+        status: 'scheduled',
+        price: 0,
+        date: new Date('2025-01-01T10:00'),
+        duration: 60,
+        level: 'beginner',
+        capacity: 10,
+        published: true,
+        online: true,
+        materialsUrl: 'https://zoom.us/materials',
+        thumbnailUrl: 'https://picsum.photos/200',
+        notes: 'Meeting notes',
+        hostId: null,
+        registrations: [],
+        participants: []
+    },
+    {
+        title: 'Offline Meeting',
         description: '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui magnam, veniam voluptatibus alias cumque libero quia ab. Odio quis quaerat cupiditate consequatur totam? Tempora ab iste commodi laboriosam, saepe officiis.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, quo distinctio! Natus vel voluptas nemo eum consectetur officiis, sit laboriosam sapiente delectus nihil illum est quaerat corporis commodi quo debitis!</p>',
         status: 'scheduled',
         price: 0,
