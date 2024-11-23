@@ -97,3 +97,5 @@ await Meeting.create(data.meetings.map(meeting => ({
 console.log('DB seeded');
 
 await db.disconnect();
+
+process.exit(0);
