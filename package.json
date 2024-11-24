@@ -14,7 +14,7 @@
     "db-restore": "node -r dotenv/config ./scripts/db/restore.js",
     "db-seed": "node --import ./loaders/register.cjs -r dotenv/config ./scripts/db/seed.js",
     "deploy": "git push prod master",
-    "deploy-dev": "git push dev dev:master",
+    "deploy-dev": "git push dev dev:master && npm run build-dev && npm run ftp dev",
     "ftp": "node ./scripts/deploy/ftp.js",
     "lint": "eslint ./src",
     "start": "node --import ./loaders/register.cjs ./src/main.js",
