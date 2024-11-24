@@ -146,7 +146,8 @@ const Payment = ({ contact, pack, meetingId, onComplete, onError }) => {
             })
         })
             .then(res => res.json())
-            .then(data => {
+            .then(res => {
+                const data = res.data;
                 const checkout = new window.YooMoneyCheckoutWidget({
                     confirmation_token: data.confirmation.confirmationToken,
                     customization: {
