@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { v4 as uuid } from 'uuid';
 
 export const assignment = {
@@ -492,10 +493,9 @@ export const meetings = [
         title: 'Online Meeting',
         description: '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui magnam, veniam voluptatibus alias cumque libero quia ab. Odio quis quaerat cupiditate consequatur totam? Tempora ab iste commodi laboriosam, saepe officiis.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, quo distinctio! Natus vel voluptas nemo eum consectetur officiis, sit laboriosam sapiente delectus nihil illum est quaerat corporis commodi quo debitis!</p>',
         status: 'scheduled',
-        price: 0,
         date: new Date('2025-01-01T10:00'),
         duration: 60,
-        level: 'beginner',
+        level: 0,
         capacity: 10,
         published: true,
         online: true,
@@ -510,10 +510,9 @@ export const meetings = [
         title: 'Offline Meeting',
         description: '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui magnam, veniam voluptatibus alias cumque libero quia ab. Odio quis quaerat cupiditate consequatur totam? Tempora ab iste commodi laboriosam, saepe officiis.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, quo distinctio! Natus vel voluptas nemo eum consectetur officiis, sit laboriosam sapiente delectus nihil illum est quaerat corporis commodi quo debitis!</p>',
         status: 'scheduled',
-        price: 0,
         date: new Date('2025-01-01T10:00'),
         duration: 60,
-        level: 'beginner',
+        level: 1,
         capacity: 10,
         published: true,
         online: false,
@@ -523,5 +522,68 @@ export const meetings = [
         hostId: null,
         registrations: [],
         participants: []
+    },
+    {
+        title: 'Free Meeting',
+        description: '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui magnam, veniam voluptatibus alias cumque libero quia ab. Odio quis quaerat cupiditate consequatur totam? Tempora ab iste commodi laboriosam, saepe officiis.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, quo distinctio! Natus vel voluptas nemo eum consectetur officiis, sit laboriosam sapiente delectus nihil illum est quaerat corporis commodi quo debitis!</p>',
+        status: 'scheduled',
+        date: new Date('2025-01-01T10:00'),
+        duration: 60,
+        level: 1,
+        capacity: 10,
+        published: true,
+        online: true,
+        materialsUrl: 'https://zoom.us/materials',
+        thumbnailUrl: 'https://picsum.photos/200',
+        notes: 'Meeting notes',
+        hostId: null,
+        registrations: [],
+        participants: []
+    },
+    {
+        title: 'Meeting with a long title that is too long to fit in the card',
+        description: '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui magnam, veniam voluptatibus alias cumque libero quia ab. Odio quis quaerat cupiditate consequatur totam? Tempora ab iste commodi laboriosam, saepe officiis.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, quo distinctio! Natus vel voluptas nemo eum consectetur officiis, sit laboriosam sapiente delectus nihil illum est quaerat corporis commodi quo debitis!</p>',
+        status: 'scheduled',
+        date: new Date('2025-01-01T10:00'),
+        duration: 60,
+        level: 1,
+        capacity: 10,
+        published: true,
+        online: false,
+        materialsUrl: 'https://zoom.us/materials',
+        thumbnailUrl: 'https://picsum.photos/200',
+        notes: 'Meeting notes',
+        hostId: null,
+        registrations: [],
+        participants: []
+    }
+];
+
+export const payments = [
+    {
+        uuid: uuid(),
+        amount: 590,
+        currency: 'RUB',
+        status: 'succeeded',
+        paid: true,
+        refundable: false,
+        refunded: false,
+        test: true,
+        operator: 'yookassa',
+        description: 'Payment description',
+        paidAt: moment().toDate(),
+        userId: null
+    }
+];
+
+export const tickets = [
+    {
+        limit: 4,
+        price: 590,
+        expiresAt: moment().add(1, 'month').toDate(),
+        purchasedAt: moment().toDate(),
+        userId: null,
+        paymentId: null,
+        meetingIds: []
     }
 ];
