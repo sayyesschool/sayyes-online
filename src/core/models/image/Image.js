@@ -5,6 +5,8 @@ export const Image = new Schema({
     src: { type: String },
     alt: { type: String },
     caption: { type: String }
+}, {
+    _id: false
 });
 
 Image.virtual('url').get(function() {
