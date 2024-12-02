@@ -76,26 +76,29 @@ export default ({
         if (event === 'payment.succeeded') {
             const payment = await Checkout.resolvePayment(object.id);
 
-            if (!payment)
+            if (!payment) {
                 return processError({ code: 404, message: 'Платеж не найден' });
+            }
 
-            if (!payment.paid)
+            if (!payment.paid) {
                 return processError({ code: 400, message: 'Платеж не оплачен' });
+            }
 
-            const user = await (payment.metadata.userId ?
-                User.findOne({
+            const user = payment.metadata.userId ?
+                await User.findOne({
                     $or: [
                         { _id: payment.metadata.userId },
                         { email: payment.metadata.email }
                     ]
                 }) :
-                Club.registerMember({
+                await Club.registerMember({
                     name: payment.metadata.name,
                     email: payment.metadata.email
-                }));
+                });
 
-            if (!user)
+            if (!user) {
                 return processError({ code: 404, message: 'Пользователь не найден' });
+            }
 
             if (!payment.userId) {
                 await Payment.update(payment.id, { userId: user.id });
@@ -104,7 +107,7 @@ export default ({
             const ticket = await Club.createTicket(user.id, payment.metadata.packId, payment.id);
 
             if (payment.metadata.meetingId) {
-                const registration = await Club.registerForMeeting(user, payment.metadata.meetingId, ticket);
+                const registration = await Club.registerForMeeting(user, payment.metadata.meetingId);
 
                 return processSuccess({
                     data: registration,

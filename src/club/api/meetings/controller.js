@@ -12,7 +12,7 @@ export default ({
     },
 
     async getOne(req, res) {
-        const meeting = await Club.findMeeting(req.params.id);
+        const meeting = await Club.getMeeting(req.params.meetingId);
 
         res.send({
             ok: true,
@@ -52,55 +52,44 @@ export default ({
         });
     },
 
-    async addRegistration(req, res, next) {
-        User.findOne({ email: req.body.email }, 'firstname lastname email balance')
-            .then(user => req.body.force ?
-                Meeting.register(req.params.meetingId, user).then(([meeting]) => meeting) :
-                Meeting.addRegistration(req.params.meetingId, user)
-            ).then(meeting => {
-                const registration = meeting.registrations.slice(-1);
+    async createRegistration(req, res) {
+        const registration = await Club.registerForMeeting(
+            req.user.id,
+            req.params.meetingId,
+            req.body
+        );
 
-                registration.meetingId = meeting.id;
-
-                res.json({
-                    ok: true,
-                    message: 'Регистрация добавлена',
-                    data: registration
-                });
-            })
-            .catch(next);
+        res.json({
+            ok: true,
+            message: 'Регистрация добавлена',
+            data: registration
+        });
     },
 
-    async updateRegistration(req, res, next) {
-        Meeting.updateRegistration(req.params.meetingId, req.params.registrationId, req.body.action)
-            .then(meeting => {
-                const registration = meeting.registrations.find(r => r.id == req.params.registrationId);
+    async updateRegistration(req, res) {
+        const registration = await Club.updateRegistration(
+            req.params.meetingId,
+            req.params.registrationId,
+            { status: req.body.status }
+        );
 
-                registration.meetingId = req.params.meetingId;
-
-                res.json({
-                    ok: true,
-                    message: 'Регистрация изменена',
-                    data: registration
-                });
-            })
-            .catch(next);
+        res.json({
+            ok: true,
+            message: 'Регистрация изменена',
+            data: registration
+        });
     },
 
-    async removeRegistration(req, res, next) {
-        Meeting.removeRegistration(req.params.meetingId, req.params.registrationId)
-            .then(() => {
-                const registration = {
-                    id: req.params.registrationId,
-                    meetingId: req.params.meetingId
-                };
+    async deleteRegistration(req, res) {
+        const registration = await Club.unregisterFromMeeting(
+            req.user.id,
+            req.params.meetingId
+        );
 
-                res.json({
-                    ok: true,
-                    message: 'Регистрация удалена',
-                    data: registration
-                });
-            })
-            .catch(next);
+        res.json({
+            ok: true,
+            message: 'Регистрация удалена',
+            data: registration
+        });
     }
 });
