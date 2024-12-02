@@ -112,8 +112,10 @@ export const actions = {
 export const meetingsReducer = createReducer(null, {
     [getMeetings]: (state, action) => action.data,
     [createMeeting]: (state, action) => state ? [...state, action.data] : [action.data],
-    [updateMeeting]: (state, action) => state.map(meeting => meeting.id === action.data.id ? ({ ...meeting, ...action.data }) : meeting),
-    [deleteMeeting]: (state, action) => state.filter(m => m.id !== action.data.id)
+    [updateMeeting]: (state, action) => state && state.map(meeting => meeting.id === action.data.id ?
+        ({ ...meeting, ...action.data }) : meeting
+    ),
+    [deleteMeeting]: (state, action) => state && state.filter(m => m.id !== action.data.id)
 });
 
 export const meetingReducer = createReducer(null, {
@@ -121,7 +123,7 @@ export const meetingReducer = createReducer(null, {
     [unsetMeeting]: (state, action) => null,
     [updateMeeting]: (state, action) => ({
         ...state,
-        ...action.meeting
+        ...action.data
     }),
     [deleteMeeting]: (state, action) => null,
     [addRegistration]: (state, action) => ({

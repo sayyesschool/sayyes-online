@@ -12,4 +12,5 @@ export * as payments from './payments';
 export * as requests from './requests';
 export * as rooms from './rooms';
 export * as teachers from './teachers';
+export * as tickets from './tickets';
 export * as user from './user';
