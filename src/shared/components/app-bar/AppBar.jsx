@@ -1,15 +1,15 @@
-import { useLocation } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 
-import { AUTH_URL, LK_URL } from 'shared/constants';
 import NavBar from 'shared/components/nav-bar';
 import UserMenu from 'shared/components/user-menu';
+import { AUTH_URL, LK_URL } from 'shared/constants';
 
 export default function AppBar({
     user,
     routes,
     ...props
 }) {
-    const location = useLocation();
+    const match = useRouteMatch('/:path?');
 
     return (
         <div className="AppBar" {...props}>
@@ -18,7 +18,7 @@ export default function AppBar({
             </div>
 
             <NavBar
-                defaultValue={location.pathname}
+                selectedItemValue={match.url}
                 items={routes.filter(route => !route.hidden).map(route => ({
                     key: route.id,
                     icon: route.icon,
@@ -26,6 +26,7 @@ export default function AppBar({
                     to: route.path,
                     exact: route.exact
                 }))}
+                orientation="vertical"
             />
 
             <UserMenu
