@@ -144,7 +144,8 @@ User.methods.toData = function() {
         balance: this.balance,
         role: this.role,
         timezone: this.timezone,
-        accounts: this.accounts
+        accounts: this.accounts,
+        permissions: this.permissions
     };
 };
 
