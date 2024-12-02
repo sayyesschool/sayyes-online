@@ -4,9 +4,9 @@ export default ({
     models: { Vocabulary }
 }) => ({
     async findOne(req, res, next, id) {
-        if (!isObjectIdOrHexString(id)) next({
+        if (!isObjectIdOrHexString(id)) return next({
             code: 400,
-            message: 'Неверный идентификатор'
+            message: 'Неверный идентификатор словаря'
         });
 
         const vocabulary = await Vocabulary.findById(id);

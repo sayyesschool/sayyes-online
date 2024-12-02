@@ -25,7 +25,7 @@ export default context => {
         ALLOWED_ROLES.includes(req.user?.role) ? next() : next('router');
     });
     app.use('/api', api(context));
-    app.use('/{:id}',
+    app.use('/:id',
         (req, res, next) => {
             const twilio = context.libs.twilio;
             const options = {

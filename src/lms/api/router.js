@@ -24,7 +24,10 @@ export default context => {
     router.use('/vocabularies', vocabularies(context));
 
     router.use((error, req, res, next) => {
-        console.error(error);
+        if (error instanceof Error) {
+            console.error(error);
+        }
+
         res.status(error.code || error.status || 500).send({
             ok: false,
             error: typeof error === 'object' ? error.message : error

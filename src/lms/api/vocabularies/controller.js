@@ -9,7 +9,7 @@ export default ({
         const query = { value: regex, approved: true };
 
         const [count, lexemes] = await Promise.all([
-            Lexeme.count(query),
+            Lexeme.countDocuments(query),
             Lexeme.find(query)
                 .skip(skip)
                 .limit(limit)
@@ -170,6 +170,11 @@ export default ({
                 lexemeId: lexeme.id,
                 learnerId: req.body.learnerId || req.user.id
             });
+        } else {
+            throw {
+                code: 403,
+                message: 'Слово уже добавлено'
+            };
         }
 
         const data = lexeme.toJSON();
@@ -240,7 +245,7 @@ export default ({
 
         if (!updatedLexeme) throw {
             code: 403,
-            message: 'Данне нельзя обновить'
+            message: 'Данные нельзя обновить'
         };
 
         const data = updatedLexeme.toJSON();
