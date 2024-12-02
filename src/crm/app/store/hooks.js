@@ -10,6 +10,7 @@ import {
     requests,
     rooms,
     teachers,
+    tickets,
     user
 } from 'shared/store/modules';
 
@@ -24,6 +25,7 @@ const modules = {
     requests,
     rooms,
     teachers,
+    tickets,
     user
 };
 

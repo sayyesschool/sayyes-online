@@ -1,8 +1,8 @@
 import { Link as RouterLink } from 'react-router-dom';
 
 import StatusChip from 'shared/components/status-chip';
-import { IconButton, Link, Table } from 'shared/ui-components';
 import { LessonStatusLabel } from 'shared/data/lesson';
+import { IconButton, Link, Table } from 'shared/ui-components';
 
 export default function LessonsTable({ lessons, onEdit, onDelete }) {
     return (
@@ -66,9 +66,7 @@ export default function LessonsTable({ lessons, onEdit, onDelete }) {
                         </Table.Cell>
 
                         <Table.Cell content={lesson.trial ? 'Да' : 'Нет'} />
-
                         <Table.Cell content={lesson.free ? 'Да' : 'Нет'} />
-
                         <Table.Cell content={lesson.confirmed ? 'Да' : 'Нет'} />
 
                         <Table.Cell align="end">

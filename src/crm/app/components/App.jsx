@@ -13,36 +13,48 @@ import { useActions, useStore } from 'crm/hooks/store';
 import './App.scss';
 
 export default function App({ routes }) {
-    const [requests, requestActions] = useStore('requests.list');
-    const [user, userActions] = useStore('user');
-    const [notification, notificationActions] = useStore('notification');
-    const managerActions = useActions('managers');
-    const teacherActions = useActions('teachers');
-    const courseActions = useActions('courses');
-    const materialActions = useActions('materials');
+    const [user, { getUser }] = useStore('user');
+    const [notification, { hideNotification, showNotification }] = useStore('notification');
+    const [requests, { getRequests }] = useStore('requests.list');
+    const { getCourses } = useActions('courses');
+    const { getMaterials } = useActions('materials');
+    const { getMeetings } = useActions('meetings');
+    const { getManagers } = useActions('managers');
+    const { getTeachers } = useActions('teachers');
 
     useEffect(() => {
-        userActions.getUser();
-        requestActions.getRequests();
-        courseActions.getCourses();
-        materialActions.getMaterials();
-        managerActions.getManagers();
-        teacherActions.getTeachers();
+        getUser();
+        getRequests();
+        getCourses();
+        getMaterials();
+        getManagers();
+        getTeachers();
+        getMeetings();
 
         //setInterval(() => requestActions.getNewRequests(), 60000);
-    }, []);
+    }, [
+        getUser,
+        getRequests,
+        getCourses,
+        getMaterials,
+        getManagers,
+        getTeachers,
+        getMeetings
+    ]);
 
     const handleAlertClose = useCallback(() => {
-        notificationActions.hideNotification();
-    }, []);
+        hideNotification();
+    }, [hideNotification]);
 
     if (!user) return <LoadingIndicator fullscreen />;
+
+    const availableRoutes = getAvailableRoutes(user, routes);
 
     return (
         <div className="App">
             <UI.Provider value={{
-                showNotification: notificationActions.showNotification,
-                hideNotification: notificationActions.hideNotification
+                showNotification,
+                hideNotification
             }}
             >
                 {/* <AppHeader
@@ -51,12 +63,12 @@ export default function App({ routes }) {
 
                 <AppBar
                     user={user}
-                    routes={routes.filter(route => !route.hidden)}
+                    routes={availableRoutes.filter(route => !route.hidden)}
                 />
 
                 <AppContent>
                     <Switch>
-                        {routes.map(route =>
+                        {availableRoutes.map(route =>
                             <Route
                                 key={route.path}
                                 {...route}
@@ -73,5 +85,13 @@ export default function App({ routes }) {
                 />
             </UI.Provider>
         </div>
+    );
+}
+
+function getAvailableRoutes(user, routes) {
+    return routes.filter(route =>
+        !route.permissions ||
+        route.permissions.length === 0 ||
+        !(new Set(user.permissions).isDisjointFrom(new Set(route.permissions)))
     );
 }

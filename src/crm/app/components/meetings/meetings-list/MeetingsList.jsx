@@ -1,33 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-    List, ListItem
-} from 'mdc-react';
+
+import { List } from 'shared/ui-components';
 
 export default function MeetingsList({ meetings }) {
     return (
-        <List twoLine>
+        <List>
             {meetings?.map(meeting =>
-                <ListItem
+                <List.Item
                     key={meeting.id}
-                    element={Link}
+                    as={Link}
                     to={meeting.url}
-                >
-                    <ListItem.Text
-                        primary={meeting.title}
-                        secondary={meeting.datetime}
-                    />
-
-                    <ListItem.Meta
-                        title="Кол-во регистраций"
-                    >
+                    content={{
+                        primary: meeting.title,
+                        secondary: meeting.datetime
+                    }}
+                    end={<>
                         <span>{meeting.registrations.filter(r => r.status === 'pending').length}</span>
                         /
                         <span style={{ color: 'green' }}>{meeting.registrations.filter(r => r.status === 'approved').length}</span>
                         /
                         <span style={{ color: 'red' }}>{meeting.registrations.filter(r => r.status === 'canceled').length}</span>
-                    </ListItem.Meta>
-                </ListItem>
+                    </>}
+                />
             )}
         </List>
     );

@@ -1,13 +1,22 @@
-import { Switch, Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
-import Meetings from './meetings-page';
 import Meeting from './meeting-page';
+import Meetings from './meetings-page';
 
 export default function MeetingRouter() {
     return (
         <Switch>
-            <Route exact path="/meetings" component={Meetings} />
-            <Route exact path="/meetings/:meetingId" component={Meeting} />
+            <Route
+                path="/meetings"
+                component={Meetings}
+                exact
+            />
+
+            <Route
+                path="/meetings/:meetingId"
+                component={Meeting}
+                exact
+            />
         </Switch>
     );
 }
