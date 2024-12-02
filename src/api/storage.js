@@ -29,7 +29,8 @@ export default ({ config: { STORAGE_URL }, services: { Storage } }) => {
     router.delete('/', async (req, res) => {
         if (!req.body.path) throw new Error('No path');
 
-        const response = await Storage.delete(req.body.path);
+        const path = getNormalizedPath(STORAGE_URL, req.body.path, {});
+        const response = await Storage.delete(path);
 
         res.json({
             ok: true,
