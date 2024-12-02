@@ -54,6 +54,7 @@ export default function ConfirmationDialog({
                     onClick: handleConfirm
                 }
             ]}
+            onClose={onClose}
             {...props}
         />
     );
