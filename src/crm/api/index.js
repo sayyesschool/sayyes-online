@@ -13,6 +13,7 @@ import payments from './payments';
 import requests from './requests';
 import rooms from './rooms';
 import teachers from './teachers';
+import tickets from './tickets';
 import users from './users';
 
 export default context => {
@@ -31,6 +32,7 @@ export default context => {
     router.use('/requests', requests(context));
     router.use('/rooms', rooms(context));
     router.use('/teachers', teachers(context));
+    router.use('/tickets', tickets(context));
     router.use('/users', users(context));
 
     router.use((error, req, res, next) => {

@@ -1,12 +1,10 @@
 export default ({
     models: { User },
-    services: { Club, Meeting }
+    services: { Club }
 }) => ({
     get: (req, res, next) => {
-        Meeting.get(req.query)
-            .sort({ date: -1 })
+        Club.findMeetings(req.query)
             .limit(30)
-            .populate('host')
             .then(meetings => {
                 res.json({
                     ok: true,
@@ -17,10 +15,7 @@ export default ({
     },
 
     getOne: (req, res, next) => {
-        Meeting.getOne(req.params.meetingId)
-            .populate('host')
-            .populate('participants')
-            .populate('registrations.user')
+        Club.getMeeting(req.params.meetingId)
             .then(meeting => {
                 res.json({
                     ok: true,
@@ -31,7 +26,7 @@ export default ({
     },
 
     create: (req, res, next) => {
-        Meeting.create(req.body)
+        Club.createMeeting(req.body)
             .then(meeting => {
                 res.json({
                     ok: true,
@@ -43,7 +38,7 @@ export default ({
     },
 
     update: (req, res, next) => {
-        Meeting.update(req.params.meetingId, req.body)
+        Club.updateMeeting(req.params.meetingId, req.body)
             .then(meeting => {
                 res.json({
                     ok: true,
@@ -55,7 +50,7 @@ export default ({
     },
 
     delete: (req, res, next) => {
-        Meeting.delete(req.params.meetingId)
+        Club.deleteMeeting(req.params.meetingId)
             .then(() => {
                 res.json({
                     ok: true,
@@ -72,9 +67,9 @@ export default ({
         User.findOne({ email: req.body.email }, 'firstname lastname email balance')
             .then(user => {
                 if (req.body.paid) {
-                    return Meeting.register(req.params.meetingId, user).then(([meeting]) => meeting);
+                    return Club.registerForMeeting(user, req.params.meetingId).then(([meeting]) => meeting);
                 } else {
-                    return Meeting.addRegistration(req.params.meetingId, user);
+                    return Club.addRegistration(user, req.params.meetingId);
                 }
             }).then(meeting => {
                 const registration = meeting.registrations.slice(-1);
@@ -91,7 +86,7 @@ export default ({
     },
 
     updateRegistration: (req, res, next) => {
-        Meeting.updateRegistration(req.params.meetingId, req.params.registrationId, req.body.action)
+        Club.updateRegistration(req.params.meetingId, req.params.registrationId, req.body.action)
             .then(meeting => {
                 const registration = meeting.registrations.find(r => r.id == req.params.registrationId);
 
@@ -107,7 +102,7 @@ export default ({
     },
 
     removeRegistration: (req, res, next) => {
-        Meeting.removeRegistration(req.params.meetingId, req.params.registrationId)
+        Club.removeRegistration(req.params.meetingId, req.params.registrationId)
             .then(() => {
                 const registration = {
                     id: req.params.registrationId,
