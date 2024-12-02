@@ -1,4 +1,6 @@
-import { isValidObjectId } from 'mongoose';
+import { isObjectIdOrHexString, isValidObjectId } from 'mongoose';
+
+import { getWordEnding } from '@/shared/utils/format';
 
 const CLUB_EMAIL = 'club@sayyes.school';
 const CLUB_NAME = 'SAY YES Speaking Club';
@@ -24,7 +26,7 @@ export const packs = [
         id: '21dec724-4a40-48ef-9cf7-89f0fb3c4d07',
         visits: 1,
         price: 590,
-        duration: undefined,
+        duration: [2, 'week'],
         title: '1 занятие'
     },
     {
@@ -59,6 +61,11 @@ const registrationStatusToAction = {
     denied: 'deny'
 };
 
+const durationLabels = {
+    week: ['неделя', 'недели', 'недель'],
+    month: ['месяц', 'месяца', 'месяцев']
+};
+
 export default ({
     lib: { zoom },
     models: { Meeting, Ticket, User },
@@ -69,9 +76,7 @@ export default ({
     async getPacks() {
         return packs.map(pack => ({
             ...pack,
-            description: pack.duration ?
-                `Срок действия ${pack.duration[0]} мес.` :
-                'Срок действия неограничен',
+            description: `Срок действия ${pack.duration[0]} ${getWordEnding('', pack.duration[0], durationLabels[pack.duration[1]])}`,
             priceWithoutDiscount: pack.discount && pack.price + pack.discount,
             pricePerMonth: pack.duration && Math.round(pack.price / pack.duration[0])
         }));
@@ -146,25 +151,27 @@ export default ({
         const user = await this.getMember($user);
         const pack = await this.getPack($pack);
 
-        const date = new Date();
-        const ticket = new Ticket({
+        const purchasedAt = new Date();
+        const expiresAt = Ticket.getExpiration(purchasedAt, pack);
+
+        return Ticket.create({
             limit: pack.visits,
             price: pack.price,
             userId: user.id,
-            paymentId
+            paymentId,
+            purchasedAt,
+            expiresAt
         });
-
-        ticket.purchasedAt = date;
-        ticket.expiresAt = Ticket.getExpiration(date, pack);
-
-        return ticket.save();
     },
 
     async findValidTicket($user) {
         const userId = isValidObjectId($user) ? $user : $user?.id;
-        const tickets = await Ticket.find({ userId });
+        const tickets = await Ticket.find({ userId })
+            .sort({ expiresAt: -1 })
+            .limit(2);
+        const validTicket = tickets.findLast(ticket => ticket.isValid);
 
-        return tickets.find(ticket => ticket.isValid);
+        return validTicket || tickets[0];
     },
 
     async getTicket($ticket) {
@@ -207,7 +214,7 @@ export default ({
 
     findMeetings(...args) {
         return Meeting.find(...args)
-            .populate('host', 'firstname lastname avatarUrl')
+            .populate('host', 'firstname lastname image role')
             .sort({ date: -1 });
     },
 
@@ -221,21 +228,19 @@ export default ({
         return (isValidObjectId(id) ?
             Meeting.findById(id, ...rest) :
             Meeting.findOne(...args)
-        )
-            .populate('host', 'firstname lastname avatarUrl')
-            .populate('registrations.user')
-            .populate('participants');
+        ).populate('host', 'firstname lastname image role');
     },
 
     async getMeeting($meeting) {
-        const meeting = await Meeting.resolve($meeting);
+        const meeting = await Meeting.findById($meeting)
+            .populate('host', 'firstname lastname image role');
 
         if (!meeting) throw {
             status: 404,
             message: 'Встреча не найдена'
         };
 
-        return meeting.populate('host', 'firstname lastname avatarUrl');
+        return meeting;
     },
 
     async createMeeting(data, ...args) {
@@ -306,36 +311,32 @@ export default ({
         return meeting;
     },
 
-    async registerForMeeting($user, $meeting, $ticket, { force, notify } = { force: false, notify: true }) {
+    async registerForMeeting($user, $meeting, options = {
+        approve: false,
+        force: false,
+        notify: true
+    }) {
         const user = await this.getMember($user);
         const meeting = await this.getMeeting($meeting);
-        const ticket = await ($ticket ?
-            this.getTicket($ticket) :
-            this.findValidTicket(user)
-        );
+        const ticket = await this.findValidTicket(user);
+        let registration = meeting.findRegistrationByUser(user);
 
-        if (this.isRegisteredForMeeting(user, meeting)) throw {
-            status: 400,
-            message: 'Пользователь уже зарегистрирован на встречу'
-        };
+        this.checkRegistration(user, meeting, ticket, registration, options.force);
 
-        if (!force && !meeting.isFree && ticket && !ticket.isValid) throw {
-            status: 400,
-            message: 'Для регистрации на встречу необходимо купить новый билет'
-        };
-
-        const registration = await this.createRegistration(meeting, user, ticket);
-
-        meeting.registrations.addToSet(registration);
-
-        if (ticket) {
-            ticket.meetingIds.addToSet(meeting.id);
-            await ticket.save();
+        if (!registration) {
+            registration = await this.createRegistration(meeting, user, ticket);
         }
 
-        await meeting.save();
+        if (
+            ticket ||
+            options.approve ||
+            options.force ||
+            (meeting.isFree && registration.isCanceled)
+        ) {
+            registration = await this.approveRegistration(meeting, registration);
+        }
 
-        if (notify) {
+        if (options.notify) {
             Mail.send({
                 to: {
                     name: user.fullname,
@@ -365,37 +366,74 @@ export default ({
         const meeting = await this.getMeeting($meeting);
         const registration = this.getRegistrationByUser(meeting, user);
 
-        if (!meeting.canUnregister(registration)) throw {
-            status: 400,
-            message: 'Отменить регистрацию нельзя'
+        if (!registration) throw {
+            status: 404,
+            message: 'Регистрация не найдена'
         };
 
-        if (meeting.zoomId && registration.zoomId)
+        if (registration.isCanceled) throw {
+            status: 400,
+            message: 'Регистрация уже отменена'
+        };
+
+        if (registration.isConfirmed) throw {
+            status: 400,
+            message: 'Отменить подтвержденную регистрацию нельзя'
+        };
+
+        if (meeting.zoomId && registration.zoomId) {
             await zoom.meetings.removeRegistrant(meeting.zoomId, registration.zoomId);
+        }
 
-        meeting.registrations.remove(registration);
+        const canceledRegistration = await this.cancelRegistration(meeting, registration);
 
-        const [savedMeeting] = await Promise.all([
-            meeting.save(),
-            Ticket.findOneAndUpdate(
-                {
-                    userId: user._id,
-                    meetingIds: meeting._id
-                },
-                { $pull: { meetingIds: meeting._id } },
-                { new: true }
-            )
-        ]);
-
-        return savedMeeting;
+        return canceledRegistration;
     },
 
-    isRegisteredForMeeting(user, meeting) {
-        return !!meeting.findRegistrationByUser(user);
+    async canRegisterForMeeting($user, $meeting) {
+        const user = await this.getMember($user);
+        const meeting = await this.getMeeting($meeting);
+        const ticket = await this.findValidTicket(user);
+        const registration = meeting.findRegistrationByUser(user);
+
+        try {
+            this.checkRegistration(user, meeting, ticket, registration);
+
+            return true;
+        } catch {
+            return false;
+        }
     },
 
-    getRegistration(meeting, registrationId) {
-        const registration = meeting.findRegistrationById(registrationId);
+    checkRegistration(user, meeting, ticket, registration, force = false) {
+        if (registration && !registration.isCanceled) throw {
+            status: 409,
+            message: 'Пользователь уже зарегистрирован на встречу'
+        };
+
+        if (force || meeting.isFree) return;
+
+        if (!ticket) throw {
+            status: 402,
+            message: 'Нет абонемента'
+        };
+
+        if (ticket.isExpired) throw {
+            status: 402,
+            message: 'Срок действия абонемента истек'
+        };
+
+        if (ticket.isOverLimit) throw {
+            status: 402,
+            message: 'Лимит посещений абонемента исчерпан'
+        };
+    },
+
+    getRegistration(meeting, $registration) {
+        const id = isObjectIdOrHexString($registration) ?
+            $registration :
+            $registration._id;
+        const registration = meeting.findRegistrationById(id);
 
         if (!registration) throw {
             status: 404,
@@ -419,6 +457,7 @@ export default ({
     async createRegistration($meeting, $user, ticket, { status } = { status: 'pending' }) {
         const meeting = await this.getMeeting($meeting);
         const user = await this.getMember($user);
+
         const registration = meeting.registrations.create({
             registrant: {
                 email: user.email,
@@ -437,16 +476,21 @@ export default ({
                 last_name: user.lastname
             });
 
-            registration.joinUrl = join_url;
             registration.zoomId = registrant_id;
+            registration.joinUrl = join_url;
         }
 
-        return registration;
+        meeting.registrations.addToSet(registration);
+
+        const updatedMeeting = await meeting.save();
+        const createdRegistration = updatedMeeting.findRegistrationById(registration.id);
+
+        return createdRegistration;
     },
 
-    async updateRegistration($meeting, registrationId, data = {}) {
+    async updateRegistration($meeting, $registration, data = {}) {
         const meeting = await this.getMeeting($meeting);
-        const registration = this.getRegistration(meeting, registrationId);
+        const registration = this.getRegistration(meeting, $registration);
 
         if (meeting.zoomId && registration.zoomId && data.status) {
             await zoom.meetings.updateRegistrantStatus(meeting.zoomId, {
@@ -459,120 +503,72 @@ export default ({
 
         registration.status = data.status;
 
-        await meeting.save();
+        const updatedMeeting = await meeting.save();
+        const updatedRegistration = updatedMeeting.findRegistrationById(registration.id);
 
-        return registration;
+        return updatedRegistration;
     },
 
-    async approveRegistration($meeting, registrationId) {
+    async deleteRegistration($meeting, $registration) {
         const meeting = await this.getMeeting($meeting);
-        const registration = this.getRegistration(meeting, registrationId);
-
-        if (!registration.zoomId && meeting.zoomId) {
-            const registrant = await zoom.meetings.addRegistrant(meeting.zoomId, {
-                email: registration.registrant.email,
-                first_name: registration.registrant.firstname,
-                last_name: registration.registrant.lastname
-            });
-
-            registration.zoomId = registrant.registrant_id;
-            registration.joinUrl = registrant.join_url;
-            registration.status = 'approved';
-
-            await meeting.save();
-        }
-
-        await this.updateRegistration(meeting, registration.id, {
-            status: 'approved'
-        });
-
-        const registrant = registration.registrant;
-
-        Mail.send({
-            to: {
-                name: `${registrant.firstname} ${registrant.lastname}`,
-                email: registrant.email
-            },
-            subject: `Спасибо за регистрацию на встречу "${meeting.title}"`,
-            templateId: 1348593,
-            variables: {
-                firstname: registrant.firstname,
-                title: meeting.title,
-                datetime: meeting.datetime,
-                host: meeting.host?.fullname,
-                level: meeting.level,
-                materialsUrl: meeting.materialsUrl || '',
-                thumbnailUrl: meeting.thumbnailUrl || '',
-                joinUrl: meeting.joinUrl
-            }
-        });
-
-        return registration;
-    },
-
-    async cancelRegistration($meeting, registrationId) {
-        const meeting = await this.getMeeting($meeting);
-        const registration = this.getRegistration(meeting, registrationId);
-
-        await this.updateRegistration(meeting, registration.id, {
-            status: 'canceled'
-        });
-
-        // send email
-
-        return registration;
-    },
-
-    async denyRegistration($meeting, registrationId) {
-        const meeting = await this.getMeeting($meeting);
-        const registration = this.getRegistration(meeting, registrationId);
-
-        await this.updateRegistration(meeting, registration.id, {
-            status: 'denied'
-        });
-
-        // if (registration.user) {
-        //     const user = {
-        //         id: registration.user,
-        //         email: registration.registrant.email
-        //     };
-        //     const payment = await this.createPayment(user, 'single', meeting);
-
-        //     Mail.send({
-        //         to: [{
-        //             name: `${registration.registrant.firstname} ${registration.registrant.lastname}`,
-        //             email: registration.registrant.email
-        //         }],
-        //         subject: 'Заявка на участие во встрече отклонена',
-        //         templateId: 1377309,
-        //         variables: {
-        //             firstname: registration.registrant.firstname,
-        //             title: meeting.title,
-        //             datetime: meeting.datetime,
-        //             host: `${meeting.host.firstname} ${meeting.host.lastname}`,
-        //             level: meeting.level,
-        //             thumbnailUrl: meeting.thumbnailUrl,
-        //             confirmationUrl: payment.confirmationUrl
-        //         }
-        //     });
-        // }
-
-        return registration;
-    },
-
-    async deleteRegistration($meeting, registrationId) {
-        const meeting = await this.getMeeting($meeting);
-        const registration = this.getRegistration(meeting, registrationId);
+        const registration = this.getRegistration(meeting, $registration);
 
         if (registration.zoomId) {
             await zoom.meetings.removeRegistrant(meeting.zoomId, registration.zoomId);
         }
 
+        const deletedRegistration = meeting.registrations.id(registration._id);
         meeting.registrations.remove(registration);
 
         await meeting.save();
 
-        return registration;
+        if (registration.ticketId) {
+            await Ticket.updateOne({
+                _id: registration.ticketId
+            }, {
+                $pull: { meetingIds: meeting._id }
+            });
+        }
+
+        return deletedRegistration;
+    },
+
+    async approveRegistration($meeting, $registration) {
+        const meeting = await this.getMeeting($meeting);
+        const registration = this.getRegistration(meeting, $registration);
+
+        const approvedRegistration = await this.updateRegistration(meeting, registration.id, {
+            status: 'approved'
+        });
+
+        if (registration.ticketId) {
+            await Ticket.updateOne({
+                _id: registration.ticketId
+            }, {
+                $addToSet: { meetingIds: meeting._id }
+            });
+        }
+
+        return approvedRegistration;
+    },
+
+    async cancelRegistration($meeting, $registration) {
+        const meeting = await this.getMeeting($meeting);
+        const registration = this.getRegistration(meeting, $registration);
+
+        const canceledRegistration = await this.updateRegistration(meeting, registration.id, {
+            status: 'canceled'
+        });
+
+        if (registration.ticketId) {
+            await Ticket.updateOne({
+                _id: registration.ticketId
+            }, {
+                $pull: { meetingIds: meeting._id }
+            });
+        }
+
+        return canceledRegistration;
     },
 
     async sendMeetingsReminders(when, { templateId } = {}) {
