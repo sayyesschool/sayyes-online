@@ -2,14 +2,14 @@ import { NavLink } from 'react-router-dom';
 
 import { applySolidInversion } from '@mui/joy/colorInversion';
 
-import { Box, Icon, Tab, TabList, Tabs } from 'shared/ui-components';
+import { Box, Icon, Tab, TabList, Tabs, Text } from 'shared/ui-components';
 import cn from 'shared/utils/classnames';
 
 import styles from './NavBar.module.scss';
 
 const IndicatorPlacementByOrientation = {
     horizontal: 'bottom',
-    vertical: 'right'
+    vertical: 'left'
 };
 
 export default function NavBar({
@@ -21,12 +21,13 @@ export default function NavBar({
 }) {
     return (
         <Box
-            className={cn(styles.root, styles.orientation)}
+            className={cn(styles.root, styles[orientation])}
             sx={invertedColors ? applySolidInversion('primary') : undefined}
         >
             <Tabs
                 orientation={orientation}
                 defaultValue={selectedItemValue}
+                sx={{ flexDirection: orientation === 'vertical' ? 'column' : 'row' }}
             >
                 <TabList disableUnderline>
                     {items.map(item =>
@@ -36,19 +37,24 @@ export default function NavBar({
                             to={item.to}
                             exact={item.exact}
                             value={item.to}
-                            className="NavBarItem"
-                            activeClassName="NavBarItem--active"
+                            className={styles.item}
+                            activeClassName={styles.item_active}
                             orientation={orientation}
                             indicatorPlacement={IndicatorPlacementByOrientation[orientation]}
                         >
                             {item.icon &&
                                 <Icon
-                                    className="NavBarItem__icon"
+                                    className={styles.item__icon}
                                     name={item.icon}
                                 />
                             }
 
-                            <span className="NavBarItem__text">{item.text}</span>
+                            <Text
+                                className={styles.item__text}
+                                type="body-xs"
+                                content={item.text}
+                                noWrap
+                            />
                         </Tab>
                     )}
                 </TabList>

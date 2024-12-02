@@ -3,20 +3,25 @@
 }
 
 .item {
-    
+    &_active {
+        --Tab-indicatorColor: var(--joy-palette-primary-plainColor) !important;
+
+        position: relative;
+    }
 }
 
 .vertical {
     .item {
-        padding-left: 4px;
-        padding-right: 4px;
+        --ListItem-paddingRight: 0.25rem;
+        --ListItem-paddingLeft: 0.25rem;
+
         text-align: center;
 
-        &-icon {
+        &__icon {
             font-size: 1.5rem;
         }
 
-        &-text {
+        &__text {
             width: 100%;
         }
     }
