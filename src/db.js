@@ -28,20 +28,23 @@ mongoose.set('toJSON', {
 });
 
 mongoose.plugin(function addResolve(schema) {
-    schema.statics.resolve = async function resolve(arg) {
+    schema.statics.resolve = function resolve(arg) {
         if (!arg)
-            return null;
+            throw new Error('Argument is required');
 
         if (arg instanceof Document)
-            return arg;
+            return Promise.resolve(arg);
 
         else if (isObjectIdOrHexString(arg))
             return this.findById(arg);
 
         else if (typeof arg === 'object')
-            return this.hydrate(arg);
+            return this.hydrate(arg, undefined, {
+                hydratedPopulatedDocs: true
+            });
 
-        else return null;
+        else
+            return this.findOne(arg);
     };
 
     schema.statics.update = function update(query, ...args) {
