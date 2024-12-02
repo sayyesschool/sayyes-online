@@ -1,12 +1,11 @@
 import { useState } from 'react';
 
 import Page from 'shared/components/page';
-import { Grid } from 'shared/components/ui';
 import { useMeetings } from 'shared/hooks/meetings';
 import datetime from 'shared/libs/datetime';
 
-import HelpDialog from 'club/components/teacher/help-dialog';
-import MeetingCard from 'club/components/teacher/meeting-card';
+import MeetingsList from 'club/components/meetings/meetings-list';
+import HelpDialog from 'club/components/shared/help-dialog';
 
 export default function TeacherPage() {
     const [meetings] = useMeetings();
@@ -19,7 +18,7 @@ export default function TeacherPage() {
 
     return (
         <Page
-            className="HostHomePage HomePage"
+            className="TeacherPage HomePage"
             title="My meetings"
             actions={[
                 {
@@ -35,30 +34,14 @@ export default function TeacherPage() {
                 title="Scheduled meetings"
                 description={scheduledMeetings.length === 0 && 'No scheduled meetings yet.'}
             >
-                <Grid>
-                    {scheduledMeetings.map(meeting =>
-                        <Grid.Item key={meeting.id} span="4">
-                            <MeetingCard
-                                meeting={meeting}
-                            />
-                        </Grid.Item>
-                    )}
-                </Grid>
+                <MeetingsList meetings={scheduledMeetings} />
             </Page.Section>
 
             <Page.Section
                 title="Past meetings"
                 description={pastMeetings.length === 0 && 'No past meetings yet.'}
             >
-                <Grid>
-                    {pastMeetings.map(meeting =>
-                        <Grid.Item key={meeting.id} span="4">
-                            <MeetingCard
-                                meeting={meeting}
-                            />
-                        </Grid.Item>
-                    )}
-                </Grid>
+                <MeetingsList meetings={scheduledMeetings} />
             </Page.Section>
 
             <HelpDialog

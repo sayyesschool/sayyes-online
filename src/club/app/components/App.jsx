@@ -6,14 +6,11 @@ import AppNotification from 'shared/components/app-notification';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import { useUser } from 'shared/hooks/user';
 
-import LearnerPage from 'club/components/learner/learner-page';
-import ManagerPage from 'club/components/manager/manager-page';
+import { LearnerPage, TeacherPage } from 'club/components/home';
 import MeetingPage from 'club/components/meetings/meeting-page';
-import TeacherPage from 'club/components/teacher/teacher-page';
 
 const PageByRole = {
-    member: LearnerPage,
-    manager: ManagerPage,
+    learner: LearnerPage,
     teacher: TeacherPage
 };
 

@@ -16,16 +16,9 @@ import {
 
 import styles from './MeetingCard.module.scss';
 
-export default function MeetingCard({ meeting, onRegister }) {
+export default function MeetingCard({ meeting, registered, onRegister }) {
     return (
         <Card className={styles.root} outlined>
-            {meeting.isPending &&
-                <Alert
-                    start={<Icon>hourglass_empty</Icon>}
-                    content="Заявка обрабатывается"
-                />
-            }
-
             <Card.Overflow>
                 <Image
                     src={meeting.thumbnailUrl}
@@ -37,6 +30,13 @@ export default function MeetingCard({ meeting, onRegister }) {
             </Card.Overflow>
 
             <Card.Content>
+                {meeting.isPending &&
+                    <Alert
+                        start={<Icon>hourglass_empty</Icon>}
+                        content="Заявка обрабатывается"
+                    />
+                }
+
                 <Flex dir="column" gap="small">
                     <Flex dir="column">
                         <Heading
@@ -64,15 +64,15 @@ export default function MeetingCard({ meeting, onRegister }) {
                         }
 
                         <Chip
-                            start={<Icon>timelapse</Icon>}
+                            icon="timelapse"
                             content={`${meeting.duration} мин.`}
                             title="Продолжительность"
                             size="sm"
                         />
 
                         <Chip
-                            start={<Icon>star</Icon>}
-                            content={meeting.level}
+                            icon="star"
+                            content={meeting.levelLabel}
                             title="Уровень"
                             size="sm"
                         />
@@ -80,21 +80,19 @@ export default function MeetingCard({ meeting, onRegister }) {
                 </Flex>
             </Card.Content>
 
-            <Card.Overflow>
-                <Flex sx={{ width: '100%', justifyContent: 'space-between' }}>
-                    <Button
-                        as={Link}
-                        to={meeting.url}
-                        content="Подробнее"
-                        variant="plain"
-                    />
+            <Card.Actions sx={{ justifyContent: 'space-between' }}>
+                <Button
+                    as={Link}
+                    to={meeting.url}
+                    content="Подробнее"
+                    variant="plain"
+                />
 
-                    <Button
-                        content="Зарегистрироваться"
-                        onClick={() => onRegister(meeting)}
-                    />
-                </Flex>
-            </Card.Overflow>
+                <Button
+                    content={registered ? 'Отменить' : 'Записаться'}
+                    onClick={() => onRegister(meeting)}
+                />
+            </Card.Actions>
         </Card>
     );
 }

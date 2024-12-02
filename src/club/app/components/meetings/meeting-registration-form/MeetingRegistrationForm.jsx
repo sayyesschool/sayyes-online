@@ -40,7 +40,6 @@ export default function MeetingRegistrationForm({
                     min="0"
                     placeholder="Сумма"
                     end="руб."
-                    filled
                 />
 
                 <Checkbox

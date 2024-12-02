@@ -3,20 +3,19 @@ import { useCallback, useState } from 'react';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import { Alert, Button, Grid, Text } from 'shared/components/ui';
+import { Grid } from 'shared/components/ui';
 import { useMeetings } from 'shared/hooks/meetings';
 import { useUser } from 'shared/hooks/user';
 
-import LevelDialog from 'club/components/learner/level-dialog';
-import MeetingCard from 'club/components/learner/meeting-card';
-import MeetingRegistrationForm from 'club/components/meetings/meeting-registration-form/index';
+import MeetingCard from 'club/components/meetings/meeting-card';
+import MeetingRegistrationForm from 'club/components/meetings/meeting-registration-form';
+// import LevelAlert from 'club/components/shared/level-alert';
 
 export default function LearnerPage() {
     const [user] = useUser();
     const [meetings, actions] = useMeetings();
 
     const [meeting, setMeeting] = useState();
-    const [isLevelDialogOpen, setLevelDialogOpen] = useState(false);
 
     const handleRegister = useCallback(meeting => {
         if (meeting.isRegistered || meeting.isPending) {
@@ -31,13 +30,17 @@ export default function LearnerPage() {
 
     if (!meetings) return <LoadingIndicator fullscreen />;
 
-    const registeredMeetings = meetings.filter(meeting => meeting.isRegistered);
-    const futureMeetings = meetings.filter(meeting => !meeting.isRegistered);
-    const hasFutureMeetings = futureMeetings.length > 0;
+    const registeredMeetings = meetings.filter(meeting =>
+        meeting.registrations.some(reg => reg.userId === user.id)
+    );
+    const unregisteredMeetings = meetings.filter(meeting =>
+        !meeting.registrations.some(reg => reg.userId === user.id)
+    );
+    const hasFutureMeetings = unregisteredMeetings.length > 0;
 
     return (
         <Page
-            className="LearnerPage"
+            className="HomePage LearnerPage"
             title="Разговорный клуб"
         >
             <Page.Header
@@ -45,32 +48,22 @@ export default function LearnerPage() {
             />
 
             <Page.Content>
-                {hasFutureMeetings &&
-                    <Alert
-                        color="warning"
-                        variant="soft"
-                        end={
-                            <Button
-                                content="Подробнее"
-                                color="warning"
-                                variant="soft"
-                                onClick={() => setLevelDialogOpen(true)}
-                            />
-                        }
-                    >
-                        <Text>
-                            <strong>Внимание!</strong> Выбирайте встречу строго своего уровня!
-                        </Text>
-                    </Alert>
-                }
+                {/* {hasFutureMeetings &&
+                    <LevelAlert />
+                } */}
 
                 {registeredMeetings.length > 0 &&
-                    <Page.Section title="Мои встречи">
+                    <Page.Section
+                        title="Мои встречи"
+                        compact
+                        plain
+                    >
                         <Grid spacing={2}>
                             {registeredMeetings.map(meeting =>
                                 <Grid.Item key={meeting.id} md={4}>
                                     <MeetingCard
                                         meeting={meeting}
+                                        registered
                                         onRegister={handleRegister}
                                     />
                                 </Grid.Item>
@@ -86,7 +79,7 @@ export default function LearnerPage() {
                     plain
                 >
                     <Grid spacing={2}>
-                        {futureMeetings.map(meeting =>
+                        {unregisteredMeetings.map(meeting =>
                             <Grid.Item key={meeting.id} md={4}>
                                 <MeetingCard
                                     meeting={meeting}
@@ -97,11 +90,6 @@ export default function LearnerPage() {
                     </Grid>
                 </Page.Section>
             </Page.Content>
-
-            <LevelDialog
-                open={isLevelDialogOpen}
-                onClose={() => setLevelDialogOpen(false)}
-            />
 
             <FormDialog
                 title="Для записи на встречу необходимо пополнить баланс."
