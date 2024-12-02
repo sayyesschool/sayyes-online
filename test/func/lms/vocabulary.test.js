@@ -2,8 +2,9 @@ import expect from 'expect';
 
 import { createId } from '../../helpers';
 import context from '../context';
+import { USER_ID } from '../data';
 
-import api, { user } from './api';
+import api from './api';
 
 const {
     models: { Lexeme, LexemeRecord, Vocabulary }
@@ -20,8 +21,8 @@ describe('Vocabulary routes', () => {
         describe('GET /', () => {
             it('should get a list of vocabularies', async () => {
                 await Vocabulary.create([
-                    { learnerId: user.id },
-                    { learnerId: user.id }
+                    { learnerId: USER_ID },
+                    { learnerId: USER_ID }
                 ]);
 
                 const { body } = await api.get('/vocabularies');
@@ -51,7 +52,7 @@ describe('Vocabulary routes', () => {
 
                 expect(body.data).toMatch({
                     title: 'Мой словарь',
-                    learnerId: user.id
+                    learnerId: USER_ID
                 });
             });
 
@@ -65,7 +66,7 @@ describe('Vocabulary routes', () => {
                 ]);
 
                 await LexemeRecord.create(lexemes.map(l => ({
-                    learnerId: user.id,
+                    learnerId: USER_ID,
                     lexemeId: l.id
                 })));
 
@@ -73,7 +74,7 @@ describe('Vocabulary routes', () => {
 
                 expect(body.data).toMatch({
                     title: 'Мой словарь',
-                    learnerId: user.id
+                    learnerId: USER_ID
                 });
 
                 expect(body.data.lexemes.length).toBe(lexemes.length);
@@ -109,7 +110,7 @@ describe('Vocabulary routes', () => {
 
                 await LexemeRecord.create({
                     lexemeId: lexeme.id,
-                    learnerId: user.id
+                    learnerId: USER_ID
                 });
 
                 const { body } = await api.delete(`/vocabularies/my/${lexeme.id}`);
@@ -264,7 +265,7 @@ describe('Vocabulary routes', () => {
 
                 const count = await LexemeRecord.countDocuments({
                     lexemeId: body1.data.id,
-                    learnerId: user.id
+                    learnerId: USER_ID
                 });
 
                 expect(count).toBe(1);
@@ -275,7 +276,7 @@ describe('Vocabulary routes', () => {
             const initialData = {
                 value: 'cat',
                 definition: 'a furry animal',
-                createdBy: user.id
+                createdBy: USER_ID
             };
 
             const updateData = {
@@ -288,7 +289,7 @@ describe('Vocabulary routes', () => {
                 });
                 const vocabulary = await Vocabulary.create({
                     lexemeIds: [lexeme.id],
-                    learnerId: user.id
+                    learnerId: USER_ID
                 });
 
                 const { body } = await api.put(`/vocabularies/${vocabulary.id}/${lexeme.id}`).send(updateData);
@@ -303,7 +304,7 @@ describe('Vocabulary routes', () => {
                 });
                 const vocabulary = await Vocabulary.create({
                     lexemeIds: [lexeme.id],
-                    learnerId: user.id
+                    learnerId: USER_ID
                 });
 
                 const { body, status } = await api.put(`/vocabularies/${vocabulary.id}/${lexeme.id}`).send(updateData);
@@ -319,7 +320,7 @@ describe('Vocabulary routes', () => {
                 });
                 const vocabulary = await Vocabulary.create({
                     lexemeIds: [lexeme.id],
-                    learnerId: user.id
+                    learnerId: USER_ID
                 });
 
                 const { body } = await api.put(`/vocabularies/${vocabulary.id}/${lexeme.id}`).send(updateData);
@@ -334,17 +335,14 @@ describe('Vocabulary routes', () => {
                 });
                 const vocabulary = await Vocabulary.create({
                     lexemeIds: [lexeme.id],
-                    learnerId: user.id
+                    learnerId: USER_ID
                 });
 
                 const { body } = await api.put(`/vocabularies/${vocabulary.id}/${lexeme.id}`).send(updateData);
 
                 expect(body.data).toNotMatch(updateData);
-
                 expect(body.data).toMatch({
-                    record: {
-                        data: updateData
-                    }
+                    data: updateData
                 });
             });
         });
@@ -354,11 +352,11 @@ describe('Vocabulary routes', () => {
                 const lexeme = await Lexeme.create({
                     value: 'cat',
                     definition: 'a furry animal',
-                    createdBy: user.id
+                    createdBy: USER_ID
                 });
                 const vocabulary = await Vocabulary.create({
                     lexemeIds: [lexeme.id],
-                    learnerId: user.id
+                    learnerId: USER_ID
                 });
 
                 const { body } = await api.delete(`/vocabularies/${vocabulary.id}/${lexeme.id}`);

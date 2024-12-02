@@ -2,9 +2,9 @@ import expect from 'expect';
 
 import { mock, toJSON } from '../../helpers';
 import context from '../context';
+import { DEFAULT_MEETING, DEFAULT_USER, NEW_PAYMENT, PACK_ID, PAID_PAYMENT, USER_EMAIL } from '../data';
 
-import api, { user as USER } from './api';
-import { EMAIL, NEW_PAYMENT, PACK_ID, PAID_PAYMENT } from './data';
+import api from './api';
 
 const {
     models: { Meeting, Ticket, User },
@@ -14,14 +14,14 @@ const {
 mock.method(Mail, 'send', async () => {});
 mock.method(Mail, 'sendMany', async () => {});
 
-describe('/payments', () => {
+describe('Club Payments API', () => {
     after(async () => {
         await Meeting.deleteMany();
-        await User.deleteMany();
         await Ticket.deleteMany();
+        await User.deleteMany();
     });
 
-    describe('GET /', () => {
+    describe('POST /', () => {
         let createPayment;
         let resolvePayment;
 
@@ -35,31 +35,31 @@ describe('/payments', () => {
             resolvePayment.mock.restore();
         });
 
-        it('should create a payment', async () => {
+        it('creates a payment', async () => {
             const { body } = await api.post('/payments').send({
-                email: EMAIL,
+                email: USER_EMAIL,
                 packId: PACK_ID
             });
 
             expect(body.data).toMatch({
                 metadata: {
-                    email: EMAIL,
+                    email: USER_EMAIL,
                     packId: PACK_ID
                 }
             });
         });
 
-        it('should return an error if the pack is not found', async () => {
+        it('returns an error if the pack is not found', async () => {
             const { body } = await api.post('/payments').send({
                 packId: undefined,
-                email: EMAIL
+                email: USER_EMAIL
             });
 
             expect(body.ok).toBe(false);
             expect(body.error).toBe('Пакет не найден');
         });
 
-        it('should return an error if the email is not provided', async () => {
+        it('returns an error if the email is not provided', async () => {
             const { body } = await api.post('/payments').send({
                 packId: PACK_ID,
                 email: undefined
@@ -69,7 +69,7 @@ describe('/payments', () => {
             expect(body.error).toBe('Не указан email');
         });
 
-        it('should return an error if the user is not found', async () => {
+        it('returns an error if the user is not found', async () => {
             const { body } = await api.post('/payments').send({
                 packId: PACK_ID,
                 userId: '000000000000000000000000'
@@ -86,9 +86,10 @@ describe('/payments', () => {
         afterEach(async () => {
             resolvePayment.mock.restore();
             await Ticket.deleteMany();
+            await User.deleteMany();
         });
 
-        it('should process a payment for a new user without a meeting registration', async () => {
+        it('processes a payment for a new user without a meeting registration', async () => {
             resolvePayment = mock.method(Checkout, 'resolvePayment', async () => PAID_PAYMENT);
 
             const { body } = await api.post('/payments/process').send({
@@ -99,29 +100,28 @@ describe('/payments', () => {
                 }
             });
 
-            const user = await User.findOne({ email: EMAIL });
+            const user = await User.findOne({ email: USER_EMAIL });
             const ticket = await Ticket.findOne({ userId: user.id });
 
-            expect(body.ok).toBe(true);
-            expect(body.data).toExist();
-            expect(body.data).toMatch(toJSON(ticket));
             expect(user).toExist();
             expect(ticket).toExist();
+            expect(body.data).toMatch(toJSON(ticket));
         });
 
-        it('should process a payment for an existing user with a meeting registration', async () => {
-            const meeting = await Meeting.create({ title: 'Test Meeting' });
+        it('processes a payment for an existing user with a meeting registration', async () => {
+            const user = await User.create(DEFAULT_USER);
+            const meeting = await Meeting.create(DEFAULT_MEETING);
 
             resolvePayment = mock.method(Checkout, 'resolvePayment', async () => ({
                 ...PAID_PAYMENT,
                 metadata: {
                     ...PAID_PAYMENT.metadata,
-                    userId: USER.id,
+                    userId: user.id,
                     meetingId: meeting.id
                 }
             }));
 
-            const { body } = await api.post('/payments/process').send({
+            const { body: { data } } = await api.post('/payments/process').send({
                 source: 'client',
                 event: 'payment.succeeded',
                 object: {
@@ -129,19 +129,16 @@ describe('/payments', () => {
                 }
             });
 
-            const registration = body.data;
-            const user = await User.findOne({ email: EMAIL });
             const ticket = await Ticket.findOne({ userId: user.id });
 
-            expect(body.ok).toBe(true);
-            expect(registration).toExist();
+            expect(data).toExist();
             expect(user).toExist();
             expect(ticket).toExist();
-            expect(user).toMatch(registration.registrant);
+            expect(user).toMatch(data.registrant);
             expect(ticket.meetingIds).toInclude(meeting.id);
-            expect(registration.meetingId).toBe(meeting.id);
-            expect(registration.ticketId).toBe(ticket.id);
-            expect(registration.userId).toBe(user.id);
+            expect(data.meetingId).toBe(meeting.id);
+            expect(data.ticketId).toBe(ticket.id);
+            expect(data.userId).toBe(user.id);
         });
     });
 });

@@ -1,15 +1,10 @@
-import express, { json } from 'express';
 import supertest from 'supertest';
 
 import club from '@/club/api';
 
-import { user, userMiddleware } from '../helpers.js';
+import context from '../context';
+import server from '../server';
 
-const server = express()
-    .use(json())
-    .use(userMiddleware)
-    .use(club(global.$context));
-
-export { user };
+server.use(club(context));
 
 export default supertest(server);

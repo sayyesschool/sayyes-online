@@ -1,8 +1,4 @@
-import config from '@/config';
-import core from '@/core';
 import db from '@/db';
-
-global.$context = core(config);
 
 export async function mochaGlobalSetup () {
     await db.connect('mongodb://localhost:27017/sayyes-test');

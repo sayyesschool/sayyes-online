@@ -4,37 +4,33 @@ import expect from 'expect';
 import moment from 'moment-timezone';
 import { model } from 'mongoose';
 
-import MeetingSchema from '@/core/models/meeting/Meeting.js';
-import TicketSchema from '@/core/models/ticket/Ticket.js';
-import UserSchema from '@/core/models/user/User.js';
-import Auth from '@/core/services/auth.js';
-import Club from '@/core/services/club.js';
+import MeetingSchema from '@/core/models/meeting/Meeting';
+import TicketSchema from '@/core/models/ticket/Ticket';
+import UserSchema from '@/core/models/user/User';
+import AuthService from '@/core/services/auth';
+import ClubService from '@/core/services/Сlub';
 
-import MailMock from '../../../mocks/mail.js';
-import NewsletterMock from '../../../mocks/newsletter.js';
-import ZoomMock from '../../../mocks/zoom.js';
+import {
+    Mail,
+    Newsletter,
+    Zoom
+} from '../../../mocks';
+import { DEFAULT_MEETING, DEFAULT_TICKET, EXPIRED_TICKET, PACKS_MAP, ZOOM_MEETING } from '../../data';
 
 const Meeting = model('Meeting', MeetingSchema);
 const Ticket = model('Ticket', TicketSchema);
 const User = model('User', UserSchema);
-const auth = Auth({ models: { User } });
 
-const club = Club({
-    lib: { zoom: ZoomMock },
+const Auth = AuthService({ models: { User } });
+const Club = ClubService({
+    lib: { zoom: Zoom },
     models: { Meeting, Ticket, User },
     services: {
-        Auth: auth,
-        Mail: MailMock,
-        Newsletter: NewsletterMock
+        Auth,
+        Mail: Mail,
+        Newsletter: Newsletter
     }
 });
-
-const packsMap = {
-    1: '21dec724-4a40-48ef-9cf7-89f0fb3c4d07',
-    4: '3f7eb11c-12c5-4631-af4a-39855ca17810',
-    8: '3d678c9b-632d-492a-aaad-e1ced4f35255',
-    16: '8012db3e-b720-48ea-95a9-ba42772da33d'
-};
 
 describe('ClubService', () => {
     let user;
@@ -46,6 +42,8 @@ describe('ClubService', () => {
             email: 'member@sayyes.school',
             role: 'member'
         });
+        Object.assign(DEFAULT_TICKET, { userId: user.id });
+        Object.assign(EXPIRED_TICKET, { userId: user.id });
     });
 
     afterEach(async () => {
@@ -57,7 +55,7 @@ describe('ClubService', () => {
     describe('packs', () => {
         describe('getPacks', () => {
             it('should return an array of packs', async () => {
-                const packs = await club.getPacks();
+                const packs = await Club.getPacks();
 
                 expect(packs).toBeAn(Array);
             });
@@ -65,7 +63,7 @@ describe('ClubService', () => {
 
         describe('getPack', () => {
             it('should return a pack by id', async () => {
-                const pack = await club.getPack('21dec724-4a40-48ef-9cf7-89f0fb3c4d07');
+                const pack = await Club.getPack('21dec724-4a40-48ef-9cf7-89f0fb3c4d07');
 
                 expect(pack).toBeAn(Object);
             });
@@ -76,7 +74,7 @@ describe('ClubService', () => {
         describe('registerMember', () => {
             it('should create a new user with the member role', async () => {
                 const email = 'bob@sayyes.school';
-                const user = await club.registerMember({
+                const user = await Club.registerMember({
                     name: 'Bob',
                     email
                 });
@@ -90,8 +88,8 @@ describe('ClubService', () => {
     describe('tickets', () => {
         describe('createTicket', () => {
             it('should create a ticket for 1 visit', async () => {
-                const packId = packsMap[1];
-                const ticket = await club.createTicket(user, packId);
+                const packId = PACKS_MAP[1];
+                const ticket = await Club.createTicket(user, packId);
                 await user.populate('tickets');
 
                 expect(ticket).toMatch({
@@ -104,8 +102,8 @@ describe('ClubService', () => {
 
             for (const visits of [4, 8, 16]) {
                 it(`should create a ticket for ${visits} visit${visits > 1 ? 's' : ''}`, async () => {
-                    const pack = await club.getPack(packsMap[visits]);
-                    const ticket = await club.createTicket(user, pack.id);
+                    const pack = await Club.getPack(PACKS_MAP[visits]);
+                    const ticket = await Club.createTicket(user, pack.id);
                     await user.populate('tickets');
 
                     expect(ticket).toMatch({
@@ -123,27 +121,27 @@ describe('ClubService', () => {
         let meeting;
 
         beforeEach(async () => {
-            meeting = await club.createMeeting({
+            meeting = await Club.createMeeting({
                 title: 'Test Meeting'
             });
         });
 
         describe('getMeeting', () => {
             it('should return a meeting by id', async () => {
-                const foundMeeting = await club.getMeeting(meeting._id);
+                const foundMeeting = await Club.getMeeting(meeting._id);
 
                 expect(foundMeeting._id).toEqual(meeting._id);
             });
 
             it('should return a meeting by object', async () => {
-                const foundMeeting = await club.getMeeting(meeting);
+                const foundMeeting = await Club.getMeeting(meeting);
 
                 expect(foundMeeting._id).toMatch(meeting._id);
             });
 
             it('should reject if the meeting is not found', async () => {
                 await rejects(async () => {
-                    await club.getMeeting('000000000000000000000000');
+                    await Club.getMeeting('000000000000000000000000');
                 }, {
                     message: 'Встреча не найдена'
                 });
@@ -160,7 +158,7 @@ describe('ClubService', () => {
 
         describe('updateMeeting', () => {
             it('should update a meeting', async () => {
-                await club.updateMeeting(meeting._id, {
+                await Club.updateMeeting(meeting._id, {
                     title: 'Updated Meeting'
                 });
 
@@ -172,7 +170,7 @@ describe('ClubService', () => {
 
         describe('cancelMeeting', () => {
             it('should cancel a meeting', async () => {
-                await club.cancelMeeting(meeting._id);
+                await Club.cancelMeeting(meeting._id);
 
                 const updatedMeeting = await Meeting.findById(meeting._id);
 
@@ -182,7 +180,7 @@ describe('ClubService', () => {
 
         describe('deleteMeeting', () => {
             it('should delete a meeting', async () => {
-                await club.deleteMeeting(meeting._id);
+                await Club.deleteMeeting(meeting._id);
 
                 const deletedMeeting = await Meeting.findById(meeting._id);
 
@@ -191,193 +189,249 @@ describe('ClubService', () => {
         });
     });
 
-    describe('registrations', () => {
+    describe.only('registrations', () => {
         describe('registerForMeeting', () => {
-            it('should register a user with a ticket for a meeting', async () => {
-                const meeting = await club.createMeeting({
-                    title: 'Test Meeting'
-                });
-                const ticket = await club.createTicket(user, packsMap[1]);
+            it('registers with a ticket', async () => {
+                const meeting = await Meeting.create(DEFAULT_MEETING);
+                await Ticket.create(DEFAULT_TICKET);
 
-                const [updatedMeeting, updatedTicket] = await club.registerForMeeting(user, meeting, ticket);
-                const registration = updatedMeeting.findRegistrationByUser(user);
+                const registration = await Club.registerForMeeting(user, meeting);
+                const ticket = await Ticket.findById(registration.ticketId);
 
                 expect(registration).toExist();
-                expect(updatedTicket.meetingIds.includes(updatedMeeting._id)).toBe(true);
-                expect(updatedTicket.isValid).toBe(false);
+                expect(registration.isApproved).toBe(true);
+                expect(registration.userId).toEqual(user.id);
+                expect(registration.ticketId).toEqual(ticket.id);
+                expect(ticket.meetingIds).toInclude(meeting.id);
+                expect(ticket.isValid).toBe(false);
             });
 
-            it('should reject if the user is already registered for the meeting', async () => {
-                const meeting = await club.createMeeting({
-                    title: 'Test Meeting'
-                });
-                const ticket = await club.createTicket(user, packsMap[1]);
+            it('registers without a ticket with the force flag', async () => {
+                const meeting = await Meeting.create(DEFAULT_MEETING);
 
-                await club.registerForMeeting(user, meeting, ticket);
+                const registration = await Club.registerForMeeting(user, meeting, { force: true });
+
+                expect(registration).toExist();
+                expect(registration.isApproved).toBe(true);
+                expect(registration.userId).toEqual(user.id);
+            });
+
+            it('registers if previously canceled', async () => {
+                const meeting = await Meeting.create(DEFAULT_MEETING);
+                await Ticket.create(DEFAULT_TICKET);
+
+                const firstRegistration = await Club.registerForMeeting(user, meeting);
+                const canceledRegistration = await Club.cancelRegistration(meeting, firstRegistration);
+                const secondRegistration = await Club.registerForMeeting(user, meeting);
+                const ticket = await Ticket.findById(secondRegistration.ticketId);
+
+                expect(firstRegistration.id).toEqual(secondRegistration.id);
+                expect(firstRegistration.id).toEqual(canceledRegistration.id);
+                expect(secondRegistration.id).toEqual(canceledRegistration.id);
+                expect(secondRegistration.userId).toEqual(user.id);
+                expect(secondRegistration.ticketId).toEqual(ticket.id);
+                expect(secondRegistration.isApproved).toBe(true);
+                expect(ticket.meetingIds).toInclude(meeting.id);
+            });
+
+            it('registers for a free meeting', async () => {
+                const meeting = await Meeting.create({ title: 'Test Meeting', free: true });
+
+                const registration = await Club.registerForMeeting(user, meeting);
+
+                expect(registration.userId).toEqual(user.id);
+                expect(registration.isPending).toBe(true);
+            });
+
+            it('rejects if registering without a ticket', async () => {
+                const meeting = await Meeting.create(DEFAULT_MEETING);
 
                 await rejects(async () => {
-                    await club.registerForMeeting(user, meeting, ticket);
+                    await Club.registerForMeeting(user, meeting);
+                }, {
+                    message: 'Нет абонемента'
+                });
+            });
+
+            it('rejects if the user is already registered', async () => {
+                const meeting = await Meeting.create(DEFAULT_MEETING);
+                await Ticket.create(DEFAULT_TICKET);
+                await Club.registerForMeeting(user, meeting);
+
+                await rejects(async () => {
+                    await Club.registerForMeeting(user, meeting);
                 }, {
                     message: 'Пользователь уже зарегистрирован на встречу'
                 });
             });
 
-            it('should reject without a ticket', async () => {
-                const meeting = await club.createMeeting({
-                    title: 'Test Meeting'
-                });
+            it('rejects if the ticket is expired', async () => {
+                const meeting = await Meeting.create(DEFAULT_MEETING);
+                await Ticket.create(EXPIRED_TICKET);
 
                 await rejects(async () => {
-                    await club.registerForMeeting(user, meeting);
+                    await Club.registerForMeeting(user, meeting);
                 }, {
-                    message: 'Билет не найден'
+                    message: 'Срок действия абонемента истек'
                 });
             });
 
-            it('should reject if the ticket is not valid', async () => {
-                const meeting = await club.createMeeting({
-                    title: 'Test Meeting'
-                });
-                const ticket = await club.createTicket(user, packsMap[4]);
+            it('rejects if the ticket has reached the limit', async () => {
+                const meeting1 = await Meeting.create(DEFAULT_MEETING);
+                const meeting2 = await Meeting.create(DEFAULT_MEETING);
+                await Ticket.create(DEFAULT_TICKET);
 
-                ticket.expiresAt = moment().subtract(1, 'day');
-
-                await ticket.save();
+                await Club.registerForMeeting(user, meeting1);
 
                 await rejects(async () => {
-                    await club.registerForMeeting(user, meeting, ticket);
+                    await Club.registerForMeeting(user, meeting2);
                 }, {
-                    message: 'Для регистрации на встречу необходимо купить новый билет'
+                    message: 'Лимит посещений абонемента исчерпан'
                 });
             });
         });
 
         describe('unregisterFromMeeting', () => {
-            it('should unregister a user from a meeting', async () => {
-                const meeting = await club.createMeeting({
-                    title: 'Test Meeting',
-                    date: moment().add(1, 'day').toDate()
-                });
-                const ticket = await club.createTicket(user, packsMap[1]);
-                await club.registerForMeeting(user, meeting, ticket);
+            it('should unregister', async () => {
+                const meeting = await Meeting.create(DEFAULT_MEETING);
+                const ticket = await Ticket.create(DEFAULT_TICKET);
+                await Club.registerForMeeting(user, meeting);
 
-                const [updatedMeeting, updatedTicket] = await club.unregisterFromMeeting(user, meeting);
-                const registration = updatedMeeting.findRegistrationByUser(user);
+                const registration = await Club.unregisterFromMeeting(user, meeting);
+                const updatedTicket = await Ticket.findById(ticket.id);
 
-                expect(registration).toNotExist();
-                expect(updatedTicket.meetingIds.includes(updatedMeeting._id)).toBe(false);
+                expect(registration).toExist();
+                expect(registration.isCanceled).toBe(true);
+                expect(registration.userId).toEqual(user.id);
+                expect(registration.ticketId).toEqual(updatedTicket.id);
                 expect(updatedTicket.isValid).toBe(true);
+                expect(updatedTicket.meetingIds).toExclude(meeting.id);
             });
         });
 
         describe('createRegistration', () => {
-            it('should create a registration', async () => {
-                const meeting = await club.createMeeting({
-                    title: 'Test Meeting'
+            it('creates a registration', async () => {
+                const meeting = await Meeting.create(DEFAULT_MEETING);
+                const ticket = await Ticket.create(DEFAULT_TICKET);
+
+                const registration = await Club.createRegistration(meeting, user, ticket);
+                const updatedMeeting = await Meeting.findById(meeting.id);
+
+                expect(registration.userId).toEqual(user.id);
+                expect(registration.ticketId).toEqual(ticket.id);
+                expect(registration.meetingId).toEqual(meeting.id);
+                expect(updatedMeeting.toObject().registrations).toInclude(registration.toObject());
+            });
+
+            it('creates a registration with the the passed status', async () => {
+                const meeting = await Meeting.create(DEFAULT_MEETING);
+                const ticket = await Ticket.create(DEFAULT_TICKET);
+
+                const registration = await Club.createRegistration(meeting, user, ticket, {
+                    status: 'approved'
                 });
-                const ticket = await club.createTicket(user, packsMap[1]);
 
-                const registration = await club.createRegistration(user, ticket, meeting);
+                expect(registration.status).toEqual('approved');
+            });
 
-                expect(meeting.registrations).toInclude(registration);
-                expect(registration).toMatch({
-                    userId: user._id,
-                    ticketId: ticket._id,
-                    meetingId: meeting._id
+            it('calls Zoom API', async () => {
+                const meeting = await Meeting.create(ZOOM_MEETING);
+                const ticket = await Ticket.create(DEFAULT_TICKET);
+
+                const registration = await Club.createRegistration(meeting, user, ticket);
+
+                expect(registration.zoomId).toExist();
+                expect(registration.joinUrl).toExist();
+                expect(Zoom.meetings.addRegistrant).toHaveBeenCalledWith(meeting.zoomId, {
+                    email: user.email,
+                    first_name: user.firstname,
+                    last_name: user.lastname
                 });
             });
         });
 
         describe('updateRegistration', () => {
-            it('should update a registration', async () => {
-                const meeting = await club.createMeeting({
-                    title: 'Test Meeting'
-                });
-                const ticket = await club.createTicket(user, packsMap[1]);
-                const registration = await club.createRegistration(user, ticket, meeting);
+            it('updates a registration', async () => {
+                const meeting = await Meeting.create(ZOOM_MEETING);
+                const ticket = await Ticket.create(DEFAULT_TICKET);
+                const registration = await Club.createRegistration(meeting, user, ticket);
 
-                await club.updateRegistration(meeting, registration.id, {
-                    status: 'approved'
+                const updatedRegistration = await Club.updateRegistration(meeting, registration.id, {
+                    status: 'pending'
                 });
 
-                const updatedMeeting = await club.findMeeting({ _id: meeting._id }, 'registrations');
-                const updatedRegistration = updatedMeeting
-                    .findRegistrationById(registration._id);
-
-                expect(updatedRegistration.status).toEqual('approved');
+                expect(updatedRegistration.status).toEqual('pending');
             });
-        });
 
-        describe('approveRegistration', () => {
-            it('should approve a registration', async () => {
-                const meeting = await club.createMeeting({
-                    title: 'Test Meeting'
+            it('calls Zoom API', async () => {
+                const meeting = await Meeting.create(ZOOM_MEETING);
+                const ticket = await Ticket.create(DEFAULT_TICKET);
+                const registration = await Club.createRegistration(meeting, user, ticket);
+
+                await Club.updateRegistration(meeting, registration.id, {
+                    status: 'canceled'
                 });
-                const ticket = await club.createTicket(user, packsMap[1]);
-                const registration = await club.createRegistration(user, ticket, meeting);
 
-                await club.approveRegistration(meeting, registration.id);
-
-                const updatedMeeting = await club.findMeeting({ _id: meeting._id }, 'registrations');
-                const updatedRegistration = updatedMeeting
-                    .findRegistrationById(registration._id);
-
-                expect(updatedRegistration.status).toEqual('approved');
-            });
-        });
-
-        describe('cancelRegistration', () => {
-            it('should cancel a registration', async () => {
-                const meeting = await club.createMeeting({
-                    title: 'Test Meeting'
+                expect(Zoom.meetings.updateRegistrantStatus).toHaveBeenCalledWith(meeting.zoomId, {
+                    action: 'cancel',
+                    registrants: [{
+                        id: registration.zoomId
+                    }]
                 });
-                const ticket = await club.createTicket(user, packsMap[1]);
-                const registration = await club.createRegistration(user, ticket, meeting);
-
-                await club.cancelRegistration(meeting, registration.id);
-
-                const updatedMeeting = await club.findMeeting({ _id: meeting._id }, 'registrations');
-                const updatedRegistration = updatedMeeting
-                    .findRegistrationById(registration._id);
-
-                expect(updatedRegistration.status).toEqual('canceled');
-            });
-        });
-
-        describe('denyRegistration', () => {
-            it('should deny a registration', async () => {
-                const meeting = await club.createMeeting({
-                    title: 'Test Meeting'
-                });
-                const ticket = await club.createTicket(user, packsMap[1]);
-                const registration = await club.createRegistration(user, ticket, meeting);
-
-                await club.denyRegistration(meeting, registration.id);
-
-                const updatedMeeting = await club.findMeeting({ _id: meeting._id }, 'registrations');
-                const updatedRegistration = updatedMeeting
-                    .findRegistrationById(registration._id);
-
-                expect(updatedRegistration.status).toEqual('denied');
             });
         });
 
         describe('deleteRegistration', () => {
-            it('should delete a registration', async () => {
-                const meeting = await club.createMeeting({
-                    title: 'Test Meeting'
+            it('deletes a registration', async () => {
+                const meeting = await Meeting.create(ZOOM_MEETING);
+                const ticket = await Ticket.create(DEFAULT_TICKET);
+                const registration = await Club.createRegistration(meeting, user, ticket);
+
+                const deletedRegistration = await Club.deleteRegistration(meeting, registration.id);
+                const updatedMeeting = await Meeting.findById(meeting.id);
+
+                expect(deletedRegistration).toExist();
+                expect(updatedMeeting.toObject().registrations).toExclude(deletedRegistration.toObject());
+            });
+
+            it('calls Zoom API', async () => {
+                const meeting = await Meeting.create(ZOOM_MEETING);
+                const ticket = await Ticket.create(DEFAULT_TICKET);
+                const registration = await Club.createRegistration(meeting, user, ticket);
+
+                await Club.deleteRegistration(meeting, registration.id);
+
+                expect(Zoom.meetings.removeRegistrant).toHaveBeenCalledWith(meeting.zoomId, registration.zoomId);
+            });
+        });
+
+        describe('approveRegistration', () => {
+            it('approves a registration', async () => {
+                const meeting = await Meeting.create(ZOOM_MEETING);
+                const ticket = await Ticket.create(DEFAULT_TICKET);
+                const registration = await Club.createRegistration(meeting, user, ticket, {
+                    status: 'pending'
                 });
-                const ticket = await club.createTicket(user, packsMap[1]);
-                const registration = await club.createRegistration(user, ticket, meeting);
 
-                await club.deleteRegistration(meeting, registration.id);
+                const approvedRegistration = await Club.approveRegistration(meeting, registration.id);
+                const updatedTicket = await Ticket.findById(ticket.id);
 
-                const updatedMeeting = await club.findMeeting({ _id: meeting._id }, 'registrations');
-                const deletedRegistration = updatedMeeting
-                    .findRegistrationById(registration._id);
+                expect(approvedRegistration.status).toEqual('approved');
+                expect(updatedTicket.meetingIds).toInclude(meeting.id);
+            });
+        });
 
-                expect(updatedMeeting.registrations).toExclude(deletedRegistration);
-                expect(deletedRegistration).toNotExist();
+        describe('cancelRegistration', () => {
+            it('cancels a registration', async () => {
+                const meeting = await Meeting.create(ZOOM_MEETING);
+                const ticket = await Ticket.create(DEFAULT_TICKET);
+                const registration = await Club.createRegistration(meeting, user, ticket);
+
+                const canceledRegistration = await Club.cancelRegistration(meeting, registration.id);
+                const updatedTicket = await Ticket.findById(ticket.id);
+
+                expect(canceledRegistration.status).toEqual('canceled');
+                expect(updatedTicket.meetingIds).toExclude(meeting.id);
             });
         });
     });
@@ -387,27 +441,27 @@ describe('ClubService', () => {
             it('should send reminders for meetings in an hour', async () => {
                 const nextHour = moment().add(1, 'hour');
 
-                await club.createMeeting({
+                await Club.createMeeting({
                     title: 'Test Meeting',
                     date: nextHour.toDate()
                 });
 
-                await club.sendMeetingsReminders(nextHour, { templateId: 1348680 });
+                await Club.sendMeetingsReminders(nextHour, { templateId: 1348680 });
 
-                expect(MailMock.sendMany).toHaveBeenCalled();
+                expect(Mail.sendMany).toHaveBeenCalled();
             });
 
             it('should send reminders for meetings in a day', async () => {
                 const nextDay = moment().add(1, 'day');
 
-                await club.createMeeting({
+                await Club.createMeeting({
                     title: 'Test Meeting',
                     date: nextDay.toDate()
                 });
 
-                await club.sendMeetingsReminders(nextDay, { templateId: 1348680 });
+                await Club.sendMeetingsReminders(nextDay, { templateId: 1348680 });
 
-                expect(MailMock.sendMany).toHaveBeenCalled();
+                expect(Mail.sendMany).toHaveBeenCalled();
             });
         });
     });

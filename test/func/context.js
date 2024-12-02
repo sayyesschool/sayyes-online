@@ -1,8 +1,12 @@
-const context = global.$context;
-const {
+import config from '@/config';
+import core from '@/core';
+
+const { models, services } = core(config);
+
+const context = {
     models,
     services
-} = context;
+};
 
 export {
     context as default,

@@ -1,8 +1,9 @@
 import expect from 'expect';
 
 import context from '../context';
+import { USER_ID } from '../data';
 
-import api, { user } from './api';
+import api from './api';
 
 const {
     models: { Lesson, Room }
@@ -12,9 +13,9 @@ describe('/comments', () => {
     describe('GET /', () => {
         it('should return a list of user\'s lessons', async () => {
             await Lesson.create([
-                { teacherId: user.id },
-                { teacherId: user.id },
-                { teacherId: user.id }
+                { teacherId: USER_ID },
+                { teacherId: USER_ID },
+                { teacherId: USER_ID }
             ]);
 
             const { body } = await api.get('/lessons');
@@ -25,7 +26,7 @@ describe('/comments', () => {
 
     describe('GET /:id', () => {
         it('should return a lesson by id', async () => {
-            const lesson = await Lesson.create({ teacherId: user.id });
+            const lesson = await Lesson.create({ teacherId: USER_ID });
 
             const { body } = await api.get(`/lessons/${lesson.id}`);
 
