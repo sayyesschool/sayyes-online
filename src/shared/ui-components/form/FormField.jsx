@@ -1,9 +1,9 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
 import FormHelperText from '@mui/joy/FormHelperText';
+import FormLabel from '@mui/joy/FormLabel';
+import classnames from 'classnames';
 
 const FormField = forwardRef(({
     label,
@@ -16,7 +16,11 @@ const FormField = forwardRef(({
     const classNames = classnames('ui-FormField', className);
 
     return (
-        <FormControl ref={ref} className={classNames} {...props}>
+        <FormControl
+            ref={ref}
+            className={classNames}
+            {...props}
+        >
             {label &&
                 <FormLabel>{label}</FormLabel>
             }

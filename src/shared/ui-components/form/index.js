@@ -6,6 +6,7 @@ import FormInput from './FormInput';
 import FormLabel from './FormLabel';
 import FormRadioGroup from './FormRadioGroup';
 import FormSelect from './FormSelect';
+import FormSwitch from './FormSwitch';
 import FormTextarea from './FormTextarea';
 
 Form.Autocomplete = FormAutocomplete;
@@ -15,6 +16,7 @@ Form.Input = FormInput;
 Form.Label = FormLabel;
 Form.RadioGroup = FormRadioGroup;
 Form.Select = FormSelect;
+Form.Switch = FormSwitch;
 Form.Textarea = FormTextarea;
 
 export {
@@ -27,5 +29,6 @@ export {
     FormLabel,
     FormRadioGroup,
     FormSelect,
+    FormSwitch,
     FormTextarea
 };

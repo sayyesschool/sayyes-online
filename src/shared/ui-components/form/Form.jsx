@@ -1,5 +1,6 @@
 import { forwardRef, useCallback } from 'react';
-import classnames from 'classnames';
+
+import cn from 'classnames';
 
 const Form = forwardRef(({
     preventDefault = true,
@@ -8,7 +9,7 @@ const Form = forwardRef(({
     className,
     ...props
 }, ref) => {
-    const classNames = classnames(className, 'ui-Form');
+    const classNames = cn(className, 'ui-Form');
 
     const handleSubmit = useCallback(event => {
         if (preventDefault)

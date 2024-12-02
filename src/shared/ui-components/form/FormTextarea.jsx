@@ -1,11 +1,11 @@
 import Textarea from '../textarea/Textarea';
 
-import FromField from './FormField';
+import FormField from './FormField';
 
 export default function FormTextarea({ label, ...props }) {
     return (
-        <FromField label={label}>
+        <FormField label={label}>
             <Textarea {...props} />
-        </FromField>
+        </FormField>
     );
 }

@@ -1,7 +1,7 @@
 import Radio from '../radio/Radio';
 import RadioGroup from '../radio/RadioGroup';
 
-import FromField from './FormField';
+import FormField from './FormField';
 
 export default function FormRadioGroup({
     label,
@@ -10,12 +10,12 @@ export default function FormRadioGroup({
     ...props
 }) {
     return (
-        <FromField label={label}>
+        <FormField label={label}>
             <RadioGroup {...props}>
                 {items.map(item => (
-                    <Radio {...item} />
+                    <Radio key={item.key} {...item} />
                 ))}
             </RadioGroup>
-        </FromField>
+        </FormField>
     );
 }
