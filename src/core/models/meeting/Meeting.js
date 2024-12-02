@@ -1,64 +1,39 @@
 import moment from 'moment';
-import { isValidObjectId, Schema } from 'mongoose';
+import { isObjectIdOrHexString, isValidObjectId, Schema } from 'mongoose';
 
+import { Level } from '../common/constants';
+import Image from '../image';
+
+import { LevelLabels, MeetingStatus } from './constants';
 import Registration from './Registration';
-
-const Level = {
-    Any: 'any',
-    Elementary: 'elementary',
-    Beginner: 'beginner',
-    PreIntermediate: 'pre-intermediate',
-    Intermediate: 'intermediate',
-    UpperIntermediate: 'upper-intermediate',
-    Advanced: 'advanced'
-};
-
-const LevelLabels = {
-    [Level.Any]: 'Любой',
-    [Level.Elementary]: 'Elementary',
-    [Level.Beginner]: 'Beginner',
-    [Level.PreIntermediate]: 'Pre-Intermediate',
-    [Level.Intermediate]: 'Intermediate',
-    [Level.UpperIntermediate]: 'Upper-Intermediate',
-    [Level.Advanced]: 'Advanced'
-};
-
-const Status = {
-    Scheduled: 'scheduled',
-    Started: 'started',
-    Ended: 'ended',
-    Canceled: 'canceled'
-};
 
 export const Meeting = new Schema({
     title: { type: String, required: true, trim: true },
     description: { type: String, trim: true },
-    status: {
-        type: String,
-        enum: Object.values(Status),
-        default: Status.Scheduled
-    },
-    price: { type: Number, min: 0, default: 0 },
     date: { type: Date },
     duration: { type: Number, default: 60 },
-    level: {
-        type: String,
-        lowercase: true,
-        enum: Object.values(Level),
-        default: Level.Any
-    },
     capacity: { type: Number },
-    published: { type: Boolean, default: false },
+    level: {
+        type: Number,
+        min: Level.Beginner,
+        max: Level.Proficient
+    },
+    status: {
+        type: String,
+        enum: Object.values(MeetingStatus),
+        default: MeetingStatus.Scheduled
+    },
+    image: { type: Image },
+    free: { type: Boolean, default: false },
     online: { type: Boolean, default: false },
+    published: { type: Boolean, default: false },
     zoomId: { type: String },
     startUrl: { type: String },
     joinUrl: { type: String },
     materialsUrl: { type: String },
-    thumbnailUrl: { type: String },
     notes: { type: String, trim: true, default: '' },
-    registrations: { type: [Registration] },
     hostId: { type: Schema.Types.ObjectId, ref: 'User' },
-    participantIds: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+    registrations: { type: [Registration] }
 }, {
     timestamps: true
 });
@@ -94,11 +69,11 @@ Meeting.virtual('durationLabel').get(function() {
 });
 
 Meeting.virtual('levelLabel').get(function() {
-    return LevelLabels[this.level];
+    return LevelLabels[this.level] || 'Любой';
 });
 
 Meeting.virtual('isFree').get(function() {
-    return this.price === 0;
+    return this.free;
 });
 
 Meeting.virtual('isToday').get(function() {
@@ -106,15 +81,15 @@ Meeting.virtual('isToday').get(function() {
 });
 
 Meeting.virtual('isScheduled').get(function() {
-    return this.status === Status.Scheduled;
+    return this.status === MeetingStatus.Scheduled;
 });
 
 Meeting.virtual('isStarted').get(function() {
-    return this.status === Status.Started;
+    return this.status === MeetingStatus.Started;
 });
 
 Meeting.virtual('isEnded').get(function() {
-    return this.status === Status.Ended;
+    return this.status === MeetingStatus.Ended;
 });
 
 Meeting.virtual('isZoom').get(function() {
@@ -144,30 +119,8 @@ Meeting.virtual('host', {
     justOne: true
 });
 
-Meeting.virtual('participants', {
-    ref: 'User',
-    localField: 'participantIds',
-    foreignField: '_id'
-});
-
-Meeting.methods.canRegister = function(user) {
-    return this.free || user.balance >= this.price;
-};
-
-Meeting.methods.canUnregister = function(registration) {
-    if (!registration) return false;
-
-    const meetingStartsIn = (new Date(this.date) - Date.now()) / 1000 / 60 / 60;
-
-    return meetingStartsIn > 2;
-};
-
-Meeting.methods.isRegistered = function(user) {
-    return this.registrations.includes(r => r.user == (user?.id || user));
-};
-
-Meeting.methods.createRegistration = function(user, ticket) {
-
+Meeting.methods.isRegistered = function($user) {
+    return !!this.findRegistrationByUser($user);
 };
 
 Meeting.methods.findRegistrationById = function(id) {
@@ -175,7 +128,7 @@ Meeting.methods.findRegistrationById = function(id) {
 };
 
 Meeting.methods.findRegistrationByUser = function($user) {
-    const userId = isValidObjectId($user) ? $user : $user?.id;
+    const userId = isObjectIdOrHexString($user) ? $user : $user?.id;
 
     return this.registrations.find(r => r.userId == userId);
 };
