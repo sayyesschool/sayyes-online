@@ -66,6 +66,7 @@ export function useFileInput(options = {}) {
         ref: fileInputRef,
         input: fileInputRef.current,
         file,
+        setFile,
         pick,
         reset
     };
