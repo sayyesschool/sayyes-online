@@ -149,7 +149,7 @@ export function useFormData(initialData, deps = []) {
 
             return data;
         });
-    });
+    }, []);
 
     return {
         data,
