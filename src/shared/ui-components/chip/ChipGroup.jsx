@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import Box from '@mui/system/Box';
+import classnames from 'classnames';
 
 import Chip from './Chip';
 

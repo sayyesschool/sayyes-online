@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyDivider from '@mui/joy/Divider';
+import classnames from 'classnames';
 
 const Divider = forwardRef(({
     className,

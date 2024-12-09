@@ -1,12 +1,15 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyChip from '@mui/joy/Chip';
 import ChipDelete from '@mui/joy/ChipDelete';
+import classnames from 'classnames';
+
+import Icon from '../icon';
 
 const Chip = forwardRef(({
-    start,
     content,
+    icon,
+    start,
     end,
 
     children = content,
@@ -19,7 +22,7 @@ const Chip = forwardRef(({
         <JoyChip
             ref={ref}
             className={classNames}
-            startDecorator={start}
+            startDecorator={icon ? <Icon>{icon}</Icon> : start}
             endDecorator={end}
             {...props}
         >

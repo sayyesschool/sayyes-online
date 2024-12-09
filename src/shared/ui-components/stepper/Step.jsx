@@ -5,11 +5,12 @@ import JoyStepIndicator from '@mui/joy/StepIndicator';
 import classnames from 'classnames';
 
 const Step = forwardRef(({
+    content,
     indicator,
     active,
 
     className,
-    children,
+    children = content,
     ...props
 }, ref) => {
     const classNames = classnames(className, 'ui-Step');
@@ -17,11 +18,7 @@ const Step = forwardRef(({
     return (
         <JoyStep
             ref={ref}
-            indicator={indicator &&
-                <JoyStepIndicator>
-                    {indicator}
-                </JoyStepIndicator>
-            }
+            indicator={indicator}
             active={active}
             className={classNames}
             {...props}
@@ -32,5 +29,6 @@ const Step = forwardRef(({
 });
 
 Step.displayName = 'Step';
+Step.Indicator = JoyStepIndicator;
 
 export default Step;

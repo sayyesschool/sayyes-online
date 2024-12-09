@@ -6,4 +6,8 @@
     &--align-end {
         text-align: right;
     }
+
+    &#{&}--header {
+        --TableCell-headBackground: transparent;
+    }
 }

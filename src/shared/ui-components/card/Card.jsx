@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
 
 import JoyCard from '@mui/joy/Card';
+import CardActions from '@mui/joy/CardActions';
 import CardContent from '@mui/joy/CardContent';
 import CardCover from '@mui/joy/CardCover';
 import CardOverflow from '@mui/joy/CardOverflow';
@@ -25,6 +26,7 @@ const Card = forwardRef(({
 
 Card.displayName = 'Card';
 
+Card.Actions = CardActions;
 Card.Cover = CardCover;
 Card.Content = CardContent;
 Card.Overflow = CardOverflow;

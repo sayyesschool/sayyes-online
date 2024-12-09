@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyTabs from '@mui/joy/Tabs';
+import classnames from 'classnames';
 
 import TabList from './TabList';
 

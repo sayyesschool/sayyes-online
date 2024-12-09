@@ -30,5 +30,6 @@ const Stepper = forwardRef(({
 });
 
 Stepper.displayName = 'Stepper';
+Stepper.Step = Step;
 
 export default Stepper;

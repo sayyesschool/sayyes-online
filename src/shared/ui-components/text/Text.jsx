@@ -8,6 +8,7 @@ const Text = forwardRef(({
     type,
     start,
     end,
+    inline,
 
     as,
     className,

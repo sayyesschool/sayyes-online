@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyTable from '@mui/joy/Table';
+import classnames from 'classnames';
 
 import TableBody from './TableBody';
 import TableCell from './TableCell';

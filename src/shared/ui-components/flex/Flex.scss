@@ -1,29 +1,39 @@
 .ui-Flex {
     &--gap {
+        &-xxs,
         &-smallest {
             gap: .25rem;
         }
     
+        &-xs,
         &-smaller {
             gap: .5rem;
         }
     
+        &-s,
+        &-sm,
         &-small {
             gap: .75rem;
         }
     
+        &-m,
+        &-md,
         &-medium {
             gap: 1rem;
         }
     
+        &-l,
+        &-lg,
         &-large {
             gap: 1.25rem;
         }
     
+        &-xl,
         &-larger {
             gap: 1.5rem;
         }
     
+        &-xxl,
         &-largest {
             gap: 1.75rem
         }

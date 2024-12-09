@@ -3,8 +3,12 @@ import { forwardRef } from 'react';
 import Sheet from '@mui/joy/Sheet';
 import classnames from 'classnames';
 
-const Surface = forwardRef(({ className, ...props }, ref) => {
-    const classNames = classnames(className, 'ui-Surface');
+const Surface = forwardRef(({ className, elevated, ...props }, ref) => {
+    const classNames = classnames(
+        className,
+        'ui-Surface',
+        elevated && 'ui-Surface--elevated'
+    );
 
     return (
         <Sheet

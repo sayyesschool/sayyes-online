@@ -1,9 +1,10 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoySwitch from '@mui/joy/Switch';
+import classnames from 'classnames';
 
 const Switch = forwardRef(({
+    name,
     className,
     ...props
 }, ref) => {
@@ -13,6 +14,9 @@ const Switch = forwardRef(({
         <JoySwitch
             ref={ref}
             className={classNames}
+            slotProps={{
+                input: { name }
+            }}
             {...props}
         />
     );
