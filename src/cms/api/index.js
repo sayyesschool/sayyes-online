@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import courses from './courses';
+import dictionary from './dictionary';
 import materials from './materials';
 import user from './user';
 
@@ -10,6 +11,7 @@ export default context => {
     router.use('/courses', courses(context));
     router.use('/materials', materials(context));
     router.use('/user', user(context));
+    router.use('/dictionary', dictionary(context));
 
     router.use((error, req, res, next) => {
         console.error(error);

@@ -1,5 +1,6 @@
 export * as comments from './comments';
 export * as courses from './courses';
+export * as dictionary from './dictionary';
 export * as enrollments from './enrollments';
 export * as learners from './learners';
 export * as lessons from './lessons';
