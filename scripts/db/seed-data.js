@@ -78,6 +78,13 @@ export const manager = {
     role: 'manager'
 };
 
+export const editor = {
+    firstname: 'Метоюист',
+    email: 'editor@sayyes.school',
+    password: '123456',
+    role: 'editor'
+};
+
 export const teacher = {
     firstname: 'Учитель',
     email: 'teacher@sayyes.school',

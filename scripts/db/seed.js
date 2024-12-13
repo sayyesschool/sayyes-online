@@ -32,6 +32,7 @@ const [
 ] = await User.create([
     data.learner,
     data.manager,
+    data.editor,
     data.teacher
 ]);
 
