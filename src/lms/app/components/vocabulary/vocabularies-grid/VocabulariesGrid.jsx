@@ -18,6 +18,7 @@ export default function VocabulariesGrid({
                 >
                     <VocabularyCard
                         vocabulary={vocabulary}
+                        readOnly={!vocabulary?.createdAt}
                         onEditVocabulary={onEditVocabulary}
                         onDeleteVocabulary={onDeleteVocabulary}
                     />
