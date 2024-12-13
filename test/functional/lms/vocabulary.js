@@ -51,11 +51,11 @@ export default (api, { models: { Lexeme, LexemeRecord, Vocabulary }, user }) =>
 
                 it('should get my vocabulary with lexemes', async () => {
                     const lexemes = await Lexeme.create([
-                        { value: 'cat', approved: true },
-                        { value: 'dog', approved: true },
-                        { value: 'fish', approved: true },
-                        { value: 'catnip', approved: true },
-                        { value: 'catdog', approved: false }
+                        { value: 'cat', publishStatus: 'approved' },
+                        { value: 'dog', publishStatus: 'approved' },
+                        { value: 'fish', publishStatus: 'approved' },
+                        { value: 'catnip', publishStatus: 'approved' },
+                        { value: 'catdog', publishStatus: 'isUnapproved' }
                     ]);
 
                     await LexemeRecord.create(lexemes.map(l => ({
@@ -119,11 +119,11 @@ export default (api, { models: { Lexeme, LexemeRecord, Vocabulary }, user }) =>
             describe('GET /search', () => {
                 beforeEach(async () => {
                     await Lexeme.create([
-                        { value: 'cat', approved: true },
-                        { value: 'dog', approved: true },
-                        { value: 'fish', approved: true },
-                        { value: 'catnip', approved: true },
-                        { value: 'catdog', approved: false }
+                        { value: 'cat', publishStatus: 'approved' },
+                        { value: 'dog', publishStatus: 'approved' },
+                        { value: 'fish', publishStatus: 'approved' },
+                        { value: 'catnip', publishStatus: 'approved' },
+                        { value: 'catdog', publishStatus: 'isUnapproved' }
                     ]);
                 });
 
@@ -156,7 +156,7 @@ export default (api, { models: { Lexeme, LexemeRecord, Vocabulary }, user }) =>
 
                     const lexemes = Array.from({ length: 21 }, (_, i) => ({
                         value: `cat${i}`,
-                        approved: true
+                        publishStatus: 'approved'
                     }));
 
                     await Lexeme.create(lexemes);
@@ -309,7 +309,7 @@ export default (api, { models: { Lexeme, LexemeRecord, Vocabulary }, user }) =>
                 it('should update the lexeme if it has not yet been approved', async () => {
                     const lexeme = await Lexeme.create({
                         ...initialData,
-                        approved: false
+                        publishStatus: 'isUnapproved'
                     });
                     const vocabulary = await Vocabulary.create({
                         lexemeIds: [lexeme.id],
@@ -324,7 +324,7 @@ export default (api, { models: { Lexeme, LexemeRecord, Vocabulary }, user }) =>
                 it('should not update the lexeme if it has been approved', async () => {
                     const lexeme = await Lexeme.create({
                         ...initialData,
-                        approved: true
+                        publishStatus: 'approved'
                     });
                     const vocabulary = await Vocabulary.create({
                         lexemeIds: [lexeme.id],

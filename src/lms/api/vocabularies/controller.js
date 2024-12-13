@@ -6,7 +6,7 @@ export default ({
         const batch = Number(req.query.p ?? 1);
         const limit = Number(req.query.c ?? 0);
         const skip = (batch - 1) * limit;
-        const query = { value: regex, approved: true };
+        const query = { value: regex, publishStatus: 'approved' };
 
         const [count, lexemes] = await Promise.all([
             Lexeme.count(query),
@@ -189,7 +189,7 @@ export default ({
     },
 
     async updateLexeme(req, res) {
-        const lexeme = await Lexeme.findById(req.params.lexemeId, 'approved');
+        const lexeme = await Lexeme.findById(req.params.lexemeId);
 
         if (!lexeme) throw {
             code: 404,
@@ -203,7 +203,7 @@ export default ({
             examples: req.body.examples
         };
 
-        const updatedLexeme = !lexeme.approved ?
+        const updatedLexeme = !lexeme.isApproved ?
             await Lexeme.findOneAndUpdate(
                 {
                     _id: req.params.lexemeId,

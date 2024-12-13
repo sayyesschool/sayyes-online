@@ -1,11 +1,11 @@
 export const getInitialData = ({
-    approved,
+    publishStatus,
     data = {},
     translation,
     definition,
     examples
 }) =>
-    approved ?
+    publishStatus === 'approved' ?
         data :
         { translation, definition, examples };
 

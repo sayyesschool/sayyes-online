@@ -4,7 +4,7 @@ import {
     createReducer
 } from 'shared/store/helpers';
 
-export const getVocabulary = createAction('GET_VOCABULARY', approved => ({
+export const getVocabulary = createAction('GET_VOCABULARY', () => ({
     request: {
         method: 'get',
         path: 'dictionary'

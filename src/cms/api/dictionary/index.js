@@ -12,7 +12,7 @@ export default context => {
     router.route('/global/:lexemeId?')
         .post(controller.addLexeme);
 
-    router.put('/status/:lexemeId', controller.updateLexemeStatus);
+    router.put('/status/:lexemeId', controller.updatePublishStatus);
 
     return router;
 };

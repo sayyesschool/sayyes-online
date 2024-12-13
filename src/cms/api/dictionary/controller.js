@@ -62,14 +62,12 @@ export default ({
         });
     },
 
-    async updateLexemeStatus(req, res) {
+    async updatePublishStatus(req, res) {
         const lexeme = await Lexeme.findOneAndUpdate({
             _id: req.params.lexemeId
         }, {
-            approved: req.body.status
+            publishStatus: req.body.status
         });
-
-        console.log(999, req.params, lexeme);
 
         if (!lexeme) throw {
             code: 404,
