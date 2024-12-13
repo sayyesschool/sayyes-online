@@ -2,8 +2,9 @@ import { useCallback, useState } from 'react';
 
 import FormDialog from 'shared/components/form-dialog';
 import { useVocabularyActions } from 'shared/hooks/vocabularies';
-import { Dialog, PopoverButton } from 'shared/ui-components';
+import { Dialog, PopoverButton, Tabs } from 'shared/ui-components';
 
+import { LexemePublishStatus } from 'core/models/lexeme/Lexeme';
 import Lexeme from 'lms/components/vocabulary/lexeme';
 import LexemeForm from 'lms/components/vocabulary/lexeme-form';
 import LexemeSimpleForm from 'lms/components/vocabulary/lexeme-simple-form';
@@ -17,8 +18,13 @@ const filters = {
     all: () => true,
     new: lexeme => lexeme.status === 0,
     learning: lexeme => lexeme.status > 0 && lexeme.status < 5,
-    learned: lexeme => lexeme.status === 5
+    learned: lexeme => lexeme.status === 5,
+    approved: lexeme => lexeme.publishStatus === LexemePublishStatus.Approved,
+    unapproved: lexeme => lexeme.publishStatus === LexemePublishStatus.Unapproved,
+    pending: lexeme => lexeme.publishStatus === LexemePublishStatus.Pending
 };
+
+const statuses = Object.values(LexemePublishStatus);
 
 export default function VocabularyLexemes({
     vocabulary,
@@ -27,15 +33,26 @@ export default function VocabularyLexemes({
     inline
 }) {
     const actions = useVocabularyActions();
-
     const [currentLexemeId, setCurrentLexemeId] = useState(null);
     const [selectedLexemeIds, setSelectedLexemeIds] = useState([]);
-    const [filter, setFilter] = useState('all');
+    const isEditor = user.role === 'editor';
+    const [filter, setFilter] = useState(isEditor ? 'pending' : 'all');
     const [showViewModal, setShowViewModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
+    const [activeTabStatus, setActiveTabStatus] = useState(0);
 
     const vocabularyId = vocabulary?.id;
+    const lexemes = vocabulary.lexemes.filter(filters[filter]);
+    const currentLexeme = lexemes.find(lexeme => lexeme.id === currentLexemeId);
+    const showHeader = !inline || !currentLexeme;
+    const showList = showHeader;
     const isTeacher = user.role === 'teacher';
+    const readOnly = isTeacher;
+
+    const handleTabChange = useCallback((event, value) => {
+        setFilter(statuses[value]);
+        setActiveTabStatus(value);
+    }, []);
 
     const closeViewModal = useCallback(() => {
         setCurrentLexemeId(null);
@@ -93,12 +110,6 @@ export default function VocabularyLexemes({
         setShowViewModal(false);
     }, []);
 
-    const lexemes = vocabulary.lexemes.filter(filters[filter]);
-    const currentLexeme = lexemes.find(lexeme => lexeme.id === currentLexemeId);
-    const showHeader = !inline || !currentLexeme;
-    const showList = showHeader;
-    const readOnly = isTeacher;
-
     return (
         <div className={styles.root}>
             {showHeader &&
@@ -132,15 +143,31 @@ export default function VocabularyLexemes({
 
             <div className={styles.body}>
                 {showList &&
-                    <LexemesList
-                        lexemes={lexemes}
-                        readOnly={readOnly}
-                        onViewLexeme={handleViewLexeme}
-                        onEditLexeme={handleEditLexeme}
-                        onSelectLexeme={handleSelectLexeme}
-                        onDeleteLexeme={handleDeleteLexeme}
-                        onUpdateLexemeStatus={handleUpdateLexemeStatus}
-                    />
+                    <>
+                        {isEditor &&
+                            <Tabs
+                                value={activeTabStatus}
+                                items={statuses.map((status, index) => ({
+                                    key: index,
+                                    content: status,
+                                    color: index === activeTabStatus ? 'primary' : undefined
+                                }))}
+                                tabVariant="plain"
+                                variant="plain"
+                                onChange={handleTabChange}
+                            />
+                        }
+
+                        <LexemesList
+                            lexemes={lexemes}
+                            readOnly={readOnly}
+                            onViewLexeme={handleViewLexeme}
+                            onEditLexeme={handleEditLexeme}
+                            onSelectLexeme={handleSelectLexeme}
+                            onDeleteLexeme={handleDeleteLexeme}
+                            onUpdateLexemeStatus={handleUpdateLexemeStatus}
+                        />
+                    </>
                 }
 
                 {currentLexeme && (
