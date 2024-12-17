@@ -3,6 +3,8 @@ import { forwardRef } from 'react';
 import AspectRatio from '@mui/joy/AspectRatio';
 import classnames from 'classnames';
 
+import styles from './Image.module.scss';
+
 const Image = forwardRef(({
     src,
     alt = '',
@@ -12,15 +14,15 @@ const Image = forwardRef(({
     className,
     ...props
 }, ref) => {
-    const classNames = classnames('ui-Image', className);
+    const classNames = classnames(className, 'ui-Image', styles.root);
 
     return (ratio ?
         <AspectRatio
             ref={ref}
-            className={classNames}
             sx={sx}
         >
             <img
+                className={classNames}
                 src={src}
                 alt={alt}
                 {...props}
