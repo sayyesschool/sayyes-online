@@ -6,13 +6,17 @@ import vhost from 'vhost';
 import api from './api';
 import pages from './pages';
 
+const DOMAIN = 'club';
+
 export default context => {
     const app = express();
 
     app.set('view engine', 'pug');
-    app.set('views', resolve(context.config.APP_PATH, 'club'));
+    app.set('views', resolve(context.config.APP_PATH, DOMAIN));
 
     Object.assign(app.locals, context.config, {
+        CLUB_URL: `https://club.${context.config.APP_DOMAIN}`,
+        CLUB_EMAIL: `club@${context.config.APP_DOMAIN}`,
         basedir: context.config.APP_PATH
     });
 
@@ -22,5 +26,5 @@ export default context => {
     );
     app.use(pages(context));
 
-    return vhost(`club.${context.config.APP_DOMAIN}`, app);
+    return vhost(`${DOMAIN}.${context.config.APP_DOMAIN}`, app);
 };

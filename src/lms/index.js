@@ -5,16 +5,14 @@ import vhost from 'vhost';
 
 import api from './api';
 
-const ALLOWED_ROLES = ['learner', 'teacher'];
-
-export { api };
+const DOMAIN = 'lms';
 
 export default context => {
     const app = express();
 
     app.set('trust proxy', true);
     app.set('view engine', 'pug');
-    app.set('views', resolve(context.config.APP_PATH, 'lms'));
+    app.set('views', resolve(context.config.APP_PATH, DOMAIN));
 
     app.locals.basedir = context.config.APP_PATH;
 
@@ -23,7 +21,7 @@ export default context => {
     });
 
     app.use((req, res, next) => {
-        ALLOWED_ROLES.includes(req.user?.role) ? next() : next('router');
+        req.user?.hasDomain(DOMAIN) ? next() : next('router');
     });
     app.use('/api', api(context));
     app.use((req, res, next) => {
@@ -41,5 +39,5 @@ export default context => {
         res.render('index');
     });
 
-    return vhost(`lms.${context.config.APP_DOMAIN}`, app);
+    return vhost(`${DOMAIN}.${context.config.APP_DOMAIN}`, app);
 };

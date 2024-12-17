@@ -1,28 +1,6 @@
 import { Schema } from 'mongoose';
 
-const permissions = [
-    'all',
-    'enrollments',
-    'meetings',
-    'requests',
-    'payments',
-    'tickets',
-    'lessons',
-    'learners',
-    'managers',
-    'teachers',
-    'tickets',
-    'users',
-    'settings'
-];
-
-export const Manager = new Schema({
-    permissions: {
-        type: [String],
-        enum: permissions,
-        default: ['all']
-    }
-});
+export const Manager = new Schema({});
 
 Manager.virtual('enrollments', {
     ref: 'Enrollment',

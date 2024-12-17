@@ -5,16 +5,8 @@ import mongoose, { Schema } from 'mongoose';
 
 import Image from '../image';
 
+import { UserPermissions, UserRole } from './constants';
 import Person from './Person';
-
-export const UserRole = {
-    Admin: 'admin',
-    Editor: 'editor',
-    Learner: 'learner',
-    Manager: 'manager',
-    Member: 'member',
-    Teacher: 'teacher'
-};
 
 function hashPassword(password) {
     return bcryptjs.hashSync(password, bcryptjs.genSaltSync());
@@ -32,14 +24,22 @@ export const User = new Schema([Person, {
     },
     role: {
         type: String,
-        enum: Object.values(UserRole),
-        default: UserRole.Customer
+        enum: Object.values(UserRole)
     },
     image: { type: Image },
     accounts: {
         type: Map,
         of: String,
         default: {}
+    },
+    domains: {
+        type: [String],
+        default: ['lk']
+    },
+    permissions: {
+        type: [String],
+        enum: UserPermissions,
+        default: ['all'] // TODO: Remove before production
     },
     timezone: { type: String },
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
@@ -70,7 +70,31 @@ User.statics.generateToken = generateToken;
 /* Virtuals */
 
 User.virtual('url').get(function() {
-    return `/${this.role}s/${this.id}`;
+    return this.id ? `/users/${this.id}` : undefined;
+});
+
+User.virtual('isAdmin').get(function() {
+    return this.role === UserRole.Admin;
+});
+
+User.virtual('isEditor').get(function() {
+    return this.role === UserRole.Editor;
+});
+
+User.virtual('isLearner').get(function() {
+    return this.role === UserRole.Learner;
+});
+
+User.virtual('isManager').get(function() {
+    return this.role === UserRole.Manager;
+});
+
+User.virtual('isMember').get(function() {
+    return this.role === UserRole.Member;
+});
+
+User.virtual('isTeacher').get(function() {
+    return this.role === UserRole.Teacher;
 });
 
 /* Methods */
@@ -131,6 +155,20 @@ User.methods.removeAccount = function(accountId) {
     return this.save().then(() => account);
 };
 
+User.methods.is = function(arg) {
+    const roles = Array.isArray(arg) ? arg : [...arguments];
+
+    return roles.includes(this.role);
+};
+
+User.methods.can = function(permission) {
+    return this.permissions.includes(permission);
+};
+
+User.methods.hasDomain = function(domain) {
+    return this.domains.includes(domain);
+};
+
 User.methods.toData = function() {
     return {
         id: this.id,
@@ -141,11 +179,12 @@ User.methods.toData = function() {
         dob: this.dob,
         image: this.image,
         initials: this.initials,
-        balance: this.balance,
-        role: this.role,
         timezone: this.timezone,
         accounts: this.accounts,
-        permissions: this.permissions
+        role: this.role,
+        permissions: this.permissions,
+        isLearner: this.isLearner,
+        isTeacher: this.isTeacher
     };
 };
 

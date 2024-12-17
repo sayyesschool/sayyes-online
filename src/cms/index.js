@@ -22,7 +22,7 @@ export default context => {
 
     app.use('/api', api(context));
     app.use((req, res, next) => {
-        ALLOWED_ROLES.includes(req.user?.role) ? next() : next('router');
+        req.user?.is(ALLOWED_ROLES) ? next() : next('router');
     });
     app.use((req, res) => res.render('index'));
 

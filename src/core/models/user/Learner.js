@@ -44,6 +44,12 @@ Learner.virtual('meetings', {
     foreignField: 'registrations.userId'
 });
 
+Learner.virtual('memberships', {
+    ref: 'Membership',
+    localField: '_id',
+    foreignField: 'userId'
+});
+
 Learner.virtual('payments', {
     ref: 'Payment',
     localField: '_id',
