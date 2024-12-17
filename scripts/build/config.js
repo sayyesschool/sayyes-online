@@ -74,7 +74,7 @@ export const apps = {
 export const islands = {
     ...common,
     entryPoints: [
-        { in: './src/club/pages/main/islands.js', out: 'club-islands' }
+        { in: './src/club/pages/main/client/islands.js', out: 'club-islands' }
     ],
     jsxImportSource: 'preact'
 };
