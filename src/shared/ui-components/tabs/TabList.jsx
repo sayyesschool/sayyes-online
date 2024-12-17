@@ -1,7 +1,7 @@
 import { forwardRef, isValidElement } from 'react';
-import classnames from 'classnames';
 
 import JoyTabList from '@mui/joy/TabList';
+import classnames from 'classnames';
 
 import Tab from './Tab';
 
@@ -24,16 +24,16 @@ const TabList = forwardRef(({
             className={classNames}
             {...props}
         >
-            {items?.map(item =>
-                isValidElement(item) ? item :
-                    <Tab
-                        key={item.key}
-                        color={tabColor}
-                        variant={tabVariant}
-                        disableIndicator={disableIndicator}
-                        indicatorInset={indicatorInset}
-                        {...item}
-                    />
+            {items?.map(item => isValidElement(item) ?
+                item :
+                <Tab
+                    key={item.key}
+                    color={tabColor}
+                    variant={tabVariant}
+                    disableIndicator={disableIndicator}
+                    indicatorInset={indicatorInset}
+                    {...item}
+                />
             )}
 
             {children}

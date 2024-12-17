@@ -1,7 +1,7 @@
 import { forwardRef, isValidElement } from 'react';
-import classnames from 'classnames';
 
 import JoyTab from '@mui/joy/Tab';
+import classnames from 'classnames';
 
 import Icon from '../icon/Icon';
 
@@ -29,12 +29,12 @@ const Tab = forwardRef(({
         >
             {start}
 
-            {icon && (isValidElement(icon) ? icon :
+            {icon && (isValidElement(icon) ?
+                icon :
                 <Icon>{icon}</Icon>
             )}
 
             {children}
-
             {end}
         </JoyTab>
     );
