@@ -14,7 +14,7 @@ const ListItem = forwardRef(({
     end,
     content,
     icon,
-    decorator = icon && <Icon name={icon} />,
+    decorator = typeof icon === 'string' ? <Icon name={icon} /> : icon,
     interactive,
     selected,
     to,
