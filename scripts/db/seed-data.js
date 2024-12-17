@@ -69,28 +69,24 @@ export const learner = {
     firstname: 'Ученик',
     email: 'learner@sayyes.school',
     password: '123456',
-    role: 'learner'
+    role: 'learner',
+    domains: ['club', 'lk', 'lms']
 };
 
 export const manager = {
     firstname: 'Менеджер',
     email: 'manager@sayyes.school',
     password: '123456',
-    role: 'manager'
-};
-
-export const member = {
-    firstname: 'Участник',
-    email: 'member@sayyes.school',
-    password: '123456',
-    role: 'member'
+    role: 'manager',
+    domains: ['crm']
 };
 
 export const teacher = {
     firstname: 'Учитель',
     email: 'teacher@sayyes.school',
     password: '123456',
-    role: 'teacher'
+    role: 'teacher',
+    domains: ['club', 'lk', 'lms']
 };
 
 export const lexemes = [
@@ -493,69 +489,104 @@ export const meetings = [
         title: 'Online Meeting',
         description: '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui magnam, veniam voluptatibus alias cumque libero quia ab. Odio quis quaerat cupiditate consequatur totam? Tempora ab iste commodi laboriosam, saepe officiis.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, quo distinctio! Natus vel voluptas nemo eum consectetur officiis, sit laboriosam sapiente delectus nihil illum est quaerat corporis commodi quo debitis!</p>',
         status: 'scheduled',
-        date: new Date('2025-01-01T10:00'),
+        date: moment().add(1, 'day').toDate(),
         duration: 60,
         level: 0,
         capacity: 10,
         published: true,
         online: true,
+        image: {
+            src: 'https://picsum.photos/400'
+        },
         materialsUrl: 'https://zoom.us/materials',
-        thumbnailUrl: 'https://picsum.photos/200',
         notes: 'Meeting notes',
-        hostId: null,
-        registrations: [],
-        participants: []
+        hostId: null
     },
     {
         title: 'Offline Meeting',
         description: '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui magnam, veniam voluptatibus alias cumque libero quia ab. Odio quis quaerat cupiditate consequatur totam? Tempora ab iste commodi laboriosam, saepe officiis.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, quo distinctio! Natus vel voluptas nemo eum consectetur officiis, sit laboriosam sapiente delectus nihil illum est quaerat corporis commodi quo debitis!</p>',
         status: 'scheduled',
-        date: new Date('2025-01-01T10:00'),
+        date: moment().add(2, 'day').toDate(),
         duration: 60,
         level: 1,
         capacity: 10,
         published: true,
         online: false,
+        image: {
+            src: 'https://picsum.photos/400'
+        },
         materialsUrl: 'https://zoom.us/materials',
-        thumbnailUrl: 'https://picsum.photos/200',
         notes: 'Meeting notes',
-        hostId: null,
-        registrations: [],
-        participants: []
+        hostId: null
     },
     {
         title: 'Free Meeting',
         description: '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui magnam, veniam voluptatibus alias cumque libero quia ab. Odio quis quaerat cupiditate consequatur totam? Tempora ab iste commodi laboriosam, saepe officiis.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, quo distinctio! Natus vel voluptas nemo eum consectetur officiis, sit laboriosam sapiente delectus nihil illum est quaerat corporis commodi quo debitis!</p>',
         status: 'scheduled',
-        date: new Date('2025-01-01T10:00'),
+        date: moment().add(3, 'day').toDate(),
         duration: 60,
         level: 1,
         capacity: 10,
+        free: true,
         published: true,
         online: true,
+        image: {
+            src: 'https://picsum.photos/400'
+        },
         materialsUrl: 'https://zoom.us/materials',
-        thumbnailUrl: 'https://picsum.photos/200',
         notes: 'Meeting notes',
-        hostId: null,
-        registrations: [],
-        participants: []
+        hostId: null
     },
     {
-        title: 'Meeting with a long title that is too long to fit in the card',
+        title: 'Started Meeting',
         description: '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui magnam, veniam voluptatibus alias cumque libero quia ab. Odio quis quaerat cupiditate consequatur totam? Tempora ab iste commodi laboriosam, saepe officiis.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, quo distinctio! Natus vel voluptas nemo eum consectetur officiis, sit laboriosam sapiente delectus nihil illum est quaerat corporis commodi quo debitis!</p>',
-        status: 'scheduled',
-        date: new Date('2025-01-01T10:00'),
+        status: 'started',
+        date: moment().subtract(1, 'hour').toDate(),
         duration: 60,
         level: 1,
         capacity: 10,
         published: true,
         online: false,
+        image: {
+            src: 'https://picsum.photos/400'
+        },
         materialsUrl: 'https://zoom.us/materials',
-        thumbnailUrl: 'https://picsum.photos/200',
         notes: 'Meeting notes',
-        hostId: null,
-        registrations: [],
-        participants: []
+        hostId: null
+    },
+    {
+        title: 'Past Meeting',
+        description: '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui magnam, veniam voluptatibus alias cumque libero quia ab. Odio quis quaerat cupiditate consequatur totam? Tempora ab iste commodi laboriosam, saepe officiis.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, quo distinctio! Natus vel voluptas nemo eum consectetur officiis, sit laboriosam sapiente delectus nihil illum est quaerat corporis commodi quo debitis!</p>',
+        status: 'ended',
+        date: moment().subtract(1, 'day').toDate(),
+        duration: 60,
+        level: 1,
+        capacity: 10,
+        published: true,
+        online: false,
+        image: {
+            src: 'https://picsum.photos/400'
+        },
+        materialsUrl: 'https://zoom.us/materials',
+        notes: 'Meeting notes',
+        hostId: null
+    },
+    {
+        title: 'Canceled Meeting',
+        description: '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui magnam, veniam voluptatibus alias cumque libero quia ab. Odio quis quaerat cupiditate consequatur totam? Tempora ab iste commodi laboriosam, saepe officiis.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, quo distinctio! Natus vel voluptas nemo eum consectetur officiis, sit laboriosam sapiente delectus nihil illum est quaerat corporis commodi quo debitis!</p>',
+        status: 'canceled',
+        date: moment().add(5, 'day').toDate(),
+        duration: 60,
+        level: 1,
+        capacity: 10,
+        published: true,
+        online: false,
+        image: {
+            src: 'https://picsum.photos/400'
+        },
+        materialsUrl: 'https://zoom.us/materials',
+        notes: 'Meeting notes',
+        hostId: null
     }
 ];
 
@@ -576,14 +607,23 @@ export const payments = [
     }
 ];
 
-export const tickets = [
+export const memberships = [
+    {
+        limit: 1,
+        price: 590,
+        expiresAt: moment().add(2, 'weeks').toDate(),
+        purchasedAt: moment().toDate(),
+        userId: null,
+        paymentId: null,
+        registrationIds: []
+    },
     {
         limit: 4,
-        price: 590,
+        price: 2990,
         expiresAt: moment().add(1, 'month').toDate(),
         purchasedAt: moment().toDate(),
         userId: null,
         paymentId: null,
-        meetingIds: []
+        registrationIds: []
     }
 ];

@@ -13,9 +13,10 @@ const {
         Course,
         Lexeme,
         Meeting,
+        Membership,
         Payment,
+        Registration,
         Room,
-        Ticket,
         User,
         Vocabulary,
         LexemeRecord
@@ -29,12 +30,10 @@ await db.drop();
 const [
     learner,
     manager,
-    member,
     teacher
 ] = await User.create([
     data.learner,
     data.manager,
-    data.member,
     data.teacher
 ]);
 
@@ -89,22 +88,17 @@ await Vocabulary.create([
 
 await Meeting.create(data.meetings.map(meeting => ({
     ...meeting,
-    hostId: teacher.id,
-    registrations: meeting.registrations.map(registration => ({
-        ...registration,
-        userId: member.id
-    }))
+    hostId: teacher.id
 })));
 
-const [payment] = await Payment.create(data.payments.map(payment => ({
+await Payment.create(data.payments.map(payment => ({
     ...payment,
-    userId: member.id
+    userId: learner.id
 })));
 
-await Ticket.create(data.tickets.map(ticket => ({
-    ...ticket,
-    userId: member.id,
-    paymentId: payment.id
+await Membership.create(data.memberships.map((membership, i) => ({
+    ...membership,
+    userId: learner.id
 })));
 
 console.log('DB seeded');
