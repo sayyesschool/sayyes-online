@@ -15,10 +15,3 @@ export const MeetingStatus = {
     Ended: 'ended',
     Canceled: 'canceled'
 };
-
-export const RegistrationStatus = {
-    Pending: 'pending',
-    Approved: 'approved',
-    Confirmed: 'confirmed',
-    Canceled: 'canceled'
-};

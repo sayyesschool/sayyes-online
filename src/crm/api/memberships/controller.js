@@ -1,27 +1,23 @@
 export default ({
-    models: { Ticket }
+    models: { Membership }
 }) => ({
     async get(req, res) {
-        const tickets = await Ticket.find()
+        const memberships = await Membership.find()
             .populate('user', 'firstname lastname email');
 
         res.json({
             ok: true,
-            data: tickets.map(map)
+            data: memberships.map(m => m.toObject())
         });
     },
 
     async getOne(req, res) {
-        const ticket = await Ticket.findById(req.params.id)
+        const membership = await Membership.findById(req.params.id)
             .populate('user', 'firstname lastname email');
 
         res.json({
             ok: true,
-            data: map(ticket)
+            data: membership.toObject()
         });
     }
 });
-
-function map(ticket) {
-    return ticket.toObject();
-}

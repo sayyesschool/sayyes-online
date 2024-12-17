@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Page from 'shared/components/page';
 import { Tabs } from 'shared/ui-components';
 
-import TicketsTable from 'crm/components/tickets/tickets-table';
+import TicketsTable from 'crm/components/memberships/memberships-table';
 import { useStore } from 'crm/store';
 
 export default function TicketsPage() {

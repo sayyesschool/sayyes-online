@@ -8,12 +8,12 @@ import lessons from './lessons';
 import managers from './managers';
 import materials from './materials';
 import meetings from './meetings';
+import memberships from './memberships';
 import packs from './packs';
 import payments from './payments';
 import requests from './requests';
 import rooms from './rooms';
 import teachers from './teachers';
-import tickets from './tickets';
 import users from './users';
 
 export default context => {
@@ -27,12 +27,12 @@ export default context => {
     router.use('/managers', managers(context));
     router.use('/materials', materials(context));
     router.use('/meetings', meetings(context));
+    router.use('/memberships', memberships(context));
     router.use('/packs', packs(context));
     router.use('/payments', payments(context));
     router.use('/requests', requests(context));
     router.use('/rooms', rooms(context));
     router.use('/teachers', teachers(context));
-    router.use('/tickets', tickets(context));
     router.use('/users', users(context));
 
     router.use((error, req, res, next) => {

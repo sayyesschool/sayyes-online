@@ -1,9 +1,10 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
+
 import moment from 'moment';
 
+import { operatorOptions, paymentMethodOptions } from 'shared/data/payment';
 import { useFormData } from 'shared/hooks/form';
 import { Form } from 'shared/ui-components';
-import { paymentMethodOptions, operatorOptions } from 'shared/data/payment';
 
 export default forwardRef(PaymentForm);
 
@@ -36,7 +37,10 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
     }, [data]);
 
     return (
-        <Form ref={formRef} className="tForm" onSubmit={handleSubmit} {...props}>
+        <Form
+            ref={formRef} className="tForm"
+            onSubmit={handleSubmit} {...props}
+        >
             <Form.Input
                 type="text"
                 name="description"

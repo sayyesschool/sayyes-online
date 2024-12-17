@@ -34,6 +34,11 @@ export default {
         single: null
     },
 
+    memberships: {
+        list: null,
+        single: null
+    },
+
     packs: {
         list: null,
         single: null
@@ -55,11 +60,6 @@ export default {
     },
 
     teachers: {
-        list: null,
-        single: null
-    },
-
-    tickets: {
         list: null,
         single: null
     },

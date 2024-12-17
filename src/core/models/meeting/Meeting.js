@@ -1,15 +1,14 @@
 import moment from 'moment';
-import { isObjectIdOrHexString, isValidObjectId, Schema } from 'mongoose';
+import { Schema } from 'mongoose';
 
 import { Level } from '../common/constants';
 import Image from '../image';
 
 import { LevelLabels, MeetingStatus } from './constants';
-import Registration from './Registration';
 
 export const Meeting = new Schema({
     title: { type: String, required: true, trim: true },
-    description: { type: String, trim: true },
+    description: { type: String, trim: true, default: '' },
     date: { type: Date },
     duration: { type: Number, default: 60 },
     capacity: { type: Number },
@@ -32,8 +31,7 @@ export const Meeting = new Schema({
     joinUrl: { type: String },
     materialsUrl: { type: String },
     notes: { type: String, trim: true, default: '' },
-    hostId: { type: Schema.Types.ObjectId, ref: 'User' },
-    registrations: { type: [Registration] }
+    hostId: { type: Schema.Types.ObjectId, ref: 'User' }
 }, {
     timestamps: true
 });
@@ -50,6 +48,10 @@ Meeting.statics.getScheduled = async function() {
 
 Meeting.virtual('url').get(function() {
     return `/meetings/${this.id}`;
+});
+
+Meeting.virtual('imageUrl').get(function() {
+    return this.image?.url;
 });
 
 Meeting.virtual('datetime').get(function() {
@@ -92,6 +94,10 @@ Meeting.virtual('isEnded').get(function() {
     return this.status === MeetingStatus.Ended;
 });
 
+Meeting.virtual('isOnline').get(function() {
+    return Boolean(this.online);
+});
+
 Meeting.virtual('isZoom').get(function() {
     return Boolean(this.zoomId);
 });
@@ -109,7 +115,7 @@ Meeting.virtual('numberOfApprovedRegistrations').get(function() {
 });
 
 Meeting.virtual('numberOfParticipants').get(function() {
-    return this.registrations?.filter(r => r.participated).length;
+    return this.registrations?.filter(r => r.isAttended).length;
 });
 
 Meeting.virtual('host', {
@@ -119,18 +125,14 @@ Meeting.virtual('host', {
     justOne: true
 });
 
-Meeting.methods.isRegistered = function($user) {
-    return !!this.findRegistrationByUser($user);
-};
+Meeting.virtual('registrations', {
+    ref: 'Registration',
+    localField: '_id',
+    foreignField: 'meetingId'
+});
 
-Meeting.methods.findRegistrationById = function(id) {
-    return this.registrations.find(r => r.id == id);
-};
-
-Meeting.methods.findRegistrationByUser = function($user) {
-    const userId = isObjectIdOrHexString($user) ? $user : $user?.id;
-
-    return this.registrations.find(r => r.userId == userId);
+Meeting.methods.canUnregister = function() {
+    return this.status === MeetingStatus.Scheduled && moment().isBefore(this.date, 'hour');
 };
 
 export default Meeting;

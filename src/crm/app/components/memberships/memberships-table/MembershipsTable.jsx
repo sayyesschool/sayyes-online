@@ -8,13 +8,13 @@ const columns = [
     { key: 'price', text: 'Стоимость, руб.' },
     { key: 'purchasedAt', text: 'Дата покупки' },
     { key: 'expiresAt', text: 'Дата окончания' },
-    { key: 'meetings', text: 'Встречи' },
+    { key: 'registrations', text: 'Регистрации' },
     { key: 'actions' }
 ];
 
-export default function TicketsTable({ tickets, onEdit, onDelete }) {
+export default function MembershipsTable({ memberships, onEdit, onDelete }) {
     return (
-        <Table className="TicketTable">
+        <Table className="MembershipsTable">
             <Table.Head>
                 <Table.Row header>
                     {columns.map(col =>
@@ -28,23 +28,23 @@ export default function TicketsTable({ tickets, onEdit, onDelete }) {
             </Table.Head>
 
             <Table.Body>
-                {tickets.map(ticket =>
-                    <Table.Row key={ticket.id}>
+                {memberships.map(membership =>
+                    <Table.Row key={membership.id}>
                         <Table.Cell>
-                            {ticket.user &&
+                            {membership.user &&
                                 <PersonChip
                                     as={Link}
-                                    to={`/learners/${ticket.user.id}`}
-                                    imageSrc={ticket.user.imageUrl}
-                                    content={ticket.user.fullname}
+                                    to={`/learners/${membership.user.id}`}
+                                    imageSrc={membership.user.imageUrl}
+                                    content={membership.user.fullname}
                                 />
                             }
                         </Table.Cell>
 
-                        <Table.Cell content={ticket.price} />
-                        <Table.Cell content={ticket.purchasedAt} />
-                        <Table.Cell content={ticket.expiresAt} />
-                        <Table.Cell content={`${ticket.meetingIds.length} / ${ticket.limit}`} />
+                        <Table.Cell content={membership.price} />
+                        <Table.Cell content={membership.purchasedAt} />
+                        <Table.Cell content={membership.expiresAt} />
+                        <Table.Cell content={`${membership.registrationsCount} / ${membership.limit}`} />
                     </Table.Row>
                 )}
             </Table.Body>

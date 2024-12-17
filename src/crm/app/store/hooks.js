@@ -5,12 +5,12 @@ import {
     lessons,
     managers,
     meetings,
+    memberships,
     packs,
     payments,
     requests,
     rooms,
     teachers,
-    tickets,
     user
 } from 'shared/store/modules';
 
@@ -20,12 +20,12 @@ const modules = {
     lessons,
     managers,
     meetings,
+    memberships,
     packs,
     payments,
     requests,
     rooms,
     teachers,
-    tickets,
     user
 };
 

@@ -82,7 +82,7 @@ export const registerForMeeting = createAction('REGISTER_FOR_MEETING', meetingId
     return {
         request: {
             method: 'post',
-            url: `/meetings/${meetingId}/registration`
+            path: `meetings/${meetingId}/registrations`
         }
     };
 });
@@ -90,7 +90,7 @@ export const registerForMeeting = createAction('REGISTER_FOR_MEETING', meetingId
 export const unregisterFromMeeting = createAction('UNREGISTER_FROM_MEETING', meetingId => ({
     request: {
         method: 'delete',
-        url: `/meetings/${meetingId}/registration`
+        path: `meetings/${meetingId}/registrations`
     }
 }));
 
@@ -109,13 +109,30 @@ export const actions = {
     unregisterFromMeeting
 };
 
+function map(fn, update) {
+    return (state, action) => state && state.map(item => fn(item, action?.data ?? action) ?
+        update(item, action?.data ?? action) :
+        item
+    );
+}
+
 export const meetingsReducer = createReducer(null, {
     [getMeetings]: (state, action) => action.data,
     [createMeeting]: (state, action) => state ? [...state, action.data] : [action.data],
-    [updateMeeting]: (state, action) => state && state.map(meeting => meeting.id === action.data.id ?
+    [updateMeeting]: (state, action) => state?.map(meeting => meeting.id === action.data.id ?
         ({ ...meeting, ...action.data }) : meeting
     ),
-    [deleteMeeting]: (state, action) => state && state.filter(m => m.id !== action.data.id)
+    [deleteMeeting]: (state, action) => state?.filter(m => m.id !== action.data.id),
+    [registerForMeeting]: (state, action) => state?.map(m => m.id !== action.data.meetingId ? m : ({
+        ...m,
+        registrations: m.registrations.concat(action.data),
+        isRegistered: true
+    })),
+    [unregisterFromMeeting]: (state, action) => state?.map(m => m.id !== action.data.meetingId ? m : ({
+        ...m,
+        registrations: m.registrations.filter(r => r.userId !== action.data.userId),
+        isRegistered: false
+    }))
 });
 
 export const meetingReducer = createReducer(null, {
@@ -142,7 +159,7 @@ export const meetingReducer = createReducer(null, {
         ...state,
         ...action.meeting
     }),
-    [registerForMeeting]: (state, action) => ({
+    [unregisterFromMeeting]: (state, action) => ({
         ...state,
         ...action.meeting
     })
