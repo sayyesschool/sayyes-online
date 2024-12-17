@@ -9,12 +9,14 @@ const Flex = forwardRef(({
     column,
     row,
     gap,
+    wrap,
 
     className,
     ...props
 }, ref) => {
     const classNames = classnames(className, 'ui-Flex', {
-        [`ui-Flex--gap-${gap}`]: gap
+        [`ui-Flex--gap-${gap}`]: gap,
+        'ui-Flex--wrap': wrap
     });
 
     return (
