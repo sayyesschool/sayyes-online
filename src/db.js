@@ -38,7 +38,7 @@ mongoose.plugin(function addResolve(schema) {
         else if (isObjectIdOrHexString(arg))
             return this.findById(arg);
 
-        else if (typeof arg === 'object')
+        else if (typeof arg === 'object' && isObjectIdOrHexString(arg?.id))
             return this.hydrate(arg, undefined, {
                 hydratedPopulatedDocs: true
             });
