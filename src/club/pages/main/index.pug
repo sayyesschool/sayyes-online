@@ -1,312 +1,227 @@
-extends /shared/layouts/base
+extends ../shared/layout
 
+include ../shared/header
 include ../shared/modal
 include ../shared/section
 include ../shared/slider
-include ../shared/tabs
 
 append head
-    link(rel="preconnect" href="https://fonts.googleapis.com")
-    link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=Shantell+Sans:ital,wght@1,300..400&display=swap")
     link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/css/intlTelInput.css")
-    link(rel="stylesheet" href="https://static.sayes.ru/css/shared.css")
-    link(rel="stylesheet" href="/css/club.css")
     link(rel="stylesheet" href="/css/club-islands.css")
 
     style
-        include:scss styles.scss
+        include:scss client/styles.scss
 
-block body
-    header.header
-        div.header__main
-            div.header__container
-                img.header__logo.logo(src="https://static.sayes.ru/images/speaking-club/logo.svg" alt="")
+append scripts
+    script(src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/js/intlTelInput.min.js")
+    script(src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js")
+    script(src="/js/club-islands.js")
+    script.
+        window.data = {
+            meetings: !{JSON.stringify(meetings)},
+            packs: !{JSON.stringify(packs)}
+        };
+    script
+        include client/script.js
 
-                div.header__buttons
-                    button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="about") О клубе
-                    button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="schedule") Расписание
-                    button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="hosts") Ведущие
-                    button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="testimonials") Отзывы
-                    button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="faq") FAQ
+block header
+    +header
+        div.header__buttons
+            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="about") О клубе
+            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="schedule") Расписание
+            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="hosts") Ведущие
+            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="testimonials") Отзывы
+            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="faq") FAQ
 
-                div.header__menu
-                    a(href=`//auth.${APP_DOMAIN}`).btn.btn--sm.btn--transparent.btn--uppercase Войти
+block main
+    div.hero
+        div.hero__content
+            h1.hero__title
+                span.yellow Разговорный клуб
+                |  реального английского
 
-    main.main
-        div.hero
-            div.hero__content
-                h1.hero__title
-                    span.yellow Разговорный клуб
-                    |  реального английского
+            p.hero__description
+                | Игры, разбор кино, актуальные темы, спонтанная речь и встречи по навыкам - 
+                span.yellow практикуйте английский онлайн, 
+                |  выбирая нужное вам!
 
-                p.hero__description
-                    | Игры, разбор кино, актуальные темы, спонтанная речь и встречи по навыкам - 
-                    span.yellow практикуйте английский онлайн, 
-                    |  выбирая нужное вам!
+            button.btn.btn--yellow.mt-xxl(data-scroll-to="packages") Прокачать английский!
 
-                button.btn.btn--yellow.mt-xxl(data-scroll-to="packages") Прокачать английский!
+        div.hero__image
+            img.image(src="https://static.sayes.ru/images/speaking-club/hero-image.png" alt="")
 
-            div.hero__image
-                img.image(src="https://static.sayes.ru/images/speaking-club/hero-image.png" alt="")
+    +section('Коротко о разговорном клубе SAY YES!')#about
+        div.grid.grid-4-lg.grid-2-sm                
+            for item in features
+                div.text-card.card.card--yellow.card--sm(class=`text-card--${item.icon}-bg`)
+                    h3.card__title= item.title
+                    p.card__description!= item.description
 
-        +section('Коротко о разговорном клубе SAY YES!')#about
-            div.grid.grid-4-lg.grid-2-sm                
-                for item in features
-                    div.text-card.card.card--yellow.card--sm(class=`text-card--${item.icon}-bg`)
-                        h3.card__title= item.title
-                        p.card__description!= item.description
+    +section('Почему вам стоит посещать разговорные клубы?')(color='purple' padded)#reasons
+        div.grid.grid.grid-2-sm.grid-3-lg
+            for item in reasons
+                div.text-card.card.card--sm
+                    h3.card__title= item.title
+                    p.card__description= item.description
 
-        +section('Почему вам стоит посещать разговорные клубы?')(color='purple' padded)#reasons
-            div.grid.grid.grid-2-sm.grid-3-lg
-                for item in reasons
-                    div.text-card.card.card--sm
-                        h3.card__title= item.title
-                        p.card__description= item.description
+    +section('Как проходят встречи разговорного клуба SAY YES?')(horizontal)#process
+        div.grid.grid-2-sm
+            for step, i in steps
+                div.text-card.card.card--sm(class=`text-card--${step.icon}-bg`)
+                    span.card__suptitle Шаг #{i + 1}
+                    h3.card__title= step.title
+                    p.card__description= step.description
 
-        +section('Как проходят встречи разговорного клуба SAY YES?')(horizontal)#process
-            div.grid.grid-2-sm
-                for step, i in steps
-                    div.text-card.card.card--sm(class=`text-card--${step.icon}-bg`)
-                        span.card__suptitle Шаг #{i + 1}
-                        h3.card__title= step.title
-                        p.card__description= step.description
-
-        +section(
-            'Ближайшие встречи',
-            meetings.length > 0 ?
-                'Не упустите возможность попрактиковать свой английский в кругу единомышленников — записывайтесь на ближайшую встречу прямо сейчас!' :
-                'Ни одной встречи пока не запланировано.'
-        )(color='yellow' padded)#schedule
-            +slider()(
-                noArrows=(meetings.length <= 3)
-                noPagination=(meetings.length <= 3)
-            ).meetings-slider
-                for meeting in meetings
-                    +slide
-                        div.meeting-card.card.card--sm
-                            div.card__media
-                                img(src=meeting.thumbnailUrl alt="")
+    +section(
+        'Ближайшие встречи',
+        meetings.length > 0 ?
+            'Не упустите возможность попрактиковать свой английский в кругу единомышленников — записывайтесь на ближайшую встречу прямо сейчас!' :
+            'Ни одной встречи пока не запланировано.'
+    )(color='yellow' padded)#schedule
+        +slider()(
+            noArrows=(meetings.length <= 3)
+            noPagination=(meetings.length <= 3)
+        ).meetings-slider
+            for meeting in meetings
+                +slide
+                    div.meeting-card.card.card--sm
+                        div.card__media
+                            img(src=meeting.thumbnailUrl alt="")
+                        
+                        div.card__header
+                            div.tags
+                                span.tag= meeting.levelLabel
+                                span.tag(class=`tag--${meeting.online ? 'yellow' : 'purple'}`)= meeting.online ? 'Онлайн' : 'Оффлайн'
                             
-                            div.card__header
-                                div.tags
-                                    span.tag= meeting.levelLabel
-                                    span.tag(class=`tag--${meeting.online ? 'yellow' : 'purple'}`)= meeting.online ? 'Онлайн' : 'Оффлайн'
-                                
-                                p.card__subtitle= meeting.datetime
-                                h3.card__title= meeting.title
-                            
-                            div.card__body
-                                ul.list.gap-xs
-                                    if meeting.host
-                                        li.list-item
-                                            span.list-item__icon.teacher-icon
-                                            span.list-item__content= meeting.host.fullname
-
+                            p.card__subtitle= meeting.datetime
+                            h3.card__title= meeting.title
+                        
+                        div.card__body
+                            ul.list.gap-xs
+                                if meeting.host
                                     li.list-item
-                                        span.list-item__icon.time-icon
-                                        span.list-item__content= meeting.durationLabel
-                            
-                            div.card__footer
-                                button.btn.btn--full.meeting-btn(data-meeting-id=`${meeting.id}`) Подробнее
+                                        span.list-item__icon.teacher-icon
+                                        span.list-item__content= meeting.host.fullname
 
-        +section()(horizontal)#hosts
-            +section-header('Разговорный клуб проводят ТОП преподаватели SAY YES!')
-                div.text
-                    p Ведущие нашего онлайн клуба — самые опытные и харизматичные преподаватели SAY YES! и носители языка из Англии и США.
-                    p Наши ведущие прошли обучение формату ведения уроков онлайн и могут разговорить любого, даже самого интровертного участника.
+                                li.list-item
+                                    span.list-item__icon.time-icon
+                                    span.list-item__content= meeting.durationLabel
+                        
+                        div.card__footer
+                            button.btn.btn--full.meeting-btn(data-meeting-id=`${meeting.id}`) Подробнее
 
-            +section-media
-                div.text-card.card
-                    img(src="https://static.sayes.ru/images/speaking-club/speakers.png" alt="")
+    +section()(horizontal)#hosts
+        +section-header('Разговорный клуб проводят ТОП преподаватели SAY YES!')
+            div.text
+                p Ведущие нашего онлайн клуба — самые опытные и харизматичные преподаватели SAY YES! и носители языка из Англии и США.
+                p Наши ведущие прошли обучение формату ведения уроков онлайн и могут разговорить любого, даже самого интровертного участника.
 
-        +section()(color='white' horizontal)#video.video-section.section--yellow
-            +section-header('Посмотрите, как проходят встречи нашего разговорного клуба')
+        +section-media
+            div.text-card.card
+                img(src="https://static.sayes.ru/images/speaking-club/speakers.png" alt="")
 
-            +section-media
-                div.video.video--modal.video--framed
-                    div.video__media
-                        img(src="https://i.ytimg.com/vi/jSfeDjvLxlI/sddefault.jpg" alt="")
-                
-                    button.video__btn(
-                        type="button"
-                        data-modal-trigger="video-modal"
-                        data-embed-url="https://www.youtube.com/embed/jSfeDjvLxlI"
-                    )
+    +section()(color='white' horizontal)#video.video-section.section--yellow
+        +section-header('Посмотрите, как проходят встречи нашего разговорного клуба')
 
-        +section('Тарифы')#packages
-            div.grid.grid-2
-                div.text-card.card.card--purple.flex-column.align-center.justify-center.gap-xl
-                    h3.heading-2.m-none Разовое посещение разговорного клуба
+        +section-media
+            div.video.video--modal.video--framed
+                div.video__media
+                    img(src="https://i.ytimg.com/vi/jSfeDjvLxlI/sddefault.jpg" alt="")
+            
+                button.video__btn(
+                    type="button"
+                    data-modal-trigger="video-modal"
+                    data-embed-url="https://www.youtube.com/embed/jSfeDjvLxlI"
+                )
 
-                    p.flex-column.align-center.gap-m
-                        span.text--semibold Попробуйте наш разговорный клуб всего за
-                        span.heading-1= `${trialPack.price} ₽`
+    +section('Тарифы')#packages
+        div.grid.grid-2
+            div.text-card.card.card--purple.flex-column.align-center.justify-center.gap-xl
+                h3.heading-2.m-none Пробное посещение разговорного клуба
 
-                    button.pack-btn.btn.btn--lg.btn--yellow.mh-auto(data-pack-id=trialPack.id) Попробовать
+                p.flex-column.align-center.gap-m
+                    span.text--semibold В тариф входит 1 встреча, которую вы можете посетить в течение 2 недель с момента оплаты
+                    span.heading-1= `${trialPack.price} ₽`
 
-                div.flex-column.gap-m
-                    for pack in packs.slice(1)
-                        div.pack-card.text-card.card.card--sm.flex
-                            div.col.gap-l
-                                div.flex-column.gap-xs
-                                    h3.heading-5.m-none= pack.title
+                button.pack-btn.btn.btn--lg.btn--yellow.mh-auto(data-pack-id=trialPack.id) Попробовать
 
-                                    if pack.description
-                                        p.text.text--small= pack.description
+            div.flex-column.gap-m
+                for pack in packs.slice(1)
+                    div.pack-card.text-card.card.card--sm.flex
+                        div.col.gap-l
+                            div.flex-column.gap-xs
+                                h3.heading-5.m-none= pack.title
+
+                                if pack.description
+                                    p.text.text--small= pack.description
+
+                                if pack.discount
+                                    p.text= `Выгода ${pack.discount} ₽`
+
+                            button.pack-btn.btn.btn--sm.btn--outlined(data-pack-id=pack.id) Купить
+
+                        div.col
+                            div.flex-column.justify-between.gap-xs.h-100
+                                div.flex-column
+                                    h3.heading-4= `${pack.price} ₽`
 
                                     if pack.discount
-                                        p.text= `Выгода ${pack.discount} ₽`
+                                        p.text.text--muted.text--strikethrough= `${pack.priceWithoutDiscount} ₽`
+                                    
+                                div.flex-column
+                                    p.text.text--small.text--muted= `${pack.pricePerMonth} ₽ / месяц`
 
-                                button.pack-btn.btn.btn--sm.btn--outlined(data-pack-id=pack.id) Купить
+    +section('Отзывы участников')#testimonials
+        +slider.testimonials-slider                                   
+            for testimonial in testimonials
+                +slide
+                    div.testimonial-card.card
+                        div.text= testimonial.text
+                        p.text.bold= testimonial.name
 
-                            div.col
-                                div.flex-column.justify-between.gap-xs.h-100
-                                    div.flex-column
-                                        h3.heading-4= `${pack.price} ₽`
+    +section('Часто задаваемые вопросы')#faq
+        div.flex-column.gap-l
+            div.accordion(data-tab-panel="meetings")
+                for faq in faqs
+                    div.accordion-item
+                        h3.accordion-item__title= faq.title
+                        p.accordion-item__content= faq.content
+            
+            div.flex-column.gap-m.align-center
+                p.text 
+                    | Не нашли ответ на свой вопрос? 
+                    a(href=`mailto:${CLUB_EMAIL}`).link.link--primary.link--underlined Напишите нам на почту
+                    |, и мы ответим вам в течение 24 часов!
 
-                                        if pack.discount
-                                            p.text.text--muted.text--strikethrough= `${pack.priceWithoutDiscount} ₽`
-                                        
-                                    div.flex-column
-                                        p.text.text--small.text--muted= `${pack.pricePerMonth} ₽ / месяц`
+                // button.btn.btn--purple(data-modal-trigger="contact-modal") Задать вопрос
 
-        +section(
-            'Отзывы участников',
-            'Мы готовы вкладываться в ваше развитие, но базовый опыт и знания необходимы уже со старта работы у нас в школе.'
-        )#testimonials
-            +slider.testimonials-slider                                   
-                for testimonial in testimonials
-                    +slide
-                        div.testimonial-card.card
-                            div.text= testimonial.text
-                            p.text.bold= testimonial.name
+    //- +section(
+    //-     'Мероприятия клуба',
+    //-     'Подпишитесь на рассылку и первым узнавайте о предстоящих мероприятиях разговорного клуба!'
+    //- )(color='yellow' horizontal padded)#newsletter
+    //-     form.form
+    //-         input.input(type="text" placeholder="Имя")
+    //-         input.input(type="email" placeholder="Email")
+    //-         button.btn.btn--full Записаться
+    //-         small.text.text--small
+    //-             | Нажимая «Записаться», я принимаю 
+    //-             a.link.link--underlined(href="/agreement") Пользовательское соглашение
+    //-             |  и даю согласие на обработку своих персональных данных на условиях 
+    //-             a.link.link--underlined(href="/policy") Политики конфиденциальности.
 
-        +section('Часто задаваемые вопросы')#faq
-            div.flex-column.gap-l
-                +tabs([
-                    { content: 'О встречах', value: 'meetings' },
-                    { content: 'Об оплатах', value: 'payments' },
-                    { content: 'О технических проблемах', values: 'issues' }
-                ])(pills color='purple')
-                    div.accordion(data-tab-panel="meetings")
-                        for faq in faqs
-                            div.accordion-item
-                                h3.accordion-item__title= faq.title
-                                p.accordion-item__content= faq.content
-                
-                div.flex-column.gap-m.align-center
-                    p.text Не нашли ответ на свой вопрос? Напишите нам на почту, и мы ответим вам в течение 24 часов!
+    +modal#payment-modal
+        div#payment-view
 
-                    button.btn.btn--purple Задать вопрос
+    +modal#meeting-modal
+        div#meeting-view
 
-        +section(
-            'Мероприятия клуба',
-            'Подпишитесь на рассылку и первым узнавайте о предстоящих мероприятиях разговорного клуба!'
-        )(color='yellow' horizontal padded)#newsletter
-            form.form
-                input.input(type="text" placeholder="Имя")
-                input.input(type="email" placeholder="Email")
-                button.btn.btn--full Записаться
-                small.text.text--small
-                    | Нажимая «Записаться», я принимаю 
-                    a.link.link--underlined(href="/agreement") Пользовательское соглашение
-                    |  и даю согласие на обработку своих персональных данных на условиях 
-                    a.link.link--underlined(href="/policy") Политики конфиденциальности.
+    //- +modal('Задать вопрос')(data-component="Modal")#contact-modal
+    //-     form.form(data-component="Form")
+    //-         input.input(type="text" placeholder="Имя")
+    //-         input.input(type="email" placeholder="Email")
+    //-         input.input(type="tel" placeholder="Телефон")
+    //-         textarea.textarea(placeholder="Ваш вопрос")
 
-        +modal#payment-modal
-            div#payment-view
+    //-         button.btn.btn--full(type="submit") Отправить
 
-        +modal#meeting-modal
-            div#meeting-view
-
-        +modal(data-component="VideoModal")#video-modal
-
-    include ../shared/footer
-
-    script(src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js")
-    script(src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/js/intlTelInput.min.js")
-    script(src="https://static.sayes.ru/js/shared.js")
-    script(src="/js/club-islands.js")
-
-    script.
-        const meetings = !{JSON.stringify(meetings)};
-        const packs = !{JSON.stringify(packs)};
-
-        ui.Accordion.init();
-        ui.Tabs.init();
-        ui.Modal.init();
-
-        const paymentModal = new ui.Modal('#payment-modal');
-        const meetingModal = new ui.Modal('#meeting-modal');
-
-        const paymentView = new window.PaymentView('#payment-view');
-        const meetingView = new window.MeetingView('#meeting-view');
-
-        const packagesSection = document.querySelector('#packages');
-
-        // Modals
-
-        const state = {};
-
-        document.querySelectorAll('.pack-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const pack = packs.find(p => p.id === button.dataset.packId);
-
-                if (!pack) return;
-
-                paymentView.render({ pack, meetingId: state.meetingId });
-                paymentModal.on('closed', () => paymentView.destroy());
-                paymentModal.open();
-            });
-        });
-
-        document.querySelectorAll('.meeting-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const meeting = meetings.find(m => m.id === button.dataset.meetingId);
-
-                if (!meeting) return;
-
-                meetingView.render({
-                    meeting,
-                    onRegister: () => {
-                        state.meetingId = meeting.id;
-
-                        meetingModal.close();
-
-                        packagesSection.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'center'
-                        });
-                    }
-                });
-                meetingModal.on('close', () => paymentView.destroy());
-                meetingModal.open();
-            });
-        });
-
-
-        // Sliders
-
-        new ui.Slider('.meetings-slider', {
-            breakpoints: {
-                768: {
-                    enabled: true,
-                    slidesPerView: 3
-                },
-                360: {
-                    enabled: false
-                }
-            }
-        });
-
-        new ui.Slider('.testimonials-slider', {
-            breakpoints: {
-                1024: {
-                    slidesPerView: 2
-                },
-                360: {
-                    slidesPerView: 'auto',
-                    centeredSlides: true
-                }
-            }
-        });
+    +modal(data-component="VideoModal")#video-modal

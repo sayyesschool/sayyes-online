@@ -1,18 +1,18 @@
 footer.footer
     div.footer__container
         div.footer__row
-            a.logo(href="https://sayes.ru")
+            a.logo(href=APP_URL)
                 img(src="https://sayes.ru/wp-content/themes/sayyes/static/images/logo-purple.svg" alt="Логотип SAY YES")
 
             ul.list.gap-xxs
                 li.list-item
-                    a.link() Пользовательское соглашение
+                    a.link(href='/agreement') Пользовательское соглашение
                 li.list-item
-                    a.link() Политика конфиденциальности
+                    a.link(href='/policy') Политика конфиденциальности
                 li.list-item
-                    a.link() Публичная оферта
+                    a.link(href='/offer') Публичная оферта
                 li.list-item
-                    a.link() Правила использования
+                    a.link(href='/rules') Правила использования
 
             div.copyright.flex.flex-column.gap-xxs
                 small.text.text--body2 © 2013–2024 SAY&nbsp;YES!
