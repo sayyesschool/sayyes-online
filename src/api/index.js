@@ -1,6 +1,7 @@
 import express from 'express';
 import vhost from 'vhost';
 
+import request from './request';
 import storage from './storage';
 import twilio from './twilio';
 import yookassa from './yookassa';
@@ -9,6 +10,7 @@ import zoom from './zoom';
 export default context => {
     const api = express();
 
+    api.use('/request', request(context));
     api.use('/storage', context.middleware.auth.authenticatedRoute, storage(context));
     api.use('/twilio', twilio(context));
     api.use('/yookassa', yookassa(context));
