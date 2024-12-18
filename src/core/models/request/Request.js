@@ -45,6 +45,10 @@ export const Request = new Schema({
     timestamps: true
 });
 
+Request.statics.Channel = RequestChannel;
+Request.statics.Source = RequestSource;
+Request.statics.Status = RequestStatus;
+
 Request.virtual('url').get(function() {
     return `requests/${this.id}`;
 });

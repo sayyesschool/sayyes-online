@@ -1,9 +1,11 @@
 export const RequestChannel = {
     None: '',
-    Site: 'site',
     Call: 'call',
-    WhatsApp: 'whatsapp',
-    Instagram: 'instagram'
+    Instagram: 'instagram',
+    Site: 'site',
+    Telegram: 'telegram',
+    Test: 'test',
+    WhatsApp: 'whatsapp'
 };
 
 export const RequestSource = {
