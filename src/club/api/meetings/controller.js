@@ -1,13 +1,20 @@
 export default ({
-    models: { Meeting, User },
     services: { Club }
 }) => ({
     async getMany(req, res) {
-        const meetings = await Club.findMeetings();
+        const query = {
+            ...req.query,
+            status: { $ne: 'canceled' }
+        };
+        const meetings = req.user.isTeacher ?
+            await Club.findMeetings(query)
+                .populate({ path: 'registrations', populate: { path: 'user' } })
+                .sort({ date: 1 }) :
+            await Club.findMeetings(query).sort({ date: 1 });
 
         res.send({
             ok: true,
-            data: meetings
+            data: meetings.map(meeting => mapMeeting(meeting, req.user.id))
         });
     },
 
@@ -16,7 +23,7 @@ export default ({
 
         res.send({
             ok: true,
-            data: meeting
+            data: mapMeeting(meeting, req.user.id)
         });
     },
 
@@ -52,6 +59,29 @@ export default ({
         });
     },
 
+    async join(req, res) {
+        const meeting = await Club.getMeeting(req.params.meetingId);
+        const registration = await Club.getRegistrationByUser(req.user.id);
+
+        if (registration.joinUrl || meeting.joinUrl) {
+            res.redirect(registration.joinUrl);
+        } else {
+            res.redirect('back');
+        }
+    },
+
+    async start(req, res) {
+        const meeting = await Club.getMeeting(req.params.meetingId);
+
+        console.log('START', meeting.hostId, req.user.id);
+
+        if (meeting.hostId == req.user.id) {
+            res.redirect(meeting.startUrl);
+        } else {
+            res.redirect('back');
+        }
+    },
+
     async createRegistration(req, res) {
         const registration = await Club.registerForMeeting(
             req.user.id,
@@ -61,7 +91,7 @@ export default ({
 
         res.json({
             ok: true,
-            message: 'Регистрация добавлена',
+            message: 'Запись на встречу создана',
             data: registration
         });
     },
@@ -75,7 +105,7 @@ export default ({
 
         res.json({
             ok: true,
-            message: 'Регистрация изменена',
+            message: 'Запись на встречу изменена',
             data: registration
         });
     },
@@ -88,8 +118,18 @@ export default ({
 
         res.json({
             ok: true,
-            message: 'Регистрация удалена',
+            message: 'Запись на встречу удалена',
             data: registration
         });
     }
 });
+
+function mapMeeting(meeting, userId) {
+    const registration = meeting.registrations?.find(r => r.userId == userId);
+
+    return {
+        ...meeting.toJSON(),
+        isRegistered: registration?.userId == userId && registration.isApproved,
+        joinUrl: (registration?.joinUrl || meeting.joinUrl) && `/meetings/${meeting.id}/join`
+    };
+}

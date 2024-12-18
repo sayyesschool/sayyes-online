@@ -10,6 +10,9 @@ export default context => {
         .get(controller.getMany)
         .post(controller.create);
 
+    router.get('/:meetingId/join', controller.join);
+    router.get('/:meetingId/start', controller.start);
+
     router.route('/:meetingId')
         .get(controller.getOne)
         .put(controller.update)
