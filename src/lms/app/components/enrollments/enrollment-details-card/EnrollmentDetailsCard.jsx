@@ -138,7 +138,7 @@ export default function EnrollmentDetailsCard({
                     </Text>
                 </Flex>
 
-                {user.role === 'learner' &&
+                {user.isLearner &&
                     <Button
                         content="Пополнить"
                         //color="secondary"

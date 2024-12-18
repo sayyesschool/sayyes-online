@@ -35,7 +35,7 @@ export default function VocabularyLexemes({
     const [showEditModal, setShowEditModal] = useState(false);
 
     const vocabularyId = vocabulary?.id;
-    const isTeacher = user.role === 'teacher';
+    const isTeacher = user.isTeacher;
 
     const closeViewModal = useCallback(() => {
         setCurrentLexemeId(null);

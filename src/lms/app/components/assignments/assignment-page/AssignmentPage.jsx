@@ -60,8 +60,8 @@ export default function AssignmentPage({ match, location, history }) {
 
     if (!assignment) return <LoadingIndicator />;
 
-    const isTeacher = user.role === 'teacher';
-    const isLearner = user.role === 'learner';
+    const isTeacher = user.isTeacher;
+    const isLearner = user.isLearner;
 
     return (
         <Page className="AssignmentPage">
@@ -144,7 +144,7 @@ export default function AssignmentPage({ match, location, history }) {
                         index={index}
                         user={user}
                         exercise={exercise}
-                        showRemoveFromAssignment={user.role === 'teacher'}
+                        showRemoveFromAssignment={isTeacher}
                         onRemoveFromAssignment={handleRemoveExercise}
                         onProgressChange={handleExerciseProgressChange}
                     />

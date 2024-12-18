@@ -78,7 +78,7 @@ export default function RoomHeader({
             </div>
 
             <div className="RoomHeader__actions">
-                {user.role === 'teacher' &&
+                {user.isTeacher &&
                     <IconButton
                         icon="sync"
                         title="Синхронизировать"

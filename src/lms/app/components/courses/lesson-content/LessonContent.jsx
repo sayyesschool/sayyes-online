@@ -45,7 +45,7 @@ export default function LessonContent({
                             user={user}
                             exercise={exercise}
                             assignments={assignments}
-                            showMenu={user.role === 'teacher'}
+                            showMenu={user.isTeacher}
                             onProgressChange={onExerciseProgressChange}
                             onAddToAssignment={onAddExerciseToAssignment}
                             onAddToNewAssignment={onAddExerciseToNewAssignment}

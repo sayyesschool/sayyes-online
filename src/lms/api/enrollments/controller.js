@@ -4,7 +4,7 @@ export default ({
     async getMany(req, res) {
         const query = { ...req.query };
 
-        if (req.user.role === 'learner') {
+        if (req.user.isLearner) {
             query.learnerId = req.user.id;
         } else {
             query.teacherId = req.user.id;
@@ -33,6 +33,7 @@ export default ({
         if (!enrollment) {
             const error = new Error('Обучение не найдено');
             error.status = 404;
+
             return next(error);
         }
 

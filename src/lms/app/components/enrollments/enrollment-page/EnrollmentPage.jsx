@@ -45,8 +45,8 @@ export default function EnrollmentPage({ match }) {
 
     if (!enrollment) return <LoadingIndicator fullscreen />;
 
-    const isLearner = user.role === 'learner';
-    const isTeacher = user.role === 'teacher';
+    const isLearner = user.isLearner;
+    const isTeacher = user.isTeacher;
     const hasChat = enrollment.learner && enrollment.teacher;
 
     return (

@@ -93,7 +93,7 @@ export default function Exercise({
     //     return actions.deleteComment(commentId);
     // }, [actions]);
 
-    const hasSaveableItems = user.role === 'learner' && exercise?.items.some(item =>
+    const hasSaveableItems = user.isLearner && exercise?.items.some(item =>
         item.type === 'essay' ||
         item.type === 'fib' ||
         item.type === 'input'
@@ -195,7 +195,7 @@ export default function Exercise({
                     exercise={exercise}
                     state={state}
                     checked={isChecked}
-                    disabled={user.role === 'teacher'}
+                    disabled={user.isTeacher}
                     onUpdateState={handleUpdateState}
                 />
 
@@ -226,7 +226,7 @@ export default function Exercise({
                             onClick={toggleCommenting}
                         /> */}
 
-                    {user.role === 'teacher' &&
+                    {user.isTeacher &&
                         <Button
                             content={exercise.completed ? 'Отметить как невыполненное' : 'Отметить как выполненное'}
                             icon={exercise.completed ? 'task_alt' : undefined}

@@ -15,7 +15,7 @@ export default function WhiteboardPage({ children, ...props }) {
     const canvasRef = useRef();
     const whiteboardRef = useRef();
 
-    const dataTrack = useDataTrack(user.role === 'teacher' ? 'local' : 'remote');
+    const dataTrack = useDataTrack(user.isTeacher ? 'local' : 'remote');
 
     useEffect(() => {
         function handleResize() {
@@ -37,7 +37,14 @@ export default function WhiteboardPage({ children, ...props }) {
     useEffect(() => {
         if (!dataTrack) return;
 
-        const type = user.role === 'teacher' ? 'local' : 'remote';
+        const type = user.isTeacher ? 'local' : 'remote';
+
+        function handleData(data) {
+            const { buffer, options } = JSON.parse(data);
+            const { width, height } = canvasRef.current;
+
+            whiteboardRef.current.draw(buffer.map(([x, y]) => [x * width, y * height]), options);
+        }
 
         if (type === 'local') {
             whiteboardRef.current = new Whiteboard(canvasRef.current, (buffer, options) => {
@@ -53,13 +60,6 @@ export default function WhiteboardPage({ children, ...props }) {
             };
         } else if (type === 'remote') {
             whiteboardRef.current = new Whiteboard(canvasRef.current);
-
-            function handleData(data) {
-                const { buffer, options } = JSON.parse(data);
-                const { width, height } = canvasRef.current;
-
-                whiteboardRef.current.draw(buffer.map(([x, y]) => [x * width, y * height]), options);
-            }
 
             dataTrack.on('message', handleData);
 
@@ -84,7 +84,10 @@ export default function WhiteboardPage({ children, ...props }) {
     }, []);
 
     return (
-        <div ref={rootRef} className="whiteboard" {...props}>
+        <div
+            ref={rootRef} className="whiteboard"
+            {...props}
+        >
             <canvas ref={canvasRef} className="whiteboard__canvas" />
 
             <div className="whiteboard__controls">
