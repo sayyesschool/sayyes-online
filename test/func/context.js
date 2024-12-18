@@ -1,11 +1,19 @@
+import { Middleware as AuthMiddleware } from '@/auth';
 import config from '@/config';
-import core from '@/core';
+import Core from '@/core';
 
-const { models, services } = core(config);
+const core = Core(config);
+const auth = AuthMiddleware(core);
+const { libs, models, services } = core;
 
 const context = {
+    config,
+    libs,
     models,
-    services
+    services,
+    middleware: {
+        auth
+    }
 };
 
 export {

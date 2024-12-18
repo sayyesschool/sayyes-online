@@ -20,8 +20,6 @@ describe('Mail Service', () => {
 
             const result = await mail.send(emailData);
 
-            console.log(result);
-
             expect(result).toExist();
         });
     });
@@ -44,8 +42,6 @@ describe('Mail Service', () => {
             ];
 
             const result = await mail.sendMany(messages);
-
-            console.log(result);
 
             expect(result).toExist();
         });

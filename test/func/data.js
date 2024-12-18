@@ -2,7 +2,7 @@ import moment from 'moment';
 
 import { models } from './context';
 
-export const EMAIL = 'member@sayyes.school';
+export const EMAIL = 'user@sayyes.school';
 
 export const PACK_ID = '21dec724-4a40-48ef-9cf7-89f0fb3c4d07';
 
@@ -35,12 +35,12 @@ export const ZOOM_MEETING = {
     zoomId: '1234567890'
 };
 
-export const DEFAULT_TICKET = {
+export const DEFAULT_MEMBERSHIP = {
     limit: 1,
     expiresAt: moment().add(2, 'week').toDate()
 };
 
-export const EXPIRED_TICKET = {
+export const EXPIRED_MEMBERSHIP = {
     limit: 1,
     expiresAt: moment().subtract(2, 'week').toDate()
 };

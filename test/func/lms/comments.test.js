@@ -9,7 +9,7 @@ const {
     models: { Lesson, Room }
 } = context;
 
-describe('/comments', () => {
+describe('LMS Comments API', () => {
     describe('GET /', () => {
         it('should return a list of user\'s lessons', async () => {
             await Lesson.create([

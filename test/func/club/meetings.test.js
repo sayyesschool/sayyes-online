@@ -2,12 +2,12 @@ import expect from 'expect';
 
 import { mock } from '../../helpers';
 import context from '../context';
-import { DEFAULT_MEETING, DEFAULT_TICKET, USER } from '../data';
+import { DEFAULT_MEETING, DEFAULT_MEMBERSHIP, USER } from '../data';
 
 import api from './api';
 
 const {
-    models: { Meeting, Ticket, User },
+    models: { Meeting, Membership, Registration, User },
     services: { Club, Mail }
 } = context;
 
@@ -17,7 +17,8 @@ mock.method(Mail, 'sendMany', async () => {});
 describe('Club Meetings API', () => {
     after(async () => {
         await Meeting.deleteMany();
-        await Ticket.deleteMany();
+        await Registration.deleteMany();
+        await Membership.deleteMany();
         await User.deleteMany();
     });
 
@@ -90,7 +91,7 @@ describe('Club Meetings API', () => {
 
     describe('meeting registrations', () => {
         let meeting;
-        let ticket;
+        let membership;
         let user;
 
         before(async () => {
@@ -99,9 +100,10 @@ describe('Club Meetings API', () => {
 
         beforeEach(async () => {
             await Meeting.deleteMany();
-            await Ticket.deleteMany();
+            await Membership.deleteMany();
+            await Registration.deleteMany();
             meeting = await Meeting.create(DEFAULT_MEETING);
-            ticket = await Ticket.create({ ...DEFAULT_TICKET, userId: user.id });
+            membership = await Membership.create({ ...DEFAULT_MEMBERSHIP, userId: user.id });
         });
 
         describe('POST /:meetingId/registrations', () => {
@@ -120,7 +122,7 @@ describe('Club Meetings API', () => {
             });
 
             it('returns an error when registration fails', async () => {
-                await Ticket.updateOne({ _id: ticket.id }, { $set: { userId: null } });
+                await Membership.updateOne({ _id: membership.id }, { $set: { userId: null } });
                 const { body } = await api.post(`/meetings/${meeting.id}/registrations`);
 
                 expect(body.error).toExist();

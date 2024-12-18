@@ -10,7 +10,7 @@ const {
 
 const user = new User({ firstname: 'User' });
 
-describe('/lessons', () => {
+describe('LMS Lessons API', () => {
     describe('GET /', () => {
         it('should return a list of user\'s lessons', async () => {
             await Lesson.create([

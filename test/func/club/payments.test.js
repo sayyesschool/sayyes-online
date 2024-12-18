@@ -7,7 +7,7 @@ import { DEFAULT_MEETING, DEFAULT_USER, NEW_PAYMENT, PACK_ID, PAID_PAYMENT, USER
 import api from './api';
 
 const {
-    models: { Meeting, Ticket, User },
+    models: { Meeting, Membership, User },
     services: { Checkout, Mail }
 } = context;
 
@@ -17,7 +17,7 @@ mock.method(Mail, 'sendMany', async () => {});
 describe('Club Payments API', () => {
     after(async () => {
         await Meeting.deleteMany();
-        await Ticket.deleteMany();
+        await Membership.deleteMany();
         await User.deleteMany();
     });
 
@@ -85,7 +85,7 @@ describe('Club Payments API', () => {
 
         afterEach(async () => {
             resolvePayment.mock.restore();
-            await Ticket.deleteMany();
+            await Membership.deleteMany();
             await User.deleteMany();
         });
 
@@ -101,11 +101,11 @@ describe('Club Payments API', () => {
             });
 
             const user = await User.findOne({ email: USER_EMAIL });
-            const ticket = await Ticket.findOne({ userId: user.id });
+            const membership = await Membership.findOne({ userId: user.id });
 
             expect(user).toExist();
-            expect(ticket).toExist();
-            expect(body.data).toMatch(toJSON(ticket));
+            expect(membership).toExist();
+            expect(body.data).toMatch(toJSON(membership));
         });
 
         it('processes a payment for an existing user with a meeting registration', async () => {
@@ -129,15 +129,15 @@ describe('Club Payments API', () => {
                 }
             });
 
-            const ticket = await Ticket.findOne({ userId: user.id });
+            const membership = await Membership.findOne({ userId: user.id });
 
             expect(data).toExist();
             expect(user).toExist();
-            expect(ticket).toExist();
-            expect(user).toMatch(data.registrant);
-            expect(ticket.meetingIds).toInclude(meeting.id);
+            expect(membership).toExist();
+            expect(membership.registrationIds).toInclude(data.id);
+            expect(data.userId).toEqual(user.id);
             expect(data.meetingId).toBe(meeting.id);
-            expect(data.ticketId).toBe(ticket.id);
+            expect(data.membershipId).toBe(membership.id);
             expect(data.userId).toBe(user.id);
         });
     });

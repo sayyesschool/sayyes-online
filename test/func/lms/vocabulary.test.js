@@ -10,7 +10,7 @@ const {
     models: { Lexeme, LexemeRecord, Vocabulary }
 } = context;
 
-describe('Vocabulary routes', () => {
+describe('LMS Vocabularies API', () => {
     afterEach(async () => {
         await Lexeme.deleteMany({});
         await LexemeRecord.deleteMany({});
