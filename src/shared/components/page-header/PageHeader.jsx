@@ -103,15 +103,24 @@ export default function PageHeader({
 
                 {actions &&
                     <div className="PageHeader__actions">
-                        {actions?.filter(a => !!a).map(action => isValidElement(action) ? action : ((action.icon && !action.content) ?
-                            <IconButton
-                                color="neutral"
-                                size="sm"
-                                variant="soft"
-                                {...action}
-                            /> :
-                            <Button {...action} />
-                        ))}
+                        {(Array.isArray(actions) ? actions : [actions])
+                            .filter(a => !!a)
+                            .map(action => isValidElement(action) ?
+                                cloneElement(action, {
+                                    color: 'neutral',
+                                    size: 'sm',
+                                    variant: 'soft',
+                                    ...action.props
+                                }) :
+                                (action.icon && !action.content) ?
+                                    <IconButton
+                                        color="neutral"
+                                        size="sm"
+                                        variant="soft"
+                                        {...action}
+                                    /> :
+                                    <Button {...action} />
+                            )}
                     </div>
                 }
 
@@ -122,7 +131,11 @@ export default function PageHeader({
                 }
             </div>
 
-            {children}
+            {children &&
+                <div className="PageHeader__row">
+                    {children}
+                </div>
+            }
         </header>
     );
 }
