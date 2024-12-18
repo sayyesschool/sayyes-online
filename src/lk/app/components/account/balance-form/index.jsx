@@ -27,10 +27,12 @@ export default function BalanceForm({ onSubmit, onClose, ...props }) {
         }
 
         if (typeof ym === 'function') {
+            // eslint-disable-next-line no-undef
             ym(YANDEX_METRIKA_ID, 'reachGoal', 'purchase');
         }
 
         if (typeof gtag === 'function') {
+            // eslint-disable-next-line no-undef
             gtag('event', 'click', { event_category: 'purchase' });
         }
 
@@ -50,7 +52,6 @@ export default function BalanceForm({ onSubmit, onClose, ...props }) {
                 label="Сумма"
                 suffix="руб."
                 min="0"
-                filled
                 onChange={handleChange}
             />
 
