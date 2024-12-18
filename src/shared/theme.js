@@ -1,9 +1,9 @@
 import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
-import { unstable_ClassNameGenerator } from '@mui/utils';
+// import { unstable_ClassNameGenerator } from '@mui/utils';
 
-unstable_ClassNameGenerator.configure(componentName => componentName.replace('Mui', 'ui-'));
+// unstable_ClassNameGenerator.configure(componentName => componentName.replace('Mui', 'ui-'));
 
-const theme = extendTheme({
+const config = {
     fontFamily: {
         body: 'Nunito, Arial, Helvetica, Segoe UI, sans-serif',
         display: 'Nunito, Arial, Helvetica, Segoe UI, sans-serif'
@@ -101,7 +101,50 @@ const theme = extendTheme({
         JoyTable: {
             styleOverrides: {
                 root: {
-                    tableLayout: 'auto'
+                    tableLayout: 'auto',
+                    headBackground: 'transparent'
+                }
+            }
+        }
+    }
+};
+
+const theme = extendTheme(config);
+
+const newTheme = extendTheme({
+    ...config,
+    fontFamily: {
+        body: 'Raleway, Arial, Helvetica, Segoe UI, sans-serif',
+        display: 'Raleway, Arial, Helvetica, Segoe UI, sans-serif'
+    },
+    components: {
+        ...config.components,
+        JoyButton: {
+            styleOverrides: {
+                root: {
+                    borderRadius: '40px'
+                }
+            }
+        },
+        JoyCard: {
+            styleOverrides: {
+                root: {
+                    borderRadius: '20px'
+                }
+            }
+        },
+        JoyCardOverflow: {
+            styleOverrides: {
+                root: {
+                    borderRadius: '20px',
+                    overflow: 'hidden'
+                }
+            }
+        },
+        JoyModalDialog: {
+            styleOverrides: {
+                root: {
+                    borderRadius: '20px'
                 }
             }
         }
@@ -110,6 +153,7 @@ const theme = extendTheme({
 
 export {
     theme as default,
+    newTheme,
     theme,
     CssVarsProvider as ThemeProvider
 };
