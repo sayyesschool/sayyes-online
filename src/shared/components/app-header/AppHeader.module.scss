@@ -1,17 +1,34 @@
 @use 'shared/styles/variables';
 
 .root {
+    background-color: variables.$primary-color;
+    color: variables.$on-primary-color;
+    height: var(--AppHeader-height);
+}
+
+.container {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1280px;
+    height: 100%;
+    margin: auto;
+    padding: 8px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 16px;
-    background-color: variables.$primary-color;
-    color: variables.$on-primary-color;
-    border-bottom: 1px solid rgba(0,0,0,.12);
-    height: 56px;
+    gap: 16px;
 }
 
-.homeLink {
+.title {
+    margin-right: auto;
+}
+
+.logo {
+    height: 100%;
+    display: flex;
     color: inherit;
-    font-size: 2rem;
+}
+
+.content {
+
 }

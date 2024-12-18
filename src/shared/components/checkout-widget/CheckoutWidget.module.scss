@@ -1,0 +1,7 @@
+.root {
+    &:empty::after {
+        content: 'Загрузка...';
+        display: block;
+        text-align: center;
+    }
+}

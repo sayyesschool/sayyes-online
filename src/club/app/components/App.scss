@@ -1,8 +1,10 @@
 .App {
-    height: 100vh;
+    --AppHeader-height: 64px;
 
-    .AppContent {
-        height: calc(100% - 56px);
-        overflow: hidden;
-    }
+    // height: 100vh;
+
+    // .AppContent {
+    //     height: calc(100% - var(--AppHeader-height));
+    //     overflow: hidden;
+    // }
 }

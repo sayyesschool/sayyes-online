@@ -1,0 +1,25 @@
+.root {
+    background-color: #fffcff;
+}
+
+.container {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1280px;
+    height: 100%;
+    margin: auto;
+    padding: 24px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.logo {
+
+}
+
+.links {
+    display: flex;
+    gap: 16px;
+}

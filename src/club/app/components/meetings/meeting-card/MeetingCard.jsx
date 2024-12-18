@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+
+import moment from 'moment';
 
 import {
     Alert,
@@ -13,19 +14,37 @@ import {
     Image,
     Text
 } from 'shared/components/ui';
+import cn from 'shared/utils/classnames';
 
 import styles from './MeetingCard.module.scss';
 
-export default function MeetingCard({ meeting, registered, onRegister }) {
+export default function MeetingCard({
+    meeting,
+    showDescription,
+    orientation,
+    onView,
+    onRegister,
+    ...props
+}) {
+    const now = moment().utc();
+    const startsIn = moment(meeting.date).diff(now, 'minutes');
+
     return (
-        <Card className={styles.root} outlined>
-            <Card.Overflow>
+        <Card
+            className={cn(styles.root, styles[meeting.status])}
+            variant="plain"
+            orientation={orientation}
+            sx={{ boxShadow: 'lg' }}
+            {...props}
+        >
+            <Card.Overflow sx={orientation === 'horizontal' ? { width: '25%' } : undefined}>
                 <Image
-                    src={meeting.thumbnailUrl}
+                    className={styles.image}
+                    src={meeting.imageUrl}
                     ratio="16/9"
                     loading="lazy"
                     alt=""
-                    sx={{ width: '100%' }}
+                    sx={orientation === 'horizontal' ? { width: '100%' } : undefined}
                 />
             </Card.Overflow>
 
@@ -41,12 +60,12 @@ export default function MeetingCard({ meeting, registered, onRegister }) {
                     <Flex dir="column">
                         <Heading
                             content={meeting.title}
-                            type="title-md"
+                            type="title-lg"
                         />
 
                         <Text
                             content={`${meeting.online ? 'Онлайн' : 'Офлайн'} · ${meeting.datetime}`}
-                            type="body-sm"
+                            type="body-md"
                         />
                     </Flex>
 
@@ -59,7 +78,6 @@ export default function MeetingCard({ meeting, registered, onRegister }) {
                                 }
                                 content={meeting.host.fullname}
                                 title="Ведущий"
-                                size="sm"
                             />
                         }
 
@@ -67,32 +85,49 @@ export default function MeetingCard({ meeting, registered, onRegister }) {
                             icon="timelapse"
                             content={`${meeting.duration} мин.`}
                             title="Продолжительность"
-                            size="sm"
                         />
 
                         <Chip
                             icon="star"
                             content={meeting.levelLabel}
                             title="Уровень"
-                            size="sm"
                         />
                     </Flex>
                 </Flex>
+
+                {showDescription &&
+                    <div
+                        className={styles.description}
+                        dangerouslySetInnerHTML={{ __html: meeting.description }}
+                    />
+                }
+
+                <Card.Actions sx={{ justifyContent: 'space-between' }} buttonFlex>
+                    {onView &&
+                        <Button
+                            content="Подробнее"
+                            variant="plain"
+                            onClick={() => onView(meeting)}
+                        />
+                    }
+
+                    {meeting.isScheduled &&
+                        <Button
+                            content={meeting.isRegistered ? 'Отменить' : 'Записаться'}
+                            variant={meeting.isRegistered ? 'outlined' : 'solid'}
+                            onClick={() => onRegister(meeting)}
+                        />
+                    }
+
+                    {meeting.isRegistered && meeting.joinUrl && startsIn < 60 &&
+                        <Button
+                            as="a"
+                            href={meeting.joinUrl}
+                            content="Присоединиться"
+                        />
+                    }
+                </Card.Actions>
             </Card.Content>
-
-            <Card.Actions sx={{ justifyContent: 'space-between' }}>
-                <Button
-                    as={Link}
-                    to={meeting.url}
-                    content="Подробнее"
-                    variant="plain"
-                />
-
-                <Button
-                    content={registered ? 'Отменить' : 'Записаться'}
-                    onClick={() => onRegister(meeting)}
-                />
-            </Card.Actions>
         </Card>
     );
 }

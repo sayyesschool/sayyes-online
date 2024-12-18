@@ -7,31 +7,38 @@ import styles from './AppHeader.module.scss';
 
 export default function AppHeader({
     user,
+    logo,
+    title,
     children,
     ...props
 }) {
     return (
         <header className={styles.root} {...props}>
-            <Link className={styles.homeLink} to="/">Say Yes</Link>
-            {children}
+            <div className={styles.container}>
+                <Link className={styles.logo} to="/">{logo}</Link>
 
-            <UserMenu
-                user={user}
-                items={[
-                    {
-                        key: 'account',
-                        as: 'a',
-                        href: LK_URL,
-                        content: 'Личный кабинет'
-                    },
-                    {
-                        key: 'logout',
-                        as: 'a',
-                        href: `${AUTH_URL}/logout`,
-                        content: 'Выйти'
-                    }
-                ]}
-            />
+                {children &&
+                    <div className={styles.content}>{children}</div>
+                }
+
+                <UserMenu
+                    user={user}
+                    items={[
+                        {
+                            key: 'account',
+                            as: 'a',
+                            href: LK_URL,
+                            content: 'Личный кабинет'
+                        },
+                        {
+                            key: 'logout',
+                            as: 'a',
+                            href: `${AUTH_URL}/logout`,
+                            content: 'Выйти'
+                        }
+                    ]}
+                />
+            </div>
         </header>
     );
 }
