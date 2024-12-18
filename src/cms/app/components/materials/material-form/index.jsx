@@ -1,10 +1,10 @@
 import { useCallback, useRef } from 'react';
 
+import ImageField from 'shared/components/image-field';
 import { STATIC_URL } from 'shared/constants';
+import { levelOptions } from 'shared/data/common';
 import useForm from 'shared/hooks/form';
 import Form from 'shared/ui-components/form';
-import ImageField from 'shared/components/image-field';
-import { levelOptions } from 'shared/data/levels';
 
 const getDefaultData = ({
     title = '',
@@ -34,10 +34,14 @@ export default function MaterialForm({ material = {}, onSubmit, ...props }) {
 
         getData(data => onSubmit(Object.assign(data, { file })));
         imageFieldRef.current.reset();
-    }, []);
+    }, [getData, onSubmit]);
 
     return (
-        <Form className="MaterialForm" onSubmit={handleSubmit} {...props}>
+        <Form
+            className="MaterialForm"
+            onSubmit={handleSubmit}
+            {...props}
+        >
             <Form.Input
                 label="Тема"
                 name="title"
