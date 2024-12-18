@@ -1,6 +1,5 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
 import { Dialog } from 'shared/ui-components';
 
 export default function ConfirmationDialog({
@@ -10,12 +9,13 @@ export default function ConfirmationDialog({
     content = message,
     cancelButtonContent = 'Отменить',
     confirmButtonContent = 'Подтвердить',
+    closeAfterConfirm = false,
     onConfirm,
     onClose,
     children = content,
     ...props
 }) {
-    const [isConfirmButtonDisabled, toggleConfirmButtonDisabled] = useBoolean(false);
+    const [isConfirmButtonDisabled, toggleConfirmButtonDisabled] = useState(false);
 
     useEffect(() => {
         if (!open) {
@@ -24,9 +24,14 @@ export default function ConfirmationDialog({
     }, [open]);
 
     const handleConfirm = useCallback(() => {
-        toggleConfirmButtonDisabled(true);
-        onConfirm();
-    }, [onConfirm]);
+        onConfirm?.();
+
+        if (closeAfterConfirm) {
+            onClose?.();
+        } else {
+            toggleConfirmButtonDisabled(true);
+        }
+    }, [closeAfterConfirm, onConfirm, onClose]);
 
     return (
         <Dialog
