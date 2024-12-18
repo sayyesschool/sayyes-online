@@ -6,10 +6,10 @@ export default ({
         const {
             email,
             name,
-            userId,
+            userId = req.user?.id,
             packId,
             meetingId
-        } = req.body;
+        } = req.body ?? {};
 
         const pack = await Club.getPack(packId);
 
@@ -19,24 +19,25 @@ export default ({
         };
 
         const user = await User.findOne({ $or: [{ _id: userId }, { email }] });
+        const userEmail = user?.email ?? email;
 
         if (userId && !user) throw {
             code: 404,
             message: 'Пользователь не найден'
         };
 
-        if (!email) throw {
+        if (!userEmail) throw {
             code: 400,
             message: 'Не указан email'
         };
 
         const payment = await Checkout.createPayment({
             amount: pack.price,
-            description: `Покупка ${pack.title} в разговорном клубе`,
+            description: 'Покупка абонемента в разговорном клубе',
             confirmation: {
                 type: 'embedded'
             },
-            email,
+            email: userEmail,
             metadata: {
                 email: user ? undefined : email,
                 name: user ? undefined : name,
@@ -91,7 +92,7 @@ export default ({
                         { email: payment.metadata.email }
                     ]
                 }) :
-                await Club.registerMember({
+                await Club.registerUser({
                     name: payment.metadata.name,
                     email: payment.metadata.email
                 });
@@ -104,7 +105,7 @@ export default ({
                 await Payment.update(payment.id, { userId: user.id });
             }
 
-            const ticket = await Club.createTicket(user.id, payment.metadata.packId, payment.id);
+            const membership = await Club.createMembership(user.id, payment.metadata.packId, payment.id);
 
             if (payment.metadata.meetingId) {
                 const registration = await Club.registerForMeeting(user, payment.metadata.meetingId);
@@ -116,8 +117,8 @@ export default ({
             }
 
             return processSuccess({
-                data: ticket,
-                message: 'Билет приобретен'
+                data: membership,
+                message: 'Абонемент приобретен'
             });
         } else if (event === 'payment.canceled') {
             await Checkout.cancelPayment(object.id);
