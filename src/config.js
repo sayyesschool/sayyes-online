@@ -26,6 +26,9 @@ export default {
 
     MONGODB_URI: process.env.DB_CONNECTION_STRING,
 
+    RECAPTCHA_PUBLIC_KEY: process.env.RECAPTCHA_PUBLIC_KEY,
+    RECAPTCHA_SECRET_KEY: process.env.RECAPTCHA_SECRET_KEY,
+
     SESSION_SECRET: 'BHve6rr4mAAP2w4G93qK',
 
     SSL_CERT_PATH: process.env.SSL_CERT_PATH,
