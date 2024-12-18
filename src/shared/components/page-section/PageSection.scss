@@ -52,6 +52,7 @@
     &--plain {
         background-color: transparent !important;
         overflow: visible;
+        box-shadow: none;
     }
 
     &#{selector.unify('#{&}--compact', '#{&}--plain')} &__header {

@@ -34,7 +34,11 @@ export default function PageSection({
 
                 {(title || description) &&
                     <div className="PageSection__header-text">
-                        <Heading as="h3" content={title} />
+                        <Heading
+                            as="h3"
+                            type="h4"
+                            content={title}
+                        />
 
                         {description &&
                             <Text type="body2" content={description} />
@@ -48,14 +52,15 @@ export default function PageSection({
                     <div className="PageSection__header-actions">
                         {Array.isArray(actions) ?
                             actions.filter(a => !!a).map(action =>
-                                isValidElement(action) ? action :
+                                isValidElement(action) ?
+                                    action :
                                     <IconButton
                                         key={action.key}
                                         size="sm"
                                         variant="plain"
                                         color="neutral"
                                         {...action}
-                                />
+                                    />
                             ) : actions
                         }
                     </div>
