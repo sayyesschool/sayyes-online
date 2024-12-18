@@ -38,7 +38,11 @@ export function createReducer(initialState, caseReducers) {
     return function(state = initialState, action) {
         return Object.entries(caseReducers)
             .filter(([key]) => key === action.type)
-            .reduce((state, [key, reducer]) => reducer(state, action), state);
+            .reduce((state, [key, reducer]) => {
+                const result = reducer(state, action);
+
+                return result === undefined ? state : result;
+            }, state);
     };
 }
 
