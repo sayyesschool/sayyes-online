@@ -2,15 +2,7 @@ export default () => ({
     getUser: (req, res, next) => {
         res.json({
             ok: true,
-            data: {
-                id: req.user.id,
-                firstname: req.user.firstname,
-                lastname: req.user.lastname,
-                fullname: req.user.fullname,
-                email: req.user.email,
-                initials: req.user.initials,
-                role: req.user.role
-            }
+            data: req.user.toData()
         });
     },
 
@@ -25,7 +17,7 @@ export default () => ({
                 res.json({
                     ok: true,
                     message: 'Профиль изменен',
-                    data: map(user)
+                    data: user.toData()
                 });
             })
             .catch(next);
@@ -48,15 +40,3 @@ export default () => ({
             .catch(next);
     }
 });
-
-function map(user) {
-    return {
-        id: user.id,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        fullname: user.fullname,
-        email: user.email,
-        initials: user.initials,
-        role: user.role
-    };
-}
