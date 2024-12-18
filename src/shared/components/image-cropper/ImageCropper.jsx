@@ -18,6 +18,7 @@ function ImageCropper({
     image = defaultImage,
     imageSrc = image.src || image.url,
     open,
+    options,
     disabled,
     onSave,
     onCancel,
@@ -57,6 +58,7 @@ function ImageCropper({
                     background={false}
                     viewMode={2}
                     aspectRatio={1}
+                    {...options}
                 />
 
                 <Text

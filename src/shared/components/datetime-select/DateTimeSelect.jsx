@@ -59,7 +59,6 @@ function DateTimeSelectItem({
                 name="date"
                 value={item.date}
                 label="Дата"
-                filled
                 onChange={event => onChange(item, event.target)}
             />
 
@@ -69,7 +68,6 @@ function DateTimeSelectItem({
                 value={item.from}
                 label="С"
                 step="1800"
-                filled
                 onChange={event => onChange(item, event.target)}
             />
 
@@ -79,7 +77,6 @@ function DateTimeSelectItem({
                 value={item.to}
                 label="До"
                 step="1800"
-                filled
                 onChange={event => onChange(item, event.target)}
             />
 

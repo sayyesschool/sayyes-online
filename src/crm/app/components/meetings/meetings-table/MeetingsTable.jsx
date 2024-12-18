@@ -81,7 +81,7 @@ export default function MeetingsTable({ meetings }) {
                             </Text>
                         </Table.Cell>
 
-                        <Table.Cell numeric>
+                        <Table.Cell>
                             <Switch
                                 name="published"
                                 checked={meeting.published}
