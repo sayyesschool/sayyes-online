@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
 
 import ImageCropper from 'shared/components/image-cropper';
 import { useFileInput } from 'shared/hooks/file';
@@ -19,11 +19,12 @@ function ImageField({
     name,
     accept = 'image/jpeg,image/png,image/jpeg,image/webp',
     image = defaultValue,
-    src = image.src || image.url,
-    alt: _alt = image.alt,
+    src = image?.src || image?.url || '',
+    alt: _alt = image?.alt || '',
     noImage,
     error,
     errorMessage,
+    cropperOptions,
     disabled,
     onChange,
     onDelete,
@@ -34,11 +35,19 @@ function ImageField({
     const [alt, setAlt] = useState(_alt);
     const [isCropperOpen, toggleCropperOpen] = useBoolean(false);
 
-    const { file, pick, reset } = useFileInput({
+    const { file, setFile, pick, reset } = useFileInput({
         name,
         accept,
         onChange: () => toggleCropperOpen(true)
     });
+
+    useEffect(() => {
+        return () => {
+            if (file?.url && file.url.startsWith('blob:')) {
+                URL.revokeObjectURL(file.url);
+            }
+        };
+    }, [file]);
 
     useImperativeHandle(ref, () => ({
         get file() { return file; },
@@ -53,12 +62,14 @@ function ImageField({
     }, [pick, toggleCropperOpen]);
 
     const handleSave = useCallback(file => {
+        file.url = URL.createObjectURL(file);
+        setFile(file);
         onChange?.(file)
             .finally(() => {
                 toggleCropperOpen(false);
                 reset();
             });
-    }, [name, onChange, toggleCropperOpen]);
+    }, [onChange, reset, setFile, toggleCropperOpen]);
 
     const handleDelete = useCallback(() => {
         onDelete?.(image)
@@ -167,7 +178,7 @@ function ImageField({
                 <Button
                     icon="add_photo_alternate"
                     content="Выбрать изображение"
-                    variant="plain"
+                    variant="outlined"
                     disabled={disabled}
                     onClick={pick}
                 />
@@ -178,6 +189,7 @@ function ImageField({
                     image={file}
                     open={isCropperOpen}
                     disabled={disabled}
+                    options={cropperOptions}
                     onSave={handleSave}
                     onCancel={handleCancel}
                     onClose={toggleCropperOpen}
