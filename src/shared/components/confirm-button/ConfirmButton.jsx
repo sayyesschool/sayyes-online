@@ -7,6 +7,8 @@ export default function ConfirmButton({
     content,
     icon,
     message = 'Подтвердите действие',
+    description,
+    closeAfterConfirm,
     onConfirm,
     onCancel,
     ...props
@@ -31,7 +33,9 @@ export default function ConfirmButton({
 
             <ConfirmationDialog
                 title={message}
+                message={description}
                 open={isDialogOpen}
+                closeAfterConfirm={closeAfterConfirm}
                 onConfirm={onConfirm}
                 onClose={() => setDialogOpen(false)}
             />
