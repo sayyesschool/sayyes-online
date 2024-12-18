@@ -22,10 +22,12 @@ export async function request(url, { headers = {}, body, ...rest } = {}) {
         .then(response => {
             if (response.ok) {
                 delete response.ok;
+
                 return response;
             } else {
                 const error = new Error(response.error.message || response.error);
                 error.code = response.error?.code;
+
                 throw error;
             }
         });
