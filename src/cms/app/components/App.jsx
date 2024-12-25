@@ -3,10 +3,12 @@ import { Route, Switch } from 'react-router-dom';
 
 import AppContent from 'shared/components/app-content';
 import AppHeader from 'shared/components/app-header';
+import AppNav from 'shared/components/app-nav';
 import AppNotification from 'shared/components/app-notification';
 import LoadingIndicator from 'shared/components/loading-indicator';
 
 import UI from 'cms/contexts/ui';
+import navItems from 'cms/data/nav';
 import { useActions, useStore } from 'cms/store';
 
 import './App.scss';
@@ -28,9 +30,13 @@ export default function App({ routes }) {
     return (
         <div className="App">
             <UI.Provider value={{}}>
-                <AppHeader
-                    user={user}
-                />
+                <AppHeader user={user}>
+                    <AppNav
+                        items={navItems}
+                        orientation="horizontal"
+                        invertedColors
+                    />
+                </AppHeader>
 
                 <AppContent>
                     <Switch>
