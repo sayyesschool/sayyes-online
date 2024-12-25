@@ -34,7 +34,8 @@ const [
 ] = await User.create([
     data.learner,
     data.manager,
-    data.teacher
+    data.teacher,
+    data.editor
 ]);
 
 await Room.create(data.rooms);

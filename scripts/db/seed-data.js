@@ -89,6 +89,14 @@ export const teacher = {
     domains: ['club', 'lk', 'lms']
 };
 
+export const editor = {
+    firstname: 'Методист',
+    email: 'editor@sayyes.school',
+    password: '123456',
+    role: 'editor',
+    domains: ['cms', 'lk']
+};
+
 export const lexemes = [
     {
         value: 'cat',
