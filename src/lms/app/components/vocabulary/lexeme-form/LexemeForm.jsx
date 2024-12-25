@@ -49,7 +49,7 @@ export default function LexemeForm({
     }, [setFile]);
 
     const handleFileDelete = useCallback(async image => {
-        if (user.id !== lexeme.createdBy || lexeme.approved) return;
+        if (user.id !== lexeme.createdBy || lexeme.isApproved) return;
 
         await Storage.delete(image.path).then(console.log);
         setFile(undefined);
@@ -69,7 +69,7 @@ export default function LexemeForm({
     }, [setExamples]);
 
     const createdByUser = lexeme.createdBy === user.id;
-    const labels = getLabels(lexeme.approved);
+    const labels = getLabels(lexeme.isApproved);
 
     return (
         <Form
@@ -86,12 +86,12 @@ export default function LexemeForm({
                 className={styles.imageField}
                 label="Изображение"
                 image={lexeme.image || lexeme.data?.image}
-                disabled={!createdByUser || lexeme.approved}
+                disabled={!createdByUser || lexeme.isApproved}
                 onChange={handleFileChange}
                 onDelete={handleFileDelete}
             />
 
-            {lexeme.approved &&
+            {lexeme.isApproved &&
                 <>
                     <Form.Input
                         label="Перевод"
@@ -121,7 +121,7 @@ export default function LexemeForm({
 
             <LexemeExamples
                 examples={examples}
-                approved={lexeme.approved}
+                approved={lexeme.isApproved}
                 onChange={handleExamplesChange}
             />
         </Form>

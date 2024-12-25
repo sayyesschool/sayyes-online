@@ -15,3 +15,9 @@ export const LexemeKind = {
     Determiner: 'determiner',
     Article: 'article'
 };
+
+export const LexemePublishStatus = {
+    Pending: 'pending',
+    Approved: 'approved',
+    Unapproved: 'unapproved'
+};

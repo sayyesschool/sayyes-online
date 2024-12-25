@@ -4,7 +4,7 @@ import Audio from '../audio';
 import { Level } from '../common';
 import Image from '../image';
 
-import { LexemeKind, LexemeType } from './constants';
+import { LexemeKind, LexemePublishStatus, LexemeType } from './constants';
 
 export const Lexeme = new Schema({
     value: { type: String, required: true, index: true },
@@ -27,7 +27,11 @@ export const Lexeme = new Schema({
     },
     level: { type: Number, enum: Object.values(Level) },
     frequency: { type: Number, min: 0, max: 1 },
-    approved: { type: Boolean, default: false },
+    publishStatus: {
+        type: String,
+        enum: Object.values(LexemePublishStatus),
+        default: LexemePublishStatus.Pending
+    },
     public: { type: Boolean, default: false },
     createdBy: { type: Schema.Types.ObjectId }
 }, {
@@ -39,6 +43,18 @@ Lexeme.virtual('record', {
     localField: '_id',
     foreignField: 'lexemeId',
     justOne: true
+});
+
+Lexeme.virtual('isPending').get(function() {
+    return this.publishStatus === LexemePublishStatus.Pending;
+});
+
+Lexeme.virtual('isApproved').get(function() {
+    return this.publishStatus === LexemePublishStatus.Approved;
+});
+
+Lexeme.virtual('isUnapproved').get(function() {
+    return this.publishStatus === LexemePublishStatus.Unapproved;
 });
 
 export default Lexeme;

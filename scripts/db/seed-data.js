@@ -119,7 +119,7 @@ export const lexemes = [
         image: {
             src: 'https://picsum.photos/200'
         },
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'dog',
@@ -155,7 +155,7 @@ export const lexemes = [
         image: {
             src: 'https://picsum.photos/200'
         },
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'car',
@@ -168,7 +168,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'tree',
@@ -181,7 +181,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'river',
@@ -194,7 +194,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'computer',
@@ -207,7 +207,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'sun',
@@ -220,7 +220,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'music',
@@ -233,7 +233,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'flower',
@@ -246,7 +246,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'friend',
@@ -259,7 +259,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'beach',
@@ -272,7 +272,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'language',
@@ -285,7 +285,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'mountain',
@@ -298,7 +298,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'food',
@@ -311,7 +311,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'school',
@@ -324,7 +324,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'water',
@@ -337,7 +337,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'friendship',
@@ -350,7 +350,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'phone',
@@ -363,7 +363,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'money',
@@ -376,7 +376,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'sky',
@@ -389,7 +389,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'city',
@@ -402,7 +402,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'country',
@@ -415,7 +415,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'family',
@@ -428,7 +428,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'game',
@@ -441,7 +441,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'movie',
@@ -454,7 +454,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         value: 'sport',
@@ -467,7 +467,7 @@ export const lexemes = [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     }
 ];
 
