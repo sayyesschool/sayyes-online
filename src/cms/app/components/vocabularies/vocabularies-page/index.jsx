@@ -5,8 +5,9 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import VocabulariesGrid from 'shared/components/vocabularies-grid';
 import VocabularyCard from 'shared/components/vocabulary-card';
+import { useDictionary } from 'shared/hooks/dictionary';
 import { useUser } from 'shared/hooks/user';
-import { useVocabularies, useVocabulary } from 'shared/hooks/vocabularies';
+import { useVocabularies } from 'shared/hooks/vocabularies';
 import { Flex, PopoverButton } from 'shared/ui-components';
 
 import VocabularyForm from 'lms/components/vocabulary/vocabulary-form';
@@ -14,7 +15,7 @@ import VocabularySimpleForm from 'lms/components/vocabulary/vocabulary-simple-fo
 
 export default function VocabulariesPage() {
     const [user] = useUser();
-    const [userVocabulary] = useVocabulary('my');
+    const [dictionary] = useDictionary();
     const [vocabularies, actions] = useVocabularies();
 
     const [currentVocabulary, setCurrentVocabulary] = useState(null);
@@ -42,7 +43,7 @@ export default function VocabulariesPage() {
         setCurrentVocabulary(null);
     }, []);
 
-    if (!vocabularies) return <LoadingIndicator />;
+    if (!vocabularies || !dictionary) return <LoadingIndicator />;
 
     return (
         <Page className="VocabulariesPage" layout="narrow">
@@ -64,17 +65,16 @@ export default function VocabulariesPage() {
 
             <Page.Content>
                 <Flex gap="medium" column>
-                    {userVocabulary &&
-                        <VocabularyCard
-                            href={`vocabulary/${userVocabulary.id}`}
-                            vocabulary={userVocabulary}
-                            orientation="horizontal"
-                            readOnly
-                        />
-                    }
+
+                    <VocabularyCard
+                        href={dictionary.id}
+                        vocabulary={dictionary}
+                        orientation="horizontal"
+                        readOnly
+                    />
 
                     <VocabulariesGrid
-                        href="vocabulary"
+                        href="vocabularies"
                         vocabularies={vocabularies}
                         onEditVocabulary={handleEditVocabulary}
                         onDeleteVocabulary={handleDeleteVocabulary}

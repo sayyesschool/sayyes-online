@@ -184,6 +184,7 @@ User.methods.toData = function() {
         role: this.role,
         permissions: this.permissions,
         isLearner: this.isLearner,
+        isEditor: this.isEditor,
         isTeacher: this.isTeacher
     };
 };

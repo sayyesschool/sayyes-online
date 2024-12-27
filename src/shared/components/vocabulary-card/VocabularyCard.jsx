@@ -7,6 +7,7 @@ import { getWordEnding } from 'shared/utils/format';
 import styles from './VocabularyCard.module.scss';
 
 export default function VocabularyCard({
+    href,
     vocabulary,
     orientation,
     readOnly,
@@ -45,7 +46,7 @@ export default function VocabularyCard({
                 <div className={styles.info}>
                     <Link
                         component={RouterLink}
-                        to={`vocabulary/${vocabulary.id}`}
+                        to={href}
                         content={title}
                         type="title-lg"
                     />

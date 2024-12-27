@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 
 import FormDialog from 'shared/components/form-dialog';
+import LexemesList from 'shared/components/lexemes-list';
 import { useVocabularyActions } from 'shared/hooks/vocabularies';
 import { Dialog, PopoverButton } from 'shared/ui-components';
 
@@ -8,7 +9,6 @@ import Lexeme from 'lms/components/vocabulary/lexeme';
 import LexemeForm from 'lms/components/vocabulary/lexeme-form';
 import LexemeSimpleForm from 'lms/components/vocabulary/lexeme-simple-form';
 import LexemeView from 'lms/components/vocabulary/lexeme-view';
-import LexemesList from 'lms/components/vocabulary/lexemes-list';
 import VocabularySearch from 'lms/components/vocabulary/vocabulary-search';
 
 import styles from './VocabularyLexemes.module.scss';
@@ -133,6 +133,7 @@ export default function VocabularyLexemes({
             <div className={styles.body}>
                 {showList &&
                     <LexemesList
+                        user={user}
                         lexemes={lexemes}
                         readOnly={readOnly}
                         onViewLexeme={handleViewLexeme}

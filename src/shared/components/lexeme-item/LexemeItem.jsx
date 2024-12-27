@@ -7,35 +7,57 @@ import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 import styles from './LexemeItem.module.scss';
 
 export default function LexemeItem({
+    user,
     lexeme,
     readOnly,
     onView,
+    onApprove,
+    onUnapprove,
     onEdit,
     onSelect,
     onDelete,
     onStatusUpdate
 }) {
     const { id, value, translation, status } = lexeme;
+    const isCreatorLexeme = lexeme.createdBy === user.id;
+    // const showDeleteBtn = (user.isEditor && isCreatorLexeme && !lexeme.isApproved) || user.isLearner;
+    const showDeleteBtn = (user.isEditor && isCreatorLexeme) || user.isLearner;
 
-    const handleCheckboxChange = useCallback(() => {
-        return onSelect(id);
-    }, [id, onSelect]);
+    // const handleCheckboxChange = useCallback(() => {
+    //     return onSelect(id);
+    // }, [id, onSelect]);
 
     const handleContentClick = useCallback(() => {
         return onView(id);
     }, [id, onView]);
 
-    const handleEditButtonClick = useCallback(() => {
-        return onEdit(id);
-    }, [id, onEdit]);
-
-    const handleDeleteButtonClick = useCallback(() => {
-        return onDelete(id);
-    }, [id, onDelete]);
-
     const handleStatusChange = useCallback(status => {
-        return onStatusUpdate(id, status);
+        onStatusUpdate(id, status);
     }, [id, onStatusUpdate]);
+
+    const actionButtons = [
+
+        onApprove && {
+            icon:'verified',
+            title: 'Утвердить слово',
+            handler: () => onApprove(id)
+        },
+        onUnapprove && {
+            icon:'clear',
+            title: 'Архивировать слово',
+            handler: () => onUnapprove(id)
+        },
+        {
+            icon:'edit',
+            title: 'Редактировать слово',
+            handler: () => onEdit(id)
+        },
+        showDeleteBtn && onDelete && {
+            icon:'delete',
+            title: 'Удалить слово',
+            handler: () => onDelete(id)
+        }
+    ].filter(Boolean);
 
     return (
         <ListItem className={styles.root}>
@@ -59,35 +81,28 @@ export default function LexemeItem({
             </div>
 
             <div className={styles.actions}>
-                <LexemeStatus
+                {onStatusUpdate && <LexemeStatus
                     level={status}
                     readOnly={readOnly}
                     onChange={handleStatusChange}
-                />
+                />}
 
-                {lexeme.audio &&
+                {/* {lexeme.audio &&
                     <IconButton
                         icon="volume_up"
                         title="Воспроизвести слово"
                         onClick={() => console.log('audio')}
                     />
-                }
+                } */}
 
-                {!readOnly && (
-                    <>
-                        <IconButton
-                            icon="edit"
-                            title="Редактировать слово"
-                            onClick={handleEditButtonClick}
-                        />
-
-                        <IconButton
-                            icon="delete"
-                            title="Удалить слово"
-                            onClick={handleDeleteButtonClick}
-                        />
-                    </>
-                )}
+                {actionButtons.map(({ title, icon, handler }, index) => (
+                    <IconButton
+                        key={index}
+                        title={title}
+                        icon={icon}
+                        onClick={handler}
+                    />
+                ))}
             </div>
         </ListItem>
     );
