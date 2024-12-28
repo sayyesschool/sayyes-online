@@ -10,7 +10,7 @@ append head
     link(rel="stylesheet" href="/css/club-islands.css")
 
     style
-        include:scss client/styles.scss
+        include:scss ../styles/main.scss
 
 append scripts
     script(src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/js/intlTelInput.min.js")
@@ -22,7 +22,7 @@ append scripts
             packs: !{JSON.stringify(packs)}
         };
     script
-        include client/script.js
+        include ../scripts/main.js
 
 block header
     +header

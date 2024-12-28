@@ -1,6 +1,6 @@
 const { meetings, packs } = window.data;
 const { Accordion, Form, Modal, Slider } = window.ui;
-const { PaymentView, MeetingView } = window.views;
+const { PaymentIsland, MeetingIsland } = window.islands;
 
 Accordion.init();
 Form.init();
@@ -11,8 +11,8 @@ const packagesSection = document.querySelector('#packages');
 const paymentModal = new Modal('#payment-modal');
 const meetingModal = new Modal('#meeting-modal');
 
-const paymentView = new PaymentView('#payment-view');
-const meetingView = new MeetingView('#meeting-view');
+const paymentIsland = new PaymentIsland('#payment-view');
+const meetingIsland = new MeetingIsland('#meeting-view');
 
 // Modals
 
@@ -24,8 +24,8 @@ document.querySelectorAll('.pack-btn').forEach(button => {
 
         if (!pack) return;
 
-        paymentView.render({ pack, meetingId: state.meetingId });
-        paymentModal.on('closed', () => paymentView.destroy());
+        paymentIsland.render({ pack, meetingId: state.meetingId });
+        paymentModal.on('closed', () => paymentIsland.destroy());
         paymentModal.open();
     });
 });
@@ -36,7 +36,7 @@ document.querySelectorAll('.meeting-btn').forEach(button => {
 
         if (!meeting) return;
 
-        meetingView.render({
+        meetingIsland.render({
             meeting,
             onRegister: () => {
                 state.meetingId = meeting.id;
@@ -49,7 +49,7 @@ document.querySelectorAll('.meeting-btn').forEach(button => {
                 });
             }
         });
-        meetingModal.on('close', () => paymentView.destroy());
+        meetingModal.on('close', () => paymentIsland.destroy());
         meetingModal.open();
     });
 });
