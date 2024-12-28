@@ -20,9 +20,11 @@ export default context => {
     app.locals.basedir = context.config.APP_PATH;
 
     app.get('/', (req, res, next) => {
-        req.user ?
-            next() :
-            res.render('login');
+        req.user
+            ? next()
+            : res.render('login', {
+                redirect: req.query?.redirect
+            });
     });
 
     app.post('/register', controller.register, middleware.redirect);

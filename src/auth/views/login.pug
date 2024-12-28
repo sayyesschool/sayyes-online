@@ -36,7 +36,7 @@ block body
     main
         include /shared/includes/flash
 
-        +form.form#login-form(method='post' action='/login')
+        +form.form#login-form(method='post' action=`/login${redirect ? `?redirect=${redirect}` : ''}`)
             div
                 img(src="https://static.sayes.ru/images/logos/sayyes-purple.png")
 

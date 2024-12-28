@@ -14,15 +14,15 @@ export default ({
     },
 
     authorize: (req, res, next) => {
-        req.user ?
-            next() :
-            res.redirect(`//auth.${config.APP_DOMAIN}?returnUrl=${req.originalUrl}`);
+        req.user
+            ? next()
+            : res.redirect(`//auth.${APP_DOMAIN}`);
     },
 
     authorizeRoles: allowedRoles => (req, res, next) => {
-        req.user?.is(allowedRoles) ?
-            next() :
-            res.redirect(`//auth.${config.APP_DOMAIN}`);
+        req.user?.is(allowedRoles)
+            ? next()
+            : res.redirect(`//auth.${APP_DOMAIN}`);
     },
 
     authenticatedRoute: (req, res, next) => {
@@ -34,16 +34,18 @@ export default ({
     },
 
     redirect: (req, res, next) => {
-        if (!req.user)
-            res.redirect(`//auth.${config.APP_DOMAIN}`);
+        if (req.query.redirect)
+            res.redirect(`//${req.query.redirect}`);
+        else if (!req.user)
+            res.redirect(`//auth.${APP_DOMAIN}`);
         else if (req.user.is('member'))
-            res.redirect(`//club.${config.APP_DOMAIN}`);
+            res.redirect(`//club.${APP_DOMAIN}`);
         else if (req.user.is('editor'))
-            res.redirect(`//cms.${config.APP_DOMAIN}`);
+            res.redirect(`//cms.${APP_DOMAIN}`);
         else if (req.user.is('manager'))
-            res.redirect(`//crm.${config.APP_DOMAIN}`);
+            res.redirect(`//crm.${APP_DOMAIN}`);
         else if (req.user.is('learner', 'teacher'))
-            res.redirect(`//lms.${config.APP_DOMAIN}`);
+            res.redirect(`//lms.${APP_DOMAIN}`);
         else
             next();
     }
