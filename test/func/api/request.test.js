@@ -6,7 +6,7 @@ import context from '../context';
 
 import setup from './api';
 
-const api = setup(request);
+const api = setup('/request', request);
 
 const {
     models: { Request }
@@ -19,7 +19,7 @@ describe('Public Request API', () => {
 
     describe('POST /', () => {
         it('creates a request', async () => {
-            const { body: { data } } = await api.post('/').send({
+            const { body: { data } } = await api.post('/request').send({
                 description: 'Test',
                 channel: Request.Channel.Site,
                 source: Request.Source.Google

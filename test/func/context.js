@@ -17,6 +17,7 @@ const context = {
 };
 
 export {
+    config,
     context as default,
     models,
     services
