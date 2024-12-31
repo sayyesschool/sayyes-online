@@ -24,7 +24,7 @@ export default function App() {
     return (
         <div className="App">
             <AppHeader
-                logo={<img src="https://sayes.ru/wp-content/themes/sayyes/static/images/logo-white.svg" alt="" />}
+                logoUrl={'https://static.sayes.ru/images/logos/sayyes-speaking-club_white.svg'}
                 user={user}
             />
 
@@ -38,7 +38,10 @@ export default function App() {
                 </Switch>
             </AppContent>
 
-            <AppFooter/>
+            <AppFooter
+                logoUrl={'https://static.sayes.ru/images/logos/sayyes-speaking-club_purple.svg'}
+            />
+
             <AppNotification />
         </div>
     );
