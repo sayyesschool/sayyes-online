@@ -4,7 +4,10 @@ import { Router } from 'express';
 import multer from 'multer';
 import { v4 as uuid } from 'uuid';
 
-export default ({ config: { STORAGE_URL }, services: { Storage } }) => {
+export default ({
+    config: { STORAGE_URL },
+    services: { Storage }
+}) => {
     const router = Router();
     const upload = multer();
 

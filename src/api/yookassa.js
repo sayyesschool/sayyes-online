@@ -1,7 +1,8 @@
 import { Router } from 'express';
 
 export default ({
-    models: { Client, Enrollment, Lesson, Meeting, Pack, Payment, Transaction, User }
+    models: { Enrollment, Lesson, Pack, Payment, Transaction, User },
+    services: { Club }
 }) => {
     const router = Router();
 

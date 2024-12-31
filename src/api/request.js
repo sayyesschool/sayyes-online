@@ -1,6 +1,8 @@
 import { Router } from 'express';
 
-export default ({ models: { Request } }) => {
+export default ({
+    models: { Request }
+}) => {
     const router = Router();
 
     router.post('/', async (req, res) => {
