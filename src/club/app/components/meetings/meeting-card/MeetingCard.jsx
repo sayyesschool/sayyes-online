@@ -65,7 +65,7 @@ export default function MeetingCard({
 
                         <Text
                             content={`${meeting.online ? 'Онлайн' : 'Офлайн'} · ${meeting.datetime}`}
-                            type="body-md"
+                            type="body-sm"
                         />
                     </Flex>
 
