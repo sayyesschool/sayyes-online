@@ -10,6 +10,9 @@ html(lang="ru")
         meta(name="viewport" content="width=device-width, initial-scale=1")
         meta(name="version" content=VERSION)
         meta(name="theme-color" content="#6c167b")
+
+        block meta
+
         if description
             meta(name="description" content=description)
         if keywords
@@ -19,6 +22,7 @@ html(lang="ru")
             title= title + ' | Say Yes'
         else
             title Say Yes
+        
         link(rel="preconnect" href="https://fonts.gstatic.com")
         link(rel="icon" href="https://static.sayes.ru/images/favicons/favicon-192x192.png")
         link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL@20,300,0..1")
