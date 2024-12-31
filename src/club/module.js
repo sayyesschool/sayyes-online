@@ -4,15 +4,15 @@ import express from 'express';
 import vhost from 'vhost';
 
 import api from './api';
-import pages from './pages';
+import pages, { routes } from './pages';
 
-const DOMAIN = 'club';
+const MODULE_NAME = 'club';
 
 export default context => {
     const app = express();
 
     app.set('view engine', 'pug');
-    app.set('views', resolve(context.config.APP_PATH, DOMAIN));
+    app.set('views', resolve(context.config.APP_PATH, MODULE_NAME));
 
     Object.assign(app.locals, context.config, {
         CLUB_URL: `https://club.${context.config.APP_DOMAIN}`,
@@ -21,10 +21,16 @@ export default context => {
     });
 
     app.use('/api', api(context));
-    app.use((req, res, next) =>
-        req.user ? res.render('app') : next()
-    );
+    app.use((req, res, next) => {
+        if (routes.includes(req.url)) {
+            next();
+        } else if (req.user) {
+            res.render('app');
+        } else {
+            next();
+        }
+    });
     app.use(pages(context));
 
-    return vhost(`${DOMAIN}.${context.config.APP_DOMAIN}`, app);
+    return vhost(`${MODULE_NAME}.${context.config.APP_DOMAIN}`, app);
 };
