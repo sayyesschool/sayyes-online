@@ -15,6 +15,12 @@ export const Request = new Schema({
     },
     contact: {
         name: { type: String },
+        email: {
+            type: String,
+            trim: true,
+            maxlength: [256, 'Адрес электронный почты слишком длинный.'],
+            match: [/^[a-zA-Z0-9'._%+-]+@[a-zA-Z0-9-][a-zA-Z0-9.-]*\.[a-zA-Z]{2,63}$/, 'Неверный формат адреса электронной почты.']
+        },
         phone: { type: String, set: value => value.trim().replace(/[\s()\-\+]+/g, '') }
     },
     channel: {
@@ -35,8 +41,8 @@ export const Request = new Schema({
         term: { type: String, default: '' },
         content: { type: String, default: '' }
     },
+    data: { type: Object },
     note: { type: String, trim: true, default: '' },
-    enrollmentId: { type: Schema.Types.ObjectId },
     learnerId: { type: Schema.Types.ObjectId },
     managerId: { type: Schema.Types.ObjectId },
     createdAt: { type: Date },
@@ -63,13 +69,6 @@ Request.virtual('timeString').get(function() {
 
 Request.virtual('dateTimeString').get(function() {
     return moment(this.createdAt).format('D MMM, H:mm');
-});
-
-Request.virtual('enrollment', {
-    ref: 'Enrollment',
-    localField: 'enrollmentId',
-    foreignField: '_id',
-    justOne: true
 });
 
 Request.virtual('learner', {
