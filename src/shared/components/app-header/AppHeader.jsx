@@ -1,21 +1,23 @@
 import { Link } from 'react-router-dom';
 
 import UserMenu from 'shared/components/user-menu';
-import { AUTH_URL, LK_URL } from 'shared/constants';
+import { AUTH_URL, LK_URL, LOGO_URL } from 'shared/constants';
 
 import styles from './AppHeader.module.scss';
 
 export default function AppHeader({
-    user,
     logo,
-    title,
+    logoUrl,
+    user,
     children,
     ...props
 }) {
     return (
         <header className={styles.root} {...props}>
             <div className={styles.container}>
-                <Link className={styles.logo} to="/">{logo}</Link>
+                <Link className={styles.logo} to="/">
+                    {logo || <img src={logoUrl || LOGO_URL} alt="Логотип Say Yes" />}
+                </Link>
 
                 {children &&
                     <div className={styles.content}>{children}</div>
