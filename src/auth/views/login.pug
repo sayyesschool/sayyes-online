@@ -1,45 +1,20 @@
-extends /shared/layouts/page
+extends ./layout
 
 append head
-    link(rel="preconnect" href="https://fonts.googleapis.com")
-    link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=Shantell+Sans:ital,wght@1,300..400&display=swap")
-    link(rel="stylesheet" href="https://static.sayes.ru/css/shared.css")
-
     style.
-        .flash {
-            border-radius: 0;
+        #password-modal .modal__body {
+            max-width: 480px;
+            padding: 20px;
         }
 
-        main {
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            text-align: center;
-        }
-
-        main > .form {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            max-width: 330px;
-            margin: auto;
-            gap: 1rem;
-        }
-
-        main > .form img {
-            width: 128px;
-        }
-
-block body
+block main
     main
-        include /shared/includes/flash
+        +logo('purple')
 
-        +form.form#login-form(method='post' action=`/login${redirect ? `?redirect=${redirect}` : ''}`)
-            div
-                img(src="https://static.sayes.ru/images/logos/sayyes-purple.png")
-
+        +form#login-form(
+            method='post'
+            action=`/login${redirect ? `?redirect=${redirect}` : ''}`
+        )
             input.input(
                 id="email-input"
                 type="email"
@@ -62,17 +37,19 @@ block body
 
             button.btn.btn--purple(type="submit") Войти
 
-            button.link(type="button" data-bs-toggle="modal" data-bs-target="#password-modal") Забыли пароль?
+            button.link.link--interactive(type="button" data-modal-trigger="password-modal") Забыли пароль?
 
-        include ./includes/password-dialog
+        +modal(
+            'Сброс пароля',
+            'Для сброса пароля введите адрес электронной почты указанный при регистрации. Вам на почту придет письмо с инструкцией.'
+        )#password-modal
+            +form(method='post' action='/reset')
+                input.input(
+                    id="email-input"
+                    name="email"
+                    type="email"
+                    placeholder="Электронная почта"
+                    required
+                )
 
-    script.
-        document.querySelectorAll('.form').forEach(form => {
-            form.addEventListener('submit', () => {
-                const submitButton = this.querySelector('button[type="submit"]');
-
-                if (submitButton) {
-                    submitButton.disabled = true;
-                }
-            });
-        });
+                button.btn.btn--purple.btn--full(type="submit") Сбросить пароль

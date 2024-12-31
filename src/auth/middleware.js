@@ -1,5 +1,5 @@
 export default ({
-    config,
+    config: { APP_DOMAIN, RECAPTCHA_SECRET_KEY },
     models: { User }
 }) => ({
     authenticate: (req, res, next) => {
@@ -31,6 +31,30 @@ export default ({
 
     authenticatedRouter: (req, res, next) => {
         req.user ? next() : next('router');
+    },
+
+    recaptcha: async (req, res, next) => {
+        const { token } = req.body;
+
+        if (!token) {
+            return res.status(400).json({ error: 'Не указан токен' });
+        }
+
+        const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+            method: 'POST',
+            body: JSON.stringify({
+                secret: RECAPTCHA_SECRET_KEY,
+                response: token
+            })
+        });
+
+        const data = await response.json();
+
+        if (!data.success) {
+            return res.status(400).json({ error: 'Подтверждение не пройдено' });
+        }
+
+        next();
     },
 
     redirect: (req, res, next) => {

@@ -1,0 +1,62 @@
+extends /shared/layouts/page
+
+include /shared/mixins/logo
+include /shared/mixins/modal
+
+append meta
+    meta(name="robots" content="noindex, nofollow")
+
+append head
+    style.
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: auto;
+            text-align: center;
+        }
+
+        main > .logo {
+            display: block;
+            width: 128px;
+            height: auto;
+            margin: auto;
+        }
+
+        main > .form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 330px;
+            margin: auto;
+            gap: 1rem;
+        }
+
+block body
+    include /shared/includes/flash
+
+    block main
+
+    script(src="https://static.sayes.ru/js/shared.js")
+    script.
+        const { Accordion, Form, Modal, Slider } = window.ui;
+
+        Form.init();
+        Modal.init();
+
+        //- document.querySelectorAll('.form').forEach(form => {
+        //-     form.addEventListener('submit', () => {
+        //-         const submitButton = this.querySelector('button[type="submit"]');
+
+        //-         if (submitButton) {
+        //-             submitButton.disabled = true;
+        //-         }
+        //-     });
+        //- });

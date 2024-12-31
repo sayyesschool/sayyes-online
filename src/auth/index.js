@@ -8,6 +8,8 @@ import Middleware from './middleware';
 
 export { Middleware };
 
+const MODULE_NAME = 'auth';
+
 export default context => {
     const app = express();
     const middleware = Middleware(context);
@@ -15,9 +17,11 @@ export default context => {
 
     app.set('trust proxy', true);
     app.set('view engine', 'pug');
-    app.set('views', resolve(context.config.APP_PATH, 'auth/views'));
+    app.set('views', resolve(context.config.APP_PATH, `${MODULE_NAME}/views`));
 
-    app.locals.basedir = context.config.APP_PATH;
+    Object.assign(app.locals, context.config, {
+        basedir: context.config.APP_PATH
+    });
 
     app.get('/', (req, res, next) => {
         req.user
@@ -40,5 +44,5 @@ export default context => {
     app.get('/reset/:token', controller.showResetPasswordForm);
     app.post('/reset/:token', controller.resetPassword);
 
-    return vhost(`auth.${context.config.APP_DOMAIN}`, app);
+    return vhost(`${MODULE_NAME}.${context.config.APP_DOMAIN}`, app);
 };
