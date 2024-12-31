@@ -13,3 +13,4 @@ export const STATIC_URL = env.STATIC_URL;
 export const STORAGE_URL = env.STORAGE_URL;
 export const YANDEX_METRIKA_ID = env.YANDEX_METRIKA_ID;
 export const YOOKASSA_SCRIPT_URL = 'https://yookassa.ru/checkout-widget/v1/checkout-widget.js';
+export const LOGO_URL = 'https://sayes.ru/wp-content/themes/sayyes/static/images/logo-white.svg';
