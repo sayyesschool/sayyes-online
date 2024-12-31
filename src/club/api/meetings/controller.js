@@ -10,7 +10,9 @@ export default ({
             await Club.findMeetings(query)
                 .populate({ path: 'registrations', populate: { path: 'user' } })
                 .sort({ date: 1 }) :
-            await Club.findMeetings(query).sort({ date: 1 });
+            await Club.findMeetings(query)
+                .populate('registrations')
+                .sort({ date: 1 });
 
         res.send({
             ok: true,

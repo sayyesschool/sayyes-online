@@ -10,5 +10,8 @@ export default context => {
     router.get('/options', controller.getOptions);
     router.get('/{:id}', controller.getOne);
 
+    router.post('/', controller.create);
+    router.post('/process', controller.process);
+
     return router;
 };
