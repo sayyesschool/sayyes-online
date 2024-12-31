@@ -5,6 +5,8 @@ import express from 'express';
 
 import { flash, logger, session } from './middleware';
 
+export * as middleware from './middleware';
+
 export default ({ config, db }, options) => {
     const server = express();
 
