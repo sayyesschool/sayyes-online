@@ -66,7 +66,7 @@ const durationLabels = {
 
 export default ({
     lib: { zoom },
-    models: { Meeting, Registration, Membership, User },
+    models: { Meeting, Membership, Payment, Registration, Request, User },
     services: { Auth, Checkout, Mail, Newsletter }
 }) => ({
     emailTemplates,
@@ -190,30 +190,111 @@ export default ({
         return membership;
     },
 
-    async purchaseMembership(user, planId, meeting = {}) {
-        if (!user) throw {
-            status: 400,
-            message: 'Для приобретения абонемента необходимо указать пользователя.'
+    async createPayment({
+        email,
+        name,
+        userId,
+        packId,
+        meetingId,
+        requestId,
+        utm
+    } = {}) {
+        const pack = await this.getPack(packId);
+        const user = await User.findOne({ $or: [{ _id: userId }, { email }] });
+        const userEmail = user?.email ?? email;
+
+        if (userId && !user) throw {
+            code: 404,
+            message: 'Пользователь не найден'
         };
 
-        const plan = Membership.plans[planId] || {};
+        if (!userEmail) throw {
+            code: 400,
+            message: 'Не указан email'
+        };
+
+        if (requestId) {
+            await Request.update(requestId, {
+                status: Request.Status.Completed
+            });
+
+            requestId = await Request.create({
+                description: 'Покупка абонемента',
+                contact: user ? undefined : {
+                    email: userEmail,
+                    name: user?.name ?? name
+                },
+                learnerId: user?.id,
+                utm
+            });
+        }
 
         return Checkout.createPayment({
-            amount: plan.price,
-            description: plan.title,
-            email: user.email,
+            amount: pack.price,
+            description: 'Покупка абонемента',
+            confirmation: {
+                type: 'embedded'
+            },
+            email: userEmail,
             metadata: {
-                userId: isObjectIdOrHexString(user) ? user : user.id,
-                meetingId: isObjectIdOrHexString(meeting) ? meeting : meeting.id
+                email: user ? undefined : email,
+                name: user ? undefined : name,
+                userId: user?.id,
+                packId: pack.id,
+                meetingId,
+                requestId
             }
         });
     },
 
+    async processPayment(payment) {
+        if (!payment) throw {
+            code: 404,
+            message: 'Платеж не найден'
+        };
+
+        if (!payment.paid) throw {
+            code: 400,
+            message: 'Платеж не оплачен'
+        };
+
+        const user = payment.metadata.userId
+            ? await User.findOne({
+                $or: [
+                    { _id: payment.metadata.userId },
+                    { email: payment.metadata.email }
+                ]
+            })
+            : await this.registerUser({
+                name: payment.metadata.name,
+                email: payment.metadata.email
+            });
+
+        if (!user) throw {
+            code: 404,
+            message: 'Пользователь не найден'
+        };
+
+        if (!payment.userId) {
+            await Payment.update(payment.id, { userId: user.id });
+        }
+
+        await this.createMembership(user.id, payment.metadata.membershipPackId, payment.id);
+
+        if (payment.metadata.meetingId) {
+            await this.registerForMeeting(user, payment.metadata.meetingId);
+        }
+
+        if (payment.metadata.requestId) {
+            await Request.update(payment.metadata.requestId, {
+                status: Request.Status.Completed,
+                learnerId: user.id
+            });
+        }
+    },
+
     findMeetings(...args) {
-        return Meeting.find(...args)
-            .populate('host', 'firstname lastname image role')
-            .populate('registrations')
-            .sort({ date: -1 });
+        return Meeting.find(...args);
     },
 
     findScheduledMeetings(...args) {
