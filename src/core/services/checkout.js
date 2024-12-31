@@ -55,8 +55,9 @@ export default ({
                 status: payment.status,
                 amount: payment.amount.value,
                 date: payment.captured_at,
-                paid: payment.paid,
                 description: payment.description,
+                paid: payment.paid,
+                test: payment.test,
                 confirmation: payment.confirmation && {
                     type: payment.confirmation.type,
                     confirmationToken: payment.confirmation.confirmation_token,
@@ -76,12 +77,8 @@ export default ({
                         issuer: payment.payment_method.card.issuer_name
                     }
                 },
-                customer: payment.metadata.customer,
-                metadata: {
-                    ...payment.metadata,
-                    customer: undefined
-                },
-                test: payment.test,
+                userId: metadata.userId,
+                metadata: payment.metadata,
                 createdAt: payment.created_at,
                 expiresAt: payment.expires_at,
                 paidAt: payment.captured_at
