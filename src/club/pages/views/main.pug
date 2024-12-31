@@ -1,9 +1,9 @@
-extends ../shared/layout
+extends ./layout
 
-include ../shared/header
-include ../shared/modal
-include ../shared/section
-include ../shared/slider
+include ./mixins/header
+include ./mixins/modal
+include ./mixins/section
+include ./mixins/slider
 
 append head
     link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/css/intlTelInput.css")
