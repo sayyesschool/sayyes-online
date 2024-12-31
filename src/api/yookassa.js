@@ -7,58 +7,42 @@ export default ({
     const router = Router();
 
     router.post('/payments', async (req, res) => {
+        const { type, source, event, object } = req.body ?? {};
+
+        if (type !== 'notification') return res.sendStatus(200);
+
         try {
-            const { type, event, object } = req.body;
-
-            if (type !== 'notification') return res.sendStatus(200);
-
             const payment = await Payment.resolve(object.id);
             const transaction = await Transaction.findOne({ paymentId: object.id });
 
             if (transaction) return res.sendStatus(200);
 
             if (event === 'payment.succeeded') {
-                const transaction = await Transaction.create({
-                    type: 'debit',
-                    amount: object.amount.value,
-                    currency: object.amount.currency,
-                    description: object.description,
-                    payment: {
-                        id: object.id,
-                        gateway: 'yookassa',
-                        method: object.payment_method && {
-                            id: object.payment_method.id,
-                            type: object.payment_method.type,
-                            title: object.payment_method.title,
-                            saved: object.payment_method.saved,
-                            card: object.payment_method.card && {
-                                type: object.payment_method.card.card_type,
-                                first6: object.payment_method.card.first6,
-                                last4: object.payment_method.card.last4,
-                                expiryMonth: object.payment_method.card.expiry_month,
-                                expiryYear: object.payment_method.card.expiry_year,
-                                issuerName: object.payment_method.card.issuer_name,
-                                issuerCountry: object.payment_method.card.issuer_country
-                            }
-                        }
-                    },
-                    user: object.metadata.userId,
-                    enrollment: object.metadata.enrollmentId
-                });
+                if (payment.metadata.membershipOptionId) {
+                    const { data, message } = Club.processPayment(payment);
 
-                await Client.updateOne({
-                    _id: transaction.user
-                }, {
-                    $inc: {
-                        balance: transaction.amount
+                    if (source === 'client') {
+                        return res.status(200).send({ ok: true, data, message });
+                    } else {
+                        return res.sendStatus(200);
                     }
-                });
+                }
 
                 if (object.metadata.enrollmentId && object.metadata.packId) {
                     const [enrollment, pack] = await Promise.all([
                         Enrollment.findById(object.metadata.enrollmentId),
                         Pack.findById(object.metadata.packId)
                     ]);
+
+                    const transaction = await Transaction.create({
+                        type: 'debit',
+                        amount: object.amount.value,
+                        currency: object.amount.currency,
+                        description: object.description,
+                        paymentId: payment.id,
+                        enrollmentId: enrollment.id,
+                        userId: payment.metadata.userId
+                    });
 
                     const lessons = enrollment.scheduleLessons(pack.numberOfLessons);
 
@@ -91,7 +75,12 @@ export default ({
             res.sendStatus(200);
         } catch (error) {
             console.error(error);
-            res.sendStatus(500);
+
+            if (source === 'client') {
+                return res.status(error.code).send(error);
+            } else {
+                return res.sendStatus(500);
+            }
         }
     });
 
