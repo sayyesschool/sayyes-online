@@ -10,7 +10,7 @@ node_modules
 .npm
 
 .env
-backups
-public
-ssl
-scripts/deploy/credentials.js
+/backups
+/public
+/ssl
+/scripts/deploy/credentials.js
