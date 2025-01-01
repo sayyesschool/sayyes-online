@@ -13,7 +13,7 @@
     "db-migrate": "node -r dotenv/config ./scripts/db/migrate.js",
     "db-restore": "node -r dotenv/config ./scripts/db/restore.js",
     "db-seed": "node --import ./loaders/register.cjs -r dotenv/config ./scripts/db/seed.js",
-    "deploy": "git push prod master",
+    "deploy": "git push master && npm run build && npm run ftp prod",
     "deploy-dev": "git push dev dev:master && npm run build-dev && npm run ftp dev",
     "ftp": "node ./scripts/deploy/ftp.js",
     "lint": "eslint ./src",
