@@ -1,12 +1,11 @@
 extends /shared/layouts/base
 
+include /shared/mixins/header
+include /shared/mixins/modal
+include /shared/mixins/section
+include /shared/mixins/slider
+include /shared/mixins/tabs
 include /shared/mixins/yandex-metrika
-
-include ./mixins/header
-include ./mixins/modal
-include ./mixins/section
-include ./mixins/slider
-include ./mixins/tabs
 
 append head
     link(rel="preconnect" href="https://fonts.googleapis.com")
@@ -25,7 +24,7 @@ block body
         block main
 
     block footer
-        include ../includes/footer
+        include ./includes/footer
 
     script(src="https://static.sayes.ru/js/shared.js")
 
