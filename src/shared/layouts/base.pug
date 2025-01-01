@@ -19,9 +19,9 @@ html(lang="ru")
             meta(name="keywords" content=keywords)
         
         if title
-            title= title + ' | Say Yes'
+            title= title + ` | ${titleBase || 'Say Yes'}`
         else
-            title Say Yes
+            title= `${titleBase || 'Say Yes'}`
         
         link(rel="preconnect" href="https://fonts.gstatic.com")
         link(rel="icon" href="https://static.sayes.ru/images/favicons/favicon-192x192.png")

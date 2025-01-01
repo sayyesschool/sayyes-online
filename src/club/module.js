@@ -17,7 +17,8 @@ export default context => {
     Object.assign(app.locals, context.config, {
         CLUB_URL: `https://club.${context.config.APP_DOMAIN}`,
         CLUB_EMAIL: `club@${context.config.APP_DOMAIN}`,
-        basedir: context.config.APP_PATH
+        basedir: context.config.APP_PATH,
+        titleBase: 'Разговорный клуб Say Yes'
     });
 
     app.use('/api', api(context));

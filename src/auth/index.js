@@ -27,6 +27,7 @@ export default context => {
         req.user
             ? next()
             : res.render('login', {
+                title: 'Вход',
                 redirect: req.query?.redirect
             });
     });
