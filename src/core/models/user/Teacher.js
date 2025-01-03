@@ -1,11 +1,11 @@
 import { Schema } from 'mongoose';
 
 export const Teacher = new Schema({
-    type: { type: String },
-    levels: { type: [String] },
-    formats: { type: [String] },
-    ageGroups: { type: [String] },
-    zoomUrl: { type: String }
+    props: {
+        levels: { type: [String] },
+        formats: { type: [String] },
+        ages: { type: [String] }
+    }
 });
 
 Teacher.virtual('enrollments', {

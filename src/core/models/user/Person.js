@@ -32,6 +32,7 @@ export const Person = new Schema({
     email: {
         type: String,
         trim: true,
+        lowercase: true,
         maxlength: [256, 'Адрес электронный почты слишком длинный.'],
         match: [/^[a-zA-Z0-9'._%+-]+@[a-zA-Z0-9-][a-zA-Z0-9.-]*\.[a-zA-Z]{2,63}$/, 'Неверный формат адреса электронной почты.']
     },

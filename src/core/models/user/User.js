@@ -5,7 +5,7 @@ import mongoose, { Schema } from 'mongoose';
 
 import Image from '../image';
 
-import { UserPermissions, UserRole } from './constants';
+import { UserDomains, UserPermissions, UserRole } from './constants';
 import Person from './Person';
 
 function hashPassword(password) {
@@ -34,17 +34,19 @@ export const User = new Schema([Person, {
     },
     domains: {
         type: [String],
+        enum: UserDomains,
         default: ['lk']
     },
     permissions: {
         type: [String],
         enum: UserPermissions,
-        default: ['all'] // TODO: Remove before production
+        default: []
     },
     timezone: { type: String },
+    active: { type: Boolean, default: false, alias: 'isActive' },
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
-    activated: { type: Boolean, default: false, alias: 'isActivated' },
     note: { type: String, trim: true },
+    props: { type: Object, default: {} },
     activationToken: String,
     activationTokenExpiresAt: Date,
     resetPasswordToken: String,
@@ -200,26 +202,26 @@ User.methods.toData = function() {
 // });
 
 // Check email
-User.pre('save', function(next) {
-    if (!this.isModified('email') || this.email === '') return next();
+// User.pre('save', function(next) {
+//     if (!this.isModified('email') || this.email === '') return next();
 
-    mongoose.models.User.findOne({ email: this.email })
-        .then(user => {
-            if (user) next(new Error('Пользователь с таким адресом электронной почты уже зарегистрирован'));
-            else next();
-        });
-});
+//     mongoose.models.User.findOne({ email: this.email })
+//         .then(user => {
+//             if (user) next(new Error('Пользователь с таким адресом электронной почты уже зарегистрирован'));
+//             else next();
+//         });
+// });
 
 // Add required fields
-User.pre('save', function(next) {
-    if (!this.isNew) return next();
+// User.pre('save', function(next) {
+//     if (!this.isNew) return next();
 
-    // Generate email verification token
-    this.activationToken = generateToken();
-    this.activationTokenExpiresAt = Date.now() + 86400000;
+//     // Generate email verification token
+//     this.activationToken = generateToken();
+//     this.activationTokenExpiresAt = Date.now() + 86400000;
 
-    next();
-});
+//     next();
+// });
 
 // Catch errors
 User.post('save', function(error, user, next) {

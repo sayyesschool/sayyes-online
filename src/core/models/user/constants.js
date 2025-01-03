@@ -1,9 +1,7 @@
 export const UserRole = {
     Admin: 'admin',
-    Editor: 'editor',
     Learner: 'learner',
     Manager: 'manager',
-    Member: 'member',
     Teacher: 'teacher'
 };
 

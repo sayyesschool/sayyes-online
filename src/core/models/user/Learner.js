@@ -3,8 +3,7 @@ import { Schema } from 'mongoose';
 import Contact from './Contact';
 
 export const Learner = new Schema({
-    level: { type: String },
-    info: {
+    props: {
         address: { type: String },
         occupation: { type: String },
         interests: { type: String },
