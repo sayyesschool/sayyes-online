@@ -8,11 +8,10 @@ export const Registration = new Schema({
         enum: Object.values(RegistrationStatus),
         default: RegistrationStatus.Pending
     },
-    free: { type: Boolean, default: false },
-    zoomId: { type: String },
     joinUrl: { type: String },
-    meetingId: { type: Schema.Types.ObjectId },
+    zoomId: { type: String },
     userId: { type: Schema.Types.ObjectId },
+    meetingId: { type: Schema.Types.ObjectId },
     membershipId: { type: Schema.Types.ObjectId }
 });
 
@@ -57,7 +56,7 @@ Registration.virtual('isResolved').get(function() {
 });
 
 Registration.virtual('isFree').get(function() {
-    return this.free;
+    return !this.membershipId;
 });
 
 Registration.virtual('user', {
