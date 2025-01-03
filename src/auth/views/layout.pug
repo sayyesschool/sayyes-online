@@ -46,17 +46,16 @@ block body
 
     script(src="https://static.sayes.ru/js/shared.js")
     script.
-        const { Accordion, Form, Modal, Slider } = window.ui;
+        const { Modal } = window.ui;
 
-        Form.init();
         Modal.init();
 
-        //- document.querySelectorAll('.form').forEach(form => {
-        //-     form.addEventListener('submit', () => {
-        //-         const submitButton = this.querySelector('button[type="submit"]');
+        document.querySelectorAll('.form').forEach(form => {
+            form.addEventListener('submit', () => {
+                const submitButton = this.querySelector('button[type="submit"]');
 
-        //-         if (submitButton) {
-        //-             submitButton.disabled = true;
-        //-         }
-        //-     });
-        //- });
+                if (submitButton) {
+                    submitButton.disabled = true;
+                }
+            });
+        });
