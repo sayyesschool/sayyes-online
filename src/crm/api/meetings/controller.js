@@ -2,20 +2,21 @@ export default ({
     models: { User },
     services: { Club }
 }) => ({
-    get: (req, res, next) => {
-        Club.findMeetings(req.query)
-            .limit(30)
-            .then(meetings => {
-                res.json({
-                    ok: true,
-                    data: meetings
-                });
-            })
-            .catch(next);
+    async get(req, res) {
+        const meetings = await Club.findMeetings(req.query)
+            .populate('registrations')
+            .sort({ date: 1 })
+            .limit(30);
+
+        res.json({
+            ok: true,
+            data: meetings
+        });
     },
 
     getOne: (req, res, next) => {
         Club.getMeeting(req.params.meetingId)
+            .populate({ path: 'registrations', populate: { path: 'user' } })
             .then(meeting => {
                 res.json({
                     ok: true,
