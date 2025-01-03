@@ -10,11 +10,12 @@ export const Payment = new Schema({
     currency: { type: String, default: 'RUB' },
     description: { type: String, trim: true },
     status: { type: String, required: true, enum: Object.keys(PaymentStatus) },
+    operator: { type: String, enum: Object.keys(PaymentOperator) },
+    method: PaymentMethod,
     paid: { type: Boolean, default: false },
     refundable: { type: Boolean, default: false },
     refunded: { type: Boolean, default: false },
     test: { type: Boolean },
-    operator: { type: String, enum: Object.keys(PaymentOperator) },
     confirmation: {
         type: {
             type: String,
@@ -28,7 +29,6 @@ export const Payment = new Schema({
         party: { type: String },
         reason: { type: String }
     },
-    method: PaymentMethod,
     metadata: { type: Object },
     expiresAt: { type: Date },
     paidAt: { type: Date },
