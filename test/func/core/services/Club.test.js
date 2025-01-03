@@ -96,7 +96,7 @@ describe('ClubService', () => {
 
                 expect(membership.limit).toEqual(1);
                 expect(membership.userId).toEqual(user.id);
-                expect(membership.expiresAt).toBeA(Date);
+                expect(membership.endDate).toBeA(Date);
                 expect(user.memberships.map(m => m.id)).toInclude(membership.id);
             });
 
@@ -109,7 +109,7 @@ describe('ClubService', () => {
                     expect(membership).toMatch({
                         limit: visits,
                         userId: user._id,
-                        expiresAt: Membership.getExpiration(membership.purchasedAt, pack)
+                        endDate: Membership.getExpiration(membership.startDate, pack)
                     });
                     expect(user.memberships.map(m => m.id)).toInclude(membership.id);
                 });

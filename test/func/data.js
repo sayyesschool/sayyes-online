@@ -37,12 +37,12 @@ export const ZOOM_MEETING = {
 
 export const DEFAULT_MEMBERSHIP = {
     limit: 1,
-    expiresAt: moment().add(2, 'week').toDate()
+    endDate: moment().add(2, 'week').toDate()
 };
 
 export const EXPIRED_MEMBERSHIP = {
     limit: 1,
-    expiresAt: moment().subtract(2, 'week').toDate()
+    endDate: moment().subtract(2, 'week').toDate()
 };
 
 export const NEW_PAYMENT = {

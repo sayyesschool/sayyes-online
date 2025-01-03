@@ -150,16 +150,16 @@ export default ({
         const user = await this.getUser($user);
         const pack = await this.getPack($pack);
 
-        const purchasedAt = new Date();
-        const expiresAt = Membership.getExpiration(purchasedAt, pack);
+        const startDate = new Date();
+        const endDate = Membership.getExpiration(startDate, pack);
 
         return Membership.create({
             limit: pack.visits,
             price: pack.price,
             userId: user.id,
             paymentId,
-            purchasedAt,
-            expiresAt
+            startDate,
+            endDate
         });
     },
 
@@ -169,7 +169,7 @@ export default ({
         return Membership.find({ userId })
             .unexpired()
             .populate('registrations')
-            .sort({ expiresAt: 1 });
+            .sort({ endDate: 1 });
     },
 
     async findUserMembership($user) {

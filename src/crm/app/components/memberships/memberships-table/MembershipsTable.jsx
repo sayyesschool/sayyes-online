@@ -6,8 +6,8 @@ import { Table } from 'shared/ui-components';
 const columns = [
     { key: 'user', text: 'Пользователь' },
     { key: 'price', text: 'Стоимость, руб.' },
-    { key: 'purchasedAt', text: 'Дата покупки' },
-    { key: 'expiresAt', text: 'Дата окончания' },
+    { key: 'startDate', text: 'Дата начала' },
+    { key: 'endDate', text: 'Дата окончания' },
     { key: 'registrations', text: 'Регистрации' },
     { key: 'actions' }
 ];
@@ -42,8 +42,8 @@ export default function MembershipsTable({ memberships, onEdit, onDelete }) {
                         </Table.Cell>
 
                         <Table.Cell content={membership.price} />
-                        <Table.Cell content={membership.purchasedAt} />
-                        <Table.Cell content={membership.expiresAt} />
+                        <Table.Cell content={membership.startDate} />
+                        <Table.Cell content={membership.endDate} />
                         <Table.Cell content={`${membership.registrationsCount} / ${membership.limit}`} />
                     </Table.Row>
                 )}

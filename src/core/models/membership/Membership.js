@@ -4,8 +4,8 @@ import { Schema } from 'mongoose';
 const Membership = new Schema({
     limit: { type: Number, default: 1 },
     price: { type: Number, default: 0 },
-    expiresAt: { type: Date },
-    purchasedAt: { type: Date },
+    startDate: { type: Date },
+    endDate: { type: Date },
     userId: { type: Schema.Types.ObjectId, ref: 'User' },
     paymentId: { type: Schema.Types.ObjectId, ref: 'Payment' },
     registrationIds: [{ type: Schema.Types.ObjectId, ref: 'Registration' }]
@@ -16,8 +16,8 @@ const Membership = new Schema({
 Membership.query.unexpired = function() {
     return this.where({
         $or: [
-            { expiresAt: { $exists: false } },
-            { expiresAt: { $gt: new Date() } }
+            { endDate: { $exists: false } },
+            { endDate: { $gt: new Date() } }
         ]
     });
 };
@@ -39,10 +39,10 @@ Membership.statics.getSoldByMonth = async function() {
         });
 };
 
-Membership.statics.getExpiration = function(date, pack) {
+Membership.statics.getEndDate = function(startDate, pack) {
     if (!pack.duration) return;
 
-    return moment(date).add(...pack.duration).toDate();
+    return moment(startDate).add(...pack.duration).toDate();
 };
 
 Membership.virtual('registrationsCount').get(function() {
@@ -54,7 +54,7 @@ Membership.virtual('isActive').get(function() {
 });
 
 Membership.virtual('isExpired').get(function() {
-    return this.expiresAt && moment().add(1, 'day').isAfter(this.expiresAt);
+    return this.endDate && moment().add(1, 'day').isAfter(this.endDate);
 });
 
 Membership.virtual('isValid').get(function() {
