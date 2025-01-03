@@ -70,7 +70,8 @@ export const learner = {
     email: 'learner@sayyes.school',
     password: '123456',
     role: 'learner',
-    domains: ['club', 'lk', 'lms']
+    domains: ['club', 'lk', 'lms'],
+    active: true
 };
 
 export const manager = {
@@ -78,7 +79,8 @@ export const manager = {
     email: 'manager@sayyes.school',
     password: '123456',
     role: 'manager',
-    domains: ['crm']
+    domains: ['crm'],
+    active: true
 };
 
 export const teacher = {
@@ -86,7 +88,8 @@ export const teacher = {
     email: 'teacher@sayyes.school',
     password: '123456',
     role: 'teacher',
-    domains: ['club', 'lk', 'lms']
+    domains: ['club', 'lk', 'lms'],
+    active: true
 };
 
 export const lexemes = [
@@ -611,8 +614,8 @@ export const memberships = [
     {
         limit: 1,
         price: 590,
-        expiresAt: moment().add(2, 'weeks').toDate(),
-        purchasedAt: moment().toDate(),
+        startDate: moment().toDate(),
+        endDate: moment().add(2, 'weeks').toDate(),
         userId: null,
         paymentId: null,
         registrationIds: []
@@ -620,8 +623,8 @@ export const memberships = [
     {
         limit: 4,
         price: 2990,
-        expiresAt: moment().add(1, 'month').toDate(),
-        purchasedAt: moment().toDate(),
+        startDate: moment().toDate(),
+        endDate: moment().add(1, 'month').toDate(),
         userId: null,
         paymentId: null,
         registrationIds: []
