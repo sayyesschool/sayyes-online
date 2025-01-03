@@ -8,13 +8,13 @@ export const Payment = new Schema({
     uuid: { type: String },
     amount: { type: Number, default: 0, min: 0, required: true },
     currency: { type: String, default: 'RUB' },
+    description: { type: String, trim: true },
     status: { type: String, required: true, enum: Object.keys(PaymentStatus) },
     paid: { type: Boolean, default: false },
     refundable: { type: Boolean, default: false },
     refunded: { type: Boolean, default: false },
     test: { type: Boolean },
     operator: { type: String, enum: Object.keys(PaymentOperator) },
-    description: { type: String, trim: true },
     confirmation: {
         type: {
             type: String,
