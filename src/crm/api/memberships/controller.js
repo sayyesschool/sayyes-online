@@ -2,7 +2,7 @@ export default ({
     models: { Membership }
 }) => ({
     async get(req, res) {
-        const memberships = await Membership.find()
+        const memberships = await Membership.find(req.query)
             .populate('user', 'firstname lastname email');
 
         res.json({

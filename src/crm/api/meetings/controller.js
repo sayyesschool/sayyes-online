@@ -14,16 +14,17 @@ export default ({
         });
     },
 
-    getOne: (req, res, next) => {
-        Club.getMeeting(req.params.meetingId)
-            .populate({ path: 'registrations', populate: { path: 'user' } })
-            .then(meeting => {
-                res.json({
-                    ok: true,
-                    data: meeting
-                });
-            })
-            .catch(next);
+    async getOne(req, res) {
+        const meeting = await Club.getMeeting(req.params.meetingId, {
+            populate: {
+                path: 'registrations', populate: { path: 'user' }
+            }
+        });
+
+        res.json({
+            ok: true,
+            data: meeting
+        });
     },
 
     create: (req, res, next) => {
