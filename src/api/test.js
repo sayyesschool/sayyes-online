@@ -47,7 +47,11 @@ export default ({
         await Mail.send({
             to: email,
             subject: 'Результаты теста',
-            html: getHtml({ name, email, questions, level })
+            templateId: 6575919,
+            variables: {
+                level,
+                questions
+            }
         });
 
         res.json({

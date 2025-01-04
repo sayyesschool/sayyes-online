@@ -17,7 +17,7 @@ function resolveTo(to) {
 export default mailClient => ({
     send({ from = FROM, to, subject, text, html, templateId, variables }) {
         return mailClient
-            .post('send', { 'version': 'v3.1' })
+            .post('send', { version: 'v3.1' })
             .request({
                 Messages: [
                     {
@@ -44,7 +44,7 @@ export default mailClient => ({
             return Promise.resolve();
 
         return mailClient
-            .post('send', { 'version': 'v3.1' })
+            .post('send', { version: 'v3.1' })
             .request({
                 Messages: messages.map(message => ({
                     From: {
