@@ -35,11 +35,11 @@ export const Request = new Schema({
     },
     referrer: { type: String },
     utm: {
-        source: { type: String, default: '' },
-        medium: { type: String, default: '' },
-        campaign: { type: String, default: '' },
-        term: { type: String, default: '' },
-        content: { type: String, default: '' }
+        source: { type: String },
+        medium: { type: String },
+        campaign: { type: String },
+        term: { type: String },
+        content: { type: String }
     },
     data: { type: Object },
     note: { type: String, trim: true, default: '' },

@@ -116,6 +116,13 @@ export const PAID_PAYMENT = {
 export const TEST_RESULTS = {
     name: 'Test',
     email: 'olegpolyakov@outlook.com',
+    utm: {
+        source: 'newsletter',
+        medium: 'email',
+        campaign: 'summer_sale',
+        term: 'shoes',
+        content: 'button'
+    },
     questions: [
         {
             id: 1,

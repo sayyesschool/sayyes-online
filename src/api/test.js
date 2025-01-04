@@ -10,7 +10,9 @@ export default ({
         const {
             name,
             email,
-            questions
+            questions,
+            source,
+            utm
         } = req.body;
 
         if (!name) {
@@ -28,10 +30,14 @@ export default ({
         const level = getLevel(questions);
 
         const request = await Request.create({
+            description: 'Прохождение теста на сайте',
             contact: {
                 name,
                 email
             },
+            channel: Request.Channel.Test,
+            source,
+            utm,
             data: {
                 level,
                 questions
@@ -39,10 +45,10 @@ export default ({
         });
 
         await Mail.send({
-            from: '',
+            from: 'admin@sayyes.school',
             to: email,
             subject: 'Результаты теста',
-            html: getHtml({ name, email, questions })
+            html: getHtml({ name, email, questions, level })
         });
 
         res.json({
@@ -85,7 +91,7 @@ function getLevel(questions) {
     }
 }
 
-function getHtml({ name, email, questions }) {
+function getHtml({ name, email, questions, level }) {
     const output = `
         <html>
             <body style="font-family: sans-serif">
@@ -96,6 +102,7 @@ function getHtml({ name, email, questions }) {
                 <div>
                     <b>Email:</b> ${email}
                 </div>
+
                 <h2>Ответы</h2>
 
                 ${questions.map((question, index) => `

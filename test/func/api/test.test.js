@@ -28,7 +28,27 @@ describe('Public Test API', () => {
             const { body: { data } } = await api.post('/test').send(TEST_RESULTS);
 
             expect(data).toExist();
-            expect(data.requestId).toExist();
+        });
+
+        it('creates a request', async () => {
+            const { body: { data: { requestId } } } = await api.post('/test').send(TEST_RESULTS);
+
+            const request = await Request.findById(requestId);
+
+            expect(request).toExist();
+            expect(request.channel).toEqual('test');
+            expect(request.contact).toExist();
+            expect(request.contact.name).toEqual(TEST_RESULTS.name);
+            expect(request.contact.email).toEqual(TEST_RESULTS.email);
+            expect(request.utm).toExist();
+            expect(request.utm.source).toEqual(TEST_RESULTS.utm.source);
+            expect(request.utm.medium).toEqual(TEST_RESULTS.utm.medium);
+            expect(request.utm.campaign).toEqual(TEST_RESULTS.utm.campaign);
+            expect(request.utm.term).toEqual(TEST_RESULTS.utm.term);
+            expect(request.utm.content).toEqual(TEST_RESULTS.utm.content);
+            expect(request.data).toExist();
+            expect(request.data.level).toExist();
+            expect(request.data.questions).toExist();
         });
     });
 });
