@@ -10,6 +10,7 @@ node_modules
 .npm
 
 .env
+.env.*
 /backups
 /public
 /ssl
