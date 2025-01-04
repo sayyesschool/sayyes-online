@@ -307,13 +307,18 @@ export default ({
         return (isObjectIdOrHexString(id) ?
             Meeting.findById(id, ...rest) :
             Meeting.findOne(...args)
-        )
-            .populate('host', 'firstname lastname image role');
+        ).populate('host', 'firstname lastname image role');
     },
 
-    async getMeeting($meeting) {
-        const meeting = await Meeting.findById($meeting)
+    async getMeeting($meeting, options = {}) {
+        const query = Meeting.findById($meeting)
             .populate('host', 'firstname lastname image role');
+
+        if (options.populate) {
+            query.populate(options.populate);
+        }
+
+        const meeting = await query;
 
         if (!meeting) throw {
             status: 404,
