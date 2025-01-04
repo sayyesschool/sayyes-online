@@ -1,33 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import Page from 'shared/components/page';
+import { useMemberships } from 'shared/hooks/memberships';
 import { Tabs } from 'shared/ui-components';
 
-import TicketsTable from 'crm/components/memberships/memberships-table';
-import { useStore } from 'crm/store';
+import MembershipsTable from 'crm/components/memberships/memberships-table';
 
-export default function TicketsPage() {
-    const [tickets, actions] = useStore('tickets.list');
+export default function MembershipsPage() {
+    const [memberships] = useMemberships();
 
-    const [tab, setTab] = useState('valid');
+    const [tab, setTab] = useState('active');
 
-    useEffect(() => {
-        actions.getTickets();
-    }, [actions]);
-
-    const filteredTickets = tickets?.filter(filters[tab]);
+    const filteredMemberships = memberships?.filter(filters[tab]);
 
     return (
-        <Page id="payments" loading={!tickets}>
+        <Page id="memberships" loading={!memberships}>
             <Page.Header
-                title="Билеты"
+                title="Абонементы"
             />
 
             <Page.Content>
                 <Tabs
                     value={tab}
                     items={[
-                        { key: 'valid', value: 'valid', content: 'Активные' },
+                        { key: 'active', value: 'active', content: 'Активные' },
                         { key: 'expired', value: 'expired', content: 'Истекшие' },
                         { key: 'all', value: 'all', content: 'Все' }
                     ]}
@@ -35,8 +31,8 @@ export default function TicketsPage() {
                 />
 
                 <Page.Section variant="outlined" compact>
-                    <TicketsTable
-                        tickets={filteredTickets}
+                    <MembershipsTable
+                        memberships={filteredMemberships}
                     />
                 </Page.Section>
             </Page.Content>
@@ -45,7 +41,7 @@ export default function TicketsPage() {
 }
 
 const filters = {
-    valid: ticket => ticket.isValid,
-    expired: ticket => ticket.isExpired,
+    active: membership => membership.isActive,
+    expired: membership => membership.isExpired,
     all: () => true
 };

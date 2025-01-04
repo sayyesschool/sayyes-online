@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import PersonChip from 'shared/components/person-chip';
 import StatusChip from 'shared/components/status-chip';
-import { IconButton, Table } from 'shared/ui-components';
+import { Chip, IconButton, Table } from 'shared/ui-components';
 
 const columns = [
     { key: 'amount', text: 'Сумма, руб.' },
@@ -11,6 +11,7 @@ const columns = [
     { key: 'user', text: 'Клиент' },
     { key: 'status', text: 'Статус' },
     { key: 'method', text: 'Способ оплаты' },
+    { key: 'operator', text: 'Оператор' },
     { key: 'actions' }
 ];
 
@@ -33,18 +34,16 @@ export default function PaymentsTable({ payments, onEdit, onDelete }) {
                 {payments.map(payment =>
                     <Table.Row key={payment.id}>
                         <Table.Cell content={payment.amount} />
-
                         <Table.Cell content={payment.description} />
-
-                        <Table.Cell content={payment.date} />
+                        <Table.Cell content={payment.dateLabel} />
 
                         <Table.Cell>
-                            {payment.learner &&
+                            {payment.user &&
                                 <PersonChip
                                     as={Link}
-                                    to={`/learners/${payment.learner.id}`}
-                                    imageSrc={payment.learner.imageUrl}
-                                    content={payment.learner.fullname}
+                                    to={payment.user.url}
+                                    imageSrc={payment.user.imageUrl}
+                                    content={payment.user.fullname}
                                 />
                             }
                         </Table.Cell>
@@ -56,7 +55,17 @@ export default function PaymentsTable({ payments, onEdit, onDelete }) {
                             />
                         </Table.Cell>
 
-                        <Table.Cell content={payment.paymentMethod} />
+                        <Table.Cell>
+                            {payment.method &&
+                                <Chip content={payment.method.card ? payment.method.card.title : payment.method.type} />
+                            }
+                        </Table.Cell>
+
+                        <Table.Cell>
+                            {payment.operator &&
+                                <Chip content={payment.operator} />
+                            }
+                        </Table.Cell>
 
                         <Table.Cell align="end">
                             <IconButton.Group

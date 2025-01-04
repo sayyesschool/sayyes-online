@@ -49,7 +49,7 @@ export default function LearnersPage({ history }) {
     return (
         <Page className="LearnersPage">
             <Page.Header
-                title="Клиенты"
+                title="Ученики"
                 actions={[{
                     key: 'add',
                     icon: 'add',
