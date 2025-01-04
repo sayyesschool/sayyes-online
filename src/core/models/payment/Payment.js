@@ -99,10 +99,21 @@ Payment.virtual('isStuck').get(function() {
     return this.isPending && !this.confirmation;
 });
 
+Payment.virtual('user', {
+    ref: 'User',
+    localField: 'userId',
+    foreignField: '_id',
+    justOne: true
+});
+
 Payment.methods.getResolveUrl = function(paymentId) {
     return this.subscriptionId ?
         `/user/subscription/resolve?paymentId=${paymentId}` :
         `/user/payments/${paymentId}`;
+};
+
+Payment.methods.toData = function() {
+    return this.toObject();
 };
 
 export default Payment;

@@ -22,16 +22,18 @@ export const User = new Schema([Person, {
         trim: true,
         set: hashPassword
     },
-    role: {
-        type: String,
-        enum: Object.values(UserRole)
-    },
     image: { type: Image },
     accounts: {
         type: Map,
         of: String,
         default: {}
     },
+    role: {
+        type: String,
+        enum: Object.values(UserRole)
+    },
+    active: { type: Boolean, default: false, alias: 'isActive' },
+    blocked: { type: Boolean, default: false, alias: 'isBlocked' },
     domains: {
         type: [String],
         enum: UserDomains,
@@ -43,8 +45,6 @@ export const User = new Schema([Person, {
         default: []
     },
     timezone: { type: String },
-    active: { type: Boolean, default: false, alias: 'isActive' },
-    blocked: { type: Boolean, default: false, alias: 'isBlocked' },
     note: { type: String, trim: true },
     props: { type: Object, default: {} },
     activationToken: String,
@@ -72,7 +72,7 @@ User.statics.generateToken = generateToken;
 /* Virtuals */
 
 User.virtual('url').get(function() {
-    return this.id ? `/users/${this.id}` : undefined;
+    return this.id ? `/${this.role ?? 'user'}s/${this.id}` : undefined;
 });
 
 User.virtual('isAdmin').get(function() {

@@ -61,6 +61,13 @@ Membership.virtual('isValid').get(function() {
     return this.registrationsCount < this.limit;
 });
 
+Membership.virtual('user', {
+    ref: 'User',
+    localField: 'userId',
+    foreignField: '_id',
+    justOne: true
+});
+
 Membership.virtual('registrations', {
     ref: 'Registration',
     localField: 'registrationIds',
