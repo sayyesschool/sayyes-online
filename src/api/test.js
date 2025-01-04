@@ -45,7 +45,6 @@ export default ({
         });
 
         await Mail.send({
-            from: 'admin@sayyes.school',
             to: email,
             subject: 'Результаты теста',
             html: getHtml({ name, email, questions, level })

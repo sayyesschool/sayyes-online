@@ -1,5 +1,5 @@
 const FROM = {
-    email: 'online@sayyes.school',
+    email: 'info@sayyes.school',
     name: 'SAY YES English School'
 };
 
