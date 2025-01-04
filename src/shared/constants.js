@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 
+export const NODE_ENV = env.NODE_ENV;
 export const APP_ENV = env.APP_ENV;
 export const AUTH_URL = env.AUTH_URL;
 export const CLASS_URL = env.CLASS_URL;

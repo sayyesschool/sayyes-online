@@ -16,7 +16,7 @@ import server from './server';
 const context = core(config);
 const authMiddleware = AuthMiddleware(context);
 
-const options = config.APP_ENV === 'production' ? null : {
+const options = config.NODE_ENV === 'production' ? null : {
     cert: readFileSync(config.SSL_CERT_PATH),
     key: readFileSync(config.SSL_KEY_PATH)
 };

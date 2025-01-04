@@ -7,8 +7,10 @@ import 'moment/locale/ru';
 moment.locale('ru');
 
 export default {
+    NODE_ENV: process.env.NODE_ENV,
+
     APP_DOMAIN: process.env.APP_DOMAIN,
-    APP_ENV: process.env.NODE_ENV,
+    APP_ENV: process.env.APP_ENV,
     APP_IP: process.env.APP_IP || '127.0.0.1',
     APP_PATH: path.normalize(process.env.APP_PATH || path.resolve(process.cwd(), 'src')),
     APP_PORT: process.env.APP_PORT || process.env.PORT || 3000,

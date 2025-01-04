@@ -28,7 +28,7 @@ block body
 
     script(src="https://static.sayes.ru/js/shared.js")
 
-    if APP_ENV === 'production'
+    if NODE_ENV === 'production'
         +yandex-metrika(YANDEX_METRIKA_ID_CLUB)
         script(src="https://js.sentry-cdn.com/b2cb9d2c881d7fc4948cece0d3dcafdb.min.js" crossorigin="anonymous")
         script.

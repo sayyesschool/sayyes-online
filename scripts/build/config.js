@@ -4,6 +4,7 @@ import { sassPlugin } from 'esbuild-sass-plugin';
 
 const {
     APP_DOMAIN,
+    APP_ENV,
     APP_URL,
     GOOGLE_ANALYTICS_ID,
     NODE_ENV,
@@ -17,7 +18,8 @@ const common = {
     entryNames: '[dir]/[ext]/[name]',
     define: {
         'process.env': JSON.stringify({}),
-        'env.APP_ENV': JSON.stringify(NODE_ENV || ''),
+        'env.NODE_ENV': JSON.stringify(NODE_ENV || ''),
+        'env.APP_ENV': JSON.stringify(APP_ENV || ''),
         'env.APP_URL': JSON.stringify(APP_URL || ''),
         'env.API_URL': JSON.stringify(`//api.${APP_DOMAIN}`),
         'env.AUTH_URL': JSON.stringify(`//auth.${APP_DOMAIN}`),
