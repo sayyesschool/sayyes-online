@@ -80,6 +80,7 @@ export const manager = {
     password: '123456',
     role: 'manager',
     domains: ['crm'],
+    permissions: ['all'],
     active: true
 };
 
@@ -606,7 +607,20 @@ export const payments = [
         operator: 'yookassa',
         description: 'Payment description',
         paidAt: moment().toDate(),
-        userId: null
+        userId: null,
+        method : {
+            id : '26166499-000f-5000-9000-18aebc48e592',
+            type : 'bank_card',
+            saved : false,
+            card : {
+                type : 'Visa',
+                last4 : '2525',
+                month : 12,
+                year : 2020,
+                country : 'RU',
+                issuer : 'Sberbank Of Russia'
+            }
+        }
     }
 ];
 
