@@ -1,12 +1,12 @@
-import Account from './account';
-import Auth from './auth';
-import Checkout from './checkout';
+import Account from './Account';
+import Auth from './Auth';
+import Checkout from './Checkout';
 import Club from './Club';
-import File from './file';
-import Mail from './mail';
-import Newsletter from './newsletter';
-import Schedule from './schedule';
-import Storage from './storage';
+import File from './File';
+import Mail from './Mail';
+import Newsletter from './Newsletter';
+import Schedule from './Schedule';
+import Storage from './Storage';
 
 export default (config, lib, models) => {
     const mail = Mail(lib.mailjet);

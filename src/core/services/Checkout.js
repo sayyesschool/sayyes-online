@@ -56,6 +56,7 @@ export default ({
                 amount: payment.amount.value,
                 date: payment.captured_at,
                 description: payment.description,
+                operator: 'yookassa',
                 paid: payment.paid,
                 test: payment.test,
                 confirmation: payment.confirmation && {
@@ -92,7 +93,6 @@ export default ({
                 $set: {
                     status: payment.status,
                     amount: payment.amount.value,
-                    date: payment.captured_at,
                     paid: payment.paid,
                     description: payment.description,
                     confirmation: payment.confirmation && {
@@ -113,7 +113,8 @@ export default ({
                             country: payment.payment_method.card.issuer_country,
                             issuer: payment.payment_method.card.issuer_name
                         }
-                    }
+                    },
+                    paidAt: payment.captured_at
                 }
             }, { new: true });
         },
