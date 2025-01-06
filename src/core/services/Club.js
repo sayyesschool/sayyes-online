@@ -151,7 +151,7 @@ export default ({
         const pack = await this.getPack($pack);
 
         const startDate = new Date();
-        const endDate = Membership.getExpiration(startDate, pack);
+        const endDate = Membership.getEndDate(startDate, pack);
 
         return Membership.create({
             limit: pack.visits,
@@ -286,10 +286,17 @@ export default ({
         }
 
         if (payment.metadata.requestId) {
-            await Request.update(payment.metadata.requestId, {
+            const request = await Request.update(payment.metadata.requestId, {
                 status: Request.Status.Completed,
                 learnerId: user.id
             });
+
+            if (request?.requestId) {
+                await Request.update(request.requestId, {
+                    status: Request.Status.Completed,
+                    learnerId: user.id
+                });
+            }
         }
     },
 
