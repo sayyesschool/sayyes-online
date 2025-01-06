@@ -1,0 +1,33 @@
+extends ./layout
+
+include /shared/mixins/modal
+include /shared/mixins/section
+
+append head
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/css/intlTelInput.css")
+    link(rel="stylesheet" href="/css/pay-islands.css")
+
+append scripts
+    script.
+        window.data = !{JSON.stringify(data)};
+    script(src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/js/intlTelInput.min.js")
+    script(src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js")
+    script(src="/js/pay-islands.js")
+
+block main
+    +section('Выберите свое обучение:')(centered)
+        div.grid.grid-3-lg
+            for format in data.formats
+                div.card.card--sm.flex-column
+                    div.card__media
+                        img.image(src=`${STATIC_URL}/images/formats/${format.id}.webp`, alt=format.title)
+                    div.card__header
+                        h2.card__title= format.title
+                        p.card__description= format.description
+                    div.card__body.mt-a
+                        button.pay-btn.btn.btn--outlined(data-format-id=format.id) Выбрать и оплатить
+
+        p.text.text--center.mt-l Если у вас возникнут какие-либо вопросы в процессе оплаты, пожалуйста, свяжитесь с вашим менеджером или напишите нам на <a class="link link--primary" href="mailto:#{CONTACT_EMAIL}">#{CONTACT_EMAIL}</a>.
+
+    +modal('Оплата обучения')#payment-modal
+        div#payment-view

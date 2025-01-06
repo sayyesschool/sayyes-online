@@ -11,6 +11,7 @@ import crm from './crm';
 import db from './db';
 import lk from './lk';
 import lms from './lms';
+import pay from './pay';
 import server from './server';
 
 const context = core(config);
@@ -35,6 +36,7 @@ server(context, options)
     .use(api(context))
     .use(auth(context))
     .use(club(context))
+    .use(pay('pay', context))
     .use(authorize, classroom(context))
     .use(authorize, cms(context))
     .use(authorize, crm(context))

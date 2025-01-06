@@ -1,0 +1,37 @@
+extends /shared/layouts/base
+
+include /shared/mixins/footer
+include /shared/mixins/header
+include /shared/mixins/modal
+
+append head
+    link(rel="stylesheet" href=`${STATIC_URL}/styles/shared.css`)
+
+    style
+        include:scss ../styles/shared.scss
+
+block body
+    block header
+        +header()(link='/' logo='sayyes-english-school_purple.svg' auth=false)
+
+    main.main
+        block main
+
+    block footer
+        +footer
+            div.flex-column.gap-xxs
+                span.text.text--small Индивидуальный предприниматель
+                span.text.text--small Письменная Ольга Владимировна
+                span.text.text--small ИНН 771413718945 · ОГРНИП 319774600529855
+
+            small.text.text--small &copy; Say Yes! #{new Date().getFullYear()}
+
+            div.flex-column.gap-xxs
+                a.link(href="/policy")
+                    span.text.text--small Политика конфиденциальности
+                a.link(href="/offer")
+                    span.text.text--small Договор-оферта
+
+    script(src=`${STATIC_URL}/scripts/shared.js`)
+    
+    block scripts
