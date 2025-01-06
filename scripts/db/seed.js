@@ -16,6 +16,7 @@ const {
         Membership,
         Payment,
         Registration,
+        Request,
         Room,
         User,
         Vocabulary,
@@ -91,12 +92,16 @@ await Meeting.create(data.meetings.map(meeting => ({
     hostId: teacher.id
 })));
 
+await Request.create(data.requests.map(request => ({
+    ...request
+})));
+
 await Payment.create(data.payments.map(payment => ({
     ...payment,
     userId: learner.id
 })));
 
-await Membership.create(data.memberships.map((membership, i) => ({
+await Membership.create(data.memberships.map(membership => ({
     ...membership,
     userId: learner.id
 })));
