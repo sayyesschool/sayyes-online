@@ -6,17 +6,15 @@ import vhost from 'vhost';
 import api from './api';
 import pages, { routes } from './pages';
 
-const MODULE_NAME = 'club';
-
-export default context => {
+export default (domain, context) => {
     const app = express();
 
     app.set('view engine', 'pug');
-    app.set('views', resolve(context.config.APP_PATH, MODULE_NAME));
+    app.set('views', resolve(context.config.APP_PATH, domain));
 
     Object.assign(app.locals, context.config, {
         CLUB_URL: `https://club.${context.config.APP_DOMAIN}`,
-        CLUB_EMAIL: `club@${context.config.APP_DOMAIN}`,
+        CLUB_EMAIL: `${domain}@${context.config.APP_DOMAIN}`,
         basedir: context.config.APP_PATH,
         titleBase: 'Разговорный клуб Say Yes'
     });
@@ -25,7 +23,7 @@ export default context => {
     app.use((req, res, next) => {
         if (routes.includes(req.url)) {
             next();
-        } else if (req.user) {
+        } else if (req.user && req.user.hasDomain(domain)) {
             res.render('app');
         } else {
             next();
@@ -33,5 +31,5 @@ export default context => {
     });
     app.use(pages(context));
 
-    return vhost(`${MODULE_NAME}.${context.config.APP_DOMAIN}`, app);
+    return vhost(`${domain}.${context.config.APP_DOMAIN}`, app);
 };

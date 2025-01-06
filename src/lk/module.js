@@ -4,24 +4,22 @@ import express from 'express';
 import vhost from 'vhost';
 
 import api from './api';
-import data from './data';
-import pages from './pages';
 
 export default (domain, context) => {
     const app = express();
 
+    app.set('trust proxy', true);
     app.set('view engine', 'pug');
     app.set('views', resolve(context.config.APP_PATH, domain));
 
-    Object.assign(app.locals, context.config, {
-        PAY_APP_URL: `https://${domain}.${context.config.APP_DOMAIN}`,
-        CONTACT_EMAIL: `info@${context.config.APP_DOMAIN}`,
-        basedir: context.config.APP_PATH,
-        titleBase: 'Оплата Say Yes'
+    app.locals.basedir = context.config.APP_PATH;
+
+    app.on('mount', parent => {
+        Object.assign(app.locals, parent.locals);
     });
 
     app.use('/api', api(context));
-    app.use(pages(context, data));
+    app.use((req, res) => res.render('app'));
 
     return vhost(`${domain}.${context.config.APP_DOMAIN}`, app);
 };

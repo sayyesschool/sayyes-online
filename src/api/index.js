@@ -9,7 +9,7 @@ import twilio from './twilio';
 import yookassa from './yookassa';
 import zoom from './zoom';
 
-export default context => {
+export default (domain, context) => {
     const api = express();
 
     api.use('/recaptcha', recaptcha(context));
@@ -26,5 +26,5 @@ export default context => {
         res.status(500).send({ error: error.message || error });
     });
 
-    return vhost(`api.${context.config.APP_DOMAIN}`, api);
+    return vhost(`${domain}.${context.config.APP_DOMAIN}`, api);
 };
