@@ -1,4 +1,4 @@
-import Island from '../Island';
+import { Island } from 'shared/islands';
 
 import Payment from './Payment';
 

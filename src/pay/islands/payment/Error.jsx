@@ -1,7 +1,7 @@
 export default function Error({ error }) {
     const subject = encodeURIComponent('Ошибка на сайте');
     const body = encodeURIComponent(error?.message ?? '');
-    const href = `mailto:club@sayyes.school?subject=${subject}&body=${body}`;
+    const href = `mailto:info@sayyes.school?subject=${subject}&body=${body}`;
 
     return (
         <div className="error-state">
