@@ -1,4 +1,4 @@
-import { Button, Item } from '../shared';
+import { Button, Item } from 'shared/custom-components';
 
 export default function MeetingComponent({ meeting, onRegister }) {
     return (

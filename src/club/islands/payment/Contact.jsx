@@ -1,6 +1,6 @@
 import { useState } from 'preact/hooks';
 
-import { Button, Checkbox, Input } from '../shared';
+import { Button, Checkbox, Input } from 'shared/custom-components';
 
 export default function Contact({ contact, onChange, onNext }){
     const [consent, setConsent] = useState(false);

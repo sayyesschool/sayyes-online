@@ -1,6 +1,6 @@
 import { useState } from 'preact/hooks';
 
-import { Tab, Tabs } from '../shared';
+import { Tab, Tabs } from 'shared/custom-components';
 
 import Checkout from './Checkout';
 import Contact from './Contact';

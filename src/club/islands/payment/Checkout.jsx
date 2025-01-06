@@ -6,7 +6,7 @@ export default function Checkout({ contact, pack, meetingId, onComplete, onError
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
 
-        fetch('/api/memberships', {
+        fetch('/api/payments/create', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'
