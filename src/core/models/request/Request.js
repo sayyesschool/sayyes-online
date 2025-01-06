@@ -45,6 +45,7 @@ export const Request = new Schema({
     note: { type: String, trim: true, default: '' },
     learnerId: { type: Schema.Types.ObjectId },
     managerId: { type: Schema.Types.ObjectId },
+    requestId: { type: Schema.Types.ObjectId },
     createdAt: { type: Date },
     updatedAt: { type: Date }
 }, {
