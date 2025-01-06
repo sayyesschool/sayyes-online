@@ -1,17 +1,35 @@
+$static-url: 'https://storage.yandexcloud.net/sayyes-static';
+
 /* Font */
 
-$font-family: 'Nunito', 'Helvetica', 'Arial', sans-serif !default;
+$font-family: 'Raleway', 'Helvetica', 'Arial', sans-serif !default;
 $font-size: 16px;
 $font-weight: 400;
 $line-height: 24px;
 
 /* Colors */
 
-$primary-color: #5a1294 !default;
-$secondary-color: #e71985 !default;
+$black: #262626;
+$white: #fffcff;
+$grey: #e5e3e2;
+$yellow: #ffd754;
+$purple: #7831b2;
+$dark-purple: #5e288a;
+$violet: #a68ad5;
+$pink: #e71985;
+$pale-pink: #f8dcd6;
+$pale-white: #f8f0ee;
+$linen: #f9e2de;
+$almond-crayola: #f6e7e5;
+$pearl-white: #f9f4f2;
+$red: #e71919;
 
-$body-color: #f1f3f4 !default;
+$primary-color: $dark-purple !default;
+$secondary-color: $yellow !default;
+
+$body-color: $pearl-white !default;
 $background-color: #ffffff !default;
+$font-color: $black;
 $surface-color: #ffffff !default;
 $error-color: #d32f2f !default;
 
