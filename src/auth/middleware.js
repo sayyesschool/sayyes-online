@@ -19,6 +19,12 @@ export default ({
             : res.redirect(`//auth.${APP_DOMAIN}`);
     },
 
+    authorizeDomain: domain => (req, res, next) => {
+        req.user?.hasDomain(domain)
+            ? next()
+            : res.redirect(`//auth.${APP_DOMAIN}`);
+    },
+
     authorizeRoles: allowedRoles => (req, res, next) => {
         req.user?.is(allowedRoles)
             ? next()
