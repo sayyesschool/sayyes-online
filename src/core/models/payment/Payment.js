@@ -60,6 +60,10 @@ Payment.virtual('url').get(function() {
     return `/payments/${this.id}`;
 });
 
+Payment.virtual('date').get(function() {
+    return this.paidAt || this.createdAt;
+});
+
 Payment.virtual('dateLabel')
     .get(function() {
         return moment(this.createdAt).format('DD.MM.YYYY');
