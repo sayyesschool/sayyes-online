@@ -28,6 +28,7 @@ export default ({
         }
 
         const level = getLevel(questions);
+        const results = getResults(questions);
 
         const request = await Request.create({
             description: 'Прохождение теста на сайте',
@@ -50,7 +51,7 @@ export default ({
             templateId: 6575919,
             variables: {
                 level,
-                questions
+                questions: results
             }
         });
 
@@ -66,57 +67,68 @@ export default ({
 };
 
 function getLevel(questions) {
-    const { correct, incorrect } = questions.reduce((results, question) => {
-        if (question.answer === question.answer) {
-            results.correct.push(question);
-        } else {
-            results.incorrect.push(question);
+    const answeredCorrectly = questions.reduce((acc, question) => {
+        const correctAnswer = question.options.find(answer => answer.correct)?.content;
+
+        if (question.answer === correctAnswer) {
+            acc.push(question);
         }
 
-        return results;
-    }, {
-        correct: [],
-        incorrect: []
-    });
+        return acc;
+    }, []);
 
-    const correctAnswers = correct.length;
+    const maxScore = questions.reduce((acc, question) => acc + question.level, 0);
+    const rawScore = answeredCorrectly.reduce((acc, question) => acc + question.level, 0);
+    const levelByScore = Math.round((rawScore / maxScore) * 6);
 
-    if (correctAnswers < 5) {
-        return 'Beginner';
-    } else if (correctAnswers < 10) {
-        return 'Elementary';
-    } else if (correctAnswers < 15) {
-        return 'Pre-Intermediate';
-    } else if (correctAnswers < 20) {
-        return 'Intermediate';
-    } else {
-        return 'Upper-Intermediate';
+    const answersByLevel = answeredCorrectly.reduce((acc, question) => {
+        if (!acc[question.level]) {
+            acc[question.level] = 0;
+        }
+
+        acc[question.level] += 1;
+
+        return acc;
+    }, {});
+
+    const levelByAnswers = Object.entries(answersByLevel).reduce((acc, [level, count]) => {
+        if (count >= 4 && level - acc === 1) {
+            return Number(level);
+        } else {
+            return acc;
+        }
+    }, 0);
+
+    const finalLevel = Math.min(levelByAnswers, levelByScore);
+
+    switch (finalLevel) {
+        case 0:
+            // fallthrough
+        case 1:
+            return 'Beginner';
+        case 2:
+            return 'Elementary';
+        case 3:
+            return 'Pre-Intermediate';
+        case 4:
+            return 'Intermediate';
+        case 5:
+            return 'Upper-Intermediate';
+        case 6:
+            return 'Advanced';
     }
 }
 
-function getHtml({ name, email, questions, level }) {
-    const output = `
-        <html>
-            <body style="font-family: sans-serif">
-                <h1>Результаты теста</h1>
-                <div>
-                    <b>Имя:</b> ${name}
-                </div>
-                <div>
-                    <b>Email:</b> ${email}
-                </div>
+function getResults(questions) {
+    return questions.map(question => {
+        const correctAnswer = question.answers.find(answer => answer.correct)?.content;
+        const isCorrect = question.answer === correctAnswer;
 
-                <h2>Ответы</h2>
-
-                ${questions.map((question, index) => `
-                    <div>
-                        <b>${index + 1}</b>
-                        <div>${question.content}</div>
-                    </div>
-                `).join('')}
-            </body>
-        </html>
-    `;
-
-    return output;
+        return {
+            ...question,
+            correctAnswer,
+            isCorrect,
+            color: isCorrect ? 'green' : 'red'
+        };
+    });
 }

@@ -125,264 +125,398 @@ export const TEST_RESULTS = {
     },
     questions: [
         {
-            id: 1,
-            content: '<p>- Are you on vacation?</p><p>- <span class="blank"></span></p>',
-            options: [
-                { content: 'Yes, I be.', correct: false },
-                { content: 'Yes, I do.', correct: false },
-                { content: 'Yes, I is.', correct: false },
-                { content: 'Yes I am.', correct: true }
+            'id': 1,
+            'content': '<p>I <span class="blank"></span> to school every day.</p>',
+            'options': [
+                { 'content': 'go', 'correct': true },
+                { 'content': 'goes', 'correct': false },
+                { 'content': 'going', 'correct': false },
+                { 'content': 'gone', 'correct': false }
             ],
-            answer: 'Yes I am.',
-            topic: 'To be',
-            level: 1
+            'answer': 'goes',
+            'topic': 'Present Simple',
+            'level': 1
         },
         {
-            id: 2,
-            content: '<p>I <span class="blank"></span> up early every morning.</p>',
-            options: [
-                { content: 'get', correct: true },
-                { content: 'gets', correct: false },
-                { content: 'am getting', correct: false },
-                { content: 'get', correct: false }
+            'id': 2,
+            'content': '<p>She <span class="blank"></span> a book right now.</p>',
+            'options': [
+                { 'content': 'is reading', 'correct': true },
+                { 'content': 'reads', 'correct': false },
+                { 'content': 'read', 'correct': false },
+                { 'content': 'reading', 'correct': false }
             ],
-            answer: 'gets',
-            topic: 'Present Simple',
-            level: 1
+            'answer': 'is reading',
+            'topic': 'Present Continuous',
+            'level': 1
         },
         {
-            id: 3,
-            content: '<p>What time <span class="blank"></span> go to work?</p>',
-            options: [
-                { content: 'do they', correct: false },
-                { content: 'do she', correct: false },
-                { content: 'is he', correct: false },
-                { content: 'does he', correct: true }
+            'id': 3,
+            'content': '<p>They <span class="blank"></span> home at 7 PM every evening.</p>',
+            'options': [
+                { 'content': 'arrive', 'correct': true },
+                { 'content': 'arrives', 'correct': false },
+                { 'content': 'arriving', 'correct': false },
+                { 'content': 'arrived', 'correct': false }
             ],
-            answer: 'does he',
-            topic: 'Present Simple',
-            level: 1
+            'answer': 'arrive',
+            'topic': 'Present Simple',
+            'level': 1
         },
         {
-            id: 4,
-            content: '<p><span class="blank"></span> a park near my house.</p>',
-            options: [
-                { content: 'It is', correct: false },
-                { content: 'There is', correct: true },
-                { content: 'They are', correct: false },
-                { content: 'There are', correct: false }
+            'id': 4,
+            'content': '<p>He <span class="blank"></span> TV when I called him.</p>',
+            'options': [
+                { 'content': 'was watching', 'correct': true },
+                { 'content': 'watched', 'correct': false },
+                { 'content': 'watching', 'correct': false },
+                { 'content': 'watches', 'correct': false }
             ],
-            answer: 'There is',
-            topic: 'There is/are',
-            level: 1
+            'answer': 'was watching',
+            'topic': 'Past Continuous',
+            'level': 1
         },
         {
-            id: 5,
-            content: '<p>Did you have a favorite toy when you <span class="blank"></span> a kid?</p>',
-            options: [
-                { content: 'was', correct: false },
-                { content: 'are', correct: false },
-                { content: 'be', correct: false },
-                { content: 'were', correct: true }
+            'id': 5,
+            'content': '<p>We <span class="blank"></span> any homework yesterday.</p>',
+            'options': [
+                { 'content': 'didn’t have', 'correct': true },
+                { 'content': 'don’t have', 'correct': false },
+                { 'content': 'haven’t had', 'correct': false },
+                { 'content': 'doesn\'t have', 'correct': false }
             ],
-            answer: 'were',
-            topic: 'To be',
-            level: 1
+            'answer': 'didn’t have',
+            'topic': 'Past Simple',
+            'level': 1
+        },
+
+        {
+            'id': 6,
+            'content': '<p>I <span class="blank"></span> to the party if I finish my work.</p>',
+            'options': [
+                { 'content': 'will go', 'correct': true },
+                { 'content': 'go', 'correct': false },
+                { 'content': 'going', 'correct': false },
+                { 'content': 'went', 'correct': false }
+            ],
+            'answer': 'will go',
+            'topic': 'Future Simple',
+            'level': 2
         },
         {
-            id: 6,
-            content: '<p>- What\'s the weather forecast for tomorrow?<br>- It <span class="blank"></span> tomorrow again.</p>',
-            options: [
-                { content: 'rains', correct: false },
-                { content: 'is raining', correct: false },
-                { content: 'is going to rain', correct: true },
-                { content: 'rained', correct: false }
+            'id': 7,
+            'content': '<p>He <span class="blank"></span> playing football when I saw him.</p>',
+            'options': [
+                { 'content': 'was', 'correct': true },
+                { 'content': 'is', 'correct': false },
+                { 'content': 'were', 'correct': false },
+                { 'content': 'am', 'correct': false }
             ],
-            answer: 'is raining',
-            topic: 'To be going to',
-            level: 2
+            'answer': 'was',
+            'topic': 'Past Continuous',
+            'level': 2
         },
         {
-            id: 7,
-            content: '<p>- What <span class="blank"></span> when you broke your arm?<br>- I was climbing a tree.</p>',
-            options: [
-                { content: 'are you doing', correct: false },
-                { content: 'did you do', correct: false },
-                { content: 'were you doing', correct: true },
-                { content: 'do you do', correct: false }
+            'id': 8,
+            'content': '<p>She <span class="blank"></span> in the park every morning.</p>',
+            'options': [
+                { 'content': 'runs', 'correct': true },
+                { 'content': 'run', 'correct': false },
+                { 'content': 'running', 'correct': false },
+                { 'content': 'runned', 'correct': false }
             ],
-            answer: 'were you doing',
-            topic: 'Past Continuous',
-            level: 2
+            'answer': 'runs',
+            'topic': 'Present Simple',
+            'level': 2
         },
         {
-            id: 8,
-            content: '<p>I <span class="blank"></span> be at the hotel after 8p.m.</p>',
-            options: [
-                { content: 'maybe', correct: false },
-                { content: 'will be', correct: false },
-                { content: 'might', correct: true },
-                { content: 'might to', correct: false }
+            'id': 9,
+            'content': '<p>We <span class="blank"></span> at the cinema at 8 PM tomorrow.</p>',
+            'options': [
+                { 'content': 'are meeting', 'correct': true },
+                { 'content': 'meet', 'correct': false },
+                { 'content': 'will meet', 'correct': false },
+                { 'content': 'met', 'correct': false }
             ],
-            answer: 'might to',
-            topic: 'Might',
-            level: 2
+            'answer': 'are meeting',
+            'topic': 'Future Continuous',
+            'level': 2
         },
         {
-            id: 9,
-            content: '<p>If Rebecca <span class="blank"></span> go to college, her parents will be disappointed.</p>',
-            options: [
-                { content: 'won\'t', correct: false },
-                { content: 'don\'t', correct: false },
-                { content: 'doesn\'t', correct: true },
-                { content: 'will', correct: false }
+            'id': 10,
+            'content': '<p>If it rains, we <span class="blank"></span> stay inside.</p>',
+            'options': [
+                { 'content': 'will', 'correct': true },
+                { 'content': 'would', 'correct': false },
+                { 'content': 'are', 'correct': false },
+                { 'content': 'were', 'correct': false }
             ],
-            answer: 'won\'t',
-            topic: 'Conditional sentences',
-            level: 2
+            'answer': 'will',
+            'topic': 'First Conditional',
+            'level': 2
+        },
+
+        {
+            'id': 11,
+            'content': '<p>By the time we arrived, she <span class="blank"></span> home.</p>',
+            'options': [
+                { 'content': 'had left', 'correct': true },
+                { 'content': 'has left', 'correct': false },
+                { 'content': 'left', 'correct': false },
+                { 'content': 'was leaving', 'correct': false }
+            ],
+            'answer': 'had left',
+            'topic': 'Past Perfect',
+            'level': 3
         },
         {
-            id: 10,
-            content: '<p>- I\'m not a good tennis player.<br>- <span class="blank"></span></p>',
-            options: [
-                { content: 'I\'m not too.', correct: false },
-                { content: 'I\'m not either.', correct: true },
-                { content: 'I don\'t too.', correct: false },
-                { content: 'I don\'t neither.', correct: false }
+            'id': 12,
+            'content': '<p>We <span class="blank"></span> here for 10 years.</p>',
+            'options': [
+                { 'content': 'have lived', 'correct': true },
+                { 'content': 'live', 'correct': false },
+                { 'content': 'living', 'correct': false },
+                { 'content': 'been living', 'correct': false }
             ],
-            answer: 'I\'m not either.',
-            topic: 'Too/Either',
-            level: 2
+            'answer': 'have lived',
+            'topic': 'Present Perfect',
+            'level': 3
         },
         {
-            id: 11,
-            content: '<p>I <span class="blank"></span> over to my sister\'s house a lot.</p>',
-            options: [
-                { content: 'was used to go', correct: false },
-                { content: 'used to go', correct: true },
-                { content: 'would to go', correct: false },
-                { content: 'used to going', correct: false }
+            'id': 13,
+            'content': '<p>She <span class="blank"></span> the answer, but she didn’t tell me.</p>',
+            'options': [
+                { 'content': 'knew', 'correct': true },
+                { 'content': 'know', 'correct': false },
+                { 'content': 'knows', 'correct': false },
+                { 'content': 'knowing', 'correct': false }
             ],
-            answer: 'would to go',
-            topic: 'Used to',
-            level: 3
+            'answer': 'knew',
+            'topic': 'Past Simple',
+            'level': 3
         },
         {
-            id: 12,
-            content: '<p>When I was a kid, my parents always made me <span class="blank"></span> my homework.</p>',
-            options: [
-                { content: 'to do', correct: false },
-                { content: 'doing', correct: false },
-                { content: 'do', correct: true },
-                { content: 'did', correct: false }
+            'id': 14,
+            'content': '<p>We <span class="blank"></span> the movie by the time you arrived.</p>',
+            'options': [
+                { 'content': 'had watched', 'correct': true },
+                { 'content': 'watched', 'correct': false },
+                { 'content': 'watch', 'correct': false },
+                { 'content': 'have watched', 'correct': false }
             ],
-            answer: 'doing',
-            topic: 'Infinitives',
-            level: 3
+            'answer': 'had watched',
+            'topic': 'Past Perfect',
+            'level': 3
         },
         {
-            id: 13,
-            content: '<p>I wish I <span class="blank"></span> something more exciting with my life.</p>',
-            options: [
-                { content: 'do', correct: false },
-                { content: 'can do', correct: false },
-                { content: 'will do', correct: false },
-                { content: 'could do', correct: true }
+            'id': 15,
+            'content': '<p>If I <span class="blank"></span> more time, I would travel the world.</p>',
+            'options': [
+                { 'content': 'had', 'correct': true },
+                { 'content': 'have', 'correct': false },
+                { 'content': 'will have', 'correct': false },
+                { 'content': 'would have', 'correct': false }
             ],
-            answer: 'could do',
-            topic: 'I wish',
-            level: 3
+            'answer': 'had',
+            'topic': 'Third Conditional',
+            'level': 3
+        },
+
+        {
+            'id': 16,
+            'content': '<p>It’s essential that he <span class="blank"></span> the report by tomorrow.</p>',
+            'options': [
+                { 'content': 'finish', 'correct': true },
+                { 'content': 'finishes', 'correct': false },
+                { 'content': 'finished', 'correct': false },
+                { 'content': 'will finish', 'correct': false }
+            ],
+            'answer': 'finish',
+            'topic': 'Subjunctive',
+            'level': 4
         },
         {
-            id: 14,
-            content: '<p>Anna <span class="blank"></span> an art class since September, and she loves it.</p>',
-            options: [
-                { content: 'is taking', correct: false },
-                { content: 'has taken', correct: false },
-                { content: 'took', correct: false },
-                { content: 'has been taking', correct: true }
+            'id': 17,
+            'content': '<p>By this time next week, we <span class="blank"></span> flying to Paris.</p>',
+            'options': [
+                { 'content': 'will be', 'correct': true },
+                { 'content': 'are', 'correct': false },
+                { 'content': 'will have been', 'correct': false },
+                { 'content': 'have been', 'correct': false }
             ],
-            answer: 'took',
-            topic: 'Present Perfect Continuous',
-            level: 3
+            'answer': 'will be',
+            'topic': 'Future Perfect Continuous',
+            'level': 4
         },
         {
-            id: 15,
-            content: '<p>Several flights <span class="blank"></span> earlier today because of severe thunderstorms.</p>',
-            options: [
-                { content: 'was delayed', correct: false },
-                { content: 'delayed', correct: false },
-                { content: 'were delayed', correct: true },
-                { content: 'be delayed', correct: false }
+            'id': 18,
+            'content': '<p>He <span class="blank"></span> me for hours when I finally agreed to help him.</p>',
+            'options': [
+                { 'content': 'had been bothering', 'correct': true },
+                { 'content': 'was bothering', 'correct': false },
+                { 'content': 'bothered', 'correct': false },
+                { 'content': 'is bothering', 'correct': false }
             ],
-            answer: 'was delayed',
-            topic: 'Passive Voice',
-            level: 3
+            'answer': 'had been bothering',
+            'topic': 'Past Perfect Continuous',
+            'level': 4
         },
         {
-            id: 16,
-            content: '<p>We <span class="blank"></span> to a soccer game last night, but the weather was awful, so we stayed home.</p>',
-            options: [
-                { content: 'are supposed to go', correct: false },
-                { content: 'are going to go', correct: false },
-                { content: 'went', correct: false },
-                { content: 'were supposed to go', correct: true }
+            'id': 19,
+            'content': '<p>Neither she <span class="blank"></span> he wanted to go.</p>',
+            'options': [
+                { 'content': 'nor', 'correct': true },
+                { 'content': 'or', 'correct': false },
+                { 'content': 'and', 'correct': false },
+                { 'content': 'but', 'correct': false }
             ],
-            answer: 'were supposed to go',
-            topic: 'Be supposed to',
-            level: 4
+            'answer': 'nor',
+            'topic': 'Conjunctions',
+            'level': 4
         },
         {
-            id: 17,
-            content: '<p>Last week I ran into an old friend of mine whom I <span class="blank"></span> in a long time.</p>',
-            options: [
-                { content: 'haven\'t seen', correct: false },
-                { content: 'didn\'t see', correct: false },
-                { content: 'wasn\'t seeing', correct: false },
-                { content: 'hadn\'t seen', correct: true }
+            'id': 20,
+            'content': '<p>If he <span class="blank"></span> earlier, he would have caught the train.</p>',
+            'options': [
+                { 'content': 'had left', 'correct': true },
+                { 'content': 'left', 'correct': false },
+                { 'content': 'leaves', 'correct': false },
+                { 'content': 'was leaving', 'correct': false }
             ],
-            answer: 'didn\'t see',
-            topic: 'Past Perfect',
-            level: 4
+            'answer': 'had left',
+            'topic': 'Third Conditional',
+            'level': 4
+        },
+
+        {
+            'id': 21,
+            'content': '<p>She <span class="blank"></span> able to speak three languages fluently.</p>',
+            'options': [
+                { 'content': 'is', 'correct': true },
+                { 'content': 'has', 'correct': false },
+                { 'content': 'can', 'correct': false },
+                { 'content': 'could', 'correct': false }
+            ],
+            'answer': 'is',
+            'topic': 'Modals of Ability',
+            'level': 5
         },
         {
-            id: 18,
-            content: '<p>We\'d love to get our neighbors <span class="blank"></span> their yard. It\'s really a mess!</p>',
-            options: [
-                { content: 'cleaned up', correct: false },
-                { content: 'will clean up', correct: false },
-                { content: 'to clean up', correct: true },
-                { content: 'clean up', correct: false }
+            'id': 22,
+            'content': '<p>It <span class="blank"></span> be raining outside. I hear thunder.</p>',
+            'options': [
+                { 'content': 'must', 'correct': true },
+                { 'content': 'could', 'correct': false },
+                { 'content': 'might', 'correct': false },
+                { 'content': 'should', 'correct': false }
             ],
-            answer: 'clean up',
-            topic: 'Infinitive',
-            level: 4
+            'answer': 'must',
+            'topic': 'Modals of Deduction',
+            'level': 5
         },
         {
-            id: 19,
-            content: '<p>If Dennis had been in the right place at the right time, his career <span class="blank"></span>.</p>',
-            options: [
-                { content: 'would take off', correct: false },
-                { content: 'is taking off', correct: false },
-                { content: 'has taken off', correct: false },
-                { content: 'would have taken off', correct: true }
+            'id': 23,
+            'content': '<p>He <span class="blank"></span> finished the report by tomorrow.</p>',
+            'options': [
+                { 'content': 'should have', 'correct': true },
+                { 'content': 'must have', 'correct': false },
+                { 'content': 'could have', 'correct': false },
+                { 'content': 'might have', 'correct': false }
             ],
-            answer: 'has taken off',
-            topic: 'Conditional Sentences',
-            level: 4
+            'answer': 'should have',
+            'topic': 'Modals of Past Deduction',
+            'level': 5
         },
         {
-            id: 20,
-            content: '<p>She asked me <span class="blank"></span>.</p>',
-            options: [
-                { content: 'whether I could stick to a monthly budget', correct: true },
-                { content: 'what is my main source of income', correct: false },
-                { content: 'if had I some loans', correct: false },
-                { content: 'how did I usually pay of things', correct: false }
+            'id': 24,
+            'content': '<p>The book was so interesting that I <span class="blank"></span> put it down.</p>',
+            'options': [
+                { 'content': 'couldn’t', 'correct': true },
+                { 'content': 'didn’t', 'correct': false },
+                { 'content': 'wasn’t', 'correct': false },
+                { 'content': 'wouldn’t', 'correct': false }
             ],
-            answer: 'if had I some loans',
-            topic: 'Reported Questions',
-            level: 4
+            'answer': 'couldn’t',
+            'topic': 'Past Modals',
+            'level': 5
+        },
+        {
+            'id': 25,
+            'content': '<p>She <span class="blank"></span> told me the truth all along.</p>',
+            'options': [
+                { 'content': 'must have', 'correct': true },
+                { 'content': 'might have', 'correct': false },
+                { 'content': 'should have', 'correct': false },
+                { 'content': 'could have', 'correct': false }
+            ],
+            'answer': 'must have',
+            'topic': 'Modals of Deduction',
+            'level': 5
+        },
+        {
+            'id': 26,
+            'content': '<p>Considering the team\'s current progress, it is <span class="blank"></span> that they will finish the project on time.</p>',
+            'options': [
+                { 'content': 'unlikely', 'correct': true },
+                { 'content': 'likely', 'correct': false },
+                { 'content': 'certain', 'correct': false },
+                { 'content': 'possible', 'correct': false }
+            ],
+            'answer': 'unlikely',
+            'topic': 'Adjectives',
+            'level': 6
+        },
+        {
+            'id': 27,
+            'content': '<p>She is a <span class="blank"></span> writer, known for her captivating stories.</p>',
+            'options': [
+                { 'content': 'talented', 'correct': true },
+                { 'content': 'relentless', 'correct': false },
+                { 'content': 'clumsy', 'correct': false },
+                { 'content': 'unskilled', 'correct': false }
+            ],
+            'answer': 'talented',
+            'topic': 'Adjectives',
+            'level': 6
+        },
+        {
+            'id': 28,
+            'content': '<p>He spoke <span class="blank"></span> during the meeting, making everyone understand the issue clearly.</p>',
+            'options': [
+                { 'content': 'eloquently', 'correct': true },
+                { 'content': 'awkwardly', 'correct': false },
+                { 'content': 'rudely', 'correct': false },
+                { 'content': 'mumbling', 'correct': false }
+            ],
+            'answer': 'eloquently',
+            'topic': 'Adverbs',
+            'level': 6
+        },
+        {
+            'id': 29,
+            'content': '<p>The decision was <span class="blank"></span> upon after a long debate, and all members agreed on it.</p>',
+            'options': [
+                { 'content': 'reached', 'correct': true },
+                { 'content': 'ignored', 'correct': false },
+                { 'content': 'avoided', 'correct': false },
+                { 'content': 'postponed', 'correct': false }
+            ],
+            'answer': 'reached',
+            'topic': 'Phrasal Verbs',
+            'level': 6
+        },
+        {
+            'id': 30,
+            'content': '<p>He is a <span class="blank"></span> speaker who knows how to persuade his audience with compelling arguments.</p>',
+            'options': [
+                { 'content': 'persuasive', 'correct': true },
+                { 'content': 'boring', 'correct': false },
+                { 'content': 'uninspiring', 'correct': false },
+                { 'content': 'intimidating', 'correct': false }
+            ],
+            'answer': 'persuasive',
+            'topic': 'Adjectives',
+            'level': 6
         }
     ]
 };
