@@ -1,10 +1,19 @@
 import { Router } from 'express';
 
 export default ({
-    models: { Request },
+    models: { Data, Request },
     services: { Mail }
 }) => {
     const router = Router();
+
+    router.get('/', async (req, res) => {
+        const data = await Data.get('test');
+
+        res.json({
+            ok: true,
+            data
+        });
+    });
 
     router.post('/', async (req, res) => {
         const {
