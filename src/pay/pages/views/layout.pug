@@ -4,6 +4,9 @@ include /shared/mixins/footer
 include /shared/mixins/header
 include /shared/mixins/modal
 
+append meta
+    meta(name="robots" content="noindex, nofollow")
+
 append head
     link(rel="stylesheet" href=`${STATIC_URL}/styles/shared.css`)
 
