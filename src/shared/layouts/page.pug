@@ -1,7 +1,7 @@
 extends base
 
 append head
-    link(rel="stylesheet" href="https://static.sayes.ru/css/shared.css")
+    link(rel="stylesheet" href=`${STATIC_URL}/styles/shared.css`)
 
 block body
     include ../includes/header
@@ -11,3 +11,5 @@ block body
     block main
 
     include ../includes/footer
+
+    script(src=`${STATIC_URL}/scripts/shared.js`)
