@@ -37,10 +37,10 @@ export default ({
             return res.status(400).json({ error: 'Не переданы ответы' });
         }
 
-        const questions = await Data.get('test');
+        const test = await Data.get('test');
 
-        const level = getLevel(questions, answers);
-        const results = getResults(questions, answers);
+        const level = getLevel(test.questions, answers);
+        const results = getResults(test.questions, answers);
 
         const request = await Request.create({
             description: 'Прохождение теста на сайте',
