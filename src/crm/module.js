@@ -13,6 +13,7 @@ export default (domain, context) => {
     app.set('views', resolve(context.config.APP_PATH, domain));
 
     app.locals.basedir = context.config.APP_PATH;
+    app.locals.titleBase = 'CRM';
 
     app.on('mount', parent => {
         Object.assign(app.locals, parent.locals);
