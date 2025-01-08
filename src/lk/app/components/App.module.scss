@@ -2,7 +2,9 @@ body {
     background-color: #f1f3f4;
 }
 
-.App {
+.root {
+    --AppHeader-height: 64px;
+
     .AppContent {
         margin: 0;
     }

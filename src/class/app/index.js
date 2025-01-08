@@ -7,7 +7,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { theme, ThemeProvider } from 'shared/theme';
 
 import { AppStateProvider } from './contexts/AppStateContext';
-
 import Root from './components';
 import store from './store';
 

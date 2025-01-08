@@ -3,13 +3,12 @@ import { Route, Switch } from 'react-router-dom';
 
 import AppContent from 'shared/components/app-content';
 import AppHeader from 'shared/components/app-header';
-import AppNotification from 'shared/components/app-notification';
+import AppShell from 'shared/components/app-shell';
 import LoadingIndicator from 'shared/components/loading-indicator';
 
-import UI from 'cms/contexts/ui';
 import { useActions, useStore } from 'cms/store';
 
-import './App.scss';
+import styles from './App.module.scss';
 
 export default function App({ routes }) {
     const [user, userActions] = useStore('user');
@@ -22,29 +21,24 @@ export default function App({ routes }) {
         materialActions.getMaterials();
     }, []);
 
-
     if (!user) return <LoadingIndicator fluid />;
 
     return (
-        <div className="App">
-            <UI.Provider value={{}}>
-                <AppHeader
-                    user={user}
-                />
+        <AppShell className={styles.root}>
+            <AppHeader
+                user={user}
+            />
 
-                <AppContent>
-                    <Switch>
-                        {routes.map(route =>
-                            <Route
-                                key={route.path}
-                                {...route}
-                            />
-                        )}
-                    </Switch>
-                </AppContent>
-
-                <AppNotification />
-            </UI.Provider>
-        </div>
+            <AppContent>
+                <Switch>
+                    {routes.map(route =>
+                        <Route
+                            key={route.path}
+                            {...route}
+                        />
+                    )}
+                </Switch>
+            </AppContent>
+        </AppShell>
     );
 }
