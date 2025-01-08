@@ -1,5 +1,7 @@
 import { Router } from 'express';
 
+const TEMPLATE_ID = 6620499;
+
 export default ({
     config: { APP_DOMAIN },
     models: { Data, Request },
@@ -61,7 +63,7 @@ export default ({
         await Mail.send({
             to: email,
             subject: 'Результаты теста',
-            templateId: 6575919,
+            templateId: TEMPLATE_ID,
             variables: {
                 level,
                 results,
