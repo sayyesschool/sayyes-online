@@ -113,16 +113,7 @@ export const PAID_PAYMENT = {
     isStuck: false
 };
 
-export const TEST_RESULTS = {
-    name: 'Test',
-    email: 'olegpolyakov@outlook.com',
-    utm: {
-        source: 'newsletter',
-        medium: 'email',
-        campaign: 'summer_sale',
-        term: 'shoes',
-        content: 'button'
-    },
+export const TEST = {
     questions: [
         {
             'id': 1,
@@ -133,7 +124,6 @@ export const TEST_RESULTS = {
                 { 'content': 'going', 'correct': false },
                 { 'content': 'gone', 'correct': false }
             ],
-            'answer': 'goes',
             'topic': 'Present Simple',
             'level': 1
         },
@@ -146,7 +136,6 @@ export const TEST_RESULTS = {
                 { 'content': 'read', 'correct': false },
                 { 'content': 'reading', 'correct': false }
             ],
-            'answer': 'is reading',
             'topic': 'Present Continuous',
             'level': 1
         },
@@ -159,7 +148,6 @@ export const TEST_RESULTS = {
                 { 'content': 'arriving', 'correct': false },
                 { 'content': 'arrived', 'correct': false }
             ],
-            'answer': 'arrive',
             'topic': 'Present Simple',
             'level': 1
         },
@@ -172,7 +160,6 @@ export const TEST_RESULTS = {
                 { 'content': 'watching', 'correct': false },
                 { 'content': 'watches', 'correct': false }
             ],
-            'answer': 'was watching',
             'topic': 'Past Continuous',
             'level': 1
         },
@@ -185,7 +172,6 @@ export const TEST_RESULTS = {
                 { 'content': 'haven’t had', 'correct': false },
                 { 'content': 'doesn\'t have', 'correct': false }
             ],
-            'answer': 'didn’t have',
             'topic': 'Past Simple',
             'level': 1
         },
@@ -199,7 +185,6 @@ export const TEST_RESULTS = {
                 { 'content': 'going', 'correct': false },
                 { 'content': 'went', 'correct': false }
             ],
-            'answer': 'will go',
             'topic': 'Future Simple',
             'level': 2
         },
@@ -212,7 +197,6 @@ export const TEST_RESULTS = {
                 { 'content': 'were', 'correct': false },
                 { 'content': 'am', 'correct': false }
             ],
-            'answer': 'was',
             'topic': 'Past Continuous',
             'level': 2
         },
@@ -225,7 +209,6 @@ export const TEST_RESULTS = {
                 { 'content': 'running', 'correct': false },
                 { 'content': 'runned', 'correct': false }
             ],
-            'answer': 'runs',
             'topic': 'Present Simple',
             'level': 2
         },
@@ -238,7 +221,6 @@ export const TEST_RESULTS = {
                 { 'content': 'will meet', 'correct': false },
                 { 'content': 'met', 'correct': false }
             ],
-            'answer': 'are meeting',
             'topic': 'Future Continuous',
             'level': 2
         },
@@ -251,7 +233,6 @@ export const TEST_RESULTS = {
                 { 'content': 'are', 'correct': false },
                 { 'content': 'were', 'correct': false }
             ],
-            'answer': 'will',
             'topic': 'First Conditional',
             'level': 2
         },
@@ -265,7 +246,6 @@ export const TEST_RESULTS = {
                 { 'content': 'left', 'correct': false },
                 { 'content': 'was leaving', 'correct': false }
             ],
-            'answer': 'had left',
             'topic': 'Past Perfect',
             'level': 3
         },
@@ -278,7 +258,6 @@ export const TEST_RESULTS = {
                 { 'content': 'living', 'correct': false },
                 { 'content': 'been living', 'correct': false }
             ],
-            'answer': 'have lived',
             'topic': 'Present Perfect',
             'level': 3
         },
@@ -291,7 +270,6 @@ export const TEST_RESULTS = {
                 { 'content': 'knows', 'correct': false },
                 { 'content': 'knowing', 'correct': false }
             ],
-            'answer': 'knew',
             'topic': 'Past Simple',
             'level': 3
         },
@@ -304,7 +282,6 @@ export const TEST_RESULTS = {
                 { 'content': 'watch', 'correct': false },
                 { 'content': 'have watched', 'correct': false }
             ],
-            'answer': 'had watched',
             'topic': 'Past Perfect',
             'level': 3
         },
@@ -317,7 +294,6 @@ export const TEST_RESULTS = {
                 { 'content': 'will have', 'correct': false },
                 { 'content': 'would have', 'correct': false }
             ],
-            'answer': 'had',
             'topic': 'Third Conditional',
             'level': 3
         },
@@ -331,7 +307,6 @@ export const TEST_RESULTS = {
                 { 'content': 'finished', 'correct': false },
                 { 'content': 'will finish', 'correct': false }
             ],
-            'answer': 'finish',
             'topic': 'Subjunctive',
             'level': 4
         },
@@ -344,7 +319,6 @@ export const TEST_RESULTS = {
                 { 'content': 'will have been', 'correct': false },
                 { 'content': 'have been', 'correct': false }
             ],
-            'answer': 'will be',
             'topic': 'Future Perfect Continuous',
             'level': 4
         },
@@ -357,7 +331,6 @@ export const TEST_RESULTS = {
                 { 'content': 'bothered', 'correct': false },
                 { 'content': 'is bothering', 'correct': false }
             ],
-            'answer': 'had been bothering',
             'topic': 'Past Perfect Continuous',
             'level': 4
         },
@@ -370,7 +343,6 @@ export const TEST_RESULTS = {
                 { 'content': 'and', 'correct': false },
                 { 'content': 'but', 'correct': false }
             ],
-            'answer': 'nor',
             'topic': 'Conjunctions',
             'level': 4
         },
@@ -383,7 +355,6 @@ export const TEST_RESULTS = {
                 { 'content': 'leaves', 'correct': false },
                 { 'content': 'was leaving', 'correct': false }
             ],
-            'answer': 'had left',
             'topic': 'Third Conditional',
             'level': 4
         },
@@ -397,7 +368,6 @@ export const TEST_RESULTS = {
                 { 'content': 'can', 'correct': false },
                 { 'content': 'could', 'correct': false }
             ],
-            'answer': 'is',
             'topic': 'Modals of Ability',
             'level': 5
         },
@@ -410,7 +380,6 @@ export const TEST_RESULTS = {
                 { 'content': 'might', 'correct': false },
                 { 'content': 'should', 'correct': false }
             ],
-            'answer': 'must',
             'topic': 'Modals of Deduction',
             'level': 5
         },
@@ -423,7 +392,6 @@ export const TEST_RESULTS = {
                 { 'content': 'could have', 'correct': false },
                 { 'content': 'might have', 'correct': false }
             ],
-            'answer': 'should have',
             'topic': 'Modals of Past Deduction',
             'level': 5
         },
@@ -436,7 +404,6 @@ export const TEST_RESULTS = {
                 { 'content': 'wasn’t', 'correct': false },
                 { 'content': 'wouldn’t', 'correct': false }
             ],
-            'answer': 'couldn’t',
             'topic': 'Past Modals',
             'level': 5
         },
@@ -449,7 +416,6 @@ export const TEST_RESULTS = {
                 { 'content': 'should have', 'correct': false },
                 { 'content': 'could have', 'correct': false }
             ],
-            'answer': 'must have',
             'topic': 'Modals of Deduction',
             'level': 5
         },
@@ -462,7 +428,6 @@ export const TEST_RESULTS = {
                 { 'content': 'certain', 'correct': false },
                 { 'content': 'possible', 'correct': false }
             ],
-            'answer': 'unlikely',
             'topic': 'Adjectives',
             'level': 6
         },
@@ -475,7 +440,6 @@ export const TEST_RESULTS = {
                 { 'content': 'clumsy', 'correct': false },
                 { 'content': 'unskilled', 'correct': false }
             ],
-            'answer': 'talented',
             'topic': 'Adjectives',
             'level': 6
         },
@@ -488,7 +452,6 @@ export const TEST_RESULTS = {
                 { 'content': 'rudely', 'correct': false },
                 { 'content': 'mumbling', 'correct': false }
             ],
-            'answer': 'eloquently',
             'topic': 'Adverbs',
             'level': 6
         },
@@ -501,7 +464,6 @@ export const TEST_RESULTS = {
                 { 'content': 'avoided', 'correct': false },
                 { 'content': 'postponed', 'correct': false }
             ],
-            'answer': 'reached',
             'topic': 'Phrasal Verbs',
             'level': 6
         },
@@ -514,9 +476,51 @@ export const TEST_RESULTS = {
                 { 'content': 'uninspiring', 'correct': false },
                 { 'content': 'intimidating', 'correct': false }
             ],
-            'answer': 'persuasive',
             'topic': 'Adjectives',
             'level': 6
         }
+    ]
+};
+
+export const TEST_RESULTS = {
+    name: 'Test',
+    email: 'olegpolyakov@outlook.com',
+    goal: 'test',
+    utm: {
+        source: 'newsletter',
+        medium: 'email',
+        campaign: 'summer_sale',
+        term: 'shoes',
+        content: 'button'
+    },
+    answers: [
+        'goes',
+        'is reading',
+        'arrive',
+        'was watching',
+        'didn’t have',
+        'will go',
+        'was',
+        'runs',
+        'are meeting',
+        'will',
+        'had left',
+        'have lived',
+        'knew',
+        'had watched',
+        'had',
+        'should have',
+        'nor',
+        'had left',
+        'is',
+        'must',
+        'should have',
+        'must have',
+        'couldn’t',
+        'unlikely',
+        'talented',
+        'must',
+        'should have',
+        'persuasive'
     ]
 };

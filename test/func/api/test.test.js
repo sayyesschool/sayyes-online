@@ -4,14 +4,14 @@ import test from '@/api/test';
 
 import { mock } from '../../helpers';
 import context from '../context';
-import { TEST_RESULTS } from '../data';
+import { TEST, TEST_RESULTS } from '../data';
 
 import setup from './api';
 
 const api = setup('/test', test);
 
 const {
-    models: { Request },
+    models: { Data, Request },
     services: { Mail }
 } = context;
 
@@ -19,8 +19,13 @@ mock.method(Mail, 'send', async () => {});
 mock.method(Mail, 'sendMany', async () => {});
 
 describe('Public Test API', () => {
+    before(async () => {
+        await Data.create({ key: 'test', value: TEST });
+    });
+
     after(async () => {
         await Request.deleteMany();
+        await Data.deleteMany();
     });
 
     describe('POST /', () => {
@@ -48,7 +53,7 @@ describe('Public Test API', () => {
             expect(request.utm.content).toEqual(TEST_RESULTS.utm.content);
             expect(request.data).toExist();
             expect(request.data.level).toExist();
-            expect(request.data.questions).toExist();
+            expect(request.data.goal).toExist();
         });
     });
 });

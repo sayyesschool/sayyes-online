@@ -143,6 +143,7 @@ function getResults(questions, answers) {
 
         return {
             ...question,
+            content: question.content.replace('<span class="blank"></span>', isCorrect ? `<span style="color: green">${answer}</span>` : `<span style="color: red; text-decoration: line-through;">${answer}</span> <span style="color: green">${correctAnswer}</span>`),
             answer,
             correctAnswer,
             isCorrect
