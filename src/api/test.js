@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 export default ({
+    config: { APP_DOMAIN },
     models: { Data, Request },
     services: { Mail }
 }) => {
@@ -63,7 +64,8 @@ export default ({
             templateId: 6575919,
             variables: {
                 level,
-                results
+                results,
+                buttonUrl: `https://club.${APP_DOMAIN}?requestId=${request.id}&utm_source=tg_adv_10.01.25&utm_medium=email`
             }
         });
 
