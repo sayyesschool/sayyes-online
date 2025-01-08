@@ -2,9 +2,9 @@ footer.footer
     div.footer__container
         div.footer__row
             a.logo(href=APP_URL)
-                img(src="https://sayes.ru/wp-content/themes/sayyes/static/images/logo-purple.svg" alt="Логотип SAY YES")
+                img(src=`${STATIC_URL}/images/logos/sayyes-speaking-club-purple.png` alt="Логотип SAY YES")
 
-            ul.list.gap-xxs
+            ul.grid.grid-2.gap-row-xxs.gap-col-s
                 li.list-item
                     a.link(href='/agreement') Пользовательское соглашение
                 li.list-item
@@ -13,10 +13,6 @@ footer.footer
                     a.link(href='/offer') Публичная оферта
                 li.list-item
                     a.link(href='/rules') Правила использования
-
-            div.copyright.flex.flex-column.gap-xxs
-                small.text.text--body2 © 2013–2024 SAY&nbsp;YES!
-                small.text.text--body2 Все права защищены
 
             ul.social
                 li.social__item
@@ -30,3 +26,7 @@ footer.footer
                         span.icon.icon--youtube
                             svg(width="20" height="20" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg")
                                 path(fill-rule="evenodd" clip-rule="evenodd" d="M23.344 2.576c-.273-.974-1.076-1.74-2.095-1.998C19.402.105 12 .105 12 .105s-7.406 0-9.253.473C1.727.837.926 1.602.653 2.576c-.495 1.76-.495 5.44-.495 5.44s0 3.676.495 5.44c.273.97 1.075 1.707 2.094 1.966 1.847.473 9.253.473 9.253.473s7.407 0 9.254-.473c1.019-.26 1.82-.995 2.094-1.966.494-1.764.494-5.44.494-5.44s-.004-3.68-.498-5.44zM9.576 4.677v6.678l6.192-3.339-6.192-3.339z" fill="currentColor")
+
+            div.copyright.flex.flex-column.gap-xxs
+                small.text.text--body2 © SAY&nbsp;YES! 2013–#{YEAR}
+                small.text.text--body2 Все права защищены

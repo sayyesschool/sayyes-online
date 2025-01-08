@@ -20,13 +20,13 @@ append scripts
         include ../scripts/main.js
 
 block header
-    +header
+    +header()(link='/' logo='sayyes-speaking-club-purple.png' blurred)
         div.header__buttons
-            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="about") О клубе
-            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="schedule") Расписание
-            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="hosts") Ведущие
-            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="testimonials") Отзывы
-            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="faq") FAQ
+            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="#about") О клубе
+            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="#schedule") Расписание
+            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="#hosts") Ведущие
+            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="#testimonials") Отзывы
+            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="#faq") FAQ
 
 block main
     div.hero

@@ -1,31 +1,4 @@
-@use './variables' as *;
-
-.section--card {
-    .section__container {
-        padding: var(--section-padding);
-    }
-}
-
-.text-card[class$="-bg"]  {
-    &::before {
-        top: -15px;
-        right: -15px;
-        background-size: contain;
-        background-position: center;
-    }
-}
-
-.textarea {
-    display: block;
-    width: 100%;
-    min-height: 150px;
-    padding: 15px 20px;
-    resize: none;
-    border: none;
-    border-radius: 30px;
-    font-family: "Raleway", "Open Sans", "Helvetica", Arial, sans-serif;
-    font-weight: 500;
-}
+$static-url: 'https://static.sayes.ru/images/speaking-club';
 
 #about {
     .text-card {
@@ -72,58 +45,60 @@
     background-position: -50px 100px;
 }
 
-// TODO: Move to main styles
-.tag {
-    &--yellow,
-    &--purple {
-        border: none;
-    }
-
-    &--purple {
-        color: white;
+#hosts {
+    .card {
+        padding-bottom: 0;
     }
 }
 
-.accordion-item {
-    &__title {
-        margin-bottom: 0;
+#schedule,
+#testimonials {
+    --description-max-width: 640px;
+}
+
+#video {
+    .video__media {
+        aspect-ratio: 16 / 9;
+
+        &::after {
+            top: -10%;
+            left: -5%;
+            width: 115%;
+            height: 115%;
+        }
     }
 }
 
-.header {
-    // TODO: Move to main styles
-    --_background-color: rgba(241, 243, 244, .75);
-    --_font-color: var(--primary-color);
-
-    &__main {
-        background-color: var(--_background-color);
-        backdrop-filter: blur(5px);
-        color: var(--primary-color);
-        border-radius: 0;
+#newsletter {
+    .section__container {
+        gap: 200px;
     }
+}
 
-    &__container {
-        justify-content: space-between;
+#contact-modal {
+    .modal__body {
+        min-width: 480px;
+        padding: 30px;
+    }
+}
+
+#payment-modal {
+    .tab {
+        cursor: default;
     }
 }
 
 .hero {
     height: 560px;
-    background: url('#{$static-url}/hero.jpg') no-repeat center center;
-    color: white;
-    border-radius: 30px;
+    background-image: url('#{$static-url}/hero.jpg');
 }
 
-.section {
-    &--card &__container {
-        padding: calc(var(--section-padding) * 1.5) 0;
-    }
-}
-
-.footer {
-    &__row {
-        display: flex;
-        justify-content: space-between;
+.text-card[class$="-bg"]  {
+    &::before {
+        top: -15px;
+        right: -15px;
+        background-size: contain;
+        background-position: center;
     }
 }
 
@@ -171,49 +146,6 @@
         img {
             border-top-right-radius: 0;
         }
-    }
-}
-
-#hosts {
-    .card {
-        padding-bottom: 0;
-    }
-}
-
-#schedule,
-#testimonials {
-    --description-max-width: 640px;
-}
-
-#video {
-    .video__media {
-        aspect-ratio: 16 / 9;
-
-        &::after {
-            top: -10%;
-            left: -5%;
-            width: 115%;
-            height: 115%;
-        }
-    }
-}
-
-#newsletter {
-    .section__container {
-        gap: 200px;
-    }
-}
-
-#contact-modal {
-    .modal__body {
-        min-width: 480px;
-        padding: 30px;
-    }
-}
-
-#payment-modal {
-    .tab {
-        cursor: default;
     }
 }
 

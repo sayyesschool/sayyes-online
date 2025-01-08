@@ -10,7 +10,7 @@ include /shared/mixins/yandex-metrika
 append head
     link(rel="preconnect" href="https://fonts.googleapis.com")
     link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=Shantell+Sans:ital,wght@1,300..400&display=swap")
-    link(rel="stylesheet" href="https://static.sayes.ru/css/shared.css")
+    link(rel="stylesheet" href=`${STATIC_URL}/styles/shared.css`)
     link(rel="stylesheet" href="/css/club.css")
 
     style
@@ -18,7 +18,7 @@ append head
 
 block body
     block header
-        +header
+        +header()(link='/' logo='sayyes-speaking-club-purple.png' blurred)
 
     main.main
         block main
@@ -26,7 +26,7 @@ block body
     block footer
         include ./includes/footer
 
-    script(src="https://static.sayes.ru/js/shared.js")
+    script(src=`${STATIC_URL}/scripts/shared.js`)
 
     if NODE_ENV === 'production'
         +yandex-metrika(YANDEX_METRIKA_ID_CLUB)
