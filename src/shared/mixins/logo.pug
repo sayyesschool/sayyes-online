@@ -1,2 +1,2 @@
-mixin logo(color = 'purple')
-    img.logo(src=`${STATIC_URL}/images/logos/sayyes-${color}.png` alt="Логотип Say Yes")
+mixin logo(variant)
+    img.logo(src=`${STATIC_URL}/images/logos/${variant}.svg` alt="Логотип Say Yes")
