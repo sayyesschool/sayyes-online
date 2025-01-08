@@ -136,7 +136,7 @@ function getLevel(questions, answers) {
 function getResults(questions, answers) {
     return questions.map((question, index) => {
         const answer = answers[index];
-        const correctAnswer = question.answers.find(answer => answer.correct)?.content;
+        const correctAnswer = question.options.find(answer => answer.correct)?.content;
         const isCorrect = answer === correctAnswer;
 
         return {
