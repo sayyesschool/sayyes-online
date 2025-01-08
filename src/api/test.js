@@ -19,7 +19,8 @@ export default ({
         const {
             name,
             email,
-            questions,
+            goal,
+            answers,
             source,
             utm
         } = req.body;
@@ -32,12 +33,14 @@ export default ({
             return res.status(400).json({ error: 'Не указан адрес эл. почты' });
         }
 
-        if (!questions) {
-            return res.status(400).json({ error: 'Не переданы вопросы' });
+        if (!answers) {
+            return res.status(400).json({ error: 'Не переданы ответы' });
         }
 
-        const level = getLevel(questions);
-        const results = getResults(questions);
+        const questions = await Data.get('test');
+
+        const level = getLevel(questions, answers);
+        const results = getResults(questions, answers);
 
         const request = await Request.create({
             description: 'Прохождение теста на сайте',
@@ -49,8 +52,8 @@ export default ({
             source,
             utm,
             data: {
-                level,
-                questions
+                goal,
+                level
             }
         });
 
@@ -60,7 +63,7 @@ export default ({
             templateId: 6575919,
             variables: {
                 level,
-                questions: results
+                results
             }
         });
 
@@ -75,11 +78,13 @@ export default ({
     return router;
 };
 
-function getLevel(questions) {
-    const answeredCorrectly = questions.reduce((acc, question) => {
+function getLevel(questions, answers) {
+    const maxLevel = questions.reduce((acc, question) => Math.max(acc, question.level), 0);
+    const answeredCorrectly = questions.reduce((acc, question, index) => {
+        const answer = answers[index];
         const correctAnswer = question.options.find(answer => answer.correct)?.content;
 
-        if (question.answer === correctAnswer) {
+        if (answer === correctAnswer) {
             acc.push(question);
         }
 
@@ -88,7 +93,7 @@ function getLevel(questions) {
 
     const maxScore = questions.reduce((acc, question) => acc + question.level, 0);
     const rawScore = answeredCorrectly.reduce((acc, question) => acc + question.level, 0);
-    const levelByScore = Math.round((rawScore / maxScore) * 6);
+    const levelByScore = Math.round((rawScore / maxScore) * maxLevel);
 
     const answersByLevel = answeredCorrectly.reduce((acc, question) => {
         if (!acc[question.level]) {
@@ -128,16 +133,17 @@ function getLevel(questions) {
     }
 }
 
-function getResults(questions) {
-    return questions.map(question => {
+function getResults(questions, answers) {
+    return questions.map((question, index) => {
+        const answer = answers[index];
         const correctAnswer = question.answers.find(answer => answer.correct)?.content;
-        const isCorrect = question.answer === correctAnswer;
+        const isCorrect = answer === correctAnswer;
 
         return {
             ...question,
+            answer,
             correctAnswer,
-            isCorrect,
-            color: isCorrect ? 'green' : 'red'
+            isCorrect
         };
     });
 }
