@@ -19,6 +19,7 @@ const common = {
     define: {
         'process.env': JSON.stringify({}),
         'env.NODE_ENV': JSON.stringify(NODE_ENV || ''),
+        'env.APP_DOMAIN': JSON.stringify(APP_DOMAIN || ''),
         'env.APP_ENV': JSON.stringify(APP_ENV || ''),
         'env.APP_URL': JSON.stringify(APP_URL || ''),
         'env.API_URL': JSON.stringify(`//api.${APP_DOMAIN}`),
