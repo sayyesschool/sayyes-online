@@ -1,0 +1,19 @@
+body {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    padding-top: 65px;
+}
+
+.header {
+    --header-background-color: rgba(249, 244, 242, .75);
+    --header-font-color: var(--primary-color);
+    --header-border-radius: 0;
+}
+
+.footer {
+    --footer-padding: 20px 60px;
+    --footer-background-color: transparent;
+
+    margin-top: auto;
+}
