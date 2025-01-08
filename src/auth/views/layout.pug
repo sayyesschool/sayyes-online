@@ -25,7 +25,7 @@ append head
 
         main > .logo {
             display: block;
-            width: 128px;
+            width: 180px;
             height: auto;
             margin: auto;
         }
@@ -42,9 +42,9 @@ append head
 block body
     include /shared/includes/flash
 
-    block main
+    main
+        block main
 
-    script(src="https://static.sayes.ru/js/shared.js")
     script.
         const { Modal } = window.ui;
 
