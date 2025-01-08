@@ -65,7 +65,7 @@ export default ({
             variables: {
                 level,
                 results,
-                buttonUrl: `https://club.${APP_DOMAIN}?requestId=${request.id}&utm_source=tg_adv_10.01.25&utm_medium=email`
+                buttonUrl: `https://club.${APP_DOMAIN}?requestId=${request.id}${test.utm ? '&' + getUTM(test.utm) : ''}`
             }
         });
 
@@ -79,6 +79,10 @@ export default ({
 
     return router;
 };
+
+function getUTM(utm) {
+    return Object.entries(utm).map(([key, value]) => `utm_${key}=${value}`).join('&');
+}
 
 function getLevel(questions, answers) {
     const maxLevel = questions.reduce((acc, question) => Math.max(acc, question.level), 0);
