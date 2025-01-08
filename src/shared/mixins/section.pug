@@ -1,15 +1,13 @@
 mixin section(title, description)
     section.section(class={
-        'section--card': attributes.card || attributes.color,
-        'section--horizontal': attributes.horizontal,
         'section--centered': attributes.centered,
+        'section--horizontal': attributes.horizontal,
         'section--padded': attributes.padded,
         'section--padded-header': attributes.paddedHeader,
         [`section--${attributes.color}`]: attributes.color
     })&attributes(Object.assign({}, attributes, {
-        card: undefined,
-        horizontal: undefined,
         centered: undefined,
+        horizontal: undefined,
         padded: undefined,
         color: undefined
     }))
