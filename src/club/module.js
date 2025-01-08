@@ -13,10 +13,11 @@ export default (domain, context) => {
     app.set('views', resolve(context.config.APP_PATH, domain));
 
     Object.assign(app.locals, context.config, {
+        basedir: context.config.APP_PATH,
+        titleBase: 'Разговорный клуб Say Yes',
         CLUB_URL: `https://club.${context.config.APP_DOMAIN}`,
         CLUB_EMAIL: `${domain}@${context.config.APP_DOMAIN}`,
-        basedir: context.config.APP_PATH,
-        titleBase: 'Разговорный клуб Say Yes'
+        YEAR: new Date().getFullYear()
     });
 
     app.use('/api', api(context));
