@@ -21,6 +21,7 @@
     "ftp:dev": "node --env-file=.env.dev ./scripts/deploy/ftp.js",
     "ftp:prod": "node --env-file=.env.prod ./scripts/deploy/ftp.js",
     "lint": "eslint ./src",
+    "prestart": "npm run build",
     "start": "node --import ./loaders/register.cjs ./src/main.js",
     "start:local": "nodemon --import ./loaders/register.cjs --env-file=.env.local ./src/main.js",
     "test": "mocha -r dotenv/config",
