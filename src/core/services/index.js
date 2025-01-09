@@ -41,6 +41,7 @@ export default (config, lib, models) => {
     });
 
     const club = Club({
+        config,
         lib,
         models,
         services: {
