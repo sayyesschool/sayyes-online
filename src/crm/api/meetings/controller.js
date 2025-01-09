@@ -27,19 +27,17 @@ export default ({
         });
     },
 
-    create: (req, res, next) => {
-        Club.createMeeting(req.body)
-            .then(meeting => {
-                res.json({
-                    ok: true,
-                    message: 'Встреча создана',
-                    data: meeting
-                });
-            })
-            .catch(next);
+    async create(req, res) {
+        const meeting = await Club.createMeeting(req.body);
+
+        res.json({
+            ok: true,
+            message: 'Встреча создана',
+            data: meeting
+        });
     },
 
-    update: (req, res, next) => {
+    async update(req, res, next) {
         Club.updateMeeting(req.params.meetingId, req.body)
             .then(meeting => {
                 res.json({
@@ -51,7 +49,7 @@ export default ({
             .catch(next);
     },
 
-    delete: (req, res, next) => {
+    async delete(req, res, next) {
         Club.deleteMeeting(req.params.meetingId)
             .then(() => {
                 res.json({
@@ -65,7 +63,7 @@ export default ({
             .catch(next);
     },
 
-    addRegistration: (req, res, next) => {
+    async addRegistration(req, res, next) {
         User.findOne({ email: req.body.email }, 'firstname lastname email balance')
             .then(user => {
                 if (req.body.paid) {
@@ -87,7 +85,7 @@ export default ({
             .catch(next);
     },
 
-    updateRegistration: (req, res, next) => {
+    async updateRegistration(req, res, next) {
         Club.updateRegistration(req.params.meetingId, req.params.registrationId, req.body.action)
             .then(meeting => {
                 const registration = meeting.registrations.find(r => r.id == req.params.registrationId);
@@ -103,7 +101,7 @@ export default ({
             .catch(next);
     },
 
-    removeRegistration: (req, res, next) => {
+    async removeRegistration(req, res, next) {
         Club.removeRegistration(req.params.meetingId, req.params.registrationId)
             .then(() => {
                 const registration = {
