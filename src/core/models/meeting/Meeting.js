@@ -29,6 +29,7 @@ export const Meeting = new Schema({
     zoomId: { type: String },
     startUrl: { type: String },
     joinUrl: { type: String },
+    password: { type: String },
     materialsUrl: { type: String },
     notes: { type: String, trim: true, default: '' },
     hostId: { type: Schema.Types.ObjectId, ref: 'User' }
