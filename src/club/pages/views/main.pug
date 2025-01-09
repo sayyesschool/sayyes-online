@@ -20,7 +20,7 @@ append scripts
         include ../scripts/main.js
 
 block header
-    +header()(link='/' logo='sayyes-speaking-club-purple.png' blurred)
+    +header()(link='/' logo='speaking-club_purple.svg' blurred)
         div.header__buttons
             button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="#about") О клубе
             button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="#schedule") Расписание
@@ -85,7 +85,7 @@ block main
                         
                         div.card__header
                             div.tags
-                                span.tag= meeting.levelLabel
+                                span.tag.tag--outlined= meeting.levelLabel
                                 span.tag(class=`tag--${meeting.online ? 'yellow' : 'purple'}`)= meeting.online ? 'Онлайн' : 'Оффлайн'
                             
                             p.card__subtitle= meeting.datetime
