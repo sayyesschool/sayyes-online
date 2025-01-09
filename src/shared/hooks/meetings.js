@@ -18,14 +18,17 @@ export function useMeetings(query) {
 
 export function useMeeting(id) {
     const [meeting, actions] = useStore(selectSingle('meetings'), meetingActions);
+    const meetingId = meeting?.id;
 
     useEffect(() => {
-        if (!meeting) {
-            actions.getMeeting(id);
-        }
+        if (meetingId === id) return;
 
+        actions.getMeeting(id);
+    }, [meetingId, id, actions]);
+
+    useEffect(() => {
         return () => actions.unsetMeeting();
-    }, [id]);
+    }, [actions]);
 
     return [meeting, actions];
 }
