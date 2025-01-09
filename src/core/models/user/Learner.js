@@ -4,6 +4,7 @@ import Contact from './Contact';
 
 export const Learner = new Schema({
     data: {
+        hhid: { type: String },
         address: { type: String },
         occupation: { type: String },
         interests: { type: String },
