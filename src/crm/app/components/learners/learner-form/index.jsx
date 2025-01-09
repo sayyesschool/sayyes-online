@@ -1,8 +1,9 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
+
 import moment from 'moment';
 
-import { useForm } from 'shared/hooks/form';
 import TimeZoneSelect from 'shared/components/timezone-select';
+import { useForm } from 'shared/hooks/form';
 import { Form } from 'shared/ui-components';
 
 const genderOptions = [
@@ -101,7 +102,6 @@ const LearnerForm = forwardRef(({
                 name="phone"
                 value={data.phone.value}
                 label="Телефон"
-                required
                 onChange={handleChange}
             />
 

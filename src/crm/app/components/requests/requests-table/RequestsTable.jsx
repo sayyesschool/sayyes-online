@@ -1,18 +1,20 @@
 import { Link } from 'react-router-dom';
-import moment from 'moment';
 
 import PersonChip from 'shared/components/person-chip';
 import StatusChip from 'shared/components/status-chip';
-import { Flex, IconButton, Table, Text } from 'shared/ui-components';
 import { RequestStatusLabel } from 'shared/data/request';
+import { Flex, IconButton, Table, Text } from 'shared/ui-components';
 
 const columns = [
     { key: 'description', text: 'Описание' },
     { key: 'status', text: 'Статус' },
     { key: 'datetime', text: 'Дата и время' },
     { key: 'contact', text: 'Контакт' },
+    { key: 'channel', text: 'Канал' },
+    { key: 'source', text: 'Источник' },
     { key: 'learner', text: 'Ученик' },
     { key: 'manager', text: 'Менеджер' },
+    { key: 'utm', text: 'UTM' },
     { key: 'actions' }
 ];
 
@@ -46,15 +48,38 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                         <Table.Cell>
                             <Flex column>
                                 <Text as="span">{request.dateString}</Text>
-                                <Text as="span" type="body3">{request.timeString}</Text>
+                                <Text as="span" type="body-sm">{request.timeString}</Text>
                             </Flex>
                         </Table.Cell>
 
                         <Table.Cell>
                             <Flex column>
                                 <Text as="span">{request.contact.name}</Text>
-                                <Text as="span" type="body3">{request.contact.phone}</Text>
+
+                                {request.contact.email &&
+                                    <Text
+                                        as="span"
+                                        type="body-sm"
+                                        content={request.contact.email}
+                                    />
+                                }
+
+                                {request.contact.phone &&
+                                    <Text
+                                        as="span"
+                                        type="body-sm"
+                                        content={request.contact.phone}
+                                    />
+                                }
                             </Flex>
+                        </Table.Cell>
+
+                        <Table.Cell>
+                            {request.channel || '—'}
+                        </Table.Cell>
+
+                        <Table.Cell>
+                            {request.source || '—'}
                         </Table.Cell>
 
                         <Table.Cell>
@@ -65,7 +90,7 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                                     text={request.learner.fullname}
                                 />
                                 :
-                                '[Отсутствует]'
+                                '—'
                             }
                         </Table.Cell>
 
@@ -77,8 +102,12 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                                     text={request.manager.fullname}
                                 />
                                 :
-                                '[Отсутствует]'
+                                '—'
                             }
+                        </Table.Cell>
+
+                        <Table.Cell>
+                            {request.utm ? 'Есть' : '—'}
                         </Table.Cell>
 
                         <Table.Cell align="end">

@@ -6,7 +6,7 @@ import EnrollmentForm from 'crm/components/enrollments/enrollment-form';
 import LearnerForm from 'crm/components/learners/learner-form';
 import RequestForm from 'crm/components/requests/request-form';
 
-import './index.scss';
+import './RequestProcessFormDialog.scss';
 
 export default function RequestProcessFormDialog({ request, open, onSubmit, onClose }) {
     const learnerFormRef = useRef();
