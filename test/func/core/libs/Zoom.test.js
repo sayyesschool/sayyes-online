@@ -12,10 +12,6 @@ const zoom = Zoom({
 });
 
 describe('Zoom client', () => {
-    before(async () => {
-        await zoom.init();
-    });
-
     describe('refreshToken', () => {
         it('should get and save a token', async () => {
             await zoom.refreshToken();

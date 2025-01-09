@@ -36,14 +36,12 @@ export default ({ accountId, clientId, clientSecret, userId }) => {
 
     const meetings = Meetings(userId, zoomRequest);
 
+    if (!token) {
+        getToken(accountId, clientId, clientSecret).then(t => token = t);
+    }
+
     return {
         meetings,
-
-        async init() {
-            if (!token) {
-                token = await getToken(accountId, clientId, clientSecret);
-            }
-        },
 
         async refreshToken() {
             token = await getToken(accountId, clientId, clientSecret);
