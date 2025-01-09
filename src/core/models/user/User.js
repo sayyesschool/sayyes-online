@@ -30,7 +30,8 @@ export const User = new Schema([Person, {
     },
     role: {
         type: String,
-        enum: Object.values(UserRole)
+        enum: Object.values(UserRole),
+        default: UserRole.Learner
     },
     active: { type: Boolean, default: false, alias: 'isActive' },
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
