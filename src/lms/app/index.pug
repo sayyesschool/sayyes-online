@@ -1,16 +1,7 @@
 extends /shared/layouts/app
 
-//- include /shared/mixins/yandex-metrika
-//- include /shared/mixins/google-analytics
-
 append head
-    link(rel="stylesheet" href="/css/lms.css")
+    link(rel="stylesheet" href=`/css/lms.css?v=${APP_VERSION}`)
 
 append body
-    //include /shared/views/includes/footer
-
-    //- if ENV === 'production'
-    //-     +yandex-metrika(YANDEX_METRIKA_ID)(defer)
-    //-     +google-analytics(GOOGLE_ANALYTICS_ID)
-        
-    script(src="/js/lms.js")
+    script(src=`/js/lms.js?v=${APP_VERSION}`)

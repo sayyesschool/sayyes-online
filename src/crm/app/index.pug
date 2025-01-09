@@ -1,7 +1,7 @@
 extends /shared/layouts/app
 
 append head
-    link(rel="stylesheet" href="/css/crm.css")
+    link(rel="stylesheet" href=`/css/crm.css?v=${APP_VERSION}`)
 
 append body
-    script(src="/js/crm.js")
+    script(src=`/js/crm.js?v=${APP_VERSION}`)

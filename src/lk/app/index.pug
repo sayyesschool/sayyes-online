@@ -1,13 +1,7 @@
 extends /shared/layouts/app
 
 append head
-    link(rel="stylesheet" href="/css/lk.css")
+    link(rel="stylesheet" href=`/css/lk.css?v=${APP_VERSION}`)
 
 append body
-    //include /shared/views/includes/footer
-
-    //- if ENV === 'production'
-    //-     +yandex-metrika(YANDEX_METRIKA_ID)(defer)
-    //-     +google-analytics(GOOGLE_ANALYTICS_ID)
-        
-    script(src="/js/lk.js")
+    script(src=`/js/lk.js?v=${APP_VERSION}`)
