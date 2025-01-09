@@ -11,7 +11,7 @@ function resolveTo(to) {
 
 export default (config, client) => ({
     defaultFrom: {
-        email: `info@${config.APP_DOMAIN}`,
+        email: `info@${config.EMAIL_DOMAIN}`,
         name: 'SAY YES English School'
     },
 

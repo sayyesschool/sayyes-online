@@ -20,6 +20,8 @@ export default {
     APP_URL: process.env.APP_URL,
     APP_VERSION: VERSION,
 
+    EMAIL_DOMAIN: process.env.EMAIL_DOMAIN,
+
     FACEBOOK_PIXEL_ID: '758563291240040',
 
     GOOGLE_ANALYTICS_ID: 'UA-161447925-1',

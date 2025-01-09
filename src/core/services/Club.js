@@ -33,7 +33,7 @@ export default ({
     models: { Data, Meeting, Membership, Payment, Registration, Request, User },
     services: { Auth, Checkout, Mail, Newsletter }
 }) => ({
-    email: `club@${config.APP_DOMAIN}`,
+    email: `club@${config.EMAIL_DOMAIN}`,
     emailTemplates,
     packs: null,
 
