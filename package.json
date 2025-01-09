@@ -23,6 +23,7 @@
     "ftp:prod": "node --env-file=.env.prod ./scripts/deploy/ftp.js",
     "lint": "eslint ./src",
     "prestart": "npm run build",
+    "prestart:dev": "npm run db-seed:dev",
     "start": "node --import ./loaders/register.cjs ./src/main.js",
     "start:dev": "node --import ./loaders/register.cjs ./src/main.js",
     "start:local": "nodemon --import ./loaders/register.cjs --env-file=.env.local ./src/main.js",
