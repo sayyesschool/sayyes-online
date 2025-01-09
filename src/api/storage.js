@@ -17,7 +17,6 @@ export default ({
 
         const file = req.file;
         const path = getNormalizedPath(STORAGE_URL, req.body.path, file);
-
         const response = await Storage.put(path, file.buffer);
 
         res.json({
@@ -49,18 +48,6 @@ export default ({
 
 function isFilename(path) {
     return basename(path).includes('.');
-}
-
-const extensions = {
-    'image/png': 'png',
-    'image/jpeg': 'jpeg',
-    'image/jpg': 'jpg'
-};
-
-function getFilename(value, type) {
-    const [name, extension = extensions[type]] = value.split('.');
-
-    return `${name}.${extension}`;
 }
 
 function getUniqueFilename(file) {
