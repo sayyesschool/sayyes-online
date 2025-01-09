@@ -1,4 +1,4 @@
-export default function Success() {
+export default function SuccessState() {
     return (
         <div className="success-state">
             <img src="https://static.sayes.ru/images/cat/cat-thumbup.png" alt="" />

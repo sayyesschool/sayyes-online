@@ -59,11 +59,12 @@ document.querySelectorAll('.meeting-btn').forEach(button => {
 new Slider('.meetings-slider', {
     breakpoints: {
         768: {
-            enabled: true,
-            slidesPerView: 3
+            slidesPerView: 3,
+            slidesPerGroup: 3
         },
         360: {
-            enabled: false
+            slidesPerView: 1,
+            slidesPerGroup: 1
         }
     }
 });
@@ -74,8 +75,7 @@ new Slider('.testimonials-slider', {
             slidesPerView: 2
         },
         360: {
-            slidesPerView: 'auto',
-            centeredSlides: true
+            slidesPerView: 1
         }
     }
 });

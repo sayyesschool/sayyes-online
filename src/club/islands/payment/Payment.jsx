@@ -1,22 +1,21 @@
 import { useState } from 'preact/hooks';
 
 import { Tab, Tabs } from 'shared/custom-components';
+import Checkout from 'shared/islands/checkout';
+import Contact from 'shared/islands/contact';
+import ErrorState from 'shared/islands/error-state';
+import SuccessState from 'shared/islands/success-state';
 
-import Checkout from './Checkout';
-import Contact from './Contact';
-import Error from './Error';
-import Success from './Success';
-
-export default function PaymentComponent({ pack, meetingId }) {
+export default function Payment({ pack, meetingId }) {
     const [view, setView] = useState(0);
     const [contact, setContact] = useState({});
     const [error, setError] = useState(null);
 
     if (view === 2)
-        return <Success />;
+        return <SuccessState />;
 
     if (view === 3)
-        return <Error error={error} />;
+        return <ErrorState error={error} />;
 
     return (
         <div className="flex-column gap-l">
@@ -54,9 +53,11 @@ export default function PaymentComponent({ pack, meetingId }) {
 
             {view === 1 &&
                 <Checkout
-                    contact={contact}
-                    pack={pack}
-                    meetingId={meetingId}
+                    data={{
+                        ...contact,
+                        packId: pack.id,
+                        meetingId
+                    }}
                     onComplete={() => setView(2)}
                     onError={error => {
                         setError(error);

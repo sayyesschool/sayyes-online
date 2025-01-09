@@ -1,6 +1,12 @@
 import { useEffect, useRef } from 'preact/hooks';
 
-export default function Checkout({ contact, pack, meetingId, onComplete, onError }) {
+import styles from './Checkout.module.scss';
+
+export default function Checkout({
+    data,
+    onComplete,
+    onError
+}) {
     const checkoutRef = useRef();
 
     useEffect(() => {
@@ -12,9 +18,7 @@ export default function Checkout({ contact, pack, meetingId, onComplete, onError
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                ...contact,
-                packId: pack.id,
-                meetingId,
+                ...data,
                 requestId: params.get('requestId'),
                 utm: {
                     source: params.get('utm_source'),
@@ -44,7 +48,7 @@ export default function Checkout({ contact, pack, meetingId, onComplete, onError
 
                 checkoutRef.current = checkout;
 
-                checkout.render('payment');
+                checkout.render('checkout');
 
                 checkout.on('complete', () => {
                     fetch('/api/payments/process', {
@@ -73,6 +77,6 @@ export default function Checkout({ contact, pack, meetingId, onComplete, onError
     }, []);
 
     return (
-        <div id="payment" />
+        <div id="checkout" className={styles.root} />
     );
 }

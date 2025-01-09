@@ -46,5 +46,3 @@ export default function Contact({ contact, onChange, onNext }){
         </div>
     );
 }
-
-;

@@ -1,12 +1,167 @@
-$static-url: 'https://static.sayes.ru/images/speaking-club';
+@use 'mq';
+
+$static-url: 'https://storage.yandexcloud.net/sayyes-static/images/club';
+
+body {
+    display: block;
+}
+
+.header {
+    @include mq.to(md) {
+        &__main {
+            max-width: 100%;
+        }
+
+        &__buttons {
+            display: none;
+        }
+    }
+}
+
+.hero {
+    overflow: visible;
+
+    @include mq.to(md) {
+        height: 80dvh;
+        min-height: 700px;
+        background-image: url('#{$static-url}/hero-mobile.jpg');
+
+        &__content {
+            position: static;
+        }
+
+        .btn {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%, 50%);
+        }
+    }
+    
+    @include mq.from(md) {
+        height: 560px;
+        background-image: url('#{$static-url}/hero-desktop.jpg');
+    }
+}
+
+.section {
+    @include mq.to(md) {
+        &__container {
+            padding: var(--section-padding) !important;
+        }
+    }
+}
+
+.slider {
+    overflow: hidden;
+}
+
+.text-card[class$="-bg"]  {
+    &::before {
+        background-size: contain;
+        background-position: center;
+    }
+
+    @include mq.to(md) {
+        &::before {
+            bottom: -15px;
+            right: -15px;
+        }
+    }
+
+    @include mq.from(md) {
+        &::before {
+            top: -15px;
+            right: -15px;
+        }
+    }
+}
+
+.meeting-card {
+    .card {
+        &__subtitle {
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        &__title {
+            margin-bottom: 15px;
+        }
+
+        &__body {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding-top: 0;
+        }
+
+        @include mq.to(md) {
+            &__header {
+                padding: 20px 20px 0;
+            }
+        }
+
+        @include mq.from(md) {
+            &__header {
+                padding: 40px 40px 0;
+            }
+        }
+    }
+
+    .list-item {
+        display: flex;
+        gap: 10px;
+
+        &__icon {
+            width: 20px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+    }
+
+    .modal & {
+        min-width: 540px;
+        max-width: 640px;
+    }
+
+    .modal &__media {
+        img {
+            border-top-right-radius: 0;
+        }
+    }
+}
+
+.pack-card {
+    padding: 20px;
+    justify-content: space-between;
+
+    .col {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 50%;
+
+        &:last-child {
+            width: 30%;
+            text-align: right;
+        }
+    }
+}
 
 #about {
     .text-card {
-        padding-top: 50%;
+        @include mq.to(md) {
+            padding-bottom: 40%;
+        }
+        
+        @include mq.from(md) {
+            padding-top: 50%;
 
-        &::before {
-            width: 50%;
-            height: 60%;
+            &::before {
+                width: 50%;
+                height: 60%;
+            }
         }
     }
 }
@@ -56,6 +211,26 @@ $static-url: 'https://static.sayes.ru/images/speaking-club';
     --description-max-width: 640px;
 }
 
+#schedule {
+    .slider {
+        @include mq.to(md) {
+            margin-left: -20px;
+            margin-right: -20px;
+            padding: 0px 15px;
+        }
+    }
+}
+
+#testimonials {
+    .slider {
+        @include mq.to(md) {
+            margin-left: -10px;
+            margin-right: -10px;
+            padding: 0px 10px;
+        }
+    }
+}
+
 #video {
     .video__media {
         aspect-ratio: 16 / 9;
@@ -85,67 +260,6 @@ $static-url: 'https://static.sayes.ru/images/speaking-club';
 #payment-modal {
     .tab {
         cursor: default;
-    }
-}
-
-.hero {
-    height: 560px;
-    background-image: url('#{$static-url}/hero.jpg');
-}
-
-.text-card[class$="-bg"]  {
-    &::before {
-        top: -15px;
-        right: -15px;
-        background-size: contain;
-        background-position: center;
-    }
-}
-
-.meeting-card {
-    .card {
-        &__header{
-            padding: 40px 40px 0;
-        }
-
-        &__subtitle {
-            margin-top: 15px;
-            margin-bottom: 5px;
-        }
-
-        &__title {
-            margin-bottom: 15px;
-        }
-
-        &__body {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            padding-top: 0;
-        }
-    }
-
-    .list-item {
-        display: flex;
-        gap: 10px;
-
-        &__icon {
-            width: 20px;
-            height: 20px;
-            background-size: contain;
-            background-repeat: no-repeat;
-        }
-    }
-
-    .modal & {
-        min-width: 540px;
-        max-width: 640px;
-    }
-
-    .modal &__media {
-        img {
-            border-top-right-radius: 0;
-        }
     }
 }
 

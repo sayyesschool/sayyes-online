@@ -1,19 +1,19 @@
 import { Button, Item } from 'shared/custom-components';
 
-export default function MeetingComponent({ meeting, onRegister }) {
+export default function Meeting({ meeting, onRegister }) {
     return (
         <div className="flex-column gap-l">
             <div className="meeting-card card">
-                <div className="card__media">
+                {/* <div className="card__media">
                     <img src={meeting.thumbnailUrl} alt="" />
-                </div>
+                </div> */}
 
                 <div className="card__header">
                     <div className="flex align-center justify-between gap-xs">
                         <p className="card__subtitle">{meeting.datetime}</p>
 
                         <div className="tags">
-                            <span className="tag">{meeting.levelLabel}</span>
+                            <span className="tag tag--outlined">{meeting.levelLabel}</span>
 
                             <span
                                 className={`tag tag--${meeting.online ? 'yellow' : 'purple'}`}

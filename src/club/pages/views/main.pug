@@ -40,7 +40,7 @@ block main
                 span.yellow практикуйте английский онлайн, 
                 |  выбирая нужное вам!
 
-            button.btn.btn--yellow.mt-xxl(data-scroll-to="packages") Прокачать английский!
+            button.btn.btn--yellow.mt-xxl(data-scroll-to="#packages") Прокачать английский!
 
         div.hero__image
             img.image(src="https://static.sayes.ru/images/speaking-club/hero-image.png" alt="")
@@ -80,8 +80,8 @@ block main
             for meeting in meetings
                 +slide
                     div.meeting-card.card.card--sm
-                        div.card__media
-                            img(src=meeting.thumbnailUrl alt="")
+                        //- div.card__media
+                        //-     img(src=meeting.thumbnailUrl alt="")
                         
                         div.card__header
                             div.tags
@@ -130,8 +130,8 @@ block main
                 )
 
     +section('Тарифы')#packages
-        div.grid.grid-2
-            div.text-card.card.card--purple.flex-column.align-center.justify-center.gap-xl
+        div.grid.grid-1.grid-2-md
+            div.text-card.card.card--purple.flex-column.align-center.justify-center.gap-xl.text--center
                 h3.heading-2.m-none Пробное посещение разговорного клуба
 
                 p.flex-column.align-center.gap-m
@@ -209,14 +209,5 @@ block main
 
     +modal#meeting-modal
         div#meeting-view
-
-    //- +modal('Задать вопрос')(data-component="Modal")#contact-modal
-    //-     form.form(data-component="Form")
-    //-         input.input(type="text" placeholder="Имя")
-    //-         input.input(type="email" placeholder="Email")
-    //-         input.input(type="tel" placeholder="Телефон")
-    //-         textarea.textarea(placeholder="Ваш вопрос")
-
-    //-         button.btn.btn--full(type="submit") Отправить
 
     +modal(data-component="VideoModal")#video-modal

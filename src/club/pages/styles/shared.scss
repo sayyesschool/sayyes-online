@@ -1,3 +1,5 @@
+@use 'mq';
+
 body {
     padding-top: 65px;
 }
@@ -12,6 +14,41 @@ body {
 .footer {
     --footer-background-color: transparent;
     --footer-padding: 20px 60px;
+}
+
+.modal {
+    --surface-max-height: calc(100dvh - 40px);
+
+    &__surface {
+        background-color: unset;
+        border-radius: unset;
+    }
+    
+    &__body {
+        max-height: inherit;
+        border-radius: 30px;
+        background-color: #f8f0ee;
+        overflow: hidden;
+    }
+    
+    &__content {
+        max-height: inherit;
+        overflow: auto;
+    }
+
+    @include mq.to(md) {
+        .tabs {
+            display: none;
+        }
+    }
+}
+
+.tab {
+    gap: 8px;
+
+    .icon {
+        font-size: 125%;
+    }
 }
 
 .article {
