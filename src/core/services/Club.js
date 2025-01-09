@@ -22,37 +22,6 @@ const emailTemplates = {
     MEMBERSHIP_PURCHASE: 6476579
 };
 
-export const packs = [
-    {
-        id: '21dec724-4a40-48ef-9cf7-89f0fb3c4d07',
-        duration: [2, 'week'],
-        price: 590,
-        priceWithoutDiscount: 590,
-        visits: 1
-    },
-    {
-        id: '3f7eb11c-12c5-4631-af4a-39855ca17810',
-        duration: [1, 'month'],
-        price: 2990,
-        priceWithoutDiscount: 3990,
-        visits: 4
-    },
-    {
-        id: '3d678c9b-632d-492a-aaad-e1ced4f35255',
-        duration: [3, 'month'],
-        price: 4990,
-        priceWithoutDiscount: 6990,
-        visits: 8
-    },
-    {
-        id: '8012db3e-b720-48ea-95a9-ba42772da33d',
-        duration: [6, 'month'],
-        price: 7990,
-        priceWithoutDiscount: 9990,
-        visits: 16
-    }
-];
-
 const registrationStatusToAction = {
     approved: 'approve',
     canceled: 'cancel',
@@ -66,24 +35,32 @@ const durationLabels = {
 
 export default ({
     lib: { zoom },
-    models: { Meeting, Membership, Payment, Registration, Request, User },
+    models: { Data, Meeting, Membership, Payment, Registration, Request, User },
     services: { Auth, Checkout, Mail, Newsletter }
 }) => ({
     emailTemplates,
+    packs: null,
 
     async getPacks() {
-        return packs.map(pack => ({
+        if (this.packs) return this.packs;
+
+        const packs = await Data.get('club.packs');
+
+        this.packs = packs.map(pack => ({
             ...pack,
             title: `${pack.visits} ${getWordEnding('заняти', pack.visits, ['е', 'я', 'й'])}`,
             description: `Срок действия ${pack.duration[0]} ${getWordEnding('', pack.duration[0], durationLabels[pack.duration[1]])}`,
             discount: pack.priceWithoutDiscount - pack.price,
             pricePerMonth: pack.duration && Math.round(pack.price / pack.duration[0])
         }));
+
+        return this.packs;
     },
 
     async getPack(arg) {
         if (typeof arg === 'object' && arg.id) return arg;
 
+        const packs = await this.getPacks();
         const pack = packs.find(pack => pack.id === arg);
 
         if (!pack) throw {
@@ -336,13 +313,11 @@ export default ({
     },
 
     async createMeeting(data, ...args) {
-        const meetingData = {};
-
         if (data.online) {
-            const zoomMeetingData = await zoom.meetings.create(Object.assign(data, {
+            const zoomMeetingData = await zoom.meetings.create({
                 topic: data.title,
-                agenda: data.description,
                 start_time: data.date,
+                duration: data.duration,
                 timezone: undefined,
                 settings: {
                     join_before_host: false,
@@ -351,10 +326,17 @@ export default ({
                     close_registration: true,
                     registrants_email_notification: false
                 }
-            }));
+            });
 
-            Object.assign(meetingData, zoomMeetingData);
+            Object.assign(data, {
+                zoomId: zoomMeetingData.id,
+                startUrl: zoomMeetingData.start_url,
+                joinUrl: zoomMeetingData.join_url,
+                password: zoomMeetingData.password
+            });
         }
+
+        console.log('Data', data);
 
         const meeting = await Meeting.create(data, ...args);
 
@@ -413,13 +395,19 @@ export default ({
         return meeting;
     },
 
-    async deleteMeeting(id, ...args) {
-        const meeting = await Meeting.findByIdAndDelete(id, ...args);
+    async deleteMeeting($meeting) {
+        const meeting = this.getMeeting($meeting).populate('registrations');
 
-        if (meeting.hasRegistrants || meeting.hasParticipants) throw {
+        if (meeting.hasRegistrants) throw {
             status: 400,
-            message: 'Невозможно удалить встречу, т.к. в ней есть зарегистрировавшиеся или участники.'
+            message: 'Невозможно удалить встречу, т.к. в ней есть зарегистрировавшиеся участники'
         };
+
+        if (meeting.zoomId) {
+            await zoom.meetings.update(meeting.zoomId);
+        }
+
+        return Meeting.findByIdAndDelete(meeting.id);
     },
 
     async registerForMeeting($user, $meeting, options = {
