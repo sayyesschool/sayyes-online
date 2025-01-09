@@ -27,7 +27,7 @@ context.middleware = {
     auth: authMiddleware
 };
 
-db.connect(config.MONGODB_URI);
+db.connect(config.DB_CONNECTION_STRING);
 
 const { authenticate, authorize, redirect } = authMiddleware;
 
