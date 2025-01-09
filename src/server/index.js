@@ -20,7 +20,7 @@ export default ({ config, db }, options) => {
 
     server.use(cors({
         // origin: '*',
-        origin: config.APP_DOMAIN,
+        origin: /sayyes\.(school|dev|local)$/,
         credentials: true
     }));
 
