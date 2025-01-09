@@ -17,10 +17,10 @@ import server from './server';
 const context = core(config);
 const authMiddleware = AuthMiddleware(context);
 
-const options = config.NODE_ENV === 'production' ? null : {
+const options = config.APP_ENV === 'local' ? {
     cert: readFileSync(config.SSL_CERT_PATH),
     key: readFileSync(config.SSL_KEY_PATH)
-};
+} : null;
 
 context.db = db;
 context.middleware = {
