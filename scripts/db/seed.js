@@ -11,6 +11,7 @@ const {
         Enrollment,
         Exercise,
         Course,
+        Data,
         Lexeme,
         Meeting,
         Membership,
@@ -105,6 +106,8 @@ await Membership.create(data.memberships.map(membership => ({
     ...membership,
     userId: learner.id
 })));
+
+await Data.create(data.data);
 
 console.log('DB seeded');
 
