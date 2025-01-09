@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 
 export const Teacher = new Schema({
-    props: {
+    data: {
         levels: { type: [String] },
         formats: { type: [String] },
         ages: { type: [String] }

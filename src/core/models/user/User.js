@@ -46,7 +46,7 @@ export const User = new Schema([Person, {
     },
     timezone: { type: String },
     note: { type: String, trim: true },
-    props: { type: Object, default: {} },
+    data: { type: Object, default: {} },
     activationToken: String,
     activationTokenExpiresAt: Date,
     resetPasswordToken: String,
