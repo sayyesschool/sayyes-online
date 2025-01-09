@@ -2,13 +2,7 @@ import { isObjectIdOrHexString } from 'mongoose';
 
 import { getWordEnding } from '@/shared/utils/format';
 
-const CLUB_EMAIL = 'club@sayyes.school';
 const CLUB_NAME = 'SAY YES Speaking Club';
-
-const FROM = {
-    email: CLUB_EMAIL,
-    name: CLUB_NAME
-};
 
 const emailTemplates = {
     MEMBER_REGISTRATION: 6476492,
@@ -34,10 +28,12 @@ const durationLabels = {
 };
 
 export default ({
+    config,
     lib: { zoom },
     models: { Data, Meeting, Membership, Payment, Registration, Request, User },
     services: { Auth, Checkout, Mail, Newsletter }
 }) => ({
+    email: `club@${config.APP_DOMAIN}`,
     emailTemplates,
     packs: null,
 
@@ -99,7 +95,10 @@ export default ({
                 name: user.fullname,
                 email: user.email
             },
-            from: FROM,
+            from: {
+                email: this.email,
+                name: CLUB_NAME
+            },
             templateId: emailTemplates.MEMBER_REGISTRATION,
             variables: {
                 firstname: user.firstname,
@@ -110,7 +109,7 @@ export default ({
 
         Mail.send({
             subject: 'Пользователь зарегистрировался в разговорном клубе',
-            to: CLUB_EMAIL,
+            to: this.email,
             html: `Имя: ${user.firstname}\nEmail: ${user.email}`
         });
 
