@@ -9,7 +9,7 @@ import Schedule from './Schedule';
 import Storage from './Storage';
 
 export default (config, lib, models) => {
-    const mail = Mail(lib.mailjet);
+    const mail = Mail(config, lib.mailjet);
     const newsletter = Newsletter(lib.mailjet);
     const checkout = Checkout({ config, models });
     const file = File();

@@ -1,8 +1,3 @@
-const FROM = {
-    email: 'info@sayyes.school',
-    name: 'SAY YES English School'
-};
-
 function resolveTo(to) {
     if (typeof to === 'string')
         return [{ email: to }];
@@ -14,9 +9,14 @@ function resolveTo(to) {
         return [];
 }
 
-export default mailClient => ({
-    send({ from = FROM, to, subject, text, html, templateId, variables }) {
-        return mailClient
+export default (config, client) => ({
+    defaultFrom: {
+        email: `info@${config.APP_DOMAIN}`,
+        name: 'SAY YES English School'
+    },
+
+    send({ from = this.defaultFrom, to, subject, text, html, templateId, variables }) {
+        return client
             .post('send', { version: 'v3.1' })
             .request({
                 Messages: [
@@ -43,13 +43,13 @@ export default mailClient => ({
         if (messages.length === 0)
             return Promise.resolve();
 
-        return mailClient
+        return client
             .post('send', { version: 'v3.1' })
             .request({
                 Messages: messages.map(message => ({
                     From: {
-                        Email: FROM.email,
-                        Name: FROM.name
+                        Email: this.defaultFrom.email,
+                        Name: this.defaultFrom.name
                     },
                     To: resolveTo(message.to).map(({ name: Name, email: Email }) => ({ Name, Email })),
                     Subject: message.subject,
