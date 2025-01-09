@@ -36,7 +36,7 @@ export default function MembershipsTable({ memberships, onEdit, onDelete }) {
                                     as={Link}
                                     to={`/learners/${membership.user.id}`}
                                     imageSrc={membership.user.imageUrl}
-                                    content={membership.user.fullname}
+                                    content={membership.user.fullname || membership.user.email}
                                 />
                             }
                         </Table.Cell>

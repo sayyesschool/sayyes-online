@@ -24,7 +24,7 @@ export default function MeetingsPage() {
             .then(() => setMeetingFormOpen(false));
     }, [actions]);
 
-    const sortedMeetings = meetings?.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+    const sortedMeetings = meetings?.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
     const filteredMeetings = sortedMeetings?.filter(filters[tab]);
 
     return (

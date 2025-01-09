@@ -56,24 +56,20 @@ export default function MeetingsTable({ meetings }) {
                         <Table.Cell numeric>
                             <Text>
                                 <Text
-                                    content={meeting.registrations.filter(r => r.status === 'pending').length}
+                                    content={meeting.registrations?.filter(r => r.status === 'pending').length ?? 0}
                                     variant="soft"
                                     title="Ожидают подтверждения"
                                 />
 
-                                ·
-
                                 <Text
-                                    content={meeting.registrations.filter(r => r.status === 'approved').length}
+                                    content={meeting.registrations?.filter(r => r.status === 'approved').length ?? 0}
                                     color="success"
                                     variant="soft"
                                     title="Подтверждено"
                                 />
 
-                                ·
-
                                 <Text
-                                    content={meeting.registrations.filter(r => r.status === 'canceled').length}
+                                    content={meeting.registrations?.filter(r => r.status === 'canceled').length ?? 0}
                                     color="danger"
                                     variant="soft"
                                     title="Отменено"

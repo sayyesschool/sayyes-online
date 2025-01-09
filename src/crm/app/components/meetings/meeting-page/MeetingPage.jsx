@@ -1,23 +1,20 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 
 import ConfirmButton from 'shared/components/confirm-button';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useMeeting } from 'shared/hooks/meetings';
+import { useTeachers } from 'shared/hooks/teachers';
 import { Grid } from 'shared/ui-components';
 
 import MeetingDetails from 'crm/components/meetings/meeting-details';
 import MeetingRegistrations from 'crm/components/meetings/meeting-registrations';
-import { useStore } from 'crm/hooks/store';
 
 import styles from './MeetingPage.module.scss';
 
 export default function Meeting({ match, history }) {
-    const [meeting, actions] = useStore('meetings.single');
-    const [teachers] = useStore('teachers.list');
-
-    useEffect(() => {
-        actions.getMeeting(match.params.meetingId);
-    }, []);
+    const [meeting, actions] = useMeeting(match.params.meetingId);
+    const [teachers] = useTeachers();
 
     const handleUpdateMeeting = useCallback(data => {
         return actions.updateMeeting(meeting.id, data);
@@ -57,6 +54,7 @@ export default function Meeting({ match, history }) {
                     { content: 'Встречи', to: '/meetings' }
                 ]}
                 title={meeting.title}
+                description={meeting.zoomId && `Zoom ID: ${meeting.zoomId} / Пароль: ${meeting.password}`}
                 actions={
                     <ConfirmButton
                         icon="delete"

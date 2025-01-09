@@ -1,11 +1,10 @@
 import { useCallback, useRef } from 'react';
 
-import moment from 'moment';
-
 import ContentEditor from 'shared/components/content-editor';
 import ImageField from 'shared/components/image-field';
 import { levelOptions } from 'shared/data/common';
 import { useFormData } from 'shared/hooks/form';
+import datetime from 'shared/libs/datetime';
 import { Flex, Form, Grid, Surface } from 'shared/ui-components';
 
 const defaultMeeting = {
@@ -13,9 +12,10 @@ const defaultMeeting = {
     date: new Date(),
     level: undefined,
     duration: 60,
+    online: false,
     free: false,
     published: false,
-    image: '',
+    image: {},
     description: ''
 };
 
@@ -27,15 +27,16 @@ export default function MeetingForm({
     const { data, setData, handleChange } = useFormData({
         ...defaultMeeting,
         title: meeting.title,
-        date: moment(meeting.date).format('YYYY-MM-DDTHH:mm'),
+        date: datetime(meeting.date).format('YYYY-MM-DDTHH:mm'),
         hostId: meeting.hostId,
         level: meeting.level?.toString(),
         duration: meeting.duration,
+        online: meeting.online,
         free: meeting.free,
         published: meeting.published,
         image: meeting.image,
         description: meeting.description
-    });
+    }, [meeting.id]);
 
     const fileInputRef = useRef();
     const contentEditorRef = useRef();
@@ -52,7 +53,7 @@ export default function MeetingForm({
 
         onSubmit({
             ...data,
-            date: moment(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]'),
+            date: datetime(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]'),
             description: content
         });
 
@@ -96,6 +97,7 @@ export default function MeetingForm({
                             type="datetime-local"
                             name="date"
                             value={data.date}
+                            message={`Московское время: ${datetime(data.date).utc().add(3, 'hours').format('HH:mm')}`}
                             required
                             onChange={handleChange}
                         />
