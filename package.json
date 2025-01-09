@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "node ./scripts/build/prod.js",
-    "build:dev": "node --env-file=.env.dev ./scripts/build/dev.js",
+    "build:dev": "node --env-file=.env.dev ./scripts/build/prod.js",
     "build:local": "node --env-file=.env.local ./scripts/build/dev.js",
     "build:prod": "node --env-file=.env.prod ./scripts/build/prod.js",
     "cron": "node --import ./loaders/register.cjs ./src/cron.js",
@@ -23,6 +23,7 @@
     "lint": "eslint ./src",
     "prestart": "npm run build",
     "start": "node --import ./loaders/register.cjs ./src/main.js",
+    "start:dev": "node --import ./loaders/register.cjs ./src/main.js",
     "start:local": "nodemon --import ./loaders/register.cjs --env-file=.env.local ./src/main.js",
     "test": "mocha -r dotenv/config",
     "test-unit": "npm test -- -r ./test/helpers.js",
