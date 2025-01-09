@@ -33,7 +33,8 @@ export default ({
     models: { Data, Meeting, Membership, Payment, Registration, Request, User },
     services: { Auth, Checkout, Mail, Newsletter }
 }) => ({
-    email: `club@${config.EMAIL_DOMAIN}`,
+    clubUrl: `https://club.${config.APP_DOMAIN}`,
+    clubEmail: `club@${config.EMAIL_DOMAIN}`,
     emailTemplates,
     packs: null,
 
@@ -96,20 +97,22 @@ export default ({
                 email: user.email
             },
             from: {
-                email: this.email,
+                email: this.clubEmail,
                 name: CLUB_NAME
             },
             templateId: emailTemplates.MEMBER_REGISTRATION,
             variables: {
-                firstname: user.firstname,
+                name: user.firstname,
                 email: user.email,
-                password
+                password,
+                clubUrl: this.clubUrl,
+                clubEmail: this.clubEmail
             }
         });
 
         Mail.send({
             subject: 'Пользователь зарегистрировался в разговорном клубе',
-            to: this.email,
+            to: this.clubEmail,
             html: `Имя: ${user.firstname}\nEmail: ${user.email}`
         });
 
