@@ -17,7 +17,7 @@
     "db-migrate": "node --env-file=.env.local ./scripts/db/migrate.js",
     "db-seed": "node --import ./loaders/register.cjs --env-file=.env.local ./scripts/db/seed.js",
     "deploy:dev": "git push dev dev:master && npm run build:dev && npm run ftp:dev",
-    "deploy:prod": "git push prod master && npm run build:prod && npm run ftp:prod",
+    "deploy:prod": "git push prod master",
     "ftp:dev": "node --env-file=.env.dev ./scripts/deploy/ftp.js",
     "ftp:prod": "node --env-file=.env.prod ./scripts/deploy/ftp.js",
     "lint": "eslint ./src",
