@@ -7,9 +7,8 @@ import 'moment/locale/ru';
 
 moment.locale('ru');
 
-console.log(process.env);
-
-// const { version } = JSON.parse(readFileSync(path.resolve(process.cwd(), 'package.json'), 'utf8'));
+const ROOT_PATH = process.env.PWD || path.normalize(path.resolve(process.cwd()));
+const VERSION = process.env.npm_package_version || JSON.parse(readFileSync(path.resolve(ROOT_PATH, 'package.json')), 'utf8').version;
 
 export default {
     NODE_ENV: process.env.NODE_ENV,
@@ -17,10 +16,10 @@ export default {
     APP_DOMAIN: process.env.APP_DOMAIN,
     APP_ENV: process.env.APP_ENV,
     APP_IP: process.env.APP_IP || '127.0.0.1',
-    APP_PATH: path.normalize(process.env.APP_PATH || path.resolve(process.cwd(), 'src')),
+    APP_PATH: path.resolve(ROOT_PATH, 'src'),
     APP_PORT: process.env.APP_PORT || process.env.PORT || 3000,
     APP_URL: process.env.APP_URL,
-    APP_VERSION: '0.0.9',
+    APP_VERSION: VERSION,
 
     FACEBOOK_PIXEL_ID: '758563291240040',
 
