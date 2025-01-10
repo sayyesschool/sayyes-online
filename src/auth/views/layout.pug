@@ -15,6 +15,43 @@ append head
             flex-direction: column;
         }
 
+        .alert {
+            height: 48px;
+            width: fit-content;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: tomato;
+            color: white;
+            border-radius: 48px;
+            padding: 1rem;
+        }
+
+        .alert-info {
+            background-color: #007bff;
+        }
+
+        .alert-danger {
+            background-color: #dc3545;
+        }
+
+        .alert-success {
+            background-color: #28a745;
+        }
+
+        .flash {
+            position: fixed;
+            left: 50%;
+            top: 0;
+            transform: translate(-50%, -100%);
+            transition: transform 0.3s;
+        }
+
+        .flash.show {
+            transform: translate(-50%, 101%);
+        }
+
         main {
             display: flex;
             flex-direction: column;
@@ -45,6 +82,7 @@ block body
     main
         block main
 
+    script(src=`${STATIC_URL}/scripts/shared.js`)
     script.
         const { Modal } = window.ui;
 
@@ -52,10 +90,23 @@ block body
 
         document.querySelectorAll('.form').forEach(form => {
             form.addEventListener('submit', () => {
-                const submitButton = this.querySelector('button[type="submit"]');
+                const submitButton = form.querySelector('button[type="submit"]');
 
                 if (submitButton) {
+                    submitButton.classList.add('btn--loading');
                     submitButton.disabled = true;
                 }
             });
         });
+
+        setTimeout(() => {
+            document.querySelectorAll('.flash').forEach(flash => {
+                flash.classList.add('show');
+            });
+
+            setTimeout(() => {
+                document.querySelectorAll('.flash').forEach(flash => {
+                    flash.classList.remove('show');
+                });
+            }, 3000);
+        }, 500);
