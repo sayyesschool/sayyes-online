@@ -20,7 +20,7 @@ append scripts
         include ../scripts/main.js
 
 block header
-    +header()(link='/' logo='speaking-club_purple.svg' blurred)
+    +header()(link='/' logo='speaking-club_purple.svg' redirect=CLUB_URL blurred)
         div.header__buttons
             button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="#about") О клубе
             button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="#schedule") Расписание
