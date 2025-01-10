@@ -13,6 +13,8 @@ export default context => {
     router.route('/new')
         .get(controller.getNew);
 
+    router.get('/export', controller.export);
+
     router.route('/:requestId')
         .get(controller.getOne)
         .put(controller.update)

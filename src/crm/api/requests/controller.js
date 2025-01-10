@@ -1,3 +1,6 @@
+import { toCSV } from 'shared/libs/csv';
+import datetime from 'shared/libs/datetime';
+
 export default ({
     models: { Request, Learner }
 }) => ({
@@ -99,5 +102,41 @@ export default ({
                 });
             })
             .catch(next);
+    },
+
+    async export(req, res) {
+        const requests = await Request.find({
+            createdAt: {
+                $gte: req.query.from ?? datetime().utc().startOf('day').toDate(),
+                $lt: req.query.to ?? datetime().utc().endOf('day').toDate()
+            },
+            ...req.query
+        }).sort({ createdAt: 1 });
+
+        const data = requests.map(request => ({
+            'Описание': request.description,
+            'Дата': request.dateTimeString,
+            'Статус': request.status,
+            'Имя': request.contact?.name,
+            'Email': request.contact?.email,
+            'Телефон': request.contact?.phone,
+            'Уровень': request.data?.level,
+            'Цель': request.data?.goal,
+            'UTM Source': request.utm?.source,
+            'UTM Medium': request.utm?.medium,
+            'UTM Campaign': request.utm?.campaign,
+            'UTM Term': request.utm?.term
+        }));
+
+        const csv = toCSV(data);
+
+        if (!csv) throw {
+            code: 404,
+            message: 'Нет данных'
+        };
+
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', `attachment; filename="requests-${datetime().format('YYYY-MM-DD')}.csv"`);
+        res.send(Buffer.from(csv, 'utf8'));
     }
 });
