@@ -52,7 +52,7 @@ export default ({
             })
             .catch(error => {
                 req.flash('error', error.message || error);
-                res.redirect('back');
+                res.redirect('/');
             });
     },
 
@@ -83,7 +83,7 @@ export default ({
         Auth.sendResetPasswordToken(req.body.email)
             .then(() => {
                 req.flash('info', 'На указанный адрес было отправлено письмо для сброса пароля');
-                res.redirect('back');
+                res.redirect('/');
             })
             .catch(error => {
                 req.flash('error', error.message || error);
@@ -108,7 +108,7 @@ export default ({
         if (!password) {
             req.flash('error', 'Пароль не указан');
 
-            return res.redirect('back');
+            return res.redirect('/');
         }
 
         req.session.userId = undefined;
