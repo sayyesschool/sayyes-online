@@ -44,7 +44,7 @@ export default ({
                         payment_subject: 'service',
                         payment_mode: 'full_payment'
                     }],
-                    tax_system_code: '2' // TODO: Check this value, maybe it should be '6'
+                    tax_system_code: '6'
                 },
                 metadata,
                 ...override
