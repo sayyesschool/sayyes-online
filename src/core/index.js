@@ -1,15 +1,15 @@
-import Libs from './libs';
+import Clients from './clients';
 import Models from './models';
 import Services from './services';
 
 export default config => {
-    const libs = Libs(config);
+    const clients = Clients(config);
     const models = Models(config);
-    const services = Services(config, libs, models);
+    const services = Services(config, clients, models);
 
     return {
         config,
-        libs,
+        clients,
         models,
         services
     };

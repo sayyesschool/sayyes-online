@@ -8,9 +8,9 @@ import Newsletter from './Newsletter';
 import Schedule from './Schedule';
 import Storage from './Storage';
 
-export default (config, lib, models) => {
-    const mail = Mail(config, lib.mailjet);
-    const newsletter = Newsletter(lib.mailjet);
+export default (config, clients, models) => {
+    const mail = Mail(config, clients.mailjet);
+    const newsletter = Newsletter(clients.mailjet);
     const checkout = Checkout({ config, models });
     const file = File();
     const storage = new Storage({
@@ -42,7 +42,7 @@ export default (config, lib, models) => {
 
     const club = Club({
         config,
-        lib,
+        clients,
         models,
         services: {
             Auth: auth,

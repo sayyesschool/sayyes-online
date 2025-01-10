@@ -29,7 +29,7 @@ const durationLabels = {
 
 export default ({
     config,
-    lib: { zoom },
+    clients: { zoom },
     models: { Data, Meeting, Membership, Payment, Registration, Request, User },
     services: { Auth, Checkout, Mail, Newsletter }
 }) => ({
