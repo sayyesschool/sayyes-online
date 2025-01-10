@@ -114,6 +114,10 @@ export default function RequestsPage({ history }) {
         console.log(params);
     }, []);
 
+    const handleExport = useCallback(() => {
+        fetch('/api/requests/export');
+    }, []);
+
     if (!requests) return <LoadingIndicator />;
 
     return (
@@ -125,6 +129,17 @@ export default function RequestsPage({ history }) {
                         key: 'search',
                         icon: isSearchFormOpen ? 'search_off' : 'search',
                         onClick: toggleSearchFormOpen
+                    }
+                ]}
+                actions={[
+                    {
+                        key: 'export',
+                        as: 'a',
+                        href: '/api/requests/export',
+                        download: true,
+                        icon: 'file_export',
+                        content: 'Экспорт в CSV',
+                        variant: 'plain'
                     }
                 ]}
             />
