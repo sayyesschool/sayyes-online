@@ -37,7 +37,7 @@ export default function MeetingCard({
             sx={{ boxShadow: 'lg' }}
             {...props}
         >
-            <Card.Overflow sx={orientation === 'horizontal' ? { width: '25%' } : undefined}>
+            {/* <Card.Overflow sx={orientation === 'horizontal' ? { width: '25%' } : undefined}>
                 <Image
                     className={styles.image}
                     src={meeting.imageUrl}
@@ -46,7 +46,7 @@ export default function MeetingCard({
                     alt=""
                     sx={orientation === 'horizontal' ? { width: '100%' } : undefined}
                 />
-            </Card.Overflow>
+            </Card.Overflow> */}
 
             <Card.Content>
                 {meeting.isPending &&
