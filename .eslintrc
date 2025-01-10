@@ -81,6 +81,9 @@
                         "^@?\\w"
                     ],
                     [
+                        "^(config|db|core)(/.*|$)"
+                    ],
+                    [
                         "^(@/shared|shared)(/.*|$)",
                         "^\\u0000(@/shared|shared)"
                     ],
