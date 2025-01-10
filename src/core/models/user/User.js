@@ -88,6 +88,10 @@ User.virtual('isManager').get(function() {
     return this.role === UserRole.Manager;
 });
 
+User.virtual('isMember').get(function() {
+    return this.domains?.includes('club');
+});
+
 User.virtual('isTeacher').get(function() {
     return this.role === UserRole.Teacher;
 });
@@ -96,8 +100,6 @@ User.virtual('isTeacher').get(function() {
 
 User.methods.validatePassword = function(password) {
     if (!this.password) throw new Error('Необходимо сбросить пароль.');
-
-    console.log('validatePassword', password, this.password, bcrypt.compareSync(password, this.password));
 
     return bcrypt.compareSync(password, this.password);
 };
@@ -181,7 +183,8 @@ User.methods.toData = function() {
         role: this.role,
         permissions: this.permissions,
         isLearner: this.isLearner,
-        isTeacher: this.isTeacher
+        isTeacher: this.isTeacher,
+        isMember: this.isMember
     };
 };
 
