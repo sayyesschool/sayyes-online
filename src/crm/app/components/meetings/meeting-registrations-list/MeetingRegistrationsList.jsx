@@ -1,25 +1,21 @@
-import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import ConfirmButton from '@/shared/components/confirm-button/ConfirmButton';
+import ConfirmButton from '@/shared/components/confirm-button';
+import CopyButton from '@/shared/components/copy-button';
 import {
     IconButton,
     List,
     Text
 } from 'shared/ui-components';
 
-import UIContext from 'crm/contexts/ui';
-
 import styles from './MeetingRegistrationsList.module.scss';
 
-export default function MeetingRegistrationsList({ registrations, onConfirm, onCancel, onDelete }) {
-    const UI = useContext(UIContext);
-
-    function handleCopyButtonClick(value) {
-        navigator.clipboard.writeText(value);
-        UI.showNotification('Ссылка скопирована');
-    }
-
+export default function MeetingRegistrationsList({
+    registrations,
+    onConfirm,
+    onCancel,
+    onDelete
+}) {
     return (
         <List>
             {registrations?.map(registration =>
@@ -29,20 +25,20 @@ export default function MeetingRegistrationsList({ registrations, onConfirm, onC
                     icon={getRegistrationIcon(registration)}
                     content={
                         <Link to={`/learners/${registration.userId}`}>
-                            <Text type="body-md">{`${registration.registrant.firstname} ${registration.registrant.lastname}`}</Text>
-                            <Text type="body-sm">{registration.registrant.email}</Text>
+                            <Text type="body-md">{`${registration.user?.firstname} ${registration.user?.lastname}`}</Text>
+                            <Text type="body-sm">{registration.user?.email}</Text>
                         </Link>
                     }
                     end={<>
                         {registration.joinUrl &&
-                            <IconButton
+                            <CopyButton
                                 title="Копировать ссылку для входа"
                                 icon="link"
-                                onClick={() => handleCopyButtonClick(registration.joinUrl)}
+                                copyContent={registration.joinUrl}
                             />
                         }
 
-                        {registration.status !== 'confirmed' &&
+                        {registration.status !== 'approved' &&
                             <IconButton
                                 title="Подтвердить"
                                 icon="check"
@@ -54,7 +50,7 @@ export default function MeetingRegistrationsList({ registrations, onConfirm, onC
                             <IconButton
                                 title="Отменить"
                                 icon="cancel"
-                                onConfirm={() => onCancel(registration)}
+                                onClick={() => onCancel(registration)}
                             />
                         }
 

@@ -1,15 +1,14 @@
 import { useMemo } from 'react';
 
 import AppNotification from 'shared/components/app-notification';
+import UI from 'shared/contexts/ui';
+import { useNotificationActions } from 'shared/hooks/notification';
 import cn from 'shared/utils/classnames';
-
-import UI from 'cms/contexts/ui';
-import { useStore } from 'crm/hooks/store';
 
 import styles from './AppShell.module.scss';
 
 export default function AppShell({ store, theme, className, children, ...props }) {
-    const [{ hideNotification, showNotification }] = useStore('notification');
+    const { hideNotification, showNotification } = useNotificationActions();
 
     const contextValue = useMemo(() => ({
         showNotification,

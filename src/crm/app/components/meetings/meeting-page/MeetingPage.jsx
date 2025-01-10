@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 
+import CopyButton from '@/shared/components/copy-button';
 import ConfirmButton from 'shared/components/confirm-button';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
@@ -55,14 +56,23 @@ export default function Meeting({ match, history }) {
                 ]}
                 title={meeting.title}
                 description={meeting.zoomId && `Zoom ID: ${meeting.zoomId} / Пароль: ${meeting.password}`}
-                actions={
+                actions={[
+                    meeting.joinUrl && (
+                        <CopyButton
+                            key="copy"
+                            title="Копировать ссылку для входа"
+                            icon="link"
+                            copyContent={meeting.joinUrl}
+                        />
+                    ),
                     <ConfirmButton
+                        key="delete"
                         icon="delete"
                         title="Удалить"
                         message="Удалить встречу?"
                         onConfirm={handleDeleteMeeting}
                     />
-                }
+                ]}
             />
 
             <Page.Content>
