@@ -458,7 +458,7 @@ export default ({
                     thumbnailUrl: meeting.thumbnailUrl,
                     joinUrl: meeting.joinUrl
                 }
-            }).then(console.log);
+            });
         }
 
         return registration;
