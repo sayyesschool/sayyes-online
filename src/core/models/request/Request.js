@@ -1,5 +1,6 @@
-import moment from 'moment';
 import { Schema } from 'mongoose';
+
+import datetime from 'shared/libs/datetime';
 
 import { RequestChannel, RequestSource, RequestStatus } from './constants';
 
@@ -61,15 +62,15 @@ Request.virtual('url').get(function() {
 });
 
 Request.virtual('dateString').get(function() {
-    return moment(this.createdAt).format('DD.MM.YYYY');
+    return datetime(this.createdAt).format('DD.MM.YYYY');
 });
 
 Request.virtual('timeString').get(function() {
-    return moment(this.createdAt).format('H:mm');
+    return datetime(this.createdAt).format('H:mm');
 });
 
 Request.virtual('dateTimeString').get(function() {
-    return moment(this.createdAt).format('D MMM, H:mm');
+    return datetime(this.createdAt).format('D MMM H:mm');
 });
 
 Request.virtual('learner', {

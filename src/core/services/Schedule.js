@@ -1,4 +1,4 @@
-import moment from 'moment';
+import datetime from 'shared/libs/datetime';
 
 export default ({ models: {
     Lesson,
@@ -31,7 +31,7 @@ export default ({ models: {
     },
 
     async getAvailableRoom({ date, duration }) {
-        const endDate = moment(date).add(duration, 'minutes').toDate();
+        const endDate = datetime(date).add(duration, 'minutes').toDate();
 
         const availableRoom = await Room.findAvailable(date, endDate);
 

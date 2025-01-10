@@ -1,12 +1,13 @@
-import moment from 'moment';
 import { Schema } from 'mongoose';
+
+import datetime from 'shared/libs/datetime';
 
 import { LessonStatus, LessonType } from './constants';
 
 export const Lesson = new Schema({
     type: { type: String, enum: Object.values(LessonType) },
     status: { type: String, enum: Object.values(LessonStatus), default: LessonStatus.Scheduled },
-    date: { type: Date, set: value => moment(value).utc().format('YYYY-MM-DDTHH:mm:ss[Z]') },
+    date: { type: Date, set: value => datetime(value).utc().format('YYYY-MM-DDTHH:mm:ss[Z]') },
     duration: { type: Number, default: 60 },
     trial: { type: Boolean, default: false },
     free: { type: Boolean, default: false },

@@ -1,7 +1,5 @@
 import React from 'react';
 
-import moment from 'moment';
-
 import {
     Alert,
     Avatar,
@@ -14,6 +12,7 @@ import {
     Image,
     Text
 } from 'shared/components/ui';
+import datetime from 'shared/libs/datetime';
 import cn from 'shared/utils/classnames';
 
 import styles from './MeetingCard.module.scss';
@@ -26,8 +25,8 @@ export default function MeetingCard({
     onRegister,
     ...props
 }) {
-    const now = moment().utc();
-    const startsIn = moment(meeting.date).diff(now, 'minutes');
+    const now = datetime().utc();
+    const startsIn = datetime(meeting.date).diff(now, 'minutes');
 
     return (
         <Card

@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import moment from 'moment';
-
 import LessonsPillGroup from 'shared/components/lessons-pill-group';
 import UserSelect from 'shared/components/user-select';
 import { useFormData } from 'shared/hooks/form';
+import datetime from 'shared/libs/datetime';
 import { scheduleLessons } from 'shared/libs/enrollment';
 import { Form, Text } from 'shared/ui-components';
 
@@ -39,14 +38,17 @@ export default function LessonsForm({ enrollment, onSubmit, ...props }) {
     }, [lessons]);
 
     return (
-        <Form className="LessonsForm" onSubmit={handleSubmit} {...props}>
+        <Form
+            className="LessonsForm" onSubmit={handleSubmit}
+            {...props}
+        >
             <Text>{enrollment.scheduleLabel}</Text>
 
             <Form.Input
                 label="Начальная дата"
                 type="date"
                 name="startDate"
-                value={moment(data.startDate).format('YYYY-MM-DD')}
+                value={datetime(data.startDate).format('YYYY-MM-DD')}
                 onChange={handleChange}
             />
 

@@ -1,5 +1,6 @@
-import moment from 'moment';
 import { Schema } from 'mongoose';
+
+import datetime from 'shared/libs/datetime';
 
 export const Room = new Schema({
     name: { type: String, trim: true, alias: 'title' },
@@ -26,20 +27,20 @@ Room.virtual('lessonCount', {
 const GRACE_PERIOD_MIN = 10;
 
 Room.methods.isAvailable = function(start, end) {
-    const startMoment = moment(start).utc().add(-GRACE_PERIOD_MIN, 'minutes');
-    const endMoment = moment(end).utc().add(GRACE_PERIOD_MIN, 'minutes');
+    const startMoment = datetime(start).utc().add(-GRACE_PERIOD_MIN, 'minutes');
+    const endMoment = datetime(end).utc().add(GRACE_PERIOD_MIN, 'minutes');
 
     const lessons = this.lessons.filter(lesson =>
-        moment(lesson.endAt).isAfter(startMoment, 'minutes') &&
-        moment(lesson.startAt).isBefore(endMoment, 'minutes')
+        datetime(lesson.endAt).isAfter(startMoment, 'minutes') &&
+        datetime(lesson.startAt).isBefore(endMoment, 'minutes')
     );
 
     return lessons.length === 0;
 };
 
 Room.statics.findAvailable = async function(start, end) {
-    const startDate = moment(start).utc().subtract(3, 'hours').toDate();
-    const endDate = moment(end).utc().add(GRACE_PERIOD_MIN, 'minutes').toDate();
+    const startDate = datetime(start).utc().subtract(3, 'hours').toDate();
+    const endDate = datetime(end).utc().add(GRACE_PERIOD_MIN, 'minutes').toDate();
 
     const rooms = await this.find({ active: true })
         .populate({
@@ -57,7 +58,7 @@ Room.statics.findAvailable = async function(start, end) {
 };
 
 Room.statics.findWithLessonCountFor = function(amount = 0, unit = 'days') {
-    const today = moment().utc().startOf('day');
+    const today = datetime().utc().startOf('day');
     const before = today.clone().subtract(amount, unit);
 
     return this.find()

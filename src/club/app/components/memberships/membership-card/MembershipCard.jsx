@@ -1,21 +1,20 @@
-import moment from 'moment';
-
 import { Card, Flex, Heading, Icon, Step, Stepper, Text } from 'shared/components/ui';
 import { StatusColor, StatusIcon, StatusLabel } from 'shared/data/registration';
+import datetime from 'shared/libs/datetime';
 import { getWordEnding } from 'shared/utils/format';
 
 import styles from './MembershipCard.module.scss';
 
 export default function MembershipCard({ membership, ...props }) {
     const heading = `${membership.limit} ${getWordEnding('встреч', membership.limit, ['а', 'и', ''])}`;
-    const durationInWeeks = moment(membership.endDate).diff(membership.startDate, 'weeks');
+    const durationInWeeks = datetime(membership.endDate).diff(membership.startDate, 'weeks');
     const durationUnit = durationInWeeks >= 4 ? 'months' : 'weeks';
-    const durationValue = Math.round(moment(membership.endDate).diff(membership.startDate, durationUnit, durationUnit));
+    const durationValue = Math.round(datetime(membership.endDate).diff(membership.startDate, durationUnit, durationUnit));
     const durationPeriod = `${durationValue} ${durationUnit === 'months' ?
         getWordEnding('месяц', durationValue, ['', 'а', 'ев']) :
         getWordEnding('недел', durationValue, ['я', 'и', 'ь'])
     }`;
-    const durationFromTo = `${moment(membership.startDate).format('DD.MM.YYYY')} - ${moment(membership.endDate).format('DD.MM.YYYY')}`;
+    const durationFromTo = `${datetime(membership.startDate).format('DD.MM.YYYY')} - ${datetime(membership.endDate).format('DD.MM.YYYY')}`;
 
     return (
         <Card

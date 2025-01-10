@@ -1,8 +1,8 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import moment from 'moment';
 
-import { useFormData } from 'shared/hooks/form';
 import TimeZoneSelect from 'shared/components/timezone-select';
+import { useFormData } from 'shared/hooks/form';
+import datetime from 'shared/libs/datetime';
 import { Form } from 'shared/ui-components';
 
 const genderItems = [
@@ -27,7 +27,7 @@ const getDefaultData = ({
     phone,
     email,
     gender,
-    dob: dob ? moment(dob).format('YYYY-MM-DD') : '',
+    dob: dob ? datetime(dob).format('YYYY-MM-DD') : '',
     timezone,
     note
 });

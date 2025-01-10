@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import moment from 'moment';
 
 import { getMonthData } from 'shared/libs/calendar';
+import datetime from 'shared/libs/datetime';
 import { Button, Select, Text } from 'shared/ui-components';
 import classnames from 'shared/utils/classnames';
 
@@ -15,12 +15,12 @@ export default function MonthView({
     children
 }) {
     const todayRef = useRef(new Date());
-    const dateRef = useRef(moment(selectedDate));
+    const dateRef = useRef(datetime(selectedDate));
     const [year, setYear] = useState(dateRef.current.year());
     const [month, setMonth] = useState(dateRef.current.month());
 
     useEffect(() => {
-        dateRef.current = moment(selectedDate);
+        dateRef.current = datetime(selectedDate);
         setYear(dateRef.current.year());
         setMonth(dateRef.current.month());
     }, [selectedDate]);

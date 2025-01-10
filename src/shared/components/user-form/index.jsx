@@ -1,9 +1,8 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
 
-import moment from 'moment';
-
 import TimeZoneSelect from 'shared/components/timezone-select';
 import { useFormData } from 'shared/hooks/form';
+import datetime from 'shared/libs/datetime';
 import { Form, IconButton } from 'shared/ui-components';
 import { generatePassword } from 'shared/utils/password';
 
@@ -29,7 +28,7 @@ const getDefaultData = ({
     phone,
     email,
     gender,
-    dob: dob ? moment(dob).format('YYYY-MM-DD') : '',
+    dob: dob ? datetime(dob).format('YYYY-MM-DD') : '',
     timezone,
     note
 });

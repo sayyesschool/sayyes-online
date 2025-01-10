@@ -1,4 +1,4 @@
-import moment from 'moment';
+import datetime from 'shared/libs/datetime';
 
 import { teacher } from './users';
 
@@ -7,7 +7,7 @@ export default [
         title: 'Online Meeting',
         description: '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui magnam, veniam voluptatibus alias cumque libero quia ab. Odio quis quaerat cupiditate consequatur totam? Tempora ab iste commodi laboriosam, saepe officiis.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, quo distinctio! Natus vel voluptas nemo eum consectetur officiis, sit laboriosam sapiente delectus nihil illum est quaerat corporis commodi quo debitis!</p>',
         status: 'scheduled',
-        date: moment().add(1, 'day').toDate(),
+        date: datetime().add(1, 'day').toDate(),
         duration: 60,
         level: 0,
         capacity: 10,
@@ -24,7 +24,7 @@ export default [
         title: 'Offline Meeting',
         description: '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui magnam, veniam voluptatibus alias cumque libero quia ab. Odio quis quaerat cupiditate consequatur totam? Tempora ab iste commodi laboriosam, saepe officiis.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, quo distinctio! Natus vel voluptas nemo eum consectetur officiis, sit laboriosam sapiente delectus nihil illum est quaerat corporis commodi quo debitis!</p>',
         status: 'scheduled',
-        date: moment().add(2, 'day').toDate(),
+        date: datetime().add(2, 'day').toDate(),
         duration: 60,
         level: 1,
         capacity: 10,
@@ -41,7 +41,7 @@ export default [
         title: 'Free Meeting',
         description: '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui magnam, veniam voluptatibus alias cumque libero quia ab. Odio quis quaerat cupiditate consequatur totam? Tempora ab iste commodi laboriosam, saepe officiis.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, quo distinctio! Natus vel voluptas nemo eum consectetur officiis, sit laboriosam sapiente delectus nihil illum est quaerat corporis commodi quo debitis!</p>',
         status: 'scheduled',
-        date: moment().add(3, 'day').toDate(),
+        date: datetime().add(3, 'day').toDate(),
         duration: 60,
         level: 1,
         capacity: 10,
@@ -59,7 +59,7 @@ export default [
         title: 'Started Meeting',
         description: '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui magnam, veniam voluptatibus alias cumque libero quia ab. Odio quis quaerat cupiditate consequatur totam? Tempora ab iste commodi laboriosam, saepe officiis.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, quo distinctio! Natus vel voluptas nemo eum consectetur officiis, sit laboriosam sapiente delectus nihil illum est quaerat corporis commodi quo debitis!</p>',
         status: 'started',
-        date: moment().subtract(1, 'hour').toDate(),
+        date: datetime().subtract(1, 'hour').toDate(),
         duration: 60,
         level: 1,
         capacity: 10,
@@ -76,7 +76,7 @@ export default [
         title: 'Past Meeting',
         description: '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui magnam, veniam voluptatibus alias cumque libero quia ab. Odio quis quaerat cupiditate consequatur totam? Tempora ab iste commodi laboriosam, saepe officiis.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, quo distinctio! Natus vel voluptas nemo eum consectetur officiis, sit laboriosam sapiente delectus nihil illum est quaerat corporis commodi quo debitis!</p>',
         status: 'ended',
-        date: moment().subtract(1, 'day').toDate(),
+        date: datetime().subtract(1, 'day').toDate(),
         duration: 60,
         level: 1,
         capacity: 10,
@@ -93,7 +93,7 @@ export default [
         title: 'Canceled Meeting',
         description: '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui magnam, veniam voluptatibus alias cumque libero quia ab. Odio quis quaerat cupiditate consequatur totam? Tempora ab iste commodi laboriosam, saepe officiis.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, quo distinctio! Natus vel voluptas nemo eum consectetur officiis, sit laboriosam sapiente delectus nihil illum est quaerat corporis commodi quo debitis!</p>',
         status: 'canceled',
-        date: moment().add(5, 'day').toDate(),
+        date: datetime().add(5, 'day').toDate(),
         duration: 60,
         level: 1,
         capacity: 10,

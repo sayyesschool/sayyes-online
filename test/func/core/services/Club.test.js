@@ -1,8 +1,9 @@
 import { rejects } from 'node:assert/strict';
 
 import expect from 'expect';
-import moment from 'moment-timezone';
 import { model } from 'mongoose';
+
+import datetime from 'shared/libs/datetime';
 
 import MeetingSchema from '@/core/models/meeting/Meeting';
 import MembershipSchema from '@/core/models/membership/Membership';
@@ -25,7 +26,7 @@ const User = model('User', UserSchema);
 
 const Auth = AuthService({ models: { User } });
 const Club = ClubService({
-    lib: { zoom: Zoom },
+    clients: { zoom: Zoom },
     models: { Meeting, Registration, Membership, User },
     services: {
         Auth,
@@ -441,7 +442,7 @@ describe('ClubService', () => {
     describe('reminders', () => {
         describe('sendMeetingsReminders', () => {
             it('should send reminders for meetings in an hour', async () => {
-                const nextHour = moment().add(1, 'hour');
+                const nextHour = datetime().add(1, 'hour');
                 const meeting = await Meeting.create({
                     ...ZOOM_MEETING,
                     date: nextHour.toDate(),
@@ -456,7 +457,7 @@ describe('ClubService', () => {
             });
 
             it('should send reminders for meetings in a day', async () => {
-                const nextDay = moment().add(1, 'day');
+                const nextDay = datetime().add(1, 'day');
                 const meeting = await Meeting.create({
                     ...ZOOM_MEETING,
                     date: nextDay.toDate(),

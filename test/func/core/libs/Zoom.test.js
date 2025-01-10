@@ -1,7 +1,8 @@
 import { doesNotReject } from 'node:assert/strict';
 
 import expect from 'expect';
-import moment from 'moment-timezone';
+
+import datetime from 'shared/libs/datetime';
 
 import Zoom from '@/core/libs/zoom/index.js';
 
@@ -31,7 +32,7 @@ describe('Zoom client', () => {
             const meeting = await zoom.meetings.create({
                 topic: 'Test meeting',
                 type: 2,
-                start_time: moment().add(1, 'day').toISOString(),
+                start_time: datetime().add(1, 'day').toISOString(),
                 duration: 60,
                 timezone: 'Europe/Moscow',
                 password: '123456',

@@ -1,9 +1,9 @@
 import { useContext } from 'react';
-import moment from 'moment';
 
-import DataContext from 'shared/contexts/data';
 import DetailsList from 'shared/components/details-list';
 import PageSection from 'shared/components/page-section';
+import DataContext from 'shared/contexts/data';
+import datetime from 'shared/libs/datetime';
 
 export default function LearnerDetails({ learner }) {
     const data = useContext(DataContext);
@@ -26,7 +26,7 @@ export default function LearnerDetails({ learner }) {
                         key: 'altPhone',
                         icon: 'phone',
                         content: learner.altPhone,
-                        header: 'Дополнительный телефон',
+                        header: 'Дополнительный телефон'
                     },
                     {
                         key: 'email',
@@ -37,7 +37,7 @@ export default function LearnerDetails({ learner }) {
                     {
                         key: 'dob',
                         icon: 'cake',
-                        content: learner.dob ? moment(learner.dob).format('DD.MM.YYYY') : '[Не указана]',
+                        content: learner.dob ? datetime(learner.dob).format('DD.MM.YYYY') : '[Не указана]',
                         header: 'Дата рождения'
                     },
                     learner.address && {

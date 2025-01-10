@@ -1,5 +1,6 @@
 import { CronJob } from 'cron';
-import moment from 'moment';
+
+import datetime from 'shared/libs/datetime';
 
 import config from './config';
 import core from './core';
@@ -9,7 +10,7 @@ const { services: { Club } } = core(config);
 new CronJob({
     cronTime: '0 0 9-21 * * *',
     onTick: async () => {
-        const now = moment().utc().minutes(0).seconds(0).milliseconds(0);
+        const now = datetime().utc().minutes(0).seconds(0).milliseconds(0);
         const inADay = now.add(1, 'day');
         const inAnHour = now.add(1, 'hour');
 

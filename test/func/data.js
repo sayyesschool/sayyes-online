@@ -1,4 +1,4 @@
-import moment from 'moment';
+import datetime from 'shared/libs/datetime';
 
 import { models } from './context';
 
@@ -35,14 +35,59 @@ export const ZOOM_MEETING = {
     zoomId: '1234567890'
 };
 
+export const requests = [
+    {
+        status: 'new',
+        description: 'Тест',
+        contact: { name: 'Тест', email: 'test@sayyes.school', phone: '79999999999' },
+        channel: 'call',
+        source: 'google',
+        utm: {
+            source: 'google',
+            medium: 'cpc',
+            campaign: 'brand',
+            term: 'test',
+            content: 'test'
+        }
+    },
+    {
+        status: 'processing',
+        description: 'Тест',
+        contact: { name: 'Тест', email: 'test@sayyes.school', phone: '79999999999' },
+        channel: 'call',
+        source: 'google',
+        utm: {
+            source: 'google',
+            medium: 'cpc',
+            campaign: 'brand',
+            term: 'test',
+            content: 'test'
+        }
+    },
+    {
+        status: 'completed',
+        description: 'Тест',
+        contact: { name: 'Тест', email: 'test@sayyes.school', phone: '79999999999' },
+        channel: 'call',
+        source: 'google',
+        utm: {
+            source: 'google',
+            medium: 'cpc',
+            campaign: 'brand',
+            term: 'test',
+            content: 'test'
+        }
+    }
+];
+
 export const DEFAULT_MEMBERSHIP = {
     limit: 1,
-    endDate: moment().add(2, 'week').toDate()
+    endDate: datetime().add(2, 'week').toDate()
 };
 
 export const EXPIRED_MEMBERSHIP = {
     limit: 1,
-    endDate: moment().subtract(2, 'week').toDate()
+    endDate: datetime().subtract(2, 'week').toDate()
 };
 
 export const NEW_PAYMENT = {

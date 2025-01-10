@@ -1,5 +1,6 @@
-import moment from 'moment';
 import { Schema } from 'mongoose';
+
+import datetime from 'shared/libs/datetime';
 
 import { AgeGroup, Domain, Format, Level, TeacherType } from '../common';
 import Schedule from '../schedule';
@@ -145,7 +146,7 @@ Enrollment.virtual('comments', {
 
 Enrollment.methods.scheduleLessons = function(numberOfLessons, startDate = new Date()) {
     const lessons = [];
-    const date = moment(startDate);
+    const date = datetime(startDate);
     const schedule = this.schedule;
 
     for (let i = 0; i < numberOfLessons; i++) {
@@ -181,7 +182,7 @@ Enrollment.methods.rescheduleLessons = function(lessons, startDate = new Date())
         .map((lesson, i) => {
             const currentSchedule = this.schedule[i % this.schedule.length];
             const [hours, minutes] = currentSchedule.from?.split(':') ?? [];
-            const lessonDate = moment(lesson.date)
+            const lessonDate = datetime(lesson.date)
                 .weekday(currentSchedule.day)
                 .hours(hours)
                 .minutes(minutes)

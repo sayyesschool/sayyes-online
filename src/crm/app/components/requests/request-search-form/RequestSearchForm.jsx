@@ -1,8 +1,7 @@
 import { useCallback } from 'react';
 
-import moment from 'moment';
-
 import { useFormData } from 'shared/hooks/form';
+import datetime from 'shared/libs/datetime';
 import { Flex, Form } from 'shared/ui-components';
 
 export default function RequestSearchForm({ onSubmit, ...props }) {
@@ -48,7 +47,7 @@ export default function RequestSearchForm({ onSubmit, ...props }) {
                 <Form.Input
                     type="date"
                     name="createdAt"
-                    value={moment(data.createdAt).format('YYYY-MM-DD')}
+                    value={datetime(data.createdAt).format('YYYY-MM-DD')}
                     placeholder="Дата создания"
                     onChange={handleChange}
                 />

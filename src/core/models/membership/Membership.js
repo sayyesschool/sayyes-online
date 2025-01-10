@@ -1,5 +1,6 @@
-import moment from 'moment';
 import { Schema } from 'mongoose';
+
+import datetime from 'shared/libs/datetime';
 
 const Membership = new Schema({
     limit: { type: Number, default: 1 },
@@ -42,7 +43,7 @@ Membership.statics.getSoldByMonth = async function() {
 Membership.statics.getEndDate = function(startDate, pack) {
     if (!pack.duration) return;
 
-    return moment(startDate).add(...pack.duration).toDate();
+    return datetime(startDate).add(...pack.duration).toDate();
 };
 
 Membership.virtual('registrationsCount').get(function() {
@@ -54,7 +55,7 @@ Membership.virtual('isActive').get(function() {
 });
 
 Membership.virtual('isExpired').get(function() {
-    return this.endDate && moment().add(1, 'day').isAfter(this.endDate);
+    return this.endDate && datetime().add(1, 'day').isAfter(this.endDate);
 });
 
 Membership.virtual('isValid').get(function() {

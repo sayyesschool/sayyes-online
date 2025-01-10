@@ -1,5 +1,6 @@
-import moment from 'moment';
 import { Schema } from 'mongoose';
+
+import datetime from 'shared/libs/datetime';
 
 import { PaymentOperator, PaymentStatus, PaymentStatusIcon, PaymentStatusLabel } from './constants';
 import PaymentMethod from './PaymentMethod';
@@ -66,7 +67,7 @@ Payment.virtual('date').get(function() {
 
 Payment.virtual('dateLabel')
     .get(function() {
-        return moment(this.createdAt).format('DD.MM.YYYY');
+        return datetime(this.createdAt).format('DD.MM.YYYY');
     });
 
 Payment.virtual('statusLabel')

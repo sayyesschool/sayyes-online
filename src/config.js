@@ -1,11 +1,5 @@
 import path from 'node:path';
 
-import moment from 'moment-timezone';
-
-import 'moment/locale/ru';
-
-moment.locale('ru');
-
 const ROOT_PATH = process.env.PWD || path.normalize(path.resolve(process.cwd()));
 const VERSION = process.env.npm_package_version;
 

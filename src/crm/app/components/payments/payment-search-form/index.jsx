@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
-import moment from 'moment';
 
+import { operatorOptions, paymentMethodOptions } from 'shared/data/payment';
 import { useFormData } from 'shared/hooks/form';
+import datetime from 'shared/libs/datetime';
 import { Flex, Form } from 'shared/ui-components';
-import { paymentMethodOptions, operatorOptions } from 'shared/data/payment';
 
 export default function PaymentSearchForm({
     payment = {},
@@ -13,21 +13,24 @@ export default function PaymentSearchForm({
     const { data, handleChange } = useFormData({
         amount: 0,
         description: '',
-        date: moment(payment.date).format('YYYY-MM-DD'),
+        date: datetime(payment.date).format('YYYY-MM-DD'),
         paymentMethod: payment.method?.type,
         learner: payment.learner ? payment.learner.id : '',
         ...payment
     });
 
     const handleSubmit = useCallback(() => {
-        data.date = moment(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
+        data.date = datetime(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
         data.status = 'succeeded';
 
         onSubmit(data);
     }, [data]);
 
     return (
-        <Form className="PaymentSearchForm" onSubmit={handleSubmit} {...props}>
+        <Form
+            className="PaymentSearchForm" onSubmit={handleSubmit}
+            {...props}
+        >
             <Flex gap="smaller">
                 <Form.Input
                     type="number"

@@ -1,8 +1,7 @@
 import { useCallback } from 'react';
 
-import moment from 'moment';
-
 import { useFormData } from 'shared/hooks/form';
+import datetime from 'shared/libs/datetime';
 import { Checkbox, Form } from 'shared/ui-components';
 
 import { useStore } from 'crm/hooks/store';
@@ -25,7 +24,7 @@ const getFormData = ({
 }) => ({
     status,
     duration,
-    date: moment(date).format('YYYY-MM-DDTHH:mm'),
+    date: datetime(date).format('YYYY-MM-DDTHH:mm'),
     trial,
     free,
     note,
@@ -38,14 +37,17 @@ export default function LessonForm({ lesson = {}, onSubmit, ...props }) {
     const { data, handleChange } = useFormData(getFormData(lesson));
 
     const handleSubmit = useCallback(() => {
-        data.date = moment(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
+        data.date = datetime(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
         data.teacher = data.teacher || undefined;
 
         onSubmit(data);
     }, [data]);
 
     return (
-        <Form className="LessonForm" onSubmit={handleSubmit} {...props}>
+        <Form
+            className="LessonForm" onSubmit={handleSubmit}
+            {...props}
+        >
             <Form.Select
                 label="Статус"
                 name="status"

@@ -1,8 +1,8 @@
-import moment from 'moment';
+import datetime from 'shared/libs/datetime';
 
 export function scheduleLessons({ schedule, quantity = 0, duration, startDate = new Date() }) {
     const lessons = [];
-    const date = moment(startDate);
+    const date = datetime(startDate);
 
     for (let i = 0; i < quantity; i++) {
         const currentSchedule = schedule[i % schedule.length];

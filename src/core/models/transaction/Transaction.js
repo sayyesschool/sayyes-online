@@ -1,5 +1,6 @@
-import moment from 'moment';
 import { Schema } from 'mongoose';
+
+import datetime from 'shared/libs/datetime';
 
 export const Transaction = new Schema({
     type: { type: String, required: true, enum: ['debit', 'credit'] },
@@ -20,7 +21,7 @@ Transaction.virtual('value').get(function() {
 });
 
 Transaction.virtual('dateLabel').get(function() {
-    return moment(this.createdAt).format('DD.MM.YYYY');
+    return datetime(this.createdAt).format('DD.MM.YYYY');
 });
 
 Transaction.virtual('user', {

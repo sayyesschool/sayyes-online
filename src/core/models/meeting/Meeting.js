@@ -1,5 +1,6 @@
-import moment from 'moment';
 import { Schema } from 'mongoose';
+
+import datetime from 'shared/libs/datetime';
 
 import { Level } from '../common/constants';
 import Image from '../image';
@@ -56,15 +57,15 @@ Meeting.virtual('imageUrl').get(function() {
 });
 
 Meeting.virtual('datetime').get(function() {
-    return moment(this.date).tz('Europe/Moscow').format('D MMMM в H:mm МСК');
+    return datetime(this.date).tz('Europe/Moscow').format('D MMMM в H:mm МСК');
 });
 
 Meeting.virtual('dateLabel').get(function() {
-    return moment(this.date).tz('Europe/Moscow').format('D MMMM YYYY');
+    return datetime(this.date).tz('Europe/Moscow').format('D MMMM YYYY');
 });
 
 Meeting.virtual('timeLabel').get(function() {
-    return moment(this.date).tz('Europe/Moscow').format('H:mm МСК');
+    return datetime(this.date).tz('Europe/Moscow').format('H:mm МСК');
 });
 
 Meeting.virtual('durationLabel').get(function() {
@@ -80,7 +81,7 @@ Meeting.virtual('isFree').get(function() {
 });
 
 Meeting.virtual('isToday').get(function() {
-    return moment(this.date).isSame(new Date(), 'day');
+    return datetime(this.date).isSame(new Date(), 'day');
 });
 
 Meeting.virtual('isScheduled').get(function() {
@@ -133,7 +134,7 @@ Meeting.virtual('registrations', {
 });
 
 Meeting.methods.canUnregister = function() {
-    return this.status === MeetingStatus.Scheduled && moment().isBefore(this.date, 'hour');
+    return this.status === MeetingStatus.Scheduled && datetime().isBefore(this.date, 'hour');
 };
 
 export default Meeting;

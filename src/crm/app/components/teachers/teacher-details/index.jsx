@@ -1,9 +1,8 @@
-import moment from 'moment';
-
-import { Image } from 'shared/ui-components';
 import DetailsList from 'shared/components/details-list';
 import PageSection from 'shared/components/page-section';
 import { timezonesMap as timezones } from 'shared/data/timezones';
+import datetime from 'shared/libs/datetime';
+import { Image } from 'shared/ui-components';
 
 export default function TeacherDetails({ teacher }) {
     return (
@@ -33,7 +32,7 @@ export default function TeacherDetails({ teacher }) {
                         key: 'dob',
                         icon: 'cake',
                         header: 'Дата рождения',
-                        content: teacher.dob ? moment(teacher.dob).format('DD.MM.YYYY') : '[Не указана]',
+                        content: teacher.dob ? datetime(teacher.dob).format('DD.MM.YYYY') : '[Не указана]',
                         headerMedia: teacher.age
                     },
                     {

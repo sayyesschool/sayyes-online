@@ -1,5 +1,6 @@
-import moment from 'moment';
 import { v4 as uuid } from 'uuid';
+
+import datetime from 'shared/libs/datetime';
 
 import { learner } from './users';
 
@@ -15,7 +16,7 @@ export default [
         test: true,
         operator: 'yookassa',
         description: 'Payment description',
-        paidAt: moment().toDate(),
+        paidAt: datetime().toDate(),
         userId: learner._id,
         method : {
             id : '26166499-000f-5000-9000-18aebc48e592',

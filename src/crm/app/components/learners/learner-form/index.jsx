@@ -1,9 +1,8 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 
-import moment from 'moment';
-
 import TimeZoneSelect from 'shared/components/timezone-select';
 import { useForm } from 'shared/hooks/form';
+import datetime from 'shared/libs/datetime';
 import { Form } from 'shared/ui-components';
 
 const genderOptions = [
@@ -33,7 +32,7 @@ const getFormData = ({
     patronym,
     email,
     gender,
-    dob: dob ? moment(dob).format('YYYY-MM-DD') : '',
+    dob: dob ? datetime(dob).format('YYYY-MM-DD') : '',
     phone,
     altPhone,
     address,

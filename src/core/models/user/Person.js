@@ -1,5 +1,6 @@
-import moment from 'moment';
 import { Schema } from 'mongoose';
+
+import datetime from 'shared/libs/datetime';
 
 export const Gender = {
     Female: 'female',
@@ -71,11 +72,11 @@ Person.virtual('initials').get(function() {
 });
 
 Person.virtual('birthdate').get(function() {
-    return this.dob && moment(this.dob).format('DD.MM.YYYY');
+    return this.dob && datetime(this.dob).format('DD.MM.YYYY');
 });
 
 Person.virtual('age').get(function() {
-    return this.dob && moment().diff(this.dob, 'years');
+    return this.dob && datetime().diff(this.dob, 'years');
 });
 
 export default Person;

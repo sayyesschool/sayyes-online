@@ -1,6 +1,4 @@
-import moment from 'moment';
-
-moment.locale('ru');
+import datetime from 'shared/libs/datetime';
 
 describe('Enrollment', () => {
     describe('createLessons', () => {
@@ -26,7 +24,7 @@ describe('Enrollment', () => {
         const schedule = [{ day: 3 }];
 
         it('should return the correct date', () => {
-            const today = moment();
+            const today = datetime();
             const date = getStartDateForSchedule(today, schedule);
 
             expect(date.date()).toBe(18);
@@ -36,7 +34,7 @@ describe('Enrollment', () => {
 
 function createLessons(quantity) {
     const lessons = [];
-    const date = moment();
+    const date = datetime();
 
     for (let i = 0; i < quantity; i++) {
         const schedule = this.schedule[i % this.schedule.length];
@@ -57,7 +55,7 @@ function createLessons(quantity) {
 
 function getStartDateForSchedule(from, schedule) {
     for (const item of schedule) {
-        const date = moment().weekday(item.day);
+        const date = datetime().weekday(item.day);
 
         if (date.isBefore(from)) {
             continue;

@@ -1,6 +1,5 @@
-import moment from 'moment';
-
 import PageSection from 'shared/components/page-section';
+import datetime from 'shared/libs/datetime';
 import { Button, Icon, List, MenuButton, Text } from 'shared/ui-components';
 
 export default function RequestDetails({ request }) {
@@ -28,7 +27,7 @@ export default function RequestDetails({ request }) {
 
                 <List.Item
                     icon="event"
-                    header={moment(request.createdAt).format('DD.MM.YYYY, HH:mm')}
+                    header={datetime(request.createdAt).format('DD.MM.YYYY, HH:mm')}
                     content="Дата создания"
                 />
 
@@ -67,7 +66,7 @@ export default function RequestDetails({ request }) {
                 {request.contactAt &&
                     <List.Item
                         icon="event"
-                        header={moment(request.createdAt).format('DD.MM.YYYY, HH:mm')}
+                        header={datetime(request.createdAt).format('DD.MM.YYYY, HH:mm')}
                         content="Дата связи"
                     />
                 }

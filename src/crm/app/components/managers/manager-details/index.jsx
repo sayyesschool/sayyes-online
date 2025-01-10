@@ -1,9 +1,9 @@
 import { useContext } from 'react';
-import moment from 'moment';
 
-import DataContext from 'shared/contexts/data';
 import DetailsList from 'shared/components/details-list';
 import PageSection from 'shared/components/page-section';
+import DataContext from 'shared/contexts/data';
+import datetime from 'shared/libs/datetime';
 import { Image } from 'shared/ui-components';
 
 export default function ManagerDetails({ manager }) {
@@ -39,7 +39,7 @@ export default function ManagerDetails({ manager }) {
                     {
                         key: 'dob',
                         icon: 'cake',
-                        header: manager.dob ? moment(manager.dob).format('DD.MM.YYYY') : '[Не указана]',
+                        header: manager.dob ? datetime(manager.dob).format('DD.MM.YYYY') : '[Не указана]',
                         content: 'Дата рождения'
                     },
                     {
