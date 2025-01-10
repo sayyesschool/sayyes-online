@@ -25,7 +25,8 @@ export default ({
         password = generatePassword(),
         firstname,
         lastname,
-        role
+        role,
+        domains
     } = {}) {
         if (!email) throw {
             code: 403,
@@ -37,7 +38,8 @@ export default ({
             password,
             firstname,
             lastname,
-            role
+            role,
+            domains
         });
 
         onRegister?.(user, password);
