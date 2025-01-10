@@ -52,7 +52,7 @@ export default ({
             })
             .catch(error => {
                 req.flash('error', error.message || error);
-                res.redirect('/');
+                res.redirect('/' + (req.query.redirect ? `?redirect=${req.query.redirect}` : ''));
             });
     },
 
@@ -124,13 +124,13 @@ export default ({
     },
 
     redirect(req, res) {
-        if (!req.session.returnUrl)
+        if (!req.session.redirect)
             return res.redirect('/');
 
-        const returnUrl = req.session.returnUrl;
+        const redirect = req.session.redirect;
 
-        delete req.session.returnUrl;
+        delete req.session.redirect;
 
-        return res.redirect(returnUrl);
+        return res.redirect(redirect);
     }
 });
