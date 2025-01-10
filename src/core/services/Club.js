@@ -338,8 +338,6 @@ export default ({
             });
         }
 
-        console.log('Data', data);
-
         const meeting = await Meeting.create(data, ...args);
 
         return meeting.populate('host');
@@ -460,7 +458,7 @@ export default ({
                     thumbnailUrl: meeting.thumbnailUrl,
                     joinUrl: meeting.joinUrl
                 }
-            });
+            }).then(console.log);
         }
 
         return registration;
