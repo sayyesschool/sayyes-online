@@ -80,20 +80,12 @@ User.virtual('isAdmin').get(function() {
     return this.role === UserRole.Admin;
 });
 
-User.virtual('isEditor').get(function() {
-    return this.role === UserRole.Editor;
-});
-
 User.virtual('isLearner').get(function() {
     return this.role === UserRole.Learner;
 });
 
 User.virtual('isManager').get(function() {
     return this.role === UserRole.Manager;
-});
-
-User.virtual('isMember').get(function() {
-    return this.role === UserRole.Member;
 });
 
 User.virtual('isTeacher').get(function() {
@@ -104,6 +96,8 @@ User.virtual('isTeacher').get(function() {
 
 User.methods.validatePassword = function(password) {
     if (!this.password) throw new Error('Необходимо сбросить пароль.');
+
+    console.log('validatePassword', password, this.password, bcrypt.compareSync(password, this.password));
 
     return bcrypt.compareSync(password, this.password);
 };
@@ -192,15 +186,6 @@ User.methods.toData = function() {
 };
 
 /* Middleware */
-
-// Generate password
-User.pre('save', function(next) {
-    if (!this.isModified('password')) return next();
-
-    this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync());
-
-    next();
-});
 
 // Check email
 User.pre('save', function(next) {
