@@ -5,6 +5,7 @@ export const APP_DOMAIN = env.APP_DOMAIN;
 export const APP_ENV = env.APP_ENV;
 export const AUTH_URL = env.AUTH_URL;
 export const CLASS_URL = env.CLASS_URL;
+export const CLUB_URL = env.CLUB_URL;
 export const CMS_URL = env.CMS_URL;
 export const CRM_URL = env.CRM_URL;
 export const GOOGLE_ANALYTICS_ID = env.GOOGLE_ANALYTICS_ID;
