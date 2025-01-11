@@ -22,7 +22,7 @@ export default (domain, context) => {
     app.use(context.middleware.auth.authorizeDomain(domain));
     app.use('/api', api(context));
     app.use((req, res, next) => {
-        const twilio = context.libs.twilio;
+        const twilio = context.clients.twilio;
         const options = {
             identity: req.user.id,
             friendlyName: req.user.fullname,
