@@ -33,7 +33,7 @@ export default (Lesson, Mail) => ({
     },
 
     notifyParticipants() {
-        const inAnHour = moment().utc().minutes(0).seconds(0).milliseconds(0).add(1, 'hour');
+        const inAnHour = datetime().utc().minutes(0).seconds(0).milliseconds(0).add(1, 'hour');
 
         Lesson.find({
             date: inAnHour.toDate()
@@ -64,7 +64,7 @@ export default (Lesson, Mail) => ({
     },
 
     notifyTeachers() {
-        const inAnHour = moment().utc().minutes(0).seconds(0).milliseconds(0).add(1, 'hour');
+        const inAnHour = datetime().utc().minutes(0).seconds(0).milliseconds(0).add(1, 'hour');
 
         Lesson.find({
             date: inAnHour.toDate()
