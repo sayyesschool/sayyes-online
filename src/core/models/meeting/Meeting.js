@@ -65,7 +65,7 @@ Meeting.virtual('datetime').get(function() {
 });
 
 Meeting.virtual('dateLabel').get(function() {
-    return datetime(this.date).tz('Europe/Moscow').format('D MMMM YYYY');
+    return datetime(this.date).tz('Europe/Moscow').format('DD.MM.YYYY');
 });
 
 Meeting.virtual('timeLabel').get(function() {

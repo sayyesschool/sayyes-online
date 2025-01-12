@@ -52,7 +52,7 @@ Registration.virtual('isMissed').get(function() {
 });
 
 Registration.virtual('isResolved').get(function() {
-    return this.isAttended || this.isMissed;
+    return this.isDenied || this.isCanceled || this.isAttended || this.isMissed;
 });
 
 Registration.virtual('isFree').get(function() {
