@@ -58,4 +58,8 @@
     &#{selector.unify('#{&}--compact', '#{&}--plain')} &__header {
         padding: 8px 0;
     }
+
+    &--scrollable {
+        overflow: auto;
+    }
 }

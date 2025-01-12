@@ -11,6 +11,7 @@ export default function PageSection({
     header,
     compact,
     plain,
+    scrollable,
 
     children,
     className,
@@ -18,7 +19,8 @@ export default function PageSection({
 }) {
     const classNames = cn(className, 'PageSection', {
         'PageSection--compact': compact,
-        'PageSection--plain': plain
+        'PageSection--plain': plain,
+        'PageSection--scrollable': scrollable
     });
 
     return (
