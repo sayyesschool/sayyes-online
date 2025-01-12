@@ -4,4 +4,26 @@
     &--elevated {
         box-shadow: var(--joy-shadowRing, 0 0 #000), 0px 1px 2px 0px rgba(var(--joy-shadowChannel, 21 21 21) / var(--joy-shadowOpacity, 0.08));
     }
+
+    &--padding {
+        &-xs {
+            padding: 8px;
+        }
+
+        &-sm {
+            padding: 12px;
+        }
+
+        &-md {
+            padding: 16px;
+        }
+
+        &-lg {
+            padding: 20px;
+        }
+
+        &-xl {
+            padding: 24px;
+        }
+    }
 }
