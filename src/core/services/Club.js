@@ -581,7 +581,7 @@ export default ({
         const meeting = await this.getMeeting($meeting);
         const registration = await this.getRegistration($registration);
 
-        if (meeting.zoomId && registration.zoomId && data.status) {
+        if (meeting.zoomId && registration.zoomId && data.status in registrationStatusToAction) {
             await zoom.meetings.updateRegistrantStatus(meeting.zoomId, {
                 action: registrationStatusToAction[data.status],
                 registrants: [{
