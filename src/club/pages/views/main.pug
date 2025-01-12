@@ -73,37 +73,7 @@ block main
             'Не упустите возможность попрактиковать свой английский в кругу единомышленников — записывайтесь на ближайшую встречу прямо сейчас!' :
             'Ни одной встречи пока не запланировано.'
     )(color='yellow' padded)#schedule
-        +slider()(
-            noArrows=(meetings.length <= 3)
-            noPagination=(meetings.length <= 3)
-        ).meetings-slider
-            for meeting in meetings
-                +slide
-                    div.meeting-card.card.card--sm
-                        //- div.card__media
-                        //-     img(src=meeting.thumbnailUrl alt="")
-                        
-                        div.card__header
-                            div.tags
-                                span.tag.tag--outlined= meeting.levelLabel
-                                span.tag(class=`tag--${meeting.online ? 'yellow' : 'purple'}`)= meeting.online ? 'Онлайн' : 'Оффлайн'
-                            
-                            p.card__subtitle= meeting.datetime
-                            h3.card__title= meeting.title
-                        
-                        div.card__body
-                            ul.list.gap-xs
-                                if meeting.host
-                                    li.list-item
-                                        span.list-item__icon.teacher-icon
-                                        span.list-item__content= meeting.host.fullname
-
-                                li.list-item
-                                    span.list-item__icon.time-icon
-                                    span.list-item__content= meeting.durationLabel
-                        
-                        div.card__footer
-                            button.btn.btn--full.meeting-btn(data-meeting-id=`${meeting.id}`) Подробнее
+        div#calendar-island
 
     +section()(horizontal)#hosts
         +section-header('Разговорный клуб проводят ТОП преподаватели SAY YES!')

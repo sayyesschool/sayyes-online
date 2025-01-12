@@ -43,6 +43,7 @@ export function getWeekData(date, events) {
         data.weekday = dayDate.weekday();
         data.isToday = dayDate.isSame(today, 'date');
         data.label = `${dayDate.format('dd')}, ${dayDate.date()}`;
+        data.events = eventsByDate.get(dayDate.valueOf()) || [];
         data.eventsByHour = getEventsByHour(eventsByDate.get(dayDate.valueOf()));
 
         weekData[i] = data;

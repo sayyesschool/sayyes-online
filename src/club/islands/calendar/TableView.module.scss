@@ -1,0 +1,85 @@
+@use 'shared/styles/variables';
+
+$border-color: variables.$black;
+
+.root {
+    table {
+        width: 100%;
+        table-layout: fixed;
+        border: none;
+        border-collapse: collapse;
+        
+        thead {
+            th {
+                text-transform: capitalize;
+            }
+        }
+
+        tbody {
+            tr:last-child {
+                th, td {
+                    border-bottom: none;
+                }
+            }
+        }
+
+        th {
+            text-align: center;
+
+            &:first-of-type {
+                width: 64px;
+            }
+        }
+
+        th, td {
+            height: 48px;
+            border: 1px solid $border-color;
+            vertical-align: middle;
+            box-sizing: border-box;
+            position: relative;
+
+            &:first-child {
+                border-left: none;
+            }
+
+            &:last-child {
+                border-right: none;
+            }
+        }
+    }
+}
+
+.today {
+    background-color: variables.$black;
+    color: variables.$white;
+    border-radius: 8px;
+    padding: 4px 8px;
+}
+
+.event {
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: space-evenly;
+    padding: 0 4px;
+    border: none;
+    border-radius: 0;
+    background-color: variables.$primary-color;
+    color: variables.$white;
+}
+
+.title,
+.level {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.title {
+    font-size: 14px;
+}
+
+.level {
+    font-size: 12px;
+}
