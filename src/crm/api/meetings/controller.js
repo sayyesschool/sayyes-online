@@ -38,83 +38,66 @@ export default ({
     },
 
     async update(req, res, next) {
-        Club.updateMeeting(req.params.meetingId, req.body)
-            .then(meeting => {
-                res.json({
-                    ok: true,
-                    message: 'Встреча изменена',
-                    data: meeting
-                });
-            })
-            .catch(next);
+        const meeting = await Club.updateMeeting(req.params.meetingId, req.body);
+
+        res.json({
+            ok: true,
+            message: 'Встреча изменена',
+            data: meeting
+        });
     },
 
     async delete(req, res, next) {
-        Club.deleteMeeting(req.params.meetingId)
-            .then(() => {
-                res.json({
-                    ok: true,
-                    message: 'Встреча удалена',
-                    data: {
-                        id: req.params.meetingId
-                    }
-                });
-            })
-            .catch(next);
+        const meeting = await Club.deleteMeeting(req.params.meetingId);
+
+        res.json({
+            ok: true,
+            message: 'Встреча удалена',
+            data: {
+                id: meeting.id
+            }
+        });
     },
 
-    async addRegistration(req, res, next) {
-        User.findOne({ email: req.body.email }, 'firstname lastname email balance')
-            .then(user => {
-                if (req.body.paid) {
-                    return Club.registerForMeeting(user, req.params.meetingId).then(([meeting]) => meeting);
-                } else {
-                    return Club.addRegistration(user, req.params.meetingId);
-                }
-            }).then(meeting => {
-                const registration = meeting.registrations.slice(-1);
+    async createRegistration(req, res) {
+        const user = await User.findOne({ email: req.body.email }, 'firstname lastname email');
 
-                registration.meetingId = meeting.id;
+        const registration = await Club.registerForMeeting(user, req.params.meetingId, {
+            approve: true,
+            force: true
+        });
 
-                res.json({
-                    ok: true,
-                    message: 'Регистрация добавлена',
-                    data: registration
-                });
-            })
-            .catch(next);
+        res.json({
+            ok: true,
+            message: 'Регистрация создана',
+            data: registration
+        });
     },
 
-    async updateRegistration(req, res, next) {
-        Club.updateRegistration(req.params.meetingId, req.params.registrationId, req.body.action)
-            .then(meeting => {
-                const registration = meeting.registrations.find(r => r.id == req.params.registrationId);
+    async updateRegistration(req, res) {
+        const registration = await Club.updateRegistration(
+            req.params.meetingId,
+            req.params.registrationId,
+            req.body
+        );
 
-                registration.meetingId = req.params.meetingId;
-
-                res.json({
-                    ok: true,
-                    message: 'Регистрация изменена',
-                    data: registration
-                });
-            })
-            .catch(next);
+        res.json({
+            ok: true,
+            message: 'Регистрация изменена',
+            data: registration
+        });
     },
 
-    async removeRegistration(req, res, next) {
-        Club.removeRegistration(req.params.meetingId, req.params.registrationId)
-            .then(() => {
-                const registration = {
-                    id: req.params.registrationId,
-                    meetingId: req.params.meetingId
-                };
+    async deleteRegistration(req, res) {
+        const registration = await Club.deleteRegistration(
+            req.params.meetingId,
+            req.params.registrationId
+        );
 
-                res.json({
-                    ok: true,
-                    message: 'Регистрация удалена',
-                    data: registration
-                });
-            })
-            .catch(next);
+        res.json({
+            ok: true,
+            message: 'Регистрация удалена',
+            data: registration
+        });
     }
 });
