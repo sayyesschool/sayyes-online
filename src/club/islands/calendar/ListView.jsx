@@ -12,7 +12,7 @@ export default function ListView({
     const [activeDate, setActiveDate] = useState();
 
     useEffect(() => {
-        setActiveDate(data.find(date => date.isToday));
+        setActiveDate(data.find(date => date.isToday) ?? data[0]);
     }, [data]);
 
     return (
