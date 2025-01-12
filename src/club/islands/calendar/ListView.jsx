@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 
 import { Item } from 'shared/custom-components';
 import cn from 'shared/utils/classnames';
@@ -9,7 +9,11 @@ export default function ListView({
     data,
     onEventClick
 }) {
-    const [activeDate, setActiveDate] = useState(data.find(date => date.isToday));
+    const [activeDate, setActiveDate] = useState();
+
+    useEffect(() => {
+        setActiveDate(data.find(date => date.isToday));
+    }, [data]);
 
     return (
         <div className={styles.root}>

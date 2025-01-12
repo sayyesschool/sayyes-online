@@ -38,8 +38,26 @@ const events = meetings.map(meeting => {
     };
 });
 
-function handleEventClick(event) {
-    meetingIsland.render({ meeting: event });
+const state = {};
+
+function handleEventClick(meeting) {
+    state.meetingId = meeting.id;
+
+    meetingIsland.render({
+        meeting,
+        onRegister: () => {
+            state.meetingId = meeting.id;
+
+            meetingModal.close();
+
+            packagesSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+    });
+
+    meetingModal.on('closed', () => meetingIsland.destroy());
     meetingModal.open();
 }
 
@@ -48,10 +66,6 @@ calendarIsland.render({
     onEventClick: handleEventClick
 });
 
-// Modals
-
-const state = {};
-
 document.querySelectorAll('.pack-btn').forEach(button => {
     button.addEventListener('click', () => {
         const pack = packs.find(p => p.id === button.dataset.packId);
@@ -59,48 +73,10 @@ document.querySelectorAll('.pack-btn').forEach(button => {
         if (!pack) return;
 
         paymentIsland.render({ pack, meetingId: state.meetingId });
+
         paymentModal.on('closed', () => paymentIsland.destroy());
         paymentModal.open();
     });
-});
-
-document.querySelectorAll('.meeting-btn').forEach(button => {
-    button.addEventListener('click', () => {
-        const meeting = meetings.find(m => m.id === button.dataset.meetingId);
-
-        if (!meeting) return;
-
-        meetingIsland.render({
-            meeting,
-            onRegister: () => {
-                state.meetingId = meeting.id;
-
-                meetingModal.close();
-
-                packagesSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center'
-                });
-            }
-        });
-        meetingModal.on('close', () => paymentIsland.destroy());
-        meetingModal.open();
-    });
-});
-
-// Sliders
-
-new Slider('.meetings-slider', {
-    breakpoints: {
-        768: {
-            slidesPerView: 3,
-            slidesPerGroup: 3
-        },
-        360: {
-            slidesPerView: 1,
-            slidesPerGroup: 1
-        }
-    }
 });
 
 new Slider('.testimonials-slider', {

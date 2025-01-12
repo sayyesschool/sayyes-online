@@ -60,5 +60,3 @@ export default function Meeting({ meeting, onRegister }) {
         </div>
     );
 }
-
-;
