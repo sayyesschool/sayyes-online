@@ -1,7 +1,8 @@
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
 const ROOT_PATH = process.env.PWD || path.normalize(path.resolve(process.cwd()));
-const VERSION = process.env.npm_package_version;
+const VERSION = process.env.npm_package_version || readFileSync(path.resolve(ROOT_PATH, 'package.json'), 'utf8').version;
 
 export default {
     NODE_ENV: process.env.NODE_ENV,
