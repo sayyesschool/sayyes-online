@@ -16,6 +16,7 @@ export default function MonthView({
 }) {
     const todayRef = useRef(new Date());
     const dateRef = useRef(datetime(selectedDate));
+
     const [year, setYear] = useState(dateRef.current.year());
     const [month, setMonth] = useState(dateRef.current.month());
 
