@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import PersonChip from 'shared/components/person-chip';
 import StatusChip from 'shared/components/status-chip';
 import { RequestStatusLabel } from 'shared/data/request';
-import { Flex, IconButton, Table, Text } from 'shared/ui-components';
+import { Button, Flex, IconButton, Popover, Surface, Table, Text } from 'shared/ui-components';
 
 const columns = [
     { key: 'description', text: 'Описание' },
@@ -48,7 +48,7 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                         <Table.Cell>
                             <Flex column>
                                 <Text as="span">{request.dateString}</Text>
-                                <Text as="span" type="body-sm">{request.timeString}</Text>
+                                <Text as="span" type="body-xs">{request.timeString}</Text>
                             </Flex>
                         </Table.Cell>
 
@@ -107,7 +107,25 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                         </Table.Cell>
 
                         <Table.Cell>
-                            {request.utm ? 'Есть' : '—'}
+                            {request.utm ? (
+                                <Popover
+                                    trigger={
+                                        <Button
+                                            content="Посмотреть"
+                                            variant="plain"
+                                            size="small"
+                                        />
+                                    }
+                                >
+                                    <Surface padding="sm">
+                                        <Text>Source: {request.utm.source}</Text>
+                                        <Text>Medium: {request.utm.medium}</Text>
+                                        <Text>Campaign: {request.utm.campaign}</Text>
+                                        <Text>Term: {request.utm.term}</Text>
+                                        <Text>Content: {request.utm.content}</Text>
+                                    </Surface>
+                                </Popover>
+                            ) : '—'}
                         </Table.Cell>
 
                         <Table.Cell align="end">

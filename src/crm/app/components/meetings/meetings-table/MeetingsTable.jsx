@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 
 import {
     Chip,
+    Flex,
     Switch,
     Table,
     Text
@@ -33,7 +34,12 @@ export default function MeetingsTable({ meetings }) {
                             </Link>
                         </Table.Cell>
 
-                        <Table.Cell>{meeting.datetime}</Table.Cell>
+                        <Table.Cell>
+                            <Flex column>
+                                <Text as="span">{meeting.dateLabel}</Text>
+                                <Text as="span" type="body-xs">{meeting.timeLabel}</Text>
+                            </Flex>
+                        </Table.Cell>
 
                         <Table.Cell>
                             {meeting.host ?
@@ -43,12 +49,12 @@ export default function MeetingsTable({ meetings }) {
                                     content={meeting.host.fullname}
                                 />
                                 :
-                                '[Ведущий не назначен]'
+                                '—'
                             }
                         </Table.Cell>
 
                         <Table.Cell>
-                            {meeting.levelLabel || '[Уровень не назначен]'}
+                            {meeting.levelLabel || '—'}
                         </Table.Cell>
 
                         <Table.Cell>{meeting.online ? 'Онлайн' : 'Оффлайн'}</Table.Cell>

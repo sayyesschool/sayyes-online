@@ -30,8 +30,8 @@ export default function Meeting({ match, history }) {
         return actions.addRegistration(meeting.id, registration);
     }, [actions, meeting]);
 
-    const handleUpdateRegistration = useCallback((registration, action) => {
-        return actions.updateRegistration(meeting.id, registration.id, action);
+    const handleUpdateRegistration = useCallback((registration, data) => {
+        return actions.updateRegistration(meeting.id, registration.id, data);
     }, [actions, meeting]);
 
     const handleRemoveRegistration = useCallback(registration => {
@@ -87,7 +87,7 @@ export default function Meeting({ match, history }) {
 
                     <Grid.Item md={4}>
                         <MeetingRegistrations
-                            registrations={meeting.registrations}
+                            meeting={meeting}
                             onCreate={handleAddRegistration}
                             onUpdate={handleUpdateRegistration}
                             onDelete={handleRemoveRegistration}

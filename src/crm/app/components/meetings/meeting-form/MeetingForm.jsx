@@ -3,6 +3,7 @@ import { useCallback, useRef } from 'react';
 import ContentEditor from 'shared/components/content-editor';
 import ImageField from 'shared/components/image-field';
 import { levelOptions } from 'shared/data/common';
+import { meetingStatusOptions } from 'shared/data/meeting';
 import { useFormData } from 'shared/hooks/form';
 import datetime from 'shared/libs/datetime';
 import { Flex, Form, Grid, Surface } from 'shared/ui-components';
@@ -12,6 +13,7 @@ const defaultMeeting = {
     date: new Date(),
     level: undefined,
     duration: 60,
+    status: 'scheduled',
     online: false,
     free: false,
     published: false,
@@ -31,6 +33,7 @@ export default function MeetingForm({
         hostId: meeting.hostId,
         level: meeting.level?.toString(),
         duration: meeting.duration,
+        status: meeting.status,
         online: meeting.online,
         free: meeting.free,
         published: meeting.published,
@@ -80,7 +83,8 @@ export default function MeetingForm({
         >
             <Grid gap="m">
                 <Grid.Item
-                    lg={4} md={4}
+                    lg={4}
+                    md={4}
                     sm={12}
                 >
                     <Flex gap="s" column>
@@ -102,6 +106,15 @@ export default function MeetingForm({
                             onChange={handleChange}
                         />
 
+                        <Form.Input
+                            label="Продолжительность"
+                            type="number"
+                            name="duration"
+                            value={data.duration}
+                            required
+                            onChange={handleChange}
+                        />
+
                         <Form.Select
                             label="Ведущий"
                             name="hostId"
@@ -119,6 +132,14 @@ export default function MeetingForm({
                             name="level"
                             value={data.level}
                             options={levelOptions}
+                            onChange={handleChange}
+                        />
+
+                        <Form.Select
+                            label="Статус"
+                            name="status"
+                            value={data.status}
+                            options={meetingStatusOptions}
                             onChange={handleChange}
                         />
 

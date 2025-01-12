@@ -51,7 +51,11 @@ export default function MeetingsPage() {
                     onChange={(_, value) => setTab(value)}
                 />
 
-                <Page.Section variant="outlined" compact>
+                <Page.Section
+                    variant="outlined"
+                    compact
+                    scrollable
+                >
                     <MeetingsTable
                         meetings={filteredMeetings}
                     />

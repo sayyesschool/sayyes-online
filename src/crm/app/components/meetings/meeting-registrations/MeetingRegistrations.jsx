@@ -8,7 +8,7 @@ import MeetingRegistrationForm from 'crm/components/meetings/meeting-registratio
 import MeetingRegistrationsList from 'crm/components/meetings/meeting-registrations-list';
 
 export default function MeetingRegistrations({
-    registrations,
+    meeting,
     onCreate,
     onUpdate,
     onDelete
@@ -34,6 +34,7 @@ export default function MeetingRegistrations({
         });
     }, []);
 
+    const registrations = meeting?.registrations;
     const hasRegistrations = registrations?.length > 0;
 
     const filteredRegistrations = query ? registrations.filter(r => {
@@ -73,9 +74,9 @@ export default function MeetingRegistrations({
 
             {filteredRegistrations?.length > 0 &&
                 <MeetingRegistrationsList
+                    meeting={meeting}
                     registrations={filteredRegistrations}
-                    onConfirm={onUpdate}
-                    onCancel={onUpdate}
+                    onUpdate={onUpdate}
                     onDelete={onDelete}
                 />
             }

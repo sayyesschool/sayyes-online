@@ -149,7 +149,11 @@ export default function RequestsPage({ history }) {
                     onSubmit={handleSearch}
                 />
 
-                <Page.Section variant="outlined" compact>
+                <Page.Section
+                    variant="outlined"
+                    compact
+                    scrollable
+                >
                     <RequestsTable
                         requests={requests}
                         manager={user}
