@@ -54,11 +54,11 @@ export const addRegistration = createAction('ADD_MEETING_REGISTRATION', (id, dat
     }
 }));
 
-export const updateRegistration = createAction('UPDATE_MEETING_REGISTRATION', (meetingId, registrationId, action) => ({
+export const updateRegistration = createAction('UPDATE_MEETING_REGISTRATION', (meetingId, registrationId, data) => ({
     request: {
         method: 'put',
         path: `meetings/${meetingId}/registrations/${registrationId}`,
-        body: { action }
+        body: data
     }
 }));
 
@@ -143,18 +143,7 @@ export const meetingReducer = createReducer(null, {
         ...action.data
     }),
     [deleteMeeting]: (state, action) => null,
-    [addRegistration]: (state, action) => ({
-        ...state,
-        registrations: state.registrations.concat(action.data)
-    }),
-    [updateRegistration]: (state, action) => ({
-        ...state,
-        registrations: state.registrations.map(r => r.id === action.data.id ? action.data : r)
-    }),
-    [removeRegistration]: (state, action) => ({
-        ...state,
-        registrations: state.registrations.filter(r => r.id !== action.id.id)
-    }),
+
     [registerForMeeting]: (state, action) => ({
         ...state,
         ...action.meeting
@@ -162,6 +151,22 @@ export const meetingReducer = createReducer(null, {
     [unregisterFromMeeting]: (state, action) => ({
         ...state,
         ...action.meeting
+    }),
+
+    [addRegistration]: (state, action) => ({
+        ...state,
+        registrations: state.registrations.concat(action.data)
+    }),
+    [updateRegistration]: (state, action) => ({
+        ...state,
+        registrations: state.registrations.map(r => r.id !== action.data.id ? r : {
+            ...r,
+            ...action.data
+        })
+    }),
+    [removeRegistration]: (state, action) => ({
+        ...state,
+        registrations: state.registrations.filter(r => r.id !== action.id.id)
     })
 });
 
