@@ -41,6 +41,7 @@ await Membership.create(data.memberships);
 await Meeting.create(data.meetings);
 await Payment.create(data.payments);
 await Request.create(data.requests);
+await Registration.create(data.registrations);
 await Room.create(data.rooms);
 await User.create(data.users);
 await Vocabulary.create(data.vocabularies);

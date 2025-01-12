@@ -9,6 +9,7 @@ export { default as meetings } from './meetings';
 export { default as memberships } from './memberships';
 export { default as payments } from './payments';
 export { default as records } from './records';
+export { default as registrations } from './registrations';
 export { default as requests } from './requests';
 export { default as rooms } from './rooms';
 export { default as users } from './users';
