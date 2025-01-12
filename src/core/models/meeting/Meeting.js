@@ -10,8 +10,8 @@ import { LevelLabels, MeetingStatus } from './constants';
 export const Meeting = new Schema({
     title: { type: String, required: true, trim: true },
     description: { type: String, trim: true, default: '' },
-    date: { type: Date },
-    duration: { type: Number, default: 60 },
+    startDate: { type: Date, alias: 'date' },
+    endDate: { type: Date },
     capacity: { type: Number },
     level: {
         type: Number,
@@ -40,21 +40,25 @@ export const Meeting = new Schema({
 
 Meeting.statics.getScheduled = async function() {
     return Meeting.find({
-        date: { $gte: new Date() },
+        startDate: { $gte: new Date() },
         status: 'scheduled',
         published: true
     })
         .sort({ date: 1 })
-        .populate('host', 'firstname lastname avatarUrl');
+        .populate('host', 'firstname lastname image');
 };
 
 Meeting.virtual('url').get(function() {
     return `/meetings/${this.id}`;
 });
 
-Meeting.virtual('imageUrl').get(function() {
-    return this.image?.url;
-});
+Meeting.virtual('duration')
+    .get(function() {
+        return Math.abs(datetime(this.startDate).diff(this.endDate, 'minutes'));
+    })
+    .set(function(value) {
+        this.endDate = datetime(this.startDate).add(value, 'minutes').toDate();
+    });
 
 Meeting.virtual('datetime').get(function() {
     return datetime(this.date).tz('Europe/Moscow').format('D MMMM в H:mm МСК');
@@ -74,6 +78,10 @@ Meeting.virtual('durationLabel').get(function() {
 
 Meeting.virtual('levelLabel').get(function() {
     return LevelLabels[this.level] || 'Любой';
+});
+
+Meeting.virtual('imageUrl').get(function() {
+    return this.image?.url;
 });
 
 Meeting.virtual('isFree').get(function() {
