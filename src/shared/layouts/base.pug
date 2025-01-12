@@ -17,6 +17,9 @@ html(lang="ru")
             meta(name="description" content=description)
         if keywords
             meta(name="keywords" content=keywords)
+
+        if noIndex
+            meta(name="robots" content="noindex, nofollow")
         
         if title
             title= title + ` | ${titleBase || 'Say Yes'}`

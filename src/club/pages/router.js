@@ -33,6 +33,7 @@ export default ({
         res.render('pages/views/agreement', {
             id: 'agreement',
             title: 'Пользовательское соглашение',
+            noIndex: true,
             data
         })
     );
@@ -41,6 +42,7 @@ export default ({
         res.render('pages/views/offer', {
             id: 'offer',
             title: 'Публичная оферта',
+            noIndex: true,
             data
         })
     );
@@ -49,6 +51,7 @@ export default ({
         res.render('pages/views/policy', {
             id: 'policy',
             title: 'Политика конфиденциальности',
+            noIndex: true,
             data
         })
     );
@@ -57,6 +60,7 @@ export default ({
         res.render('pages/views/rules', {
             id: 'rules',
             title: 'Правила оказания услуг',
+            noIndex: true,
             data
         })
     );
@@ -65,6 +69,7 @@ export default ({
         res.render('pages/views/zoom', {
             id: 'zoom',
             title: 'Инструкция по пользованию Zoom',
+            noIndex: true,
             data
         })
     );
