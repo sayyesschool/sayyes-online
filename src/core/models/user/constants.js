@@ -6,9 +6,10 @@ export const UserRole = {
 };
 
 export const UserDomains = [
+    'class',
+    'club',
     'cms',
     'crm',
-    'club',
     'lk',
     'lms'
 ];
