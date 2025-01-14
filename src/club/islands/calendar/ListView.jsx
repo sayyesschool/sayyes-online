@@ -44,7 +44,7 @@ export default function ListView({
                         >
                             <div className="card__header">
                                 <div className="tags">
-                                    <span className="tag tag--outlined">{meeting.levelLabel}</span>
+                                    <span className="tag tag--outlined">{meeting.simpleLevelLabel}</span>
 
                                     <span
                                         className={`tag tag--${meeting.online ? 'yellow' : 'purple'}`}

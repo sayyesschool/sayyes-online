@@ -16,7 +16,7 @@ const views = {
 
 export default function Calendar({
     events,
-    view: defaultView = 'list',
+    view: defaultView = 'table',
     ...props
 }) {
     const dateRef = useRef(datetime());

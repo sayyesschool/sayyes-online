@@ -9,11 +9,11 @@ export default function Meeting({ meeting, onRegister }) {
                 </div> */}
 
                 <div className="card__header">
-                    <div className="flex align-center justify-between gap-xs">
+                    <div className="flex align-center justify-between gap-xs flex-wrap--reverse">
                         <p className="card__subtitle">{meeting.datetime}</p>
 
                         <div className="tags">
-                            <span className="tag tag--outlined">{meeting.levelLabel}</span>
+                            <span className="tag tag--outlined">{meeting.simpleLevelLabel}</span>
 
                             <span
                                 className={`tag tag--${meeting.online ? 'yellow' : 'purple'}`}

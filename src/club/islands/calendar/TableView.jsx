@@ -92,7 +92,7 @@ function Event({ event, onClick, ...props }) {
             </span>
 
             <span className={styles.level}>
-                {event.levelLabel}
+                {event.simpleLevelLabel}
             </span>
         </button>
     );
