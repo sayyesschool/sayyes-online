@@ -87,7 +87,7 @@ block main
 
         +section-media
             div.text-card.card
-                img(src="https://static.sayes.ru/images/speaking-club/speakers.png" alt="")
+                img.image(src="https://static.sayes.ru/images/speaking-club/speakers.png" alt="")
 
     +section()(color='white' horizontal)#video.video-section.section--yellow
         +section-header('Посмотрите, как проходят встречи нашего разговорного клуба')
@@ -100,7 +100,7 @@ block main
                 button.video__btn(
                     type="button"
                     data-modal-trigger="video-modal"
-                    data-embed-url="https://www.youtube.com/embed/jSfeDjvLxlI"
+                    data-video-url=`${STATIC_URL}/videos/speaking-club.mp4`
                 )
 
     +section('Тарифы')#packages

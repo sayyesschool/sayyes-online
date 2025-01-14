@@ -121,8 +121,10 @@ body {
     }
 
     .modal & {
-        min-width: 540px;
-        max-width: 640px;
+        @include mq.from(md) {
+            min-width: 540px;
+            max-width: 640px;
+        }
     }
 
     .modal &__media {
