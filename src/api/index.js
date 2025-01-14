@@ -21,9 +21,14 @@ export default (domain, context) => {
     api.use('/zoom', zoom(context));
 
     api.use((error, req, res, next) => {
-        console.log(error);
+        if (error instanceof Error) {
+            console.error(error);
+        }
 
-        res.status(500).send({ error: error.message || error });
+        res.status(error.status || 500).send({
+            ok: false,
+            error: typeof error === 'object' ? error.message : error
+        });
     });
 
     return vhost(`${domain}.${context.config.APP_DOMAIN}`, api);

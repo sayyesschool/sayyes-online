@@ -1,8 +1,9 @@
 import expect from 'expect';
 
-import request from '@/api/request';
+import request from 'api/request';
 
 import context from '../context';
+import { REQUEST } from '../data';
 
 import setup from './api';
 
@@ -19,17 +20,22 @@ describe('Public Request API', () => {
 
     describe('POST /', () => {
         it('creates a request', async () => {
-            const { body: { data } } = await api.post('/request').send({
-                description: 'Test',
-                channel: Request.Channel.Site,
-                source: Request.Source.Google
-            });
+            const { body: { data, error } } = await api.post('/request').send(REQUEST);
+
+            console.log(error);
 
             expect(data).toExist();
-            expect(data.description).toBe('Test');
+            expect(data.type).toBe(Request.Type.Call);
             expect(data.status).toBe(Request.Status.New);
             expect(data.channel).toBe(Request.Channel.Site);
             expect(data.source).toBe(Request.Source.Google);
+        });
+
+        it('adds a request to HH', async () => {
+            const { body: { data } } = await api.post('/request').send(REQUEST);
+
+            expect(data).toExist();
+            expect(data.hhid).toExist();
         });
     });
 });

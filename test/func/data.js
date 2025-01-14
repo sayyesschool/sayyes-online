@@ -35,23 +35,31 @@ export const ZOOM_MEETING = {
     zoomId: '1234567890'
 };
 
-export const requests = [
-    {
-        status: 'new',
-        description: 'Тест',
-        contact: { name: 'Тест', email: 'test@sayyes.school', phone: '79999999999' },
-        channel: 'call',
-        source: 'google',
-        utm: {
-            source: 'google',
-            medium: 'cpc',
-            campaign: 'brand',
-            term: 'test',
-            content: 'test'
-        }
+export const REQUEST = {
+    status: 'new',
+    type: 'call',
+    description: 'Тест',
+    contact: {
+        name: 'Тест',
+        email: 'olegpolyakov@outlook.com',
+        phone: '79999999999'
     },
+    channel: 'call',
+    source: 'google',
+    utm: {
+        source: 'google',
+        medium: 'cpc',
+        campaign: 'brand',
+        term: 'test',
+        content: 'test'
+    }
+};
+
+export const REQUESTS = [
+    REQUEST,
     {
         status: 'processing',
+        type: 'call',
         description: 'Тест',
         contact: { name: 'Тест', email: 'test@sayyes.school', phone: '79999999999' },
         channel: 'call',
@@ -66,6 +74,7 @@ export const requests = [
     },
     {
         status: 'completed',
+        type: 'call',
         description: 'Тест',
         contact: { name: 'Тест', email: 'test@sayyes.school', phone: '79999999999' },
         channel: 'call',

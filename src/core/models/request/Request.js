@@ -2,17 +2,28 @@ import { Schema } from 'mongoose';
 
 import datetime from 'shared/libs/datetime';
 
-import { RequestChannel, RequestSource, RequestStatus } from './constants';
+import {
+    RequestChannel,
+    RequestSource,
+    RequestStatus,
+    RequestType,
+    RequestTypeLabel
+} from './constants';
 
 export const Request = new Schema({
+    hhid: { type: String },
     status: {
         type: String,
         enum: Object.values(RequestStatus),
         default: RequestStatus.New
     },
+    type: {
+        type: String,
+        enum: Object.values(RequestType)
+    },
     description: {
         type: String,
-        default: 'Заявка на обучение'
+        default: ''
     },
     contact: {
         name: { type: String },
@@ -35,6 +46,8 @@ export const Request = new Schema({
         default: RequestSource.None
     },
     referrer: { type: String },
+    data: { type: Object, default: {} },
+    note: { type: String, trim: true, default: '' },
     utm: {
         source: { type: String },
         medium: { type: String },
@@ -42,8 +55,10 @@ export const Request = new Schema({
         term: { type: String },
         content: { type: String }
     },
-    data: { type: Object },
-    note: { type: String, trim: true, default: '' },
+    recaptcha: {
+        success: { type: Boolean },
+        score: { type: Number }
+    },
     learnerId: { type: Schema.Types.ObjectId },
     managerId: { type: Schema.Types.ObjectId },
     requestId: { type: Schema.Types.ObjectId },
@@ -51,18 +66,23 @@ export const Request = new Schema({
     updatedAt: { type: Date },
     processedAt: { type: Date },
     completedAt: { type: Date },
-    postponedUntil: { type: Date },
+    postponedAt: { type: Date },
     canceledAt: { type: Date }
 }, {
     timestamps: true
 });
 
 Request.statics.Channel = RequestChannel;
+Request.statics.Type = RequestType;
 Request.statics.Source = RequestSource;
 Request.statics.Status = RequestStatus;
 
 Request.virtual('url').get(function() {
     return `requests/${this.id}`;
+});
+
+Request.virtual('typeLabel').get(function() {
+    return RequestTypeLabel[this.type];
 });
 
 Request.virtual('dateString').get(function() {
@@ -92,6 +112,8 @@ Request.virtual('manager', {
 });
 
 Request.pre('save', function(next) {
+    console.log('Request.pre save');
+
     if (!this.isModified('status')) return next();
 
     if (this.status === RequestStatus.Processing && !this.processedAt) {
@@ -102,8 +124,8 @@ Request.pre('save', function(next) {
         this.completedAt = new Date();
     }
 
-    if (this.status === RequestStatus.Postponed && !this.postponedUntil) {
-        this.postponedUntil = new Date();
+    if (this.status === RequestStatus.Postponed && !this.postponedAt) {
+        this.postponedAt = new Date();
     }
 
     if (this.status === RequestStatus.Canceled && !this.canceledAt) {
