@@ -103,9 +103,9 @@ export default ({
         const requests = await Request.find(query).sort({ createdAt: -1 });
 
         const data = requests.map(request => ({
+            'Статус': request.status,
             'Описание': request.description,
             'Дата': request.dateTimeString,
-            'Статус': request.status,
             'Имя': request.contact?.name,
             'Email': request.contact?.email,
             'Телефон': request.contact?.phone,
