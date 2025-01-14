@@ -5,7 +5,7 @@ import datetime from 'shared/libs/datetime';
 import { Level } from '../common/constants';
 import Image from '../image';
 
-import { LevelLabels, MeetingStatus } from './constants';
+import { LevelLabels, MeetingStatus, SimpleLevelLabels } from './constants';
 
 export const Meeting = new Schema({
     title: { type: String, required: true, trim: true },
@@ -78,6 +78,10 @@ Meeting.virtual('durationLabel').get(function() {
 
 Meeting.virtual('levelLabel').get(function() {
     return LevelLabels[this.level] || 'Любой';
+});
+
+Meeting.virtual('simpleLevelLabel').get(function() {
+    return SimpleLevelLabels[this.level] || 'Любой';
 });
 
 Meeting.virtual('imageUrl').get(function() {

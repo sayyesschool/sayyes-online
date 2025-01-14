@@ -48,7 +48,11 @@ export const Request = new Schema({
     managerId: { type: Schema.Types.ObjectId },
     requestId: { type: Schema.Types.ObjectId },
     createdAt: { type: Date },
-    updatedAt: { type: Date }
+    updatedAt: { type: Date },
+    processedAt: { type: Date },
+    completedAt: { type: Date },
+    postponedUntil: { type: Date },
+    canceledAt: { type: Date }
 }, {
     timestamps: true
 });
@@ -85,6 +89,28 @@ Request.virtual('manager', {
     localField: 'managerId',
     foreignField: '_id',
     justOne: true
+});
+
+Request.pre('save', function(next) {
+    if (!this.isModified('status')) return next();
+
+    if (this.status === RequestStatus.Processing && !this.processedAt) {
+        this.processedAt = new Date();
+    }
+
+    if (this.status === RequestStatus.Completed && !this.completedAt) {
+        this.completedAt = new Date();
+    }
+
+    if (this.status === RequestStatus.Postponed && !this.postponedUntil) {
+        this.postponedUntil = new Date();
+    }
+
+    if (this.status === RequestStatus.Canceled && !this.canceledAt) {
+        this.canceledAt = new Date();
+    }
+
+    next();
 });
 
 export default Request;
