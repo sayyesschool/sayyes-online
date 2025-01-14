@@ -68,14 +68,14 @@ export default ({
             res.redirect(req.query.redirect);
         else if (!req.user)
             res.redirect(`//auth.${APP_DOMAIN}`);
-        else if (req.user.hasDomain('club') && !req.user.hasDomain('lms'))
-            res.redirect(`//club.${APP_DOMAIN}`);
         else if (req.user.hasDomain('crm'))
             res.redirect(`//crm.${APP_DOMAIN}`);
         else if (req.user.hasDomain('cms'))
             res.redirect(`//cms.${APP_DOMAIN}`);
         else if (req.user.hasDomain('lms'))
             res.redirect(`//lms.${APP_DOMAIN}`);
+        else if (req.user.hasDomain('club'))
+            res.redirect(`//club.${APP_DOMAIN}`);
         else
             next();
     }
