@@ -7,10 +7,10 @@ import { Button, Flex, IconButton, Popover, Surface, Table, Text } from 'shared/
 
 const columns = [
     { key: 'number', text: '№' },
+    { key: 'status', text: 'Статус' },
     { key: 'description', text: 'Описание' },
     { key: 'datetime', text: 'Дата и время' },
     { key: 'contact', text: 'Контакт' },
-    { key: 'status', text: 'Статус' },
     // { key: 'channel', text: 'Канал' },
     // { key: 'source', text: 'Источник' },
     { key: 'learner', text: 'Ученик' },
@@ -38,6 +38,14 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                 {requests.map((request, index) =>
                     <Table.Row key={request.id}>
                         <Table.Cell content={index + 1} />
+
+                        <Table.Cell>
+                            <StatusChip
+                                status={request.status}
+                                content={RequestStatusLabel[request.status]}
+                            />
+                        </Table.Cell>
+
                         <Table.Cell content={request.description} />
 
                         <Table.Cell>
@@ -67,13 +75,6 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                                     />
                                 }
                             </Flex>
-                        </Table.Cell>
-
-                        <Table.Cell>
-                            <StatusChip
-                                status={request.status}
-                                content={RequestStatusLabel[request.status]}
-                            />
                         </Table.Cell>
 
                         {/* <Table.Cell>
