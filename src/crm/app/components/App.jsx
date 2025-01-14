@@ -55,7 +55,7 @@ export default function App({ routes }) {
                 routes={availableRoutes.filter(route => !route.hidden)}
             />
 
-            <AppContent>
+            <AppContent full>
                 <Switch>
                     {availableRoutes.map(route =>
                         <Route
