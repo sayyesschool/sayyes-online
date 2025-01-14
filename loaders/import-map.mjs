@@ -3,12 +3,13 @@ const ROOT_PATH = process.cwd();
 const imports = {
     config: `${ROOT_PATH}/src/config.js`,
     db: `${ROOT_PATH}/src/db.js`,
-    core: `${ROOT_PATH}/src/core`,
-    auth: `${ROOT_PATH}/src/auth`,
-    club: `${ROOT_PATH}/src/club`,
-    cms: `${ROOT_PATH}/src/cms`,
-    crm: `${ROOT_PATH}/src/crm`,
-    lms: `${ROOT_PATH}/src/lms`,
+    api: `${ROOT_PATH}/src/api/`,
+    auth: `${ROOT_PATH}/src/auth/`,
+    core: `${ROOT_PATH}/src/core/`,
+    club: `${ROOT_PATH}/src/club/`,
+    cms: `${ROOT_PATH}/src/cms/`,
+    crm: `${ROOT_PATH}/src/crm/`,
+    lms: `${ROOT_PATH}/src/lms/`,
     shared: `${ROOT_PATH}/src/shared/`
 };
 
