@@ -24,7 +24,7 @@ export default function CheckoutWidget({ data, onLoad, onComplete, onError }) {
 
         const { onLoad, onComplete, onError } = callbackRefs.current;
 
-        http.post('/api/payments', dataRef.current)
+        http.post('/api/payments/create', dataRef.current)
             .then(res => {
                 const data = res.data;
                 const checkout = new window.YooMoneyCheckoutWidget({
