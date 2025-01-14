@@ -1,4 +1,4 @@
-import React from 'react';
+import { useCallback, useState } from 'react';
 
 import {
     Alert,
@@ -27,6 +27,14 @@ export default function MeetingCard({
 }) {
     const now = datetime().utc();
     const startsIn = datetime(meeting.date).diff(now, 'minutes');
+
+    const [isLoading, setLoading] = useState(false);
+
+    const handleRegister = useCallback(() => {
+        setLoading(true);
+
+        return onRegister?.(meeting).finally(() => setLoading(false));
+    }, [meeting, onRegister]);
 
     return (
         <Card
@@ -114,7 +122,9 @@ export default function MeetingCard({
                         <Button
                             content={meeting.isRegistered ? 'Отменить' : 'Записаться'}
                             variant={meeting.isRegistered ? 'outlined' : 'solid'}
-                            onClick={() => onRegister(meeting)}
+                            disabled={isLoading}
+                            loading={isLoading}
+                            onClick={handleRegister}
                         />
                     }
 
