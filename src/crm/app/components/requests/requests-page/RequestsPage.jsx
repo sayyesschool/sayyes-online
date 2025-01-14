@@ -111,13 +111,15 @@ export default function RequestsPage({ history }) {
     }, []);
 
     const handleSearchSubmit = useCallback(params => {
-        requestActions.getRequests(params);
         setSearchParams(params);
+
+        return requestActions.getRequests(params);
     }, [requestActions]);
 
     const handleSearchClear = useCallback(() => {
-        requestActions.getRequests();
         setSearchParams();
+
+        return requestActions.getRequests();
     }, [requestActions]);
 
     if (!requests) return <LoadingIndicator />;
