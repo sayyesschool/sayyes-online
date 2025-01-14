@@ -38,7 +38,7 @@ export default function MeetingRegistrationsList({
                             />
                         }
 
-                        {!registration.isResolved &&
+                        {registration.isPending &&
                             <IconButton
                                 title="Подтвердить"
                                 icon="check"
@@ -46,7 +46,7 @@ export default function MeetingRegistrationsList({
                             />
                         }
 
-                        {!registration.isResolved &&
+                        {registration.isPending &&
                             <IconButton
                                 title="Отменить"
                                 icon="cancel"
