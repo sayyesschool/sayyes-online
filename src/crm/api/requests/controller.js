@@ -4,114 +4,103 @@ import datetime from 'shared/libs/datetime';
 export default ({
     models: { Request, Learner }
 }) => ({
-    get: (req, res, next) => {
-        Request.find({ status: { $in: ['new', 'processing'] }, ...req.query })
-            .populate('learner', 'firstname lastname')
-            .populate('manager', 'firstname lastname')
-            .sort({ createdAt: 1 })
-            .then(requests => {
-                res.json({
-                    ok: true,
-                    data: requests
-                });
-            })
-            .catch(next);
-    },
+    async get(req, res) {
+        const query = getQuery(req);
 
-    getNew: (req, res, next) => {
-        const minAgo = new Date(Date.now() - 60000);
-
-        Request.find({
-            status: 'new',
-            createdAt: {
-                $gt: minAgo
-            }
+        const requests = await Request.find({
+            status: { $in: ['new', 'processing'] },
+            ...query
         })
-            .sort({ createdAt: 1 })
-            .then(requests => {
-                res.json({
-                    ok: true,
-                    message: requests.length > 0 ? (requests.length === 1 ? 'Новая заявка' : 'Новые заявки') : undefined,
-                    data: requests
-                });
-            })
-            .catch(next);
-    },
-
-    getOne: (req, res, next) => {
-        Request.findById(req.params.requestId)
             .populate('learner', 'firstname lastname')
             .populate('manager', 'firstname lastname')
-            .then(request => {
-                return Learner.findOne({
-                    phone: request.contact.phone
-                }).then(learner => {
-                    return [request, learner];
-                });
-            })
-            .then(([request, learner]) => {
-                const data = request.toJSON({ getters: true, virtuals: true });
+            .sort({ createdAt: -1 });
 
-                data.existinglearner = learner;
-
-                res.json({
-                    ok: true,
-                    data
-                });
-            })
-            .catch(next);
+        res.json({
+            ok: true,
+            data: requests
+        });
     },
 
-    create: (req, res, next) => {
-        Request.create(req.body)
+    async getNew(req, res) {
+        const minAgo = datetime().subtract(1, 'minute').toDate();
+
+        const requests = await Request.find({
+            createdAt: { $gt: minAgo }
+        })
             .populate('learner', 'firstname lastname')
             .populate('manager', 'firstname lastname')
-            .then(request => {
-                res.json({
-                    ok: true,
-                    message: 'Заявка создана',
-                    data: request
-                });
-            })
-            .catch(next);
+            .sort({ createdAt: -1 });
+
+        res.json({
+            ok: true,
+            message: requests.length > 0 ? (requests.length === 1 ? 'Новая заявка' : 'Новые заявки') : undefined,
+            data: requests
+        });
     },
 
-    update: (req, res, next) => {
-        Request.findByIdAndUpdate(req.params.requestId, req.body, { new: true })
+    async getOne(req, res) {
+        const request = await Request.findById(req.params.requestId)
             .populate('learner', 'firstname lastname')
-            .populate('manager', 'firstname lastname')
-            .then(request => {
-                res.json({
-                    ok: true,
-                    message: 'Заявка изменена',
-                    data: request
-                });
-            })
-            .catch(next);
+            .populate('manager', 'firstname lastname');
+
+        const learner = await Learner.findOne({
+            phone: request.contact.phone
+        });
+
+        const data = request.toJSON({ getters: true, virtuals: true });
+
+        data.existingLearner = learner;
+
+        res.json({
+            ok: true,
+            data
+        });
     },
 
-    delete: (req, res, next) => {
-        Request.findByIdAndDelete(req.params.requestId)
-            .then(() => {
-                res.json({
-                    ok: true,
-                    message: 'Заявка удалена',
-                    data: {
-                        requestId: req.params.requestId
-                    }
-                });
-            })
-            .catch(next);
+    async create(req, res, next) {
+        const request = await Request.create(req.body)
+            .populate('learner', 'firstname lastname')
+            .populate('manager', 'firstname lastname');
+
+        res.json({
+            ok: true,
+            message: 'Заявка создана',
+            data: request
+        });
+    },
+
+    async update(req, res) {
+        const request = await Request.findByIdAndUpdate(
+            req.params.requestId,
+            req.body,
+            { new: true }
+        )
+            .populate('learner', 'firstname lastname')
+            .populate('manager', 'firstname lastname');
+
+        res.json({
+            ok: true,
+            message: 'Заявка изменена',
+            data: request
+        });
+    },
+
+    async delete(req, res) {
+        const request = await Request.findByIdAndDelete(req.params.requestId);
+
+        res.json({
+            ok: true,
+            message: 'Заявка удалена',
+            data: {
+                requestId: request.id
+            }
+        });
     },
 
     async export(req, res) {
-        const requests = await Request.find({
-            createdAt: {
-                $gte: req.query.from ?? datetime().utc().startOf('day').toDate(),
-                $lt: req.query.to ?? datetime().utc().endOf('day').toDate()
-            },
-            ...req.query
-        }).sort({ createdAt: 1 });
+        const query = getQuery(req);
+
+        const requests = await Request.find(query).sort({ createdAt: -1 });
 
         const data = requests.map(request => ({
             'Описание': request.description,
@@ -130,13 +119,40 @@ export default ({
 
         const csv = toCSV(data);
 
-        if (!csv) throw {
-            code: 404,
-            message: 'Нет данных'
-        };
+        res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+        res.setHeader('Content-Disposition', `attachment; filename="requests-${datetime().format('YYYY-MM-DD_HH-mm')}.csv"`);
 
-        res.setHeader('Content-Type', 'text/csv');
-        res.setHeader('Content-Disposition', `attachment; filename="requests-${datetime().format('YYYY-MM-DD')}.csv"`);
-        res.send(Buffer.from(csv, 'utf8'));
+        res.send('\uFEFF' + csv);
     }
 });
+
+function getQuery(req) {
+    const query = req.query;
+
+    if (query.query) {
+        const regex = new RegExp(query.query, 'i');
+
+        return {
+            $or: [
+                { 'contact.name': regex },
+                { 'contact.email': regex },
+                { 'contact.phone': regex }
+            ]
+        };
+    } else {
+        if (query.from) {
+            query.createdAt = { $gte: datetime(query.from).utc().startOf('day').toDate() };
+            delete query.from;
+        }
+
+        if (query.to) {
+            query.createdAt = {
+                ...query.createdAt,
+                $lt: datetime(query.to).utc().endOf('day').toDate()
+            };
+            delete query.to;
+        }
+    }
+
+    return query;
+}

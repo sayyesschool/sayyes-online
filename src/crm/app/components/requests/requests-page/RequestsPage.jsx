@@ -16,11 +16,11 @@ export default function RequestsPage({ history }) {
     const [user] = useStore('user');
     const [managers] = useStore('managers.list');
     const [{ list: requests, single: request }, requestActions] = useStore('requests');
-
     const learnerActions = useActions('learners');
     const enrollmentActions = useActions('enrollments');
     const { showNotification } = useActions('notification');
 
+    const [searchParams, setSearchParams] = useState();
     const [isRequestProcessPanelOpen, toggleRequestProcessPanelOpen] = useBoolean(false);
     const [isRequestFormOpen, toggleRequestFormOpen] = useBoolean(false);
     const [isSearchFormOpen, toggleSearchFormOpen] = useBoolean(false);
@@ -29,7 +29,7 @@ export default function RequestsPage({ history }) {
 
     useEffect(() => {
         requestActions.getRequests();
-    }, []);
+    }, [requestActions]);
 
     const handleUpdateRequest = useCallback(data => {
         return requestActions.updateRequest(data.id, data)
@@ -110,13 +110,15 @@ export default function RequestsPage({ history }) {
         toggleConfirmationDialogOpen(true);
     }, []);
 
-    const handleSearch = useCallback(params => {
-        console.log(params);
-    }, []);
+    const handleSearchSubmit = useCallback(params => {
+        requestActions.getRequests(params);
+        setSearchParams(params);
+    }, [requestActions]);
 
-    const handleExport = useCallback(() => {
-        fetch('/api/requests/export');
-    }, []);
+    const handleSearchClear = useCallback(() => {
+        requestActions.getRequests();
+        setSearchParams();
+    }, [requestActions]);
 
     if (!requests) return <LoadingIndicator />;
 
@@ -135,7 +137,7 @@ export default function RequestsPage({ history }) {
                     {
                         key: 'export',
                         as: 'a',
-                        href: '/api/requests/export',
+                        href: '/api/requests/export' + (searchParams ? `?${new URLSearchParams(searchParams).toString()}` : ''),
                         download: true,
                         icon: 'file_export',
                         content: 'Экспорт в CSV',
@@ -146,7 +148,8 @@ export default function RequestsPage({ history }) {
 
             <Page.Content>
                 <RequestSearchForm
-                    onSubmit={handleSearch}
+                    onSubmit={handleSearchSubmit}
+                    onClear={handleSearchClear}
                 />
 
                 <Page.Section
