@@ -4,8 +4,8 @@ import { YOOKASSA_SCRIPT_URL } from 'shared/constants';
 import { useScript } from 'shared/hooks/dom';
 import http from 'shared/services/http';
 
-import CheckoutWidgetErrorState from './CheckoutWidgetErrorState';
-import CheckoutWidgetSuccessState from './CheckoutWidgetSuccessState';
+import CheckoutWidgetError from './CheckoutWidgetError';
+import CheckoutWidgetSuccess from './CheckoutWidgetSuccess';
 
 import styles from './CheckoutWidget.module.scss';
 
@@ -80,11 +80,11 @@ export default function CheckoutWidget({ data, onLoad, onComplete, onError }) {
     }, [isLoaded]);
 
     if (isComplete) return (
-        <CheckoutWidgetSuccessState />
+        <CheckoutWidgetError />
     );
 
     if (error) return (
-        <CheckoutWidgetErrorState error={error} />
+        <CheckoutWidgetSuccess error={error} />
     );
 
     return (
