@@ -18,7 +18,8 @@ export default ({ accountId, clientId, clientSecret, userId }) => {
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP error status: ${response.status}`);
+            const error = await response.json();
+            throw new Error(error.message ?? `ZOOM API error. Code ${response.status}`, { code: error.code });
         }
 
         const contentLength = response.headers.get('Content-Length');
