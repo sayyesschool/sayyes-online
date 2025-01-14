@@ -11,7 +11,7 @@ export default function MeetingsSection({ meetings, onRegister, ...props }) {
     const [tab, setTab] = useState('scheduled');
 
     const handleRegister = useCallback(meeting => {
-        onRegister?.(meeting).then(() => setMeeting());
+        return onRegister?.(meeting).then(() => setMeeting());
     }, [onRegister]);
 
     const startedMeeting = meetings.find(m => m.isRegistered && m.isStarted);
