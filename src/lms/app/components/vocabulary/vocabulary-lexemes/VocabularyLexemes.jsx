@@ -1,15 +1,15 @@
 import { useCallback, useState } from 'react';
 
 import FormDialog from 'shared/components/form-dialog';
+import LexemeSimpleForm from 'shared/components/lexeme-simple-form';
 import LexemesList from 'shared/components/lexemes-list';
+import VocabularySearch from 'shared/components/vocabulary-search';
 import { useVocabularyActions } from 'shared/hooks/vocabularies';
 import { Dialog, PopoverButton } from 'shared/ui-components';
 
 import Lexeme from 'lms/components/vocabulary/lexeme';
 import LexemeForm from 'lms/components/vocabulary/lexeme-form';
-import LexemeSimpleForm from 'lms/components/vocabulary/lexeme-simple-form';
 import LexemeView from 'lms/components/vocabulary/lexeme-view';
-import VocabularySearch from 'lms/components/vocabulary/vocabulary-search';
 
 import styles from './VocabularyLexemes.module.scss';
 

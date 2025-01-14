@@ -1,17 +1,15 @@
 import { useCallback, useState } from 'react';
 
-import FormDialog from 'shared/components/form-dialog';
+import LexemeSimpleForm from 'shared/components/lexeme-simple-form';
 import LexemesList from 'shared/components/lexemes-list';
+import VocabularySearch from 'shared/components/vocabulary-search';
 import { useDictionaryActions } from 'shared/hooks/dictionary';
-import { Dialog, PopoverButton, Tabs } from 'shared/ui-components';
+import { Dialog, IconButton, PopoverButton, Tabs } from 'shared/ui-components';
 
+import Lexeme from 'cms/components/dictionary/lexeme';
+import LexemeForm from 'cms/components/dictionary/lexeme-form';
+import LexemesForm from 'cms/components/dictionary/lexeme-form/LexemesForm';
 import { LexemePublishStatus } from 'core/models/lexeme/constants';
-// TODO: Lexeme в shared
-import Lexeme from 'lms/components/vocabulary/lexeme';
-import LexemeForm from 'lms/components/vocabulary/lexeme-form';
-import LexemeSimpleForm from 'lms/components/vocabulary/lexeme-simple-form';
-import LexemeView from 'lms/components/vocabulary/lexeme-view';
-import VocabularySearch from 'lms/components/vocabulary/vocabulary-search';
 
 import styles from './DictionaryLexemes.module.scss';
 
@@ -20,43 +18,50 @@ const statuses = Object.values(LexemePublishStatus);
 export default function DictionaryLexemes({ dictionary, user }) {
     const actions = useDictionaryActions();
 
-    const [currentLexemeId, setCurrentLexemeId] = useState(null);
-    const [showViewModal, setShowViewModal] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false);
+    const [modalState, setModalState] = useState({ type: null, lexemeId: null });
     const [activeTabStatus, setActiveTabStatus] = useState(0);
+    const [selectedLexemeIds, setSelectedLexemeIds] = useState([]);
 
-    const { id, lexemes, numberOfLexemes } = dictionary;
+    const { lexemes, numberOfLexemes } = dictionary;
 
-    const vocabularyId = id;
-    const isTeacher = user.isTeacher;
     const isPending = dictionary.publishStatus === 'pending';
     const isApproved = dictionary.publishStatus === 'approved';
     const isUnapproved = dictionary.publishStatus === 'unapproved';
 
+    const currentLexeme = lexemes.find(lexeme => lexeme.id === modalState.lexemeId);
+    const isNotCreatorLexeme = currentLexeme?.createdBy !== user.id;
+    const withNotifications = isPending && isNotCreatorLexeme;
+
     const handleTabChange = useCallback((event, value) => {
-        actions.getDictionary(statuses[value]);
-        setActiveTabStatus(value);
+        // TODO: setActiveTabStatus лучше вызывать в then или нет?
+        actions.getDictionary(statuses[value])
+            .then(() => { setActiveTabStatus(value); });
     }, [actions]);
 
-    const closeViewModal = useCallback(() => {
-        setCurrentLexemeId(null);
-        setShowViewModal(false);
+    const handleModalOpen = useCallback((type, lexemeId = null) => {
+        setModalState({ type, lexemeId });
     }, []);
 
-    const closeEditModal = useCallback(() => {
-        setCurrentLexemeId(null);
-        setShowEditModal(false);
-    }, []);
+    const handleModalClose = useCallback(() => setModalState({ type: null, lexemeId: null }), []);
 
     const handleAddLexeme = useCallback(data => {
         return actions.addLexeme(data)
-            .finally(() => setShowEditModal(false));
-    }, [actions]);
+            .then(() => {
+                if (!activeTabStatus) return;
+                //TODO: можно ли как-то обойтись без null, т.к. я по-сути использую это как загрушку
+                handleTabChange(null, 0);
+            });
+    }, [actions, activeTabStatus, handleTabChange]);
 
     const handleUpdateLexeme = useCallback(data => {
-        return actions.updateLexeme(vocabularyId, currentLexemeId, data)
-            .finally(() => setShowEditModal(false));
-    }, [vocabularyId, currentLexemeId, actions]);
+        return actions.updateLexeme(modalState.lexemeId, data)
+            .finally(() => handleModalClose());
+    }, [actions, modalState.lexemeId, handleModalClose]);
+
+    const handleUpdateLexemes = useCallback(data => {
+        return actions.updateLexemes(data)
+            .finally(() => handleModalClose());
+    }, [actions, handleModalClose]);
 
     const handleDeleteLexeme = useCallback(lexemeId => {
         if (confirm('Вы уверены что хотите удалить слово')) {
@@ -65,27 +70,52 @@ export default function DictionaryLexemes({ dictionary, user }) {
     }, [actions]);
 
     const handleApproveLexeme = useCallback(lexemeId => {
-        return actions.updateLexemePublishStatus(lexemeId, LexemePublishStatus.Approved );
+        return actions.updateLexemePublishStatus(lexemeId, LexemePublishStatus.Approved);
     }, [actions]);
 
     const handleUnapproveLexeme = useCallback(lexemeId => {
-        return actions.updateLexemePublishStatus(lexemeId, LexemePublishStatus.Unapproved );
+        return actions.updateLexemePublishStatus(lexemeId, LexemePublishStatus.Unapproved);
     }, [actions]);
 
-    const handleViewLexeme = useCallback(lexemeId => {
-        setCurrentLexemeId(lexemeId);
-        setShowViewModal(true);
-        setShowEditModal(false);
+    const handleSelectLexeme = useCallback(lexemeId => {
+        setSelectedLexemeIds(ids => {
+            const isSelected = ids.includes(lexemeId);
+
+            return isSelected ?
+                ids.filter(id => id !== lexemeId) :
+                ids.concat(lexemeId);
+        });
     }, []);
 
-    const handleEditLexeme = useCallback(lexemeId => {
-        setCurrentLexemeId(lexemeId);
-        setShowEditModal(true);
-        setShowViewModal(false);
-    }, []);
-
-    const currentLexeme = lexemes.find(lexeme => lexeme.id === currentLexemeId);
-    const readOnly = isTeacher;
+    const renderModalContent = () => {
+        switch (modalState.type) {
+            case 'view-lexeme':
+                return <Lexeme lexeme={currentLexeme} onClose={handleModalClose} />;
+            case 'edit-lexeme':
+                return (
+                    <LexemeForm
+                        id="lexeme-edit-form"
+                        withNotifications={withNotifications}
+                        lexeme={currentLexeme}
+                        onSubmit={handleUpdateLexeme}
+                        onClose={handleModalClose}
+                    />
+                );
+            case 'edit-lexemes':
+                return (
+                    <LexemesForm
+                        id="lexemes-edit-form"
+                        user={user}
+                        lexemes={lexemes.filter(lexeme => selectedLexemeIds.includes(lexeme.id))}
+                        withNotifications={withNotifications}
+                        onSubmit={handleUpdateLexemes}
+                        onClose={handleModalClose}
+                    />
+                );
+            default:
+                return null;
+        }
+    };
 
     return (
         <div className={styles.root}>
@@ -109,6 +139,13 @@ export default function DictionaryLexemes({ dictionary, user }) {
                         onSubmit={handleAddLexeme}
                     />
                 </PopoverButton>
+
+                <IconButton
+                    icon="edit"
+                    title="Редактировать несколько лексем"
+                    disabled={selectedLexemeIds.length < 2}
+                    onClick={() => handleModalOpen('edit-lexemes')}
+                />
             </div>
 
             <div className={styles.body}>
@@ -127,44 +164,18 @@ export default function DictionaryLexemes({ dictionary, user }) {
                 <LexemesList
                     user={user}
                     lexemes={lexemes}
-                    readOnly={readOnly}
-                    onViewLexeme={handleViewLexeme}
-                    onEditLexeme={handleEditLexeme}
-                    onApprove={!isApproved && handleApproveLexeme}
+                    selectedLexemeIds={selectedLexemeIds}
+                    onViewLexeme={id => handleModalOpen('view-lexeme', id)}
+                    onEditLexeme={id => handleModalOpen('edit-lexeme', id)}
                     onUnapprove={!isUnapproved && handleUnapproveLexeme}
                     onDeleteLexeme={isPending && handleDeleteLexeme}
-                    // onSelectLexeme={handleSelectLexeme}
+                    onSelectLexeme={handleSelectLexeme}
+                    onApprove={!isApproved && handleApproveLexeme}
                 />
 
-                {currentLexeme && (
-                    <LexemeView
-                        as={Dialog}
-                        open={showViewModal}
-                        onClose={closeViewModal}
-                    >
-                        <Lexeme
-                            lexeme={currentLexeme}
-                            readOnly={readOnly}
-                            // onStatusUpdate={handleUpdateLexemeStatus}
-                            onClose={closeViewModal}
-                        />
-                    </LexemeView>
-                )}
-
-                {currentLexeme && (
-                    <LexemeView
-                        as={FormDialog}
-                        open={showEditModal}
-                        onClose={closeViewModal}
-                    >
-                        <LexemeForm
-                            id="lexeme-edit-form"
-                            lexeme={currentLexeme}
-                            onSubmit={handleUpdateLexeme}
-                            onClose={closeEditModal}
-                        />
-                    </LexemeView>
-                )}
+                <Dialog open={!!modalState.type} onClose={handleModalClose}>
+                    {renderModalContent()}
+                </Dialog>
             </div>
         </div>
     );

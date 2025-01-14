@@ -10,6 +10,7 @@ export default function LexemeItem({
     user,
     lexeme,
     readOnly,
+    selectedLexemeIds,
     onView,
     onApprove,
     onUnapprove,
@@ -20,12 +21,11 @@ export default function LexemeItem({
 }) {
     const { id, value, translation, status } = lexeme;
     const isCreatorLexeme = lexeme.createdBy === user.id;
-    // const showDeleteBtn = (user.isEditor && isCreatorLexeme && !lexeme.isApproved) || user.isLearner;
     const showDeleteBtn = (user.isEditor && isCreatorLexeme) || user.isLearner;
 
-    // const handleCheckboxChange = useCallback(() => {
-    //     return onSelect(id);
-    // }, [id, onSelect]);
+    const handleCheckboxChange = useCallback(() => {
+        return onSelect(id);
+    }, [id, onSelect]);
 
     const handleContentClick = useCallback(() => {
         return onView(id);
@@ -38,22 +38,22 @@ export default function LexemeItem({
     const actionButtons = [
 
         onApprove && {
-            icon:'verified',
+            icon: 'verified',
             title: 'Утвердить слово',
             handler: () => onApprove(id)
         },
         onUnapprove && {
-            icon:'clear',
+            icon: 'clear',
             title: 'Архивировать слово',
             handler: () => onUnapprove(id)
         },
         {
-            icon:'edit',
+            icon: 'edit',
             title: 'Редактировать слово',
             handler: () => onEdit(id)
         },
         showDeleteBtn && onDelete && {
-            icon:'delete',
+            icon: 'delete',
             title: 'Удалить слово',
             handler: () => onDelete(id)
         }
@@ -61,11 +61,10 @@ export default function LexemeItem({
 
     return (
         <ListItem className={styles.root}>
-            {/* Временно отключили */}
-            {/* <Checkbox
-                checked={false}
+            <Checkbox
+                checked={selectedLexemeIds?.includes(id)}
                 onChange={handleCheckboxChange}
-            /> */}
+            />
 
             <div
                 className={styles.content}

@@ -24,7 +24,7 @@ export const addLexeme = createAction('DICTIONARY_ADD_LEXEME', data => ({
 export const updateLexeme = createAction('DICTIONARY_UPDATE_LEXEME', (lexemeId, data) => ({
     request: {
         method: 'put',
-        path: `dictionary/global/${lexemeId}`,
+        path: `dictionary/${lexemeId}`,
         body: data
     }
 }));
@@ -56,7 +56,7 @@ export const actions = {
     deleteLexeme
 };
 
-export const vocabulariesReducer = createReducer(null, {
+export const dictionariesReducer = createReducer(null, {
     [addLexeme]: (state, action) =>
         state &&
     state.map(vocabulary =>
@@ -104,6 +104,6 @@ export const dictionaryReducer = createReducer(null, {
 });
 
 export default combineReducers({
-    list: vocabulariesReducer,
+    list: dictionariesReducer,
     single: dictionaryReducer
 });

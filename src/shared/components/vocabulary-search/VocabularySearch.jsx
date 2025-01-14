@@ -1,10 +1,9 @@
 import { useCallback, useRef, useState } from 'react';
 
+import LexemeSimpleForm from 'shared/components/lexeme-simple-form';
 import SearchForm from 'shared/components/search-form';
 import { LMS_URL } from 'shared/constants';
 import { Popover } from 'shared/ui-components';
-
-import LexemeSimpleForm from 'lms/components/vocabulary/lexeme-simple-form';
 
 import VocabularySearchResultItem from './VocabularySearchResultItem';
 

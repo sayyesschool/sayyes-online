@@ -8,9 +8,11 @@ export default context => {
 
     router.route('/')
         .get(controller.get)
-        .post(controller.addLexeme);
+        .post(controller.addLexeme)
+        .put(controller.updateLexemes);
 
     router.route('/:lexemeId')
+        .put(controller.updateLexeme)
         .delete(controller.deleteLexeme);
 
     router.route('/status/:lexemeId')
