@@ -2,6 +2,7 @@ import AccessGuard from 'shared/components/access-guard';
 import Page from 'shared/components/page';
 import { Permissions } from 'shared/data/access';
 import { useTodaysLessons } from 'shared/hooks/lessons';
+import { isToday } from 'shared/libs/datetime';
 import { Grid } from 'shared/ui-components';
 
 import LessonsList from 'crm/components/lessons/lessons-list';
@@ -15,6 +16,7 @@ export default function HomePage() {
     const [meetings] = useStore('meetings.list');
     const [lessons] = useTodaysLessons();
 
+    const newRequestsToday = requests?.filter(request => request.status === 'new' && isToday(request.createdAt));
     const currentMeetings = meetings?.sort((a, b) => new Date(a.date) - new Date(b.date))
         .filter(meeting => meeting.status === 'started' || meeting.status === 'scheduled');
 
@@ -26,9 +28,13 @@ export default function HomePage() {
                 <Grid gap="medium">
                     <AccessGuard user={user} permissions={Permissions.Requests}>
                         <Grid.Item xs={3}>
-                            <Page.Section title="Новые заявки" compact>
+                            <Page.Section
+                                title="Новые заявки"
+                                description="Сегодня"
+                                compact
+                            >
                                 <RequestsList
-                                    requests={requests}
+                                    requests={newRequestsToday}
                                 />
                             </Page.Section>
                         </Grid.Item>
