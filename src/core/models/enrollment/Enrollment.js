@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { Schema, Types } from 'mongoose';
 
 import datetime from 'shared/libs/datetime';
 
@@ -7,30 +7,25 @@ import Schedule from '../schedule';
 
 import { EnrollmentStatus, EnrollmentType } from './constants';
 
+const { ObjectId } = Types;
+
 export const Enrollment = new Schema({
     hhid: { type: String },
-    ageGroup: { type: String, default: AgeGroup.Adults },
+    type: { type: String, enum: Object.values(EnrollmentType), default: EnrollmentType.Individual },
+    status: { type: String, enum: Object.values(EnrollmentStatus), default: EnrollmentStatus.Processing },
     domain: { type: String, enum: Object.values(Domain), default: Domain.general },
     format: { type: String, default: Format.online },
-    type: { type: String, enum: Object.values(EnrollmentType), default: EnrollmentType.Individual },
+    ageGroup: { type: String, default: AgeGroup.Adults },
     teacherType: { type: String, default: TeacherType.Russian },
-    status: { type: String, enum: Object.values(EnrollmentStatus), default: EnrollmentStatus.Processing },
     level: { type: Number, enum: Object.values(Level) },
     lessonDuration: { type: Number, default: 50 },
-    lessonPrice: { type: Number, default: 0 },
     schedule: [Schedule],
-    trialLessonSchedule: [Schedule],
-    info: {
-        purpose: { type: String, default: '' },
-        experience: { type: String, default: '' },
-        preferences: { type: String, default: '' },
-        note: { type: String, default: '' }
-    },
-    learnerId: { type: Schema.Types.ObjectId, required: true },
-    teacherId: { type: Schema.Types.ObjectId },
-    managerId: { type: Schema.Types.ObjectId },
-    courseIds: [{ type: Schema.Types.ObjectId }],
-    materialIds: [{ type: Schema.Types.ObjectId }]
+    note: { type: String, default: '' },
+    learnerIds: [{ type: ObjectId }],
+    teacherIds: [{ type: ObjectId }],
+    managerIds: [{ type: ObjectId }],
+    courseIds: [{ type: ObjectId }],
+    materialIds: [{ type: ObjectId }]
 }, {
     timestamps: true
 });
