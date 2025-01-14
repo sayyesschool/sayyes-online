@@ -12,6 +12,9 @@
             "@/*": [
                 "./src/*"
             ],
+            "api/*": [
+                "./src/api/*"
+            ],
             "class/*": [
                 "./src/class/app/*"
             ],
