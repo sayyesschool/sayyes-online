@@ -17,14 +17,14 @@ append scripts
 block main
     +section('Выберите свое обучение:')(centered)
         div.grid.grid-3-lg
-            for format in data.formats
+            for format in data
                 div.card.card--sm.flex-column
                     div.card__media
                         img.image(src=`${STATIC_URL}/images/formats/${format.id}.webp`, alt=format.title)
                     div.card__header
                         h2.card__title= format.title
                         p.card__description= format.description
-                    div.card__body.mt-a
+                    div.card__body.mt-auto
                         button.pay-btn.btn.btn--outlined(data-format-id=format.id) Выбрать и оплатить
 
         p.text.text--center.mt-l Если у вас возникнут какие-либо вопросы в процессе оплаты, пожалуйста, свяжитесь с вашим менеджером или напишите нам на <a class="link link--primary" href="mailto:#{CONTACT_EMAIL}">#{CONTACT_EMAIL}</a>.

@@ -4,7 +4,6 @@ import express from 'express';
 import vhost from 'vhost';
 
 import api from './api';
-import data from './data';
 import pages from './pages';
 
 export default (domain, context) => {
@@ -21,7 +20,7 @@ export default (domain, context) => {
     });
 
     app.use('/api', api(context));
-    app.use(pages(context, data));
+    app.use(pages(context));
 
     return vhost(`${domain}.${context.config.APP_DOMAIN}`, app);
 };

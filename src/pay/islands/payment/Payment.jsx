@@ -18,7 +18,7 @@ const View = {
 };
 
 export default function PaymentComponent({ format }) {
-    const [view, setView] = useState(0);
+    const [view, setView] = useState(format.types ? View.TYPE : View.PACK);
     const [type, setType] = useState();
     const [pack, setPack] = useState();
     const [amount, setAmount] = useState();
@@ -30,6 +30,9 @@ export default function PaymentComponent({ format }) {
 
     if (error)
         return <Error error={error} />;
+
+    const types = format.types;
+    const packs = type ? type.packs : format.packs;
 
     return (
         <div className="flex-column gap-l">
@@ -56,12 +59,14 @@ export default function PaymentComponent({ format }) {
                 }
             </div>
 
-            <Tabs>
-                <Tab
-                    content="Тип обучения"
-                    icon={view >= View.PACK ? 'check' : 'person'}
-                    active={view === View.TYPE}
-                />
+            <Tabs color="violet" pills>
+                {types &&
+                    <Tab
+                        content="Тип обучения"
+                        icon={view >= View.PACK ? 'check' : 'person'}
+                        active={view === View.TYPE}
+                    />
+                }
 
                 <Tab
                     content="Пакет"
@@ -84,7 +89,7 @@ export default function PaymentComponent({ format }) {
 
             {view === 0 &&
                 <Type
-                    types={format.types}
+                    types={types}
                     selectedType={type}
                     onChange={setType}
                     onNext={() => setView(View.PACK)}
@@ -94,7 +99,7 @@ export default function PaymentComponent({ format }) {
             {view === 1 &&
                 <Pack
                     format={format}
-                    packs={type.packs}
+                    packs={packs}
                     selectedPack={pack}
                     amount={amount}
                     customPriceAvailable={format.customPriceAvailable}

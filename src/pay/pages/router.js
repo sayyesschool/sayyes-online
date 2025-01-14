@@ -1,9 +1,11 @@
 import { Router } from 'express';
 
-export default (context, data) => {
+export default ({ models: { Data } }) => {
     const router = Router();
 
     router.get('/', async (req, res) => {
+        const data = await Data.get('pay.packs');
+
         res.render('pages/views/main', { data });
     });
 
