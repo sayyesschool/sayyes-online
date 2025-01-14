@@ -1,8 +1,15 @@
 import { useCallback, useEffect } from 'react';
 
+import { requestStatusOptions as _requestStatusOptions } from 'shared/data/request';
 import { useThrottle } from 'shared/hooks/fn';
 import { useFormData } from 'shared/hooks/form';
 import { Button, Flex, Form, Icon } from 'shared/ui-components';
+
+const requestStatusOptions = _requestStatusOptions.concat({
+    key: 'all',
+    value: '',
+    content: 'Все'
+});
 
 export default function RequestSearchForm({ onSubmit, onClear, ...props }) {
     const { data, handleChange, getData, setData } = useFormData({
@@ -66,14 +73,7 @@ export default function RequestSearchForm({ onSubmit, onClear, ...props }) {
                         label="Статус"
                         name="status"
                         value={data.status}
-                        options={[
-                            { key: '', value: '', content: 'Все' },
-                            { key: 'new', value: 'new', content: 'Новая' },
-                            { key: 'pending', value: 'pending', content: 'В обработке' },
-                            { key: 'resolved', value: 'resolved', content: 'Успешная' },
-                            { key: 'rejected', value: 'rejected', content: 'Отказ' },
-                            { key: 'postponed', value: 'postponed', content: 'Отложенная' }
-                        ]}
+                        options={requestStatusOptions}
                         orientation="horizontal"
                         onChange={handleChange}
                     />

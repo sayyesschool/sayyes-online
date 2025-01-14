@@ -42,17 +42,17 @@ export const requestStatusMenuItems = Object.entries(RequestStatusLabel).map(([k
 export const requestStatusOptions = Object.entries(RequestStatusLabel).map(([key, value]) => ({
     key: key,
     value: key,
-    label: value
+    content: value
 }));
 
 export const requestChannelOptions = Object.entries(RequestChannelLabel).map(([key, value]) => ({
     key: key,
     value: key,
-    label: value
+    content: value
 }));
 
 export const requestSourceOptions = Object.entries(RequestSourceLabel).map(([key, value]) => ({
     key: key,
     value: key,
-    label: value
+    content: value
 }));
