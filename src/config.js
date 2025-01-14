@@ -29,6 +29,8 @@ export default {
 
     DB_CONNECTION_STRING: process.env.DB_CONNECTION_STRING,
 
+    HH_REQUEST_URL: 'https://sayes.t8s.ru/Api/V2/AddStudyRequest',
+
     RECAPTCHA_PUBLIC_KEY: process.env.RECAPTCHA_PUBLIC_KEY,
     RECAPTCHA_SECRET_KEY: process.env.RECAPTCHA_SECRET_KEY,
 
