@@ -24,7 +24,7 @@ export function split(value) {
 }
 
 export function formatDate(date, format) {
-    return moment(date).format(format);
+    return datetime(date).format(format);
 }
 
 export function formatTimeSegment(s) {

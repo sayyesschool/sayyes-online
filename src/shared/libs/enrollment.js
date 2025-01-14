@@ -32,7 +32,7 @@ export function rescheduleLessons({ schedule, lessons, startDate = new Date() })
     return lessons.filter(lesson => new Date(lesson.date) > startDate).map((lesson, i) => {
         const currentSchedule = schedule[i % schedule.length];
         const [hours, minutes] = currentSchedule.from?.split(':') ?? [];
-        const lessonDate = moment(lesson.date)
+        const lessonDate = datetime(lesson.date)
             .weekday(currentSchedule.day)
             .hours(hours)
             .minutes(minutes)
