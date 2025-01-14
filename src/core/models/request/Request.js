@@ -2,6 +2,8 @@ import { Schema } from 'mongoose';
 
 import datetime from 'shared/libs/datetime';
 
+import Schedule from '../schedule';
+
 import {
     RequestChannel,
     RequestSource,
@@ -46,8 +48,14 @@ export const Request = new Schema({
         default: RequestSource.None
     },
     referrer: { type: String },
-    data: { type: Object, default: {} },
+    data: {
+        level: { type: String, default: '' },
+        purpose: { type: String, default: '' },
+        experience: { type: String, default: '' },
+        preferences: { type: String, default: '' }
+    },
     note: { type: String, trim: true, default: '' },
+    trialLessonSchedule: [Schedule],
     utm: {
         source: { type: String },
         medium: { type: String },
