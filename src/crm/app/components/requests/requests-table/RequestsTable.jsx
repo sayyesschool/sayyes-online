@@ -6,12 +6,13 @@ import { RequestStatusLabel } from 'shared/data/request';
 import { Button, Flex, IconButton, Popover, Surface, Table, Text } from 'shared/ui-components';
 
 const columns = [
+    { key: 'number', text: '№' },
     { key: 'description', text: 'Описание' },
-    { key: 'status', text: 'Статус' },
     { key: 'datetime', text: 'Дата и время' },
     { key: 'contact', text: 'Контакт' },
-    { key: 'channel', text: 'Канал' },
-    { key: 'source', text: 'Источник' },
+    { key: 'status', text: 'Статус' },
+    // { key: 'channel', text: 'Канал' },
+    // { key: 'source', text: 'Источник' },
     { key: 'learner', text: 'Ученик' },
     { key: 'manager', text: 'Менеджер' },
     { key: 'utm', text: 'UTM' },
@@ -34,16 +35,10 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
             </Table.Head>
 
             <Table.Body>
-                {requests.map(request =>
+                {requests.map((request, index) =>
                     <Table.Row key={request.id}>
+                        <Table.Cell content={index + 1} />
                         <Table.Cell content={request.description} />
-
-                        <Table.Cell>
-                            <StatusChip
-                                status={request.status}
-                                content={RequestStatusLabel[request.status]}
-                            />
-                        </Table.Cell>
 
                         <Table.Cell>
                             <Flex column>
@@ -75,12 +70,19 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                         </Table.Cell>
 
                         <Table.Cell>
+                            <StatusChip
+                                status={request.status}
+                                content={RequestStatusLabel[request.status]}
+                            />
+                        </Table.Cell>
+
+                        {/* <Table.Cell>
                             {request.channel || '—'}
                         </Table.Cell>
 
                         <Table.Cell>
                             {request.source || '—'}
-                        </Table.Cell>
+                        </Table.Cell> */}
 
                         <Table.Cell>
                             {request.learner ?
