@@ -11,6 +11,12 @@ export default ({
     router.post('/events', async (req, res) => {
         console.log(req.headers);
 
+        console.log({
+            ZOOM_WEBHOOK_SECRET_TOKEN
+        });
+
+        console.log(req.body);
+
         const event = req.body.event;
 
         if (event === 'endpoint.url_validation') {
