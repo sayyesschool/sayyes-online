@@ -85,6 +85,14 @@ function getHtml(request) {
     if (contact.email)
         html += `<b>Электронная почта:</b> ${contact.email}<br>`;
 
+    if (data.child) {
+        html += `<b>Имя ребенка:</b> ${data.childName}<br>`;
+        html += `<b>Возраст ребенка:</b> ${data.childAge}<br>`;
+    }
+
+    if (data.format)
+        html += `<b>Формат обучения:</b> ${data.format}<br>`;
+
     if (channel)
         html += `<b>Способ связи:</b> ${channelLabel}<br>`;
 
@@ -97,16 +105,8 @@ function getHtml(request) {
     if (description)
         html += `<b>Описание:</b> ${description}<br>`;
 
-    if (data.format)
-        html += `<b>Формат обучения:</b> ${data.format}<br>`;
-
-    if (data.child) {
-        html += `<b>Имя ребенка:</b> ${data.childName}<br>`;
-        html += `<b>Возраст ребенка:</b> ${data.childAge}<br>`;
-    }
-
-    if (Object.values(utm).length) {
-        html += '<br>UTM-метки:<br>';
+    if (Object.values(utm).filter(Boolean).length) {
+        html += '<b>UTM-метки:</b><br>';
         if (utm.source)
             html += `<b>Source:</b> ${utm.source}<br>`;
         if (utm.medium)
@@ -118,9 +118,7 @@ function getHtml(request) {
     }
 
     if (captcha)
-        html += `<br><b>CAPTCHA:</b> ${captcha ? 'Пройдена' : 'Не пройдена'}`;
-
-    html += '';
+        html += `<b>CAPTCHA:</b> ${captcha ? 'Пройдена' : 'Не пройдена'}<br>`;
 
     return html;
 }
