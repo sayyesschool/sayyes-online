@@ -14,6 +14,9 @@ export default ({
 
         const data = await fetch('https://www.google.com/recaptcha/api/siteverify', {
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({
                 secret: RECAPTCHA_SECRET_KEY,
                 response: token
