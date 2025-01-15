@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express from 'express';
 import vhost from 'vhost';
 
@@ -11,6 +12,11 @@ import zoom from './zoom';
 
 export default (domain, context) => {
     const api = express();
+
+    api.use(cors({
+        origin: /sayyes\.(school|dev|local)$/,
+        credentials: true
+    }));
 
     api.use('/recaptcha', recaptcha(context));
     api.use('/request', request(context));
