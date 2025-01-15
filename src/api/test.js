@@ -22,9 +22,8 @@ export default ({
         const {
             name,
             email,
-            goal,
             answers,
-            source,
+            goal,
             utm
         } = req.body;
 
@@ -46,13 +45,14 @@ export default ({
         const results = getResults(test.questions, answers);
 
         const request = await Request.create({
+            type: 'test',
             description: 'Прохождение теста на сайте',
             contact: {
                 name,
                 email
             },
-            channel: Request.Channel.Test,
-            source,
+            channel: Request.Channel.Email,
+            source: Request.Source.Site,
             utm,
             data: {
                 goal,

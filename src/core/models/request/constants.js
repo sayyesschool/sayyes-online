@@ -24,6 +24,7 @@ export const RequestChannel = {
 export const RequestChannelLabel = {
     [RequestChannel.Call]: 'Звонок',
     [RequestChannel.Instagram]: 'Instagram',
+    [RequestChannel.Email]: 'Электронная почта',
     [RequestChannel.Site]: 'Сайт',
     [RequestChannel.Telegram]: 'Telegram',
     [RequestChannel.WhatsApp]: 'WhatsApp'
@@ -32,9 +33,10 @@ export const RequestChannelLabel = {
 export const RequestSource = {
     None: '',
     Instagram: 'instagram',
-    Yandex: 'yandex',
+    Recommendation: 'recommendation',
+    Site: 'site',
     Google: 'google',
-    Recommendation: 'recommendation'
+    Yandex: 'yandex'
 };
 
 export const RequestSourceLabel = {
