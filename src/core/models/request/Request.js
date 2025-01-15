@@ -46,6 +46,7 @@ export const Request = new Schema({
         default: RequestSource.None
     },
     referrer: { type: String },
+    captcha: { type: Boolean, default: false },
     data: { type: Object, default: {} },
     note: { type: String, trim: true, default: '' },
     utm: {
@@ -54,10 +55,6 @@ export const Request = new Schema({
         campaign: { type: String },
         term: { type: String },
         content: { type: String }
-    },
-    recaptcha: {
-        success: { type: Boolean },
-        score: { type: Number }
     },
     learnerId: { type: Schema.Types.ObjectId },
     managerId: { type: Schema.Types.ObjectId },

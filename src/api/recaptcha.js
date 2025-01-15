@@ -9,7 +9,10 @@ export default ({
         const { token } = req.body;
 
         if (!token) {
-            return res.status(400).json({ success: false, error: 'Не указан токен' });
+            return res.status(400).json({
+                success: false,
+                error: 'Не указан токен'
+            });
         }
 
         const data = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${RECAPTCHA_SECRET_KEY}&response=${token}`, {

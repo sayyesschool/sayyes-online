@@ -9,16 +9,26 @@ export default ({
     const router = Router();
 
     router.post('/', async (req, res) => {
-        console.log(req.body);
+        const {
+            type,
+            contact,
+            channel,
+            data,
+            captcha
+        } = req.body;
 
-        if (!req.body.contact.phone) throw {
+        if (!contact?.phone) throw {
             code: 400,
             message: 'Не указан телефон'
         };
 
         const request = await Request.create({
+            type,
+            contact,
+            channel,
+            data,
             referrer: req.get('Referrer'),
-            ...req.body
+            captcha
         });
 
         await Mail.send({
@@ -54,7 +64,7 @@ export default ({
 };
 
 function getHtml(request) {
-    const { description, contact, channel, source, referrer, data, utm, recaptcha } = request;
+    const { description, contact, channel, source, referrer, data, utm, captcha } = request;
 
     let html = '';
 
@@ -63,9 +73,6 @@ function getHtml(request) {
 
     if (contact.email)
         html += `<b>Электронная почта:</b> ${contact.email}<br>`;
-
-    if (data.format)
-        html += `<b>Формат обучения:</b> $${data.format}<br>`;
 
     if (channel)
         html += `<b>Способ связи:</b> ${channel}<br>`;
@@ -79,7 +86,15 @@ function getHtml(request) {
     if (description)
         html += `<b>Описание:</b> ${description}<br>`;
 
-    if (Object.keys(utm).length) {
+    if (data.format)
+        html += `<b>Формат обучения:</b> $${data.format}<br>`;
+
+    if (data.child) {
+        html += `<b>Имя ребенка:</b> ${data.childName}<br>`;
+        html += `<b>Возраст ребенка:</b> ${data.childAge}<br>`;
+    }
+
+    if (Object.values(utm).length) {
         html += '<br>UTM-метки:<br>';
         if (utm.source)
             html += `<b>Source:</b> ${utm.source}<br>`;
@@ -91,8 +106,8 @@ function getHtml(request) {
             html += `<b>Content:</b> ${utm.content}<br>`;
     }
 
-    if (recaptcha)
-        html += `<br><b>reCAPTCHA:</b> ${recaptcha.success ? `Пройдена (${recaptcha.score})` : 'Не пройдена'}`;
+    if (captcha)
+        html += `<br><b>CAPTCHA:</b> ${captcha ? 'Пройдена' : 'Не пройдена'}`;
 
     html += '';
 
