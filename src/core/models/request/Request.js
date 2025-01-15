@@ -4,7 +4,9 @@ import datetime from 'shared/libs/datetime';
 
 import {
     RequestChannel,
+    RequestChannelLabel,
     RequestSource,
+    RequestSourceLabel,
     RequestStatus,
     RequestType,
     RequestTypeLabel
@@ -21,9 +23,15 @@ export const Request = new Schema({
         type: String,
         enum: Object.values(RequestType)
     },
-    description: {
+    channel: {
         type: String,
-        default: ''
+        enum: Object.values(RequestChannel),
+        default: RequestChannel.None
+    },
+    source: {
+        type: String,
+        enum: Object.values(RequestSource),
+        default: RequestSource.None
     },
     contact: {
         name: { type: String },
@@ -35,20 +43,14 @@ export const Request = new Schema({
         },
         phone: { type: String, set: value => value.trim().replace(/[\s()\-\+]+/g, '') }
     },
-    channel: {
+    description: {
         type: String,
-        enum: Object.values(RequestChannel),
-        default: RequestChannel.None
+        default: ''
     },
-    source: {
-        type: String,
-        enum: Object.values(RequestSource),
-        default: RequestSource.None
-    },
+    note: { type: String, trim: true, default: '' },
     referrer: { type: String },
     captcha: { type: Boolean, default: false },
     data: { type: Object, default: {} },
-    note: { type: String, trim: true, default: '' },
     utm: {
         source: { type: String },
         medium: { type: String },
@@ -80,6 +82,14 @@ Request.virtual('url').get(function() {
 
 Request.virtual('typeLabel').get(function() {
     return RequestTypeLabel[this.type];
+});
+
+Request.virtual('channelLabel').get(function() {
+    return RequestChannelLabel[this.channel];
+});
+
+Request.virtual('sourceLabel').get(function() {
+    return RequestSourceLabel[this.source];
 });
 
 Request.virtual('dateString').get(function() {

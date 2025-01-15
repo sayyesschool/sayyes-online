@@ -64,7 +64,18 @@ export default ({
 };
 
 function getHtml(request) {
-    const { description, contact, channel, source, referrer, data, utm, captcha } = request;
+    const {
+        description,
+        contact,
+        channel,
+        channelLabel,
+        source,
+        sourceLabel,
+        referrer,
+        data,
+        utm,
+        captcha
+    } = request;
 
     let html = '';
 
@@ -75,10 +86,10 @@ function getHtml(request) {
         html += `<b>Электронная почта:</b> ${contact.email}<br>`;
 
     if (channel)
-        html += `<b>Способ связи:</b> ${channel}<br>`;
+        html += `<b>Способ связи:</b> ${channelLabel}<br>`;
 
     if (source)
-        html += `<b>Источник:</b> ${source}<br>`;
+        html += `<b>Источник:</b> ${sourceLabel}<br>`;
 
     if (referrer)
         html += `<b>Сайт:</b> ${referrer}<br>`;
@@ -87,7 +98,7 @@ function getHtml(request) {
         html += `<b>Описание:</b> ${description}<br>`;
 
     if (data.format)
-        html += `<b>Формат обучения:</b> $${data.format}<br>`;
+        html += `<b>Формат обучения:</b> ${data.format}<br>`;
 
     if (data.child) {
         html += `<b>Имя ребенка:</b> ${data.childName}<br>`;

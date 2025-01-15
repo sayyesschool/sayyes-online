@@ -45,14 +45,13 @@ export default ({
         const results = getResults(test.questions, answers);
 
         const request = await Request.create({
-            type: 'test',
-            description: 'Прохождение теста на сайте',
+            type: Request.Type.Test,
+            channel: Request.Channel.Email,
+            source: Request.Source.Site,
             contact: {
                 name,
                 email
             },
-            channel: Request.Channel.Email,
-            source: Request.Source.Site,
             utm,
             data: {
                 goal,
