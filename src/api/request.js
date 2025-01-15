@@ -27,7 +27,7 @@ export default ({
                 email: `crm@${EMAIL_DOMAIN}`
             },
             to: `requests@${EMAIL_DOMAIN}`,
-            subject: request.typeLabel,
+            subject: request.typeLabel || 'Заявка',
             html: getHtml(request)
         });
 
