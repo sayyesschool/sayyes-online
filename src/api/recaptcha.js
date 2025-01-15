@@ -6,33 +6,24 @@ export default ({
     const router = Router();
 
     router.post('/', async (req, res) => {
-        const { action, token } = req.body;
-
-        if (!action) {
-            return res.status(400).json({ error: 'Не указано действие' });
-        }
+        const { token } = req.body;
 
         if (!token) {
-            return res.status(400).json({ error: 'Не указан токен' });
+            return res.status(400).json({ success: false, error: 'Не указан токен' });
         }
 
-        if (action === 'verify') {
-            const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-                method: 'POST',
-                body: JSON.stringify({
-                    secret: RECAPTCHA_SECRET_KEY,
-                    response: token
-                })
-            });
+        const data = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+            method: 'POST',
+            body: JSON.stringify({
+                secret: RECAPTCHA_SECRET_KEY,
+                response: token
+            })
+        }).then(res => res.json());
 
-            const data = await response.json();
-
-            console.log(data);
-
-            if (!data.success) {
-                return res.status(400).json({ error: 'Подтверждение не пройдено' });
-            }
-        }
+        return res.json({
+            success: data.success,
+            score: data.score
+        });
     });
 
     return router;
