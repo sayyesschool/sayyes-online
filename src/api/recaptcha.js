@@ -20,6 +20,8 @@ export default ({
             })
         }).then(res => res.json());
 
+        console.log(data);
+
         return res.json({
             success: data.success,
             score: data.score

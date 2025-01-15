@@ -9,6 +9,8 @@ export default ({
     const router = Router();
 
     router.post('/', async (req, res) => {
+        console.log(req.body);
+
         if (!req.body.contact.phone) throw {
             code: 400,
             message: 'Не указан телефон'
