@@ -6,8 +6,8 @@ export const RequestType = {
 };
 
 export const RequestTypeLabel = {
-    [RequestType.Call]: 'Обратный звонок',
-    [RequestType.Lesson]: 'Запись на урок',
+    [RequestType.Call]: 'Заявка на звонок',
+    [RequestType.Lesson]: 'Заявка на пробный урок',
     [RequestType.Study]: 'Заявка на обучение',
     [RequestType.Test]: 'Тестирование'
 };

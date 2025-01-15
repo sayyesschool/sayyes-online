@@ -8,6 +8,11 @@ export default ({
     router.post('/', async (req, res) => {
         const { token } = req.body;
 
+        console.log({
+            secret: RECAPTCHA_SECRET_KEY,
+            response: token
+        });
+
         if (!token) {
             return res.status(400).json({ success: false, error: 'Не указан токен' });
         }

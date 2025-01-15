@@ -79,7 +79,7 @@ function getHtml(request) {
     if (description)
         html += `<b>Описание:</b> ${description}<br>`;
 
-    if (utm) {
+    if (Object.keys(utm).length) {
         html += '<br>UTM-метки:<br>';
         if (utm.source)
             html += `<b>Source:</b> ${utm.source}<br>`;

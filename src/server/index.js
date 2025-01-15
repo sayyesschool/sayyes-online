@@ -19,7 +19,6 @@ export default ({ config, db }, options) => {
     Object.assign(server.locals, config);
 
     server.use(cors({
-        // origin: '*',
         origin: /sayyes\.(school|dev|local)$/,
         credentials: true
     }));
