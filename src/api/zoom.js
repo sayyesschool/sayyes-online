@@ -9,19 +9,11 @@ export default ({
     const router = Router();
 
     router.post('/events', async (req, res) => {
-        console.log(req.headers);
-
-        console.log({
-            ZOOM_WEBHOOK_SECRET_TOKEN
-        });
-
-        console.log(req.body);
-
         const event = req.body.event;
 
         if (event === 'endpoint.url_validation') {
             const plainToken = req.body.payload.plainToken;
-            const encryptedToken = crypto.createHmac('sha256', ZOOM_WEBHOOK_SECRET_TOKEN).update().digest('hex');
+            const encryptedToken = crypto.createHmac('sha256', ZOOM_WEBHOOK_SECRET_TOKEN).update(plainToken).digest('hex');
 
             return res.status(200).send({
                 plainToken,
