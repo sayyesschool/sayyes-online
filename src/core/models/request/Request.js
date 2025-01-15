@@ -112,8 +112,6 @@ Request.virtual('manager', {
 });
 
 Request.pre('save', function(next) {
-    console.log('Request.pre save');
-
     if (!this.isModified('status')) return next();
 
     if (this.status === RequestStatus.Processing && !this.processedAt) {
