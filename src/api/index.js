@@ -13,15 +13,15 @@ import zoom from './zoom';
 export default (domain, context) => {
     const api = express();
 
-    api.use(cors({
+    const internalCors = cors({
         origin: /sayyes\.(school|dev|local)$/,
         credentials: true
-    }));
+    });
 
-    api.use('/recaptcha', recaptcha(context));
-    api.use('/request', request(context));
-    api.use('/storage', context.middleware.auth.authenticatedRoute, storage(context));
-    api.use('/test', test(context));
+    api.use('/recaptcha', internalCors, recaptcha(context));
+    api.use('/request', internalCors, request(context));
+    api.use('/storage', internalCors, context.middleware.auth.authenticatedRoute, storage(context));
+    api.use('/test', internalCors, test(context));
     api.use('/twilio', twilio(context));
     api.use('/yookassa', yookassa(context));
     api.use('/zoom', zoom(context));
