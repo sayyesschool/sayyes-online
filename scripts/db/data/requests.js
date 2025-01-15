@@ -6,7 +6,7 @@ export default [
             name: 'Oleg',
             email: 'olegpolyakov@outlook.com'
         },
-        channel: 'test',
+        channel: 'call',
         source: '',
         data: {},
         note: ''
