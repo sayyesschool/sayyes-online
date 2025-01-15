@@ -1,41 +1,62 @@
+import crypto from 'node:crypto';
+
 import { Router } from 'express';
 
-export default ({ models: { Meeting } }) => {
+export default ({
+    config: { ZOOM_WEBHOOK_SECRET_TOKEN },
+    models: { Meeting, Registration }
+}) => {
     const router = Router();
 
-    router.post('/meetings', (req, res, next) => {
+    router.post('/events', async (req, res) => {
+        console.log(req.headers);
+
         const event = req.body.event;
-        const data = req.body.payload?.object;
 
-        switch (event) {
-            case 'meeting.started':
-                Meeting.updateOne({
-                    zoomId: data.id
-                }, {
-                    status: 'started'
-                }).catch(next);
-                break;
+        if (event === 'endpoint.url_validation') {
+            const plainToken = req.body.payload.plainToken;
+            const encryptedToken = crypto.createHmac('sha256', ZOOM_WEBHOOK_SECRET_TOKEN).update().digest('hex');
 
-            case 'meeting.ended':
-                Meeting.updateOne({
-                    zoomId: data.id,
-                    date: { $lt: new Date() }
-                }, {
-                    status: 'ended'
-                }).catch(next);
-                break;
-
-            case 'meeting.participant_joined':
-                Meeting.updateOne({
-                    zoomId: data.id,
-                    'registrations.zoomId': data.participant.registrant_id
-                }, {
-                    $set: { 'registrations.$.participated': true }
-                }).catch(next);
-                break;
+            return res.status(200).send({
+                plainToken,
+                encryptedToken
+            });
         }
 
-        res.status(200).send();
+        const data = req.body.payload?.object;
+
+        try {
+            switch (event) {
+                case 'meeting.started':
+                    await Meeting.updateOne({
+                        zoomId: data.id
+                    }, {
+                        status: Meeting.Status.Started
+                    });
+                    break;
+
+                case 'meeting.ended':
+                    await Meeting.updateOne({
+                        zoomId: data.id
+                    }, {
+                        status: Meeting.Status.Ended
+                    });
+                    break;
+
+                case 'meeting.participant_joined':
+                    await Registration.updateOne({
+                        zoomId: data.participant.registrant_id
+                    }, {
+                        status: Registration.Status.Attended
+                    });
+                    break;
+            }
+
+            res.status(200).send();
+        } catch (error) {
+            console.log('ZOOM webhook error', error);
+            res.status(500).send();
+        }
     });
 
     return router;
