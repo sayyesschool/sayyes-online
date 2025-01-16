@@ -1,70 +1,68 @@
 export default ({
     models: { User }
 }) => ({
-    get: (req, res, next) => {
-        const regex = req.query.search && new RegExp(req.query.search, 'i');
-        const query = regex ? {
-            $or: [
+    async get(req, res) {
+        const query = req.query;
+
+        if (query.search) {
+            const regex = new RegExp(query.search, 'i');
+
+            query.$or = [
                 { firstname: regex },
                 { lastname: regex },
                 { email: regex },
                 { phone: regex }
-            ]
-        } : req.query;
+            ];
 
-        User.find(query)
-            .then(users => {
-                res.json({
-                    ok: true,
-                    data: users
-                });
-            })
-            .catch(next);
+            delete query.search;
+        }
+
+        const users = await User.find(query);
+
+        res.json({
+            ok: true,
+            data: users
+        });
     },
 
-    getOne: (req, res, next) => {
-        User.findById(req.params.id)
-            .then(user => {
-                res.json({
-                    ok: true,
-                    data: user
-                });
-            })
-            .catch(next);
+    async getOne(req, res) {
+        const user = await User.findById(req.params.id);
+
+        res.json({
+            ok: true,
+            data: user
+        });
     },
 
-    create: (req, res, next) => {
-        User.create(req.body)
-            .then(user => {
-                res.json({
-                    ok: true,
-                    message: 'Пользователь создан',
-                    data: user
-                });
-            })
-            .catch(next);
+    async create(req, res) {
+        const user = await User.create(req.body);
+
+        res.json({
+            ok: true,
+            message: 'Пользователь создан',
+            data: user
+        });
     },
 
-    update: (req, res, next) => {
-        User.findByIdAndUpdate(req.params.id, req.body, { new: true })
-            .then(user => {
-                res.json({
-                    ok: true,
-                    message: 'Пользователь изменен',
-                    data: user
-                });
-            })
-            .catch(next);
+    async update(req, res) {
+        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+
+        res.json({
+            ok: true,
+            message: 'Пользователь изменен',
+            data: user
+        });
     },
 
-    delete: (req, res, next) => {
-        User.findByIdAndDelete(req.params.id)
-            .then(() => {
-                res.json({
-                    ok: true,
-                    message: 'Пользователь удален'
-                });
-            })
-            .catch(next);
+    async delete(req, res) {
+        const user = await User.findByIdAndDelete(req.params.id);
+
+        res.json({
+            ok: true,
+            message: 'Пользователь удален',
+            data: {
+                id: user.id
+            }
+        });
     }
 });

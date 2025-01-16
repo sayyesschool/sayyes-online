@@ -1,9 +1,9 @@
 export default ({
-    models: { User },
     services: { Club }
 }) => ({
     async get(req, res) {
         const meetings = await Club.findMeetings(req.query)
+            .populate('host', 'firstname lastname email')
             .populate('registrations')
             .sort({ date: 1 })
             .limit(30);
@@ -60,12 +60,15 @@ export default ({
     },
 
     async createRegistration(req, res) {
-        const user = await User.findOne({ email: req.body.email }, 'firstname lastname email');
-
-        const registration = await Club.registerForMeeting(user, req.params.meetingId, {
-            approve: true,
-            force: true
-        });
+        const registration = await Club.registerForMeeting(
+            req.body.userId,
+            req.params.meetingId,
+            {
+                approve: true,
+                force: true,
+                notify: req.body.notify
+            }
+        );
 
         res.json({
             ok: true,
