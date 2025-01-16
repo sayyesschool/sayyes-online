@@ -1,20 +1,7 @@
-export const RequestType = {
-    Call: 'call',
-    Lesson: 'lesson',
-    Study: 'study',
-    Test: 'test'
-};
-
-export const RequestTypeLabel = {
-    [RequestType.Call]: 'Заявка на звонок',
-    [RequestType.Lesson]: 'Заявка на пробный урок',
-    [RequestType.Study]: 'Заявка на обучение',
-    [RequestType.Test]: 'Тестирование'
-};
-
 export const RequestChannel = {
     None: '',
     Call: 'call',
+    Email: 'email',
     Instagram: 'instagram',
     Site: 'site',
     Telegram: 'telegram',
@@ -24,7 +11,7 @@ export const RequestChannel = {
 export const RequestChannelLabel = {
     [RequestChannel.Call]: 'Звонок',
     [RequestChannel.Instagram]: 'Instagram',
-    [RequestChannel.Email]: 'Электронная почта',
+    [RequestChannel.Email]: 'Эл. почта',
     [RequestChannel.Site]: 'Сайт',
     [RequestChannel.Telegram]: 'Telegram',
     [RequestChannel.WhatsApp]: 'WhatsApp'
@@ -43,7 +30,8 @@ export const RequestSourceLabel = {
     [RequestSource.Instagram]: 'Instagram',
     [RequestSource.Yandex]: 'Яндекс',
     [RequestSource.Google]: 'Google',
-    [RequestSource.Recommendation]: 'Рекомендация'
+    [RequestSource.Recommendation]: 'Рекомендация',
+    [RequestSource.Site]: 'Сайт'
 };
 
 export const RequestStatus = {
@@ -60,4 +48,18 @@ export const RequestStatusLabel = {
     [RequestStatus.Postponed]: 'Отложена',
     [RequestStatus.Completed]: 'Выполнена',
     [RequestStatus.Canceled]: 'Отменена'
+};
+
+export const RequestType = {
+    Call: 'call',
+    Lesson: 'lesson',
+    Study: 'study',
+    Test: 'test'
+};
+
+export const RequestTypeLabel = {
+    [RequestType.Call]: 'Заявка на звонок',
+    [RequestType.Lesson]: 'Заявка на пробный урок',
+    [RequestType.Study]: 'Заявка на обучение',
+    [RequestType.Test]: 'Тестирование'
 };

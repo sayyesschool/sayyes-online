@@ -1,4 +1,4 @@
-import { RequestChannel, RequestSource, RequestStatus } from '../../core/models/request/constants';
+import { RequestChannel, RequestSource, RequestStatus, RequestTypeLabel } from 'core/models/request/constants';
 
 export const RequestStatusLabel = {
     [RequestStatus.New]: 'Новая',
@@ -34,6 +34,12 @@ export const RequestSourceLabel = {
 };
 
 export const requestStatusMenuItems = Object.entries(RequestStatusLabel).map(([key, value]) => ({
+    key: key,
+    value: key,
+    content: value
+}));
+
+export const requestTypeOptions = Object.entries(RequestTypeLabel).map(([key, value]) => ({
     key: key,
     value: key,
     content: value
