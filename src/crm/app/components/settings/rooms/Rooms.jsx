@@ -5,6 +5,7 @@ import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import PageSection from 'shared/components/page-section';
 import { useBoolean } from 'shared/hooks/state';
+import Surface from 'shared/ui-components/surface';
 
 import RoomForm from 'crm/components/rooms/room-form';
 import RoomsTable from 'crm/components/rooms/rooms-table';
@@ -65,22 +66,26 @@ export default function Rooms() {
 
     return (
         <PageSection
-            title="Комнаты"
+            title="Аудитории"
             actions={[{
                 key: 'add',
                 icon: 'add',
-                title: 'Создать',
+                content: 'Добавить аудиторию',
+                variant: 'solid',
+                color: 'primary',
                 onClick: handleCreate
             }]}
-            variant="outlined"
+            plain
             compact
         >
-            <RoomsTable
-                rooms={rooms}
-                onEdit={handleEdit}
-                onToggleActive={toggleRoomActive}
-                onDelete={handleDelete}
-            />
+            <Surface variant="outlined">
+                <RoomsTable
+                    rooms={rooms}
+                    onEdit={handleEdit}
+                    onToggleActive={toggleRoomActive}
+                    onDelete={handleDelete}
+                />
+            </Surface>
 
             <FormDialog
                 title={room ? 'Редактирование аудитории' : 'Новая аудитория'}

@@ -1,4 +1,4 @@
-import { Switch, Route, NavLink, useRouteMatch } from 'react-router-dom';
+import { NavLink, Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 
 import Page from 'shared/components/page';
 
@@ -9,14 +9,14 @@ import './index.scss';
 
 const tabs = [
     {
+        key: 'rooms',
+        url: '/settings/rooms',
+        content: 'Аудитории'
+    },
+    {
         key: 'packs',
         url: '/settings/packs',
         content: 'Пакеты'
-    },
-    {
-        key: 'rooms',
-        url: '/settings/rooms',
-        content: 'Комнаты'
     }
 ];
 
@@ -38,8 +38,23 @@ export default function SettingsPage() {
 
             <Page.Content>
                 <Switch>
-                    <Route exact path="/settings/packs" component={Packs} />
-                    <Route exact path="/settings/rooms" component={Rooms} />
+                    <Redirect
+                        from="/settings"
+                        to="/settings/rooms"
+                        exact
+                    />
+
+                    <Route
+                        path="/settings/rooms"
+                        component={Rooms}
+                        exact
+                    />
+
+                    <Route
+                        path="/settings/packs"
+                        component={Packs}
+                        exact
+                    />
                 </Switch>
             </Page.Content>
         </Page >

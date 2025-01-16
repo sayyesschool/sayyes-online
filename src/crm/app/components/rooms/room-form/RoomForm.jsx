@@ -3,12 +3,10 @@ import { useCallback } from 'react';
 import { useFormData } from 'shared/hooks/form';
 import Form from 'shared/ui-components/form';
 
-import './index.scss';
-
 const defaultRoom = {
     title: '',
     login: '',
-    password: 4,
+    password: '',
     active: true
 };
 
@@ -23,7 +21,11 @@ export default function RoomForm({ room = {}, onSubmit, ...props }) {
     }, [data]);
 
     return (
-        <Form className="room-form" onSubmit={handleSubmit} {...props}>
+        <Form
+            className="room-form"
+            onSubmit={handleSubmit}
+            {...props}
+        >
             <Form.Input
                 label="Название"
                 name="title"
