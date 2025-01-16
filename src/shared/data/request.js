@@ -1,11 +1,16 @@
-import { RequestChannel, RequestSource, RequestStatus, RequestTypeLabel } from 'core/models/request/constants';
+import {
+    RequestChannelLabel,
+    RequestSourceLabel,
+    RequestStatus,
+    RequestStatusLabel,
+    RequestTypeLabel
+} from 'core/models/request/constants';
 
-export const RequestStatusLabel = {
-    [RequestStatus.New]: 'Новая',
-    [RequestStatus.Processing]: 'В обработке',
-    [RequestStatus.Postponed]: 'В обработке',
-    [RequestStatus.Completed]: 'Завершена',
-    [RequestStatus.Canceled]: 'Отменена'
+export {
+    RequestChannelLabel,
+    RequestSourceLabel,
+    RequestStatusLabel,
+    RequestTypeLabel
 };
 
 export const RequestStatusIcon = {
@@ -14,23 +19,6 @@ export const RequestStatusIcon = {
     [RequestStatus.Postponed]: 'hourglass_empty',
     [RequestStatus.Completed]: 'check_circle',
     [RequestStatus.Canceled]: 'cancel'
-};
-
-export const RequestChannelLabel = {
-    [RequestChannel.None]: '',
-    [RequestChannel.Call]: 'Звонок',
-    [RequestChannel.Site]: 'Сайт',
-    [RequestChannel.WhatsApp]: 'WhatsApp',
-    [RequestChannel.Instagram]: 'Instagram'
-};
-
-export const RequestSourceLabel = {
-    [RequestSource.None]: '',
-    [RequestSource.Instagram]: 'Instagram',
-    [RequestSource.WhatsApp]: 'WhatsApp',
-    [RequestSource.Yandex]: 'Яндекс',
-    [RequestSource.Google]: 'Google',
-    [RequestSource.Recommendation]: 'Рекомендация'
 };
 
 export const requestStatusMenuItems = Object.entries(RequestStatusLabel).map(([key, value]) => ({
