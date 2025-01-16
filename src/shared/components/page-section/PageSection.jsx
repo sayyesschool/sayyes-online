@@ -1,6 +1,6 @@
 import { isValidElement } from 'react';
 
-import { Heading, Icon, IconButton, Surface, Text } from 'shared/ui-components';
+import { Button, Heading, Icon, IconButton, Surface, Text } from 'shared/ui-components';
 import cn from 'shared/utils/classnames';
 
 export default function PageSection({
@@ -54,15 +54,24 @@ export default function PageSection({
                     <div className="PageSection__header-actions">
                         {Array.isArray(actions) ?
                             actions.filter(a => !!a).map(action =>
-                                isValidElement(action) ?
-                                    action :
-                                    <IconButton
-                                        key={action.key}
-                                        size="sm"
-                                        variant="plain"
-                                        color="neutral"
-                                        {...action}
-                                    />
+                                isValidElement(action)
+                                    ? action
+                                    : !action.content ?
+                                        <IconButton
+                                            key={action.key}
+                                            size="sm"
+                                            variant="plain"
+                                            color="neutral"
+                                            {...action}
+                                        />
+                                        :
+                                        <Button
+                                            key={action.key}
+                                            size="sm"
+                                            variant="plain"
+                                            color="neutral"
+                                            {...action}
+                                        />
                             ) : actions
                         }
                     </div>
