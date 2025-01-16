@@ -4,7 +4,7 @@ import { useFormData } from 'shared/hooks/form';
 import Form from 'shared/ui-components/form';
 
 const defaultRoom = {
-    title: '',
+    name: '',
     login: '',
     password: '',
     active: true
@@ -28,8 +28,8 @@ export default function RoomForm({ room = {}, onSubmit, ...props }) {
         >
             <Form.Input
                 label="Название"
-                name="title"
-                value={data.title}
+                name="name"
+                value={data.name}
                 onChange={handleChange}
             />
 

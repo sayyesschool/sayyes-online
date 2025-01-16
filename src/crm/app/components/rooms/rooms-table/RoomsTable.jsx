@@ -1,7 +1,7 @@
 import { IconButton, Switch, Table } from 'shared/ui-components';
 
 const columns = [
-    { key: 'title', content: 'Название' },
+    { key: 'name', content: 'Название' },
     { key: 'login', content: 'Логин' },
     { key: 'password', content: 'Пароль' },
     { key: 'lessons', content: 'Кол-во уроков за 30 дней' },
@@ -27,12 +27,9 @@ export default function RoomsTable({ rooms, onEdit, onToggleActive, onDelete }) 
             <Table.Body>
                 {rooms.map(room =>
                     <Table.Row key={room.id}>
-                        <Table.Cell content={room.title} />
-
+                        <Table.Cell content={room.name} />
                         <Table.Cell content={room.login} />
-
                         <Table.Cell content={room.password} />
-
                         <Table.Cell content={room.lessonCount} />
 
                         <Table.Cell>
