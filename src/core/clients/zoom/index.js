@@ -9,8 +9,6 @@ export default ({ accountId, clientId, clientSecret, userId }) => {
 
     async function refreshToken() {
         token = await getToken(accountId, clientId, clientSecret);
-
-        return token;
     }
 
     async function zoomRequest({ path, method = 'GET', body }) {
@@ -51,7 +49,7 @@ export default ({ accountId, clientId, clientSecret, userId }) => {
     const meetings = Meetings(userId, zoomRequest);
 
     if (!token) {
-        getToken(accountId, clientId, clientSecret).then(t => token = t);
+        refreshToken();
     }
 
     return {
