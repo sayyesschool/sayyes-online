@@ -1,6 +1,10 @@
 @use 'shared/styles/base';
 @use 'shared/styles/components';
 
+.Page {
+    --page-max-width: 1440px;
+}
+
 .PageContent {
     display: flex;
     flex-direction: column;
