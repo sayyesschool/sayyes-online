@@ -4,6 +4,7 @@ import PersonChip from 'shared/components/person-chip';
 import { Table } from 'shared/ui-components';
 
 const columns = [
+    { key: 'number', text: '№' },
     { key: 'user', text: 'Пользователь' },
     { key: 'price', text: 'Стоимость, руб.' },
     { key: 'startDate', text: 'Дата начала' },
@@ -28,8 +29,10 @@ export default function MembershipsTable({ memberships, onEdit, onDelete }) {
             </Table.Head>
 
             <Table.Body>
-                {memberships.map(membership =>
+                {memberships.map((membership, index) =>
                     <Table.Row key={membership.id}>
+                        <Table.Cell content={index + 1} />
+
                         <Table.Cell>
                             {membership.user &&
                                 <PersonChip
@@ -42,8 +45,8 @@ export default function MembershipsTable({ memberships, onEdit, onDelete }) {
                         </Table.Cell>
 
                         <Table.Cell content={membership.price} />
-                        <Table.Cell content={membership.startDate} />
-                        <Table.Cell content={membership.endDate} />
+                        <Table.Cell content={membership.startDateString} />
+                        <Table.Cell content={membership.endDateString} />
                         <Table.Cell content={`${membership.registrationsCount} / ${membership.limit}`} />
                     </Table.Row>
                 )}

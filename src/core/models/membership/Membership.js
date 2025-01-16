@@ -46,6 +46,14 @@ Membership.statics.getEndDate = function(startDate, pack) {
     return datetime(startDate).add(...pack.duration).toDate();
 };
 
+Membership.virtual('startDateString').get(function() {
+    return datetime(this.startDate).format('DD.MM.YYYY');
+});
+
+Membership.virtual('endDateString').get(function() {
+    return datetime(this.endDate).format('DD.MM.YYYY');
+});
+
 Membership.virtual('registrationsCount').get(function() {
     return this.registrationIds.length;
 });
