@@ -47,7 +47,8 @@ export default ({
             fullName: request.contact.name,
             phone: request.contact.phone,
             email: request.contact.email,
-            office: request.data.format
+            office: request.data.format,
+            maturity: request.data.child && `Дети ${request.data.childAge} лет`
         });
 
         request.hhid = hhRequest.Id;
