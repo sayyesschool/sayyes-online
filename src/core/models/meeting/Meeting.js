@@ -38,7 +38,7 @@ export const Meeting = new Schema({
     timestamps: true
 });
 
-Meeting.Status = MeetingStatus;
+Meeting.statics.Status = MeetingStatus;
 
 Meeting.statics.getScheduled = async function() {
     return Meeting.find({

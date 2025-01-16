@@ -15,7 +15,7 @@ export const Registration = new Schema({
     membershipId: { type: Schema.Types.ObjectId }
 });
 
-Registration.Status = RegistrationStatus;
+Registration.statics.Status = RegistrationStatus;
 
 Registration.statics.findByUser = function($user) {
     const userId = isObjectIdOrHexString($user) ? $user : $user?.id;
