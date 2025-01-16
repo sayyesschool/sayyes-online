@@ -28,6 +28,10 @@ export default function Payments({ match, history }) {
             .then(() => togglePaymentFormOpen(false));
     }, []);
 
+    const handleResolve = useCallback(payment => {
+        actions.resolvePayment(payment.uuid);
+    }, [actions]);
+
     const handleEdit = useCallback(payment => {
         actions.setPayment(payment);
         togglePaymentFormOpen(true);
@@ -74,6 +78,7 @@ export default function Payments({ match, history }) {
                 <Page.Section variant="outlined" compact>
                     <PaymentsTable
                         payments={payments}
+                        onResolve={handleResolve}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
                     />

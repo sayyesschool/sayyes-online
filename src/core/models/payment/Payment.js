@@ -111,12 +111,6 @@ Payment.virtual('user', {
     justOne: true
 });
 
-Payment.methods.getResolveUrl = function(paymentId) {
-    return this.subscriptionId ?
-        `/user/subscription/resolve?paymentId=${paymentId}` :
-        `/user/payments/${paymentId}`;
-};
-
 Payment.methods.toData = function() {
     return this.toObject();
 };

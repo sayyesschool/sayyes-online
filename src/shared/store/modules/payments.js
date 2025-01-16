@@ -54,13 +54,15 @@ export const paymentsReducer = createReducer(null, {
     [getPayments]: (state, action) => action.data,
     [createPayment]: (state, action) => state ? [...state, action.data] : [action.data],
     [updatePayment]: (state, action) => state && state.map(payment => payment.id !== action.data.id ? payment : action.data),
-    [deletePayment]: (state, action) => state && state.filter(payment => payment.id !== action.data.id)
+    [deletePayment]: (state, action) => state && state.filter(payment => payment.id !== action.data.id),
+    [resolvePayment]: (state, action) => state && state.map(payment => payment.id !== action.data.id ? payment : action.data)
 });
 
 export const paymentReducer = createReducer(null, {
     [getPayment]: (state, action) => action.data,
     [setPayment]: (state, action) => action.payment,
-    [unsetPayment]: (state, action) => null
+    [unsetPayment]: (state, action) => null,
+    [resolvePayment]: (state, action) => action.data
 });
 
 export default combineReducers({

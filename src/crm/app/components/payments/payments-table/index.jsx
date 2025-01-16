@@ -5,8 +5,9 @@ import StatusChip from 'shared/components/status-chip';
 import { Chip, IconButton, Table } from 'shared/ui-components';
 
 const columns = [
-    { key: 'amount', text: 'Сумма, руб.' },
+    { key: 'number', text: '№' },
     { key: 'description', text: 'Описание' },
+    { key: 'amount', text: 'Сумма, руб.' },
     { key: 'date', text: 'Дата' },
     { key: 'user', text: 'Клиент' },
     { key: 'status', text: 'Статус' },
@@ -15,7 +16,7 @@ const columns = [
     { key: 'actions' }
 ];
 
-export default function PaymentsTable({ payments, onEdit, onDelete }) {
+export default function PaymentsTable({ payments, onResolve, onEdit, onDelete }) {
     return (
         <Table className="PaymentsTable">
             <Table.Head>
@@ -31,10 +32,11 @@ export default function PaymentsTable({ payments, onEdit, onDelete }) {
             </Table.Head>
 
             <Table.Body>
-                {payments.map(payment =>
+                {payments.map((payment, index) =>
                     <Table.Row key={payment.id}>
-                        <Table.Cell content={payment.amount} />
+                        <Table.Cell content={index + 1} />
                         <Table.Cell content={payment.description} />
+                        <Table.Cell content={payment.amount} />
                         <Table.Cell content={payment.dateLabel} />
 
                         <Table.Cell>
@@ -70,6 +72,13 @@ export default function PaymentsTable({ payments, onEdit, onDelete }) {
                         <Table.Cell align="end">
                             <IconButton.Group
                                 buttons={[
+                                    {
+                                        key: 'update',
+                                        title: 'Обновить',
+                                        icon: 'refresh',
+                                        disabled: payment.isResolved,
+                                        onClick: () => onResolve(payment)
+                                    },
                                     {
                                         key: 'edit',
                                         title: 'Изменить',

@@ -126,18 +126,18 @@ export const enrollmentReducer = createReducer(null, {
 
     // Payments
 
-    [createPayment]: (state, action) => state.id !== action.data.enrollmentId ? state : {
+    [createPayment]: (state, action) => state?.id !== action.data.enrollmentId ? state : {
         ...state,
         payments: [action.data, ...state.payments]
     },
-    [updatePayment]: (state, action) => state.id !== action.data.enrollmentId ? state : {
+    [updatePayment]: (state, action) => state?.id !== action.data.enrollmentId ? state : {
         ...state,
         payments: state.payments.map(payment => payment.id !== action.data.id ? payment : {
             ...payment,
             ...action.data
         })
     },
-    [deletePayment]: (state, action) => state.id !== action.data.enrollmentId ? state : {
+    [deletePayment]: (state, action) => state?.id !== action.data.enrollmentId ? state : {
         ...state,
         payments: state.payments.filter(payment => payment.id !== action.data.id)
     },

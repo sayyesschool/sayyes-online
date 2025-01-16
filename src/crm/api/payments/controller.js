@@ -1,5 +1,6 @@
 export default ({
-    models: { Payment }
+    models: { Payment },
+    services: { Checkout }
 }) => ({
     async get(req, res) {
         const payments = await Payment.find(req.query)
@@ -32,7 +33,7 @@ export default ({
     },
 
     async update(req, res) {
-        const payment = await Payment.findByIdAndUpdate(req.params.payment, req.body, { new: true });
+        const payment = await Payment.findByIdAndUpdate(req.params.id, req.body, { new: true });
 
         res.json({
             ok: true,
@@ -42,7 +43,7 @@ export default ({
     },
 
     async resolve(req, res) {
-        const payment = await Payment.resolve(req.params.id);
+        const payment = await Checkout.resolvePayment(req.params.id);
 
         res.json({
             ok: true,
@@ -52,7 +53,7 @@ export default ({
     },
 
     async delete(req, res) {
-        const payment = await Payment.findByIdAndDelete(req.params.payment);
+        const payment = await Payment.findByIdAndDelete(req.params.id);
 
         res.json({
             ok: true,
