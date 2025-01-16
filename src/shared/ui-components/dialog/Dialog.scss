@@ -1,5 +1,6 @@
 .ui-Dialog {
-    &--scrollable &__content {
+    &--scrollable &__scroller {
         overflow: hidden auto;
+        padding-bottom: 1px;
     }
 }

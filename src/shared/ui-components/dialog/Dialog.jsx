@@ -56,16 +56,24 @@ export default function Dialog({
                 }
 
                 <DialogContent className="ui-Dialog__content" {...contentProps}>
-                    {children}
+                    {scrollableContent ?
+                        <div className="ui-Dialog__scroller">
+                            {children}
+                        </div>
+                        :
+                        children
+                    }
                 </DialogContent>
 
                 {isValidElement(actions) ? actions : (Array.isArray(actions) &&
                     <DialogActions className="ui-Dialog__actions" {...actionsProps}>
-                        {actions?.map(action => isValidElement(action) ? action :
-                            <Button
-                                key={action.key}
-                                {...action}
-                            />
+                        {actions?.map(action =>
+                            isValidElement(action) ?
+                                action :
+                                <Button
+                                    key={action.key}
+                                    {...action}
+                                />
                         )}
                     </DialogActions>
                 )}
