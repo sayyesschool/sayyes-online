@@ -40,4 +40,7 @@ List.displayName = 'List';
 List.Item = ListItem;
 List.Divider = ListDivider;
 
-export default List;
+export {
+    List as default,
+    ListDivider
+};

@@ -89,4 +89,9 @@ ListItem.Button = JoyListItemButton;
 ListItem.Content = JoyListItemContent;
 ListItem.Decorator = JoyListItemDecorator;
 
-export default ListItem;
+export {
+    ListItem as default,
+    JoyListItemButton as ListItemButton,
+    JoyListItemContent as ListItemContent,
+    JoyListItemDecorator as ListItemDecorator
+};
