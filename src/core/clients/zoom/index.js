@@ -7,6 +7,12 @@ import Meetings from './meetings';
 export default ({ accountId, clientId, clientSecret, userId }) => {
     let token;
 
+    async function refreshToken() {
+        token = await getToken(accountId, clientId, clientSecret);
+
+        return token;
+    }
+
     async function zoomRequest({ path, method = 'GET', body }) {
         const response = await fetch(`${ZOOM_API_URL}${path}`, {
             method,
@@ -19,6 +25,13 @@ export default ({ accountId, clientId, clientSecret, userId }) => {
 
         if (!response.ok) {
             const error = await response.json();
+
+            if (error.code === 124) { // Token expired
+                await refreshToken();
+
+                return zoomRequest({ path, method, body });
+            }
+
             throw new Error(error ? `${error.message} (Code: ${error.code})` : `ZOOM API error. Code ${response.status}`);
         }
 
@@ -43,12 +56,6 @@ export default ({ accountId, clientId, clientSecret, userId }) => {
 
     return {
         meetings,
-
-        async refreshToken() {
-            token = await getToken(accountId, clientId, clientSecret);
-
-            return token;
-        },
 
         generateSignature(meetingNumber, role = 0) {
             const time = Date.now() - 1000;
