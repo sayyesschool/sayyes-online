@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import datetime from 'shared/libs/datetime';
+import datetime, { isToday } from 'shared/libs/datetime';
 
 import { Level } from '../common/constants';
 import Image from '../image';
@@ -95,7 +95,7 @@ Meeting.virtual('isFree').get(function() {
 });
 
 Meeting.virtual('isToday').get(function() {
-    return datetime(this.date).isSame(new Date(), 'day');
+    return isToday(this.startDate);
 });
 
 Meeting.virtual('isScheduled').get(function() {
