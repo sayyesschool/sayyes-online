@@ -8,7 +8,7 @@ import { useBoolean } from 'shared/hooks/state';
 
 import RequestForm from 'crm/components/requests/request-form';
 import RequestProcessFormDialog from 'crm/components/requests/request-process-form-dialog';
-import RequestSearchForm from 'crm/components/requests/request-search-form';
+import RequestsSearch from 'crm/components/requests/requests-search';
 import RequestsTable from 'crm/components/requests/requests-table';
 import { useActions, useStore } from 'crm/store';
 
@@ -21,6 +21,7 @@ export default function RequestsPage({ history }) {
     const { showNotification } = useActions('notification');
 
     const [searchParams, setSearchParams] = useState();
+    const [isLoading, setLoading] = useState(false);
     const [isRequestProcessPanelOpen, toggleRequestProcessPanelOpen] = useBoolean(false);
     const [isRequestFormOpen, toggleRequestFormOpen] = useBoolean(false);
     const [isSearchFormOpen, toggleSearchFormOpen] = useBoolean(false);
@@ -28,7 +29,9 @@ export default function RequestsPage({ history }) {
     const [requestWithExistingLearner, setRequestWithExistingLearner] = useState();
 
     useEffect(() => {
-        requestActions.getRequests();
+        setLoading(true);
+        requestActions.getRequests()
+            .finally(() => setLoading(false));
     }, [requestActions]);
 
     const handleUpdateRequest = useCallback(data => {
@@ -111,15 +114,19 @@ export default function RequestsPage({ history }) {
     }, []);
 
     const handleSearchSubmit = useCallback(params => {
-        setSearchParams(params);
+        setSearchParams(prevParams => ({ ...prevParams, ...params }));
 
-        return requestActions.getRequests(params);
+        setLoading(true);
+
+        return requestActions.getRequests(params).finally(() => setLoading(false));
     }, [requestActions]);
 
     const handleSearchClear = useCallback(() => {
         setSearchParams();
 
-        return requestActions.getRequests();
+        setLoading(true);
+
+        return requestActions.getRequests().finally(() => setLoading(false));
     }, [requestActions]);
 
     if (!requests) return <LoadingIndicator />;
@@ -128,13 +135,6 @@ export default function RequestsPage({ history }) {
         <Page className="RequestsPage">
             <Page.Header
                 title="Заявки"
-                toolbar={[
-                    {
-                        key: 'search',
-                        icon: isSearchFormOpen ? 'search_off' : 'search',
-                        onClick: toggleSearchFormOpen
-                    }
-                ]}
                 actions={[
                     {
                         key: 'export',
@@ -146,14 +146,15 @@ export default function RequestsPage({ history }) {
                         variant: 'plain'
                     }
                 ]}
-            />
-
-            <Page.Content>
-                <RequestSearchForm
+                loading={isLoading}
+            >
+                <RequestsSearch
                     onSubmit={handleSearchSubmit}
                     onClear={handleSearchClear}
                 />
+            </Page.Header>
 
+            <Page.Content>
                 <Page.Section
                     variant="outlined"
                     compact
