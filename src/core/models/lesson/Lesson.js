@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import datetime from 'shared/libs/datetime';
+import datetime, { isToday } from 'shared/libs/datetime';
 
 import { LessonStatus, LessonType } from './constants';
 
@@ -16,7 +16,7 @@ export const Lesson = new Schema({
     enrollmentId: { type: Schema.Types.ObjectId },
     learnerId: { type: Schema.Types.ObjectId },
     teacherId: { type: Schema.Types.ObjectId },
-    roomId: { type: Schema.Types.ObjectId, ref: 'Room' }
+    roomId: { type: Schema.Types.ObjectId }
 }, {
     timestamps: true
 });
