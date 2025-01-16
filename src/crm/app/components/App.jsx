@@ -13,7 +13,8 @@ import styles from './App.module.scss';
 
 export default function App({ routes }) {
     const [user, { getUser }] = useStore('user');
-    const [requests, { getRequests }] = useStore('requests.list');
+    const { getRequests } = useActions('requests');
+    const { getLessons } = useActions('lessons');
     const { getCourses } = useActions('courses');
     const { getMaterials } = useActions('materials');
     const { getMeetings } = useActions('meetings');
@@ -22,16 +23,18 @@ export default function App({ routes }) {
 
     useEffect(() => {
         getUser();
+        getLessons();
+        getMeetings();
         getRequests();
         getCourses();
         getMaterials();
         getManagers();
         getTeachers();
-        getMeetings();
 
         //setInterval(() => requestActions.getNewRequests(), 60000);
     }, [
         getUser,
+        getLessons,
         getRequests,
         getCourses,
         getMaterials,
