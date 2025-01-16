@@ -300,8 +300,13 @@ export default ({
         const query = Meeting.findById($meeting)
             .populate('host', 'firstname lastname image role');
 
-        if (options.populate) {
+        if (
+            typeof options.populate === 'string' ||
+            typeof options.populate === 'object'
+        ) {
             query.populate(options.populate);
+        } else if (Array.isArray(options.populate)) {
+            options.populate.forEach(populate => query.populate(populate));
         }
 
         const meeting = await query;
@@ -463,7 +468,7 @@ export default ({
             });
         }
 
-        return registration;
+        return registration.populate('user');
     },
 
     async unregisterFromMeeting($user, $meeting) {
@@ -565,7 +570,7 @@ export default ({
             membershipId: membership?.id
         });
 
-        if (meeting.zoomId) {
+        if (meeting.isScheduled && meeting.zoomId) {
             const { join_url, registrant_id } = await zoom.meetings.addRegistrant(meeting.zoomId, {
                 email: user.email,
                 first_name: user.firstname,
