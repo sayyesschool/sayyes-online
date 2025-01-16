@@ -103,14 +103,17 @@ export default ({
         const requests = await Request.find(query).sort({ createdAt: -1 });
 
         const data = requests.map(request => ({
-            'Статус': request.status,
-            'Описание': request.description,
+            'Тип': request.typeLabel,
+            'Статус': request.statusLabel,
             'Дата': request.dateTimeString,
             'Имя': request.contact?.name,
             'Email': request.contact?.email,
             'Телефон': request.contact?.phone,
+            'Канал': request.channelLabel,
+            'Источник': request.sourceLabel,
             'Уровень': request.data?.level,
             'Цель': request.data?.goal,
+            'Описание': request.description,
             'UTM Source': request.utm?.source,
             'UTM Medium': request.utm?.medium,
             'UTM Campaign': request.utm?.campaign,
