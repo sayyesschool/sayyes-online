@@ -18,7 +18,6 @@ export default function MeetingRegistrations({
     const [isSearching, setSearching] = useState(false);
 
     const handleSubmit = useCallback(data => {
-        setFormOpen(false);
         onCreate(data)?.finally(() => setFormOpen(false));
     }, [onCreate]);
 
@@ -49,7 +48,7 @@ export default function MeetingRegistrations({
 
     return (
         <Page.Section
-            title="Участники"
+            title="Регистрации"
             actions={[
                 hasRegistrations &&
                     <IconButton
@@ -82,9 +81,10 @@ export default function MeetingRegistrations({
             }
 
             <FormDialog
-                title="Новая регистрация"
-                open={isFormOpen}
                 form="meeting-registration-form"
+                title="Новая регистрация"
+                submitButtonText="Создать"
+                open={isFormOpen}
                 onClose={() => setFormOpen(false)}
             >
                 <MeetingRegistrationForm
