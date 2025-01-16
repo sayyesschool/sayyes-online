@@ -1,31 +1,33 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 
 import UserSelect from 'shared/components/user-select';
-import { requestChannelOptions, requestSourceOptions, requestStatusOptions } from 'shared/data/request';
+import {
+    requestChannelOptions,
+    requestSourceOptions,
+    requestStatusOptions,
+    requestTypeOptions
+} from 'shared/data/request';
 import { useFormData } from 'shared/hooks/form';
 import { Flex, Form, Text } from 'shared/ui-components';
 
-import { useStore } from 'crm/hooks/store';
-
 const defaultRequest = {
     status: 'new',
-    contact: {},
+    type: '',
     channel: '',
     source: '',
+    contact: {},
     utm: {},
-    note: undefined
+    note: ''
 };
 
-function RequestForm({ request = {}, onSubmit, ...props }, ref) {
-    const [managers] = useStore('managers.list');
-
+function RequestForm({ request = {}, managers, onSubmit, ...props }, ref) {
     const formRef = useRef();
 
     const { data, handleChange } = useFormData({
         ...defaultRequest,
         ...request,
-        learner: request.learner?.id,
-        manager: request.manager?.id
+        learnerId: request.learner?.id,
+        managerId: request.manager?.id
     });
 
     useImperativeHandle(ref, () => ({
@@ -39,6 +41,8 @@ function RequestForm({ request = {}, onSubmit, ...props }, ref) {
         onSubmit(data);
     }
 
+    console.log('RequestForm render', { request, data });
+
     return (
         <Form
             ref={formRef}
@@ -47,18 +51,20 @@ function RequestForm({ request = {}, onSubmit, ...props }, ref) {
             {...props}
         >
             <Form.Select
+                name="type"
+                value={data.type}
+                label="Тип"
+                options={requestTypeOptions}
+                required
+                onChange={handleChange}
+            />
+
+            <Form.Select
                 name="status"
                 value={data.status}
                 label="Статус"
                 options={requestStatusOptions}
                 required
-                onChange={handleChange}
-            />
-
-            <Form.Input
-                name="description"
-                value={data.description}
-                label="Описание"
                 onChange={handleChange}
             />
 
@@ -73,33 +79,6 @@ function RequestForm({ request = {}, onSubmit, ...props }, ref) {
                 name="contact.phone"
                 value={data.contact.phone}
                 label="Телефон"
-                onChange={handleChange}
-            />
-
-            {data.learner &&
-                <UserSelect
-                    name="learner"
-                    label="Клиент"
-                    value={data.learner}
-                    options={[{
-                        key: request.learner.id,
-                        value: request.learner.id,
-                        label: request.learner.fullname
-                    }]}
-                    disabled
-                />
-            }
-
-            <UserSelect
-                name="manager"
-                value={data.manager}
-                label="Менеджер"
-                options={managers?.map(manager => ({
-                    key: manager.id,
-                    value: manager.id,
-                    label: manager.fullname
-                }))}
-                required
                 onChange={handleChange}
             />
 
@@ -123,6 +102,33 @@ function RequestForm({ request = {}, onSubmit, ...props }, ref) {
                 name="note"
                 value={data.note}
                 label="Примечание"
+                onChange={handleChange}
+            />
+
+            {data.learner &&
+                <UserSelect
+                    name="learner"
+                    label="Ученик"
+                    value={data.learnerId}
+                    options={[{
+                        key: request.learner.id,
+                        value: request.learner.id,
+                        label: request.learner.fullname
+                    }]}
+                    disabled
+                />
+            }
+
+            <UserSelect
+                name="manager"
+                value={data.managerId}
+                label="Менеджер"
+                options={managers?.map(manager => ({
+                    key: manager.id,
+                    value: manager.id,
+                    label: manager.fullname
+                }))}
+                required
                 onChange={handleChange}
             />
 

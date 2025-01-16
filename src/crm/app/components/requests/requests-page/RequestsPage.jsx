@@ -40,10 +40,12 @@ export default function RequestsPage({ history }) {
     }, []);
 
     const handleProcessRequest = useCallback(request => {
-        if (!request.manager) {
-            requestActions.updateRequest(request.id, { status: 'processing', manager: user.id })
-                .then(() => toggleRequestProcessPanelOpen(true));
-        } else if (request.manager.id === user.id) {
+        if (!request.managerId) {
+            requestActions.updateRequest(request.id, {
+                status: 'processing',
+                managerId: user.id
+            }).then(() => toggleRequestProcessPanelOpen(true));
+        } else if (request.managerId === user.id) {
             toggleRequestProcessPanelOpen(true);
         } else {
             showNotification({ text: `Обработкой заявки уже занимается ${request.manager.fullname}` });
@@ -65,9 +67,9 @@ export default function RequestsPage({ history }) {
         return learnerActions.createLearner(data.learner)
             .then(({ data: learner }) => enrollmentActions.createEnrollment({
                 ...data.enrollment,
-                learner: learner.id,
-                manager: user.id,
-                request: request.id
+                learnerId: learner.id,
+                managerId: user.id,
+                requestId: request.id
             }))
             .then(({ data: enrollment }) => requestActions.updateRequest(request.id, {
                 ...data.request,

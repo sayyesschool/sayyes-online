@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 
+import ConfirmButton from 'shared/components/confirm-button';
 import PersonChip from 'shared/components/person-chip';
 import StatusChip from 'shared/components/status-chip';
 import { RequestStatusLabel } from 'shared/data/request';
@@ -112,13 +113,6 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                             <IconButton.Group
                                 buttons={[
                                     {
-                                        key: 'process',
-                                        title: 'Обработать',
-                                        icon: 'assignment',
-                                        disabled: (request.manager && request.manager?.id !== manager?.id),
-                                        onClick: () => onProcess(request)
-                                    },
-                                    {
                                         key: 'edit',
                                         title: 'Изменить',
                                         icon: 'edit',
@@ -129,6 +123,7 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                                         key: 'delete',
                                         title: 'Удалить',
                                         icon: 'delete',
+                                        color: 'danger',
                                         onClick: () => onDelete(request)
                                     }
                                 ]}
@@ -137,25 +132,6 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                                 variant="plain"
                                 size="sm"
                             >
-                                {request.data && (
-                                    <Popover
-                                        trigger={
-                                            <IconButton
-                                                title="Посмотреть данные"
-                                                icon="text_snippet"
-                                                variant="plain"
-                                                size="sm"
-                                            />
-                                        }
-                                    >
-                                        <Surface padding="sm">
-                                            {Object.entries(request.data).map(([key, value]) =>
-                                                <Text key={key}>{key}: {value}</Text>
-                                            )}
-                                        </Surface>
-                                    </Popover>
-                                )}
-
                                 {request.utm && (
                                     <Popover
                                         trigger={
@@ -176,6 +152,37 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                                         </Surface>
                                     </Popover>
                                 )}
+
+                                {request.data && (
+                                    <Popover
+                                        trigger={
+                                            <IconButton
+                                                title="Посмотреть данные"
+                                                icon="text_snippet"
+                                                variant="plain"
+                                                size="sm"
+                                            />
+                                        }
+                                    >
+                                        <Surface padding="sm">
+                                            {Object.entries(request.data).map(([key, value]) =>
+                                                <Text key={key}>{key}: {value}</Text>
+                                            )}
+                                        </Surface>
+                                    </Popover>
+                                )}
+
+                                {!request.managerId &&
+                                    <ConfirmButton
+                                        key="process"
+                                        icon="flag"
+                                        title="Обработать"
+                                        message="Обработать заявку?"
+                                        variant="plain"
+                                        size="sm"
+                                        onConfirm={() => onProcess(request)}
+                                    />
+                                }
                             </IconButton.Group>
                         </Table.Cell>
                     </Table.Row>

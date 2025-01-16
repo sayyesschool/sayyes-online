@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 
-import StatusIcon from 'shared/components/status-icon';
 import { Avatar, List, ListItem, Text } from 'shared/ui-components';
 
 export default function RequestsList({ requests }) {
@@ -11,14 +10,9 @@ export default function RequestsList({ requests }) {
                     key={request.id}
                     as={Link}
                     to={request.url}
-                    decorator={
-                        <StatusIcon
-                            status={request.status}
-                        />
-                    }
                     content={<>
-                        <Text type="body2" noWrap>{request.contact.name}</Text>
-                        <Text type="body3" noWrap>{request.contact.phone}</Text>
+                        <Text type="body-md" noWrap>{request.contact.name}</Text>
+                        <Text type="body-sm" noWrap>{request.contact.phone || request.contact.email}</Text>
                     </>}
                     endAction={request.manager &&
                         <Avatar
