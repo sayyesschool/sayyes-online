@@ -95,6 +95,7 @@ export default function PageHeader({
                         variant="plain"
                         size="sm"
                         color="primary"
+                        disableUnderline
                     />
                 }
 
