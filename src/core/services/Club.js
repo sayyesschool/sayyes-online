@@ -396,7 +396,9 @@ export default ({
     },
 
     async deleteMeeting($meeting) {
-        const meeting = this.getMeeting($meeting).populate('registrations');
+        const meeting = await this.getMeeting($meeting, {
+            populate: 'registrations'
+        });
 
         if (meeting.hasRegistrants) throw {
             status: 400,
@@ -404,7 +406,7 @@ export default ({
         };
 
         if (meeting.zoomId) {
-            await zoom.meetings.update(meeting.zoomId);
+            await zoom.meetings.delete(meeting.zoomId);
         }
 
         return Meeting.findByIdAndDelete(meeting.id);

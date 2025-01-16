@@ -37,7 +37,7 @@ export default ({
         });
     },
 
-    async update(req, res, next) {
+    async update(req, res) {
         const meeting = await Club.updateMeeting(req.params.meetingId, req.body);
 
         res.json({
@@ -47,7 +47,7 @@ export default ({
         });
     },
 
-    async delete(req, res, next) {
+    async delete(req, res) {
         const meeting = await Club.deleteMeeting(req.params.meetingId);
 
         res.json({

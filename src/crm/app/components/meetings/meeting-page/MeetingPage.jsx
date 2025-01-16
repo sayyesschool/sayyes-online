@@ -35,11 +35,7 @@ export default function Meeting({ match, history }) {
     }, [actions, meeting]);
 
     const handleRemoveRegistration = useCallback(registration => {
-        if (confirm('Вы уверены что хотите удалить регистрацию? Отменить операцию будет невозможно.')) {
-            return actions.removeRegistration(meeting.id, registration.id);
-        } else {
-            Promise.resolve();
-        }
+        return actions.removeRegistration(meeting.id, registration.id);
     }, [actions, meeting]);
 
     if (!meeting) return <LoadingIndicator />;

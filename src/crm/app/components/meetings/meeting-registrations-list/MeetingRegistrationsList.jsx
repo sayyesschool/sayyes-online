@@ -30,7 +30,7 @@ export default function MeetingRegistrationsList({
                         </Link>
                     }
                     end={<>
-                        {registration.joinUrl &&
+                        {meeting.isScheduled || meeting.isStarted && registration.joinUrl &&
                             <CopyButton
                                 title="Копировать ссылку для входа"
                                 icon="link"
