@@ -44,9 +44,10 @@ export default ({
         const hhRequest = await hh.addStudyRequest({
             type: request.typeLabel,
             description: request.description,
-            name: request.contact.name,
+            fullName: request.contact.name,
             phone: request.contact.phone,
-            email: request.contact.email
+            email: request.contact.email,
+            office: request.data.format
         });
 
         request.hhid = hhRequest.Id;
