@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
+
 import Box from '@mui/system/Box';
+import classnames from 'classnames';
 
 import IconButton from './IconButton';
 
@@ -26,7 +27,9 @@ const IconButtonGroup = forwardRef(({
             justifyContent={align}
             {...props}
         >
-            {buttons?.map(button =>
+            {children}
+
+            {buttons?.filter(Boolean).map(button =>
                 <IconButton
                     key={button.key}
                     color={color}
@@ -35,8 +38,6 @@ const IconButtonGroup = forwardRef(({
                     {...button}
                 />
             )}
-
-            {children}
         </Box>
     );
 });
