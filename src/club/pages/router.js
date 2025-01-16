@@ -18,8 +18,10 @@ export default ({
     router.get('/', async (req, res) => {
         const packs = await Club.getPacks();
         const meetings = await Club.findMeetings({
-            status: { $nin: ['canceled', 'ended'] }
-        }).sort({ date: 1 });
+            status: 'scheduled'
+        })
+            .populate('host', 'firstname lastname email')
+            .sort({ date: 1 });
 
         res.render('pages/views/main', {
             trialPack: packs[0],
