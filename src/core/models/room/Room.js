@@ -3,7 +3,7 @@ import { Schema } from 'mongoose';
 import datetime from 'shared/libs/datetime';
 
 export const Room = new Schema({
-    name: { type: String, trim: true, alias: 'title' },
+    name: { type: String, trim: true },
     login: { type: String },
     password: { type: String },
     active: { type: Boolean, default: false }
