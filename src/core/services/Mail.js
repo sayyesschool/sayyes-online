@@ -1,13 +1,4 @@
-function resolveTo(to) {
-    if (typeof to === 'string')
-        return [{ email: to }];
-    else if (Array.isArray(to))
-        return to;
-    else if (to && typeof to === 'object')
-        return [to];
-    else
-        return [];
-}
+const API_VERSION = 'v3.1';
 
 export default (config, client) => ({
     defaultFrom: {
@@ -15,9 +6,17 @@ export default (config, client) => ({
         name: 'SAY YES English School'
     },
 
-    send({ from = this.defaultFrom, to, subject, text, html, templateId, variables }) {
+    send({
+        from = this.defaultFrom,
+        to, subject,
+        text,
+        html,
+        templateId,
+        variables,
+        attachments
+    }) {
         return client
-            .post('send', { version: 'v3.1' })
+            .post('send', { version: API_VERSION })
             .request({
                 Messages: [
                     {
@@ -25,13 +24,17 @@ export default (config, client) => ({
                             Email: from.email,
                             Name: from.name
                         },
-                        To: resolveTo(to).map(({ name: Name, email: Email }) => ({ Name, Email })),
+                        To: resolveTo(to).map(({ name, email }) => ({
+                            Name: name,
+                            Email: email
+                        })),
                         Subject: subject,
                         TextPart: text,
                         HTMLPart: html,
                         TemplateID: templateId,
-                        TemplateLanguage: true,
-                        Variables: variables
+                        TemplateLanguage: !!variables,
+                        Variables: variables,
+                        Attachments: attachments
                     }
                 ]
             })
@@ -44,7 +47,7 @@ export default (config, client) => ({
             return Promise.resolve();
 
         return client
-            .post('send', { version: 'v3.1' })
+            .post('send', { version: API_VERSION })
             .request({
                 Messages: messages.map(message => ({
                     From: {
@@ -62,3 +65,14 @@ export default (config, client) => ({
             }).catch(console.error);
     }
 });
+
+function resolveTo(to) {
+    if (typeof to === 'string')
+        return [{ email: to }];
+    else if (Array.isArray(to))
+        return to;
+    else if (to && typeof to === 'object')
+        return [to];
+    else
+        return [];
+}

@@ -38,7 +38,6 @@ export const ZOOM_MEETING = {
 export const REQUEST = {
     status: 'new',
     type: 'call',
-    description: 'Тест',
     contact: {
         name: 'Тест',
         email: 'olegpolyakov@outlook.com',

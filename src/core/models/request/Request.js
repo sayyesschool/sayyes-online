@@ -43,10 +43,6 @@ export const Request = new Schema({
         },
         phone: { type: String, set: value => value.trim().replace(/[\s()\-\+]+/g, '') }
     },
-    description: {
-        type: String,
-        default: ''
-    },
     note: { type: String, trim: true, default: '' },
     referrer: { type: String },
     captcha: { type: Boolean, default: false },
@@ -102,6 +98,10 @@ Request.virtual('timeString').get(function() {
 
 Request.virtual('dateTimeString').get(function() {
     return datetime(this.createdAt).format('D MMM H:mm');
+});
+
+Request.virtual('hasUTM').get(function() {
+    return this.utm && Object.values(this.utm).filter(Boolean).length > 0;
 });
 
 Request.virtual('learner', {
