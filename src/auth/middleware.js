@@ -76,6 +76,8 @@ export default ({
             res.redirect(`//lms.${APP_DOMAIN}`);
         else if (req.user.hasDomain('club'))
             res.redirect(`//club.${APP_DOMAIN}`);
+        else if (req.user.hasDomain('lk'))
+            res.redirect(`//lk.${APP_DOMAIN}`);
         else
             next();
     }
