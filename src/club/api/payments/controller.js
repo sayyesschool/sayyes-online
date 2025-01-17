@@ -12,7 +12,6 @@ export default ({
             utm
         } = req.body ?? {};
         let requestId = req.body?.requestId;
-        let paymentRequestId;
 
         const pack = await Club.getPack(packId);
 
@@ -33,22 +32,22 @@ export default ({
             message: 'Не указан email'
         };
 
-        if (requestId) {
-            paymentRequestId = await Request.create({
-                description: 'Покупка абонемента',
-                contact: user ? undefined : {
-                    name,
-                    email
-                },
-                learnerId: user?.id,
-                requestId,
-                utm
-            }).then(request => request.id);
+        const paymentRequest = await Request.create({
+            type: Request.Type.Membership,
+            contact: user ? undefined : {
+                name,
+                email
+            },
+            learnerId: user?.id,
+            requestId,
+            utm
+        });
 
+        if (requestId) {
             await Request.update(requestId, {
                 status: Request.Status.Completed,
                 learnerId: user?.id,
-                requestId: paymentRequestId
+                requestId: paymentRequest.id
             });
         }
 
@@ -65,7 +64,7 @@ export default ({
                 userId: user?.id,
                 membershipPackId: pack.id,
                 meetingId,
-                requestId: paymentRequestId
+                requestId: paymentRequest.id
             }
         });
 

@@ -53,13 +53,15 @@ export const RequestStatusLabel = {
 export const RequestType = {
     Call: 'call',
     Lesson: 'lesson',
+    Membership: 'membership',
     Study: 'study',
     Test: 'test'
 };
 
 export const RequestTypeLabel = {
-    [RequestType.Call]: 'Заявка на звонок',
-    [RequestType.Lesson]: 'Заявка на пробный урок',
-    [RequestType.Study]: 'Заявка на обучение',
+    [RequestType.Call]: 'Звонок',
+    [RequestType.Lesson]: 'Занятие',
+    [RequestType.Membership]: 'Абонемент',
+    [RequestType.Study]: 'Обучение',
     [RequestType.Test]: 'Тестирование'
 };
