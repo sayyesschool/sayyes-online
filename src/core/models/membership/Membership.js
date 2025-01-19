@@ -5,11 +5,19 @@ import datetime from 'shared/libs/datetime';
 const Membership = new Schema({
     limit: { type: Number, default: 1 },
     price: { type: Number, default: 0 },
-    startDate: { type: Date },
-    endDate: { type: Date },
-    userId: { type: Schema.Types.ObjectId, ref: 'User' },
-    paymentId: { type: Schema.Types.ObjectId, ref: 'Payment' },
-    registrationIds: [{ type: Schema.Types.ObjectId, ref: 'Registration' }]
+    startDate: {
+        type: Date,
+        required: true,
+        set: value => datetime(value).utc().toDate()
+    },
+    endDate: {
+        type: Date,
+        required: true,
+        set: value => datetime(value).utc().toDate()
+    },
+    userId: { type: Schema.Types.ObjectId, required: true },
+    paymentId: { type: Schema.Types.ObjectId },
+    registrationIds: [{ type: Schema.Types.ObjectId }]
 }, {
     timestamps: true
 });

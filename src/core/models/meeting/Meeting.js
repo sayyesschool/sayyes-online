@@ -10,7 +10,11 @@ import { LevelLabels, MeetingStatus, SimpleLevelLabels } from './constants';
 export const Meeting = new Schema({
     title: { type: String, required: true, trim: true },
     description: { type: String, trim: true, default: '' },
-    startDate: { type: Date, alias: 'date' },
+    startDate: {
+        type: Date,
+        alias: 'date',
+        set: value => datetime(value).utc().toDate()
+    },
     endDate: { type: Date },
     capacity: { type: Number },
     level: {
