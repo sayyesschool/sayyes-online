@@ -54,7 +54,7 @@ export default function Payment({ pack, meetingId }) {
             {view === 1 &&
                 <Checkout
                     data={{
-                        ...contact,
+                        contact,
                         packId: pack.id,
                         meetingId
                     }}
