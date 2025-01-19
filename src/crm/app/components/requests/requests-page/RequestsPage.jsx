@@ -25,7 +25,6 @@ export default function RequestsPage({ history }) {
     const [isRequestProcessPanelOpen, toggleRequestProcessPanelOpen] = useBoolean(false);
     const [isRequestFormOpen, toggleRequestFormOpen] = useBoolean(false);
     const [isSearchFormOpen, toggleSearchFormOpen] = useBoolean(false);
-    const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
     const [requestWithExistingLearner, setRequestWithExistingLearner] = useState();
 
     useEffect(() => {
@@ -33,11 +32,6 @@ export default function RequestsPage({ history }) {
         requestActions.getRequests()
             .finally(() => setLoading(false));
     }, [requestActions]);
-
-    const handleUpdateRequest = useCallback(data => {
-        return requestActions.updateRequest(data.id, data)
-            .then(() => toggleRequestFormOpen(false));
-    }, []);
 
     const handleProcessRequest = useCallback(request => {
         if (!request.managerId) {
@@ -102,18 +96,15 @@ export default function RequestsPage({ history }) {
         toggleRequestFormOpen(true);
     }, []);
 
-    const handleDeleteRequest = useCallback(() => {
-        return requestActions.deleteRequest(request.id)
-            .then(() => {
-                requestActions.unsetRequest();
-                toggleConfirmationDialogOpen(false);
-            });
-    }, [request]);
-
-    const handleDeleteConfirm = useCallback(request => {
-        requestActions.setRequest(request);
-        toggleConfirmationDialogOpen(true);
+    const handleUpdateRequest = useCallback(data => {
+        return requestActions.updateRequest(data.id, data)
+            .then(() => toggleRequestFormOpen(false));
     }, []);
+
+    const handleDeleteRequest = useCallback(request => {
+        return requestActions.deleteRequest(request.id)
+            .then(() => requestActions.unsetRequest());
+    }, [requestActions]);
 
     const handleSearchSubmit = useCallback(params => {
         setSearchParams(prevParams => ({ ...prevParams, ...params }));
@@ -167,17 +158,19 @@ export default function RequestsPage({ history }) {
                         manager={user}
                         onEdit={handleEditRequest}
                         onProcess={handleCheckRequest}
-                        onDelete={handleDeleteConfirm}
+                        onDelete={handleDeleteRequest}
                     />
                 </Page.Section>
             </Page.Content>
 
-            <RequestProcessFormDialog
-                request={request}
-                open={isRequestProcessPanelOpen}
-                onSubmit={handleProcessRequestSubmit}
-                onClose={toggleRequestProcessPanelOpen}
-            />
+            {request &&
+                <RequestProcessFormDialog
+                    request={request}
+                    open={isRequestProcessPanelOpen}
+                    onSubmit={handleProcessRequestSubmit}
+                    onClose={toggleRequestProcessPanelOpen}
+                />
+            }
 
             <FormDialog
                 title="Редактирование заявки"
@@ -191,14 +184,6 @@ export default function RequestsPage({ history }) {
                     onSubmit={handleUpdateRequest}
                 />
             </FormDialog>
-
-            <ConfirmationDialog
-                title="Подтвердите действие"
-                message="Вы действительно хотите удалить заявку?"
-                open={isConfirmationDialogOpen}
-                onConfirm={handleDeleteRequest}
-                onClose={toggleConfirmationDialogOpen}
-            />
 
             <ConfirmationDialog
                 title="Совпадение номера телефона"

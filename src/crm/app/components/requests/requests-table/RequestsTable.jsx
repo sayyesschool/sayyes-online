@@ -56,25 +56,29 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                         </Table.Cell>
 
                         <Table.Cell>
-                            <Flex column>
-                                <Text as="span">{request.contact.name}</Text>
+                            {request.contact ?
+                                <Flex column>
+                                    <Text as="span">{request.contact.name}</Text>
 
-                                {request.contact.email &&
-                                    <Text
-                                        as="span"
-                                        type="body-sm"
-                                        content={request.contact.email}
-                                    />
-                                }
+                                    {request.contact.email &&
+                                        <Text
+                                            as="span"
+                                            type="body-sm"
+                                            content={request.contact.email}
+                                        />
+                                    }
 
-                                {request.contact.phone &&
-                                    <Text
-                                        as="span"
-                                        type="body-sm"
-                                        content={request.contact.phone}
-                                    />
-                                }
-                            </Flex>
+                                    {request.contact.phone &&
+                                        <Text
+                                            as="span"
+                                            type="body-sm"
+                                            content={request.contact.phone}
+                                        />
+                                    }
+                                </Flex>
+                                :
+                                '—'
+                            }
                         </Table.Cell>
 
                         <Table.Cell>
@@ -110,35 +114,13 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                         </Table.Cell>
 
                         <Table.Cell align="end">
-                            <IconButton.Group
-                                buttons={[
-                                    {
-                                        key: 'edit',
-                                        title: 'Изменить',
-                                        icon: 'edit',
-                                        disabled: (request.manager && request.manager?.id !== manager?.id),
-                                        onClick: () => onEdit(request)
-                                    },
-                                    {
-                                        key: 'delete',
-                                        title: 'Удалить',
-                                        icon: 'delete',
-                                        color: 'danger',
-                                        onClick: () => onDelete(request)
-                                    }
-                                ]}
-                                align="end"
-                                color="neutral"
-                                variant="plain"
-                                size="sm"
-                            >
+                            <IconButton.Group>
                                 {request.utm && (
                                     <Popover
                                         trigger={
                                             <IconButton
                                                 title="Посмотреть UTM"
                                                 icon="sell"
-                                                variant="plain"
                                                 size="sm"
                                             />
                                         }
@@ -159,7 +141,6 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                                             <IconButton
                                                 title="Посмотреть данные"
                                                 icon="text_snippet"
-                                                variant="plain"
                                                 size="sm"
                                             />
                                         }
@@ -174,15 +155,29 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
 
                                 {!request.managerId &&
                                     <ConfirmButton
-                                        key="process"
-                                        icon="flag"
                                         title="Обработать"
                                         message="Обработать заявку?"
-                                        variant="plain"
+                                        icon="flag"
                                         size="sm"
                                         onConfirm={() => onProcess(request)}
                                     />
                                 }
+
+                                <IconButton
+                                    title="Изменить"
+                                    icon="edit"
+                                    size="sm"
+                                    disabled={request.manager && request.manager?.id !== manager?.id}
+                                    onClick={() => onEdit(request)}
+                                />
+
+                                <ConfirmButton
+                                    title="Удалить"
+                                    message="Удалить заявку?"
+                                    icon="delete"
+                                    size="sm"
+                                    onConfirm={() => onDelete(request)}
+                                />
                             </IconButton.Group>
                         </Table.Cell>
                     </Table.Row>
