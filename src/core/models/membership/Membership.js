@@ -62,6 +62,12 @@ Membership.virtual('endDateString').get(function() {
     return datetime(this.endDate).format('DD.MM.YYYY');
 });
 
+Membership.virtual('durationString').get(function() {
+    const days = datetime(this.endDate).diff(this.startDate, 'days');
+
+    return datetime.duration(days, 'days').humanize();
+});
+
 Membership.virtual('registrationsCount').get(function() {
     return this.registrationIds.length;
 });
@@ -71,7 +77,7 @@ Membership.virtual('isActive').get(function() {
 });
 
 Membership.virtual('isExpired').get(function() {
-    return this.endDate && datetime().add(1, 'day').isAfter(this.endDate);
+    return datetime(this.endDate).isBefore(new Date());
 });
 
 Membership.virtual('isValid').get(function() {
