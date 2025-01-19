@@ -16,6 +16,29 @@ export const getMembership = createAction('GET_MEMBERSHIP', id => ({
     }
 }));
 
+export const createMembership = createAction('CREATE_MEMBERSHIP', data => ({
+    request: {
+        method: 'post',
+        path: 'memberships',
+        body: data
+    }
+}));
+
+export const updateMembership = createAction('UPDATE_MEMBERSHIP', (id, data) => ({
+    request: {
+        method: 'put',
+        path: `memberships/${id}`,
+        body: data
+    }
+}));
+
+export const deleteMembership = createAction('DELETE_MEMBERSHIP', id => ({
+    request: {
+        method: 'delete',
+        path: `memberships/${id}`
+    }
+}));
+
 export const setMembership = createAction('SET_MEMBERSHIP', membership => ({
     membership
 }));
@@ -25,12 +48,22 @@ export const unsetMembership = createAction('UNSET_MEMBERSHIP');
 export const actions = {
     getMemberships,
     getMembership,
+    createMembership,
+    updateMembership,
+    deleteMembership,
     setMembership,
     unsetMembership
 };
 
 export const membershipsReducer = createReducer(null, {
     [getMemberships]: (state, action) => action.data,
+    [createMembership]: (state, action) => state ? [...state, action.data] : [action.data],
+    [updateMembership]: (state, action) => state?.map(m => m.id !== action.data.id ? m : {
+        ...m,
+        ...action.data
+    }),
+    [deleteMembership]: (state, action) => state?.filter(m => m.id !== action.data.id),
+
     [registerForMeeting]: (state, action) =>
         state?.map(m => m.id !== action.data.membershipId ? m : registerForMeetingUpdate(m, action.data)),
     [unregisterFromMeeting]: (state, action) =>
@@ -40,7 +73,13 @@ export const membershipsReducer = createReducer(null, {
 export const membershipReducer = createReducer(null, {
     [getMembership]: (state, action) => action.data,
     [setMembership]: (state, action) => action.data,
+    [updateMembership]: (state, action) => ({
+        ...state,
+        ...action.data
+    }),
+    [deleteMembership]: () => null,
     [unsetMembership]: () => null,
+
     [registerForMeeting]: (state, action) =>
         state?.id !== action.data.membershipId ? state : registerForMeetingUpdate(state, action.data),
     [unregisterFromMeeting]: (state, action) =>
