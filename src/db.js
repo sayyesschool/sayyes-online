@@ -69,7 +69,7 @@ process.on('SIGINT', async () => {
 
     await mongoose.connection.close();
 
-    console.log('Disconnected from DB through app termination');
+    console.log('Process terminated');
     process.exit(0);
 });
 
