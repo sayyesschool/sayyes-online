@@ -4,25 +4,33 @@ export default ({
 }) => ({
     async create(req, res) {
         const {
-            email,
-            name,
+            amount,
+            contact: {
+                email,
+                name,
+                phone
+            },
             userId = req.user?.id,
             formatId,
             typeId,
-            packId,
-            amount
+            packId
         } = req.body ?? {};
+
+        if (!amount) throw {
+            code: 400,
+            message: 'Не указана сумма'
+        };
+
+        if (!userId && !email) throw {
+            code: 400,
+            message: 'Не указан email'
+        };
 
         const user = await User.findOne({ $or: [{ _id: userId }, { email }] });
 
         if (userId && !user) throw {
             code: 404,
             message: 'Пользователь не найден'
-        };
-
-        if (!userId && !email) throw {
-            code: 400,
-            message: 'Не указан email'
         };
 
         const payment = await Checkout.createPayment({
@@ -33,8 +41,9 @@ export default ({
             },
             email: user?.email ?? email,
             metadata: {
-                email: user ? undefined : email,
                 name: user ? undefined : name,
+                email: user ? undefined : email,
+                phone: user ? undefined : phone,
                 userId: user?.id,
                 formatId: formatId,
                 typeId: typeId,
