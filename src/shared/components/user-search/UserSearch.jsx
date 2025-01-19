@@ -5,7 +5,7 @@ import { useDebounce } from 'shared/hooks/fn';
 import http from 'shared/services/http';
 import { AutocompleteOption, ListItemContent, Text } from 'shared/ui-components';
 
-export default function UserSearch({ onResult }) {
+export default function UserSearch({ onResult, ...props }) {
     const [query, setQuery] = useState('');
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -26,7 +26,7 @@ export default function UserSearch({ onResult }) {
     }, [search]);
 
     const handleChange = useCallback((event, userId) => {
-        onResult(userId);
+        onResult?.(userId);
     }, [onResult]);
 
     const options = users.map(user => ({
@@ -42,7 +42,7 @@ export default function UserSearch({ onResult }) {
         <UserSelect
             options={options}
             loading={loading}
-            placeholder="Поиск пользователя"
+            placeholder="Имя, фамилия, телефон или email"
             forcePopupIcon={options.length > 0}
             renderOption={(props, option) => (
                 <AutocompleteOption key={option.value} {...props}>
@@ -59,6 +59,7 @@ export default function UserSearch({ onResult }) {
             freeSolo
             onInputChange={handleInputChange}
             onChange={handleChange}
+            {...props}
         />
     );
 }
