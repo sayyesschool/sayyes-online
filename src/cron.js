@@ -9,7 +9,7 @@ import db from './db';
 const { services: { Club } } = core(config);
 
 new CronJob({
-    cronTime: '0 0/30 * * * *', // every 30 minutes
+    cronTime: '0 */30 * * * *', // every 30 minutes
     start: true,
     onTick: async () => {
         console.log('Cron job running...');
