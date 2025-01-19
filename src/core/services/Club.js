@@ -666,10 +666,8 @@ export default ({
         return canceledRegistration;
     },
 
-    async sendMeetingsReminders(when, { templateId } = {}) {
-        const meetings = await Meeting.find({
-            date: when instanceof Date ? when : when.toDate()
-        })
+    async sendMeetingsReminders(query, { templateId } = {}) {
+        const meetings = await Meeting.find(query)
             .populate('host', 'firstname lastname')
             .populate({
                 path: 'registrations',
@@ -694,7 +692,7 @@ export default ({
                         firstname: registration.user.firstname,
                         title: meeting.title,
                         datetime: meeting.datetime,
-                        host: `${meeting.host.firstname} ${meeting.host.lastname}`,
+                        host: meeting.host && `${meeting.host.firstname} ${meeting.host.lastname}`,
                         level: meeting.level,
                         thumbnailUrl: meeting.thumbnailUrl || '',
                         materialsUrl: meeting.materialsUrl || '',
