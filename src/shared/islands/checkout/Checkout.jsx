@@ -13,13 +13,13 @@ export default function Checkout({
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
-        const requestId = params.get('requestId');
+        const requestId = params.get('requestId') ?? undefined;
         const utm = {
-            source: params.get('utm_source'),
-            medium: params.get('utm_medium'),
-            campaign: params.get('utm_campaign'),
-            content: params.get('utm_content'),
-            term: params.get('utm_term')
+            source: params.get('utm_source') ?? undefined,
+            medium: params.get('utm_medium') ?? undefined,
+            campaign: params.get('utm_campaign') ?? undefined,
+            content: params.get('utm_content') ?? undefined,
+            term: params.get('utm_term') ?? undefined
         };
 
         http.post('/api/payments/create', {
