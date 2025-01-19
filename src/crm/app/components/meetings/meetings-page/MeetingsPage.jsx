@@ -12,8 +12,8 @@ export default function MeetingsPage() {
     const [meetings, actions] = useStore('meetings.list');
     const [teachers] = useStore('teachers.list');
 
-    const [isMeetingFormOpen, setMeetingFormOpen] = useState(false);
     const [tab, setTab] = useState('upcoming');
+    const [isMeetingFormOpen, setMeetingFormOpen] = useState(false);
 
     useEffect(() => {
         actions.getMeetings();

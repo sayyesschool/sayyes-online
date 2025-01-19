@@ -5,41 +5,39 @@ import ImageField from 'shared/components/image-field';
 import { levelOptions } from 'shared/data/common';
 import { meetingStatusOptions } from 'shared/data/meeting';
 import { useFormData } from 'shared/hooks/form';
-import datetime from 'shared/libs/datetime';
+import datetime, { atMSK } from 'shared/libs/datetime';
 import { Flex, Form, Grid, Surface } from 'shared/ui-components';
 
-const defaultMeeting = {
-    title: '',
-    date: new Date(),
-    level: undefined,
-    duration: 60,
-    status: 'scheduled',
-    online: false,
-    free: false,
-    published: false,
-    image: {},
-    description: ''
-};
+const getData = ({
+    title = '',
+    startDate = new Date(),
+    level = '',
+    duration = 60,
+    status = 'scheduled',
+    online = false,
+    free = false,
+    published = false,
+    image = {},
+    description = ''
+} = {}) => ({
+    title,
+    startDate: datetime(startDate).format('YYYY-MM-DDTHH:mm'),
+    level: level?.toString(),
+    duration,
+    status,
+    online,
+    free,
+    published,
+    image,
+    description
+});
 
 export default function MeetingForm({
-    meeting = defaultMeeting,
+    meeting,
     hosts = [],
     onSubmit
 }) {
-    const { data, setData, handleChange } = useFormData({
-        ...defaultMeeting,
-        title: meeting.title,
-        date: datetime(meeting.date).format('YYYY-MM-DDTHH:mm'),
-        hostId: meeting.hostId,
-        level: meeting.level?.toString(),
-        duration: meeting.duration,
-        status: meeting.status,
-        online: meeting.online,
-        free: meeting.free,
-        published: meeting.published,
-        image: meeting.image,
-        description: meeting.description
-    }, [meeting.id]);
+    const { data, setData, handleChange } = useFormData(getData(meeting), [meeting.id]);
 
     const fileInputRef = useRef();
     const contentEditorRef = useRef();
@@ -56,7 +54,6 @@ export default function MeetingForm({
 
         onSubmit({
             ...data,
-            date: datetime(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]'),
             description: content
         });
 
@@ -99,9 +96,9 @@ export default function MeetingForm({
                         <Form.Input
                             label="Когда"
                             type="datetime-local"
-                            name="date"
-                            value={data.date}
-                            message={`Московское время: ${datetime(data.date).utc().add(3, 'hours').format('HH:mm')}`}
+                            name="startDate"
+                            value={data.startDate}
+                            message={`Московское время: ${atMSK(data.startDate).format('HH:mm')}`}
                             required
                             onChange={handleChange}
                         />
