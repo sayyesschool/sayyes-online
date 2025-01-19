@@ -19,7 +19,8 @@ export default function RequestProcessFormDialog({ request, open, onSubmit, onCl
         return {
             firstname,
             lastname,
-            phone: request?.contact.phone
+            email: request?.contact?.email,
+            phone: request?.contact?.phone
         };
     }, [request]);
 

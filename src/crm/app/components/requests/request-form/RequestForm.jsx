@@ -41,8 +41,6 @@ function RequestForm({ request = {}, managers, onSubmit, ...props }, ref) {
         onSubmit(data);
     }
 
-    console.log('RequestForm render', { request, data });
-
     return (
         <Form
             ref={formRef}
@@ -70,14 +68,21 @@ function RequestForm({ request = {}, managers, onSubmit, ...props }, ref) {
 
             <Form.Input
                 name="contact.name"
-                value={data.contact.name}
+                value={data.contact?.name}
                 label="Имя"
                 onChange={handleChange}
             />
 
             <Form.Input
+                name="contact.email"
+                value={data.contact?.email}
+                label="Эл. почта"
+                onChange={handleChange}
+            />
+
+            <Form.Input
                 name="contact.phone"
-                value={data.contact.phone}
+                value={data.contact?.phone}
                 label="Телефон"
                 onChange={handleChange}
             />
@@ -98,16 +103,9 @@ function RequestForm({ request = {}, managers, onSubmit, ...props }, ref) {
                 onChange={handleChange}
             />
 
-            <Form.Textarea
-                name="note"
-                value={data.note}
-                label="Примечание"
-                onChange={handleChange}
-            />
-
-            {data.learner &&
+            {data.learnerId &&
                 <UserSelect
-                    name="learner"
+                    name="learnerId"
                     label="Ученик"
                     value={data.learnerId}
                     options={[{
@@ -120,7 +118,7 @@ function RequestForm({ request = {}, managers, onSubmit, ...props }, ref) {
             }
 
             <UserSelect
-                name="manager"
+                name="managerId"
                 value={data.managerId}
                 label="Менеджер"
                 options={managers?.map(manager => ({
@@ -129,6 +127,13 @@ function RequestForm({ request = {}, managers, onSubmit, ...props }, ref) {
                     label: manager.fullname
                 }))}
                 required
+                onChange={handleChange}
+            />
+
+            <Form.Textarea
+                name="note"
+                value={data.note}
+                label="Примечание"
                 onChange={handleChange}
             />
 
