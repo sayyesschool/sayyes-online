@@ -154,7 +154,7 @@ block main
                 for faq in faqs
                     div.accordion-item
                         h3.accordion-item__title= faq.title
-                        p.accordion-item__content= faq.content
+                        p.accordion-item__content !{faq.content}
             
             div.flex-column.gap-m.align-center
                 p.text 
