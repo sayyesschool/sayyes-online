@@ -16,4 +16,8 @@ export function isThisMonth(date) {
     return moment(date).isSame(moment(), 'month');
 }
 
+export function atMSK(date) {
+    return moment(date).tz('Europe/Moscow');
+}
+
 export default moment;
