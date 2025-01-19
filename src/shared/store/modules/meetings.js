@@ -138,12 +138,12 @@ export const meetingsReducer = createReducer(null, {
 
 export const meetingReducer = createReducer(null, {
     [getMeeting]: (state, action) => action.data,
-    [unsetMeeting]: (state, action) => null,
     [updateMeeting]: (state, action) => ({
         ...state,
         ...action.data
     }),
     [deleteMeeting]: (state, action) => null,
+    [unsetMeeting]: (state, action) => null,
 
     [registerForMeeting]: (state, action) => ({
         ...state,
