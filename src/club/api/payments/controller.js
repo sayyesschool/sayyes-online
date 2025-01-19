@@ -4,14 +4,22 @@ export default ({
 }) => ({
     async create(req, res) {
         const {
-            email,
-            name,
+            contact: {
+                email,
+                name,
+                phone
+            },
             userId = req.user?.id,
             packId,
             meetingId,
             utm
         } = req.body ?? {};
         let requestId = req.body?.requestId;
+
+        if (!userId && !email) throw {
+            code: 400,
+            message: 'Не указан email'
+        };
 
         const pack = await Club.getPack(packId);
 
@@ -27,17 +35,15 @@ export default ({
             message: 'Пользователь не найден'
         };
 
-        if (!userId && !email) throw {
-            code: 400,
-            message: 'Не указан email'
-        };
-
         const paymentRequest = await Request.create({
             type: Request.Type.Membership,
             contact: user ? undefined : {
                 name,
-                email
+                email,
+                phone
             },
+            channel: Request.Channel.Email,
+            source: Request.Source.Site,
             learnerId: user?.id,
             requestId,
             utm
@@ -61,6 +67,7 @@ export default ({
             metadata: {
                 email: user ? undefined : email,
                 name: user ? undefined : name,
+                phone: user ? undefined : phone,
                 userId: user?.id,
                 membershipPackId: pack.id,
                 meetingId,
