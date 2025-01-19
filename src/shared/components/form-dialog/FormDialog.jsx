@@ -30,7 +30,7 @@ export default function FormDialog({
     const handleSubmit = useCallback(event => {
         toggleSubmitting(true);
 
-        onSubmitRef?.current(event);
+        onSubmitRef?.current(event).finally(() => toggleSubmitting(false));
     }, []);
 
     return (
