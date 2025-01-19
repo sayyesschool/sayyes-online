@@ -1,12 +1,12 @@
 import { useState } from 'preact/hooks';
 
-import { Input, Tab, Tabs } from 'shared/custom-components';
+import { Tab, Tabs } from 'shared/custom-components';
+import Checkout from 'shared/islands/checkout';
+import Contact from 'shared/islands/contact';
+import Error from 'shared/islands/error-state';
+import Success from 'shared/islands/success-state';
 
-import Checkout from './Checkout';
-import Contact from './Contact';
-import Error from './Error';
 import Pack from './Pack';
-import Success from './Success';
 import Type from './Type';
 
 const View = {
@@ -120,11 +120,13 @@ export default function PaymentComponent({ format }) {
 
             {view === 3 &&
                 <Checkout
-                    format={format}
-                    type={type}
-                    pack={pack}
-                    amount={amount}
-                    contact={contact}
+                    data={{
+                        amount: amount || pack.price,
+                        contact,
+                        formatId: format?.id,
+                        typeId: type?.id,
+                        packId: pack?.id
+                    }}
                     onComplete={() => setView(View.SUCCESS)}
                     onError={error => setError(error)}
                 />
