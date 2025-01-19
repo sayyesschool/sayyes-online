@@ -1,21 +1,27 @@
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
 
-import { operatorOptions, paymentMethodOptions } from 'shared/data/payment';
+import UserSearch from 'shared/components/user-search';
 import { useFormData } from 'shared/hooks/form';
 import datetime from 'shared/libs/datetime';
 import { Form } from 'shared/ui-components';
 
-export default forwardRef(PaymentForm);
+export default forwardRef(MembershipForm);
 
-const defaultPayment = {
-    amount: 0,
-    description: '',
-    paidAt: new Date(),
-    paymentMethod: '',
-    operator: ''
-};
+const getData = ({
+    limit = 1,
+    price = 0,
+    startDate = new Date(),
+    endDate = datetime(new Date()).add(1, 'day').toDate(),
+    userId = ''
+} = {}) => ({
+    limit,
+    price,
+    startDate: datetime(startDate).format('YYYY-MM-DD'),
+    endDate: datetime(endDate).format('YYYY-MM-DD'),
+    userId
+});
 
-function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
+function MembershipForm({ membership, onSubmit, ...props }, ref) {
     const formRef = useRef();
 
     useImperativeHandle(ref, () => ({
@@ -23,75 +29,66 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
         get data() { return data; }
     }));
 
-    const { data, handleChange } = useFormData({
-        ...defaultPayment,
-        ...payment
-    }, [payment]);
+    const { data, handleChange } = useFormData(getData(membership), [membership?.id]);
+    const [userId, setUserId] = useState(data.userId);
 
     const handleSubmit = useCallback(() => {
-        data.date = datetime(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
-        data.status = 'succeeded';
+        if (!userId) return;
 
-        onSubmit(data);
-    }, [data]);
+        onSubmit({ ...data, userId });
+    }, [userId, data, onSubmit]);
+
+    const handleSearchResult = useCallback(userId => {
+        setUserId(userId);
+    }, []);
 
     return (
         <Form
-            ref={formRef} className="tForm"
-            onSubmit={handleSubmit} {...props}
+            ref={formRef}
+            id="membership-form"
+            onSubmit={handleSubmit}
+            {...props}
         >
-            <Form.Input
-                type="text"
-                name="description"
-                value={data.description}
-                label="Описание"
-                fluid
-                required
-                onChange={handleChange}
-            />
+            {!data.userId &&
+                <UserSearch
+                    label="Пользователь"
+                    onResult={handleSearchResult}
+                />
+            }
 
             <Form.Input
                 type="number"
-                name="amount"
-                value={data.amount}
-                label="Сумма"
-                suffix="руб."
+                name="limit"
+                value={data.limit}
+                label="Лимит посещений"
                 min={1}
                 required
                 onChange={handleChange}
             />
 
             <Form.Input
+                type="number"
+                name="price"
+                value={data.price}
+                label="Сумма"
+                end="руб."
+                min={0}
+                onChange={handleChange}
+            />
+
+            <Form.Input
                 type="date"
-                name="paidAt"
-                value={datetime(data.paidAt).format('YYYY-MM-DD')}
-                label="Дата"
+                name="startDate"
+                value={data.startDate}
+                label="Дата начала"
                 onChange={handleChange}
             />
 
-            <Form.Select
-                name="paymentMethod"
-                value={data.paymentMethod}
-                label="Способ оплаты"
-                options={paymentMethodOptions}
-                onChange={handleChange}
-            />
-
-            {(data.paymentMethod !== '' && data.paymentMethod !== 'cash') &&
-                <Form.Select
-                    name="operator"
-                    value={data.operator}
-                    label="Оператор"
-                    options={operatorOptions}
-                    onChange={handleChange}
-                />
-            }
-
-            <Form.Textarea
-                type="text"
-                name="note"
-                value={data.note}
-                label="Заметка"
+            <Form.Input
+                type="date"
+                name="endDate"
+                value={data.endDate}
+                label="Дата окончания"
                 onChange={handleChange}
             />
         </Form>

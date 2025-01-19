@@ -1,12 +1,16 @@
 import { Link } from 'react-router-dom';
 
+import ConfirmButton from 'shared/components/confirm-button';
 import PersonChip from 'shared/components/person-chip';
-import { Table } from 'shared/ui-components';
+import { IconButton, Table } from 'shared/ui-components';
+
+import MembershipRegistrationsCounter from 'crm/components/memberships/membership-registrations-counter';
 
 const columns = [
     { key: 'number', text: '№' },
     { key: 'user', text: 'Пользователь' },
     { key: 'price', text: 'Стоимость, руб.' },
+    { key: 'duration', text: 'Срок' },
     { key: 'startDate', text: 'Дата начала' },
     { key: 'endDate', text: 'Дата окончания' },
     { key: 'registrations', text: 'Регистрации' },
@@ -45,9 +49,38 @@ export default function MembershipsTable({ memberships, onEdit, onDelete }) {
                         </Table.Cell>
 
                         <Table.Cell content={membership.price} />
+                        <Table.Cell content={membership.durationString} />
                         <Table.Cell content={membership.startDateString} />
                         <Table.Cell content={membership.endDateString} />
-                        <Table.Cell content={`${membership.registrationsCount} / ${membership.limit}`} />
+
+                        <Table.Cell>
+                            <MembershipRegistrationsCounter membership={membership} />
+                        </Table.Cell>
+
+                        <Table.Cell align="end">
+                            <IconButton.Group>
+                                <IconButton
+                                    key="edit"
+                                    title="Изменить"
+                                    icon="edit"
+                                    color="neutral"
+                                    size="sm"
+                                    variant="plain"
+                                    onClick={() => onEdit(membership)}
+                                />
+
+                                <ConfirmButton
+                                    key="delete"
+                                    title="Удалить"
+                                    message="Удалить абонемент?"
+                                    icon="delete"
+                                    color="neutral"
+                                    size="sm"
+                                    variant="plain"
+                                    onClick={() => onDelete(membership)}
+                                />
+                            </IconButton.Group>
+                        </Table.Cell>
                     </Table.Row>
                 )}
             </Table.Body>
