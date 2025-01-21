@@ -37,7 +37,7 @@ export default function MeetingForm({
     hosts = [],
     onSubmit
 }) {
-    const { data, setData, handleChange } = useFormData(getData(meeting), [meeting.id]);
+    const { data, setData, handleChange } = useFormData(getData(meeting), [meeting?.id]);
 
     const fileInputRef = useRef();
     const contentEditorRef = useRef();
@@ -140,7 +140,7 @@ export default function MeetingForm({
                             onChange={handleChange}
                         />
 
-                        {!meeting.id &&
+                        {!meeting?.id &&
                             <Form.Switch
                                 label="Онлайн"
                                 name="online"
