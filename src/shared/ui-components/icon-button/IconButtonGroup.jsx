@@ -27,7 +27,9 @@ const IconButtonGroup = forwardRef(({
             justifyContent={align}
             {...props}
         >
-            {children}
+            {Children.map(children, child =>
+                child && cloneElement(child, { color, size, variant, ...child.props })
+            )}
 
             {buttons?.filter(Boolean).map(button =>
                 <IconButton

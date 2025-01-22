@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { Children, cloneElement, forwardRef } from 'react';
 
 import JoyList from '@mui/joy/List';
 import ListDivider from '@mui/joy/ListDivider';
@@ -30,7 +30,9 @@ const List = forwardRef(({
                 />
             )}
 
-            {children}
+            {Children.map(children, child =>
+                child && cloneElement(child, { interactive, ...child.props })
+            )}
         </JoyList>
     );
 });
