@@ -60,21 +60,17 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                                 <Flex column>
                                     <Text as="span">{request.contact.name}</Text>
 
-                                    {request.contact.email &&
-                                        <Text
-                                            as="span"
-                                            type="body-sm"
-                                            content={request.contact.email}
-                                        />
-                                    }
-
-                                    {request.contact.phone &&
-                                        <Text
-                                            as="span"
-                                            type="body-sm"
-                                            content={request.contact.phone}
-                                        />
-                                    }
+                                    <Text
+                                        as="span"
+                                        type="body-sm"
+                                        content={
+                                            <Flex gap="xxs">
+                                                {request.contact.phone && <span>{request.contact.phone}</span>}
+                                                {request.contact.phone && request.contact.email && '·'}
+                                                {request.contact.email && <span>{request.contact.email}</span>}
+                                            </Flex>
+                                        }
+                                    />
                                 </Flex>
                                 :
                                 '—'

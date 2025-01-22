@@ -11,8 +11,17 @@ export default function RequestsList({ requests }) {
                     as={Link}
                     to={request.url}
                     content={<>
-                        <Text type="body-md" noWrap>{request.contact.name}</Text>
-                        <Text type="body-sm" noWrap>{request.contact.phone || request.contact.email}</Text>
+                        <Text
+                            type="body-md"
+                            content={request.contact.name}
+                            noWrap
+                        />
+
+                        <Text
+                            type="body-sm"
+                            content={request.contact.phone || request.contact.email}
+                            noWrap
+                        />
                     </>}
                     endAction={request.manager &&
                         <Avatar
