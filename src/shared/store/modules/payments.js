@@ -50,6 +50,17 @@ export const setPayment = createAction('SET_PAYMENT', payment => ({
 
 export const unsetPayment = createAction('UNSET_PAYMENT');
 
+export const actions = {
+    getPayments,
+    getPayment,
+    createPayment,
+    updatePayment,
+    resolvePayment,
+    deletePayment,
+    setPayment,
+    unsetPayment
+};
+
 export const paymentsReducer = createReducer(null, {
     [getPayments]: (state, action) => action.data,
     [createPayment]: (state, action) => state ? [...state, action.data] : [action.data],
@@ -61,8 +72,7 @@ export const paymentsReducer = createReducer(null, {
 export const paymentReducer = createReducer(null, {
     [getPayment]: (state, action) => action.data,
     [setPayment]: (state, action) => action.payment,
-    [unsetPayment]: (state, action) => null,
-    [resolvePayment]: (state, action) => action.data
+    [unsetPayment]: (state, action) => null
 });
 
 export default combineReducers({
