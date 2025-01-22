@@ -24,44 +24,49 @@ export default function PaymentSearchForm({
         data.status = 'succeeded';
 
         onSubmit(data);
-    }, [data]);
+    }, [data, onSubmit]);
 
     return (
         <Form
-            className="PaymentSearchForm" onSubmit={handleSubmit}
+            className="PaymentSearchForm"
+            onSubmit={handleSubmit}
             {...props}
         >
             <Flex gap="smaller">
                 <Form.Input
+                    label="Сумма"
                     type="number"
                     name="amount"
                     value={data.amount}
-                    label="Сумма"
                     min={1}
+                    orientation="horizontal"
                     onChange={handleChange}
                 />
 
                 <Form.Input
+                    label="Дата"
                     type="date"
                     name="date"
                     value={data.date}
-                    label="Дата"
+                    orientation="horizontal"
                     onChange={handleChange}
                 />
 
                 <Form.Select
+                    label="Способ оплаты"
                     name="paymentMethod"
                     value={data.paymentMethod}
-                    label="Способ оплаты"
                     options={paymentMethodOptions}
+                    orientation="horizontal"
                     onChange={handleChange}
                 />
 
                 <Form.Select
+                    label="Оператор"
                     name="operator"
                     value={data.operator}
-                    label="Оператор"
                     options={operatorOptions}
+                    orientation="horizontal"
                     onChange={handleChange}
                 />
             </Flex>

@@ -1,18 +1,20 @@
 import { Link } from 'react-router-dom';
 
+import ActionButton from 'shared/components/action-button';
+import ConfirmButton from 'shared/components/confirm-button';
 import PersonChip from 'shared/components/person-chip';
 import StatusChip from 'shared/components/status-chip';
 import { Chip, IconButton, Table } from 'shared/ui-components';
 
 const columns = [
-    { key: 'number', text: '№' },
-    { key: 'description', text: 'Описание' },
-    { key: 'amount', text: 'Сумма, руб.' },
-    { key: 'date', text: 'Дата' },
-    { key: 'user', text: 'Клиент' },
-    { key: 'status', text: 'Статус' },
-    { key: 'method', text: 'Способ оплаты' },
-    { key: 'operator', text: 'Оператор' },
+    { key: 'number', content: '№', align: 'center' },
+    { key: 'description', content: 'Описание' },
+    { key: 'amount', content: 'Сумма, руб.' },
+    { key: 'date', content: 'Дата' },
+    { key: 'user', content: 'Клиент' },
+    { key: 'status', content: 'Статус' },
+    { key: 'method', content: 'Способ оплаты' },
+    { key: 'operator', content: 'Оператор' },
     { key: 'actions' }
 ];
 
@@ -21,10 +23,10 @@ export default function PaymentsTable({ payments, onResolve, onEdit, onDelete })
         <Table className="PaymentsTable">
             <Table.Head>
                 <Table.Row header>
-                    {columns.map(col =>
+                    {columns.map(column =>
                         <Table.Cell
-                            key={col.key}
-                            content={col.text}
+                            key={column.key}
+                            {...column}
                             header
                         />
                     )}
@@ -34,7 +36,7 @@ export default function PaymentsTable({ payments, onResolve, onEdit, onDelete })
             <Table.Body>
                 {payments.map((payment, index) =>
                     <Table.Row key={payment.id}>
-                        <Table.Cell content={index + 1} />
+                        <Table.Cell content={index + 1} align="center" />
                         <Table.Cell content={payment.description} />
                         <Table.Cell content={payment.amount} />
                         <Table.Cell content={payment.dateLabel} />
@@ -70,32 +72,35 @@ export default function PaymentsTable({ payments, onResolve, onEdit, onDelete })
                         </Table.Cell>
 
                         <Table.Cell align="end">
-                            <IconButton.Group
-                                buttons={[
-                                    {
-                                        key: 'update',
-                                        title: 'Обновить',
-                                        icon: 'refresh',
-                                        disabled: payment.isResolved,
-                                        onClick: () => onResolve(payment)
-                                    },
-                                    {
-                                        key: 'edit',
-                                        title: 'Изменить',
-                                        icon: 'edit',
-                                        onClick: () => onEdit(payment)
-                                    },
-                                    {
-                                        key: 'delete',
-                                        title: 'Удалить',
-                                        icon: 'delete',
-                                        onClick: () => onDelete(payment)
-                                    }
-                                ]}
-                                color="neutral"
-                                size="sm"
-                                variant="plain"
-                            />
+                            <IconButton.Group size="sm">
+                                {!payment.isResolved &&
+                                    <ActionButton
+                                        title="Обновить"
+                                        icon="refresh"
+                                        onAction={() => onResolve(payment)}
+                                    />
+                                }
+
+                                <ActionButton
+                                    title="Обновить"
+                                    icon="refresh"
+                                    onAction={() => onResolve(payment)}
+                                />
+
+                                <IconButton
+                                    title="Изменить"
+                                    icon="edit"
+                                    onClick={() => onEdit(payment)}
+                                />
+
+                                <ConfirmButton
+                                    title="Удалить"
+                                    message="Удалить встречу?"
+                                    icon="delete"
+                                    color="danger"
+                                    onConfirm={() => onDelete(payment)}
+                                />
+                            </IconButton.Group>
                         </Table.Cell>
                     </Table.Row>
                 )}

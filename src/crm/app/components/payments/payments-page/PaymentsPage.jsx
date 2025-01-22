@@ -2,26 +2,24 @@ import { useCallback, useEffect } from 'react';
 
 import FormDialog from 'shared/components/form-dialog';
 import Page from 'shared/components/page';
+import { usePayment, usePayments } from 'shared/hooks/payments';
 import { useBoolean } from 'shared/hooks/state';
 
 import PaymentForm from 'crm/components/payments/payment-form';
 import PaymentSearchForm from 'crm/components/payments/payment-search-form';
 import PaymentsTable from 'crm/components/payments/payments-table';
-import { useStore } from 'crm/store';
 
-export default function Payments({ match, history }) {
-    const [{ list: payments, single: payment }, actions] = useStore('payments');
+export default function PaymentsPage({ match, history }) {
+    const [payments, actions] = usePayments();
+    const [payment] = usePayment(match.params.id);
 
     const [isPaymentFormOpen, togglePaymentFormOpen] = useBoolean(false);
 
     useEffect(() => {
-        actions.getPayments();
+        if (!payment?.id) return;
 
-        if (match.params.id) {
-            actions.getPayment(match.params.id)
-                .then(() => togglePaymentFormOpen(true));
-        }
-    }, []);
+        togglePaymentFormOpen(true);
+    }, [payment?.id, actions]);
 
     const handleSubmit = useCallback(data => {
         return actions.updatePayment(data)
@@ -29,22 +27,15 @@ export default function Payments({ match, history }) {
     }, []);
 
     const handleResolve = useCallback(payment => {
-        actions.resolvePayment(payment.uuid);
+        return actions.resolvePayment(payment.uuid);
+    }, [actions]);
+
+    const handleDelete = useCallback(payment => {
+        return actions.deletePayment(payment.id);
     }, [actions]);
 
     const handleEdit = useCallback(payment => {
         actions.setPayment(payment);
-        togglePaymentFormOpen(true);
-    }, []);
-
-    const handleDelete = useCallback(payment => {
-        if (confirm('Подтвердите удаление платежа')) {
-            return actions.deletePayment(payment.id);
-        }
-    }, []);
-
-    const handleOpen = useCallback(() => {
-        actions.unsetPayment();
         togglePaymentFormOpen(true);
     }, []);
 
@@ -59,13 +50,15 @@ export default function Payments({ match, history }) {
     }, []);
 
     return (
-        <Page id="payments" loading={!payments}>
+        <Page id="payments">
             <Page.Header
                 title="Платежи"
                 actions={[{
                     key: 'add',
                     icon: 'add',
-                    title: 'Новый платеж',
+                    content: 'Создать платеж',
+                    color: 'primary',
+                    variant: 'solid',
                     onClick: togglePaymentFormOpen
                 }]}
             />

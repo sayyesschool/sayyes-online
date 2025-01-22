@@ -7,45 +7,48 @@ import { Form } from 'shared/ui-components';
 
 export default forwardRef(PaymentForm);
 
-const defaultPayment = {
+const getData = (payment = {
     amount: 0,
     description: '',
     paidAt: new Date(),
     paymentMethod: '',
     operator: ''
-};
+}) => ({
+    amount: payment.amount,
+    description: payment.description,
+    paidAt: datetime(payment.paidAt).format('YYYY-MM-DD'),
+    paymentMethod: payment.paymentMethod,
+    operator: payment.operator
+});
 
-function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
+function PaymentForm({ payment, onSubmit, ...props }, ref) {
     const formRef = useRef();
+
+    const { data, handleChange } = useFormData(getData(payment), [payment?.id]);
 
     useImperativeHandle(ref, () => ({
         get form() { return formRef.current; },
         get data() { return data; }
     }));
 
-    const { data, handleChange } = useFormData({
-        ...defaultPayment,
-        ...payment
-    }, [payment]);
-
     const handleSubmit = useCallback(() => {
         data.date = datetime(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
         data.status = 'succeeded';
 
         onSubmit(data);
-    }, [data]);
+    }, [data, onSubmit]);
 
     return (
         <Form
-            ref={formRef} className="tForm"
-            onSubmit={handleSubmit} {...props}
+            ref={formRef}
+            onSubmit={handleSubmit}
+            {...props}
         >
             <Form.Input
                 type="text"
                 name="description"
                 value={data.description}
                 label="Описание"
-                fluid
                 required
                 onChange={handleChange}
             />
