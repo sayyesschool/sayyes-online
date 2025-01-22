@@ -7,13 +7,13 @@ import { IconButton, Table } from 'shared/ui-components';
 import MembershipRegistrationsCounter from 'crm/components/memberships/membership-registrations-counter';
 
 const columns = [
-    { key: 'number', text: '№' },
-    { key: 'user', text: 'Пользователь' },
-    { key: 'price', text: 'Стоимость, руб.' },
-    { key: 'duration', text: 'Срок' },
-    { key: 'startDate', text: 'Дата начала' },
-    { key: 'endDate', text: 'Дата окончания' },
-    { key: 'registrations', text: 'Регистрации' },
+    { key: 'number', content: '№' },
+    { key: 'user', content: 'Пользователь' },
+    { key: 'price', content: 'Стоимость, руб.' },
+    { key: 'duration', content: 'Срок' },
+    { key: 'startDate', content: 'Дата начала' },
+    { key: 'endDate', content: 'Дата окончания' },
+    { key: 'registrations', content: 'Регистрации' },
     { key: 'actions' }
 ];
 
@@ -22,10 +22,10 @@ export default function MembershipsTable({ memberships, onEdit, onDelete }) {
         <Table className="MembershipsTable">
             <Table.Head>
                 <Table.Row header>
-                    {columns.map(col =>
+                    {columns.map(column =>
                         <Table.Cell
-                            key={col.key}
-                            content={col.text}
+                            key={column.key}
+                            content={column.content}
                             header
                         />
                     )}
@@ -60,24 +60,18 @@ export default function MembershipsTable({ memberships, onEdit, onDelete }) {
                         <Table.Cell align="end">
                             <IconButton.Group>
                                 <IconButton
-                                    key="edit"
                                     title="Изменить"
                                     icon="edit"
-                                    color="neutral"
                                     size="sm"
-                                    variant="plain"
                                     onClick={() => onEdit(membership)}
                                 />
 
                                 <ConfirmButton
-                                    key="delete"
                                     title="Удалить"
                                     message="Удалить абонемент?"
                                     icon="delete"
-                                    color="neutral"
                                     size="sm"
-                                    variant="plain"
-                                    onClick={() => onDelete(membership)}
+                                    onConfirm={() => onDelete(membership)}
                                 />
                             </IconButton.Group>
                         </Table.Cell>

@@ -26,9 +26,9 @@ export default function MembershipsPage() {
             .then(() => setDialogOpen(false));
     }, [membership, actions]);
 
-    const handleDelete = useCallback(() => {
+    const handleDelete = useCallback(membership => {
         return actions.deleteMembership(membership.id);
-    }, [membership, actions]);
+    }, [actions]);
 
     const handleCreate = useCallback(() => {
         setMembership();
@@ -70,6 +70,7 @@ export default function MembershipsPage() {
                         { key: 'inactive', value: 'inactive', content: 'Неактивные' },
                         { key: 'all', value: 'all', content: 'Все' }
                     ]}
+                    disableUnderline
                     onChange={(_, value) => setTab(value)}
                 />
 
