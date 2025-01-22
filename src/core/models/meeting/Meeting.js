@@ -15,7 +15,10 @@ export const Meeting = new Schema({
         alias: 'date',
         set: value => datetime(value).utc().toDate()
     },
-    endDate: { type: Date },
+    endDate: {
+        type: Date,
+        set: value => datetime(value).utc().toDate()
+    },
     capacity: { type: Number },
     level: {
         type: Number,
@@ -58,14 +61,6 @@ Meeting.virtual('url').get(function() {
     return `/meetings/${this.id}`;
 });
 
-Meeting.virtual('duration')
-    .get(function() {
-        return Math.abs(datetime(this.startDate).diff(this.endDate, 'minutes'));
-    })
-    .set(function(value) {
-        this.endDate = datetime(this.startDate).add(value, 'minutes').toDate();
-    });
-
 Meeting.virtual('datetime').get(function() {
     return datetime(this.date).tz('Europe/Moscow').format('D MMMM в H:mm МСК');
 });
@@ -77,6 +72,15 @@ Meeting.virtual('dateLabel').get(function() {
 Meeting.virtual('timeLabel').get(function() {
     return datetime(this.date).tz('Europe/Moscow').format('H:mm МСК');
 });
+
+Meeting.virtual('duration')
+    .get(function() {
+        return Math.abs(datetime(this.startDate).diff(this.endDate, 'minutes'));
+    })
+    .set(function(value) {
+        console.log('set duration', value, datetime(this.startDate).add(value, 'minutes').toDate());
+        this.endDate = datetime(this.startDate).add(value, 'minutes').toDate();
+    });
 
 Meeting.virtual('durationLabel').get(function() {
     return `${this.duration} минут`;
