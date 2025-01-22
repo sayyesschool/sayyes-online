@@ -121,7 +121,7 @@ export default function MeetingForm({
                             label="Ведущий"
                             name="hostId"
                             value={data.hostId}
-                            options={hosts.map(host => ({
+                            options={hosts?.map(host => ({
                                 key: host.id,
                                 value: host.id,
                                 content: host.fullname
