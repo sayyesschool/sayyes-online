@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { Children, cloneElement, forwardRef } from 'react';
 
 import Box from '@mui/system/Box';
 import classnames from 'classnames';
@@ -22,9 +22,12 @@ const IconButtonGroup = forwardRef(({
         <Box
             ref={ref}
             className={classNames}
-            display="inline-flex"
-            gap=".25rem"
-            justifyContent={align}
+            sx={{
+                display: 'inline-flex',
+                gap: '.25rem',
+                justifyContent: align,
+                verticalAlign: 'middle'
+            }}
             {...props}
         >
             {Children.map(children, child =>
