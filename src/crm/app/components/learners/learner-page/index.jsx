@@ -12,6 +12,7 @@ import LearnerContacts from 'crm/components/learners/learner-contacts';
 import LearnerDetails from 'crm/components/learners/learner-details';
 import LearnerEnrollments from 'crm/components/learners/learner-enrollments';
 import LearnerForm from 'crm/components/learners/learner-form';
+import LearnerMemberships from 'crm/components/learners/learner-memberships';
 import LearnerRequests from 'crm/components/learners/learner-requests';
 import LearnerTransactions from 'crm/components/learners/learner-transactions';
 import PasswordForm from 'crm/components/shared/password-form';
@@ -34,6 +35,8 @@ export default function LearnerPage({ match, location, history }) {
                     toggleConfirmationDialogOpen(true);
                 }
             });
+
+        return () => learnerActions.unsetLearner();
     }, []);
 
     const updateLearner = useCallback(data => {
@@ -116,6 +119,11 @@ export default function LearnerPage({ match, location, history }) {
                                 manager={{
                                     id: user.id
                                 }}
+                            />
+
+                            <LearnerMemberships
+                                learner={learner}
+                                memberships={learner?.memberships}
                             />
 
                             <LearnerTransactions

@@ -36,9 +36,11 @@ export default function LearnerEnrollments({ learner, manager }) {
             ]}
             compact
         >
-            <EnrollmentsList
-                enrollments={enrollments}
-            />
+            {enrollments.length > 0 &&
+                <EnrollmentsList
+                    enrollments={enrollments}
+                />
+            }
 
             <FormDialog
                 form="enrollment-form"
