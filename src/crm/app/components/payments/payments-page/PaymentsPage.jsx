@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react';
 
 import FormDialog from 'shared/components/form-dialog';
+import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { usePayment, usePayments } from 'shared/hooks/payments';
 import { useBoolean } from 'shared/hooks/state';
@@ -48,6 +49,8 @@ export default function PaymentsPage({ match, history }) {
     const handleSearch = useCallback(params => {
         console.log(params);
     }, []);
+
+    if (!payments) return <LoadingIndicator />;
 
     return (
         <Page id="payments">
