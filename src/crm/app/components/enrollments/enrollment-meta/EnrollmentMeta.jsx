@@ -1,5 +1,4 @@
 import PersonChip from 'shared/components/person-chip';
-
 import { Flex, Label } from 'shared/ui-components';
 
 export default function EnrollmentMeta({ enrollment }) {

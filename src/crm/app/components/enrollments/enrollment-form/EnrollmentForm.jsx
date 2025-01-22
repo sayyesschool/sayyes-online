@@ -1,5 +1,7 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 
+import { EnrollmentStatus } from 'core/models/enrollment/constants';
+
 // import ScheduleSelect from 'shared/components/schedule-select';
 // import DateTimeSelect from 'shared/components/datetime-select';
 import UserSelect from 'shared/components/user-select';
@@ -15,7 +17,6 @@ import { typeOptions } from 'shared/data/enrollment';
 import { useFormData } from 'shared/hooks/form';
 import { Form } from 'shared/ui-components';
 
-import { EnrollmentStatus } from 'core/models/enrollment/constants';
 import { useStore } from 'crm/store';
 
 const defaultEnrollment = {

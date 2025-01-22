@@ -1,8 +1,8 @@
 import Stepper from 'shared/components/stepper';
-import { IconButton, MenuButton } from 'shared/ui-components';
 import { statusOptions } from 'shared/data/enrollment';
+import { IconButton, MenuButton } from 'shared/ui-components';
 
-import './index.scss';
+import './EnrollmentStatus.scss';
 
 export default function EnrollmentStatus({ enrollment, onUpdate }) {
     const { status } = enrollment;

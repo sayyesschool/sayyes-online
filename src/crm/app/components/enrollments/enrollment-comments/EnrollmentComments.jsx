@@ -5,6 +5,7 @@ import CommentForm from 'shared/components/comment-form';
 import EmptyState from 'shared/components/empty-state';
 import PageSection from 'shared/components/page-section';
 import { useBoolean } from 'shared/hooks/state';
+import { Button, Text } from 'shared/ui-components';
 
 import { useActions, useStore } from 'crm/store';
 
@@ -40,6 +41,7 @@ export default function EnrollmentComments({ enrollment }) {
             {enrollment.comments?.length > 0 ?
                 enrollment.comments?.map(comment =>
                     <Comment
+                        key={comment.id}
                         user={user}
                         comment={comment}
                         onSave={updateComment}

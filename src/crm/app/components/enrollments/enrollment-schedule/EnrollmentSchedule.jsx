@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
-import FormDialog from 'shared/components/form-dialog';
 import EnrollmentScheduleForm from 'shared/components/enrollment-schedule-form';
-import WeekSchedule from 'shared/components/week-schedule';
+import FormDialog from 'shared/components/form-dialog';
 import PageSection from 'shared/components/page-section';
+import WeekSchedule from 'shared/components/week-schedule';
+import { useBoolean } from 'shared/hooks/state';
 
 export default function EnrollmentSchedule({ enrollment, onUpdate }) {
     const [isFormOpen, toggleFormOpen] = useBoolean(false);

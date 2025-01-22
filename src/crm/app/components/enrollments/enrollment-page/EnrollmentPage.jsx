@@ -21,7 +21,7 @@ import EnrollmentSchedule from 'crm/components/enrollments/enrollment-schedule';
 import EnrollmentStatus from 'crm/components/enrollments/enrollment-status';
 
 // import EnrollmentTrialLesson from 'crm/components/enrollments/enrollment-trial-lesson';
-import './index.scss';
+import './EnrollmentPage.scss';
 
 export default function EnrollmentPage({ match, history }) {
     const [enrollment, actions] = useEnrollment(match.params.enrollmentId);
@@ -69,9 +69,6 @@ export default function EnrollmentPage({ match, history }) {
                         <IconButton
                             icon="comment"
                             title="Открыть комментарии"
-                            color="neutral"
-                            size="sm"
-                            variant="soft"
                             onClick={toggleSidePanel}
                         />
                     </Badge>,

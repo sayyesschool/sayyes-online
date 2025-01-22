@@ -1,6 +1,5 @@
 import DetailsList from 'shared/components/details-list';
 import PageSection from 'shared/components/page-section';
-import { TypeLabel } from 'shared/data/enrollment';
 import {
     AgeGroupLabel,
     FormatLabel,
@@ -8,6 +7,7 @@ import {
     PurposeLabel,
     TeacherTypeLabel
 } from 'shared/data/common';
+import { TypeLabel } from 'shared/data/enrollment';
 
 export default function EnrollmentDetails({ enrollment }) {
     return (
@@ -64,7 +64,7 @@ export default function EnrollmentDetails({ enrollment }) {
                         key: 'experience',
                         icon: 'star',
                         header: 'Опыт',
-                        content: enrollment.experience,
+                        content: enrollment.experience
                     },
                     {
                         key: 'preferences',
