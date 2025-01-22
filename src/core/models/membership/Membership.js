@@ -54,6 +54,10 @@ Membership.statics.getEndDate = function(startDate, pack) {
     return datetime(startDate).add(...pack.duration).toDate();
 };
 
+Membership.virtual('uri').get(function() {
+    return `/memberships/${this.id}`;
+});
+
 Membership.virtual('startDateString').get(function() {
     return datetime(this.startDate).format('DD.MM.YYYY');
 });
