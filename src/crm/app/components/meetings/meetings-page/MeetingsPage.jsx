@@ -1,34 +1,69 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import FormDialog from 'shared/components/form-dialog';
+import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useMeetings } from 'shared/hooks/meetings';
+import { useTeachers } from 'shared/hooks/teachers';
 import { Tabs } from 'shared/ui-components';
 
 import MeetingForm from 'crm/components/meetings/meeting-form';
 import MeetingsTable from 'crm/components/meetings/meetings-table';
-import { useStore } from 'crm/hooks/store';
+
+const filters = {
+    upcoming: meeting => new Date(meeting.date) > new Date(),
+    ended: meeting => new Date(meeting.date) < new Date(),
+    all: () => true
+};
 
 export default function MeetingsPage() {
-    const [meetings, actions] = useStore('meetings.list');
-    const [teachers] = useStore('teachers.list');
+    const [meetings, actions] = useMeetings();
+    const [teachers] = useTeachers();
 
     const [tab, setTab] = useState('upcoming');
-    const [isMeetingFormOpen, setMeetingFormOpen] = useState(false);
-
-    useEffect(() => {
-        actions.getMeetings();
-    }, [actions]);
+    const [meeting, setMeeting] = useState();
+    const [isLoading, setLoading] = useState(false);
+    const [isFormOpen, setFormOpen] = useState(false);
 
     const handleSubmit = useCallback(data => {
-        actions.createMeeting(data)
-            .then(() => setMeetingFormOpen(false));
+        setLoading(true);
+
+        return actions.createMeeting(data)
+            .then(() => setFormOpen(false))
+            .finally(() => setLoading(false));
     }, [actions]);
 
-    const sortedMeetings = meetings?.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
-    const filteredMeetings = sortedMeetings?.filter(filters[tab]);
+    const handlePublish = useCallback(meeting => {
+        setLoading(true);
+
+        return actions.updateMeeting(meeting.id, { published: !meeting.published })
+            .finally(() => setLoading(false));
+    }, [actions]);
+
+    const handleEdit = useCallback(meeting => {
+        setMeeting(meeting);
+        setFormOpen(true);
+    }, []);
+
+    const handleDelete = useCallback(meeting => {
+        setLoading(true);
+
+        return actions.deleteMeeting(meeting.id).finally(() => setLoading(false));
+    }, [actions]);
+
+    const handleFormClose = useCallback(() => {
+        setMeeting();
+        setFormOpen(false);
+    }, []);
+
+    if (!meetings) return <LoadingIndicator />;
+
+    const filteredMeetings = meetings?.slice()
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
+        .filter(filters[tab]);
 
     return (
-        <Page id="meetings-page" loading={!meetings}>
+        <Page id="meetings-page">
             <Page.Header
                 title="Встречи"
                 actions={[{
@@ -36,7 +71,7 @@ export default function MeetingsPage() {
                     icon: 'add',
                     content: 'Создать встречу',
                     variant: 'solid',
-                    onClick: () => setMeetingFormOpen(true)
+                    onClick: () => setFormOpen(true)
                 }]}
             />
 
@@ -58,18 +93,20 @@ export default function MeetingsPage() {
                 >
                     <MeetingsTable
                         meetings={filteredMeetings}
+                        onEdit={handleEdit}
+                        onPublish={handlePublish}
+                        onDelete={handleDelete}
                     />
                 </Page.Section>
             </Page.Content>
 
             <FormDialog
-                form="meeting-form"
-                title="Новая встреча"
-                open={isMeetingFormOpen}
-                modal
-                onClose={() => setMeetingFormOpen(false)}
+                title={meeting?.id ? 'Изменить встречу' : 'Новая встреча'}
+                open={isFormOpen}
+                onClose={handleFormClose}
             >
                 <MeetingForm
+                    meeting={meeting}
                     hosts={teachers}
                     onSubmit={handleSubmit}
                 />
@@ -77,9 +114,3 @@ export default function MeetingsPage() {
         </Page>
     );
 }
-
-const filters = {
-    upcoming: meeting => new Date(meeting.date) > new Date(),
-    ended: meeting => new Date(meeting.date) < new Date(),
-    all: () => true
-};

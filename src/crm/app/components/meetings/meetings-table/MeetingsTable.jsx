@@ -1,33 +1,55 @@
 import { Link } from 'react-router-dom';
 
+import ActionButton from 'shared/components/action-button';
+import ConfirmButton from 'shared/components/confirm-button';
 import {
     Chip,
     Flex,
-    Switch,
+    IconButton,
     Table,
     Text
 } from 'shared/ui-components';
 
 import styles from './MeetingsTable.module.scss';
 
-export default function MeetingsTable({ meetings }) {
+const columns = [
+    { key: 'number', content: '№' },
+    { key: 'title', content: 'Тема' },
+    { key: 'date', content: 'Дата и время' },
+    { key: 'host', content: 'Ведущий' },
+    { key: 'level', content: 'Уровень' },
+    { key: 'format', content: 'Формат' },
+    { key: 'participants', content: 'Участники' },
+    { key: 'actions' }
+];
+
+export default function MeetingsTable({
+    meetings,
+    onEdit,
+    onPublish,
+    onDelete
+}) {
     return (
         <Table className={styles.root}>
             <Table.Head>
                 <Table.Row header>
-                    <Table.Cell header>Тема</Table.Cell>
-                    <Table.Cell header>Дата и время</Table.Cell>
-                    <Table.Cell header>Ведущий</Table.Cell>
-                    <Table.Cell header>Уровень</Table.Cell>
-                    <Table.Cell header>Формат</Table.Cell>
-                    <Table.Cell header>Участники</Table.Cell>
-                    <Table.Cell header>Опубликована</Table.Cell>
+                    {columns.map(column =>
+                        <Table.Cell
+                            key={column.key}
+                            content={column.content}
+                            header
+                        />
+                    )}
                 </Table.Row>
             </Table.Head>
 
             <Table.Body>
-                {meetings.map(meeting =>
+                {meetings.map((meeting, index) =>
                     <Table.Row key={meeting.id}>
+                        <Table.Cell>
+                            {index + 1}
+                        </Table.Cell>
+
                         <Table.Cell>
                             <Link to={`/meetings/${meeting.id}`}>
                                 {meeting.title}
@@ -59,7 +81,7 @@ export default function MeetingsTable({ meetings }) {
 
                         <Table.Cell>{meeting.online ? 'Онлайн' : 'Оффлайн'}</Table.Cell>
 
-                        <Table.Cell numeric>
+                        <Table.Cell>
                             {meeting.isEnded ?
                                 <Text>
                                     <Text
@@ -101,12 +123,29 @@ export default function MeetingsTable({ meetings }) {
                             }
                         </Table.Cell>
 
-                        <Table.Cell>
-                            <Switch
-                                name="published"
-                                checked={meeting.published}
-                                readOnly
-                            />
+                        <Table.Cell align="end">
+                            <IconButton.Group size="sm">
+                                <ActionButton
+                                    title={meeting.published ? 'Опубликована' : 'Не опубликована'}
+                                    icon={meeting.published ? 'public' : 'public_off'}
+                                    color={meeting.published ? 'primary' : 'neutral'}
+                                    onAction={() => onPublish(meeting)}
+                                />
+
+                                <IconButton
+                                    title="Изменить"
+                                    icon="edit"
+                                    onClick={() => onEdit(meeting)}
+                                />
+
+                                <ConfirmButton
+                                    title="Удалить"
+                                    message="Удалить встречу?"
+                                    icon="delete"
+                                    color="danger"
+                                    onConfirm={() => onDelete(meeting)}
+                                />
+                            </IconButton.Group>
                         </Table.Cell>
                     </Table.Row>
                 )}

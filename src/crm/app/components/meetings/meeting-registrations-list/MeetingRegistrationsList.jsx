@@ -6,9 +6,8 @@ import {
     ButtonGroup,
     IconButton,
     List,
-    Text } from 'shared/ui-components';
-
-import styles from './MeetingRegistrationsList.module.scss';
+    Text
+} from 'shared/ui-components';
 
 export default function MeetingRegistrationsList({
     meeting,
@@ -17,11 +16,10 @@ export default function MeetingRegistrationsList({
     onDelete
 }) {
     return (
-        <List>
+        <List interactive>
             {registrations?.map(registration =>
                 <List.Item
                     key={registration.id}
-                    className={styles.item}
                     icon={getRegistrationIcon(registration)}
                     content={
                         <Link to={`/learners/${registration.userId}`}>
@@ -30,7 +28,7 @@ export default function MeetingRegistrationsList({
                         </Link>
                     }
                     end={<>
-                        {meeting.isScheduled || meeting.isStarted && registration.joinUrl &&
+                        {(meeting.isScheduled || meeting.isStarted) && registration.joinUrl &&
                             <CopyButton
                                 title="Копировать ссылку для входа"
                                 icon="link"
