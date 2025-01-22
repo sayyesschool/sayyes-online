@@ -66,6 +66,7 @@ export default function Meeting({ match, history }) {
                         icon="delete"
                         title="Удалить"
                         message="Удалить встречу?"
+                        color="danger"
                         onConfirm={handleDeleteMeeting}
                     />
                 ]}

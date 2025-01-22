@@ -11,8 +11,8 @@ import { Flex, Form, Grid, Surface } from 'shared/ui-components';
 const getData = ({
     title = '',
     startDate = new Date(),
+    duration = 50,
     level = '',
-    duration = 60,
     status = 'scheduled',
     online = false,
     free = false,
@@ -52,8 +52,13 @@ export default function MeetingForm({
             data.image = data.image || {};
         }
 
+        const startDate = datetime(data.startDate).toDate();
+        const endDate = datetime(data.startDate).add(data.duration, 'minutes').toDate();
+
         onSubmit({
             ...data,
+            startDate,
+            endDate,
             description: content
         });
 
@@ -161,14 +166,6 @@ export default function MeetingForm({
                             label="Опубликована"
                             name="published"
                             checked={data.published}
-                            onChange={handleChange}
-                        />
-
-                        <Form.Input
-                            type="number"
-                            name="duration"
-                            value={data.duration}
-                            label="Продолжительность, мин"
                             onChange={handleChange}
                         />
 
