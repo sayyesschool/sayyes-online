@@ -3,6 +3,8 @@ import { isValidElement } from 'react';
 import { Button, Heading, Icon, IconButton, Surface, Text } from 'shared/ui-components';
 import cn from 'shared/utils/classnames';
 
+import styles from './PageSection.module.scss';
+
 export default function PageSection({
     title,
     description,
@@ -17,11 +19,14 @@ export default function PageSection({
     className,
     ...props
 }) {
-    const classNames = cn(className, 'PageSection', {
-        'PageSection--compact': compact,
-        'PageSection--plain': plain,
-        'PageSection--scrollable': scrollable
-    });
+    const classNames = cn(
+        className,
+        'PageSection',
+        styles.root,
+        compact && styles.compact,
+        plain && styles.plain,
+        scrollable && styles.scrollable
+    );
 
     return (
         <Surface
@@ -29,13 +34,13 @@ export default function PageSection({
             className={classNames}
             {...props}
         >
-            <div className="PageSection__header">
+            <div className={styles.header}>
                 {icon &&
-                    <Icon className="PageSection__header-icon">{icon}</Icon>
+                    <Icon className={styles.header_icon}>{icon}</Icon>
                 }
 
                 {(title || description) &&
-                    <div className="PageSection__header-text">
+                    <div className={styles.header_text}>
                         <Heading
                             as="h3"
                             type="h4"
@@ -51,7 +56,7 @@ export default function PageSection({
                 {header}
 
                 {actions &&
-                    <div className="PageSection__header-actions">
+                    <div className={styles.header_actions}>
                         {Array.isArray(actions) ?
                             actions.filter(a => !!a).map(action =>
                                 isValidElement(action)
@@ -59,17 +64,11 @@ export default function PageSection({
                                     : !action.content ?
                                         <IconButton
                                             key={action.key}
-                                            size="sm"
-                                            variant="plain"
-                                            color="neutral"
                                             {...action}
                                         />
                                         :
                                         <Button
                                             key={action.key}
-                                            size="sm"
-                                            variant="plain"
-                                            color="neutral"
                                             {...action}
                                         />
                             ) : actions
@@ -78,7 +77,7 @@ export default function PageSection({
                 }
             </div>
 
-            <div className="PageSection__content">
+            <div className={styles.content}>
                 {children}
             </div>
         </Surface>

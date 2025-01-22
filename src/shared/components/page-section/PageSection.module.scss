@@ -1,0 +1,57 @@
+@use 'sass:selector';
+
+.root {
+    border-radius: 12px;
+    //box-shadow: var(--joy-shadow-md);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: 8px 8px 8px 16px;
+
+    &:empty {
+        padding: 0;
+    }
+
+    &_text {
+        flex: 1;
+    }
+
+    &_actions {
+        align-self: flex-start;
+        margin-left: auto;
+    }
+}
+
+.content {
+    padding: 8px 16px 16px;
+    // overflow-y: auto;
+
+    &:empty {
+        padding: 0;
+    }
+}
+
+.header:empty + .content {
+    padding: 16px;
+}
+
+.compact > .header + .content {
+    padding: 0;
+}
+
+.plain {
+    background-color: transparent !important;
+    overflow: visible;
+    box-shadow: none;
+}
+
+.compact.plain .header {
+    padding: 8px 0;
+}
+
+.scrollable {
+    overflow: auto;
+}

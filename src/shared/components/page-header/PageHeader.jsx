@@ -111,16 +111,10 @@ export default function PageHeader({
                             .filter(a => !!a)
                             .map(action => isValidElement(action) ?
                                 cloneElement(action, {
-                                    color: 'neutral',
-                                    size: 'sm',
-                                    variant: 'soft',
                                     ...action.props
                                 }) :
                                 (action.icon && !action.content) ?
                                     <IconButton
-                                        color="neutral"
-                                        size="sm"
-                                        variant="soft"
                                         {...action}
                                     /> :
                                     <Button {...action} />

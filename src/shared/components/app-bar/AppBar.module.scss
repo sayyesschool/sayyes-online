@@ -1,0 +1,25 @@
+.root {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    width: 73px;
+    height: 100%;
+    border-right: 1px solid var(--joy-palette-divider);
+    background-color: white;
+    overflow-y: auto;
+    box-shadow: var(--joy-shadow-lg);
+}
+
+.logo {
+    padding: .25rem;
+}
+
+.menu {
+    margin-top: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
