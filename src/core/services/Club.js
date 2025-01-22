@@ -348,10 +348,10 @@ export default ({
         return meeting.populate('host');
     },
 
-    async updateMeeting(id, data, ...args) {
+    async updateMeeting(id, data, options = {}, ...args) {
         const meeting = await Meeting.findByIdAndUpdate(id, data, {
             new: true,
-            select: '-registrations -participants'
+            ...options
         }, ...args);
 
         if (meeting.zoomId) {
