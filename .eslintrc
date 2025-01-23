@@ -91,6 +91,10 @@
                         "^(@|api|auth|class|club|cms|config|core|db|crm|lk|lms)(/.*|$)"
                     ],
                     [
+                        "^(@/test|test)(/.*|$)",
+                        "^\\u0000(@/test|test)"
+                    ],
+                    [
                         // Parent imports. Put `..` last.
                         "^\\.\\.(?!/?$)",
                         "^\\.\\./?$"
