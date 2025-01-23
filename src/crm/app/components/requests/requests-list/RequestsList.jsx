@@ -10,7 +10,7 @@ export default function RequestsList({ requests }) {
                     key={request.id}
                     as={Link}
                     to={request.url}
-                    content={<>
+                    content={request.contact && <>
                         <Text
                             type="body-md"
                             content={request.contact.name}
