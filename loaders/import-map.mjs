@@ -10,7 +10,8 @@ const imports = {
     cms: `${ROOT_PATH}/src/cms/`,
     crm: `${ROOT_PATH}/src/crm/`,
     lms: `${ROOT_PATH}/src/lms/`,
-    shared: `${ROOT_PATH}/src/shared/`
+    shared: `${ROOT_PATH}/src/shared/`,
+    test: `${ROOT_PATH}/test/`
 };
 
 export async function resolve(specifier, context, nextResolve) {
