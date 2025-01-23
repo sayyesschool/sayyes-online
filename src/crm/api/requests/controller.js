@@ -7,10 +7,7 @@ export default ({
     async get(req, res) {
         const query = getQuery(req);
 
-        const requests = await Request.find({
-            status: { $in: ['new', 'processing'] },
-            ...query
-        })
+        const requests = await Request.find(query)
             .populate('learner', 'firstname lastname')
             .populate('manager', 'firstname lastname')
             .sort({ createdAt: -1 });
