@@ -2,7 +2,7 @@ import { Schema } from 'mongoose';
 
 import datetime from 'shared/libs/datetime';
 
-const Membership = new Schema({
+export const Membership = new Schema({
     limit: { type: Number, default: 1 },
     price: { type: Number, default: 0 },
     startDate: {
@@ -15,6 +15,7 @@ const Membership = new Schema({
         required: true,
         set: value => datetime(value).utc().toDate()
     },
+    active: { type: Boolean, default: true, alias: 'isActive' },
     userId: { type: Schema.Types.ObjectId, required: true },
     paymentId: { type: Schema.Types.ObjectId },
     registrationIds: [{ type: Schema.Types.ObjectId }]
@@ -22,30 +23,16 @@ const Membership = new Schema({
     timestamps: true
 });
 
-Membership.query.unexpired = function() {
+Membership.query.expired = function() {
     return this.where({
-        $or: [
-            { endDate: { $exists: false } },
-            { endDate: { $gt: new Date() } }
-        ]
+        endDate: { $lt: new Date() }
     });
 };
 
-Membership.statics.getSoldByMonth = async function() {
-    const today = new Date();
-
-    return this.aggregate()
-        .match({
-            paidAt: {
-                $gt: new Date(today.getFullYear() - 1, 11, 31),
-                $lt: new Date(today.getFullYear() + 1, 0)
-            }
-        })
-        .group({
-            _id: { $month: '$paidAt' },
-            count: { $sum: 1 },
-            amount: { $sum: '$price' }
-        });
+Membership.query.unexpired = function() {
+    return this.where({
+        endDate: { $gt: new Date() }
+    });
 };
 
 Membership.statics.getEndDate = function(startDate, pack) {
@@ -54,8 +41,84 @@ Membership.statics.getEndDate = function(startDate, pack) {
     return datetime(startDate).add(...pack.duration).toDate();
 };
 
+Membership.statics.getSoldByMonth = async function() {
+    return this.aggregate()
+        .match({
+            startDate: {
+                $gt: datetime().startOf('year').toDate(),
+                $lt: datetime().endOf('year').toDate()
+            }
+        })
+        .group({
+            _id: { $month: '$startDate' },
+            count: { $sum: 1 },
+            amount: { $sum: '$price' }
+        });
+};
+
+Membership.statics.getAlmostFullMemberships = async function({ limitDifference } = { limitDifference: 2 }) {
+    const results = await this.aggregate()
+        .match({
+            limit: { $gte: 4 },
+            endDate: { $gt: new Date() }
+        })
+        .project({
+            limit: true,
+            registrationIds: true,
+            registrationCount: { $size: '$registrationIds' }
+        })
+        .match({
+            $expr: { $eq: ['$registrationCount', { $subtract: ['$limit', limitDifference] }] }
+        });
+
+    return this.find({ _id: { $in: results.map(({ _id }) => _id) } })
+        .populate({
+            path: 'user',
+            select: 'firstname email',
+            options: { lean: true }
+        });
+};
+
+Membership.statics.getFullMemberships = async function() {
+    const results = await this.aggregate()
+        .match({
+            endDate: { $gt: new Date() }
+        })
+        .project({
+            limit: true,
+            registrationIds: true,
+            registrationCount: { $size: '$registrationIds' }
+        })
+        .match({
+            $expr: { $eq: ['$registrationCount', '$limit'] }
+        });
+
+    return this.find({ _id: { $in: results.map(({ _id }) => _id) } })
+        .populate({
+            path: 'user',
+            select: 'firstname email',
+            options: { lean: true }
+        });
+};
+
 Membership.virtual('uri').get(function() {
     return `/memberships/${this.id}`;
+});
+
+Membership.virtual('registrationsCount').get(function() {
+    return this.registrationIds.length;
+});
+
+Membership.virtual('isExpired').get(function() {
+    return datetime(this.endDate).isBefore(new Date());
+});
+
+Membership.virtual('isFull').get(function() {
+    return this.registrationsCount === this.limit;
+});
+
+Membership.virtual('isValid').get(function() {
+    return !this.isExpired && !this.isFull;
 });
 
 Membership.virtual('startDateString').get(function() {
@@ -70,22 +133,6 @@ Membership.virtual('durationString').get(function() {
     const days = datetime(this.endDate).diff(this.startDate, 'days');
 
     return datetime.duration(days, 'days').humanize();
-});
-
-Membership.virtual('registrationsCount').get(function() {
-    return this.registrationIds.length;
-});
-
-Membership.virtual('isActive').get(function() {
-    return !this.isExpired && this.isValid;
-});
-
-Membership.virtual('isExpired').get(function() {
-    return datetime(this.endDate).isBefore(new Date());
-});
-
-Membership.virtual('isValid').get(function() {
-    return this.registrationsCount < this.limit;
 });
 
 Membership.virtual('user', {
