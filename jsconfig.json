@@ -38,6 +38,9 @@
             ],
             "shared/*": [
                 "./src/shared/*"
+            ],
+            "test/*": [
+                "./test/*"
             ]
         },
         "target": "es2020"
