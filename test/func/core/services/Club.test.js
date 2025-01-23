@@ -3,35 +3,52 @@ import { rejects } from 'node:assert/strict';
 import expect from 'expect';
 import { model } from 'mongoose';
 
+import { DataSchema } from 'core/models/data';
+import { MeetingSchema } from 'core/models/meeting';
+import { MembershipSchema } from 'core/models/membership';
+import { RegistrationSchema } from 'core/models/registration';
+import { UserSchema } from 'core/models/user';
+import AuthService from 'core/services/Auth';
+import ClubService from 'core/services/Club';
+
 import datetime from 'shared/libs/datetime';
 
-import MeetingSchema from '@/core/models/meeting/Meeting';
-import MembershipSchema from '@/core/models/membership/Membership';
-import RegistrationSchema from '@/core/models/registration/Registration';
-import UserSchema from '@/core/models/user/User';
-import AuthService from '@/core/services/auth';
-import ClubService from '@/core/services/Club';
-
+import { config } from 'test/func/context';
+import {
+    ALMOST_FULL_MEMBERSHIP,
+    DEFAULT_MEETING,
+    DEFAULT_MEMBERSHIP,
+    EXPIRED_MEMBERSHIP,
+    FREE_MEETING,
+    FULL_MEMBERSHIP,
+    PACKS,
+    PACKS_MAP,
+    ZOOM_MEETING
+} from 'test/func/data';
 import {
     Mail,
     Newsletter,
     Zoom
-} from '../../../mocks';
-import { DEFAULT_MEETING, DEFAULT_MEMBERSHIP, EXPIRED_MEMBERSHIP, PACKS_MAP, ZOOM_MEETING } from '../../data';
+} from 'test/mocks';
 
+const Data = model('Data', DataSchema);
 const Meeting = model('Meeting', MeetingSchema);
 const Membership = model('Membership', MembershipSchema);
 const Registration = model('Registration', RegistrationSchema);
 const User = model('User', UserSchema);
 
-const Auth = AuthService({ models: { User } });
+const Auth = AuthService({
+    models: { User },
+    services: { Mail }
+});
 const Club = ClubService({
+    config,
     clients: { zoom: Zoom },
-    models: { Meeting, Registration, Membership, User },
+    models: { Data, Meeting, Registration, Membership, User },
     services: {
         Auth,
-        Mail: Mail,
-        Newsletter: Newsletter
+        Mail,
+        Newsletter
     }
 });
 
@@ -47,16 +64,28 @@ describe('ClubService', () => {
         });
         Object.assign(DEFAULT_MEMBERSHIP, { userId: user.id });
         Object.assign(EXPIRED_MEMBERSHIP, { userId: user.id });
+        Object.assign(FULL_MEMBERSHIP, { userId: user.id });
+    });
+
+    beforeEach(() => {
+        Mail.sendMany.reset();
     });
 
     afterEach(async () => {
+        await Data.deleteMany({});
         await Meeting.deleteMany({});
         await Registration.deleteMany({});
         await Membership.deleteMany({});
-        await User.deleteMany({});
     });
 
     describe('packs', () => {
+        before(async () => {
+            await Data.create({
+                key: 'club.packs',
+                value: PACKS
+            });
+        });
+
         describe('getPacks', () => {
             it('should return a list of packs', async () => {
                 const packs = await Club.getPacks();
@@ -198,17 +227,17 @@ describe('ClubService', () => {
         describe('registerForMeeting', () => {
             it('registers with a membership', async () => {
                 const meeting = await Meeting.create(DEFAULT_MEETING);
-                await Membership.create(DEFAULT_MEMBERSHIP);
+                const membership = await Membership.create(DEFAULT_MEMBERSHIP);
 
                 const registration = await Club.registerForMeeting(user, meeting);
-                const membership = await Membership.findById(registration.membershipId);
+                const updatedMembership = await Membership.findById(registration.membershipId);
 
                 expect(registration).toExist();
                 expect(registration.isApproved).toBe(true);
                 expect(registration.userId).toEqual(user.id);
                 expect(registration.membershipId).toEqual(membership.id);
-                expect(membership.registrationIds).toInclude(registration.id);
-                expect(membership.isValid).toBe(false);
+                expect(updatedMembership.registrationIds).toInclude(registration.id);
+                expect(updatedMembership.isValid).toBe(true);
             });
 
             it('registers without a membership with the force flag', async () => {
@@ -240,7 +269,7 @@ describe('ClubService', () => {
             });
 
             it('registers for a free meeting', async () => {
-                const meeting = await Meeting.create({ title: 'Test Meeting', free: true });
+                const meeting = await Meeting.create(FREE_MEETING);
 
                 const registration = await Club.registerForMeeting(user, meeting);
 
@@ -281,15 +310,12 @@ describe('ClubService', () => {
                 });
             });
 
-            it('rejects if the membership is not valid (exceeded the limit)', async () => {
-                const meeting1 = await Meeting.create(DEFAULT_MEETING);
-                const meeting2 = await Meeting.create(DEFAULT_MEETING);
-                await Membership.create(DEFAULT_MEMBERSHIP);
-
-                await Club.registerForMeeting(user, meeting1);
+            it('rejects if the membership is full', async () => {
+                const meeting = await Meeting.create(DEFAULT_MEETING);
+                await Membership.create(FULL_MEMBERSHIP);
 
                 await rejects(async () => {
-                    await Club.registerForMeeting(user, meeting2);
+                    await Club.registerForMeeting(user, meeting);
                 }, {
                     message: 'Лимит посещений абонемента исчерпан'
                 });
@@ -297,7 +323,7 @@ describe('ClubService', () => {
         });
 
         describe('unregisterFromMeeting', () => {
-            it('should unregister', async () => {
+            it('unregister from a meeting', async () => {
                 const meeting = await Meeting.create(DEFAULT_MEETING);
                 const membership = await Membership.create(DEFAULT_MEMBERSHIP);
                 await Club.registerForMeeting(user, meeting);
@@ -442,33 +468,89 @@ describe('ClubService', () => {
     describe('reminders', () => {
         describe('sendMeetingsReminders', () => {
             it('should send reminders for meetings in an hour', async () => {
-                const nextHour = datetime().add(1, 'hour');
+                const nextHour = datetime().add(1, 'hour').startOf('minute').toDate();
                 const meeting = await Meeting.create({
                     ...ZOOM_MEETING,
-                    date: nextHour.toDate(),
+                    date: nextHour,
                     hostId: user.id
                 });
-                const membership = await Membership.create(DEFAULT_MEMBERSHIP);
-                await Club.createRegistration(meeting, user, membership);
+                await Membership.create(DEFAULT_MEMBERSHIP);
+                await Club.registerForMeeting(user, meeting);
 
-                await Club.sendMeetingsReminders(nextHour, { templateId: 1348680 });
+                await Club.sendMeetingsReminders();
 
                 expect(Mail.sendMany).toHaveBeenCalled();
             });
 
             it('should send reminders for meetings in a day', async () => {
-                const nextDay = datetime().add(1, 'day');
+                const nextDay = datetime().endOf('hour').add(1, 'day').toDate();
                 const meeting = await Meeting.create({
                     ...ZOOM_MEETING,
-                    date: nextDay.toDate(),
+                    date: nextDay,
                     hostId: user.id
                 });
                 const membership = await Membership.create(DEFAULT_MEMBERSHIP);
                 await Club.createRegistration(meeting, user, membership);
 
-                await Club.sendMeetingsReminders(nextDay, { templateId: 1348680 });
+                await Club.sendMeetingsReminders();
 
                 expect(Mail.sendMany).toHaveBeenCalled();
+            });
+        });
+
+        describe('sendMembershipsReminders', () => {
+            it('sends reminders memberships that are almost full', async () => {
+                await Membership.create({
+                    ...DEFAULT_MEMBERSHIP,
+                    userId: user.id
+                });
+                await Membership.create({
+                    ...ALMOST_FULL_MEMBERSHIP,
+                    userId: user.id
+                });
+                await Club.sendMembershipsReminders();
+
+                expect(Mail.sendMany).toHaveBeenCalled();
+                expect(Mail.sendMany.calls[0].arguments[0]).toMatch([
+                    {
+                        to: { name: user.firstname, email: user.email },
+                        subject: 'В вашем абонементе осталось 2 встречи',
+                        variables: {
+                            firstname: user.firstname
+                        }
+                    }
+                ]);
+            });
+
+            it('sends reminders for memberships that are full', async () => {
+                await Membership.create({
+                    ...DEFAULT_MEMBERSHIP,
+                    userId: user.id
+                });
+                await Membership.create({
+                    ...FULL_MEMBERSHIP,
+                    userId: user.id
+                });
+                await Club.sendMembershipsReminders();
+
+                expect(Mail.sendMany).toHaveBeenCalled();
+                expect(Mail.sendMany.calls[0].arguments[0]).toMatch([
+                    {
+                        to: { name: user.firstname, email: user.email },
+                        subject: 'Ваш абонемент закончился',
+                        variables: {
+                            firstname: user.firstname
+                        }
+                    }
+                ]);
+            });
+
+            it.skip('sends reminders for memberships that are expiring', async () => {
+
+            });
+
+            it.skip('sends reminders for memberships that have expired', async () => {
+
             });
         });
     });

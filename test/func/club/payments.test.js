@@ -2,7 +2,7 @@ import expect from 'expect';
 
 import { mock, toJSON } from '../../helpers';
 import context from '../context';
-import { DEFAULT_MEETING, DEFAULT_USER, NEW_PAYMENT, PACK_ID, PAID_PAYMENT, USER_EMAIL } from '../data';
+import { DEFAULT_MEETING, NEW_PAYMENT, PACK_ID, PAID_PAYMENT, USER_DATA, USER_EMAIL } from '../data';
 
 import api from './api';
 
@@ -109,7 +109,7 @@ describe('Club Payments API', () => {
         });
 
         it('processes a payment for an existing user with a meeting registration', async () => {
-            const user = await User.create(DEFAULT_USER);
+            const user = await User.create(USER_DATA);
             const meeting = await Meeting.create(DEFAULT_MEETING);
 
             resolvePayment = mock.method(Checkout, 'resolvePayment', async () => ({
