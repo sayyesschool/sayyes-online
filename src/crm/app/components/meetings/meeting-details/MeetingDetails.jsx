@@ -22,6 +22,7 @@ export default function MeetingDetails({ meeting, hosts, onUpdate }) {
             }
         >
             <MeetingForm
+                id="meeting-form"
                 meeting={meeting}
                 hosts={hosts}
                 onSubmit={onUpdate}

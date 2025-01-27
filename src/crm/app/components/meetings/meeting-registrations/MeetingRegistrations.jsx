@@ -81,13 +81,13 @@ export default function MeetingRegistrations({
             }
 
             <FormDialog
-                form="meeting-registration-form"
                 title="Новая регистрация"
                 submitButtonText="Создать"
                 open={isFormOpen}
                 onClose={() => setFormOpen(false)}
             >
                 <MeetingRegistrationForm
+                    id="meeting-registration-form"
                     onSubmit={handleSubmit}
                 />
             </FormDialog>

@@ -35,7 +35,8 @@ const getData = ({
 export default function MeetingForm({
     meeting,
     hosts = [],
-    onSubmit
+    onSubmit,
+    ...props
 }) {
     const { data, setData, handleChange } = useFormData(getData(meeting), [meeting?.id]);
 
@@ -80,8 +81,8 @@ export default function MeetingForm({
 
     return (
         <Form
-            id="meeting-form"
             onSubmit={handleSubmit}
+            {...props}
         >
             <Grid gap="m">
                 <Grid.Item

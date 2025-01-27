@@ -106,6 +106,7 @@ export default function MeetingsPage() {
                 onClose={handleFormClose}
             >
                 <MeetingForm
+                    id="meeting-form"
                     meeting={meeting}
                     hosts={teachers}
                     onSubmit={handleSubmit}

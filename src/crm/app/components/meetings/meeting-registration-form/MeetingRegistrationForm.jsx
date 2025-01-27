@@ -4,7 +4,7 @@ import UserSearch from 'shared/components/user-search';
 import { Checkbox } from 'shared/ui-components';
 import Form from 'shared/ui-components/form';
 
-export default function MeetingRegistrationForm({ onSubmit }) {
+export default function MeetingRegistrationForm({ onSubmit, ...props }) {
     const [userId, setUserId] = useState();
     const [notify, setNotify] = useState(false);
 
@@ -17,7 +17,7 @@ export default function MeetingRegistrationForm({ onSubmit }) {
     }, []);
 
     return (
-        <Form id="meeting-registration-form" onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} {...props}>
             <UserSearch onResult={handleResult} />
 
             <Checkbox
