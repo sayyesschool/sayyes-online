@@ -148,7 +148,8 @@ export default ({
             Lexeme.findById(req.body.lexemeId) :
             Lexeme.findOne({
                 value: req.body.value,
-                translation: req.body.translation
+                translation: req.body.translation,
+                publishStatus: 'approved'
             }));
 
         if (!lexeme) {
