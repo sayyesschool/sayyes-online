@@ -9,7 +9,7 @@ export default context => {
     router.route('/')
         .get(controller.get)
         .post(controller.addLexeme)
-        .put(controller.updateLexemes);
+        .put(controller.mergeLexemes);
 
     router.route('/:lexemeId')
         .put(controller.updateLexeme)

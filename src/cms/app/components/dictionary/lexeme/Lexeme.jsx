@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { Checkbox, Flex, Heading, Image, Text } from 'shared/ui-components';
 
@@ -6,27 +6,32 @@ import LexemeExamples from './LexemeExamples';
 
 import styles from './Lexeme.module.scss';
 
-export default function LexemeView({ user, lexeme, additionalData, changeAdditionalData }) {
+export default function LexemeView({ user, lexeme, onChange }) {
+    const [data, setData] = useState({ examples: [], translation: '', definition: '' });
     const { value, image, definition, translation, examples } = lexeme;
     const isNotCreator = user?.id !== lexeme.createdBy;
-    const readOnly = !changeAdditionalData || !isNotCreator;
-    const addExamples = additionalData?.examples;
+    const readOnly = !onChange || !isNotCreator;
     const fields = [
         { label: 'translation', content: translation, field: 'translation' },
         { label: 'definition', content: definition, field: 'definition' }
     ];
 
-    const handleToggle = useCallback(field => {
-        if (!changeAdditionalData) return;
-        changeAdditionalData({
-            ...additionalData,
-            [field]: !additionalData?.[field]
-        });
-    }, [additionalData, changeAdditionalData]);
+    const handleToggle = useCallback((checked, field) => {
+        setData(prev => ({
+            ...prev,
+            [field]: checked ? lexeme[field] : ''
+        }));
+    }, [lexeme]);
 
-    const onChangeAddExamples = useCallback(examples => {
-        changeAdditionalData({ ...additionalData, examples });
-    }, [additionalData, changeAdditionalData]);
+    const onChangeExamples = useCallback(examples => {
+        setData(prev => ({ ...prev, examples }));
+    }, []);
+
+    useEffect(() => {
+        if (!onChange) return;
+
+        onChange(data);
+    }, [data]);
 
     return (
         <div className={styles.root}>
@@ -62,8 +67,8 @@ export default function LexemeView({ user, lexeme, additionalData, changeAdditio
 
                                 {!readOnly && (
                                     <Checkbox
-                                        checked={!!additionalData?.[field]}
-                                        onChange={() => handleToggle(field)}
+                                        checked={!!data[field]}
+                                        onChange={e => handleToggle(e.target.checked, field)}
                                     />
                                 )}
                             </Flex>
@@ -76,8 +81,8 @@ export default function LexemeView({ user, lexeme, additionalData, changeAdditio
                 <LexemeExamples
                     title="Примеры:"
                     examples={examples}
-                    addExamples={addExamples}
-                    onChangeAddExamples={changeAdditionalData && onChangeAddExamples}
+                    // additionalExampleIds={data.examples.map(ex => ex.id)}
+                    onChangeExamples={onChangeExamples}
                 />
             }
         </div>

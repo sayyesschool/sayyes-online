@@ -29,6 +29,14 @@ export const updateLexeme = createAction('DICTIONARY_UPDATE_LEXEME', (lexemeId, 
     }
 }));
 
+export const mergeLexemes = createAction('MERGE_LEXEMES', data => ({
+    request: {
+        method: 'put',
+        path: 'dictionary',
+        body: data
+    }
+}));
+
 export const updateLexemePublishStatus = createAction(
     'UPDATE_LEXEME_PUBLISH_STATUS',
     (lexemeId, status) => ({
@@ -53,6 +61,7 @@ export const actions = {
     addLexeme,
     updateLexemePublishStatus,
     updateLexeme,
+    mergeLexemes,
     deleteLexeme
 };
 
@@ -84,7 +93,25 @@ export const dictionaryReducer = createReducer(null, {
     [updateLexeme]: (state, action) => {
         return {
             ...state,
-            lexemes: state.lexemes.filter(lexeme => lexeme.id !== action.data.id)
+            lexemes: state.lexemes.map(lexeme =>
+                lexeme.id === action.data.id
+                    ? action.data.updatedLexeme
+                    : lexeme
+            )
+        };
+    },
+
+    [mergeLexemes]: (state, action) => {
+        const filteredLexemes = state.lexemes.filter(
+            lexeme => !action.data.deletedLexemeIds.includes(lexeme.id)
+        );
+
+        return {
+            ...state,
+            lexemes:
+            state.publishStatus === 'pending'
+                ? filteredLexemes
+                : [action.data.newLexeme, ...filteredLexemes]
         };
     },
 

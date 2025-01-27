@@ -2,8 +2,7 @@ export default ({
     models: { Lexeme, LexemeRecord }
 }) => ({
     async get(req, res) {
-        //TODO: правильно ли я тут использую сортировку
-        const lexemes = await Lexeme.find({ publishStatus: req.query.publishStatus }).sort({ createdAt: -1 });;
+        const lexemes = await Lexeme.find({ publishStatus: req.query.publishStatus }).sort({ createdAt: -1 });
 
         res.json({
             ok: true,
@@ -34,7 +33,6 @@ export default ({
         });
     },
 
-    // TODO: как бы разрулть тут всё без дублирования
     async updateLexeme(req, res) {
         const lexeme = await Lexeme.findById(req.params.lexemeId);
 
@@ -67,9 +65,9 @@ export default ({
 
         const record = await LexemeRecord.findOne({ lexemeId: lexeme.id });
 
-        const addTranslate = req.body.checkboxes.translation;
-        const addDefinition = req.body.checkboxes.definition;
-        const examples = req.body.checkboxes.examples;
+        const addTranslate = req.body.additionalData.translation;
+        const addDefinition = req.body.additionalData.definition;
+        const examples = req.body.additionalData.examples;
 
         if (addTranslate) {
             record.data.translation = lexeme.translation;
@@ -80,7 +78,7 @@ export default ({
         }
 
         if (examples.length) {
-            record.data.examples = lexeme.examples.filter(example => examples.includes(example.id));
+            record.data.examples = examples;
         }
 
         await record.save();
@@ -97,64 +95,54 @@ export default ({
         });
     },
 
-    async updateLexemes(req, res) {
-        // TODO: отрефакторить, убрать два запроса за лексимой
-        const lexeme = await Lexeme.findById(req.params.lexemeId);
+    async mergeLexemes(req, res) {
+        function mergeRecordData(mergeData, lexemes) {
+            const lexemIds = lexemes.map(lexeme => lexeme.lexemeId.toString());
 
-        if (!lexeme) throw {
-            code: 404,
-            message: 'Не найдено'
-        };
+            const filteredEntries = Object.entries(mergeData).filter(([id]) => lexemIds.includes(id));
 
-        const updateData = {
-            value: req.body.value,
-            image: req.body.image,
-            definition: req.body.definition,
-            translation: req.body.translation,
-            examples: req.body.examples
-            // publishStatus: 'approved'
-        };
+            return filteredEntries.reduce((acc, [, item]) => {
+                Object.entries(item).forEach(([key, value]) => {
+                    acc[key] = acc[key] ?
+                        Array.isArray(acc[key]) ?
+                            acc[key].concat(value) :
+                            `${acc[key]}  ${value}` :
+                        value;
+                });
 
-        const updatedLexeme = await Lexeme.findOneAndUpdate(
-            {
-                _id: req.params.lexemeId
-            },
-            updateData,
-            { new: true }
-        );
-
-        if (!updatedLexeme) throw {
-            code: 403,
-            message: 'Данне нельзя обновить'
-        };
-
-        console.log(999, newRecord.data);
-
-        const record = await LexemeRecord.findOne({ lexemeId: lexeme.id });
-        const addTranslate = req.body.checkboxes.translation;
-        const addDefinition = req.body.checkboxes.definition;
-
-        if (addTranslate) {
-            record.data.translation = lexeme.translation;
+                return acc;
+            }, {});
         }
 
-        if (addDefinition) {
-            record.data.definition = lexeme.definition;
-        }
+        const newLexeme = await Lexeme.create({ ...req.body.new, publishStatus: 'approved' });
 
-        const newRecord = await record.save();
+        await Lexeme.deleteMany({ _id: { $in:  req.body.deletedLexemeIds } });
 
-        console.log(999, newRecord.data);
+        const lexemeRecords = await LexemeRecord.find({ lexemeId: { $in: req.body.deletedLexemeIds } });
 
-        const data = updatedLexeme.toJSON();
+        const recordsByUser = lexemeRecords.reduce((acc, record) => {
+            const records = acc[record.learnerId];
 
-        if (req.params.vocabulary) {
-            data.vocabularyId = req.vocabulary.id;
-        }
+            acc[record.learnerId] = records ? [...records, record] : [record];
+
+            return acc;
+        }, {});
+
+        await Promise.all(Object.entries(recordsByUser).flatMap(([learnerId, lexemes]) => {
+            const data = mergeRecordData(req.body.merge, lexemes);
+
+            return Promise.all([
+                LexemeRecord.deleteMany({ _id: { $in: lexemes.map(lexeme => lexeme.id) } }),
+                LexemeRecord.create({ lexemeId: newLexeme.id, learnerId, data })
+            ]);
+        }));
 
         res.json({
             ok: true,
-            data: updatedLexeme
+            data: {
+                deletedLexemeIds: req.body.deletedLexemeIds,
+                newLexeme
+            }
         });
     },
 

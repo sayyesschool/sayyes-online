@@ -1,18 +1,25 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { Avatar, Checkbox, Flex, Heading, List } from 'shared/ui-components';
 
 import styles from './LexemeExamples.module.scss';
 
-export default function LexemeExamples({ title, examples, addExamples = [], onChangeAddExamples }) {
-    const readOnly = !onChangeAddExamples;
+export default function LexemeExamples({ title, examples, onChangeExamples }) {
+    const [activeExamples, setActiveExamples] = useState([]);
+    const readOnly = !onChangeExamples;
 
-    const handleCheckboxChange = useCallback(example => {
-        const updatedExamples = addExamples.find(ex => ex?.id === example.id)
-            ? addExamples.filter(ex => ex.id !== example.id)
-            : [...addExamples, example];
-        onChangeAddExamples(updatedExamples);
-    }, [addExamples, onChangeAddExamples]);
+    const handleToggleExample = useCallback(example => {
+        const hasInExamples = activeExamples.find(ex => ex.id === example.id);
+        const examples = hasInExamples ? activeExamples.filter(ex => ex.id !== example.id) : [...activeExamples, example];
+
+        setActiveExamples(examples);
+    }, [activeExamples]);
+
+    useEffect(() => {
+        if (!onChangeExamples) return;
+
+        onChangeExamples(activeExamples);
+    }, [activeExamples]);
 
     return (
         <section className={styles.root}>
@@ -24,7 +31,7 @@ export default function LexemeExamples({ title, examples, addExamples = [], onCh
 
             <List>
                 {examples.map((example, index, array) => {
-                    const hasInaddExamples = !!addExamples.find(ex => ex?.id === example.id);
+                    const isChecked = !!activeExamples.find(ex => ex.id === example.id);
 
                     return (
                         <div key={example.id}>
@@ -49,8 +56,8 @@ export default function LexemeExamples({ title, examples, addExamples = [], onCh
 
                                 {!readOnly && (
                                     <Checkbox
-                                        checked={hasInaddExamples}
-                                        onChange={() => handleCheckboxChange(example)}
+                                        checked={isChecked}
+                                        onChange={() => handleToggleExample(example)}
                                     />
                                 )}
                             </Flex>

@@ -28,7 +28,7 @@ export default function DictionaryLexemes({ dictionary, user }) {
     const isApproved = dictionary.publishStatus === 'approved';
     const isUnapproved = dictionary.publishStatus === 'unapproved';
 
-    const currentLexeme = lexemes.find(lexeme => lexeme.id === modalState.lexemeId);
+    const currentLexeme = lexemes.find(lexeme => lexeme.id === modalState?.lexemeId);
     const isNotCreatorLexeme = currentLexeme?.createdBy !== user.id;
     const withNotifications = isPending && isNotCreatorLexeme;
 
@@ -48,7 +48,7 @@ export default function DictionaryLexemes({ dictionary, user }) {
         return actions.addLexeme(data)
             .then(() => {
                 if (!activeTabStatus) return;
-                //TODO: можно ли как-то обойтись без null, т.к. я по-сути использую это как загрушку
+                //TODO: можно ли как-то обойтись без null, т.к. я по-сути использую это как заглушку
                 handleTabChange(null, 0);
             });
     }, [actions, activeTabStatus, handleTabChange]);
@@ -58,8 +58,8 @@ export default function DictionaryLexemes({ dictionary, user }) {
             .finally(() => handleModalClose());
     }, [actions, modalState.lexemeId, handleModalClose]);
 
-    const handleUpdateLexemes = useCallback(data => {
-        return actions.updateLexemes(data)
+    const handleMergeLexemes = useCallback(data => {
+        return actions.mergeLexemes(data)
             .finally(() => handleModalClose());
     }, [actions, handleModalClose]);
 
@@ -92,7 +92,7 @@ export default function DictionaryLexemes({ dictionary, user }) {
             case 'view-lexeme':
                 return <Lexeme lexeme={currentLexeme} onClose={handleModalClose} />;
             case 'edit-lexeme':
-                return (
+                return modalState.lexemeId && (
                     <LexemeForm
                         id="lexeme-edit-form"
                         withNotifications={withNotifications}
@@ -108,7 +108,7 @@ export default function DictionaryLexemes({ dictionary, user }) {
                         user={user}
                         lexemes={lexemes.filter(lexeme => selectedLexemeIds.includes(lexeme.id))}
                         withNotifications={withNotifications}
-                        onSubmit={handleUpdateLexemes}
+                        onSubmit={handleMergeLexemes}
                         onClose={handleModalClose}
                     />
                 );

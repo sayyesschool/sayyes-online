@@ -24,7 +24,13 @@ export default function LexemesForm({
         definition: '',
         examples: []
     });
-    const [additionalData, setAdditionalData] = useState({});
+    const [additionalData, setAdditionalData] = useState(
+        lexemes.reduce((object, { id, translation, definition, examples }) => {
+            object[id] = { translation, definition, examples };
+
+            return object;
+        }, {})
+    );
     const { value, translation, definition, examples } = data;
     const inputs = [
         {
@@ -67,11 +73,14 @@ export default function LexemesForm({
         event.preventDefault();
 
         const data = {
-            value,
-            translation,
-            definition,
-            examples,
-            additionalData
+            new: {
+                value,
+                translation,
+                definition,
+                examples
+            },
+            merge: additionalData,
+            deletedLexemeIds: lexemes.map(lexeme => lexeme.id)
         };
 
         if (file) {
@@ -83,9 +92,7 @@ export default function LexemesForm({
         }
 
         onSubmit(data);
-    }, [value, translation, definition, examples, additionalData, file, onSubmit]);
-
-    console.log(111, { data, additionalData });
+    }, [value, translation, definition, examples, additionalData, lexemes, file, onSubmit]);
 
     return (
         <Form
@@ -103,8 +110,8 @@ export default function LexemesForm({
                         key={lexeme.id}
                         user={user}
                         additionalData={additionalData[lexeme.id]}
-                        changeAdditionalData={withNotifications && changeAdditionalData}
                         lexeme={lexeme}
+                        onChange={changeAdditionalData}
                     />
                 );
             })}
