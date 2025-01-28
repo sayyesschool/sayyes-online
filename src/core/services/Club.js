@@ -1,19 +1,26 @@
 import { isObjectIdOrHexString } from 'mongoose';
 
-import { getWordEnding } from '@/shared/utils/format';
+import datetime from 'shared/libs/datetime';
+import { getWordEnding } from 'shared/utils/format';
 
 const CLUB_NAME = 'SAY YES Speaking Club';
+const ALMOST_FULL_LIMIT_DIFFERENCE = 2;
 
 const emailTemplates = {
     MEMBER_REGISTRATION: 6476492,
+    MEMBERSHIP_PURCHASE: 6476579,
+    MEMBERSHIP_ALMOST_FULL: 1111111,
+    MEMBERSHIP_FULL: 1111111,
+    MEMBERSHIP_EXPIRING_IN_3_DAYS: 1111111,
+    MEMBERSHIP_EXPIRING_IN_1_DAY: 1111111,
+    MEMBERSHIP_EXPIRED: 1111111,
     MEETING_CANCELED: 1111111,
+    MEETING_FEEDBACK: 6476574,
     MEETING_REGISTRATION_ONLINE: 6476555,
     MEETING_REGISTRATION_OFFLINE: 6476558,
     MEETING_REGISTRATION_DENIED: 6476560,
     MEETING_REMINDER_24H: 6476571,
-    MEETING_REMINDER_1H: 6476573,
-    MEETING_FEEDBACK: 6476574,
-    MEMBERSHIP_PURCHASE: 6476579
+    MEETING_REMINDER_1H: 6476573
 };
 
 const registrationStatusToAction = {
@@ -146,7 +153,6 @@ export default ({
         const userId = isObjectIdOrHexString($user) ? $user : $user?.id;
 
         return Membership.find({ userId })
-            .unexpired()
             .populate('registrations')
             .sort({ endDate: 1 });
     },
@@ -530,7 +536,7 @@ export default ({
             message: 'Срок действия абонемента истек'
         };
 
-        if (!membership.isValid) throw {
+        if (membership.isFull) throw {
             status: 402,
             message: 'Лимит посещений абонемента исчерпан'
         };
@@ -666,41 +672,164 @@ export default ({
         return canceledRegistration;
     },
 
-    async sendMeetingsReminders(query, { templateId } = {}) {
-        const meetings = await Meeting.find(query)
-            .populate('host', 'firstname lastname')
+    async endMeetings() {
+        await Meeting.updateMany({
+            status: { $in: [Meeting.Status.Scheduled, Meeting.Status.Started] },
+            endDate: { $lt: new Date() }
+        }, {
+            status: Meeting.Status.Ended
+        });
+    },
+
+    async sendMeetingsReminders() {
+        const now = datetime().utc().seconds(0).milliseconds(0);
+        const hourBefore = now.clone().add(1, 'hour').toDate();
+        const dayBefore = now.clone().add(1, 'day').toDate();
+
+        const meetingsStartingInHour = await Meeting.find({ startDate: hourBefore })
+            .populate({
+                path: 'host',
+                select: 'firstname lastname',
+                options: { lean: true }
+            })
             .populate({
                 path: 'registrations',
+                match: {
+                    status: 'approved'
+                },
                 populate: {
                     path: 'user',
-                    select: 'firstname lastname email'
+                    select: 'firstname lastname email',
+                    options: { lean: true }
                 }
             });
 
-        const messages = meetings.reduce((messages, meeting) => [
-            ...messages,
-            ...meeting.registrations
-                .filter(registration => registration.isApproved)
-                .map(registration => ({
-                    to: {
-                        name: `${registration.user.firstname} ${registration.user.lastname}`,
-                        email: registration.user.email
-                    },
-                    subject: 'Напоминание о встрече',
-                    templateId,
-                    variables: {
-                        firstname: registration.user.firstname,
-                        title: meeting.title,
-                        datetime: meeting.datetime,
-                        host: meeting.host && `${meeting.host.firstname} ${meeting.host.lastname}`,
-                        level: meeting.level,
-                        thumbnailUrl: meeting.thumbnailUrl || '',
-                        materialsUrl: meeting.materialsUrl || '',
-                        joinUrl: registration.joinUrl
-                    }
-                }))
-        ], []);
+        const meetingsStartingInDay = await Meeting.find({ startDate: dayBefore })
+            .populate({
+                path: 'host',
+                select: 'firstname lastname',
+                options: { lean: true }
+            })
+            .populate({
+                path: 'registrations',
+                match: {
+                    status: 'approved'
+                },
+                populate: {
+                    path: 'user',
+                    select: 'firstname lastname email',
+                    options: { lean: true }
+                }
+            });
+
+        const messages = [
+            ...meetingsStartingInHour.flatMap(m => m.registrations.map(r => ({
+                registration: r.toJSON(),
+                meeting: m.toJSON(),
+                templateId: emailTemplates.MEETING_REMINDER_1H
+            }))),
+            ...meetingsStartingInDay.flatMap(m => m.registrations.map(r => ({
+                registration: r.toJSON(),
+                meeting: m.toJSON(),
+                templateId: emailTemplates.MEETING_REMINDER_24H
+            })))
+        ].map(({ registration, meeting, templateId }) => ({
+            to: {
+                name: `${registration.user.firstname} ${registration.user.lastname}`,
+                email: registration.user.email
+            },
+            subject: 'Напоминание о встрече',
+            templateId,
+            variables: {
+                firstname: registration.user.firstname,
+                title: meeting.title,
+                datetime: meeting.datetime,
+                host: meeting.host && `${meeting.host.firstname} ${meeting.host.lastname}`,
+                level: meeting.level,
+                thumbnailUrl: meeting.thumbnailUrl || '',
+                materialsUrl: meeting.materialsUrl || '',
+                joinUrl: registration.joinUrl
+            }
+        }));
 
         await Mail.sendMany(messages);
+    },
+
+    async sendMembershipsReminders() {
+        const almostFullMemberships = await Membership.getAlmostFullMemberships({
+            limitDifference: ALMOST_FULL_LIMIT_DIFFERENCE
+        });
+        const fullMemberships = await Membership.getFullMemberships();
+        const membershipsExpiringIn3Days = await Membership.find().expiringIn(3, 'days').withUser();
+        const membershipsExpiringIn1Day = await Membership.find().expiringIn(1, 'days').withUser();
+        const expiredMemberships = await Membership.find().expired().withUser();
+
+        const almostFullMessages = almostFullMemberships.map(m => ({
+            to: {
+                name: m.user.firstname,
+                email: m.user.email
+            },
+            subject: `В вашем абонементе осталось ${ALMOST_FULL_LIMIT_DIFFERENCE} встречи`,
+            templateId: emailTemplates.MEMBERSHIP_ALMOST_FULL,
+            variables: {
+                firstname: m.user.firstname
+            }
+        }));
+
+        const fullMessages = fullMemberships.map(m => ({
+            to: {
+                name: m.user.firstname,
+                email: m.user.email
+            },
+            subject: 'Ваш абонемент закончился',
+            templateId: emailTemplates.MEMBERSHIP_FULL,
+            variables: {
+                firstname: m.user.firstname
+            }
+        }));
+
+        const messagesExpiringIn3Days = membershipsExpiringIn3Days.map(m => ({
+            to: {
+                name: m.user.firstname,
+                email: m.user.email
+            },
+            subject: 'Ваш абонемент истекает через 3 дня',
+            templateId: emailTemplates.MEMBERSHIP_EXPIRING_IN_3_DAYS,
+            variables: {
+                firstname: m.user.firstname
+            }
+        }));
+
+        const messagesExpiringIn1Day = membershipsExpiringIn1Day.map(m => ({
+            to: {
+                name: m.user.firstname,
+                email: m.user.email
+            },
+            subject: 'Через 24 часа действие абонемента закончится',
+            templateId: emailTemplates.MEMBERSHIP_EXPIRING_IN_1_DAY,
+            variables: {
+                firstname: m.user.firstname
+            }
+        }));
+
+        const expiredMessages = expiredMemberships.map(m => ({
+            to: {
+                name: m.user.firstname,
+                email: m.user.email
+            },
+            subject: 'Ваш абонемент закончился',
+            templateId: emailTemplates.MEMBERSHIP_EXPIRED,
+            variables: {
+                firstname: m.user.firstname
+            }
+        }));
+
+        await Mail.sendMany([
+            ...almostFullMessages,
+            ...fullMessages,
+            ...messagesExpiringIn3Days,
+            ...messagesExpiringIn1Day,
+            ...expiredMessages
+        ]);
     }
 });

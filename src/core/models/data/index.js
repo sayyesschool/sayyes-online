@@ -1,1 +1,1 @@
-export { default, Data } from './Data';
+export { default, Data as DataSchema } from './Data';

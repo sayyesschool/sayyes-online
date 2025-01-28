@@ -11,7 +11,7 @@ export default function MembershipsSection({ memberships, options, ...props }) {
     if (!memberships) return null;
 
     const noMemberships = memberships.length === 0;
-    const validMemberships = memberships.filter(m => m.isValid);
+    const validMemberships = memberships.filter(m => m.isFull);
     const noValidMemberships = !noMemberships && validMemberships.length === 0;
     const showWarning = noMemberships || noValidMemberships;
     const title = noMemberships

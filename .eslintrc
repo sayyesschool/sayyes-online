@@ -91,7 +91,8 @@
                         "^(@|api|auth|class|club|cms|config|core|db|crm|lk|lms)(/.*|$)"
                     ],
                     [
-                        "^(@/test|test)(/.*|$)",
+                        "^test/(data|helpers|mocks)(/.*|$)",
+                        "^test(/.*|$)",
                         "^\\u0000(@/test|test)"
                     ],
                     [

@@ -17,12 +17,28 @@ new CronJob({
 
             await db.connect(config.DB_CONNECTION_STRING);
 
-            const now = datetime().utc().seconds(0).milliseconds(0);
-            const hourBefore = now.clone().add(1, 'hour').toDate();
-            const dayBefore = now.clone().add(1, 'day').toDate();
+            await Club.sendMeetingsReminders();
+            await Club.endMeetings();
 
-            await Club.sendMeetingsReminders({ startDate: hourBefore }, { templateId: 1348680 });
-            await Club.sendMeetingsReminders({ startDate: dayBefore }, { templateId: 1348661 });
+            await db.disconnect();
+
+            console.log('Cron job finished...');
+        } catch (error) {
+            console.error('Cron job failed:', error);
+        }
+    }
+});
+
+new CronJob({
+    cronTime: '0 0 0 * * *', // every day at midnight
+    start: true,
+    onTick: async () => {
+        try {
+            console.log('Cron job running...');
+
+            await db.connect(config.DB_CONNECTION_STRING);
+
+            await Club.sendMembershipsReminders();
 
             await db.disconnect();
 

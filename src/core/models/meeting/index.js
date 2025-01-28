@@ -1,1 +1,1 @@
-export { default, Meeting } from './Meeting';
+export { default, Meeting as MeetingSchema } from './Meeting';
