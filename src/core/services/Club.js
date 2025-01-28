@@ -7,13 +7,13 @@ const CLUB_NAME = 'SAY YES Speaking Club';
 const ALMOST_FULL_LIMIT_DIFFERENCE = 2;
 
 const emailTemplates = {
-    MEMBER_REGISTRATION: 6476492,
-    MEMBERSHIP_PURCHASE: 6476579,
-    MEMBERSHIP_ALMOST_FULL: 1111111,
-    MEMBERSHIP_FULL: 1111111,
-    MEMBERSHIP_EXPIRING_IN_3_DAYS: 1111111,
-    MEMBERSHIP_EXPIRING_IN_1_DAY: 1111111,
-    MEMBERSHIP_EXPIRED: 1111111,
+    MEMBER_REGISTERED: 6476492,
+    MEMBERSHIP_PURCHASED: 6476579,
+    MEMBERSHIP_ALMOST_FULL: 6678353,
+    MEMBERSHIP_FULL: 6678427,
+    MEMBERSHIP_EXPIRING_IN_3_DAYS: 6678353,
+    MEMBERSHIP_EXPIRING_IN_1_DAY: 6678353,
+    MEMBERSHIP_EXPIRED: 6678427,
     MEETING_CANCELED: 1111111,
     MEETING_FEEDBACK: 6476574,
     MEETING_REGISTRATION_ONLINE: 6476555,
@@ -40,8 +40,9 @@ export default ({
     models: { Data, Meeting, Membership, Payment, Registration, Request, User },
     services: { Auth, Checkout, Mail, Newsletter }
 }) => ({
-    clubUrl: `https://club.${config.APP_DOMAIN}`,
+    clubName: CLUB_NAME,
     clubEmail: `club@${config.EMAIL_DOMAIN}`,
+    clubUrl: `https://club.${config.APP_DOMAIN}`,
     emailTemplates,
     packs: null,
 
@@ -105,9 +106,9 @@ export default ({
             },
             from: {
                 email: this.clubEmail,
-                name: CLUB_NAME
+                name: this.clubName
             },
-            templateId: emailTemplates.MEMBER_REGISTRATION,
+            templateId: emailTemplates.MEMBER_REGISTERED,
             variables: {
                 name: user.firstname,
                 email: user.email,
@@ -146,6 +147,17 @@ export default ({
             paymentId,
             startDate,
             endDate
+        });
+    },
+
+    async endMemberships() {
+        return Membership.updateMany({
+            active: true,
+            endDate: {
+                $lt: new Date()
+            }
+        }, {
+            active: false
         });
     },
 
@@ -796,7 +808,8 @@ export default ({
             subject: 'Ваш абонемент истекает через 3 дня',
             templateId: emailTemplates.MEMBERSHIP_EXPIRING_IN_3_DAYS,
             variables: {
-                firstname: m.user.firstname
+                firstname: m.user.firstname,
+                clubUrl: this.clubUrl
             }
         }));
 

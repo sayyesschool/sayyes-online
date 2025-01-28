@@ -141,6 +141,26 @@ describe('ClubService', () => {
                 });
             }
         });
+
+        describe('endMemberships', () => {
+            it.only('ends memberships that have expired', async () => {
+                await Membership.create([
+                    MEMBERSHIP_DEFAULT,
+                    MEMBERSHIP_EXPIRING_IN_1_DAY,
+                    MEMBERSHIP_EXPIRING_IN_3_DAYS,
+                    MEMBERSHIP_EXPIRED
+                ]);
+
+                await Club.endMemberships();
+
+                const expiredMemberships = await Membership.find({
+                    active: false
+                });
+
+                expect(expiredMemberships.length).toBe(1);
+                expect(expiredMemberships[0].active).toBe(false);
+            });
+        });
     });
 
     describe('meetings', () => {

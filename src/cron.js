@@ -39,6 +39,7 @@ new CronJob({
             await db.connect(config.DB_CONNECTION_STRING);
 
             await Club.sendMembershipsReminders();
+            await Club.endMemberships();
 
             await db.disconnect();
 

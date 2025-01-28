@@ -38,6 +38,10 @@ Membership.query.expiringIn = function(value, unit) {
     });
 };
 
+Membership.query.expiringToday = function() {
+    return this.expiringIn(0, 'days');
+};
+
 Membership.query.withUser = function(options = {}) {
     return this.populate({
         path: 'user',
