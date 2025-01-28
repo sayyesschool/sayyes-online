@@ -14,4 +14,3 @@ node_modules
 /backups
 /public
 /ssl
-/scripts/deploy/credentials.js
