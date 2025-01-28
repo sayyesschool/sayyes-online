@@ -29,9 +29,21 @@ Membership.query.expired = function() {
     });
 };
 
-Membership.query.unexpired = function() {
+Membership.query.expiringIn = function(value, unit) {
     return this.where({
-        endDate: { $gt: new Date() }
+        endDate: {
+            $gt: datetime().add(value, unit).startOf(unit).toDate(),
+            $lt: datetime().add(value, unit).endOf(unit).toDate()
+        }
+    });
+};
+
+Membership.query.withUser = function(options = {}) {
+    return this.populate({
+        path: 'user',
+        select: 'firstname email',
+        options: { lean: true },
+        ...options
     });
 };
 
@@ -71,12 +83,7 @@ Membership.statics.getAlmostFullMemberships = async function({ limitDifference }
             $expr: { $eq: ['$registrationCount', { $subtract: ['$limit', limitDifference] }] }
         });
 
-    return this.find({ _id: { $in: results.map(({ _id }) => _id) } })
-        .populate({
-            path: 'user',
-            select: 'firstname email',
-            options: { lean: true }
-        });
+    return this.find({ _id: { $in: results.map(({ _id }) => _id) } }).withUser();
 };
 
 Membership.statics.getFullMemberships = async function() {
@@ -93,12 +100,7 @@ Membership.statics.getFullMemberships = async function() {
             $expr: { $eq: ['$registrationCount', '$limit'] }
         });
 
-    return this.find({ _id: { $in: results.map(({ _id }) => _id) } })
-        .populate({
-            path: 'user',
-            select: 'firstname email',
-            options: { lean: true }
-        });
+    return this.find({ _id: { $in: results.map(({ _id }) => _id) } }).withUser();
 };
 
 Membership.virtual('uri').get(function() {
