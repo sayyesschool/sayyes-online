@@ -9,10 +9,11 @@ const ALMOST_FULL_LIMIT_DIFFERENCE = 2;
 const emailTemplates = {
     MEMBER_REGISTRATION: 6476492,
     MEMBERSHIP_PURCHASE: 6476579,
-    MEMBERSHIP_ENDING: 1111111,
-    MEMBERSHIP_ENDED: 1111111,
     MEMBERSHIP_ALMOST_FULL: 1111111,
     MEMBERSHIP_FULL: 1111111,
+    MEMBERSHIP_EXPIRING_IN_3_DAYS: 1111111,
+    MEMBERSHIP_EXPIRING_IN_1_DAY: 1111111,
+    MEMBERSHIP_EXPIRED: 1111111,
     MEETING_CANCELED: 1111111,
     MEETING_FEEDBACK: 6476574,
     MEETING_REGISTRATION_ONLINE: 6476555,
@@ -759,6 +760,9 @@ export default ({
             limitDifference: ALMOST_FULL_LIMIT_DIFFERENCE
         });
         const fullMemberships = await Membership.getFullMemberships();
+        const membershipsExpiringIn3Days = await Membership.find().expiringIn(3, 'days').withUser();
+        const membershipsExpiringIn1Day = await Membership.find().expiringIn(1, 'days').withUser();
+        const expiredMemberships = await Membership.find().expired().withUser();
 
         const almostFullMessages = almostFullMemberships.map(m => ({
             to: {
@@ -784,9 +788,48 @@ export default ({
             }
         }));
 
+        const messagesExpiringIn3Days = membershipsExpiringIn3Days.map(m => ({
+            to: {
+                name: m.user.firstname,
+                email: m.user.email
+            },
+            subject: 'Ваш абонемент истекает через 3 дня',
+            templateId: emailTemplates.MEMBERSHIP_EXPIRING_IN_3_DAYS,
+            variables: {
+                firstname: m.user.firstname
+            }
+        }));
+
+        const messagesExpiringIn1Day = membershipsExpiringIn1Day.map(m => ({
+            to: {
+                name: m.user.firstname,
+                email: m.user.email
+            },
+            subject: 'Через 24 часа действие абонемента закончится',
+            templateId: emailTemplates.MEMBERSHIP_EXPIRING_IN_1_DAY,
+            variables: {
+                firstname: m.user.firstname
+            }
+        }));
+
+        const expiredMessages = expiredMemberships.map(m => ({
+            to: {
+                name: m.user.firstname,
+                email: m.user.email
+            },
+            subject: 'Ваш абонемент закончился',
+            templateId: emailTemplates.MEMBERSHIP_EXPIRED,
+            variables: {
+                firstname: m.user.firstname
+            }
+        }));
+
         await Mail.sendMany([
             ...almostFullMessages,
-            ...fullMessages
+            ...fullMessages,
+            ...messagesExpiringIn3Days,
+            ...messagesExpiringIn1Day,
+            ...expiredMessages
         ]);
     }
 });
