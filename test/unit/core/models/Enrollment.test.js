@@ -1,3 +1,5 @@
+import expect from 'expect';
+
 import datetime from 'shared/libs/datetime';
 
 describe('Enrollment', () => {
