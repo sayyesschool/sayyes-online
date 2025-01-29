@@ -24,9 +24,11 @@ export function useTeacher(id) {
         if (teacherId !== id) {
             actions.getTeacher(id);
         }
-
-        return () => actions.unsetTeacher();
     }, [teacherId, id, actions]);
+
+    useEffect(() => {
+        return () => actions.unsetTeacher();
+    }, []);
 
     return [teacher, actions];
 }
