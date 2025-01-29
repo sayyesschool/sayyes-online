@@ -32,6 +32,8 @@ export default function PageSection({
         <Surface
             as="section"
             className={classNames}
+            radius="lg"
+            shadow={plain ? undefined : 'xs'}
             {...props}
         >
             <div className={styles.header}>

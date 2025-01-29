@@ -1,8 +1,7 @@
 @use 'sass:selector';
 
 .root {
-    border-radius: 12px;
-    //box-shadow: var(--joy-shadow-md);
+    position: relative;
 }
 
 .header {
@@ -16,7 +15,7 @@
     }
 
     &_text {
-        flex: 1;
+        // flex: 1;
     }
 
     &_actions {
@@ -42,14 +41,14 @@
     padding: 0;
 }
 
+.compact.plain .header {
+    padding: 8px 0;
+}
+
 .plain {
     background-color: transparent !important;
     overflow: visible;
     box-shadow: none;
-}
-
-.compact.plain .header {
-    padding: 8px 0;
 }
 
 .scrollable {
