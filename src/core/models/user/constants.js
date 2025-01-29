@@ -5,14 +5,14 @@ export const UserRole = {
     Teacher: 'teacher'
 };
 
-export const UserDomains = [
-    'class',
-    'club',
-    'cms',
-    'crm',
-    'lk',
-    'lms'
-];
+export const UserDomain = {
+    Class: 'class',
+    Club: 'club',
+    CMS: 'cms',
+    CRM: 'crm',
+    LK: 'lk',
+    LMS: 'lms'
+};
 
 export const UserPermissions = [
     'all',

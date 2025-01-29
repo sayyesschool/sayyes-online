@@ -5,7 +5,7 @@ import mongoose, { Schema } from 'mongoose';
 
 import Image from '../image';
 
-import { UserDomains, UserPermissions, UserRole } from './constants';
+import { UserDomain, UserPermissions, UserRole } from './constants';
 import Person from './Person';
 
 function hashPassword(password) {
@@ -37,8 +37,8 @@ export const User = new Schema([Person, {
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
     domains: {
         type: [String],
-        enum: UserDomains,
-        default: ['lk']
+        enum: Object.keys(UserDomain),
+        default: [UserDomain.LK]
     },
     permissions: {
         type: [String],
