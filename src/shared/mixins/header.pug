@@ -10,7 +10,7 @@ mixin header()
         div.header__main
             div.header__container
                 a(href=attributes.link).header__logo.logo
-                    img(src=`${STATIC_URL}/images/logos/${attributes.logo}` alt="Логотип Say Yes")
+                    img(src=`${CDN_URL}/images/logos/${attributes.logo}` alt="Логотип Say Yes")
 
                 block 
 

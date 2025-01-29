@@ -46,9 +46,6 @@ block main
 
             button.btn.btn--yellow.mt-xxl(data-scroll-to="#packages") Прокачать английский!
 
-        div.hero__image
-            img.image(src="https://static.sayes.ru/images/speaking-club/hero-image.png" alt="")
-
     +section('Коротко о разговорном клубе SAY YES!')#about
         div.grid.grid-4-lg.grid-2-sm                
             for item in features
@@ -71,11 +68,9 @@ block main
                     h3.card__title= step.title
                     p.card__description= step.description
 
-    +section(
-        'Ближайшие встречи',
-        meetings.length > 0 ?
-            'Не упустите возможность попрактиковать свой английский в кругу единомышленников — записывайтесь на ближайшую встречу прямо сейчас!' :
-            'Ни одной встречи пока не запланировано.'
+    +section('Ближайшие встречи', meetings.length > 0 ?
+        'Не упустите возможность попрактиковать свой английский в кругу единомышленников — записывайтесь на ближайшую встречу прямо сейчас!' :
+        'Ни одной встречи пока не запланировано.'
     )(color='yellow' padded)#schedule
         div#calendar-island
 
@@ -87,7 +82,7 @@ block main
 
         +section-media
             div.text-card.card
-                img.image(src="https://static.sayes.ru/images/speaking-club/speakers.png" alt="")
+                img.image(src=`${CDN_URL}/images/club/speakers.jpg` alt="Спикеры")
 
     +section()(color='white' horizontal)#video.video-section.section--yellow
         +section-header('Посмотрите, как проходят встречи нашего разговорного клуба')
@@ -95,12 +90,12 @@ block main
         +section-media
             div.video.video--modal.video--framed
                 div.video__media
-                    img(src="https://i.ytimg.com/vi/jSfeDjvLxlI/sddefault.jpg" alt="")
+                    img(src=`${CDN_URL}/images/club/video-poster.jpg` alt="Постер")
             
                 button.video__btn(
                     type="button"
                     data-modal-trigger="video-modal"
-                    data-video-url=`${STATIC_URL}/videos/speaking-club.mp4`
+                    data-video-url=`${CDN_URL}/videos/speaking-club_360.mp4`
                 )
 
     +section('Тарифы')#packages

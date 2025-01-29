@@ -13,7 +13,7 @@ block meta
 append head
     link(rel="preconnect" href="https://fonts.googleapis.com")
     link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=Shantell+Sans:ital,wght@1,300..400&display=swap")
-    link(rel="stylesheet" href=`${STATIC_URL}/styles/shared.css?${APP_VERSION}`)
+    link(rel="stylesheet" href=`${CDN_URL}/styles/shared.css?${APP_VERSION}`)
 
     style
         include:scss ../styles/shared.scss
@@ -28,7 +28,7 @@ block body
     block footer
         include ./includes/footer
 
-    script(src=`${STATIC_URL}/scripts/shared.js`)
+    script(src=`${CDN_URL}/scripts/shared.js`)
 
     if NODE_ENV === 'production'
         +yandex-metrika(YANDEX_METRIKA_ID_CLUB)

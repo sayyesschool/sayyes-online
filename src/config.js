@@ -15,6 +15,8 @@ export default {
     APP_URL: process.env.APP_URL,
     APP_VERSION: VERSION,
 
+    CDN_URL: process.env.CDN_URL,
+
     EMAIL_DOMAIN: process.env.EMAIL_DOMAIN,
 
     FACEBOOK_PIXEL_ID: '758563291240040',
