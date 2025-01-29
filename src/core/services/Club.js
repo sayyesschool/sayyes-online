@@ -1,6 +1,6 @@
 import { isObjectIdOrHexString } from 'mongoose';
 
-import datetime from 'shared/libs/datetime';
+import datetime, { toMSKString } from 'shared/libs/datetime';
 import { getWordEnding } from 'shared/utils/format';
 
 const CLUB_NAME = 'SAY YES Speaking Club';
@@ -171,9 +171,9 @@ export default ({
 
     async findUserMembership($user) {
         const memberships = await this.findUserMemberships($user);
-        const activeMembership = memberships.find(m => m.isActive);
+        const validMembership = memberships.find(m => m.isValid);
 
-        return activeMembership || memberships[0];
+        return validMembership || memberships[0];
     },
 
     async getMembership($membership) {
@@ -341,9 +341,9 @@ export default ({
         if (data.online) {
             const zoomMeetingData = await zoom.meetings.create({
                 topic: data.title,
-                start_time: data.date,
+                start_time: toMSKString(data.startDate),
                 duration: data.duration,
-                timezone: undefined,
+                timezone: 'Europe/Moscow',
                 settings: {
                     join_before_host: false,
                     waiting_room: false,
@@ -363,7 +363,7 @@ export default ({
 
         const meeting = await Meeting.create(data, ...args);
 
-        return meeting.populate('host');
+        return meeting.populate('host', 'firstname lastname image role');
     },
 
     async updateMeeting(id, data, options = {}, ...args) {
@@ -376,12 +376,13 @@ export default ({
             await zoom.meetings.update(meeting.zoomId, {
                 topic: meeting.title,
                 agenda: meeting.description,
-                start_time: data.date,
+                start_time: toMSKString(meeting.startDate),
+                timezone: 'Europe/Moscow',
                 duration: meeting.duration
             });
         }
 
-        return meeting.populate('host');
+        return meeting.populate('host', 'firstname lastname image role');
     },
 
     async cancelMeeting(id) {
