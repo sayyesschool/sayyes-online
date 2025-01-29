@@ -2,7 +2,7 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import { timezonesMap } from 'shared/data/timezones';
 import { UserDomainLabel } from 'shared/data/user';
-import { Chip, IconButton, Link, MenuButton, Table } from 'shared/ui-components';
+import { Chip, IconButton, Link, Menu, Table } from 'shared/ui-components';
 
 const columns = [
     { key: 'fullname', content: 'Имя и фамилия' },
@@ -65,7 +65,7 @@ export default function ManagersTable({ managers, onEdit, onDelete }) {
                         </Table.Cell>
 
                         <Table.Cell align="end">
-                            <MenuButton
+                            <Menu
                                 trigger={
                                     <IconButton
                                         icon="more_vert"
@@ -77,12 +77,15 @@ export default function ManagersTable({ managers, onEdit, onDelete }) {
                                 items={[
                                     {
                                         key: 'edit',
+                                        icon: 'edit',
                                         content: 'Изменить',
                                         onClick: () => onEdit(manager)
                                     },
                                     {
                                         key: 'delete',
+                                        icon: 'delete',
                                         content: 'Удалить',
+                                        color: 'danger',
                                         onClick: () => onDelete(manager)
                                     }
                                 ]}
