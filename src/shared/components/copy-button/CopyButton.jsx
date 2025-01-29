@@ -8,8 +8,9 @@ import {
 
 export default function CopyButton({
     content,
-    icon,
+    icon = 'content_copy',
     copyContent,
+    title = 'Копировать',
     tooltipContent = 'Скопировано',
     ...props
 }) {
@@ -23,6 +24,8 @@ export default function CopyButton({
     return icon && !content ?
         <IconButton
             icon={icon}
+            title={title}
+            variant="plain"
             onClick={handleCopyButtonClick}
             {...props}
         />
@@ -30,6 +33,8 @@ export default function CopyButton({
         <Button
             content={content}
             icon={icon}
+            title={title}
+            variant="plain"
             onClick={handleCopyButtonClick}
             {...props}
         />
