@@ -1,4 +1,4 @@
-import { Card, Flex, Heading, Icon, Step, Stepper, Text } from 'shared/components/ui';
+import { Card, Chip, Flex, Heading, Icon, Step, Stepper, Text } from 'shared/components/ui';
 import { StatusColor, StatusIcon, StatusLabel } from 'shared/data/registration';
 import datetime from 'shared/libs/datetime';
 import { getWordEnding } from 'shared/utils/format';
@@ -27,7 +27,16 @@ export default function MembershipCard({ membership, ...props }) {
                 gap="large"
             >
                 <Flex dir="column" flexShrink="0">
-                    <Heading content={heading} type="h3" />
+                    <Heading
+                        content={heading} type="h3"
+                        end={!membership.isValid ?
+                            <Chip content="Закончился" color="danger" />
+                            : membership.isExpiring ?
+                                <Chip content="Заканчивается" color="warning" />
+                                : null
+                        }
+                    />
+
                     <Text content={durationPeriod} type="body-md" />
                     <Text content={durationFromTo} type="body-sm" />
                 </Flex>
