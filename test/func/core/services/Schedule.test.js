@@ -3,11 +3,11 @@ import { rejects } from 'node:assert/strict';
 import expect from 'expect';
 import { model } from 'mongoose';
 
-import datetime from 'shared/libs/datetime';
+import { LessonSchema } from 'core/models/lesson';
+import { RoomSchema } from 'core/models/room';
+import ScheduleService from 'core/services/Schedule';
 
-import LessonSchema from '@/core/models/lesson/Lesson.js';
-import RoomSchema from '@/core/models/room/Room.js';
-import ScheduleService from '@/core/services/schedule.js';
+import datetime from 'shared/libs/datetime';
 
 const Lesson = model('Lesson', LessonSchema);
 const Room = model('Room', RoomSchema);

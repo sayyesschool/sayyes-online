@@ -143,7 +143,7 @@ describe('ClubService', () => {
         });
 
         describe('endMemberships', () => {
-            it.only('ends memberships that have expired', async () => {
+            it('ends memberships that have expired', async () => {
                 await Membership.create([
                     MEMBERSHIP_DEFAULT,
                     MEMBERSHIP_EXPIRING_IN_1_DAY,

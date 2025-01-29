@@ -1,6 +1,5 @@
-import { mock, spy } from '../helpers';
-
-import { addRegistrant, createMeeting, getMeeting } from './data.js';
+import { addRegistrant, createMeeting, getMeeting } from 'test/data/zoom';
+import { mock, spy } from 'test/helpers';
 
 async function noopAsync() {}
 

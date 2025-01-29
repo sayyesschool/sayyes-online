@@ -2,20 +2,17 @@ import expect from 'expect';
 
 import datetime from 'shared/libs/datetime';
 
-import context from 'test/func/context';
+import { USER } from 'test/data';
 import { createId, toJSON } from 'test/helpers';
+import { models } from 'test/func/context';
 
-const { models: { Membership, User } } = context;
+const { Membership, User } = models;
 
 describe('Membership model', () => {
     let user;
 
     before(async () => {
-        user = await User.create({
-            firstname: 'John',
-            lastname: 'Doe',
-            email: 'jd@mail.com'
-        });
+        user = await User.create(USER);
     });
 
     afterEach(async () => {

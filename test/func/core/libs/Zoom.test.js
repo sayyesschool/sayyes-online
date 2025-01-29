@@ -2,14 +2,16 @@ import { doesNotReject } from 'node:assert/strict';
 
 import expect from 'expect';
 
+import Zoom from 'core/clients/zoom';
+
 import datetime from 'shared/libs/datetime';
 
-import Zoom from '@/core/libs/zoom/index.js';
+import { config } from 'test/func/context';
 
 const zoom = Zoom({
-    accountId: global.$context.config.ZOOM_ACCOUNT_ID,
-    clientId: global.$context.config.ZOOM_CLIENT_ID,
-    clientSecret: global.$context.config.ZOOM_CLIENT_SECRET
+    accountId: config.ZOOM_ACCOUNT_ID,
+    clientId: config.ZOOM_CLIENT_ID,
+    clientSecret: config.ZOOM_CLIENT_SECRET
 });
 
 describe('Zoom client', () => {

@@ -1,6 +1,6 @@
 import supertest from 'supertest';
 
-import crm from '@/crm/api';
+import crm from 'crm/api';
 
 import context from '../context';
 import server from '../server';
