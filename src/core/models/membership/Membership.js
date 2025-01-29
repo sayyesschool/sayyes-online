@@ -24,8 +24,10 @@ export const Membership = new Schema({
 });
 
 Membership.query.expired = function() {
+    const endOfToday = datetime().endOf('day').toDate();
+
     return this.where({
-        endDate: { $lt: new Date() }
+        endDate: { $lt: endOfToday }
     });
 };
 
@@ -115,8 +117,16 @@ Membership.virtual('registrationsCount').get(function() {
     return this.registrationIds.length;
 });
 
+Membership.virtual('isExpiring').get(function() {
+    const expiringDate = datetime().add(3, 'days').endOf('day');
+
+    return datetime(this.endDate).isBefore(expiringDate, 'day');
+});
+
 Membership.virtual('isExpired').get(function() {
-    return datetime(this.endDate).isBefore(new Date());
+    const endOfToday = datetime().endOf('day');
+
+    return datetime(this.endDate).isBefore(endOfToday, 'day');
 });
 
 Membership.virtual('isFull').get(function() {
