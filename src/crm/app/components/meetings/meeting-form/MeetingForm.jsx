@@ -14,22 +14,26 @@ const getData = ({
     duration = 50,
     level = '',
     status = 'scheduled',
+    hostId = '',
     online = false,
     free = false,
     published = false,
     image = {},
-    description = ''
+    description = '',
+    materialsUrl = ''
 } = {}) => ({
     title,
     startDate: datetime(startDate).format('YYYY-MM-DDTHH:mm'),
     level: level?.toString(),
     duration,
     status,
+    hostId,
     online,
     free,
     published,
     image,
-    description
+    description,
+    materialsUrl
 });
 
 export default function MeetingForm({
