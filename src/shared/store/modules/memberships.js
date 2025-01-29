@@ -93,30 +93,28 @@ export default combineReducers({
 
 function registerForMeetingUpdate(meeting, data) {
     const registrationsCount = meeting.registrationsCount + (data.isFree ? 0 : 1);
-    const isValid = meeting.limit && registrationsCount < meeting.limit;
-    const isActive = !meeting.isExpired && isValid;
+    const isFull = meeting.limit && registrationsCount === meeting.limit;
+    const isValid = !meeting.isExpired && !isFull;
 
     return {
         ...meeting,
         registrationIds: meeting.registrationIds.concat(data.id),
         registrationsCount,
         registrations: meeting.registrations.concat(data),
-        isValid,
-        isActive
+        isValid
     };
 }
 
 function unregisterFromMeetingUpdate(meeting, data) {
     const registrationsCount = meeting.registrationsCount - (data.isFree ? 0 : 1);
-    const isValid = meeting.limit && registrationsCount < meeting.limit;
-    const isActive = !meeting.isExpired && isValid;
+    const isFull = meeting.limit && registrationsCount === meeting.limit;
+    const isValid = !meeting.isExpired && !isFull;
 
     return {
         ...meeting,
         registrationIds: meeting.registrationIds.filter(id => id !== data.meetingId),
         registrationsCount,
         registrations: meeting.registrations.filter(r => r.id !== data.id),
-        isValid,
-        isActive
+        isValid
     };
 }
