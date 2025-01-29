@@ -78,7 +78,6 @@ Meeting.virtual('duration')
         return Math.abs(datetime(this.startDate).diff(this.endDate, 'minutes'));
     })
     .set(function(value) {
-        console.log('set duration', value, datetime(this.startDate).add(value, 'minutes').toDate());
         this.endDate = datetime(this.startDate).add(value, 'minutes').toDate();
     });
 
