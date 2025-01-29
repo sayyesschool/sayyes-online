@@ -6,7 +6,7 @@ export default ({
             .populate('host', 'firstname lastname email')
             .populate('registrations')
             .sort({ date: 1 })
-            .limit(30);
+            .limit(100);
 
         res.json({
             ok: true,
