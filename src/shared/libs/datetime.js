@@ -20,4 +20,8 @@ export function atMSK(date) {
     return moment(date).tz('Europe/Moscow');
 }
 
+export function toMSKString(date) {
+    return moment(date).tz('Europe/Moscow').format('YYYY-MM-DDTHH:mm:ss');
+}
+
 export default moment;
