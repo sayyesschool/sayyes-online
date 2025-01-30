@@ -16,7 +16,7 @@ const getDefaultData = ({
     gender = '',
     timezone = '',
     note = '',
-    domains = []
+    domains = ['crm', 'lk']
 }) => ({
     firstname,
     lastname,
