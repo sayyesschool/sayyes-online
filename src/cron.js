@@ -1,7 +1,5 @@
 import { CronJob } from 'cron';
 
-import datetime from 'shared/libs/datetime';
-
 import config from './config';
 import core from './core';
 import db from './db';
