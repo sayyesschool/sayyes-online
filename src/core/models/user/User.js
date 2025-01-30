@@ -37,7 +37,7 @@ export const User = new Schema([Person, {
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
     domains: {
         type: [String],
-        enum: Object.keys(UserDomain),
+        enum: Object.values(UserDomain),
         default: [UserDomain.LK]
     },
     permissions: {
