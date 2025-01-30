@@ -45,7 +45,7 @@ export default ({
     },
 
     login(req, res, next) {
-        Auth.login(req.body.email, req.body.password)
+        Auth.login(req.body.email?.toLowerCase(), req.body.password)
             .then(user => {
                 req.session.userId = user.id;
                 next();
