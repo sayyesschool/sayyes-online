@@ -6,11 +6,9 @@ import LexemeExamples from './LexemeExamples';
 
 import styles from './Lexeme.module.scss';
 
-export default function LexemeView({ user, lexeme, onChange }) {
+export default function LexemeView({ lexeme, readOnly, onChange }) {
     const [data, setData] = useState({ examples: [], translation: '', definition: '' });
     const { value, image, definition, translation, examples } = lexeme;
-    const isNotCreator = user?.id !== lexeme.createdBy;
-    const readOnly = !onChange || !isNotCreator;
     const fields = [
         { label: 'translation', content: translation, field: 'translation' },
         { label: 'definition', content: definition, field: 'definition' }
@@ -81,7 +79,7 @@ export default function LexemeView({ user, lexeme, onChange }) {
                 <LexemeExamples
                     title="Примеры:"
                     examples={examples}
-                    // additionalExampleIds={data.examples.map(ex => ex.id)}
+                    readOnly={readOnly}
                     onChangeExamples={onChangeExamples}
                 />
             }

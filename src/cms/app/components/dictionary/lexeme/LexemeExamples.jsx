@@ -4,9 +4,8 @@ import { Avatar, Checkbox, Flex, Heading, List } from 'shared/ui-components';
 
 import styles from './LexemeExamples.module.scss';
 
-export default function LexemeExamples({ title, examples, onChangeExamples }) {
+export default function LexemeExamples({ title, examples, readOnly, onChangeExamples }) {
     const [activeExamples, setActiveExamples] = useState([]);
-    const readOnly = !onChangeExamples;
 
     const handleToggleExample = useCallback(example => {
         const hasInExamples = activeExamples.find(ex => ex.id === example.id);

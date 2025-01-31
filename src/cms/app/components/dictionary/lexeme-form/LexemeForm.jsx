@@ -11,8 +11,8 @@ import styles from './LexemeForm.module.scss';
 const initialAdditionalData = { translation: false, definition: false, examples: [] };
 
 export default function LexemeForm({
-    withNotifications,
     lexeme,
+    withNotifications,
     onSubmit,
     ...props
 }) {
@@ -25,7 +25,6 @@ export default function LexemeForm({
         definition: lexeme.definition ?? '',
         examples: lexeme.examples ?? []
     });
-
     const [additionalData, setAdditionalData] = useState(initialAdditionalData);
     const { value, translation, definition, examples } = data;
 
@@ -116,7 +115,7 @@ export default function LexemeForm({
                 const valuesAreDifferent = lexeme[id] !== value;
                 const isNotLexemeValue = id !== 'value';
                 const showNotification =
-                    originalIsNotEmpty && valuesAreDifferent && isNotLexemeValue;
+                    originalIsNotEmpty && valuesAreDifferent && isNotLexemeValue && withNotifications;
 
                 return (
                     <div key={id}>
@@ -128,7 +127,7 @@ export default function LexemeForm({
                             onChange={e => setData(prev => ({ ...prev, [id]: e.target.value }))}
                         />
 
-                        {showNotification && withNotifications &&
+                        {showNotification &&
                             (isSending ? (
                                 <Flex
                                     justifyContent="space-between"
@@ -161,11 +160,11 @@ export default function LexemeForm({
             })}
 
             <LexemeExamples
-                // withNotifications={withNotifications}
                 isSending={isSending}
                 examples={examples}
                 existingExamples={lexeme.examples}
                 additionalExamples={additionalData.examples}
+                withNotifications={withNotifications}
                 setAdditionalExamples={handleAdditionalExamplesChange}
                 onChange={handleExamplesChange}
             />

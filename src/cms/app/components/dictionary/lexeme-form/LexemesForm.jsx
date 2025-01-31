@@ -11,9 +11,9 @@ import LexemeExamples from './LexemeExamples';
 import styles from './LexemesForm.module.scss';
 
 export default function LexemesForm({
-    user,
+    userId,
     lexemes,
-    withNotifications,
+    isPending,
     onSubmit,
     ...props
 }) {
@@ -101,6 +101,8 @@ export default function LexemesForm({
             {...props}
         >
             {lexemes.map(lexeme => {
+                const isEditorLexeme = lexeme?.createdBy === userId;
+
                 const changeAdditionalData = data => {
                     setAdditionalData(prev => ({ ...prev, [lexeme.id]: data }));
                 };
@@ -108,9 +110,8 @@ export default function LexemesForm({
                 return (
                     <Lexeme
                         key={lexeme.id}
-                        user={user}
-                        additionalData={additionalData[lexeme.id]}
                         lexeme={lexeme}
+                        readOnly={!isPending || isEditorLexeme}
                         onChange={changeAdditionalData}
                     />
                 );

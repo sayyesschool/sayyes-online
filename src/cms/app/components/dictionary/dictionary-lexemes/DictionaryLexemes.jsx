@@ -90,13 +90,19 @@ export default function DictionaryLexemes({ dictionary, user }) {
     const renderModalContent = () => {
         switch (modalState.type) {
             case 'view-lexeme':
-                return <Lexeme lexeme={currentLexeme} onClose={handleModalClose} />;
+                return (
+                    <Lexeme
+                        readOnly={true}
+                        lexeme={currentLexeme}
+                        onClose={handleModalClose}
+                    />
+                );
             case 'edit-lexeme':
                 return modalState.lexemeId && (
                     <LexemeForm
                         id="lexeme-edit-form"
-                        withNotifications={withNotifications}
                         lexeme={currentLexeme}
+                        withNotifications={withNotifications}
                         onSubmit={handleUpdateLexeme}
                         onClose={handleModalClose}
                     />
@@ -105,9 +111,9 @@ export default function DictionaryLexemes({ dictionary, user }) {
                 return (
                     <LexemesForm
                         id="lexemes-edit-form"
-                        user={user}
+                        userId={user.id}
                         lexemes={lexemes.filter(lexeme => selectedLexemeIds.includes(lexeme.id))}
-                        withNotifications={withNotifications}
+                        isPending={isPending}
                         onSubmit={handleMergeLexemes}
                         onClose={handleModalClose}
                     />

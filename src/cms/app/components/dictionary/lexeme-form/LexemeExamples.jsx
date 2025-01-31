@@ -20,6 +20,7 @@ export default function LexemeExamples({
     examples,
     existingExamples,
     additionalExamples,
+    withNotifications,
     setAdditionalExamples,
     onChange,
     ...props
@@ -64,12 +65,12 @@ export default function LexemeExamples({
         const existingExample = existingExamples?.find(ex => ex.id === id);
 
         return (
-            !!setAdditionalExamples && !!existingExample &&
+            withNotifications && !!setAdditionalExamples && !!existingExample &&
             (deleted ||
                 text !== existingExample.text ||
                 translation !== existingExample.translation)
         );
-    }, [existingExamples, setAdditionalExamples]);
+    }, [existingExamples, setAdditionalExamples, withNotifications]);
 
     return (
         <Surface className={styles.root} {...props}>
