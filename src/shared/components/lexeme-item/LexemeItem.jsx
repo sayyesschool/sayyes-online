@@ -36,7 +36,7 @@ export default function LexemeItem({
 
     const actionButtons = [
         {
-            icon: 'verified',
+            icon: user.isEditor ? 'verified' : 'edit',
             title: 'Редактировать слово',
             handler: () => onEdit(id)
         },
