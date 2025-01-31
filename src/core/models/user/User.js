@@ -1,15 +1,15 @@
 import { randomBytes } from 'node:crypto';
 
-import bcryptjs from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 import mongoose, { Schema } from 'mongoose';
 
 import Image from '../image';
 
-import { UserPermissions, UserRole } from './constants';
+import { UserDomain, UserPermissions, UserRole } from './constants';
 import Person from './Person';
 
 function hashPassword(password) {
-    return bcryptjs.hashSync(password, bcryptjs.genSaltSync());
+    return bcrypt.hashSync(password, bcrypt.genSaltSync());
 }
 
 function generateToken() {
@@ -22,29 +22,32 @@ export const User = new Schema([Person, {
         trim: true,
         set: hashPassword
     },
-    role: {
-        type: String,
-        enum: Object.values(UserRole)
-    },
     image: { type: Image },
     accounts: {
         type: Map,
         of: String,
         default: {}
     },
+    role: {
+        type: String,
+        enum: Object.values(UserRole),
+        default: UserRole.Learner
+    },
+    active: { type: Boolean, default: false, alias: 'isActive' },
+    blocked: { type: Boolean, default: false, alias: 'isBlocked' },
     domains: {
         type: [String],
-        default: ['lk']
+        enum: Object.keys(UserDomain),
+        default: [UserDomain.LK]
     },
     permissions: {
         type: [String],
         enum: UserPermissions,
-        default: ['all'] // TODO: Remove before production
+        default: []
     },
     timezone: { type: String },
-    blocked: { type: Boolean, default: false, alias: 'isBlocked' },
-    activated: { type: Boolean, default: false, alias: 'isActivated' },
     note: { type: String, trim: true },
+    data: { type: Object, default: {} },
     activationToken: String,
     activationTokenExpiresAt: Date,
     resetPasswordToken: String,
@@ -70,15 +73,11 @@ User.statics.generateToken = generateToken;
 /* Virtuals */
 
 User.virtual('url').get(function() {
-    return this.id ? `/users/${this.id}` : undefined;
+    return this.id ? `/${this.role ?? 'user'}s/${this.id}` : undefined;
 });
 
 User.virtual('isAdmin').get(function() {
     return this.role === UserRole.Admin;
-});
-
-User.virtual('isEditor').get(function() {
-    return this.role === UserRole.Editor;
 });
 
 User.virtual('isLearner').get(function() {
@@ -90,7 +89,7 @@ User.virtual('isManager').get(function() {
 });
 
 User.virtual('isMember').get(function() {
-    return this.role === UserRole.Member;
+    return this.domains?.includes('club');
 });
 
 User.virtual('isTeacher').get(function() {
@@ -102,7 +101,7 @@ User.virtual('isTeacher').get(function() {
 User.methods.validatePassword = function(password) {
     if (!this.password) throw new Error('Необходимо сбросить пароль.');
 
-    return bcryptjs.compareSync(password, this.password);
+    return bcrypt.compareSync(password, this.password);
 };
 
 User.methods.resetPassword = function(password) {
@@ -184,21 +183,13 @@ User.methods.toData = function() {
         role: this.role,
         permissions: this.permissions,
         isLearner: this.isLearner,
-        isEditor: this.isEditor,
-        isTeacher: this.isTeacher
+        isTeacher: this.isTeacher,
+        isMember: this.isMember,
+        isManager: this.isManager
     };
 };
 
 /* Middleware */
-
-// Generate password
-// User.pre('save', function(next) {
-//     if (!this.isModified('password')) return next();
-
-//     this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync());
-
-//     next();
-// });
 
 // Check email
 User.pre('save', function(next) {

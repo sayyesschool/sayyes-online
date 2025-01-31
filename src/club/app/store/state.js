@@ -3,7 +3,7 @@ export default {
         list: null,
         single: null
     },
-    membership: {
+    memberships: {
         list: null,
         single: null
     },

@@ -1,4 +1,4 @@
-import { AgeGroup, Domain, Format, Level, TeacherType } from '../../core/models/common';
+import { AgeGroup, Domain, Format, Level, TeacherType } from 'core/models/common';
 
 export const AgeGroupLabel = {
     [AgeGroup.Adults]: 'Взрослые',

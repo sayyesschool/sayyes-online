@@ -1,5 +1,5 @@
 .root {
-    background-color: #fffcff;
+    margin-top: auto;
 }
 
 .container {
@@ -16,10 +16,14 @@
 }
 
 .logo {
-
+    display: flex;
+    height: 48px;
 }
 
 .links {
     display: flex;
     gap: 16px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }

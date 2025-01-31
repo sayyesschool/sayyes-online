@@ -9,6 +9,8 @@ const Flex = forwardRef(({
     column,
     row,
     gap,
+    align,
+    justify,
     wrap,
 
     className,
@@ -24,6 +26,8 @@ const Flex = forwardRef(({
             ref={ref}
             className={classNames}
             direction={column ? 'column' : row ? 'row' : dir}
+            alignItems={align}
+            justifyContent={justify}
             useFlexGap
             {...props}
         />

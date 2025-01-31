@@ -1,9 +1,12 @@
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Route, Switch } from 'react-router-dom';
 
 import AppContent from 'shared/components/app-content';
 import AppHeader from 'shared/components/app-header';
 import AppNav from 'shared/components/app-nav';
 import AppNotification from 'shared/components/app-notification';
+import AppShell from 'shared/components/app-shell';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import { useUser } from 'shared/hooks/user';
 
@@ -27,48 +30,50 @@ export default function App() {
     if (!user) return <LoadingIndicator fullscreen />;
 
     return (
-        <div className={styles.root}>
-            <AppHeader user={user}>
-                <AppNav
-                    items={navItems}
-                    orientation="horizontal"
-                    invertedColors
-                />
-            </AppHeader>
-
-            <AppContent className={styles.content}>
-                <Switch>
-                    <Route
-                        path="/"
-                        component={PageHomeByRole[user.role]}
-                        exact
+        <DndProvider backend={HTML5Backend}>
+            <AppShell className={styles.root}>
+                <AppHeader user={user}>
+                    <AppNav
+                        items={navItems}
+                        orientation="horizontal"
+                        invertedColors
                     />
+                </AppHeader>
 
-                    <Route
-                        path="/assignments"
-                        component={Assignments}
-                    />
+                <AppContent>
+                    <Switch>
+                        <Route
+                            path="/"
+                            component={PageHomeByRole[user.role]}
+                            exact
+                        />
 
-                    <Route
-                        path="/courses"
-                        component={Courses}
-                    />
+                        <Route
+                            path="/assignments"
+                            component={Assignments}
+                        />
 
-                    <Route
-                        path="/enrollments"
-                        component={Enrollments}
-                    />
+                        <Route
+                            path="/courses"
+                            component={Courses}
+                        />
 
-                    <Route
-                        path="/vocabulary"
-                        component={Vocabularies}
-                    />
+                        <Route
+                            path="/enrollments"
+                            component={Enrollments}
+                        />
 
-                    {/* <Route path="/materials" component={Materials} /> */}
-                </Switch>
-            </AppContent>
+                        <Route
+                            path="/vocabulary"
+                            component={Vocabularies}
+                        />
 
-            <AppNotification />
-        </div >
+                        {/* <Route path="/materials" component={Materials} /> */}
+                    </Switch>
+                </AppContent>
+
+                <AppNotification />
+            </AppShell>
+        </DndProvider>
     );
 }

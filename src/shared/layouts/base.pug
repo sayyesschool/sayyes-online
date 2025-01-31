@@ -8,17 +8,24 @@ html(lang="ru")
         meta(charset="utf-8")
         meta(http-equiv="X-UA-Compatible" content="IE=edge")
         meta(name="viewport" content="width=device-width, initial-scale=1")
-        meta(name="version" content=VERSION)
+        meta(name="version" content=APP_VERSION)
         meta(name="theme-color" content="#6c167b")
+
+        block meta
+
         if description
             meta(name="description" content=description)
         if keywords
             meta(name="keywords" content=keywords)
+
+        if noIndex
+            meta(name="robots" content="noindex, nofollow")
         
         if title
-            title= title + ' | Say Yes'
+            title= title + ` | ${titleBase || 'Say Yes'}`
         else
-            title Say Yes
+            title= `${titleBase || 'Say Yes'}`
+        
         link(rel="preconnect" href="https://fonts.gstatic.com")
         link(rel="icon" href="https://static.sayes.ru/images/favicons/favicon-192x192.png")
         link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL@20,300,0..1")

@@ -3,6 +3,7 @@ import { model } from 'mongoose';
 import Assignment from './assignment';
 import Comment from './comment';
 import Course from './course';
+import Data from './data';
 import Enrollment from './enrollment';
 import Exercise from './exercise';
 import Lesson from './lesson';
@@ -26,6 +27,7 @@ export default () => ({
     Assignment: model('Assignment', Assignment),
     Comment: model('Comment', Comment),
     Course: model('Course', Course),
+    Data: model('Data', Data, 'data'),
     Enrollment: model('Enrollment', Enrollment),
     Exercise: model('Exercise', Exercise),
     Lexeme: model('Lexeme', Lexeme),

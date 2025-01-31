@@ -41,7 +41,7 @@ export default function MeetingsTable({ meetings, onView, onStart }) {
                         <Table.Cell>
                             <Flex gap="xs">
                                 <Text
-                                    content={meeting.registrations.filter(r => r.status === 'approved').length}
+                                    content={meeting.registrations?.filter(r => r.status === 'approved').length}
                                     color={StatusColor['approved']}
                                     variant="soft"
                                     title={StatusLabel['approved']}
@@ -50,7 +50,7 @@ export default function MeetingsTable({ meetings, onView, onStart }) {
                                 {' · '}
 
                                 <Text
-                                    content={meeting.registrations.filter(r => r.status === 'attended').length}
+                                    content={meeting.registrations?.filter(r => r.status === 'attended').length}
                                     color={StatusColor['attended']}
                                     variant="soft"
                                     title={StatusLabel['attended']}
@@ -59,7 +59,7 @@ export default function MeetingsTable({ meetings, onView, onStart }) {
                                 {' · '}
 
                                 <Text
-                                    content={meeting.registrations.filter(r => r.status === 'missed').length}
+                                    content={meeting.registrations?.filter(r => r.status === 'missed').length}
                                     color={StatusColor['missed']}
                                     variant="soft"
                                     title={StatusLabel['missed']}

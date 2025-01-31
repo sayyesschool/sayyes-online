@@ -1,0 +1,22 @@
+.root {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.indicator {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    line-height: 1;
+    border-radius: 50%;
+    font-size: 10px;
+    background-color: var(--joy-palette-neutral-200);
+
+    &.active {
+        background-color: var(--joy-palette-primary-200);
+    }
+}

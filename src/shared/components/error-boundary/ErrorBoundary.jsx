@@ -6,9 +6,9 @@ import {
 } from '@sentry/react';
 
 import ErrorState from 'shared/components/error-state';
-import { APP_ENV, SENTRY_DSN } from 'shared/constants';
+import { NODE_ENV, SENTRY_DSN } from 'shared/constants';
 
-if (APP_ENV === 'production') {
+if (NODE_ENV === 'production') {
     init({
         dsn: SENTRY_DSN,
         integrations: [new BrowserTracing(), new Replay()],

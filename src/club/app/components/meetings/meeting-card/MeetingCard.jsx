@@ -1,6 +1,4 @@
-import React from 'react';
-
-import moment from 'moment';
+import { useCallback, useState } from 'react';
 
 import {
     Alert,
@@ -14,6 +12,7 @@ import {
     Image,
     Text
 } from 'shared/components/ui';
+import datetime from 'shared/libs/datetime';
 import cn from 'shared/utils/classnames';
 
 import styles from './MeetingCard.module.scss';
@@ -26,8 +25,16 @@ export default function MeetingCard({
     onRegister,
     ...props
 }) {
-    const now = moment().utc();
-    const startsIn = moment(meeting.date).diff(now, 'minutes');
+    const now = datetime().utc();
+    const startsIn = datetime(meeting.date).diff(now, 'minutes');
+
+    const [isLoading, setLoading] = useState(false);
+
+    const handleRegister = useCallback(() => {
+        setLoading(true);
+
+        return onRegister?.(meeting).finally(() => setLoading(false));
+    }, [meeting, onRegister]);
 
     return (
         <Card
@@ -37,7 +44,7 @@ export default function MeetingCard({
             sx={{ boxShadow: 'lg' }}
             {...props}
         >
-            <Card.Overflow sx={orientation === 'horizontal' ? { width: '25%' } : undefined}>
+            {/* <Card.Overflow sx={orientation === 'horizontal' ? { width: '25%' } : undefined}>
                 <Image
                     className={styles.image}
                     src={meeting.imageUrl}
@@ -46,7 +53,7 @@ export default function MeetingCard({
                     alt=""
                     sx={orientation === 'horizontal' ? { width: '100%' } : undefined}
                 />
-            </Card.Overflow>
+            </Card.Overflow> */}
 
             <Card.Content>
                 {meeting.isPending &&
@@ -65,7 +72,7 @@ export default function MeetingCard({
 
                         <Text
                             content={`${meeting.online ? 'Онлайн' : 'Офлайн'} · ${meeting.datetime}`}
-                            type="body-md"
+                            type="body-sm"
                         />
                     </Flex>
 
@@ -115,7 +122,9 @@ export default function MeetingCard({
                         <Button
                             content={meeting.isRegistered ? 'Отменить' : 'Записаться'}
                             variant={meeting.isRegistered ? 'outlined' : 'solid'}
-                            onClick={() => onRegister(meeting)}
+                            disabled={isLoading}
+                            loading={isLoading}
+                            onClick={handleRegister}
                         />
                     }
 

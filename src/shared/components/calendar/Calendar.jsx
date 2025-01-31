@@ -1,8 +1,8 @@
 import classnames from 'shared/utils/classnames';
 
 import MonthView from './MonthView';
-import WeekView from './WeekView';
 import WeekTimeView from './WeekTimeView';
+import WeekView from './WeekView';
 
 const ComponentByView = {
     'week': WeekView,
@@ -37,4 +37,4 @@ Calendar.WeekView = WeekView;
 Calendar.WeekTimeView = WeekTimeView;
 Calendar.MonthView = MonthView;
 
-export { Calendar as default, WeekView, WeekTimeView, MonthView };
+export { Calendar as default, MonthView, WeekTimeView, WeekView };

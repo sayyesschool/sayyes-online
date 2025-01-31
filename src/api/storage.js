@@ -4,7 +4,10 @@ import { Router } from 'express';
 import multer from 'multer';
 import { v4 as uuid } from 'uuid';
 
-export default ({ config: { STORAGE_URL }, services: { Storage } }) => {
+export default ({
+    config: { STORAGE_URL },
+    services: { Storage }
+}) => {
     const router = Router();
     const upload = multer();
 
@@ -14,7 +17,6 @@ export default ({ config: { STORAGE_URL }, services: { Storage } }) => {
 
         const file = req.file;
         const path = getNormalizedPath(STORAGE_URL, req.body.path, file);
-
         const response = await Storage.put(path, file.buffer);
 
         res.json({
@@ -46,18 +48,6 @@ export default ({ config: { STORAGE_URL }, services: { Storage } }) => {
 
 function isFilename(path) {
     return basename(path).includes('.');
-}
-
-const extensions = {
-    'image/png': 'png',
-    'image/jpeg': 'jpeg',
-    'image/jpg': 'jpg'
-};
-
-function getFilename(value, type) {
-    const [name, extension = extensions[type]] = value.split('.');
-
-    return `${name}.${extension}`;
 }
 
 function getUniqueFilename(file) {

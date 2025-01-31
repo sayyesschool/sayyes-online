@@ -1,5 +1,5 @@
 import StatusIcon from 'shared/components/status-icon';
-import { StatusLabel, StatusColor } from 'shared/data/status';
+import { StatusColor, StatusLabel } from 'shared/data/status';
 import { Chip } from 'shared/ui-components';
 import classnames from 'shared/utils/classnames';
 

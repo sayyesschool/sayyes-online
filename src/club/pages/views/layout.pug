@@ -1,0 +1,47 @@
+extends /shared/layouts/base
+
+include /shared/mixins/header
+include /shared/mixins/modal
+include /shared/mixins/section
+include /shared/mixins/slider
+include /shared/mixins/tabs
+include /shared/mixins/yandex-metrika
+
+block meta
+    meta(name="yandex-verification" content="93da5fff1ab6b1bc")
+
+append head
+    link(rel="preconnect" href="https://fonts.googleapis.com")
+    link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=Shantell+Sans:ital,wght@1,300..400&display=swap")
+    link(rel="stylesheet" href=`${CDN_URL}/styles/shared.css?${APP_VERSION}`)
+
+    style
+        include:scss ../styles/shared.scss
+
+block body
+    block header
+        +header()(link='/' logo='speaking-club_purple.svg' redirect=CLUB_URL blurred)
+
+    main.main
+        block main
+
+    block footer
+        include ./includes/footer
+
+    script(src=`${CDN_URL}/scripts/shared.js`)
+
+    if NODE_ENV === 'production'
+        +yandex-metrika(YANDEX_METRIKA_ID_CLUB)
+        script(src="https://js.sentry-cdn.com/b2cb9d2c881d7fc4948cece0d3dcafdb.min.js" crossorigin="anonymous")
+        script.
+            Sentry.onLoad(function() {
+                Sentry.init({
+                    // Tracing
+                    tracesSampleRate: 1.0, // Capture 100% of the transactions
+                    // Session Replay
+                    replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
+                    replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
+                });
+            });
+    
+    block scripts

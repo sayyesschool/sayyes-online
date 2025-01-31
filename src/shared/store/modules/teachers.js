@@ -41,6 +41,15 @@ export const deleteTeacher = createAction('DELETE_TEACHER', (id, data) => ({
     }
 }));
 
+export const actions = {
+    getTeachers,
+    getTeacher,
+    unsetTeacher,
+    createTeacher,
+    updateTeacher,
+    deleteTeacher
+};
+
 export default combineReducers({
     list: createReducer(null, {
         [getTeachers]: (state, action) => action.data,

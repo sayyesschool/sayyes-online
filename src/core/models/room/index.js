@@ -1,1 +1,1 @@
-export { default, Room } from './Room';
+export { default, Room as RoomSchema } from './Room';

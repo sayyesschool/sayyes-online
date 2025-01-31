@@ -1,6 +1,6 @@
 import expect from 'expect';
 
-import { debounce, delay, throttle } from '@/shared/utils/fn';
+import { debounce, delay, throttle } from 'shared/utils/fn';
 
 describe('debounce', () => {
     it('should work', async () => {

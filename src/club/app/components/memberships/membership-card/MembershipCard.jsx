@@ -1,21 +1,20 @@
-import moment from 'moment';
-
-import { Card, Flex, Heading, Icon, Step, Stepper, Text } from 'shared/components/ui';
+import { Card, Chip, Flex, Heading, Icon, Step, Stepper, Text } from 'shared/components/ui';
 import { StatusColor, StatusIcon, StatusLabel } from 'shared/data/registration';
+import datetime from 'shared/libs/datetime';
 import { getWordEnding } from 'shared/utils/format';
 
 import styles from './MembershipCard.module.scss';
 
 export default function MembershipCard({ membership, ...props }) {
     const heading = `${membership.limit} ${getWordEnding('встреч', membership.limit, ['а', 'и', ''])}`;
-    const durationInWeeks = moment(membership.expiresAt).diff(membership.purchasedAt, 'weeks');
+    const durationInWeeks = datetime(membership.endDate).diff(membership.startDate, 'weeks');
     const durationUnit = durationInWeeks >= 4 ? 'months' : 'weeks';
-    const durationValue = Math.round(moment(membership.expiresAt).diff(membership.purchasedAt, durationUnit, durationUnit));
+    const durationValue = Math.round(datetime(membership.endDate).diff(membership.startDate, durationUnit, durationUnit));
     const durationPeriod = `${durationValue} ${durationUnit === 'months' ?
         getWordEnding('месяц', durationValue, ['', 'а', 'ев']) :
         getWordEnding('недел', durationValue, ['я', 'и', 'ь'])
     }`;
-    const durationFromTo = `${moment(membership.purchasedAt).format('DD.MM.YYYY')} - ${moment(membership.expiresAt).format('DD.MM.YYYY')}`;
+    const durationFromTo = `${datetime(membership.startDate).format('DD.MM.YYYY')} - ${datetime(membership.endDate).format('DD.MM.YYYY')}`;
 
     return (
         <Card
@@ -28,7 +27,16 @@ export default function MembershipCard({ membership, ...props }) {
                 gap="large"
             >
                 <Flex dir="column" flexShrink="0">
-                    <Heading content={heading} type="h3" />
+                    <Heading
+                        content={heading} type="h3"
+                        end={!membership.isValid ?
+                            <Chip content="Закончился" color="danger" />
+                            : membership.isExpiring ?
+                                <Chip content="Заканчивается" color="warning" />
+                                : null
+                        }
+                    />
+
                     <Text content={durationPeriod} type="body-md" />
                     <Text content={durationFromTo} type="body-sm" />
                 </Flex>

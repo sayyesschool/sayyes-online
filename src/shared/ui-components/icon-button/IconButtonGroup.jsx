@@ -1,6 +1,7 @@
-import { forwardRef } from 'react';
-import classnames from 'classnames';
+import { Children, cloneElement, forwardRef } from 'react';
+
 import Box from '@mui/system/Box';
+import classnames from 'classnames';
 
 import IconButton from './IconButton';
 
@@ -21,12 +22,19 @@ const IconButtonGroup = forwardRef(({
         <Box
             ref={ref}
             className={classNames}
-            display="inline-flex"
-            gap=".25rem"
-            justifyContent={align}
+            sx={{
+                display: 'inline-flex',
+                gap: '.25rem',
+                justifyContent: align,
+                verticalAlign: 'middle'
+            }}
             {...props}
         >
-            {buttons?.map(button =>
+            {Children.map(children, child =>
+                child && cloneElement(child, { color, size, variant, ...child.props })
+            )}
+
+            {buttons?.filter(Boolean).map(button =>
                 <IconButton
                     key={button.key}
                     color={color}
@@ -35,8 +43,6 @@ const IconButtonGroup = forwardRef(({
                     {...button}
                 />
             )}
-
-            {children}
         </Box>
     );
 });

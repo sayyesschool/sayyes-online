@@ -12,6 +12,10 @@ export function pick(object, keys = []) {
     return toObject(map.entries());
 }
 
+export function stripEmptyValues(object) {
+    return pick(object, Object.keys(object).filter(key => object[key] != null && object[key] !== ''));
+}
+
 export function pickValues(object, keys = []) {
     return toArray(pick(object, keys));
 }

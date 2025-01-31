@@ -1,16 +1,16 @@
-import Account from './account';
-import Auth from './auth';
-import Checkout from './checkout';
+import Account from './Account';
+import Auth from './Auth';
+import Checkout from './Checkout';
 import Club from './Club';
-import File from './file';
-import Mail from './mail';
-import Newsletter from './newsletter';
-import Schedule from './schedule';
-import Storage from './storage';
+import File from './File';
+import Mail from './Mail';
+import Newsletter from './Newsletter';
+import Schedule from './Schedule';
+import Storage from './Storage';
 
-export default (config, lib, models) => {
-    const mail = Mail(lib.mailjet);
-    const newsletter = Newsletter(lib.mailjet);
+export default (config, clients, models) => {
+    const mail = Mail(config, clients.mailjet);
+    const newsletter = Newsletter(clients.mailjet);
     const checkout = Checkout({ config, models });
     const file = File();
     const storage = new Storage({
@@ -41,7 +41,8 @@ export default (config, lib, models) => {
     });
 
     const club = Club({
-        lib,
+        config,
+        clients,
         models,
         services: {
             Auth: auth,

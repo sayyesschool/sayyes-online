@@ -1,7 +1,7 @@
 export function noop() { }
 
 /**
- * The `debounce` function delays the execution of a function until a certain amount of time has passed since it was last called.
+ * Debounce ensures that a function is only executed once after a specified period of inactivity.
  * @param {Function} fn - The function to debounce.
  * @param {number} delay - The number of milliseconds to wait before the function is called.
  * @returns {Function} - A debounced version of the input function, with a `cancel` method to cancel delayed function calls.
@@ -21,7 +21,7 @@ export function debounce(fn, delay = 0) {
 }
 
 /**
- * Throttles the execution of a function, ensuring it's not called more often than the specified delay.
+ * Throttle ensures that a function is executed at most once in a specified period.
  * @param {Function} fn - The function to throttle.
  * @param {number} delay - The number of milliseconds to wait before the next call.
  * @returns {Function} - A throttled version of the input function, with a `cancel` method to cancel delayed function calls.

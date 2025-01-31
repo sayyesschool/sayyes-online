@@ -29,5 +29,9 @@ export function spyOn(obj, method) {
 }
 
 export function toJSON(arg) {
+    if (Array.isArray(arg)) {
+        return arg.map(toJSON);
+    }
+
     return JSON.parse(JSON.stringify(arg?.toJSON ? arg.toJSON() : arg));
 }

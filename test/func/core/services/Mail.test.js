@@ -1,11 +1,13 @@
 import expect from 'expect';
 
-import MailClient from '@/core/libs/mailjet.js';
-import MailService from '@/core/services/mail.js';
+import MailClient from 'core/clients/mailjet';
+import MailService from 'core/services/Mail';
+
+import { config } from 'test/func/context';
 
 const mail = MailService(MailClient({
-    apiKey: global.$context.config.MAILJET_API_KEY,
-    apiSecret: global.$context.config.MAILJET_API_SECRET
+    apiKey: config.MAILJET_API_KEY,
+    apiSecret: config.MAILJET_API_SECRET
 }));
 
 describe('Mail Service', () => {

@@ -1,103 +1,158 @@
+import { toCSV } from 'shared/libs/csv';
+import datetime from 'shared/libs/datetime';
+
 export default ({
     models: { Request, Learner }
 }) => ({
-    get: (req, res, next) => {
-        Request.find({ status: { $in: ['new', 'processing'] }, ...req.query })
+    async get(req, res) {
+        const query = getQuery(req);
+
+        const requests = await Request.find(query)
             .populate('learner', 'firstname lastname')
             .populate('manager', 'firstname lastname')
-            .sort({ createdAt: 1 })
-            .then(requests => {
-                res.json({
-                    ok: true,
-                    data: requests
-                });
-            })
-            .catch(next);
+            .sort({ createdAt: -1 });
+
+        res.json({
+            ok: true,
+            data: requests
+        });
     },
 
-    getNew: (req, res, next) => {
-        const minAgo = new Date(Date.now() - 60000);
+    async getNew(req, res) {
+        const minAgo = datetime().subtract(1, 'minute').toDate();
 
-        Request.find({
-            status: 'new',
-            createdAt: {
-                $gt: minAgo
-            }
+        const requests = await Request.find({
+            createdAt: { $gt: minAgo }
         })
-            .sort({ createdAt: 1 })
-            .then(requests => {
-                res.json({
-                    ok: true,
-                    message: requests.length > 0 ? (requests.length === 1 ? 'Новая заявка' : 'Новые заявки') : undefined,
-                    data: requests
-                });
-            })
-            .catch(next);
-    },
-
-    getOne: (req, res, next) => {
-        Request.findById(req.params.requestId)
             .populate('learner', 'firstname lastname')
             .populate('manager', 'firstname lastname')
-            .then(request => {
-                return Learner.findOne({
-                    phone: request.contact.phone
-                }).then(learner => {
-                    return [request, learner];
-                });
-            })
-            .then(([request, learner]) => {
-                const data = request.toJSON({ getters: true, virtuals: true });
+            .sort({ createdAt: -1 });
 
-                data.existinglearner = learner;
-
-                res.json({
-                    ok: true,
-                    data
-                });
-            })
-            .catch(next);
+        res.json({
+            ok: true,
+            message: requests.length > 0 ? (requests.length === 1 ? 'Новая заявка' : 'Новые заявки') : undefined,
+            data: requests
+        });
     },
 
-    create: (req, res, next) => {
-        Request.create(req.body)
+    async getOne(req, res) {
+        const request = await Request.findById(req.params.requestId)
             .populate('learner', 'firstname lastname')
-            .populate('manager', 'firstname lastname')
-            .then(request => {
-                res.json({
-                    ok: true,
-                    message: 'Заявка создана',
-                    data: request
-                });
-            })
-            .catch(next);
+            .populate('manager', 'firstname lastname');
+
+        const learner = await Learner.findOne({
+            phone: request.contact.phone
+        });
+
+        const data = request.toJSON({ getters: true, virtuals: true });
+
+        data.existingLearner = learner;
+
+        res.json({
+            ok: true,
+            data
+        });
     },
 
-    update: (req, res, next) => {
-        Request.findByIdAndUpdate(req.params.requestId, req.body, { new: true })
+    async create(req, res, next) {
+        const request = await Request.create(req.body)
             .populate('learner', 'firstname lastname')
-            .populate('manager', 'firstname lastname')
-            .then(request => {
-                res.json({
-                    ok: true,
-                    message: 'Заявка изменена',
-                    data: request
-                });
-            })
-            .catch(next);
+            .populate('manager', 'firstname lastname');
+
+        res.json({
+            ok: true,
+            message: 'Заявка создана',
+            data: request
+        });
     },
 
-    delete: (req, res, next) => {
-        Request.findByIdAndDelete(req.params.requestId)
-            .then(() => {
-                res.json({
-                    ok: true,
-                    message: 'Заявка удалена',
-                    data: {
-                        requestId: req.params.requestId
-                    }
-                });
-            })
-            .catch(next);
+    async update(req, res) {
+        const request = await Request.findByIdAndUpdate(
+            req.params.requestId,
+            req.body,
+            { new: true }
+        )
+            .populate('learner', 'firstname lastname')
+            .populate('manager', 'firstname lastname');
+
+        res.json({
+            ok: true,
+            message: 'Заявка изменена',
+            data: request
+        });
+    },
+
+    async delete(req, res) {
+        const request = await Request.findByIdAndDelete(req.params.requestId);
+
+        res.json({
+            ok: true,
+            message: 'Заявка удалена',
+            data: {
+                requestId: request.id
+            }
+        });
+    },
+
+    async export(req, res) {
+        const query = getQuery(req);
+
+        const requests = await Request.find(query).sort({ createdAt: -1 });
+
+        const data = requests.map(request => ({
+            'Тип': request.typeLabel,
+            'Статус': request.statusLabel,
+            'Дата': request.dateTimeString,
+            'Имя': request.contact?.name,
+            'Email': request.contact?.email,
+            'Телефон': request.contact?.phone,
+            'Канал': request.channelLabel,
+            'Источник': request.sourceLabel,
+            'Уровень': request.data?.level,
+            'Цель': request.data?.goal,
+            'Описание': request.description,
+            'UTM Source': request.utm?.source,
+            'UTM Medium': request.utm?.medium,
+            'UTM Campaign': request.utm?.campaign,
+            'UTM Term': request.utm?.term
+        }));
+
+        const csv = toCSV(data);
+
+        res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+        res.setHeader('Content-Disposition', `attachment; filename="requests-${datetime().format('YYYY-MM-DD_HH-mm')}.csv"`);
+
+        res.send('\uFEFF' + csv);
     }
 });
+
+function getQuery(req) {
+    const query = req.query;
+
+    if (query.query) {
+        const regex = new RegExp(query.query, 'i');
+
+        return {
+            $or: [
+                { 'contact.name': regex },
+                { 'contact.email': regex },
+                { 'contact.phone': regex }
+            ]
+        };
+    } else {
+        if (query.from) {
+            query.createdAt = { $gte: datetime(query.from).utc().startOf('day').toDate() };
+            delete query.from;
+        }
+
+        if (query.to) {
+            query.createdAt = {
+                ...query.createdAt,
+                $lt: datetime(query.to).utc().endOf('day').toDate()
+            };
+            delete query.to;
+        }
+    }
+
+    return query;
+}

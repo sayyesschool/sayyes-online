@@ -5,6 +5,7 @@ export default function Icon({
     size = 'medium',
     filled,
 
+    as: Tag = 'i',
     children = name,
     className,
     ...props
@@ -15,6 +16,6 @@ export default function Icon({
     });
 
     return (
-        <i className={classNames} {...props}>{children}</i>
+        <Tag className={classNames} {...props}>{children}</Tag>
     );
 }

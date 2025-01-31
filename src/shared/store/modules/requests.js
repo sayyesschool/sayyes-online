@@ -1,9 +1,10 @@
 import { combineReducers, createAction, createReducer } from 'shared/store/helpers';
 
-export const getRequests = createAction('GET_REQUESTS', () => ({
+export const getRequests = createAction('GET_REQUESTS', query => ({
     request: {
         method: 'get',
-        path: 'requests'
+        path: 'requests',
+        query
     }
 }));
 

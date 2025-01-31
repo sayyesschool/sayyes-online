@@ -1,19 +1,19 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
 
 import { getWeekData, getWeekLabel } from 'shared/libs/calendar';
+import datetime from 'shared/libs/datetime';
 import { Button, Icon, Label, Text } from 'shared/ui-components';
 import classnames from 'shared/utils/classnames';
 
 WeekView.defaultProps = {
-    weekdayNames: Array.of(...moment.weekdaysMin().slice(1), moment.weekdaysMin()[0]),
+    weekdayNames: Array.of(...datetime.weekdaysMin().slice(1), datetime.weekdaysMin()[0]),
     onChange: Function.prototype
 };
 
 export default function WeekView({ eventsByDate }) {
     const todayRef = useRef(new Date());
-    const dateRef = useRef(moment());
+    const dateRef = useRef(datetime());
 
     const [week, setWeek] = useState(dateRef.current.month());
 
@@ -63,7 +63,10 @@ export default function WeekView({ eventsByDate }) {
                             'Calendar__day--today': date.isSame(todayRef.current) && 'today'
                         })}
                     >
-                        <Text className="Calendar__day-name" as="div" type="overline">{date.format('dd')}, {date.date()}</Text>
+                        <Text
+                            className="Calendar__day-name" as="div"
+                            type="overline"
+                        >{date.format('dd')}, {date.date()}</Text>
 
                         <div className="Calendar__day-events">
                             {eventsByDate.has(date.toDate().toLocaleDateString()) &&
@@ -86,7 +89,7 @@ function CalendarEvent({ event }) {
             to={event.url}
             icon={<Icon>{event.icon}</Icon>}
             iconPosition="start"
-            content={moment(event.date).format('HH:mm')}
+            content={datetime(event.date).format('HH:mm')}
             title={event.title}
         />
     );

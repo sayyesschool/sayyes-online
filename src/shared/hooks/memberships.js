@@ -12,7 +12,7 @@ export function useMemberships(query) {
         if (!memberships) {
             actions.getMemberships(query);
         }
-    }, []);
+    }, [memberships, query, actions]);
 
     return [memberships, actions];
 }

@@ -1,1 +1,1 @@
-export { default } from './Membership';
+export { default, Membership as MembershipSchema } from './Membership';

@@ -1,20 +1,24 @@
 import Ftp from 'ftp-deploy';
 
-import credentials from './credentials.js';
-
-const stand = process.argv[2];
 const include = process.argv[3];
+const {
+    FTP_HOST,
+    FTP_USER,
+    FTP_PASSWORD
+} = process.env;
 
-const config = Object.assign(credentials[stand], {
+const config = {
+    host: FTP_HOST,
+    user: FTP_USER,
+    password: FTP_PASSWORD,
     port: 21,
     localRoot: process.cwd(),
     remoteRoot: '/',
     include: [include ? `public/**/${include}` : 'public/**/*'],
     deleteRemote: false,
-    // Passive mode is forced (EPSV command is not sent)
-    forcePasv: true,
+    forcePasv: true, // Passive mode is forced (EPSV command is not sent)
     sftp: false
-});
+};
 
 const ftp = new Ftp();
 

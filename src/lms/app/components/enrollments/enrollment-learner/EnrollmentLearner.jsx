@@ -1,11 +1,10 @@
 import { useContext } from 'react';
 
-import moment from 'moment';
-
 import DetailsList from 'shared/components/details-list';
 import PageSection from 'shared/components/page-section';
 import DataContext from 'shared/contexts/data';
 import { useBoolean } from 'shared/hooks/state';
+import datetime from 'shared/libs/datetime';
 import { Avatar, IconButton, List, MenuButton } from 'shared/ui-components';
 
 export default function EnrollmentLearner({ enrollment: { learner } }) {
@@ -95,7 +94,7 @@ export default function EnrollmentLearner({ enrollment: { learner } }) {
                                 key: 'dob',
                                 icon: 'cake',
                                 header: 'Дата рождения',
-                                content: learner.dob ? moment(learner.dob).format('DD.MM.YYYY') : '[Не указана]'
+                                content: learner.dob ? datetime(learner.dob).format('DD.MM.YYYY') : '[Не указана]'
                             },
                             {
                                 key: 'timezone',

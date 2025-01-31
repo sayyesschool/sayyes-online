@@ -1,3 +1,5 @@
+import dt from 'shared/libs/datetime';
+
 export default ({
     models: { Lesson }
 }) => ({
@@ -5,31 +7,34 @@ export default ({
         const query = {};
 
         if (req.query.date) {
-            const from = new Date(req.query.date);
-            const to = new Date(req.query.date);
-
-            to.setDate(from.getDate() + 1);
+            const from = dt(req.query.date).utc().startOf('day').toDate();
+            const to = dt(from).utc().endOf('day').toDate();
 
             query.date = {
                 $gte: from,
                 $lt: to
             };
+        } else {
+            query.date = {
+                $gte: dt().utc().subtract(7, 'days').toDate(),
+                $lt: dt().utc().add(7, 'days').toDate()
+            };
         }
 
         if (req.query.from) {
             query.date = query.date || {};
-            query.date.$gt = new Date(req.query.from);
+            query.date.$gte = dt(req.query.from).utc().startOf('day').toDate();
         }
 
         if (req.query.to) {
             query.date = query.date || {};
-            query.date.$lt = new Date(req.query.to);
+            query.date.$lt = dt(req.query.to).utc().endOf('day').toDate();
         }
 
         let lessons = await Lesson.find(query)
             .populate('learner', 'firstname lastname email')
             .populate('teacher', 'firstname lastname email')
-            .populate('room', 'title')
+            .populate('room', 'name')
             .sort({ date: -1 })
             .limit(100);
 
@@ -53,7 +58,7 @@ export default ({
         const lessons = await Lesson.findTodays()
             .populate('learner', 'firstname lastname email')
             .populate('teacher', 'firstname lastname email')
-            .populate('room', 'title');
+            .populate('room', 'name');
 
         res.json({
             ok: true,

@@ -1,20 +1,51 @@
 import { CronJob } from 'cron';
-import moment from 'moment';
+
+import datetime from 'shared/libs/datetime';
 
 import config from './config';
 import core from './core';
+import db from './db';
 
 const { services: { Club } } = core(config);
 
 new CronJob({
-    cronTime: '0 0 9-21 * * *',
+    cronTime: '0 */30 * * * *', // every 30 minutes
+    start: true,
     onTick: async () => {
-        const now = moment().utc().minutes(0).seconds(0).milliseconds(0);
-        const inADay = now.add(1, 'day');
-        const inAnHour = now.add(1, 'hour');
+        try {
+            console.log('Cron job running...');
 
-        Club.sendMeetingsReminders(inADay, { templateId: 1348661 });
-        Club.sendMeetingsReminders(inAnHour, { templateId: 1348680 });
-    },
-    start: true
+            await db.connect(config.DB_CONNECTION_STRING);
+
+            await Club.sendMeetingsReminders();
+            await Club.endMeetings();
+
+            await db.disconnect();
+
+            console.log('Cron job finished...');
+        } catch (error) {
+            console.error('Cron job failed:', error);
+        }
+    }
+});
+
+new CronJob({
+    cronTime: '0 0 0 * * *', // every day at midnight
+    start: true,
+    onTick: async () => {
+        try {
+            console.log('Cron job running...');
+
+            await db.connect(config.DB_CONNECTION_STRING);
+
+            await Club.sendMembershipsReminders();
+            await Club.endMemberships();
+
+            await db.disconnect();
+
+            console.log('Cron job finished...');
+        } catch (error) {
+            console.error('Cron job failed:', error);
+        }
+    }
 });

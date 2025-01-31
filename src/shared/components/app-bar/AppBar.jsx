@@ -3,6 +3,9 @@ import { useRouteMatch } from 'react-router-dom';
 import NavBar from 'shared/components/nav-bar';
 import UserMenu from 'shared/components/user-menu';
 import { AUTH_URL, LK_URL } from 'shared/constants';
+import cn from 'shared/utils/classnames';
+
+import styles from './AppBar.module.scss';
 
 export default function AppBar({
     user,
@@ -12,8 +15,8 @@ export default function AppBar({
     const match = useRouteMatch('/:path?');
 
     return (
-        <div className="AppBar" {...props}>
-            <div className="AppBar__logo">
+        <div className={cn('AppBar', styles.root)} {...props}>
+            <div className={styles.logo}>
                 <img src="https://static.sayes.ru/images/logos/sayyes-purple.png" />
             </div>
 
@@ -30,6 +33,7 @@ export default function AppBar({
             />
 
             <UserMenu
+                className={styles.menu}
                 user={user}
                 items={[
                     {

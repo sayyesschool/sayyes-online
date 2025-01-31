@@ -1,3 +1,4 @@
+import { LOGO_URL } from 'shared/constants';
 import { Flex, Link, Text } from 'shared/ui-components';
 
 import styles from './AppFooter.module.scss';
@@ -9,12 +10,12 @@ const links = [
     { href: '/rules', text: 'Правила использования' }
 ];
 
-export default function AppFooter() {
+export default function AppFooter({ logo, logoUrl }) {
     return (
         <footer className={styles.root}>
             <div className={styles.container}>
-                <a className="logo" href="/">
-                    <img src="https://sayes.ru/wp-content/themes/sayyes/static/images/logo-purple.svg" alt="Логотип SAY YES" />
+                <a className={styles.logo} href="/">
+                    {logo || <img src={logoUrl || LOGO_URL} alt="Логотип Say Yes" />}
                 </a>
 
                 <ul className={styles.links}>

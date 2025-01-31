@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { List } from 'shared/ui-components';
+import { List, Text } from 'shared/ui-components';
 
 export default function MeetingsList({ meetings }) {
     return (
@@ -15,13 +15,29 @@ export default function MeetingsList({ meetings }) {
                         primary: meeting.title,
                         secondary: meeting.datetime
                     }}
-                    end={<>
-                        <span>{meeting.registrations.filter(r => r.status === 'pending').length}</span>
-                        /
-                        <span style={{ color: 'green' }}>{meeting.registrations.filter(r => r.status === 'approved').length}</span>
-                        /
-                        <span style={{ color: 'red' }}>{meeting.registrations.filter(r => r.status === 'canceled').length}</span>
-                    </>}
+                    end={
+                        <Text>
+                            <Text
+                                content={meeting.registrations?.filter(r => r.status === 'pending').length ?? 0}
+                                variant="soft"
+                                title="Ожидают подтверждения"
+                            />
+
+                            <Text
+                                content={meeting.registrations?.filter(r => r.status === 'approved').length ?? 0}
+                                color="success"
+                                variant="soft"
+                                title="Подтверждено"
+                            />
+
+                            <Text
+                                content={meeting.registrations?.filter(r => r.status === 'canceled').length ?? 0}
+                                color="danger"
+                                variant="soft"
+                                title="Отменено"
+                            />
+                        </Text>
+                    }
                 />
             )}
         </List>

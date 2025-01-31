@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import moment from 'moment';
 
 import { getMonthData } from 'shared/libs/calendar';
+import datetime from 'shared/libs/datetime';
 import { Button, Select, Text } from 'shared/ui-components';
 import classnames from 'shared/utils/classnames';
 
@@ -15,12 +15,13 @@ export default function MonthView({
     children
 }) {
     const todayRef = useRef(new Date());
-    const dateRef = useRef(moment(selectedDate));
+    const dateRef = useRef(datetime(selectedDate));
+
     const [year, setYear] = useState(dateRef.current.year());
     const [month, setMonth] = useState(dateRef.current.month());
 
     useEffect(() => {
-        dateRef.current = moment(selectedDate);
+        dateRef.current = datetime(selectedDate);
         setYear(dateRef.current.year());
         setMonth(dateRef.current.month());
     }, [selectedDate]);
@@ -94,6 +95,7 @@ export default function MonthView({
                         <div key={index} className="Calendar__week">
                             {week.map((date, index) =>
                                 <div
+                                    key={index}
                                     className={classnames('Calendar__day', date && {
                                         'Calendar__day--today': date.isSame(todayRef.current, 'day'),
                                         'Calendar__day--selected': selectedDate && date.isSame(selectedDate, 'day'),
@@ -132,8 +134,8 @@ function CalendarDay({ date, today, selected, events, onClick }) {
 }
 
 MonthView.defaultProps = {
-    years: Array(11).fill(moment().subtract(6, 'years').year()).map((year, index) => year + index + 1),
-    monthNames: moment.months(),
-    weekdayNames: Array.of(...moment.weekdaysMin().slice(1), moment.weekdaysMin()[0]),
+    years: Array(11).fill(datetime().subtract(6, 'years').year()).map((year, index) => year + index + 1),
+    monthNames: datetime.months(),
+    weekdayNames: Array.of(...datetime.weekdaysMin().slice(1), datetime.weekdaysMin()[0]),
     onChange: Function.prototype
 };

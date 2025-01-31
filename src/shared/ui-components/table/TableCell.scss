@@ -1,10 +1,14 @@
 .ui-TableCell {
     &--align-start {
-        text-align: left;
+        text-align: left !important;
+    }
+
+    &--align-center {
+        text-align: center !important;
     }
 
     &--align-end {
-        text-align: right;
+        text-align: right !important;
     }
 
     &#{&}--header {

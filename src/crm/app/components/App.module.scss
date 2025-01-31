@@ -1,0 +1,12 @@
+@use 'shared/styles/mixins';
+
+.root {
+    height: 100dvh;
+    margin-left: 73px;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    @include mixins.breakpoint(lt-lg) {
+        padding: 0;
+    }
+}

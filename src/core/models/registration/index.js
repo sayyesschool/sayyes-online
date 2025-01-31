@@ -1,1 +1,1 @@
-export { default, Registration } from './Registration';
+export { default, Registration as RegistrationSchema } from './Registration';

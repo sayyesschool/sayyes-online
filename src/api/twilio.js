@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-export default ({ libs: { twilio } }) => {
+export default ({ clients: { twilio } }) => {
     const router = Router();
 
     router.get('/tokens/:type', (req, res, next) => {

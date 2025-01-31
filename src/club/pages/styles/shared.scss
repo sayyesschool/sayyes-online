@@ -1,0 +1,82 @@
+@use 'mq';
+
+body {
+    padding-top: 65px;
+}
+
+.header {
+    --header-background-color: rgba(241, 243, 244, .75);
+    --header-font-color: var(--primary-color);
+    --header-border-radius: 0;
+    --header-blur: 5px;
+}
+
+.footer {
+    --footer-background-color: transparent;
+    --footer-padding: 20px 60px;
+}
+
+.modal {
+    --surface-max-height: calc(100dvh - 40px);
+
+    &__surface {
+        background-color: unset;
+        border-radius: unset;
+    }
+    
+    &__body {
+        max-height: inherit;
+        border-radius: 30px;
+        background-color: #f8f0ee;
+        overflow: hidden;
+    }
+    
+    &__content {
+        max-height: inherit;
+        overflow: auto;
+    }
+
+    @include mq.to(md) {
+        .tabs {
+            display: none;
+        }
+    }
+}
+
+.tab {
+    gap: 8px;
+
+    .icon {
+        font-size: 125%;
+    }
+}
+
+.article {
+    max-width: 1024px;
+    padding-bottom: 4rem;
+    line-height: 1.4;
+
+    header + section,
+    section + section {
+        margin-top: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    ul,
+    ol,
+    p:not(:last-child) {
+        margin-bottom: 1rem;
+    }
+
+    ul,
+    ol {
+        list-style: inside;
+    }
+
+    li:not(:last-child) {
+        margin-bottom: .5rem;
+    }
+}

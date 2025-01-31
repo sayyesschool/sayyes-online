@@ -5,6 +5,8 @@ import express from 'express';
 
 import { flash, logger, session } from './middleware';
 
+export * as middleware from './middleware';
+
 export default ({ config, db }, options) => {
     const server = express();
 
@@ -17,8 +19,7 @@ export default ({ config, db }, options) => {
     Object.assign(server.locals, config);
 
     server.use(cors({
-        // origin: '*',
-        origin: /sayyes\.(school|local)$/,
+        origin: /sayyes\.(school|dev|local)$/,
         credentials: true
     }));
 

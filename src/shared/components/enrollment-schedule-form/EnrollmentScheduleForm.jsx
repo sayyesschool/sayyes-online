@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import moment from 'moment';
 
-import { useBoolean } from 'shared/hooks/state';
-import { useFormData } from 'shared/hooks/form';
-import { rescheduleLessons } from 'shared/libs/enrollment';
-import { Checkbox, Form, FormInput } from 'shared/ui-components';
 import LessonPillGroup from 'shared/components/lessons-pill-group';
 import ScheduleSelect from 'shared/components/schedule-select';
+import { useFormData } from 'shared/hooks/form';
+import { useBoolean } from 'shared/hooks/state';
+import datetime from 'shared/libs/datetime';
+import { rescheduleLessons } from 'shared/libs/enrollment';
+import { Checkbox, Form, FormInput } from 'shared/ui-components';
 import { Text } from 'shared/ui-components';
 
 export default function EnrollmentScheduleForm({ enrollment, onSubmit, ...props }) {
@@ -33,7 +33,10 @@ export default function EnrollmentScheduleForm({ enrollment, onSubmit, ...props 
     }, [data]);
 
     return (
-        <Form className="EnrollmentScheduleForm" onSubmit={handleSubmit} {...props}>
+        <Form
+            className="EnrollmentScheduleForm" onSubmit={handleSubmit}
+            {...props}
+        >
             <ScheduleSelect
                 name="schedule"
                 schedule={data.schedule}
@@ -53,8 +56,8 @@ export default function EnrollmentScheduleForm({ enrollment, onSubmit, ...props 
                     <FormInput
                         type="date"
                         name="startDate"
-                        value={moment(data.startDate).format('YYYY-MM-DD')}
-                        min={moment().format('YYYY-MM-DD')}
+                        value={datetime(data.startDate).format('YYYY-MM-DD')}
+                        min={datetime().format('YYYY-MM-DD')}
                         label="С даты"
                         required
                         onChange={handleChange}

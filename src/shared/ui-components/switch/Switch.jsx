@@ -5,6 +5,7 @@ import classnames from 'classnames';
 
 const Switch = forwardRef(({
     name,
+    thumb,
     className,
     ...props
 }, ref) => {
@@ -15,7 +16,8 @@ const Switch = forwardRef(({
             ref={ref}
             className={classNames}
             slotProps={{
-                input: { name }
+                input: { name },
+                thumb: thumb && { children: thumb }
             }}
             {...props}
         />

@@ -3,11 +3,13 @@ import { Route, Switch } from 'react-router-dom';
 import AppContent from 'shared/components/app-content';
 import AppFooter from 'shared/components/app-footer/AppFooter';
 import AppHeader from 'shared/components/app-header';
-import AppNotification from 'shared/components/app-notification';
+import AppShell from 'shared/components/app-shell';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import { useUser } from 'shared/hooks/user';
 
 import { LearnerPage, TeacherPage } from 'club/components/home';
+
+import styles from './App.module.scss';
 
 const PageByRole = {
     learner: LearnerPage,
@@ -22,9 +24,9 @@ export default function App() {
     const HomePage = PageByRole[user.role];
 
     return (
-        <div className="App">
+        <AppShell className={styles.root}>
             <AppHeader
-                logo={<img src="https://sayes.ru/wp-content/themes/sayyes/static/images/logo-white.svg" alt="" />}
+                logoVariant="speaking-club_white"
                 user={user}
             />
 
@@ -38,8 +40,9 @@ export default function App() {
                 </Switch>
             </AppContent>
 
-            <AppFooter/>
-            <AppNotification />
-        </div>
+            <AppFooter
+                logoUrl={'https://static.sayes.ru/images/logos/sayyes-speaking-club_purple.svg'}
+            />
+        </AppShell>
     );
 }

@@ -1,15 +1,25 @@
 export default ({
-    models: { Payment, User },
+    models: { Request, User },
     services: { Club, Checkout }
 }) => ({
     async create(req, res) {
         const {
-            email,
-            name,
+            contact: {
+                email,
+                name,
+                phone
+            },
             userId = req.user?.id,
             packId,
-            meetingId
+            meetingId,
+            utm
         } = req.body ?? {};
+        let requestId = req.body?.requestId;
+
+        if (!userId && !email) throw {
+            code: 400,
+            message: 'Не указан email'
+        };
 
         const pack = await Club.getPack(packId);
 
@@ -19,31 +29,49 @@ export default ({
         };
 
         const user = await User.findOne({ $or: [{ _id: userId }, { email }] });
-        const userEmail = user?.email ?? email;
 
         if (userId && !user) throw {
             code: 404,
             message: 'Пользователь не найден'
         };
 
-        if (!userEmail) throw {
-            code: 400,
-            message: 'Не указан email'
-        };
+        const paymentRequest = await Request.create({
+            type: Request.Type.Membership,
+            contact: user ? undefined : {
+                name,
+                email,
+                phone
+            },
+            channel: Request.Channel.Email,
+            source: Request.Source.Site,
+            learnerId: user?.id,
+            requestId,
+            utm
+        });
+
+        if (requestId) {
+            await Request.update(requestId, {
+                status: Request.Status.Completed,
+                learnerId: user?.id,
+                requestId: paymentRequest.id
+            });
+        }
 
         const payment = await Checkout.createPayment({
             amount: pack.price,
-            description: 'Покупка абонемента в разговорном клубе',
+            description: 'Покупка абонемента',
             confirmation: {
                 type: 'embedded'
             },
-            email: userEmail,
+            email: user?.email ?? email,
             metadata: {
                 email: user ? undefined : email,
                 name: user ? undefined : name,
+                phone: user ? undefined : phone,
                 userId: user?.id,
-                packId: pack.id,
-                meetingId
+                membershipPackId: pack.id,
+                meetingId,
+                requestId: paymentRequest.id
             }
         });
 
@@ -54,78 +82,13 @@ export default ({
     },
 
     async process(req, res) {
-        const source = req.body.source;
-        const event = req.body.event;
-        const object = req.body.object;
+        const { uuid } = req.body;
 
-        function processError(error) {
-            if (source === 'client') {
-                return res.status(error.code).send(error);
-            } else {
-                return res.sendStatus(200);
-            }
-        }
+        const payment = await Checkout.resolvePayment(uuid);
+        await Club.processPayment(payment);
 
-        function processSuccess(response = {}) {
-            if (source === 'client') {
-                return res.status(200).send({ ok: true, ...response });
-            } else {
-                return res.sendStatus(200);
-            }
-        }
-
-        if (event === 'payment.succeeded') {
-            const payment = await Checkout.resolvePayment(object.id);
-
-            if (!payment) {
-                return processError({ code: 404, message: 'Платеж не найден' });
-            }
-
-            if (!payment.paid) {
-                return processError({ code: 400, message: 'Платеж не оплачен' });
-            }
-
-            const user = payment.metadata.userId ?
-                await User.findOne({
-                    $or: [
-                        { _id: payment.metadata.userId },
-                        { email: payment.metadata.email }
-                    ]
-                }) :
-                await Club.registerUser({
-                    name: payment.metadata.name,
-                    email: payment.metadata.email
-                });
-
-            if (!user) {
-                return processError({ code: 404, message: 'Пользователь не найден' });
-            }
-
-            if (!payment.userId) {
-                await Payment.update(payment.id, { userId: user.id });
-            }
-
-            const membership = await Club.createMembership(user.id, payment.metadata.packId, payment.id);
-
-            if (payment.metadata.meetingId) {
-                const registration = await Club.registerForMeeting(user, payment.metadata.meetingId);
-
-                return processSuccess({
-                    data: registration,
-                    message: 'Запись на встречу создана'
-                });
-            }
-
-            return processSuccess({
-                data: membership,
-                message: 'Абонемент приобретен'
-            });
-        } else if (event === 'payment.canceled') {
-            await Checkout.cancelPayment(object.id);
-        } else if (event === 'refund.succeeded') {
-            await Checkout.refundPayment(object.payment_id, { refunded: true });
-        }
-
-        res.sendStatus(200);
+        res.json({
+            ok: true
+        });
     }
 });

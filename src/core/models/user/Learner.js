@@ -3,8 +3,8 @@ import { Schema } from 'mongoose';
 import Contact from './Contact';
 
 export const Learner = new Schema({
-    level: { type: String },
-    info: {
+    data: {
+        hhid: { type: String },
         address: { type: String },
         occupation: { type: String },
         interests: { type: String },
@@ -38,12 +38,6 @@ Learner.virtual('lessons', {
     foreignField: 'learnerId'
 });
 
-Learner.virtual('meetings', {
-    ref: 'Meeting',
-    localField: '_id',
-    foreignField: 'registrations.userId'
-});
-
 Learner.virtual('memberships', {
     ref: 'Membership',
     localField: '_id',
@@ -52,6 +46,12 @@ Learner.virtual('memberships', {
 
 Learner.virtual('payments', {
     ref: 'Payment',
+    localField: '_id',
+    foreignField: 'userId'
+});
+
+Learner.virtual('registrations', {
+    ref: 'Meeting',
     localField: '_id',
     foreignField: 'userId'
 });

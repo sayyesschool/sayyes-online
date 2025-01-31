@@ -117,16 +117,20 @@ export function useFormData(initialData, deps = []) {
         setData(data => {
             const [name1, name2] = name.split('.');
 
-            if (Array.isArray(data[name1]) && !isNaN(name2)) {
+            if (Array.isArray(data[name1])) {
                 const array = data[name1].slice();
 
-                array[name2] = value;
+                if (checked) {
+                    array.push(value);
+                } else {
+                    array.splice(array.indexOf(value), 1);
+                }
 
                 return {
                     ...data,
                     [name1]: array
                 };
-            } else if (!Array.isArray(data[name1]) && isObject(data[name1])) {
+            } else if (isObject(data[name1])) {
                 return {
                     ...data,
                     [name1]: {

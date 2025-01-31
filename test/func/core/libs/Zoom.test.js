@@ -1,21 +1,20 @@
 import { doesNotReject } from 'node:assert/strict';
 
 import expect from 'expect';
-import moment from 'moment-timezone';
 
-import Zoom from '@/core/libs/zoom/index.js';
+import Zoom from 'core/clients/zoom';
+
+import datetime from 'shared/libs/datetime';
+
+import { config } from 'test/func/context';
 
 const zoom = Zoom({
-    accountId: global.$context.config.ZOOM_ACCOUNT_ID,
-    clientId: global.$context.config.ZOOM_CLIENT_ID,
-    clientSecret: global.$context.config.ZOOM_CLIENT_SECRET
+    accountId: config.ZOOM_ACCOUNT_ID,
+    clientId: config.ZOOM_CLIENT_ID,
+    clientSecret: config.ZOOM_CLIENT_SECRET
 });
 
 describe('Zoom client', () => {
-    before(async () => {
-        await zoom.init();
-    });
-
     describe('refreshToken', () => {
         it('should get and save a token', async () => {
             await zoom.refreshToken();
@@ -35,7 +34,7 @@ describe('Zoom client', () => {
             const meeting = await zoom.meetings.create({
                 topic: 'Test meeting',
                 type: 2,
-                start_time: moment().add(1, 'day').toISOString(),
+                start_time: datetime().add(1, 'day').toISOString(),
                 duration: 60,
                 timezone: 'Europe/Moscow',
                 password: '123456',

@@ -20,7 +20,7 @@ import LessonsSection from 'lms/components/lessons/lessons-section';
 export default function TeacherHomePage() {
     const [user] = useUser();
     const [enrollments] = useEnrollments();
-    const [lessons, actions] = useLessons();
+    const [lessons, actions] = useLessons(`teacherId=${user.id}`);
 
     const [tab, setTab] = useState('calendar');
     const [lesson, setLesson] = useState();

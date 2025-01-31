@@ -9,6 +9,7 @@ import FormField from './FormField';
 const FormInput = forwardRef(({
     label,
     message,
+    orientation,
     className,
     ...props
 }, ref) => {
@@ -19,6 +20,7 @@ const FormInput = forwardRef(({
             className={classNames}
             label={label}
             message={message}
+            orientation={orientation}
         >
             <Input ref={ref} {...props} />
         </FormField>

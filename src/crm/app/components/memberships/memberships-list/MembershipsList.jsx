@@ -1,27 +1,34 @@
-import StatusIcon from 'shared/components/status-icon';
-import { IconButton, List, Text } from 'shared/ui-components';
+import ConfirmButton from 'shared/components/confirm-button';
+import { Flex, List, Text } from 'shared/ui-components';
 
-export default function PaymentsList({ payments, onClick, onDelete }) {
+import MembershipRegistrationsCounter from 'crm/components/memberships/membership-registrations-counter';
+
+export default function MembershipsList({ memberships, onClick, onDelete }) {
     return (
-        <List className="PaymentsList">
-            {payments.map(payment =>
+        <List className="MembershipsList">
+            {memberships.map(membership =>
                 <List.Item
-                    key={payment.id}
-                    decorator={
-                        <StatusIcon status={payment.status} />
+                    key={membership.id}
+                    content={
+                        <Flex align="center" gap="l">
+                            <Flex dir="column">
+                                <Text content={`${membership.price} руб.`} type="body-md" />
+                                <Text content={`${membership.startDateString} - ${membership.endDateString}`} type="body-sm" />
+                            </Flex>
+
+                            <MembershipRegistrationsCounter membership={membership} />
+                        </Flex>
                     }
-                    content={<>
-                        <Text>{`${payment.amount} руб.`}</Text>
-                        <Text>{payment.description}</Text>
-                    </>}
                     endAction={
-                        <IconButton
+                        <ConfirmButton
                             icon="delete"
-                            title="Удалить платеж"
-                            onClick={() => onDelete(payment)}
+                            title="Удалить"
+                            message="Удалить абонемент?"
+                            color="danger"
+                            onConfirm={() => onDelete(membership)}
                         />
                     }
-                    onClick={() => onClick(payment)}
+                    onClick={() => onClick(membership)}
                 />
             )}
         </List>

@@ -16,12 +16,12 @@ export default function WeekTimeEvent({ event, onClick, ...props }) {
         <Chip
             className={classNames}
             color={LessonColorByType[event.status]}
-            onClick={onClick && handleClick}
             sx={{
                 position: 'absolute',
                 padding: '0 4px',
                 maxWidth: 'unset'
             }}
+            onClick={onClick && handleClick}
             {...props}
         >
             <Text

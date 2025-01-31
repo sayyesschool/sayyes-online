@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
-import moment from 'moment';
 
+import { operatorOptions, paymentMethodOptions } from 'shared/data/payment';
 import useForm from 'shared/hooks/form';
+import datetime from 'shared/libs/datetime';
 import Form from 'shared/ui-components/form';
-import { paymentMethodOptions, operatorOptions } from 'shared/data/payment';
 
 import './index.scss';
 
@@ -11,14 +11,14 @@ export default function PaymentForm({ payment = {}, onSubmit }) {
     const { data, setData } = useForm({
         amount: 0,
         description: '',
-        date: moment(payment.date).format('YYYY-MM-DD'),
+        date: datetime(payment.date).format('YYYY-MM-DD'),
         paymentMethod: payment.method?.type,
         learner: payment.learner ? payment.learner.id : '',
         ...payment
     });
 
     const handleSubmit = useCallback(() => {
-        data.date = moment(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
+        data.date = datetime(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
         data.status = 'succeeded';
 
         onSubmit(data);

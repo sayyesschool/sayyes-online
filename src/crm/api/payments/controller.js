@@ -1,81 +1,64 @@
 export default ({
-    models: { Payment }
+    models: { Payment },
+    services: { Checkout }
 }) => ({
-    get: (req, res, next) => {
-        Payment.find()
-            .populate('learner', 'firstname lastname email')
-            .then(payments => {
-                res.json({
-                    ok: true,
-                    data: payments.map(map)
-                });
-            })
-            .catch(next);
+    async get(req, res) {
+        const payments = await Payment.find(req.query)
+            .populate('user', 'firstname lastname email role');
+
+        res.json({
+            ok: true,
+            data: payments.map(p => p.toData())
+        });
     },
 
-    getOne: (req, res, next) => {
-        Payment.findById(req.params.payment)
-            .populate('learner', 'firstname lastname email')
-            .then(payment => {
-                res.json({
-                    ok: true,
-                    data: map(payment)
-                });
-            })
-            .catch(next);
+    async getOne(req, res) {
+        const payment = await Payment.findById(req.params.id)
+            .populate('user', 'firstname lastname email role');
+
+        res.json({
+            ok: true,
+            data: payment.toData()
+        });
     },
 
-    create: (req, res, next) => {
-        Payment.create(req.body)
-            .then(payment => {
-                res.json({
-                    ok: true,
-                    message: 'Платеж создан',
-                    data: payment
-                });
-            })
-            .catch(next);
+    async create(req, res) {
+        const payment = await Payment.create(req.body);
+
+        res.json({
+            ok: true,
+            message: 'Платеж создан',
+            data: payment.toData()
+        });
     },
 
-    update: (req, res, next) => {
-        Payment.findByIdAndUpdate(req.params.payment, req.body, { new: true })
-            .then(payment => {
-                res.json({
-                    ok: true,
-                    message: 'Платеж обновлен',
-                    data: payment
-                });
-            })
-            .catch(next);
+    async update(req, res) {
+        const payment = await Payment.findByIdAndUpdate(req.params.id, req.body, { new: true });
+
+        res.json({
+            ok: true,
+            message: 'Платеж обновлен',
+            data: payment.toData()
+        });
     },
 
-    resolve: (req, res, next) => {
-        Payment.resolve(req.params.id)
-            .then(payment => {
-                res.json({
-                    ok: true,
-                    message: 'Платеж обновлен',
-                    data: payment
-                });
-            })
-            .catch(next);
+    async resolve(req, res) {
+        const payment = await Checkout.resolvePayment(req.params.id);
+
+        res.json({
+            ok: true,
+            message: 'Платеж обновлен',
+            data: payment.toData()
+        });
     },
 
-    delete: (req, res, next) => {
-        Payment.findByIdAndDelete(req.params.payment)
-            .then(payment => {
-                res.json({
-                    ok: true,
-                    message: 'Платеж удален',
-                    data: payment
-                });
-            })
-            .catch(next);
+    async delete(req, res) {
+        const payment = await Payment.findByIdAndDelete(req.params.id);
+
+        res.json({
+            ok: true,
+            message: 'Платеж удален',
+            data: payment.toData()
+        });
     }
 });
-
-function map(payment) {
-    const object = payment.toObject();
-
-    return object;
-}

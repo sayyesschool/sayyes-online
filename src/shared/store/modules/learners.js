@@ -41,6 +41,8 @@ export const deleteLearner = createAction('DELETE_LEARNER', (learnerId, data) =>
     }
 }));
 
+export const unsetLearner = createAction('UNSET_LEARNER');
+
 export default combineReducers({
     list: createReducer(null, {
         [getLearners]: (state, action) => action.data,
@@ -52,21 +54,22 @@ export default combineReducers({
         [getLearner]: (state, action) => action.data,
         [updateLearner]: (state, action) => ({ ...state, ...action.data }),
         [deleteLearner]: (state, action) => null,
+        [unsetLearner]: () => null,
 
-        [createPayment]: (state, action) => state?.id === action.data.learner ? {
+        [createPayment]: (state, action) => state && state?.id === action.data.userId && {
             ...state,
-            payments: state.payments.concat(action.data)
-        } : state,
-        [updatePayment]: (state, action) => state?.id === action.data.learner ? {
+            payments: state && state.payments.concat(action.data)
+        },
+        [updatePayment]: (state, action) => state && state?.id === action.data.userId && {
             ...state,
-            payments: state.payments.map(p => p.id === action.data.id ? {
+            payments: state && state.payments.map(p => p.id === action.data.id ? {
                 ...p,
                 ...action.data
             } : p)
-        } : state,
-        [deletePayment]: (state, action) => state?.id === action.data.learner ? {
+        },
+        [deletePayment]: (state, action) => state && state.id === action.data.userId && {
             ...state,
-            payments: state.payments.filter(p => p.id !== action.data.id)
-        } : state
+            payments: state && state.payments.filter(p => p.id !== action.data.id)
+        }
     })
 });

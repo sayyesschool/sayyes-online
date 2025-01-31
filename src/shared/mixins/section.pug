@@ -1,0 +1,39 @@
+mixin section(title, description)
+    section.section(class={
+        'section--centered': attributes.centered,
+        'section--horizontal': attributes.horizontal,
+        'section--padded': attributes.padded,
+        'section--padded-header': attributes.paddedHeader,
+        [`section--${attributes.color}`]: attributes.color
+    })&attributes(Object.assign({}, attributes, {
+        centered: undefined,
+        horizontal: undefined,
+        padded: undefined,
+        color: undefined
+    }))
+        div.section__container
+            if title || description
+                +section-header(title, description)
+
+                +section-content
+                    block
+            else
+                block
+
+mixin section-header(title, description)
+    div.section__header
+        if title
+            h2.section__title= title
+
+        if description
+            p.section__description= description
+        
+        block
+
+mixin section-content
+    div.section__content
+        block
+
+mixin section-media
+    div.section__media
+        block

@@ -3,11 +3,22 @@ import { forwardRef } from 'react';
 import Sheet from '@mui/joy/Sheet';
 import classnames from 'classnames';
 
-const Surface = forwardRef(({ className, elevated, ...props }, ref) => {
+import styles from './Surface.module.scss';
+
+const Surface = forwardRef(({
+    padding,
+    radius = 'md',
+    shadow,
+    className,
+    ...props
+}, ref) => {
     const classNames = classnames(
         className,
         'ui-Surface',
-        elevated && 'ui-Surface--elevated'
+        styles.root,
+        padding && styles[`padding-${padding}`],
+        radius && styles[`radius-${radius}`],
+        shadow && styles[`shadow-${shadow}`]
     );
 
     return (

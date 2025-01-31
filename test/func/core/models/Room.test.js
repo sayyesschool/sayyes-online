@@ -1,12 +1,13 @@
 import expect from 'expect';
 
-import { at } from '../../../helpers.js';
+import { at } from 'test/helpers';
+import { models } from 'test/func/context';
 
-const { models: { Lesson, Room } } = global.$context;
-
-let room;
+const { Lesson, Room } = models;
 
 describe('Room model', () => {
+    let room;
+
     before(async () => {
         room = await Room.create({ title: 'A', active: true });
     });

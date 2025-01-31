@@ -12,6 +12,9 @@
             "@/*": [
                 "./src/*"
             ],
+            "api/*": [
+                "./src/api/*"
+            ],
             "class/*": [
                 "./src/class/app/*"
             ],
@@ -35,6 +38,9 @@
             ],
             "shared/*": [
                 "./src/shared/*"
+            ],
+            "test/*": [
+                "./test/*"
             ]
         },
         "target": "es2020"

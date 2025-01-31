@@ -10,7 +10,7 @@ export default context => {
         .get(controller.get)
         .post(controller.create);
 
-    router.route('/:payment')
+    router.route('/:id')
         .get(controller.getOne)
         .put(controller.update)
         .patch(controller.resolve)
