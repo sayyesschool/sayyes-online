@@ -11,6 +11,8 @@ export default context => {
         .post(controller.addLexeme)
         .put(controller.mergeLexemes);
 
+    router.get('/search', controller.search);
+
     router.route('/:lexemeId')
         .put(controller.updateLexeme)
         .delete(controller.deleteLexeme);

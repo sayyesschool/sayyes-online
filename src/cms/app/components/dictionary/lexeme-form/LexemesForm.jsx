@@ -13,16 +13,17 @@ import styles from './LexemesForm.module.scss';
 export default function LexemesForm({
     userId,
     lexemes,
+    initialLexeme,
     isPending,
     onSubmit,
     ...props
 }) {
     const [file, setFile] = useState();
     const [data, setData] = useState({
-        value: '',
-        translation: '',
-        definition: '',
-        examples: []
+        value: initialLexeme?.value || '',
+        translation: initialLexeme?.translation || '',
+        definition: initialLexeme?.definition || '',
+        examples: initialLexeme?.examples || []
     });
     const [additionalData, setAdditionalData] = useState(
         lexemes.reduce((object, { id, translation, definition, examples }) => {
@@ -102,6 +103,7 @@ export default function LexemesForm({
         >
             {lexemes.map(lexeme => {
                 const isEditorLexeme = lexeme?.createdBy === userId;
+                const isLexemeNotPending = lexeme.publishStatus !== 'pending';
 
                 const changeAdditionalData = data => {
                     setAdditionalData(prev => ({ ...prev, [lexeme.id]: data }));
@@ -111,7 +113,7 @@ export default function LexemesForm({
                     <Lexeme
                         key={lexeme.id}
                         lexeme={lexeme}
-                        readOnly={!isPending || isEditorLexeme}
+                        readOnly={!isPending || isEditorLexeme || isLexemeNotPending}
                         onChange={changeAdditionalData}
                     />
                 );

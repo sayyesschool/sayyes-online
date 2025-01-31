@@ -1,6 +1,24 @@
 export default ({
     models: { Lexeme, LexemeRecord }
 }) => ({
+    async search(req, res) {
+        const regex = req.query.q && new RegExp(req.query.q, 'i');
+        const query = { value: regex, publishStatus: 'approved' };
+
+        const [count, lexemes] = await Promise.all([
+            Lexeme.countDocuments(query),
+            Lexeme.find(query)
+        ]);
+
+        res.json({
+            ok: true,
+            meta: {
+                totalCount: count
+            },
+            data: lexemes
+        });
+    },
+
     async get(req, res) {
         const lexemes = await Lexeme.find({ publishStatus: req.query.publishStatus }).sort({ createdAt: -1 });
 
@@ -65,23 +83,25 @@ export default ({
 
         const record = await LexemeRecord.findOne({ lexemeId: lexeme.id });
 
-        const addTranslate = req.body.additionalData.translation;
-        const addDefinition = req.body.additionalData.definition;
-        const examples = req.body.additionalData.examples;
+        if (record) {
+            const addTranslate = req.body.additionalData.translation;
+            const addDefinition = req.body.additionalData.definition;
+            const examples = req.body.additionalData.examples;
 
-        if (addTranslate) {
-            record.data.translation = lexeme.translation;
+            if (addTranslate) {
+                record.data.translation = lexeme.translation;
+            }
+
+            if (addDefinition) {
+                record.data.definition = lexeme.definition;
+            }
+
+            if (examples.length) {
+                record.data.examples = examples;
+            }
+
+            await record.save();
         }
-
-        if (addDefinition) {
-            record.data.definition = lexeme.definition;
-        }
-
-        if (examples.length) {
-            record.data.examples = examples;
-        }
-
-        await record.save();
 
         const data = updatedLexeme.toJSON();
 

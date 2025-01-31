@@ -55,7 +55,15 @@ export const deleteLexeme = createAction('DICTIONARY_DELETE_LEXEME', lexemeId =>
     }
 }));
 
+export const search = createAction('DICTIONARY_SEARCH', str => ({
+    request: {
+        method: 'get',
+        path: `dictionary/search?q=${str}`
+    }
+}));
+
 export const actions = {
+    search,
     getDictionary,
     unsetDictionary,
     addLexeme,
@@ -91,13 +99,16 @@ export const dictionaryReducer = createReducer(null, {
     },
 
     [updateLexeme]: (state, action) => {
+        const updatedLexemes = state.lexemes.map(lexeme =>
+            lexeme.id === action.data.id ? action.data : lexeme
+        );
+        const filteredLexemes = state.lexemes.filter(lexeme => lexeme.id !== action.data.id);
+
+        console.log(222, { state, data: action.data, lexemes: state.publishStatus === 'approved' ? updatedLexemes : filteredLexemes });
+
         return {
             ...state,
-            lexemes: state.lexemes.map(lexeme =>
-                lexeme.id === action.data.id
-                    ? action.data
-                    : lexeme
-            )
+            lexemes: state.publishStatus === 'approved' ? updatedLexemes : filteredLexemes
         };
     },
 
@@ -126,6 +137,13 @@ export const dictionaryReducer = createReducer(null, {
         return {
             ...state,
             lexemes: state.lexemes.filter(lexeme => lexeme.id !== action.data.id)
+        };
+    },
+
+    [search]: (state, action) => {
+        return {
+            ...state,
+            foundSearchLexemes: action.data
         };
     }
 });

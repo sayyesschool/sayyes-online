@@ -1,6 +1,7 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import ImageField from 'shared/components/image-field';
+import { useDebounce } from 'shared/hooks/fn';
 import Storage from 'shared/services/storage';
 import { Button, Checkbox, Flex, Form } from 'shared/ui-components';
 
@@ -12,8 +13,11 @@ const initialAdditionalData = { translation: false, definition: false, examples:
 
 export default function LexemeForm({
     lexeme,
+    foundSearchLexemes,
+    updateFoundLexeme,
     withNotifications,
     onSubmit,
+    onSearch,
     ...props
 }) {
     // TODO: стоит ли file тоже добавить в data?
@@ -95,6 +99,14 @@ export default function LexemeForm({
         setAdditionalData(prev => ({ ...prev, examples }));
     }, []);
 
+    const handleInputChange = useDebounce(value => {
+        onSearch(value);
+    }, 1000);
+
+    useEffect(() => {
+        handleInputChange(data.value);
+    }, [data.value, handleInputChange]);
+
     return (
         <Form
             className={styles.root}
@@ -109,6 +121,17 @@ export default function LexemeForm({
                 onChange={handleFileChange}
                 onDelete={handleFileDelete}
             />
+
+            {/* TODO: Как в строчке ниже добавить пробел между тэгом */}
+            {foundSearchLexemes?.map(foundLexeme => (
+                <Button
+                    key={foundLexeme.id}
+                    variant="plain"
+                    onClick={() => updateFoundLexeme(foundLexeme, lexeme)}
+                >
+                    Использовать существующую лексиму <span className={styles.foundLexeme}>{foundLexeme.value}-{foundLexeme.translation}</span>?
+                </Button>
+            ))}
 
             {inputs.map(({ component: Component, id, label, value, required, setData }) => {
                 const originalIsNotEmpty = !!lexeme[id];

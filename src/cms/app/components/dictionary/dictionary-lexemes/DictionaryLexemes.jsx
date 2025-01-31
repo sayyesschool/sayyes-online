@@ -21,13 +21,15 @@ export default function DictionaryLexemes({ dictionary, user }) {
     const [modalState, setModalState] = useState({ type: null, lexemeId: null });
     const [activeTabStatus, setActiveTabStatus] = useState(0);
     const [selectedLexemeIds, setSelectedLexemeIds] = useState([]);
+    const [foundSearchLexeme, setFoundSearchLexeme] = useState();
 
-    const { lexemes, numberOfLexemes } = dictionary;
+    const { lexemes, numberOfLexemes, foundSearchLexemes } = dictionary;
 
     const isPending = dictionary.publishStatus === 'pending';
     const isUnapproved = dictionary.publishStatus === 'unapproved';
 
     const currentLexeme = lexemes.find(lexeme => lexeme.id === modalState?.lexemeId);
+
     const isNotCreatorLexeme = currentLexeme?.createdBy !== user.id;
     const withNotifications = isPending && isNotCreatorLexeme;
 
@@ -41,7 +43,10 @@ export default function DictionaryLexemes({ dictionary, user }) {
         setModalState({ type, lexemeId });
     }, []);
 
-    const handleModalClose = useCallback(() => setModalState({ type: null, lexemeId: null }), []);
+    const handleModalClose = useCallback(() => {
+        setModalState({ type: null, lexemeId: null });
+        setFoundSearchLexeme(null);
+    }, []);
 
     const handleAddLexeme = useCallback(data => {
         return actions.addLexeme(data)
@@ -82,6 +87,13 @@ export default function DictionaryLexemes({ dictionary, user }) {
         });
     }, []);
 
+    const handleSearch = useCallback(str => actions.search(str), [actions]);
+
+    const handleUpdateFoundLexeme = useCallback((foundLexeme, chosenLexeme) => {
+        setFoundSearchLexeme([foundLexeme, chosenLexeme]);
+        handleModalOpen('edit-lexemes');
+    }, [handleModalOpen, setFoundSearchLexeme]);
+
     const renderModalContent = () => {
         switch (modalState.type) {
             case 'view-lexeme':
@@ -97,9 +109,12 @@ export default function DictionaryLexemes({ dictionary, user }) {
                     <LexemeForm
                         id="lexeme-edit-form"
                         lexeme={currentLexeme}
+                        foundSearchLexemes={foundSearchLexemes}
                         withNotifications={withNotifications}
+                        updateFoundLexeme={handleUpdateFoundLexeme}
                         onSubmit={handleUpdateLexeme}
                         onClose={handleModalClose}
+                        onSearch={handleSearch}
                     />
                 );
             case 'edit-lexemes':
@@ -107,7 +122,8 @@ export default function DictionaryLexemes({ dictionary, user }) {
                     <LexemesForm
                         id="lexemes-edit-form"
                         userId={user.id}
-                        lexemes={lexemes.filter(lexeme => selectedLexemeIds.includes(lexeme.id))}
+                        lexemes={foundSearchLexeme ?? lexemes.filter(lexeme => selectedLexemeIds.includes(lexeme.id))}
+                        initialLexeme={foundSearchLexeme?.[0]}
                         isPending={isPending}
                         onSubmit={handleMergeLexemes}
                         onClose={handleModalClose}
