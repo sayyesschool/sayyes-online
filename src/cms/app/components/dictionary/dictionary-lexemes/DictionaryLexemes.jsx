@@ -105,7 +105,7 @@ export default function DictionaryLexemes({ dictionary, user }) {
                     />
                 );
             case 'edit-lexeme':
-                return modalState.lexemeId && (
+                return currentLexeme && (
                     <LexemeForm
                         id="lexeme-edit-form"
                         lexeme={currentLexeme}
