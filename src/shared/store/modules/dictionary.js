@@ -104,8 +104,6 @@ export const dictionaryReducer = createReducer(null, {
         );
         const filteredLexemes = state.lexemes.filter(lexeme => lexeme.id !== action.data.id);
 
-        console.log(222, { state, data: action.data, lexemes: state.publishStatus === 'approved' ? updatedLexemes : filteredLexemes });
-
         return {
             ...state,
             lexemes: state.publishStatus === 'approved' ? updatedLexemes : filteredLexemes
