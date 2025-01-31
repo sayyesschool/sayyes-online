@@ -25,7 +25,6 @@ export default function DictionaryLexemes({ dictionary, user }) {
     const { lexemes, numberOfLexemes } = dictionary;
 
     const isPending = dictionary.publishStatus === 'pending';
-    const isApproved = dictionary.publishStatus === 'approved';
     const isUnapproved = dictionary.publishStatus === 'unapproved';
 
     const currentLexeme = lexemes.find(lexeme => lexeme.id === modalState?.lexemeId);
@@ -67,10 +66,6 @@ export default function DictionaryLexemes({ dictionary, user }) {
         if (confirm('Вы уверены что хотите удалить слово')) {
             return actions.deleteLexeme(lexemeId);
         }
-    }, [actions]);
-
-    const handleApproveLexeme = useCallback(lexemeId => {
-        return actions.updateLexemePublishStatus(lexemeId, LexemePublishStatus.Approved);
     }, [actions]);
 
     const handleUnapproveLexeme = useCallback(lexemeId => {
@@ -176,7 +171,6 @@ export default function DictionaryLexemes({ dictionary, user }) {
                     onUnapprove={!isUnapproved && handleUnapproveLexeme}
                     onDeleteLexeme={isPending && handleDeleteLexeme}
                     onSelectLexeme={handleSelectLexeme}
-                    onApprove={!isApproved && handleApproveLexeme}
                 />
 
                 <Dialog open={!!modalState.type} onClose={handleModalClose}>

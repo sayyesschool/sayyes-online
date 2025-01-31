@@ -8,7 +8,6 @@ export default function LexemesList({
     lexemes = [],
     readOnly,
     selectedLexemeIds,
-    onApprove,
     onUnapprove,
     onViewLexeme,
     onEditLexeme,
@@ -25,7 +24,6 @@ export default function LexemesList({
                     lexeme={lexeme}
                     readOnly={readOnly}
                     selectedLexemeIds={selectedLexemeIds}
-                    onApprove={onApprove}
                     onUnapprove={onUnapprove}
                     onView={onViewLexeme}
                     onEdit={onEditLexeme}

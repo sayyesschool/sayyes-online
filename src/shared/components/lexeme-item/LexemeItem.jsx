@@ -12,7 +12,6 @@ export default function LexemeItem({
     readOnly,
     selectedLexemeIds,
     onView,
-    onApprove,
     onUnapprove,
     onEdit,
     onSelect,
@@ -36,21 +35,15 @@ export default function LexemeItem({
     }, [id, onStatusUpdate]);
 
     const actionButtons = [
-
-        onApprove && {
+        {
             icon: 'verified',
-            title: 'Утвердить слово',
-            handler: () => onApprove(id)
+            title: 'Редактировать слово',
+            handler: () => onEdit(id)
         },
         onUnapprove && {
             icon: 'clear',
             title: 'Архивировать слово',
             handler: () => onUnapprove(id)
-        },
-        {
-            icon: 'edit',
-            title: 'Редактировать слово',
-            handler: () => onEdit(id)
         },
         showDeleteBtn && onDelete && {
             icon: 'delete',
