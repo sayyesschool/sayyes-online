@@ -95,7 +95,7 @@ export const dictionaryReducer = createReducer(null, {
             ...state,
             lexemes: state.lexemes.map(lexeme =>
                 lexeme.id === action.data.id
-                    ? action.data.updatedLexeme
+                    ? action.data
                     : lexeme
             )
         };
