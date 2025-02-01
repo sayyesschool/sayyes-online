@@ -1,2 +1,2 @@
 export * from './constants';
-export { default, Payment } from './Payment';
+export { default, Payment as PaymentSchema } from './Payment';

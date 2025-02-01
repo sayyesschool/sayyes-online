@@ -40,6 +40,8 @@ export const Payment = new Schema({
     toJSON: { getters: true, virtuals: true }
 });
 
+Payment.statics.Status = PaymentStatus;
+
 Payment.statics.getByMonth = async function() {
     const today = new Date();
 
