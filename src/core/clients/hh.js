@@ -1,4 +1,4 @@
-export default ({ requestUrl }) => ({
+export default ({ HH_REQUEST_URL: requestUrl }) => ({
     async addStudyRequest(data) {
         return await fetch(requestUrl, {
             method: 'post',

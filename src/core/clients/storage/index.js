@@ -1,0 +1,1 @@
+export { default as YandexCloudStorage } from './yandex-cloud';

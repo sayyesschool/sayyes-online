@@ -4,7 +4,12 @@ import { getToken } from './auth';
 import { ZOOM_API_URL } from './constants';
 import Meetings from './meetings';
 
-export default ({ accountId, clientId, clientSecret, userId }) => {
+export default ({
+    ZOOM_ACCOUNT_ID: accountId,
+    ZOOM_CLIENT_ID: clientId,
+    ZOOM_CLIENT_SECRET: clientSecret,
+    ZOOM_USER_ID: userId
+}) => {
     let token;
 
     async function refreshToken() {

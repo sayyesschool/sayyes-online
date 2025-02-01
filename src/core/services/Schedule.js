@@ -1,9 +1,8 @@
 import datetime from 'shared/libs/datetime';
 
-export default ({ models: {
-    Lesson,
-    Room
-} }) => ({
+export default ({
+    models: { Lesson, Room }
+}) => ({
     async scheduleLesson({ id, ...data }) {
         const room = await this.getAvailableRoom(data);
 

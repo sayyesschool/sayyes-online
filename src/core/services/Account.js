@@ -2,19 +2,32 @@ import { isValidObjectId } from 'mongoose';
 
 export default ({
     models: { User },
-    events: {
-        onIncreaseBalance
-    }
+    services: { Mail }
 }) => ({
-    async increaseBalance(user, amount, notify) {
+    async increaseBalance(user, amount, { notify = false } = {}) {
         const userId = isValidObjectId(user) ? user : user.id;
 
         const updatedUser = await User.findByIdAndUpdate(userId, {
             $inc: { balance: amount }
         }, { new: true });
 
-        if (updatedUser && notify) {
-            onIncreaseBalance?.(updatedUser, amount);
+        if (!updatedUser) throw {
+            code: 404,
+            message: 'Пользователь не найден'
+        };
+
+        if (notify) {
+            Mail.send({
+                to: [{
+                    name: user.fullname,
+                    email: user.email
+                }],
+                subject: 'Успешное пополнение баланса',
+                templateId: 1348783,
+                variables: {
+                    firstname: user.firstname
+                }
+            });
         }
 
         return updatedUser;
