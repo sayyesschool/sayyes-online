@@ -81,12 +81,6 @@ export default function PaymentsTable({ payments, onResolve, onEdit, onDelete })
                                     />
                                 }
 
-                                <ActionButton
-                                    title="Обновить"
-                                    icon="refresh"
-                                    onAction={() => onResolve(payment)}
-                                />
-
                                 <IconButton
                                     title="Изменить"
                                     icon="edit"
