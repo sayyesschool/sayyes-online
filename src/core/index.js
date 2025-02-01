@@ -8,7 +8,6 @@ export default config => {
     const services = Services(config, clients, models);
 
     return {
-        config,
         clients,
         models,
         services

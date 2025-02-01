@@ -1,12 +1,9 @@
-import { readFileSync } from 'node:fs';
-
 import api from './api';
-import auth, { Middleware as AuthMiddleware } from './auth';
+import auth from './auth';
 import classroom from './class';
 import club from './club';
 import cms from './cms';
-import config from './config';
-import core from './core';
+import context from './context';
 import crm from './crm';
 import db from './db';
 import lk from './lk';
@@ -14,24 +11,9 @@ import lms from './lms';
 import pay from './pay';
 import server from './server';
 
-const context = core(config);
-const authMiddleware = AuthMiddleware(context);
+const { authenticate, authorize, redirect } = context.middleware;
 
-const options = config.APP_ENV === 'local' ? {
-    cert: readFileSync(config.SSL_CERT_PATH),
-    key: readFileSync(config.SSL_KEY_PATH)
-} : null;
-
-context.db = db;
-context.middleware = {
-    auth: authMiddleware
-};
-
-db.connect(config.DB_CONNECTION_STRING);
-
-const { authenticate, authorize, redirect } = authMiddleware;
-
-server(context, options)
+server(context, db(context))
     .use(authenticate)
     .use(api('api', context))
     .use(auth('auth', context))

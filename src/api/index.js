@@ -20,7 +20,7 @@ export default (domain, context) => {
 
     api.use('/recaptcha', internalCors, recaptcha(context));
     api.use('/request', internalCors, request(context));
-    api.use('/storage', internalCors, context.middleware.auth.authenticatedRoute, storage(context));
+    api.use('/storage', internalCors, context.middleware.authenticatedRoute, storage(context));
     api.use('/test', internalCors, test(context));
     api.use('/twilio', twilio(context));
     api.use('/yookassa', yookassa(context));

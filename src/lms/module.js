@@ -19,7 +19,7 @@ export default (domain, context) => {
         Object.assign(app.locals, parent.locals);
     });
 
-    app.use(context.middleware.auth.authorizeDomain(domain));
+    app.use(context.middleware.authorizeDomain(domain));
     app.use('/api', api(context));
     app.use((req, res, next) => {
         const twilio = context.clients.twilio;
