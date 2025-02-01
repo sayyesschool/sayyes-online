@@ -1,7 +1,10 @@
 import passport from 'passport';
 import { Strategy } from 'passport-yandex';
 
-export default (Auth, { YANDEX_CLIENT_ID, YANDEX_CLIENT_SECRET, YANDEX_CALLBACK_URL }) => {
+export default ({
+    config: { YANDEX_CLIENT_ID, YANDEX_CLIENT_SECRET, YANDEX_CALLBACK_URL },
+    services: { Auth }
+}) => {
     const config = {
         clientID: YANDEX_CLIENT_ID,
         clientSecret: YANDEX_CLIENT_SECRET,
@@ -26,9 +29,9 @@ export default (Auth, { YANDEX_CLIENT_ID, YANDEX_CLIENT_SECRET, YANDEX_CALLBACK_
         };
 
         if (req.user) {
-            Auth.connect(req.user, account, done);
+            Auth.connectAccount(req.user, account, done);
         } else {
-            Auth.authorize(account, done);
+            Auth.authorizeAccount(account, done);
         }
     }));
 

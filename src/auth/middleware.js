@@ -16,7 +16,7 @@ export default ({
     authorize: (req, res, next) => {
         req.user
             ? next()
-            : res.redirect(`//auth.${APP_DOMAIN}`);
+            : res.redirect(`//auth.${APP_DOMAIN}/login`);
     },
 
     authorizeDomain: domain => (req, res, next) => {
@@ -37,6 +37,25 @@ export default ({
 
     authenticatedRouter: (req, res, next) => {
         req.user ? next() : next('router');
+    },
+
+    redirect: (req, res, next) => {
+        if (req.query.redirect)
+            res.redirect(req.query.redirect);
+        else if (!req.user)
+            res.redirect(`//auth.${APP_DOMAIN}/login`);
+        else if (req.user.hasDomain('crm'))
+            res.redirect(`//crm.${APP_DOMAIN}`);
+        else if (req.user.hasDomain('cms'))
+            res.redirect(`//cms.${APP_DOMAIN}`);
+        else if (req.user.hasDomain('lms'))
+            res.redirect(`//lms.${APP_DOMAIN}`);
+        else if (req.user.hasDomain('club'))
+            res.redirect(`//club.${APP_DOMAIN}`);
+        else if (req.user.hasDomain('lk'))
+            res.redirect(`//lk.${APP_DOMAIN}`);
+        else
+            next();
     },
 
     recaptcha: async (req, res, next) => {
@@ -61,24 +80,5 @@ export default ({
         }
 
         next();
-    },
-
-    redirect: (req, res, next) => {
-        if (req.query.redirect)
-            res.redirect(req.query.redirect);
-        else if (!req.user)
-            res.redirect(`//auth.${APP_DOMAIN}`);
-        else if (req.user.hasDomain('crm'))
-            res.redirect(`//crm.${APP_DOMAIN}`);
-        else if (req.user.hasDomain('cms'))
-            res.redirect(`//cms.${APP_DOMAIN}`);
-        else if (req.user.hasDomain('lms'))
-            res.redirect(`//lms.${APP_DOMAIN}`);
-        else if (req.user.hasDomain('club'))
-            res.redirect(`//club.${APP_DOMAIN}`);
-        else if (req.user.hasDomain('lk'))
-            res.redirect(`//lk.${APP_DOMAIN}`);
-        else
-            next();
     }
 });

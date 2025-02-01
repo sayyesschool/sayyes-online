@@ -1,1 +1,2 @@
-export { default, Middleware } from './module';
+export { default as middleware } from './middleware';
+export { default } from './module';

@@ -1,7 +1,10 @@
 import passport from 'passport';
 import { Strategy } from 'passport-vkontakte';
 
-export default (Auth, { VKONTAKTE_CLIENT_ID, VKONTAKTE_CLIENT_SECRET, VKONTAKTE_CALLBACK_URL }) => {
+export default ({
+    config: { VKONTAKTE_CLIENT_ID, VKONTAKTE_CLIENT_SECRET, VKONTAKTE_CALLBACK_URL },
+    services: { Auth }
+}) => {
     const config = {
         clientID: VKONTAKTE_CLIENT_ID,
         clientSecret: VKONTAKTE_CLIENT_SECRET,
@@ -27,9 +30,9 @@ export default (Auth, { VKONTAKTE_CLIENT_ID, VKONTAKTE_CLIENT_SECRET, VKONTAKTE_
         };
 
         if (req.user) {
-            Auth.connect(req.user, account, done);
+            Auth.connectAccount(req.user, account, done);
         } else {
-            Auth.authorize(account, done);
+            Auth.authorizeAccount(account, done);
         }
     }));
 
