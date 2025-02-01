@@ -1,7 +1,12 @@
-import db from '@/db';
+import DB from 'db';
+
+import context from './context';
+
+const db = DB(context);
 
 export async function mochaGlobalSetup () {
-    await db.connect('mongodb://localhost:27017/sayyes-test');
+    await db.connect();
+    await db.drop();
 }
 
 export async function mochaGlobalTeardown () {

@@ -1,15 +1,4 @@
-import { rejects } from 'node:assert/strict';
-
 import expect from 'expect';
-import { model } from 'mongoose';
-
-import { DataSchema } from 'core/models/data';
-import { MeetingSchema } from 'core/models/meeting';
-import { MembershipSchema } from 'core/models/membership';
-import { RegistrationSchema } from 'core/models/registration';
-import { UserSchema } from 'core/models/user';
-import AuthService from 'core/services/Auth';
-import ClubService from 'core/services/Club';
 
 import datetime from 'shared/libs/datetime';
 
@@ -24,46 +13,22 @@ import {
     MEMBERSHIP_FULL,
     PACKS,
     PACKS_MAP,
-    USER,
     ZOOM_MEETING
 } from 'test/data';
-import {
-    Mail,
-    Newsletter,
-    Zoom
-} from 'test/mocks';
-import { config } from 'test/func/context';
+import { rejects } from 'test/helpers';
+import context from 'test/func/context';
+import { withUser } from 'test/func/helpers';
 
-const Data = model('Data', DataSchema);
-const Meeting = model('Meeting', MeetingSchema);
-const Membership = model('Membership', MembershipSchema);
-const Registration = model('Registration', RegistrationSchema);
-const User = model('User', UserSchema);
-
-const Auth = AuthService({
-    models: { User },
-    services: { Mail }
-});
-const Club = ClubService({
-    config,
-    clients: { zoom: Zoom },
-    models: { Data, Meeting, Registration, Membership, User },
-    services: {
-        Auth,
-        Mail,
-        Newsletter
-    }
-});
+const {
+    models: { Data, Meeting, Membership, Registration },
+    services: { Club, Mail, Zoom }
+} = context;
 
 describe('ClubService', () => {
-    let user;
-
-    before(async () => {
-        await User.deleteMany({});
-        user = await User.create(USER);
-    });
+    const user = withUser();
 
     beforeEach(() => {
+        console.log(Mail);
         Mail.sendMany.reset();
     });
 
@@ -236,6 +201,35 @@ describe('ClubService', () => {
 
                 expect(deletedMeeting).toNotExist();
             });
+        });
+    });
+
+    describe('payments', () => {
+        describe('processPayment', () => {
+            it.only('creates a membership', () => {
+                console.log({ user });
+                // const payment = Club.createPayment({
+                //     uuid: '00000000-0000-0000-0000-000000000000'
+                // });
+
+                // Club.processPayment(payment);
+
+                // expect(Club.createMembership).toHaveBeenCalled();
+            });
+
+            it('updates the payment if it came from a user');
+
+            it('registers for a meeting if meetingId is present');
+
+            it('updates the associated request if requestId is present');
+
+            it('updates another request if requestId is present');
+
+            it.skip('rejects in payment is not found', () => {});
+
+            it.skip('rejects if payment is not paid', () => {});
+
+            it.skip('rejects if user is not found');
         });
     });
 

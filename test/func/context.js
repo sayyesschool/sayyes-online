@@ -1,24 +1,32 @@
 import config from 'config';
-import core from 'core';
+import { YooKassa } from 'core/clients/checkout';
+import setupModels from 'core/models';
+import setupServices from 'core/services';
 
-import { Middleware as AuthMiddleware } from 'auth';
+import { middleware as authMiddleware } from 'auth';
 
-const { clients, models, services } = core(config);
-const auth = AuthMiddleware({ config, models });
-const context = {
+import { HH, Mail, Storage, Zoom } from 'test/mocks';
+
+export { config };
+
+export const clients = {
+    checkout: YooKassa(config),
+    hh: HH,
+    mail: Mail,
+    storage: Storage,
+    zoom: Zoom
+};
+
+export const models = setupModels(config);
+
+export const services = setupServices(config, clients, models);
+
+export default {
     config,
     clients,
     models,
     services,
     middleware: {
-        auth
+        ...authMiddleware({ config, models })
     }
-};
-
-export {
-    clients,
-    config,
-    context as default,
-    models,
-    services
 };

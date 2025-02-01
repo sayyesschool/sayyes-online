@@ -10,6 +10,7 @@ sinon.addBehavior('returnsQuery', (fake, value) => {
     });
 });
 
+export { rejects } from 'node:assert/strict';
 export { mock } from 'node:test';
 
 export function at(time = '00:00') {
@@ -35,3 +36,5 @@ export function toJSON(arg) {
 
     return JSON.parse(JSON.stringify(arg?.toJSON ? arg.toJSON() : arg));
 }
+
+export async function noopAsync() {}

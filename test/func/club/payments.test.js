@@ -2,7 +2,14 @@ import expect from 'expect';
 
 import { mock, toJSON } from '../../helpers';
 import context from '../context';
-import { DEFAULT_MEETING, NEW_PAYMENT, PACK_ID, PAID_PAYMENT, USER_DATA, USER_EMAIL } from '../data';
+import {
+    DEFAULT_MEETING,
+    NEW_PAYMENT,
+    PACK_ID,
+    PAID_PAYMENT,
+    USER_DATA,
+    USER_EMAIL
+} from '../data';
 
 import api from './api';
 
