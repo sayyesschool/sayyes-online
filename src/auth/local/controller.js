@@ -32,10 +32,10 @@ export default ({
                 }
             });
 
-            res.redirect('/');
+            res.redirect(req.query.redirect || '/');
         }).catch(error => {
             req.flash('error', error.message || error);
-            res.redirect('back');
+            res.redirect('/register');
         });
     },
 
@@ -43,17 +43,17 @@ export default ({
         Auth.login(req.body.email?.toLowerCase(), req.body.password)
             .then(user => {
                 req.session.userId = user.id;
-                res.redirect('/');
+                res.redirect(req.query.redirect || '/');
             })
             .catch(error => {
                 req.flash('error', error.message || error);
-                res.redirect('/' + (req.query.redirect ? `?redirect=${req.query.redirect}` : ''));
+                res.redirect('/login');
             });
     },
 
     logout(req, res) {
         req.session.userId = undefined;
-        res.redirect('/');
+        res.redirect('/login');
     },
 
     resetPassword(req, res) {
@@ -63,7 +63,7 @@ export default ({
         if (!password) {
             req.flash('error', 'Пароль не указан');
 
-            return res.redirect('/');
+            return res.redirect(req.originalUrl);
         }
 
         req.session.userId = undefined;
@@ -71,11 +71,12 @@ export default ({
         Auth.resetPassword(token, password)
             .then(() => {
                 req.flash('success', 'Пароль изменен');
+                res.redirect('/login');
             })
             .catch(error => {
                 req.flash('error', error.message || error);
-            })
-            .finally(() => res.redirect('/'));
+                res.redirect(req.originalUrl);
+            });
     },
 
     showLoginForm(req, res, next) {
@@ -91,32 +92,22 @@ export default ({
         Auth.sendResetPasswordToken(req.body.email)
             .then(() => {
                 req.flash('info', 'На указанный адрес было отправлено письмо для сброса пароля');
-                res.redirect('/');
+                res.redirect('/login');
             })
             .catch(error => {
                 req.flash('error', error.message || error);
-                res.redirect('/');
+                res.redirect(req.originalUrl);
             });
     },
 
     showResetPasswordForm(req, res) {
-        if (!req.params.token) return res.redirect('/');
+        if (!req.params.token)
+            return res.redirect('/login');
 
         res.render('reset', {
             id: 'reset',
             title: 'Сброс пароля',
             token: req.params.token
         });
-    },
-
-    redirect(req, res) {
-        if (!req.session.redirect)
-            return res.redirect('/');
-
-        const redirect = req.session.redirect;
-
-        delete req.session.redirect;
-
-        return res.redirect(redirect);
     }
 });

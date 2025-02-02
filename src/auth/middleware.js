@@ -16,19 +16,19 @@ export default ({
     authorize: (req, res, next) => {
         req.user
             ? next()
-            : res.redirect(`//auth.${APP_DOMAIN}/login`);
+            : res.redirect(getRedirectUrl(APP_DOMAIN, req));
     },
 
     authorizeDomain: domain => (req, res, next) => {
         req.user?.hasDomain(domain)
             ? next()
-            : res.redirect(`//auth.${APP_DOMAIN}`);
+            : res.redirect(getRedirectUrl(domain, req));
     },
 
     authorizeRoles: allowedRoles => (req, res, next) => {
         req.user?.is(allowedRoles)
             ? next()
-            : res.redirect(`//auth.${APP_DOMAIN}`);
+            : res.redirect(getRedirectUrl(APP_DOMAIN, req));
     },
 
     authenticatedRoute: (req, res, next) => {
@@ -40,10 +40,10 @@ export default ({
     },
 
     redirect: (req, res, next) => {
-        if (req.query.redirect)
+        if (!req.user)
+            res.redirect(getRedirectUrl(APP_DOMAIN, req));
+        else if (req.query.redirect)
             res.redirect(req.query.redirect);
-        else if (!req.user)
-            res.redirect(`//auth.${APP_DOMAIN}/login`);
         else if (req.user.hasDomain('crm'))
             res.redirect(`//crm.${APP_DOMAIN}`);
         else if (req.user.hasDomain('cms'))
@@ -82,3 +82,16 @@ export default ({
         next();
     }
 });
+
+function getRedirectUrl(domain, req) {
+    const baseHost = `auth.${domain}`;
+    const loginUrl = `//${baseHost}/login`;
+
+    if (req.query.redirect) {
+        return `${loginUrl}?redirect=${req.query.redirect}`;
+    } else if (req.host !== baseHost) {
+        return `${loginUrl}?redirect=//${req.host}${req.originalUrl}`;
+    } else {
+        return loginUrl;
+    }
+}
