@@ -80,11 +80,12 @@ export default ({
 
         await user.generateResetPasswordToken();
 
-        Mail.send({
+        await Mail.send({
             subject: 'Изменение пароля для входа на сайт',
-            to: [{
-                email: user.email
-            }],
+            to: {
+                email: user.email,
+                name: user.fullname
+            },
             templateId: 5329582,
             variables: {
                 firstname: user.firstname,

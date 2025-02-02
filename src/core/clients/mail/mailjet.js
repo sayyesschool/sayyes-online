@@ -9,37 +9,36 @@ export default ({
     const client = new Mailjet({ apiKey, apiSecret });
 
     return {
-        async send(...messages) {
+        async send(messages) {
             return client
                 .post('send', { version: API_VERSION })
                 .request({
                     Messages: messages.map(({
-                        from = this.defaultFrom,
-                        to, subject,
+                        from,
+                        to,
+                        subject,
                         text,
                         html,
                         templateId,
                         variables,
                         attachments
-                    }) => [
-                        {
-                            From: {
-                                Email: from.email,
-                                Name: from.name
-                            },
-                            To: resolveTo(to).map(({ name, email }) => ({
-                                Name: name,
-                                Email: email
-                            })),
-                            Subject: subject,
-                            TextPart: text,
-                            HTMLPart: html,
-                            TemplateID: templateId,
-                            TemplateLanguage: !!variables,
-                            Variables: variables,
-                            Attachments: attachments
-                        }
-                    ])
+                    }) => ({
+                        From: {
+                            Email: from.email,
+                            Name: from.name
+                        },
+                        To: resolveTo(to).map(({ name, email }) => ({
+                            Name: name,
+                            Email: email
+                        })),
+                        Subject: subject,
+                        TextPart: text,
+                        HTMLPart: html,
+                        TemplateID: templateId,
+                        TemplateLanguage: !!variables,
+                        Variables: variables,
+                        Attachments: attachments
+                    }))
                 })
                 .then(data => data.response.data)
                 .catch(console.error);

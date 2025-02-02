@@ -3,11 +3,13 @@ export default ({
     clients: { mail }
 }) => ({
     defaultFrom: {
-        email: `info@${config.EMAIL_DOMAIN}`,
+        email: `admin@${config.EMAIL_DOMAIN}`,
         name: 'SAY YES English School'
     },
 
-    async send(...messages) {
+    async send(arg) {
+        const messages = Array.isArray(arg) ? arg : [arg];
+
         return mail.send(messages.map(m => ({
             ...m,
             from: m.from || this.defaultFrom
