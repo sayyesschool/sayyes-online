@@ -1,4 +1,4 @@
-import db from './db';
+import { db } from './context';
 
 export async function mochaGlobalSetup () {
     await db.connect();

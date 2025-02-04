@@ -2,9 +2,8 @@ import express, { json } from 'express';
 
 import { flash, session } from 'server/middleware';
 
-import { config } from './context';
+import { config, db } from './context';
 import { USER } from './data';
-import db from './db';
 
 export function user(req, res, next) {
     req.app.user = USER;
