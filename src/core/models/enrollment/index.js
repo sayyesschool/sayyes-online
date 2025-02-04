@@ -1,2 +1,2 @@
 export * from './constants';
-export { default, Enrollment } from './Enrollment';
+export { default, Enrollment as EnrollmentSchema } from './Enrollment';

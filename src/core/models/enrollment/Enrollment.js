@@ -199,4 +199,18 @@ Enrollment.methods.rescheduleLessons = function(lessons, startDate = new Date())
         });
 };
 
+Enrollment.methods.getStartDateForSchedule = function(from, schedule) {
+    for (const item of schedule) {
+        const date = datetime().weekday(item.day);
+
+        if (date.isBefore(from)) {
+            continue;
+        } else {
+            return date;
+        }
+    }
+
+    return this.getStartDateForSchedule(from.add(7, 'days'), schedule);
+};
+
 export default Enrollment;
