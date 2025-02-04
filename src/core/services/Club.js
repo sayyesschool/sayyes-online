@@ -813,7 +813,8 @@ export default ({
             subject: `В вашем абонементе осталось ${ALMOST_FULL_LIMIT_DIFFERENCE} встречи`,
             templateId: emailTemplates.MEMBERSHIP_ALMOST_FULL,
             variables: {
-                firstname: m.user.firstname
+                firstname: m.user.firstname,
+                clubUrl: this.clubUrl
             }
         }));
 
@@ -825,7 +826,8 @@ export default ({
             subject: 'Ваш абонемент закончился',
             templateId: emailTemplates.MEMBERSHIP_FULL,
             variables: {
-                firstname: m.user.firstname
+                firstname: m.user.firstname,
+                clubUrl: this.clubUrl
             }
         }));
 
@@ -850,7 +852,8 @@ export default ({
             subject: 'Через 24 часа действие абонемента закончится',
             templateId: emailTemplates.MEMBERSHIP_EXPIRING_IN_1_DAY,
             variables: {
-                firstname: m.user.firstname
+                firstname: m.user.firstname,
+                clubUrl: this.clubUrl
             }
         }));
 
@@ -862,7 +865,8 @@ export default ({
             subject: 'Ваш абонемент закончился',
             templateId: emailTemplates.MEMBERSHIP_EXPIRED,
             variables: {
-                firstname: m.user.firstname
+                firstname: m.user.firstname,
+                clubUrl: this.clubUrl
             }
         }));
 
