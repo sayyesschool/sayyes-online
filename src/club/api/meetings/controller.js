@@ -6,13 +6,11 @@ export default ({
             ...req.query,
             status: { $ne: 'canceled' }
         };
-        const meetings = req.user.isTeacher ?
-            await Club.findMeetings(query)
-                .populate({ path: 'registrations', populate: { path: 'user' } })
-                .sort({ date: 1 }) :
-            await Club.findMeetings(query)
-                .populate('registrations')
-                .sort({ date: 1 });
+        const meetings = await Club.findMeetings(query)
+            .populate(req.user.isTeacher
+                ? { path: 'registrations', populate: { path: 'user' } }
+                : 'registrations'
+            ).sort({ date: 1 });
 
         res.send({
             ok: true,
@@ -130,7 +128,7 @@ function mapMeeting(meeting, userId) {
 
     return {
         ...meeting.toJSON(),
-        isRegistered: registration?.userId == userId && registration.isApproved,
-        joinUrl: registration?.joinUrl || meeting?.joinUrl
+        isRegistered: registration && registration.userId == userId && registration.isApproved,
+        joinUrl: registration && registration.joinUrl || meeting?.joinUrl
     };
 }
