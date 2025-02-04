@@ -10,6 +10,7 @@ const imports = {
     cms: `${ROOT_PATH}/src/cms/`,
     crm: `${ROOT_PATH}/src/crm/`,
     lms: `${ROOT_PATH}/src/lms/`,
+    server: `${ROOT_PATH}/src/server/`,
     shared: `${ROOT_PATH}/src/shared/`,
     test: `${ROOT_PATH}/test/`
 };

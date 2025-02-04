@@ -81,7 +81,7 @@
                         "^@?\\w"
                     ],
                     [
-                        "^(config|db|core)(/.*|$)"
+                        "^(config|core|db|server)(/.*|$)"
                     ],
                     [
                         "^(@/shared|shared)(/.*|$)",
