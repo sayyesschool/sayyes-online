@@ -41,7 +41,7 @@ export default function Pack({
             <Button
                 className="mh-auto"
                 content="Далее"
-                disabled={!selectedPack}
+                disabled={!selectedPack && !amount}
                 outlined
                 onClick={onNext}
             />
