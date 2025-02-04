@@ -10,7 +10,7 @@ export default ({
         });
     },
 
-    register(req, res) {
+    async register(req, res) {
         const password = Auth.generatePassword();
 
         Auth.register({
@@ -19,7 +19,7 @@ export default ({
         }).then(user => {
             req.session.userId = user.id;
 
-            Mail.send({
+            return Mail.send({
                 subject: 'Добро пожаловать в SAY YES Online!',
                 to: [{
                     email: user.email
@@ -31,11 +31,21 @@ export default ({
                     password
                 }
             });
-
-            res.redirect(req.query.redirect || '/');
+        }).then(() => {
+            req.flash('info', 'На указанный адрес было отправлено письмо с паролем');
+            res.redirect(req.query.redirect || '/login');
         }).catch(error => {
             req.flash('error', error.message || error);
             res.redirect('/register');
+        });
+    },
+
+    loginPage(req, res, next) {
+        if (req.user) return next();
+
+        res.render('login', {
+            title: 'Вход',
+            redirect: req.query?.redirect
         });
     },
 
@@ -54,6 +64,26 @@ export default ({
     logout(req, res) {
         req.session.userId = undefined;
         res.redirect('/login');
+    },
+
+    resetPasswordToken(req, res) {
+        Auth.sendResetPasswordToken(req.body.email)
+            .then(() => {
+                req.flash('info', 'На указанный адрес было отправлено письмо для сброса пароля');
+                res.redirect('/login');
+            })
+            .catch(error => {
+                req.flash('error', error.message || error);
+                res.redirect('/login');
+            });
+    },
+
+    resetPasswordPage(req, res) {
+        res.render('reset', {
+            id: 'reset',
+            title: 'Сброс пароля',
+            token: req.params.token
+        });
     },
 
     resetPassword(req, res) {
@@ -77,37 +107,5 @@ export default ({
                 req.flash('error', error.message || error);
                 res.redirect(req.originalUrl);
             });
-    },
-
-    showLoginForm(req, res, next) {
-        if (req.user) return next();
-
-        res.render('login', {
-            title: 'Вход',
-            redirect: req.query?.redirect
-        });
-    },
-
-    sendResetPasswordToken(req, res) {
-        Auth.sendResetPasswordToken(req.body.email)
-            .then(() => {
-                req.flash('info', 'На указанный адрес было отправлено письмо для сброса пароля');
-                res.redirect('/login');
-            })
-            .catch(error => {
-                req.flash('error', error.message || error);
-                res.redirect(req.originalUrl);
-            });
-    },
-
-    showResetPasswordForm(req, res) {
-        if (!req.params.token)
-            return res.redirect('/login');
-
-        res.render('reset', {
-            id: 'reset',
-            title: 'Сброс пароля',
-            token: req.params.token
-        });
     }
 });
