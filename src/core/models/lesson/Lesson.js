@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import datetime, { isToday } from 'shared/libs/datetime';
+import datetime from 'shared/libs/datetime';
 
 import { LessonStatus, LessonType } from './constants';
 

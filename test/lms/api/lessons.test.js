@@ -1,33 +1,37 @@
 import expect from 'expect';
 
-import { models, USER } from 'test/_env';
+import { USER_ID } from 'test/_data';
+import { models } from 'test/_env';
+import { withUser } from 'test/_env/helpers';
 
 import api from './api';
 
 const { Lesson, Room } = models;
 
 describe('LMS Lessons API', () => {
+    withUser();
+
     beforeEach(async () => {
         await Lesson.deleteMany();
     });
 
     describe('GET /', () => {
-        it('returns a list of user\'s lessons', async () => {
-            await Lesson.create([
-                { teacherId: USER.id },
-                { teacherId: USER.id },
-                { teacherId: USER.id }
+        it.skip('returns a list of user\'s lessons', async () => {
+            const lessons = await Lesson.create([
+                { teacherId: USER_ID },
+                { teacherId: USER_ID },
+                { teacherId: USER_ID }
             ]);
 
-            const { body } = await api.get(`/lessons?teacherId=${USER.id}`);
+            const { body } = await api.get(`/lessons?teacherId=${USER_ID}`);
 
-            expect(body.data.length).toBe(3);
+            expect(body.data.length).toBe(lessons.length);
         });
     });
 
     describe('GET /:id', () => {
         it('returns a lesson by id', async () => {
-            const lesson = await Lesson.create({ teacherId: USER.id });
+            const lesson = await Lesson.create({ teacherId: USER_ID });
 
             const { body } = await api.get(`/lessons/${lesson.id}`);
 

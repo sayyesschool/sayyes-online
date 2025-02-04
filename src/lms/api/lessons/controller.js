@@ -4,9 +4,9 @@ export default ({
 }) => ({
     async get(req, res) {
         const lessons = await Lesson.find(req.query)
-            .sort({ date: 1 })
             .populate('learner', 'firstname lastname email')
-            .populate('room', 'title login password');
+            .populate('room', 'title login password')
+            .sort({ date: 1 });
 
         res.json({
             ok: true,
