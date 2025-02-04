@@ -3,9 +3,8 @@ import { resolve } from 'node:path';
 import express from 'express';
 import vhost from 'vhost';
 
-import local from './local';
+import api from './api';
 import Middleware from './middleware';
-import oauth from './oauth';
 
 export default (domain, context) => {
     const app = express();
@@ -19,8 +18,7 @@ export default (domain, context) => {
         basedir: context.config.APP_PATH
     });
 
-    app.use(local(context));
-    // app.use(oauth(context));
+    app.use(api(context));
     app.use(middleware.redirect);
 
     return vhost(`${domain}.${context.config.APP_DOMAIN}`, app);

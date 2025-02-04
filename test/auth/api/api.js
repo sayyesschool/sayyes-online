@@ -2,7 +2,7 @@ import { resolve } from 'node:path';
 
 import supertest from 'supertest';
 
-import auth from 'auth/local';
+import auth from 'auth/api';
 
 import { context, server } from 'test/_env';
 

@@ -11,7 +11,7 @@ import lms from './lms';
 import pay from './pay';
 import server from './server';
 
-const { authenticate, authorize, redirect } = context.middleware;
+const { authenticate, authorize } = context.middleware;
 
 server(context, db(context))
     .use(authenticate)
@@ -24,5 +24,4 @@ server(context, db(context))
     .use(authorize, crm('crm', context))
     .use(authorize, lk('lk', context))
     .use(authorize, lms('lms', context))
-    .use(redirect)
     .start();
