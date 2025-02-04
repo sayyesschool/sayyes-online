@@ -188,41 +188,55 @@ export default ({
     },
 
     async createPayment({
-        email,
-        name,
+        contact: {
+            name,
+            email,
+            phone
+        } = {},
         userId,
         packId,
         meetingId,
         requestId,
         utm
-    } = {}) {
+    } = { contact: {} }) {
+        if (!userId && !email) throw {
+            code: 400,
+            message: 'Не указан email'
+        };
+
         const pack = await this.getPack(packId);
+
+        if (!pack) throw {
+            code: 404,
+            message: 'Пакет не найден'
+        };
+
         const user = await User.findOne({ $or: [{ _id: userId }, { email }] });
-        const userEmail = user?.email ?? email;
 
         if (userId && !user) throw {
             code: 404,
             message: 'Пользователь не найден'
         };
 
-        if (!userEmail) throw {
-            code: 400,
-            message: 'Не указан email'
-        };
+        const paymentRequest = await Request.create({
+            type: Request.Type.Membership,
+            contact: user ? undefined : {
+                name,
+                email,
+                phone
+            },
+            channel: Request.Channel.Email,
+            source: Request.Source.Site,
+            learnerId: user?.id,
+            requestId,
+            utm
+        });
 
         if (requestId) {
             await Request.update(requestId, {
-                status: Request.Status.Completed
-            });
-
-            requestId = await Request.create({
-                description: 'Покупка абонемента',
-                contact: user ? undefined : {
-                    email: userEmail,
-                    name: user?.name ?? name
-                },
+                status: Request.Status.Completed,
                 learnerId: user?.id,
-                utm
+                requestId: paymentRequest.id
             });
         }
 
@@ -232,14 +246,15 @@ export default ({
             confirmation: {
                 type: 'embedded'
             },
-            email: userEmail,
+            email: user?.email ?? email,
             metadata: {
                 email: user ? undefined : email,
                 name: user ? undefined : name,
+                phone: user ? undefined : phone,
                 userId: user?.id,
-                packId: pack.id,
+                membershipPackId: pack.id,
                 meetingId,
-                requestId
+                requestId: paymentRequest.id
             }
         });
     },
@@ -276,11 +291,11 @@ export default ({
             await Payment.update(payment.id, { userId: user.id });
         }
 
-        await this.createMembership(user.id, payment.metadata.membershipPackId, payment.id);
+        const membership = await this.createMembership(user.id, payment.metadata.membershipPackId, payment.id);
 
-        if (payment.metadata.meetingId) {
-            await this.registerForMeeting(user, payment.metadata.meetingId);
-        }
+        const registration = payment.metadata.meetingId
+            ? await this.registerForMeeting(user, payment.metadata.meetingId)
+            : null;
 
         if (payment.metadata.requestId) {
             const request = await Request.update(payment.metadata.requestId, {
@@ -295,6 +310,14 @@ export default ({
                 });
             }
         }
+
+        return {
+            paymentId: payment.id,
+            userId: user.id,
+            membershipId: membership.id,
+            registrationId: registration?.id,
+            requestId: payment.metadata.requestId
+        };
     },
 
     findMeetings(...args) {
@@ -389,6 +412,7 @@ export default ({
         const meeting = await Meeting.findByIdAndUpdate(id, {
             status: 'canceled'
         }, { new: true });
+
         const registrations = await Registration.find({
             meetingId: meeting.id
         });
@@ -407,14 +431,11 @@ export default ({
             variables: {
                 firstname: registration.user.firstname,
                 title: meeting.title,
-                datetime: meeting.datetime,
-                host: `${meeting.host.firstname} ${meeting.host.lastname}`,
-                level: meeting.level,
-                thumbnailUrl: meeting.thumbnailUrl || ''
+                datetime: meeting.datetime
             }
         }));
 
-        await Mail.sendMany(messages);
+        await Mail.send(messages);
 
         return meeting;
     },
@@ -487,7 +508,10 @@ export default ({
             });
         }
 
-        return registration.populate('user');
+        return registration.populate({
+            path: 'user',
+            select: 'firstname lastname email'
+        });
     },
 
     async unregisterFromMeeting($user, $meeting) {
@@ -640,7 +664,11 @@ export default ({
             });
         }
 
-        return deletedRegistration;
+        return deletedRegistration.populate({
+            path: 'user',
+            select: 'firstname lastname email',
+            options: { lean: true }
+        });
     },
 
     async approveRegistration($meeting, $registration, membership) {
@@ -765,7 +793,7 @@ export default ({
             }
         }));
 
-        await Mail.sendMany(messages);
+        await Mail.send(messages);
     },
 
     async sendMembershipsReminders() {
@@ -838,7 +866,7 @@ export default ({
             }
         }));
 
-        await Mail.sendMany([
+        await Mail.send([
             ...almostFullMessages,
             ...fullMessages,
             ...messagesExpiringIn3Days,
