@@ -65,7 +65,15 @@ export default ({
         },
 
         async resolvePayment(uuid) {
-            const payment = await checkout.getPayment(uuid);
+            const payment = await checkout.getPayment(uuid).catch(error => {
+                if (error.code === 'not_found') return null;
+                else throw error;
+            });
+
+            if (!payment) throw {
+                code: 404,
+                message: 'Платеж не найден'
+            };
 
             return Payment.findOneAndUpdate({ uuid: payment.id }, {
                 status: payment.status,
@@ -96,7 +104,6 @@ export default ({
         },
 
         async cancelPayment(uuid) {
-            console.log(await checkout.getPayment(uuid));
             const payment = await checkout.cancelPayment(uuid);
 
             if (payment.isPending || payment.isCanceled) {
