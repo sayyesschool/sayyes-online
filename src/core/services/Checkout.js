@@ -99,6 +99,7 @@ export default ({
                         issuer: payment.payment_method.card.issuer_name
                     }
                 },
+                cancelation: payment.cancellation_details,
                 paidAt: payment.captured_at
             }, { new: true });
         },
