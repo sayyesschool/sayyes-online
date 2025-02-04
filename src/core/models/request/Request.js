@@ -41,7 +41,10 @@ export const Request = new Schema({
             maxlength: [256, 'Адрес электронный почты слишком длинный.'],
             match: [/^[a-zA-Z0-9'._%+-]+@[a-zA-Z0-9-][a-zA-Z0-9.-]*\.[a-zA-Z]{2,63}$/, 'Неверный формат адреса электронной почты.']
         },
-        phone: { type: String, set: value => value.trim().replace(/[\s()\-\+]+/g, '') }
+        phone: {
+            type: String,
+            set: (value = '') => value.trim().replace(/[\s()\-+]+/g, '')
+        }
     },
     note: { type: String, trim: true, default: '' },
     referrer: { type: String },

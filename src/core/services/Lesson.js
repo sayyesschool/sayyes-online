@@ -27,7 +27,7 @@ export default (Lesson, Mail) => ({
                 }));
 
                 if (messages.length > 0) {
-                    Mail.sendMany(messages);
+                    Mail.send(messages);
                 }
             });
     },
@@ -58,7 +58,7 @@ export default (Lesson, Mail) => ({
                 }));
 
                 if (messages.length > 0) {
-                    Mail.sendMany(messages);
+                    Mail.send(messages);
                 }
             });
     },
@@ -89,7 +89,7 @@ export default (Lesson, Mail) => ({
                 }));
 
                 if (messages.length > 0) {
-                    Mail.sendMany(messages);
+                    Mail.send(messages);
                 }
             });
     }

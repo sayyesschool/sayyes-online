@@ -77,15 +77,15 @@ User.virtual('url').get(function() {
 });
 
 User.virtual('isAdmin').get(function() {
-    return this.role === UserRole.Admin;
+    return this.role && this.role === UserRole.Admin;
 });
 
 User.virtual('isLearner').get(function() {
-    return this.role === UserRole.Learner;
+    return this.role && this.role === UserRole.Learner;
 });
 
 User.virtual('isManager').get(function() {
-    return this.role === UserRole.Manager;
+    return this.role && this.role === UserRole.Manager;
 });
 
 User.virtual('isMember').get(function() {
@@ -93,7 +93,7 @@ User.virtual('isMember').get(function() {
 });
 
 User.virtual('isTeacher').get(function() {
-    return this.role === UserRole.Teacher;
+    return this.role && this.role === UserRole.Teacher;
 });
 
 /* Methods */
