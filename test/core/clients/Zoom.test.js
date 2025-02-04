@@ -6,31 +6,21 @@ import Zoom from 'core/clients/zoom';
 
 import datetime from 'shared/libs/datetime';
 
-import { config } from 'test/func/context';
+import { config } from 'test/_env';
 
-const zoom = Zoom({
-    accountId: config.ZOOM_ACCOUNT_ID,
-    clientId: config.ZOOM_CLIENT_ID,
-    clientSecret: config.ZOOM_CLIENT_SECRET
-});
+const zoom = Zoom(config);
 
 describe('Zoom client', () => {
-    describe('refreshToken', () => {
-        it('should get and save a token', async () => {
-            await zoom.refreshToken();
-        });
-    });
-
     describe('meetings', () => {
         let meetingId;
 
-        it('should get meetings', async () => {
+        it('gets meetings', async () => {
             const { meetings } = await zoom.meetings.list();
 
             expect(meetings).toBeAn(Array);
         });
 
-        it('should create meeting', async () => {
+        it('creates a meeting', async () => {
             const meeting = await zoom.meetings.create({
                 topic: 'Test meeting',
                 type: 2,
@@ -59,13 +49,13 @@ describe('Zoom client', () => {
             expect(meeting).toExist();
         });
 
-        it('should get meeting', async () => {
+        it('gets a meeting', async () => {
             const meeting = await zoom.meetings.get(meetingId);
 
             expect(meeting).toExist();
         });
 
-        it('should update meeting', async () => {
+        it('updates a meeting', async () => {
             await doesNotReject(async () => {
                 await zoom.meetings.update(meetingId, {
                     topic: 'Test meeting updated',
@@ -74,7 +64,7 @@ describe('Zoom client', () => {
             });
         });
 
-        it('should delete meeting', async () => {
+        it('deletes a meeting', async () => {
             await doesNotReject(async () => {
                 await zoom.meetings.delete(meetingId);
             });
