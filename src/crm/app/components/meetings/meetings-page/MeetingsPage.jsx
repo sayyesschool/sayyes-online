@@ -59,7 +59,10 @@ export default function MeetingsPage() {
     if (!meetings) return <LoadingIndicator />;
 
     const filteredMeetings = meetings?.slice()
-        .sort((a, b) => new Date(a.date) - new Date(b.date))
+        .sort((a, b) => tab === 'ended'
+            ? new Date(b.date) - new Date(a.date)
+            : new Date(a.date) - new Date(b.date)
+        )
         .filter(filters[tab]);
 
     return (

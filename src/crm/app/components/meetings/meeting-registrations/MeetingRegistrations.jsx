@@ -62,6 +62,7 @@ export default function MeetingRegistrations({
                     onClick={() => setFormOpen(true)}
                 />
             ]}
+            compact
         >
             {isSearching &&
                 <Input
