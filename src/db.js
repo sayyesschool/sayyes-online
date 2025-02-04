@@ -74,12 +74,12 @@ process.on('SIGINT', async () => {
 });
 
 export default ({
-    config: { DB_CONNECTION_STRING }
+    DB_CONNECTION_STRING
 }) => ({
     connection: mongoose.connection,
 
     async connect(uri = DB_CONNECTION_STRING) {
-        return mongoose.connect(DB_CONNECTION_STRING, {
+        return mongoose.connect(uri, {
             autoIndex: false
         });
     },

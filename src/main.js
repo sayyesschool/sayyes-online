@@ -5,7 +5,6 @@ import club from './club';
 import cms from './cms';
 import context from './context';
 import crm from './crm';
-import db from './db';
 import lk from './lk';
 import lms from './lms';
 import pay from './pay';
@@ -13,7 +12,7 @@ import server from './server';
 
 const { authenticate, authorize } = context.middleware;
 
-server(context, db(context))
+server(context)
     .use(authenticate)
     .use(api('api', context))
     .use(auth('auth', context))

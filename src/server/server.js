@@ -6,7 +6,7 @@ import express from 'express';
 
 import { flash, logger, session } from './middleware';
 
-export default ({ config }, db) => {
+export default ({ config, db }) => {
     const server = express();
 
     server.set('trust proxy', true);
