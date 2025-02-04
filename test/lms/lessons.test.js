@@ -1,33 +1,33 @@
 import expect from 'expect';
 
-import context from '../context';
+import { models, USER } from 'test/_env';
 
 import api from './api';
 
-const {
-    models: { Lesson, Room, User }
-} = context;
-
-const user = new User({ firstname: 'User' });
+const { Lesson, Room } = models;
 
 describe('LMS Lessons API', () => {
+    beforeEach(async () => {
+        await Lesson.deleteMany();
+    });
+
     describe('GET /', () => {
-        it('should return a list of user\'s lessons', async () => {
+        it('returns a list of user\'s lessons', async () => {
             await Lesson.create([
-                { teacherId: user.id },
-                { teacherId: user.id },
-                { teacherId: user.id }
+                { teacherId: USER.id },
+                { teacherId: USER.id },
+                { teacherId: USER.id }
             ]);
 
-            const { body } = await api.get(`/lessons?teacherId=${user.id}`);
+            const { body } = await api.get(`/lessons?teacherId=${USER.id}`);
 
             expect(body.data.length).toBe(3);
         });
     });
 
     describe('GET /:id', () => {
-        it('should return a lesson by id', async () => {
-            const lesson = await Lesson.create({ teacherId: user.id });
+        it('returns a lesson by id', async () => {
+            const lesson = await Lesson.create({ teacherId: USER.id });
 
             const { body } = await api.get(`/lessons/${lesson.id}`);
 
@@ -38,7 +38,7 @@ describe('LMS Lessons API', () => {
     });
 
     describe('POST /', () => {
-        it('should create a lesson', async () => {
+        it('creates a lesson', async () => {
             await Room.create({ name: 'A', active: true });
 
             const date = new Date(2024, 3, 4, 10);
@@ -56,7 +56,7 @@ describe('LMS Lessons API', () => {
     });
 
     describe('PUT /:id', () => {
-        it('should update a lesson', async () => {
+        it('updates a lesson', async () => {
             const date = new Date(2024, 3, 4, 10);
 
             const lesson = await Lesson.create({
@@ -73,7 +73,7 @@ describe('LMS Lessons API', () => {
     });
 
     describe('DELETE /:id', () => {
-        it('should delete a lesson', async () => {
+        it('deletes a lesson', async () => {
             const lesson = await Lesson.create({});
 
             const { body } = await api.delete(`/lessons/${lesson.id}`);

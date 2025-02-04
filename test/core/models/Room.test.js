@@ -1,7 +1,7 @@
 import expect from 'expect';
 
 import { at } from 'test/helpers';
-import { models } from 'test/func/context';
+import { models } from 'test/_env';
 
 const { Lesson, Room } = models;
 

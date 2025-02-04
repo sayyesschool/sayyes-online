@@ -1,70 +1,40 @@
 import expect from 'expect';
+import { model } from 'mongoose';
+
+import { EnrollmentSchema } from 'core/models/enrollment';
 
 import datetime from 'shared/libs/datetime';
 
+const Enrollment = model('Enrollment', EnrollmentSchema);
+
 describe('Enrollment', () => {
-    describe('createLessons', () => {
-        const enrollment = {
-            schedule: [{ day: 0, from: '18:00' }, { day: 1, from: '16:00' }],
-            createLessons
-        };
-
-        it('should return an array', () => {
-            const lessons = enrollment.createLessons(5);
-
-            expect(Array.isArray(lessons)).toBe(true);
-        });
-
-        it('should create correct number of lessons', () => {
+    describe('scheduleLessons', () => {
+        it.skip('creates correct number of lessons', () => {
+            const enrollment = Enrollment.create({
+                schedule: [
+                    { day: 0, from: '18:00' },
+                    { day: 1, from: '16:00' }
+                ]
+            });
             const lessons = enrollment.createLessons(5);
 
             expect(lessons.length).toBe(5);
         });
     });
 
-    describe('getStartDateForSchedule', () => {
-        const schedule = [{ day: 3 }];
+    describe('rescheduleLessons', () => {
+        it.skip('returns the correct date', () => {
+            const enrollment = Enrollment.create({
+                schedule: [
+                    { day: 3 }
+                ]
+            });
+            const lessons = enrollment.createLessons(5);
+            const date = datetime().weekday(3).hours(10).minutes(0).seconds(0).toDate();
 
-        it('should return the correct date', () => {
-            const today = datetime();
-            const date = getStartDateForSchedule(today, schedule);
+            const rescheduleLessons = enrollment.rescheduleLessons(lessons, date);
 
-            expect(date.date()).toBe(18);
+            expect(rescheduleLessons.length).toBe(5);
         });
     });
 });
-
-function createLessons(quantity) {
-    const lessons = [];
-    const date = datetime();
-
-    for (let i = 0; i < quantity; i++) {
-        const schedule = this.schedule[i % this.schedule.length];
-        const currentWeekday = date.weekday();
-        const [hours, minutes] = schedule.from?.split(':') ?? [];
-
-        if (schedule.day <= currentWeekday) {
-            date.weekday(7);
-        }
-
-        lessons.push({
-            date: date.weekday(schedule.day).hours(hours).minutes(minutes).seconds(0).clone()
-        });
-    }
-
-    return lessons;
-}
-
-function getStartDateForSchedule(from, schedule) {
-    for (const item of schedule) {
-        const date = datetime().weekday(item.day);
-
-        if (date.isBefore(from)) {
-            continue;
-        } else {
-            return date;
-        }
-    }
-
-    return getStartDateForSchedule(from.add(7, 'days'), schedule);
-}

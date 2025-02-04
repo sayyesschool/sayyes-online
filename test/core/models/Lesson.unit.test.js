@@ -2,7 +2,7 @@ import expect from 'expect';
 import { model } from 'mongoose';
 import sinon from 'sinon';
 
-import LessonSchema from '@/core/models/lesson/Lesson.js';
+import { LessonSchema } from 'core/models/lesson';
 
 const Lesson = model('Lesson', LessonSchema);
 
@@ -17,7 +17,7 @@ sinon.stub(Lesson, 'find').returnsQuery(sampleLessons);
 
 describe('Lesson', () => {
     describe('findConflicting', () => {
-        it('should return a conflicting lesson if there is a conflict', async () => {
+        it('returns a conflicting lesson if there is a conflict', async () => {
             const conflictingLesson = await Lesson.findConflicting({
                 roomId: '2',
                 date: '2024-03-07T09:00',
@@ -27,7 +27,7 @@ describe('Lesson', () => {
             expect(conflictingLesson).toExist();
         });
 
-        it('should not return a conflicting lesson if there is no conflict', async () => {
+        it('does NOT return a conflicting lesson if there is no conflict', async () => {
             const conflictingLesson = await Lesson.findConflicting({
                 roomId: '2',
                 date: '2024-03-07T08:00',

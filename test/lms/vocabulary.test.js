@@ -1,14 +1,12 @@
 import expect from 'expect';
 
-import { createId } from '../../helpers';
-import context from '../context';
-import { USER_ID } from '../data';
+import { createId } from 'test/helpers';
+import { USER_ID } from 'test/_data';
+import { models } from 'test/_env';
 
 import api from './api';
 
-const {
-    models: { Lexeme, LexemeRecord, Vocabulary }
-} = context;
+const { Lexeme, LexemeRecord, Vocabulary } = models;
 
 describe('LMS Vocabularies API', () => {
     afterEach(async () => {
@@ -19,7 +17,7 @@ describe('LMS Vocabularies API', () => {
 
     describe('Vocabularies', () => {
         describe('GET /', () => {
-            it('should get a list of vocabularies', async () => {
+            it('gets a list of vocabularies', async () => {
                 await Vocabulary.create([
                     { learnerId: USER_ID },
                     { learnerId: USER_ID }
@@ -32,7 +30,7 @@ describe('LMS Vocabularies API', () => {
         });
 
         describe('POST /', () => {
-            it('should create a new vocabulary', async () => {
+            it('creates a new vocabulary', async () => {
                 const { body } = await api.post('/vocabularies').send({});
 
                 expect(body.data).toMatch({
@@ -47,16 +45,7 @@ describe('LMS Vocabularies API', () => {
 
     describe('My vocabulary', () => {
         describe('GET /my', () => {
-            it('should get my vocabulary', async () => {
-                const { body } = await api.get('/vocabularies/my');
-
-                expect(body.data).toMatch({
-                    title: 'Мой словарь',
-                    learnerId: USER_ID
-                });
-            });
-
-            it('should get my vocabulary with lexemes', async () => {
+            it('gets my vocabulary', async () => {
                 const lexemes = await Lexeme.create([
                     { value: 'cat', approved: true },
                     { value: 'dog', approved: true },
@@ -76,13 +65,12 @@ describe('LMS Vocabularies API', () => {
                     title: 'Мой словарь',
                     learnerId: USER_ID
                 });
-
                 expect(body.data.lexemes.length).toBe(lexemes.length);
             });
         });
 
         describe('POST /my', () => {
-            it('should add a lexeme to my vocabulary', async () => {
+            it('adds a lexeme to my vocabulary', async () => {
                 const data = {
                     value: 'cat',
                     definition: 'a furry animal'
@@ -100,7 +88,7 @@ describe('LMS Vocabularies API', () => {
         });
 
         describe('DELETE /my/:lexemeId', () => {
-            it('should delete a lexeme from my vocabulary', async () => {
+            it('removes a lexeme from my vocabulary', async () => {
                 const data = {
                     value: 'cat',
                     definition: 'a furry animal'

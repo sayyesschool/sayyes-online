@@ -1,10 +1,10 @@
 import supertest from 'supertest';
 
-import lms from '@/lms/api';
+import lms from 'lms/api';
 
-import context from '../context';
-import server from '../server';
+import { context, server, user } from 'test/_env';
 
+server.use(user);
 server.use(lms(context));
 
 export default supertest(server);

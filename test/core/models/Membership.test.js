@@ -2,9 +2,9 @@ import expect from 'expect';
 
 import datetime from 'shared/libs/datetime';
 
-import { USER } from 'test/data';
 import { createId, toJSON } from 'test/helpers';
-import { models } from 'test/func/context';
+import { USER } from 'test/_data';
+import { models } from 'test/_env';
 
 const { Membership, User } = models;
 
