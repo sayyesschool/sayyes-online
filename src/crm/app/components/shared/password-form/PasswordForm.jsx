@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 
-import { Checkbox, Form, Input, IconButton } from 'shared/ui-components';
+import CopyButton from 'shared/components/copy-button';
+import { Alert, Form, IconButton, Input } from 'shared/ui-components';
 import { generatePassword } from 'shared/utils/password';
 
 export default function PasswordForm({ onSubmit, ...props }) {
@@ -13,7 +14,6 @@ export default function PasswordForm({ onSubmit, ...props }) {
     const handleClick = useCallback(() => {
         setPassword(generatePassword());
     }, []);
-
 
     const handleSubmit = useCallback(() => {
         onSubmit(password);
@@ -42,9 +42,16 @@ export default function PasswordForm({ onSubmit, ...props }) {
                 onChange={handleChange}
             />
 
-            <Checkbox
-                label="Я сохранил/ла пароль для отправки пользователю."
-                required
+            <Alert
+                content="Не забудьте скопировать пароль для отправки пользователю"
+                color="warning"
+                end={
+                    <CopyButton
+                        copyContent={password}
+                        size="sm"
+                        color="warning"
+                    />
+                }
             />
         </Form>
     );
