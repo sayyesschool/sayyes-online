@@ -16,19 +16,19 @@ export default ({
     authorize: (req, res, next) => {
         req.user
             ? next()
-            : res.redirect(getRedirectUrl(APP_DOMAIN, req));
+            : res.status(403).send('Нет доступа к этому разделу');
     },
 
     authorizeDomain: domain => (req, res, next) => {
         req.user?.hasDomain(domain)
             ? next()
-            : res.redirect(getRedirectUrl(domain, req));
+            : res.status(403).send('Нет доступа к этому разделу');
     },
 
     authorizeRoles: allowedRoles => (req, res, next) => {
         req.user?.is(allowedRoles)
             ? next()
-            : res.redirect(getRedirectUrl(APP_DOMAIN, req));
+            : res.status(403).send('Нет доступа к этому разделу');
     },
 
     authenticatedRoute: (req, res, next) => {
