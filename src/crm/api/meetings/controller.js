@@ -65,7 +65,7 @@ export default ({
             req.params.meetingId,
             {
                 approve: true,
-                force: true,
+                force: req.body.force,
                 notify: req.body.notify
             }
         );

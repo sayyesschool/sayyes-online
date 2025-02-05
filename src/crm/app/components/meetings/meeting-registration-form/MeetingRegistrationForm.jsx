@@ -6,11 +6,12 @@ import Form from 'shared/ui-components/form';
 
 export default function MeetingRegistrationForm({ onSubmit, ...props }) {
     const [userId, setUserId] = useState();
+    const [force, setForce] = useState(false);
     const [notify, setNotify] = useState(false);
 
     const handleSubmit = useCallback(() => {
-        onSubmit({ userId, notify });
-    }, [userId, notify, onSubmit]);
+        onSubmit({ userId, force, notify });
+    }, [userId, force, notify, onSubmit]);
 
     const handleResult = useCallback(userId => {
         setUserId(userId);
@@ -21,8 +22,14 @@ export default function MeetingRegistrationForm({ onSubmit, ...props }) {
             <UserSearch onResult={handleResult} />
 
             <Checkbox
+                label="Требуется абонемент"
+                checked={!force}
+                onChange={() => setForce(v => !v)}
+            />
+
+            <Checkbox
                 label="Отправить письмо с регистрацией на встречу"
-                value={notify}
+                checked={notify}
                 onChange={() => setNotify(v => !v)}
             />
         </Form>
