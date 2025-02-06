@@ -14,21 +14,28 @@ export default ({
     },
 
     authorize: (req, res, next) => {
-        req.user
-            ? next()
-            : res.status(403).send('Нет доступа к этому разделу');
+        if (!req.user)
+            res.redirect(getRedirectUrl(APP_DOMAIN, req));
+        else
+            next();
     },
 
     authorizeDomain: domain => (req, res, next) => {
-        req.user?.hasDomain(domain)
-            ? next()
-            : res.status(403).send('Нет доступа к этому разделу');
+        if (!req.user)
+            res.redirect(getRedirectUrl(APP_DOMAIN, req));
+        else if (req.user.hasDomain(domain))
+            next();
+        else
+            res.status(403).send('Нет доступа к этому разделу');
     },
 
     authorizeRoles: allowedRoles => (req, res, next) => {
-        req.user?.is(allowedRoles)
-            ? next()
-            : res.status(403).send('Нет доступа к этому разделу');
+        if (!req.user)
+            res.redirect(getRedirectUrl(APP_DOMAIN, req));
+        else if (req.user?.is(allowedRoles))
+            next();
+        else
+            res.status(403).send('Нет доступа к этому разделу');
     },
 
     authenticatedRoute: (req, res, next) => {
