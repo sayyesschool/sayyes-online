@@ -87,7 +87,7 @@ export default function DictionaryLexemes({ dictionary, user }) {
         });
     }, []);
 
-    const handleSearch = useCallback(str => actions.search(str), [actions]);
+    const handleSearch = useCallback((str, execludeId) => actions.search(str, execludeId), [actions]);
 
     const handleUpdateFoundLexeme = useCallback((foundLexeme, chosenLexeme) => {
         setFoundSearchLexeme([foundLexeme, chosenLexeme]);

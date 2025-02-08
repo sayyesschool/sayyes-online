@@ -3,7 +3,7 @@ export default ({
 }) => ({
     async search(req, res) {
         const regex = req.query.q && new RegExp(req.query.q, 'i');
-        const query = { value: regex, publishStatus: 'approved' };
+        const query = { value: regex, publishStatus: 'approved', _id: { $ne: req.query.e } };
 
         const [count, lexemes] = await Promise.all([
             Lexeme.countDocuments(query),

@@ -55,10 +55,10 @@ export const deleteLexeme = createAction('DICTIONARY_DELETE_LEXEME', lexemeId =>
     }
 }));
 
-export const search = createAction('DICTIONARY_SEARCH', str => ({
+export const search = createAction('DICTIONARY_SEARCH', (str, execludeId) => ({
     request: {
         method: 'get',
-        path: `dictionary/search?q=${str}`
+        path: `dictionary/search?q=${str}&e=${execludeId}`
     }
 }));
 

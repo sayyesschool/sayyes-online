@@ -100,8 +100,8 @@ export default function LexemeForm({
     }, []);
 
     const handleInputChange = useDebounce(value => {
-        onSearch(value);
-    }, 1000);
+        onSearch(value, lexeme.id);
+    }, 500);
 
     useEffect(() => {
         handleInputChange(data.value);
