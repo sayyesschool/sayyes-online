@@ -74,7 +74,7 @@ export default function LexemesForm({
         event.preventDefault();
 
         const data = {
-            new: {
+            newLexemeData: {
                 value,
                 translation,
                 definition,
