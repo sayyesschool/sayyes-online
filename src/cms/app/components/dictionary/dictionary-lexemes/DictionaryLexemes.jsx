@@ -23,7 +23,7 @@ export default function DictionaryLexemes({ dictionary, user }) {
     const [selectedLexemeIds, setSelectedLexemeIds] = useState([]);
     const [foundSearchLexeme, setFoundSearchLexeme] = useState();
 
-    const { lexemes, numberOfLexemes, foundSearchLexemes } = dictionary;
+    const { lexemes, numberOfLexemes } = dictionary;
 
     const isPending = dictionary.publishStatus === 'pending';
     const isUnapproved = dictionary.publishStatus === 'unapproved';
@@ -87,8 +87,6 @@ export default function DictionaryLexemes({ dictionary, user }) {
         });
     }, []);
 
-    const handleSearch = useCallback((str, execludeId) => actions.search(str, execludeId), [actions]);
-
     const handleUpdateFoundLexeme = useCallback((foundLexeme, chosenLexeme) => {
         setFoundSearchLexeme([foundLexeme, chosenLexeme]);
         handleModalOpen('edit-lexemes');
@@ -109,12 +107,10 @@ export default function DictionaryLexemes({ dictionary, user }) {
                     <LexemeForm
                         id="lexeme-edit-form"
                         lexeme={currentLexeme}
-                        foundSearchLexemes={foundSearchLexemes}
                         withNotifications={withNotifications}
                         updateFoundLexeme={handleUpdateFoundLexeme}
                         onSubmit={handleUpdateLexeme}
                         onClose={handleModalClose}
-                        onSearch={handleSearch}
                     />
                 );
             case 'edit-lexemes':

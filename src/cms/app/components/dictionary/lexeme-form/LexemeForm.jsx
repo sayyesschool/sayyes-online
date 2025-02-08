@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import ImageField from 'shared/components/image-field';
 import { useDebounce } from 'shared/hooks/fn';
+import http from 'shared/services/http';
 import Storage from 'shared/services/storage';
 import { Button, Checkbox, Flex, Form } from 'shared/ui-components';
 
@@ -13,11 +14,9 @@ const initialAdditionalData = { translation: false, definition: false, examples:
 
 export default function LexemeForm({
     lexeme,
-    foundSearchLexemes,
     updateFoundLexeme,
     withNotifications,
     onSubmit,
-    onSearch,
     ...props
 }) {
     // TODO: стоит ли file тоже добавить в data?
@@ -30,6 +29,7 @@ export default function LexemeForm({
         examples: lexeme.examples ?? []
     });
     const [additionalData, setAdditionalData] = useState(initialAdditionalData);
+    const [foundSearchLexemes, setFoundSearchLexemes] = useState();
     const { value, translation, definition, examples } = data;
 
     // TODO: required не срабатывает из-за disabled
@@ -39,23 +39,20 @@ export default function LexemeForm({
             id: 'value',
             label: 'Лексема',
             required: true,
-            value,
-            setData
+            value
         },
         {
             component: Form.Input,
             id: 'translation',
             label: 'Переводы',
             required: true,
-            value: translation,
-            setData
+            value: translation
         },
         {
             component: Form.Textarea,
             id: 'definition',
             label: 'Определение',
-            value: definition,
-            setData
+            value: definition
         }
     ];
 
@@ -99,13 +96,22 @@ export default function LexemeForm({
         setAdditionalData(prev => ({ ...prev, examples }));
     }, []);
 
-    const handleInputChange = useDebounce(value => {
-        onSearch(value, lexeme.id);
-    }, 500);
+    // TODO: раньше я делал эту логику через экшны, но по-сути было нелогично зранить респонс в глобальном стейте, поэтому сделал так (мб стоит вынести в хук, но у нас уже есть похожий хук в поиске)
+    const onSearch = useCallback(async value => {
+        try {
+            const response = await http.get(`api/dictionary/search?q=${value}&e=${lexeme.id}`);
+
+            setFoundSearchLexemes(response.data);
+        } catch (e) {
+            console.log(e);
+        }
+    }, [lexeme.id]);
+
+    const deboundedSearch = useDebounce(onSearch, 500);
 
     useEffect(() => {
-        handleInputChange(data.value);
-    }, [data.value, handleInputChange]);
+        deboundedSearch(value);
+    }, [deboundedSearch, value]);
 
     return (
         <Form
@@ -133,7 +139,7 @@ export default function LexemeForm({
                 </Button>
             ))}
 
-            {inputs.map(({ component: Component, id, label, value, required, setData }) => {
+            {inputs.map(({ component: Component, id, label, value, required }) => {
                 const originalIsNotEmpty = !!lexeme[id];
                 const valuesAreDifferent = lexeme[id] !== value;
                 const isNotLexemeValue = id !== 'value';

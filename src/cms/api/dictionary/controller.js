@@ -1,14 +1,8 @@
 export default ({
-    models: { Lexeme, LexemeRecord }
+    services: { Dictionary }
 }) => ({
     async search(req, res) {
-        const regex = req.query.q && new RegExp(req.query.q, 'i');
-        const query = { value: regex, publishStatus: 'approved', _id: { $ne: req.query.e } };
-
-        const [count, lexemes] = await Promise.all([
-            Lexeme.countDocuments(query),
-            Lexeme.find(query)
-        ]);
+        const [count, lexemes] = await Dictionary.search(req.query.q, req.query.e);
 
         res.json({
             ok: true,
@@ -20,7 +14,7 @@ export default ({
     },
 
     async get(req, res) {
-        const lexemes = await Lexeme.find({ publishStatus: req.query.publishStatus }).sort({ createdAt: -1 });
+        const lexemes = await Dictionary.get(req.query.publishStatus);
 
         res.json({
             ok: true,
@@ -37,11 +31,7 @@ export default ({
     },
 
     async addLexeme(req, res) {
-        const lexeme = await Lexeme.create({
-            value: req.body.value,
-            translation: req.body.translation,
-            createdBy: req.user.id
-        });
+        const lexeme = await Dictionary.addLexeme(req.user.id, req.body);
 
         const data = lexeme.toJSON();
 
@@ -52,110 +42,16 @@ export default ({
     },
 
     async updateLexeme(req, res) {
-        const lexeme = await Lexeme.findById(req.params.lexemeId);
-
-        if (!lexeme) throw {
-            code: 404,
-            message: 'Не найдено'
-        };
-
-        const updateData = {
-            value: req.body.value,
-            image: req.body.image,
-            definition: req.body.definition,
-            translation: req.body.translation,
-            examples: req.body.examples,
-            publishStatus: 'approved'
-        };
-
-        const updatedLexeme = await Lexeme.findOneAndUpdate(
-            {
-                _id: req.params.lexemeId
-            },
-            updateData,
-            { new: true }
-        );
-
-        if (!updatedLexeme) throw {
-            code: 403,
-            message: 'Данне нельзя обновить'
-        };
-
-        const record = await LexemeRecord.findOne({ lexemeId: lexeme.id });
-
-        if (record) {
-            const addTranslate = req.body.additionalData.translation;
-            const addDefinition = req.body.additionalData.definition;
-            const examples = req.body.additionalData.examples;
-
-            if (addTranslate) {
-                record.data.translation = lexeme.translation;
-            }
-
-            if (addDefinition) {
-                record.data.definition = lexeme.definition;
-            }
-
-            if (examples.length) {
-                record.data.examples = examples;
-            }
-
-            await record.save();
-        }
-
-        const data = updatedLexeme.toJSON();
-
-        if (req.params.vocabulary) {
-            data.vocabularyId = req.vocabulary.id;
-        }
+        const data = await Dictionary.updateLexeme(req.params.lexemeId, req.body);
 
         res.json({
             ok: true,
-            data: updatedLexeme
+            data
         });
     },
 
     async mergeLexemes(req, res) {
-        function mergeRecordData(mergeData, lexemes) {
-            const lexemIds = lexemes.map(lexeme => lexeme.lexemeId.toString());
-
-            const filteredEntries = Object.entries(mergeData).filter(([id]) => lexemIds.includes(id));
-
-            return filteredEntries.reduce((acc, [, item]) => {
-                Object.entries(item).forEach(([key, value]) => {
-                    acc[key] = acc[key] ?
-                        Array.isArray(acc[key]) ?
-                            acc[key].concat(value) :
-                            `${acc[key]}  ${value}` :
-                        value;
-                });
-
-                return acc;
-            }, {});
-        }
-
-        const newLexeme = await Lexeme.create({ ...req.body.new, publishStatus: 'approved' });
-
-        await Lexeme.deleteMany({ _id: { $in:  req.body.deletedLexemeIds } });
-
-        const lexemeRecords = await LexemeRecord.find({ lexemeId: { $in: req.body.deletedLexemeIds } });
-
-        const recordsByUser = lexemeRecords.reduce((acc, record) => {
-            const records = acc[record.learnerId];
-
-            acc[record.learnerId] = records ? [...records, record] : [record];
-
-            return acc;
-        }, {});
-
-        await Promise.all(Object.entries(recordsByUser).flatMap(([learnerId, lexemes]) => {
-            const data = mergeRecordData(req.body.merge, lexemes);
-
-            return Promise.all([
-                LexemeRecord.deleteMany({ _id: { $in: lexemes.map(lexeme => lexeme.id) } }),
-                LexemeRecord.create({ lexemeId: newLexeme.id, learnerId, data })
-            ]);
-        }));
+        const newLexeme = await Dictionary.mergeLexemes(req.body);
 
         res.json({
             ok: true,
@@ -167,32 +63,20 @@ export default ({
     },
 
     async updatePublishStatus(req, res) {
-        const lexeme = await Lexeme.findByIdAndUpdate(req.params.lexemeId, {
-            publishStatus: req.body.status
-        });
-
-        if (!lexeme) throw {
-            code: 404,
-            message: 'Не найдено'
-        };
+        const lexeme = await Dictionary.updatePublishStatus(req.params.lexemeId, req.body.status);
 
         res.json({
             ok: true,
-            data: { id: lexeme.id }
+            data: lexeme
         });
     },
 
     async deleteLexeme(req, res) {
-        const lexeme = await Lexeme.findByIdAndDelete(req.params.lexemeId);
-
-        if (!lexeme) throw {
-            code: 404,
-            message: 'Не найдено'
-        };
+        const lexeme = await Dictionary.deleteLexeme(req.params.lexemeId);
 
         res.json({
             ok: true,
-            data: { id: lexeme.id }
+            data: lexeme
         });
     }
 });

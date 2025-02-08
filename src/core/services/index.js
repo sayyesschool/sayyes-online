@@ -2,6 +2,7 @@ import Account from './account';
 import Auth from './auth';
 import Checkout from './checkout';
 import Club from './Club';
+import Dictionary from './Dictionary';
 import File from './file';
 import Mail from './mail';
 import Newsletter from './newsletter';
@@ -51,6 +52,8 @@ export default (config, lib, models) => {
         }
     });
 
+    const dictionary = Dictionary({ models });
+
     const schedule = Schedule({ models });
 
     const account = Account({
@@ -81,6 +84,7 @@ export default (config, lib, models) => {
         Auth: auth,
         Checkout: checkout,
         Club: club,
+        Dictionary: dictionary,
         File: file,
         Mail: mail,
         Newsletter: newsletter,

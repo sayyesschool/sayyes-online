@@ -55,15 +55,7 @@ export const deleteLexeme = createAction('DICTIONARY_DELETE_LEXEME', lexemeId =>
     }
 }));
 
-export const search = createAction('DICTIONARY_SEARCH', (str, execludeId) => ({
-    request: {
-        method: 'get',
-        path: `dictionary/search?q=${str}&e=${execludeId}`
-    }
-}));
-
 export const actions = {
-    search,
     getDictionary,
     unsetDictionary,
     addLexeme,
@@ -135,13 +127,6 @@ export const dictionaryReducer = createReducer(null, {
         return {
             ...state,
             lexemes: state.lexemes.filter(lexeme => lexeme.id !== action.data.id)
-        };
-    },
-
-    [search]: (state, action) => {
-        return {
-            ...state,
-            foundSearchLexemes: action.data
         };
     }
 });
