@@ -10,8 +10,15 @@ export const Payment = new Schema({
     amount: { type: Number, default: 0, min: 0, required: true },
     currency: { type: String, default: 'RUB' },
     description: { type: String, trim: true },
-    status: { type: String, required: true, enum: Object.keys(PaymentStatus) },
-    operator: { type: String, enum: Object.keys(PaymentOperator) },
+    status: {
+        type: String,
+        enum: Object.keys(PaymentStatus),
+        required: true
+    },
+    operator: {
+        type: String,
+        enum: Object.keys(PaymentOperator)
+    },
     method: PaymentMethod,
     paid: { type: Boolean, default: false },
     refundable: { type: Boolean, default: false },
@@ -33,6 +40,7 @@ export const Payment = new Schema({
     metadata: { type: Object },
     expiresAt: { type: Date },
     paidAt: { type: Date },
+    processedAt: { type: Date },
     userId: { type: Schema.Types.ObjectId }
 }, {
     timestamps: true,
@@ -104,6 +112,10 @@ Payment.virtual('isResolved').get(function() {
 
 Payment.virtual('isStuck').get(function() {
     return this.isPending && !this.confirmation;
+});
+
+Payment.virtual('isProcessed').get(function() {
+    return Boolean(this.processedAt) && this.status !== 'pending';
 });
 
 Payment.virtual('user', {
