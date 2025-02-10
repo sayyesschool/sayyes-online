@@ -10,18 +10,28 @@ export default function RequestsList({ requests }) {
                     key={request.id}
                     as={Link}
                     to={request.url}
-                    content={request.contact && <>
+                    content={<>
                         <Text
                             type="body-md"
-                            content={request.contact.name}
+                            content={request.typeLabel}
+                            end={
+                                <Text
+                                    type="body-sm" content={request.dateTimeString}
+                                    inline
+                                />
+                            }
                             noWrap
                         />
 
-                        <Text
-                            type="body-sm"
-                            content={request.contact.phone || request.contact.email}
-                            noWrap
-                        />
+                        {request.contact &&
+                            <Text
+                                type="body-sm"
+                                content={request.contact.phone || request.contact.email}
+                                noWrap
+                            >
+                                {request.contact.name} · {request.contact.phone || request.contact.email}
+                            </Text>
+                        }
                     </>}
                     endAction={request.manager &&
                         <Avatar
