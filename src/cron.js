@@ -2,9 +2,10 @@ import { CronJob } from 'cron';
 
 import config from './config';
 import core from './core';
-import db from './db';
+import DB from './db';
 
 const { services: { Club } } = core(config);
+const db = DB(config);
 
 new CronJob({
     cronTime: '0 */30 * * * *', // every 30 minutes
@@ -13,7 +14,7 @@ new CronJob({
         try {
             console.log('Cron job running...');
 
-            await db.connect(config.DB_CONNECTION_STRING);
+            await db.connect();
 
             await Club.sendMeetingsReminders();
             await Club.endMeetings();
