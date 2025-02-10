@@ -270,10 +270,11 @@ export default ({
             message: 'Платеж не оплачен'
         };
 
-        const user = payment.metadata.userId
+        const userId = payment.userId || payment.metadata?.userId;
+        const user = userId
             ? await User.findOne({
                 $or: [
-                    { _id: payment.metadata.userId },
+                    { _id: userId },
                     { email: payment.metadata.email }
                 ]
             })
@@ -310,6 +311,8 @@ export default ({
                 });
             }
         }
+
+        await Payment.update(payment.id, { processedAt: new Date() });
 
         return {
             paymentId: payment.id,
@@ -724,44 +727,50 @@ export default ({
 
     async sendMeetingsReminders() {
         const now = datetime().utc().seconds(0).milliseconds(0);
-        const hourBefore = now.clone().add(1, 'hour').toDate();
-        const dayBefore = now.clone().add(1, 'day').toDate();
+        const nextHour = now.clone().add(1, 'hour');
+        const nextDay = now.clone().add(1, 'day');
 
-        const meetingsStartingInHour = await Meeting.find({ startDate: hourBefore })
-            .populate({
-                path: 'host',
-                select: 'firstname lastname',
+        const meetingsStartingInHour = await Meeting.find({
+            startDate: {
+                $gte: nextHour.startOf('minute').toDate(),
+                $lt: nextHour.endOf('minute').toDate()
+            }
+        }).populate({
+            path: 'host',
+            select: 'firstname lastname',
+            options: { lean: true }
+        }).populate({
+            path: 'registrations',
+            match: {
+                status: 'approved'
+            },
+            populate: {
+                path: 'user',
+                select: 'firstname lastname email',
                 options: { lean: true }
-            })
-            .populate({
-                path: 'registrations',
-                match: {
-                    status: 'approved'
-                },
-                populate: {
-                    path: 'user',
-                    select: 'firstname lastname email',
-                    options: { lean: true }
-                }
-            });
+            }
+        });
 
-        const meetingsStartingInDay = await Meeting.find({ startDate: dayBefore })
-            .populate({
-                path: 'host',
-                select: 'firstname lastname',
+        const meetingsStartingInDay = await Meeting.find({
+            startDate: {
+                $gte: nextDay.startOf('minute').toDate(),
+                $lt: nextDay.endOf('minute').toDate()
+            }
+        }).populate({
+            path: 'host',
+            select: 'firstname lastname',
+            options: { lean: true }
+        }).populate({
+            path: 'registrations',
+            match: {
+                status: 'approved'
+            },
+            populate: {
+                path: 'user',
+                select: 'firstname lastname email',
                 options: { lean: true }
-            })
-            .populate({
-                path: 'registrations',
-                match: {
-                    status: 'approved'
-                },
-                populate: {
-                    path: 'user',
-                    select: 'firstname lastname email',
-                    options: { lean: true }
-                }
-            });
+            }
+        });
 
         const messages = [
             ...meetingsStartingInHour.flatMap(m => m.registrations.map(r => ({
