@@ -60,7 +60,7 @@ export default function LearnerTransactions({ learner }) {
     return (
         <PageSection
             className="LearnerTransactions"
-            title="Платежи"
+            title="Транзакции"
             actions={[
                 {
                     key: 'add',

@@ -13,6 +13,7 @@ import LearnerDetails from 'crm/components/learners/learner-details';
 import LearnerEnrollments from 'crm/components/learners/learner-enrollments';
 import LearnerForm from 'crm/components/learners/learner-form';
 import LearnerMemberships from 'crm/components/learners/learner-memberships';
+import LearnerPayments from 'crm/components/learners/learner-payments';
 import LearnerRequests from 'crm/components/learners/learner-requests';
 import LearnerTransactions from 'crm/components/learners/learner-transactions';
 import PasswordForm from 'crm/components/shared/password-form';
@@ -124,6 +125,10 @@ export default function LearnerPage({ match, location, history }) {
                             <LearnerMemberships
                                 learner={learner}
                                 memberships={learner?.memberships}
+                            />
+
+                            <LearnerPayments
+                                learner={learner}
                             />
 
                             <LearnerTransactions
