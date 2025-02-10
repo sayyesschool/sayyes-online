@@ -12,17 +12,10 @@ export default ({
 
     async getOne(req, res) {
         const learner = await Learner.findById(req.params.id)
-            .populate({
-                path: 'requests',
-                select: 'status manager contact'
-                // populate: { path: 'manager', select: 'firstname lastname' }
-            })
+            .populate('requests', 'type status manager contact')
             .populate('memberships')
-            .populate({
-                path: 'enrollments',
-                select: 'status type domain format manager schedules'
-                // populate: { path: 'manager', select: 'firstname lastname' }
-            })
+            .populate('enrollments', 'status type domain format manager schedules')
+            .populate('payments')
             .populate({
                 path: 'transactions',
                 populate: { path: 'enrollment', select: 'domain' }
