@@ -8,12 +8,14 @@ import { Form } from 'shared/ui-components';
 export default forwardRef(MembershipForm);
 
 const getData = ({
+    active = true,
     limit = 1,
     price = 0,
     startDate = new Date(),
     endDate = datetime(new Date()).add(1, 'day').toDate(),
     userId = ''
 } = {}) => ({
+    active,
     limit,
     price,
     startDate: datetime(startDate).format('YYYY-MM-DD'),
@@ -53,6 +55,15 @@ function MembershipForm({ membership, onSubmit, ...props }, ref) {
                 <UserSearch
                     label="Пользователь"
                     onResult={handleSearchResult}
+                />
+            }
+
+            {membership?.id &&
+                <Form.Switch
+                    label="Активный"
+                    name="active"
+                    checked={data.active}
+                    onChange={handleChange}
                 />
             }
 
