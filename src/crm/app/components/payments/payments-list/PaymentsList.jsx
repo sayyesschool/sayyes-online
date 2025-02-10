@@ -11,8 +11,8 @@ export default function PaymentsList({ payments, onClick, onDelete }) {
                         <StatusIcon status={payment.status} />
                     }
                     content={<>
-                        <Text>{`${payment.amount} руб.`}</Text>
-                        <Text>{payment.description}</Text>
+                        <Text type="body-md">{`${payment.amount} руб.`}</Text>
+                        <Text type="body-sm">{payment.description}</Text>
                     </>}
                     endAction={
                         <IconButton

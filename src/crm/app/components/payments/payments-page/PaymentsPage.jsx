@@ -52,6 +52,8 @@ export default function PaymentsPage({ match, history }) {
 
     if (!payments) return <LoadingIndicator />;
 
+    const sortedPayments = payments.sort((a, b) => new Date(b.date) - new Date(a.date));
+
     return (
         <Page id="payments">
             <Page.Header
@@ -73,7 +75,7 @@ export default function PaymentsPage({ match, history }) {
 
                 <Page.Section variant="outlined" compact>
                     <PaymentsTable
-                        payments={payments}
+                        payments={sortedPayments}
                         onResolve={handleResolve}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
