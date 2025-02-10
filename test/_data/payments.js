@@ -1,4 +1,4 @@
-import { PACK_ID } from './packs';
+import { PACK_1_ID } from './packs';
 import { USER } from './user';
 
 export const NEW_PAYMENT = {
@@ -17,7 +17,7 @@ export const NEW_PAYMENT = {
         confirmationToken: 'ct-2ecb773f-000f-5000-a000-17e41bfba39c'
     },
     metadata: {
-        packId: PACK_ID,
+        packId: PACK_1_ID,
         email: USER.email,
         name: USER.firstname
     },
@@ -51,7 +51,7 @@ export const PAID_PAYMENT = {
         confirmationToken: 'ct-2ecb773f-000f-5000-a000-17e41bfba39c'
     },
     metadata: {
-        packId: PACK_ID,
+        packId: PACK_1_ID,
         email: USER.email,
         name: USER.firstname
     },

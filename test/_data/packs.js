@@ -41,9 +41,17 @@ export const PACKS = [
     }
 ];
 
-export const PACK_ID = PACKS[0].id;
+export const PACK_1 = PACKS[0];
+export const PACK_4 = PACKS[1];
+export const PACK_8 = PACKS[2];
+export const PACK_16 = PACKS[3];
+
+export const PACK_1_ID = PACK_1.id;
+export const PACK_4_ID = PACK_4.id;
+export const PACK_8_ID = PACK_8.id;
+export const PACK_16_ID = PACK_16.id;
 
 export const PACKS_MAP = PACKS.reduce((acc, pack) => ({
     ...acc,
-    [pack.visits]: pack.id
+    [pack.visits]: pack
 }), {});

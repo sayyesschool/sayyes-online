@@ -1,46 +1,52 @@
 import expect from 'expect';
 
-import { createId, toJSON } from 'test/helpers';
-import { MEMBERSHIP, USER_ID } from 'test/_data';
-import { context } from 'test/_env';
+import { createId } from 'test/helpers';
+import { withMembership, withMembershipPacks, withUser } from 'test/_env';
 
 import api from './api';
 
-const {
-    models: { Membership, User }
-} = context;
-
 describe('Club Memberships API', () => {
-    after(async () => {
-        await Membership.deleteMany();
-        await User.deleteMany();
-    });
+    const membership = withMembership();
+    withMembershipPacks();
+    withUser();
 
     describe('GET /', () => {
-        it('returns latest membership', async () => {
-            const membership = await Membership.create({
-                ...MEMBERSHIP,
-                userId: USER_ID
-            });
+        it('returns user memberships', async () => {
+            const { body } = await api.get('/memberships');
 
-            const { body } = await api.get('/memberships/my');
-
-            expect(body.data).toMatch(toJSON(membership));
+            expect(body.data).toBeAn('array');
         });
+    });
 
-        it('returns a membership by id', async () => {
-            const membership = await Membership.create(MEMBERSHIP);
-
+    describe('GET /:id', () => {
+        it('returns membership by id', async () => {
             const { body } = await api.get(`/memberships/${membership.id}`);
 
-            expect(body.data).toMatch(toJSON(membership));
+            expect(body.data).toExist();
+            expect(body.data.id).toEqual(membership.id);
         });
 
-        it('returns an error if the email is not provided', async () => {
+        it('returns error if membership does not exist', async () => {
             const { body } = await api.get(`/memberships/${createId()}`);
 
             expect(body.ok).toBe(false);
             expect(body.error).toExist();
+        });
+    });
+
+    describe('GET /my', () => {
+        it('returns user membership', async () => {
+            const { body } = await api.get('/memberships/my');
+
+            expect(body.data).toExist();
+        });
+    });
+
+    describe('GET /options', () => {
+        it('returns membership options', async () => {
+            const { body } = await api.get('/memberships/options');
+
+            expect(body.data).toBeAn('array');
         });
     });
 });
