@@ -16,8 +16,8 @@ new CronJob({
 
             await db.connect();
 
-            await Club.sendMeetingsReminders();
             await Club.endMeetings();
+            await Club.sendMeetingsReminders();
 
             await db.disconnect();
 
@@ -35,10 +35,10 @@ new CronJob({
         try {
             console.log('Cron job running...');
 
-            await db.connect(config.DB_CONNECTION_STRING);
+            await db.connect();
 
-            await Club.sendMembershipsReminders();
             await Club.endMemberships();
+            await Club.sendMembershipsReminders();
 
             await db.disconnect();
 
