@@ -4,6 +4,7 @@ import { USER_EMAIL, USER_ID } from 'test/_data';
 import { context } from 'test/_env';
 
 const {
+    clients: { checkout },
     models: { User },
     services: { Checkout }
 } = context;
@@ -59,7 +60,7 @@ describe('Checkout Service', () => {
     });
 
     describe('cancelPayment', () => {
-        it.skip('cancels a payment', async () => {
+        it('cancels a payment', async () => {
             const payment = await Checkout.createPayment({
                 amount: 100,
                 description: 'Test payment',
@@ -67,6 +68,7 @@ describe('Checkout Service', () => {
                 capture: false,
                 metadata: { userId: USER_ID }
             });
+            await checkout.cancelPayment(payment.uuid);
 
             const canceledPayment = await Checkout.cancelPayment(payment.uuid);
 

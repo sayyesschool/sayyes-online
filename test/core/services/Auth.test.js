@@ -1,20 +1,18 @@
 import expect from 'expect';
 
-import { spyOn } from 'test/helpers';
 import { USER } from 'test/_data';
 import { context } from 'test/_env';
 
 const {
+    clients: { mail },
     models: { User },
-    services: { Auth, Mail }
+    services: { Auth }
 } = context;
-
-const mailSendSpy = spyOn(Mail, 'send');
 
 describe('Auth Service', () => {
     afterEach(async () => {
         await User.deleteMany();
-        mailSendSpy.reset();
+        mail.send.reset();
     });
 
     describe('register', () => {
@@ -101,7 +99,7 @@ describe('Auth Service', () => {
             const user = await User.findOne({ email: USER.email });
 
             expect(user.resetPasswordToken).toExist();
-            expect(Mail.send).toHaveBeenCalled();
+            expect(mail.send).toHaveBeenCalled();
         });
 
         it('throws an error if user is not found', async () => {

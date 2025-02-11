@@ -62,7 +62,7 @@ mongoose.plugin(function addResolve(schema) {
 
 mongoose.connection.on('connected', () => console.log('Connected to DB'));
 mongoose.connection.on('disconnected', () => console.log('Disconnected from DB'));
-mongoose.connection.on('error', () => console.error(console, 'DB connection error:'));
+mongoose.connection.on('error', () => console.error('DB connection error:'));
 
 process.on('SIGINT', async () => {
     console.log('SIGINT signal received');

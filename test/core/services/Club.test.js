@@ -167,7 +167,7 @@ describe('ClubService', () => {
         });
 
         describe('cancelMeeting', () => {
-            afterEach(() => {
+            beforeEach(() => {
                 mail.send.reset();
             });
 
