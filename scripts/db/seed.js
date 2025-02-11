@@ -1,6 +1,6 @@
 import config from 'config';
 import core from 'core';
-import db from 'db';
+import DB from 'db';
 
 import * as data from './data';
 
@@ -25,8 +25,9 @@ const {
     }
 } = core(config);
 
-await db.connect(process.env.DB_CONNECTION_STRING);
+const db = DB(config);
 
+await db.connect();
 await db.drop();
 
 await Assignment.create(data.assignments);
