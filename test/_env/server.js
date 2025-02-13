@@ -2,12 +2,11 @@ import express, { json } from 'express';
 
 import { flash, session } from 'server/middleware';
 
-import { config, db } from './context';
+import { config, db, models } from './context';
 import { USER } from './data';
 
-export function user(req, res, next) {
-    req.app.user = USER;
-    req.user = USER;
+export async function user(req, res, next) {
+    req.user = await models.User.findById(USER.id);
     next();
 }
 
