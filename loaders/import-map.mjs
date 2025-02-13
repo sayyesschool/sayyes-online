@@ -9,6 +9,7 @@ const imports = {
     club: `${ROOT_PATH}/src/club/`,
     cms: `${ROOT_PATH}/src/cms/`,
     crm: `${ROOT_PATH}/src/crm/`,
+    lk: `${ROOT_PATH}/src/lk/`,
     lms: `${ROOT_PATH}/src/lms/`,
     server: `${ROOT_PATH}/src/server/`,
     shared: `${ROOT_PATH}/src/shared/`,
