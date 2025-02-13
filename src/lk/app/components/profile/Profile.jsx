@@ -1,5 +1,7 @@
-import UserAvatar from 'shared/components/user-avatar';
-import UserProfileForm from 'shared/components/user-profile-form';
+import { Grid, Surface } from 'shared/ui-components';
+
+import ProfileAvatar from './profile-avatar';
+import ProfileForm from './profile-form';
 
 import styles from './Profile.module.scss';
 
@@ -9,16 +11,26 @@ export default function Profile({
     onProfileChange
 }) {
     return (
-        <div className={styles.root}>
-            <UserAvatar
-                user={user}
-                onChange={onAvatarChange}
-            />
+        <Surface
+            className={styles.root}
+            padding="lg"
+            shadow="sm"
+        >
+            <Grid>
+                <Grid.Item md="4">
+                    <ProfileAvatar
+                        user={user}
+                        onChange={onAvatarChange}
+                    />
+                </Grid.Item>
 
-            <UserProfileForm
-                user={user}
-                onSubmit={onProfileChange}
-            />
-        </div>
+                <Grid.Item md="8">
+                    <ProfileForm
+                        user={user}
+                        onSubmit={onProfileChange}
+                    />
+                </Grid.Item>
+            </Grid>
+        </Surface>
     );
 }

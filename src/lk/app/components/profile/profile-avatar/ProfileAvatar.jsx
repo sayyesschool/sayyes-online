@@ -4,11 +4,11 @@ import ImageField from 'shared/components/image-field';
 import Storage from 'shared/services/storage';
 import { Avatar, Skeleton } from 'shared/ui-components';
 
-import styles from './UserAvatar.module.scss';
+import styles from './ProfileAvatar.module.scss';
 
 const emptyAvatarSrc = 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg';
 
-export default function UserAvatar({ user, onChange }) {
+export default function ProfileAvatar({ user, onChange }) {
     const [isLoading, setLoading] = useState(false);
 
     const handleChange = useCallback(file => {
