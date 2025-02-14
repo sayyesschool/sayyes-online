@@ -29,11 +29,18 @@ export default function AccountPage() {
             <Page.Header title="Личный кабинет" />
 
             <Page.Content className={styles.content}>
-                <Profile
-                    user={user}
-                    onAvatarChange={handleAvatarChange}
-                    onProfileChange={handleProfileChange}
-                />
+                <Page.Section
+                    title="Мои данные"
+                    variant="plain"
+                    compact
+                    plain
+                >
+                    <Profile
+                        user={user}
+                        onAvatarChange={handleAvatarChange}
+                        onProfileChange={handleProfileChange}
+                    />
+                </Page.Section>
             </Page.Content>
         </Page>
     );

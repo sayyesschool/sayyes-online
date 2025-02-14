@@ -15,16 +15,17 @@ export default function Profile({
             className={styles.root}
             padding="lg"
             shadow="sm"
+            radius="lg"
         >
             <Grid>
-                <Grid.Item md="4">
+                <Grid.Item md="4" xs="12">
                     <ProfileAvatar
                         user={user}
                         onChange={onAvatarChange}
                     />
                 </Grid.Item>
 
-                <Grid.Item md="8">
+                <Grid.Item md="8" xs="12">
                     <ProfileForm
                         user={user}
                         onSubmit={onProfileChange}
