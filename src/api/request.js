@@ -48,7 +48,7 @@ export default ({
         const hhRequest = await hh.addStudyRequest({
             type: request.typeLabel,
             fullName: request.contact.name,
-            phone: request.contact.phone,
+            phone: `+${request.contact.phone}`,
             email: request.contact.email,
             description: request.note,
             office: request.data.format,
