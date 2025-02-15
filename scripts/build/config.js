@@ -33,6 +33,7 @@ const common = {
         'env.GOOGLE_ANALYTICS_ID': JSON.stringify(GOOGLE_ANALYTICS_ID || ''),
         'env.LK_URL': JSON.stringify(`//lk.${APP_DOMAIN}`),
         'env.LMS_URL': JSON.stringify(`//lms.${APP_DOMAIN}`),
+        'env.PAY_URL': JSON.stringify(`//pay.${APP_DOMAIN}`),
         'env.SENTRY_DSN': JSON.stringify(process.env.SENTRY_DSN || ''),
         'env.STATIC_URL': JSON.stringify(STATIC_URL || ''),
         'env.STORAGE_URL': JSON.stringify(STORAGE_URL || ''),
