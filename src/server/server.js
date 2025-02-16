@@ -3,11 +3,14 @@ import { createServer } from 'node:https';
 
 import cors from 'cors';
 import express from 'express';
+import vhost from 'vhost';
 
+import App from './app';
 import { flash, logger, session } from './middleware';
 
-export default ({ config, db }) => {
+export default context => {
     const server = express();
+    const { config, db } = context;
 
     server.set('trust proxy', true);
     server.set('view engine', 'pug');
@@ -41,6 +44,13 @@ export default ({ config, db }) => {
     });
 
     return {
+        add(name, mod) {
+            const app = App(name, context);
+            server.use(vhost(`${name}.${config.APP_DOMAIN}`, mod(app, context)));
+
+            return this;
+        },
+
         use(...args) {
             server.use(...args);
 

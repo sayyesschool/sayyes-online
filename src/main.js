@@ -9,18 +9,21 @@ import lk from './lk';
 import lms from './lms';
 import pay from './pay';
 import server from './server';
+import webhooks from './webhooks';
 
 const { authenticate, authorize } = context.middleware;
 
 server(context)
+    .add('webhooks', webhooks)
     .use(authenticate)
-    .use(api('api', context))
-    .use(auth('auth', context))
-    .use(club('club', context))
-    .use(pay('pay', context))
-    .use(authorize, classroom('class', context))
-    .use(authorize, cms('cms', context))
-    .use(authorize, crm('crm', context))
-    .use(authorize, lk('lk', context))
-    .use(authorize, lms('lms', context))
+    .add('api', api)
+    .add('auth', auth)
+    .add('club', club)
+    .add('pay', pay)
+    .use(authorize)
+    .add('class', classroom)
+    .add('cms', cms)
+    .add('crm', crm)
+    .add('lk', lk)
+    .add('lms', lms)
     .start();
