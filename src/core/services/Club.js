@@ -37,8 +37,8 @@ const durationLabels = {
 export default ({
     config,
     clients: { zoom },
-    models: { Data, Meeting, Membership, Payment, Registration, Request, User },
-    services: { Auth, Checkout, Mail, Newsletter }
+    models: { Data, Meeting, Membership, Registration, User },
+    services: { Auth, Mail, Newsletter }
 }) => ({
     clubName: CLUB_NAME,
     clubEmail: `club@${config.EMAIL_DOMAIN}`,
@@ -69,60 +69,54 @@ export default ({
         const pack = packs.find(pack => pack.id === arg);
 
         if (!pack) throw {
-            status: 404,
+            code: 404,
             message: 'Пакет не найден'
         };
 
         return pack;
     },
 
-    async getUser($user) {
-        const user = await User.resolve($user);
+    async getPackPrice(packId) {
+        const pack = await this.getPack(packId);
 
-        if (!user) throw {
-            status: 404,
-            message: 'Пользователь не найден'
-        };
-
-        return user;
+        return pack.price;
     },
 
-    async registerUser({ name = '', email } = { }) {
-        const [firstname, lastname] = name.split(' ');
+    async registerUser($user) {
+        const user = await Auth.getUser($user);
         const password = Auth.generatePassword();
-        const user = await Auth.register({
-            firstname,
-            lastname,
-            email,
-            password,
-            domains: ['club', 'lk']
-        });
 
-        Mail.send({
-            subject: 'Добро пожаловать в Разговорный клуб SAY YES!',
-            to: {
-                name: user.fullname,
-                email: user.email
+        user.password = password;
+        user.domains.addToSet('club');
+
+        const updatedUser = await user.save();
+
+        await Mail.send([
+            {
+                subject: 'Добро пожаловать в Разговорный клуб SAY YES!',
+                to: {
+                    name: user.fullname,
+                    email: user.email
+                },
+                from: {
+                    email: this.clubEmail,
+                    name: this.clubName
+                },
+                templateId: emailTemplates.MEMBER_REGISTERED,
+                variables: {
+                    name: user.firstname,
+                    email: user.email,
+                    password,
+                    clubUrl: this.clubUrl,
+                    clubEmail: this.clubEmail
+                }
             },
-            from: {
-                email: this.clubEmail,
-                name: this.clubName
-            },
-            templateId: emailTemplates.MEMBER_REGISTERED,
-            variables: {
-                name: user.firstname,
-                email: user.email,
-                password,
-                clubUrl: this.clubUrl,
-                clubEmail: this.clubEmail
+            {
+                subject: 'Пользователь зарегистрировался в разговорном клубе',
+                to: this.clubEmail,
+                html: `Имя: ${user.firstname}\nEmail: ${user.email}`
             }
-        });
-
-        Mail.send({
-            subject: 'Пользователь зарегистрировался в разговорном клубе',
-            to: this.clubEmail,
-            html: `Имя: ${user.firstname}\nEmail: ${user.email}`
-        });
+        ]);
 
         Newsletter.subscribe({
             name: user.firstname,
@@ -130,11 +124,11 @@ export default ({
             action: 'addnoforce'
         });
 
-        return user;
+        return updatedUser;
     },
 
     async createMembership($user, $pack, paymentId) {
-        const user = await this.getUser($user);
+        const user = await Auth.getUser($user);
         const pack = await this.getPack($pack);
 
         const startDate = new Date();
@@ -180,146 +174,30 @@ export default ({
         const membership = await Membership.resolve($membership).populate('registrations');
 
         if (!membership) throw {
-            status: 404,
+            code: 404,
             message: 'Абонемент не найден'
         };
 
         return membership;
     },
 
-    async createPayment({
-        contact: {
-            name,
-            email,
-            phone
-        } = {},
-        userId,
-        packId,
-        meetingId,
-        requestId,
-        utm
-    } = { contact: {} }) {
-        if (!userId && !email) throw {
-            code: 400,
-            message: 'Не указан email'
-        };
-
-        const pack = await this.getPack(packId);
-
-        if (!pack) throw {
-            code: 404,
-            message: 'Пакет не найден'
-        };
-
-        const user = await User.findOne({ $or: [{ _id: userId }, { email }] });
-
-        if (userId && !user) throw {
-            code: 404,
-            message: 'Пользователь не найден'
-        };
-
-        const paymentRequest = await Request.create({
-            type: Request.Type.Membership,
-            contact: user ? undefined : {
-                name,
-                email,
-                phone
-            },
-            channel: Request.Channel.Email,
-            source: Request.Source.Site,
-            learnerId: user?.id,
-            requestId,
-            utm
-        });
-
-        if (requestId) {
-            await Request.update(requestId, {
-                status: Request.Status.Completed,
-                learnerId: user?.id,
-                requestId: paymentRequest.id
-            });
-        }
-
-        return Checkout.createPayment({
-            amount: pack.price,
-            description: 'Покупка абонемента',
-            confirmation: {
-                type: 'embedded'
-            },
-            email: user?.email ?? email,
-            metadata: {
-                email: user ? undefined : email,
-                name: user ? undefined : name,
-                phone: user ? undefined : phone,
-                userId: user?.id,
-                membershipPackId: pack.id,
-                meetingId,
-                requestId: paymentRequest.id
-            }
-        });
-    },
-
     async processPayment(payment) {
-        if (!payment) throw {
-            code: 404,
-            message: 'Платеж не найден'
-        };
+        const user = await Auth.getUser(payment.userId);
 
-        if (!payment.paid) throw {
-            code: 400,
-            message: 'Платеж не оплачен'
-        };
-
-        const userId = payment.userId || payment.metadata?.userId;
-        const user = userId
-            ? await User.findOne({
-                $or: [
-                    { _id: userId },
-                    { email: payment.metadata.email }
-                ]
-            })
-            : await this.registerUser({
-                name: payment.metadata.name,
-                email: payment.metadata.email
-            });
-
-        if (!user) throw {
-            code: 404,
-            message: 'Пользователь не найден'
-        };
-
-        if (!payment.userId) {
-            await Payment.update(payment.id, { userId: user.id });
+        if (!user.isMember) {
+            await this.registerUser(user);
         }
 
-        const membership = await this.createMembership(user.id, payment.metadata.membershipPackId, payment.id);
+        const membership = await this.createMembership(user.id, payment.data.packId, payment.id);
 
-        const registration = payment.metadata.meetingId
-            ? await this.registerForMeeting(user, payment.metadata.meetingId)
+        const registration = payment.data.meetingId
+            ? await this.registerForMeeting(user, payment.data.meetingId)
             : null;
 
-        if (payment.metadata.requestId) {
-            const request = await Request.update(payment.metadata.requestId, {
-                status: Request.Status.Completed,
-                learnerId: user.id
-            });
-
-            if (request?.requestId) {
-                await Request.update(request.requestId, {
-                    status: Request.Status.Completed,
-                    learnerId: user.id
-                });
-            }
-        }
-
-        await Payment.update(payment.id, { processedAt: new Date() });
-
         return {
-            paymentId: payment.id,
             userId: user.id,
             membershipId: membership.id,
-            registrationId: registration?.id,
-            requestId: payment.metadata.requestId
+            registrationId: registration?.id
         };
     },
 
@@ -356,7 +234,7 @@ export default ({
         const meeting = await query;
 
         if (!meeting) throw {
-            status: 404,
+            code: 404,
             message: 'Встреча не найдена'
         };
 
@@ -448,8 +326,8 @@ export default ({
             populate: 'registrations'
         });
 
-        if (meeting.hasRegistrants) throw {
-            status: 400,
+        if (meeting.hasRegistrations) throw {
+            code: 400,
             message: 'Невозможно удалить встречу, т.к. в ней есть зарегистрировавшиеся участники'
         };
 
@@ -465,7 +343,7 @@ export default ({
         force: false,
         notify: true
     }) {
-        const user = await this.getUser($user);
+        const user = await Auth.getUser($user);
         const meeting = await this.getMeeting($meeting);
         const membership = await this.findUserMembership(user);
 
@@ -525,12 +403,12 @@ export default ({
         });
 
         if (registration.isCanceled) throw {
-            status: 400,
+            code: 400,
             message: 'Регистрация уже отменена'
         };
 
         if (registration.isConfirmed) throw {
-            status: 400,
+            code: 400,
             message: 'Отменить подтвержденную регистрацию нельзя'
         };
 
@@ -544,7 +422,7 @@ export default ({
     },
 
     async canRegisterForMeeting($user, $meeting) {
-        const user = await this.getUser($user);
+        const user = await Auth.getUser($user);
         const meeting = await this.getMeeting($meeting);
         const membership = await this.findUserMembership(user);
         const registration = meeting.findRegistrationByUser(user);
@@ -560,24 +438,24 @@ export default ({
 
     checkRegistration(user, meeting, membership, registration, force = false) {
         if (registration && !registration.isCanceled) throw {
-            status: 409,
+            code: 409,
             message: 'Пользователь уже зарегистрирован на встречу'
         };
 
         if (force || meeting.isFree) return;
 
         if (!membership) throw {
-            status: 402,
+            code: 402,
             message: 'Нет абонемента'
         };
 
         if (membership.isExpired) throw {
-            status: 402,
+            code: 402,
             message: 'Срок действия абонемента истек'
         };
 
         if (membership.isFull) throw {
-            status: 402,
+            code: 402,
             message: 'Лимит посещений абонемента исчерпан'
         };
     },
@@ -586,7 +464,7 @@ export default ({
         const registration = await Registration.resolve($registration);
 
         if (!registration) throw {
-            status: 404,
+            code: 404,
             message: 'Регистрация на встречу не найдена'
         };
 
@@ -597,7 +475,7 @@ export default ({
         const registration = await Registration.findOneByUser($user);
 
         if (!registration) throw {
-            status: 404,
+            code: 404,
             message: 'Регистрация на встречу не найдена'
         };
 
@@ -606,14 +484,14 @@ export default ({
 
     async createRegistration($meeting, $user, membership, { status } = { status: 'pending' }) {
         const meeting = await this.getMeeting($meeting);
-        const user = await this.getUser($user);
+        const user = await Auth.getUser($user);
 
         const registration = new Registration({
             status,
             free: meeting.isFree,
             meetingId: meeting.id,
             userId: user.id,
-            membershipId: membership?.id
+            membershipId: meeting.isFree ? undefined : membership?.id
         });
 
         if (meeting.isScheduled && meeting.zoomId) {
@@ -680,7 +558,7 @@ export default ({
 
         const approvedRegistration = await this.updateRegistration(meeting, registration.id, {
             status: 'approved',
-            membershipId: membership?.id
+            membershipId: meeting.isFree ? undefined : membership?.id
         });
 
         if (!meeting.isFree && approvedRegistration.membershipId) {
