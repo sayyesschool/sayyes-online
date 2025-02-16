@@ -55,8 +55,10 @@ export default function Payment({ pack, meetingId }) {
                 <Checkout
                     data={{
                         contact,
-                        packId: pack.id,
-                        meetingId
+                        data: {
+                            packId: pack.id,
+                            meetingId
+                        }
                     }}
                     onComplete={() => setView(2)}
                     onError={error => {

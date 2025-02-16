@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'preact/hooks';
 
+import { PAY_URL } from 'shared/constants';
 import http from 'shared/services/http';
 
 import styles from './Checkout.module.scss';
@@ -22,7 +23,7 @@ export default function Checkout({
             term: params.get('utm_term') ?? undefined
         };
 
-        http.post('/api/payments/create', {
+        http.post(`${PAY_URL}/api/payments/create`, {
             ...data,
             requestId,
             utm
@@ -45,7 +46,7 @@ export default function Checkout({
             checkout.on('fail', reject);
 
             checkout.render('checkout');
-        })).then(payment => http.post('/api/payments/process', {
+        })).then(payment => http.post(`${PAY_URL}/api/payments/process`, {
             uuid: payment.uuid
         })).then(() => {
             onComplete();
