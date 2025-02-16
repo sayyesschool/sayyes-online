@@ -88,7 +88,7 @@
                         "^\\u0000(@/shared|shared)"
                     ],
                     [
-                        "^(@|api|auth|class|club|cms|config|core|db|crm|lk|lms)(/.*|$)"
+                        "^(@|api|auth|class|club|cms|config|core|db|crm|lk|lms|pay)(/.*|$)"
                     ],
                     [
                         "^test/(data|helpers|mocks)(/.*|$)",
