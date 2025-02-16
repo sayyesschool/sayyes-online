@@ -37,6 +37,7 @@ export const RequestSourceLabel = {
 export const RequestStatus = {
     New: 'new',
     Processing: 'processing',
+    Pending: 'pending',
     Postponed: 'postponed',
     Completed: 'completed',
     Canceled: 'canceled'
@@ -44,7 +45,8 @@ export const RequestStatus = {
 
 export const RequestStatusLabel = {
     [RequestStatus.New]: 'Новая',
-    [RequestStatus.Processing]: 'В работе',
+    [RequestStatus.Processing]: 'В обработке',
+    [RequestStatus.Pending]: 'В ожидании',
     [RequestStatus.Postponed]: 'Отложена',
     [RequestStatus.Completed]: 'Выполнена',
     [RequestStatus.Canceled]: 'Отменена'
@@ -54,14 +56,16 @@ export const RequestType = {
     Call: 'call',
     Lesson: 'lesson',
     Membership: 'membership',
+    Enrollment: 'enrollment',
     Study: 'study',
     Test: 'test'
 };
 
 export const RequestTypeLabel = {
     [RequestType.Call]: 'Звонок',
-    [RequestType.Lesson]: 'Занятие',
+    [RequestType.Lesson]: 'Пробное занятие',
     [RequestType.Membership]: 'Абонемент',
+    [RequestType.Enrollment]: 'Обучение',
     [RequestType.Study]: 'Обучение',
     [RequestType.Test]: 'Тестирование'
 };
