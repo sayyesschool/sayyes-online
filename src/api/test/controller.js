@@ -1,24 +1,20 @@
-import { Router } from 'express';
-
 const TEMPLATE_ID = 6620499;
 
 export default ({
     config: { APP_DOMAIN },
     models: { Data, Request },
     services: { Mail }
-}) => {
-    const router = Router();
-
-    router.get('/', async (req, res) => {
+}) => ({
+    async get(req, res) {
         const data = await Data.get('test');
 
         res.json({
             ok: true,
             data
         });
-    });
+    },
 
-    router.post('/', async (req, res) => {
+    async process(req, res) {
         const {
             name,
             email,
@@ -76,10 +72,8 @@ export default ({
                 requestId: request.id
             }
         });
-    });
-
-    return router;
-};
+    }
+});
 
 function getUTM(utm) {
     return Object.entries(utm).map(([key, value]) => `utm_${key}=${value}`).join('&');

@@ -28,9 +28,5 @@ export default ({ clients: { twilio } }) => {
         });
     });
 
-    router.post('/rooms', async (req, res) => {
-
-    });
-
     return router;
 };

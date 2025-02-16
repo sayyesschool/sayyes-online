@@ -1,14 +1,10 @@
-import { Router } from 'express';
-
 export default ({
     config: { EMAIL_DOMAIN },
     clients: { hh, teams },
     models: { Request },
     services: { Mail }
-}) => {
-    const router = Router();
-
-    router.post('/', async (req, res) => {
+}) => ({
+    post: async (req, res) => {
         const {
             type,
             contact,
@@ -64,10 +60,8 @@ export default ({
             message: 'Заявка создана',
             data: request
         });
-    });
-
-    return router;
-};
+    }
+});
 
 function getHtml(request) {
     const {
