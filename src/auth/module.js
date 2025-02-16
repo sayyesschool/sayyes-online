@@ -1,25 +1,15 @@
 import { resolve } from 'node:path';
 
-import express from 'express';
-import vhost from 'vhost';
+import local from './local';
+import middleware from './middleware';
 
-import api from './api';
-import Middleware from './middleware';
+export default (app, context) => {
+    const { redirect } = middleware(context);
 
-export default (domain, context) => {
-    const app = express();
-    const middleware = Middleware(context);
+    app.set('views', resolve(context.config.APP_PATH, `${app.get('name')}/local/views`));
 
-    app.set('trust proxy', true);
-    app.set('view engine', 'pug');
-    app.set('views', resolve(context.config.APP_PATH, `${domain}/views`));
+    app.use(local(context));
+    app.use(redirect);
 
-    Object.assign(app.locals, context.config, {
-        basedir: context.config.APP_PATH
-    });
-
-    app.use(api(context));
-    app.use(middleware.redirect);
-
-    return vhost(`${domain}.${context.config.APP_DOMAIN}`, app);
+    return app;
 };
