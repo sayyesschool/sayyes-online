@@ -29,6 +29,10 @@ export function spyOn(obj, method) {
     return expect.spyOn(obj, method);
 }
 
+export function stub(...args) {
+    return sinon.stub(...args);
+}
+
 export function toJSON(arg) {
     if (Array.isArray(arg)) {
         return arg.map(toJSON);

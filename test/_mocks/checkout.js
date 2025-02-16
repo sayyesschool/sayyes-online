@@ -38,6 +38,7 @@ export default {
         payment.isSucceeded = true;
         payment.paid = true;
         payment.isPaid = true;
+        payment.captured_at = new Date().toISOString();
 
         return payment;
     }),

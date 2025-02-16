@@ -1,7 +1,7 @@
 import expect from 'expect';
 
 import { PACK_4_ID } from 'test/_data';
-import { context, withMembershipPacks, withUser } from 'test/_env';
+import { context, withUser } from 'test/_env';
 
 import api from './api';
 
@@ -10,9 +10,7 @@ const {
     models: { Data, Membership, Payment, Registration, Request, User }
 } = context;
 
-describe('Club Payments API', function() {
-    withMembershipPacks();
-
+describe('Pay API', function() {
     afterEach(async () => {
         await Request.deleteMany();
         await Payment.deleteMany();

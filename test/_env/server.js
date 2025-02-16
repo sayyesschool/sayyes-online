@@ -1,5 +1,6 @@
 import express, { json } from 'express';
 
+import App from 'server/app';
 import { flash, session } from 'server/middleware';
 
 import { config, db, models } from './context';
@@ -22,4 +23,7 @@ server.use(json());
 server.use(session(config, db.connection));
 server.use(...flash);
 
-export default server;
+export {
+    App,
+    server as default
+};

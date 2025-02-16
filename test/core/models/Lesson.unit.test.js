@@ -1,8 +1,9 @@
 import expect from 'expect';
 import { model } from 'mongoose';
-import sinon from 'sinon';
 
 import { LessonSchema } from 'core/models/lesson';
+
+import { stub } from 'test/helpers';
 
 const Lesson = model('Lesson', LessonSchema);
 
@@ -13,7 +14,7 @@ const sampleLessons = [
     })
 ];
 
-sinon.stub(Lesson, 'find').returnsQuery(sampleLessons);
+stub(Lesson, 'find').returnsQuery(sampleLessons);
 
 describe('Lesson', () => {
     describe('findConflicting', () => {

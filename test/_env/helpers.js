@@ -1,25 +1,33 @@
 import { MEETING, MEMBERSHIP, PACKS, USER } from 'test/_data';
-import { models } from 'test/_env';
+import { clients, models } from 'test/_env';
 
-const { Data, Meeting, Membership, User } = models;
+const { Data, Meeting, Membership, Payment, Room, User } = models;
 
 export function withMeeting(data = MEETING, options) {
-    return withModel(Meeting, data, options);
+    return withDocument(Meeting, data, options);
 }
 
 export function withMembership(data = MEMBERSHIP, options) {
-    return withModel(Membership, data, options);
+    return withDocument(Membership, data, options);
 }
 
 export function withMembershipPacks(options) {
-    return withModel(Data, { key: 'club.packs', value: PACKS }, options);
+    return withDocument(Data, { key: 'club.packs', value: PACKS }, options);
+}
+
+export function withPayment(data, options) {
+    return withDocument(Payment, data, options);
+}
+
+export function withRoom(data, options) {
+    return withDocument(Room, data, options);
 }
 
 export function withUser(data = USER, options) {
-    return withModel(User, data, options);
+    return withDocument(User, data, options);
 }
 
-export function withModel(Model, data, options = {}) {
+export function withDocument(Model, data, options = {}) {
     const state = {};
 
     async function createModel() {
@@ -47,6 +55,8 @@ export function withModel(Model, data, options = {}) {
         },
         set(_, prop, value) {
             state.doc[prop] = value;
+
+            return true;
         },
         has(_, prop) {
             return prop in state.doc;
@@ -54,5 +64,33 @@ export function withModel(Model, data, options = {}) {
         apply(_, thisArg, args) {
             return state.doc?.apply(thisArg, args);
         }
+    });
+}
+
+export function withModel(Model, options = { after: true }) {
+    async function cleanup() {
+        await Model.deleteMany({});
+    }
+
+    if (options.before) {
+        before(cleanup);
+    }
+
+    if (options.after) {
+        after(cleanup);
+    }
+
+    if (options.beforeEach) {
+        beforeEach(cleanup);
+    }
+
+    if (options.afterEach) {
+        afterEach(cleanup);
+    }
+}
+
+export function withMailClient() {
+    afterEach(() => {
+        clients.mail.send.reset();
     });
 }

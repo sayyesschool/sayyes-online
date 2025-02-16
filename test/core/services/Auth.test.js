@@ -1,5 +1,8 @@
+import { rejects } from 'node:assert';
+
 import expect from 'expect';
 
+import { createId } from 'test/helpers';
 import { USER } from 'test/_data';
 import { context } from 'test/_env';
 
@@ -13,6 +16,22 @@ describe('Auth Service', () => {
     afterEach(async () => {
         await User.deleteMany();
         mail.send.reset();
+    });
+
+    describe('getUser', () => {
+        it('gets user', async () => {
+            const user = await Auth.register(USER);
+
+            const result = await Auth.getUser(user);
+
+            expect(result).toEqual(user);
+        });
+
+        it('throws if user is not found', async () => {
+            await rejects(async () => await Auth.getUser(createId()), {
+                code: 404
+            });
+        });
     });
 
     describe('register', () => {

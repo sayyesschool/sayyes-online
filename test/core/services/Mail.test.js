@@ -1,6 +1,7 @@
 import expect from 'expect';
 
 import { context } from 'test/_env';
+import { withMailClient } from 'test/_env/helpers';
 
 const {
     clients: { mail },
@@ -8,6 +9,8 @@ const {
 } = context;
 
 describe('Mail Service', () => {
+    withMailClient();
+
     const email = {
         to: 'olegpolyakov@outlook.com',
         subject: 'Test Subject',
