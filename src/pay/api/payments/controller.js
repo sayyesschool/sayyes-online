@@ -1,54 +1,34 @@
 export default ({
-    models: { User },
-    services: { Checkout }
+    models: { Payment },
+    services: { Checkout, Class, Club }
 }) => ({
     async create(req, res) {
-        const {
+        let {
             amount,
-            contact: {
-                email,
-                name,
-                phone
-            },
+            description,
+            purpose,
+            contact: customer,
+            data,
+            requestId,
             userId = req.user?.id,
-            formatId,
-            typeId,
-            packId
-        } = req.body ?? {};
+            utm
+        } = req.body;
 
-        if (!amount) throw {
-            code: 400,
-            message: 'Не указана сумма'
-        };
-
-        if (!userId && !email) throw {
-            code: 400,
-            message: 'Не указан email'
-        };
-
-        const user = await User.findOne({ $or: [{ _id: userId }, { email }] });
-
-        if (userId && !user) throw {
-            code: 404,
-            message: 'Пользователь не найден'
-        };
+        if (purpose === Payment.Purpose.Enrollment) {
+            amount = await Class.getPackPrice(data.packId);
+        } else if (purpose === Payment.Purpose.Membership) {
+            amount = await Club.getPackPrice(data.packId);
+        }
 
         const payment = await Checkout.createPayment({
             amount,
-            description: 'Оплата за тренинги',
-            confirmation: {
-                type: 'embedded'
-            },
-            email: user?.email ?? email,
-            metadata: {
-                name: user ? undefined : name,
-                email: user ? undefined : email,
-                phone: user ? undefined : phone,
-                userId: user?.id,
-                formatId: formatId,
-                typeId: typeId,
-                packId: packId
-            }
+            description,
+            purpose,
+            customer,
+            data,
+            requestId,
+            userId,
+            utm
         });
 
         res.json({
@@ -58,22 +38,19 @@ export default ({
     },
 
     async process(req, res) {
-        const { uuid } = req.body;
+        const payment = await Checkout.processPayment(req.body.uuid);
 
-        const payment = await Checkout.resolvePayment(uuid);
+        let data;
 
-        if (!payment) throw {
-            code: 404,
-            message: 'Платеж не найден'
-        };
-
-        if (!payment.paid) throw {
-            code: 400,
-            message: 'Платеж не оплачен'
-        };
+        if (payment.purpose === Payment.Purpose.Enrollment) {
+            data = await Class.processPayment(payment);
+        } else if (payment.purpose === Payment.Purpose.Membership) {
+            data = await Club.processPayment(payment);
+        }
 
         res.json({
-            ok: true
+            ok: true,
+            data
         });
     }
 });
