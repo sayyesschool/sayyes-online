@@ -36,7 +36,7 @@ export default function CheckoutWidget({ data, onLoad, onComplete, onError }) {
                         }
                     },
                     error_callback: error => {
-                        console.log(error);
+                        console.error(error);
                         onError(error);
                     }
                 });

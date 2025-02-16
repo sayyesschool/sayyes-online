@@ -31,7 +31,6 @@ export default function TeachersPage({ history }) {
     }, [teacher]);
 
     const handleEdit = useCallback(teacher => {
-        console.log(teacher);
         history.push(teacher.url, { edit: true });
     }, []);
 
