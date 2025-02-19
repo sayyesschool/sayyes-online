@@ -62,7 +62,7 @@ describe('Membership model', () => {
         });
 
         describe('getAlmostFullMemberships', () => {
-            it.only('returns memberships that are almost full', async () => {
+            it('returns memberships that are almost full', async () => {
                 const membership = await Membership.create([
                     {
                         limit: 5,
@@ -104,7 +104,7 @@ describe('Membership model', () => {
         });
 
         describe('getFullMemberships', () => {
-            it.only('returns memberships that are full', async () => {
+            it('returns memberships that are full', async () => {
                 const membership = await Membership.create([
                     {
                         limit: 5,
