@@ -14,54 +14,73 @@ export default ({
         return this.packs;
     },
 
-    async getPackPrice(packId) {
+    async getPack(packId) {
         const packs = await this.getPacks();
-        const pack = packs.find(pack => pack.id === packId);
+        const pack = packs.find(pack => pack.id == packId);
 
         if (!pack) throw {
             code: 404,
-            message: 'Пакет не найден.'
+            message: 'Пакет не найден'
         };
+
+        return pack;
+    },
+
+    async getPackPrice(packId) {
+        const pack = await this.getPack(packId);
 
         return pack.price;
     },
 
+    async getEnrollment($enrollment) {
+        const enrollment = await Enrollment.resolve($enrollment);
+
+        if (!enrollment) throw {
+            code: 404,
+            message: 'Запись не найдена'
+        };
+
+        return enrollment;
+    },
+
     async processPayment(payment) {
-        const [enrollment, pack] = await Promise.all([
-            Enrollment.findById(payment.data.enrollmentId),
-            Pack.findById(payment.data.packId)
-        ]);
+        const enrollment = await Enrollment.resolve(payment.data.enrollmentId);
 
-        const lessons = enrollment.scheduleLessons(pack.numberOfLessons);
+        // TODO: Remove when transactions are implemented
+        if (!enrollment) return {};
 
-        const debitTransaction = await Transaction.create([{
-            type: 'debit',
-            amount: payment.amount.value,
-            currency: payment.amount.currency,
-            description: payment.description,
-            paymentId: payment.id,
-            enrollmentId: enrollment.id,
-            userId: payment.data.userId
-        },
-        {
-            type: 'credit',
-            amount: debitTransaction.amount,
-            currency: debitTransaction.currency,
-            enrollment: debitTransaction.enrollment,
-            userId: debitTransaction.userId
-        }]);
+        const pack = await this.getPack(payment.data.packId);
+        const scheduledLessons = enrollment.scheduleLessons(pack.numberOfLessons);
 
-        const [creditTransaction, updatedEnrollment] = await Promise.all([
-            Transaction.create(),
-            Enrollment.updateOne({
-                _id: enrollment.id
-            }, {
+        // TODO: Implement transactions
+        // const debitTransaction = await Transaction.create([{
+        //     type: 'debit',
+        //     amount: payment.amount.value,
+        //     currency: payment.amount.currency,
+        //     description: payment.description,
+        //     paymentId: payment.id,
+        //     enrollmentId: enrollment.id,
+        //     userId: payment.data.userId
+        // },
+        // {
+        //     type: 'credit',
+        //     amount: payment.amount.amount,
+        //     currency: payment.amount.currency,
+        //     enrollment: debitTransaction.enrollment,
+        //     userId: debitTransaction.userId
+        // }]);
+
+        const [updatedEnrollment, lessons] = await Promise.all([
+            Enrollment.update(enrollment.id, {
                 lessonPrice: pack.lessonPrice
             }),
-            Lesson.insertMany(lessons)
+            Lesson.create(scheduledLessons)
         ]);
 
-        // TODO finish this method
+        return {
+            enrollmentId: updatedEnrollment.id,
+            lessonIds: lessons.map(lesson => lesson.id)
+        };
     },
 
     async scheduleLesson({ id, ...data }) {
