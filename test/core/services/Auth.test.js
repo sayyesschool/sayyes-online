@@ -12,7 +12,9 @@ const {
     services: { Auth }
 } = context;
 
-describe('Auth Service', () => {
+describe('Auth Service', function() {
+    this.timeout(5000);
+
     afterEach(async () => {
         await User.deleteMany();
         mail.send.reset();

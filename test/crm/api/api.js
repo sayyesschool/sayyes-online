@@ -2,9 +2,8 @@ import supertest from 'supertest';
 
 import crm from 'crm/api';
 
-import { context, server, user } from 'test/_env';
+import { context, Server, user } from 'test/_env';
 
-server.use(user);
-server.use(crm(context));
+const server = Server(user, crm(context));
 
 export default supertest(server);

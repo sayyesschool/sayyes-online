@@ -12,7 +12,10 @@ export function withMembership(data = MEMBERSHIP, options) {
 }
 
 export function withMembershipPacks(options) {
-    return withDocument(Data, { key: 'club.packs', value: PACKS }, options);
+    return withDocument(Data, {
+        key: 'club.packs',
+        value: PACKS
+    }, options);
 }
 
 export function withPayment(data, options) {

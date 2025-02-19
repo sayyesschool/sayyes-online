@@ -1,7 +1,8 @@
 import expect from 'expect';
 
-import { PACK_4_ID } from 'test/_data';
-import { context, withUser } from 'test/_env';
+import { createId } from 'test/helpers';
+import { ENROLLMENT_ID, ENROLLMENT_PACK_5, ENROLLMENT_PACK_5_ID } from 'test/_data';
+import { context, withEnrollment, withEnrollmentPacks, withModel, withUser } from 'test/_env';
 
 import api from './api';
 
@@ -11,24 +12,24 @@ const {
 } = context;
 
 describe('Pay API', function() {
-    afterEach(async () => {
-        await Request.deleteMany();
-        await Payment.deleteMany();
-    });
-
-    after(async () => {
-        await Data.deleteMany();
-        await Registration.deleteMany();
-        await User.deleteMany();
-    });
+    withEnrollmentPacks();
+    withModel(Data);
+    withModel(Payment, { afterEach: true });
+    withModel(Request, { afterEach: true });
+    withModel(Registration);
 
     describe('unauthenticated', () => {
         const DATA = {
+            amount: 100,
+            purpose: Payment.Purpose.Enrollment,
             contact: {
                 name: 'Jane',
                 email: 'jane@sayyes.school'
             },
-            packId: PACK_4_ID
+            data: {
+                enrollmentId: ENROLLMENT_ID,
+                packId: ENROLLMENT_PACK_5_ID
+            }
         };
 
         describe('POST /create', () => {
@@ -51,7 +52,7 @@ describe('Pay API', function() {
             it('returns error if pack is not found', async () => {
                 const { body } = await api.post('/payments/create').send({
                     ...DATA,
-                    packId: undefined
+                    data: {}
                 });
 
                 expect(body.ok).toBe(false);
@@ -95,10 +96,15 @@ describe('Pay API', function() {
 
     describe('authenticated', () => {
         const user = withUser();
+        const enrollment = withEnrollment();
 
         const DATA = {
-            userId: undefined,
-            packId: PACK_4_ID
+            amount: 100,
+            purpose: Payment.Purpose.Enrollment,
+            data: {
+                enrollmentId: ENROLLMENT_ID,
+                packId: ENROLLMENT_PACK_5_ID
+            }
         };
 
         before(async () => {
@@ -113,9 +119,14 @@ describe('Pay API', function() {
             });
 
             it('returns error if user is not found', async () => {
+                const userId = createId();
                 const { body } = await api.post('/payments/create').send({
-                    packId: PACK_4_ID,
-                    userId: '000000000000000000000000'
+                    ...DATA,
+                    userId,
+                    data: {
+                        packId: ENROLLMENT_PACK_5_ID,
+                        userId
+                    }
                 });
 
                 expect(body.error).toBe('Пользователь не найден');
@@ -135,6 +146,8 @@ describe('Pay API', function() {
                 const { body: { data } } = await api.post('/payments/process').send({ uuid });
 
                 expect(data).toExist();
+                expect(data.enrollmentId).toEqual(enrollment.id);
+                expect(data.lessonIds.length).toEqual(ENROLLMENT_PACK_5.numberOfLessons);
             });
         });
     });

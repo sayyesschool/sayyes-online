@@ -14,9 +14,17 @@ const sampleLessons = [
     })
 ];
 
-stub(Lesson, 'find').returnsQuery(sampleLessons);
-
 describe('Lesson', () => {
+    let findStub;
+
+    before(() => {
+        findStub = stub(Lesson, 'find').returnsQuery(sampleLessons);
+    });
+
+    after(() => {
+        findStub.restore();
+    });
+
     describe('findConflicting', () => {
         it('returns a conflicting lesson if there is a conflict', async () => {
             const conflictingLesson = await Lesson.findConflicting({

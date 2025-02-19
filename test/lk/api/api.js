@@ -2,9 +2,8 @@ import supertest from 'supertest';
 
 import lk from 'lk/api';
 
-import { context, server, user } from 'test/_env';
+import { context, Server, user } from 'test/_env';
 
-server.use(user);
-server.use(lk(context));
+const server = Server(user, lk(context));
 
 export default supertest(server);
