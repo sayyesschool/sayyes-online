@@ -16,10 +16,11 @@ export default context => {
     server.set('view engine', 'pug');
     server.set('views', config.APP_PATH);
 
-    Object.assign(server.locals, {
+    Object.assign(server.locals, config, {
+        basedir: config.APP_PATH,
         ENV: server.get('env'),
-        basedir: config.APP_PATH
-    }, config);
+        YEAR: new Date().getFullYear()
+    });
 
     server.use(cors({
         origin: /sayyes\.(school|dev|local)$/,

@@ -8,10 +8,11 @@ export default (name, context) => {
     app.set('name', name);
     app.set('trust proxy', true);
     app.set('view engine', 'pug');
-    app.set('views', resolve(context.config.APP_PATH, `${name}/views`));
+    app.set('views', resolve(context.config.APP_PATH, name));
 
     Object.assign(app.locals, context.config, {
-        basedir: context.config.APP_PATH
+        basedir: context.config.APP_PATH,
+        YEAR: new Date().getFullYear()
     });
 
     app.use((error, req, res, next) => {

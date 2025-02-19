@@ -3,10 +3,9 @@ import pages, { routes } from './pages';
 
 export default (app, context) => {
     Object.assign(app.locals, {
-        titleBase: 'Разговорный клуб Say Yes',
+        titleBase: 'Разговорный клуб SAY YES',
         CLUB_URL: `https://club.${context.config.APP_DOMAIN}`,
-        CLUB_EMAIL: `club@${context.config.APP_DOMAIN}`,
-        YEAR: new Date().getFullYear()
+        CLUB_EMAIL: `club@${context.config.APP_DOMAIN}`
     });
 
     app.use('/api', api(context));
