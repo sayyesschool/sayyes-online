@@ -149,9 +149,14 @@ Enrollment.methods.scheduleLessons = function(numberOfLessons, startDate = new D
     const date = datetime(startDate);
     const schedule = this.schedule;
 
+    if (!schedule?.length) return lessons;
+
     for (let i = 0; i < numberOfLessons; i++) {
         const currentSchedule = schedule[i % schedule.length];
-        const [hours, minutes] = currentSchedule.from?.split(':') ?? [];
+
+        if (!currentSchedule) break;
+
+        const [hours, minutes] = currentSchedule?.from?.split(':') ?? [];
 
         if (currentSchedule.day <= date.weekday()) {
             date.weekday(7);
