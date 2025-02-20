@@ -20,7 +20,7 @@ export default function LexemeItem({
 }) {
     const { id, value, translation, status } = lexeme;
     const isCreatorLexeme = lexeme.createdBy === user.id;
-    const showDeleteBtn = (user.isEditor && isCreatorLexeme) || user.isLearner;
+    const showDeleteBtn = (user.Manager && isCreatorLexeme) || user.isLearner;
 
     const handleCheckboxChange = useCallback(() => {
         return onSelect(id);
@@ -36,7 +36,7 @@ export default function LexemeItem({
 
     const actionButtons = [
         {
-            icon: user.isEditor ? 'verified' : 'edit',
+            icon: user.Manager ? 'verified' : 'edit',
             title: 'Редактировать слово',
             handler: () => onEdit(id)
         },
