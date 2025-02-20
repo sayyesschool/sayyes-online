@@ -1,16 +1,24 @@
-import moment from 'moment';
 import { Schema } from 'mongoose';
+
+import datetime, { isToday } from 'shared/libs/datetime';
 
 import { Level } from '../common/constants';
 import Image from '../image';
 
-import { LevelLabels, MeetingStatus } from './constants';
+import { LevelLabels, MeetingStatus, SimpleLevelLabels } from './constants';
 
 export const Meeting = new Schema({
     title: { type: String, required: true, trim: true },
     description: { type: String, trim: true, default: '' },
-    date: { type: Date },
-    duration: { type: Number, default: 60 },
+    startDate: {
+        type: Date,
+        alias: 'date',
+        set: value => datetime(value).utc().toDate()
+    },
+    endDate: {
+        type: Date,
+        set: value => datetime(value).utc().toDate()
+    },
     capacity: { type: Number },
     level: {
         type: Number,
@@ -29,6 +37,7 @@ export const Meeting = new Schema({
     zoomId: { type: String },
     startUrl: { type: String },
     joinUrl: { type: String },
+    password: { type: String },
     materialsUrl: { type: String },
     notes: { type: String, trim: true, default: '' },
     hostId: { type: Schema.Types.ObjectId, ref: 'User' }
@@ -36,35 +45,41 @@ export const Meeting = new Schema({
     timestamps: true
 });
 
+Meeting.statics.Status = MeetingStatus;
+
 Meeting.statics.getScheduled = async function() {
     return Meeting.find({
-        date: { $gte: new Date() },
+        startDate: { $gte: new Date() },
         status: 'scheduled',
         published: true
     })
         .sort({ date: 1 })
-        .populate('host', 'firstname lastname avatarUrl');
+        .populate('host', 'firstname lastname image');
 };
 
 Meeting.virtual('url').get(function() {
     return `/meetings/${this.id}`;
 });
 
-Meeting.virtual('imageUrl').get(function() {
-    return this.image?.url;
-});
-
 Meeting.virtual('datetime').get(function() {
-    return moment(this.date).tz('Europe/Moscow').format('D MMMM в H:mm МСК');
+    return datetime(this.date).tz('Europe/Moscow').format('D MMMM в H:mm МСК');
 });
 
 Meeting.virtual('dateLabel').get(function() {
-    return moment(this.date).tz('Europe/Moscow').format('D MMMM YYYY');
+    return datetime(this.date).tz('Europe/Moscow').format('DD.MM.YYYY');
 });
 
 Meeting.virtual('timeLabel').get(function() {
-    return moment(this.date).tz('Europe/Moscow').format('H:mm МСК');
+    return datetime(this.date).tz('Europe/Moscow').format('H:mm МСК');
 });
+
+Meeting.virtual('duration')
+    .get(function() {
+        return Math.abs(datetime(this.startDate).diff(this.endDate, 'minutes'));
+    })
+    .set(function(value) {
+        this.endDate = datetime(this.startDate).add(value, 'minutes').toDate();
+    });
 
 Meeting.virtual('durationLabel').get(function() {
     return `${this.duration} минут`;
@@ -74,12 +89,20 @@ Meeting.virtual('levelLabel').get(function() {
     return LevelLabels[this.level] || 'Любой';
 });
 
+Meeting.virtual('simpleLevelLabel').get(function() {
+    return SimpleLevelLabels[this.level] || 'Любой';
+});
+
+Meeting.virtual('imageUrl').get(function() {
+    return this.image?.url;
+});
+
 Meeting.virtual('isFree').get(function() {
     return this.free;
 });
 
 Meeting.virtual('isToday').get(function() {
-    return moment(this.date).isSame(new Date(), 'day');
+    return isToday(this.startDate);
 });
 
 Meeting.virtual('isScheduled').get(function() {
@@ -132,7 +155,7 @@ Meeting.virtual('registrations', {
 });
 
 Meeting.methods.canUnregister = function() {
-    return this.status === MeetingStatus.Scheduled && moment().isBefore(this.date, 'hour');
+    return this.status === MeetingStatus.Scheduled && datetime().isBefore(this.date, 'hour');
 };
 
 export default Meeting;

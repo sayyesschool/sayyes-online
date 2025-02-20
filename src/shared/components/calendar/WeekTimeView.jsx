@@ -1,14 +1,14 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
-import moment from 'moment';
 
 import { getWeekData, getWeekLabel } from 'shared/libs/calendar';
+import datetime from 'shared/libs/datetime';
 import { IconButton, Text } from 'shared/ui-components';
 import { formatTime } from 'shared/utils/format';
 
 import WeekTimeEvent from './WeekTimeEvent';
 
 const defaultHours = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
-const defaultWeekDayNames = Array.of(...moment.weekdaysMin().slice(1), moment.weekdaysMin()[0]);
+const defaultWeekDayNames = Array.of(...datetime.weekdaysMin().slice(1), datetime.weekdaysMin()[0]);
 
 export default function WeekTimeView({
     hours = defaultHours,
@@ -16,7 +16,7 @@ export default function WeekTimeView({
     events,
     onEventClick
 }) {
-    const dateRef = useRef(moment());
+    const dateRef = useRef(datetime());
 
     const [week, setWeek] = useState(dateRef.current.week());
 
@@ -59,6 +59,7 @@ export default function WeekTimeView({
                 <table>
                     <colgroup>
                         <col />
+
                         {weekData.map(day =>
                             <col
                                 key={day.weekday}
@@ -71,6 +72,7 @@ export default function WeekTimeView({
                     <thead>
                         <tr>
                             <th scope="col" />
+
                             {weekData.map(day =>
                                 <th
                                     key={day.weekday}

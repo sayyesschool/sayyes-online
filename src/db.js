@@ -62,29 +62,37 @@ mongoose.plugin(function addResolve(schema) {
 
 mongoose.connection.on('connected', () => console.log('Connected to DB'));
 mongoose.connection.on('disconnected', () => console.log('Disconnected from DB'));
-mongoose.connection.on('error', () => console.error(console, 'DB connection error:'));
+mongoose.connection.on('error', () => console.error('DB connection error:'));
 
 process.on('SIGINT', async () => {
-    console.info('SIGINT signal received');
+    console.log('SIGINT signal received');
 
     await mongoose.connection.close();
 
-    console.log('Disconnected from DB through app termination');
+    console.log('Process terminated');
     process.exit(0);
 });
 
-export default {
+export default ({
+    DB_CONNECTION_STRING
+}) => ({
     connection: mongoose.connection,
-    connect: uri => mongoose.connect(uri, {
-        autoIndex: false
-    }),
-    disconnect: () => mongoose.disconnect(),
-    drop: () => {
-        return mongoose.connection.dropDatabase()
-            .catch(() => {
-                for (const name in mongoose.connection.collections) {
-                    mongoose.connection.dropCollection(name);
-                }
-            });
+
+    async connect(uri = DB_CONNECTION_STRING) {
+        return mongoose.connect(uri, {
+            autoIndex: false
+        });
+    },
+
+    async disconnect() {
+        return mongoose.disconnect();
+    },
+
+    async drop() {
+        return mongoose.connection.dropDatabase().catch(() => {
+            for (const name in mongoose.connection.collections) {
+                mongoose.connection.dropCollection(name);
+            }
+        });
     }
-};
+});

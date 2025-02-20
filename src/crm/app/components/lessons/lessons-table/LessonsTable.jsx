@@ -4,6 +4,44 @@ import StatusChip from 'shared/components/status-chip';
 import { LessonStatusLabel } from 'shared/data/lesson';
 import { IconButton, Link, Table } from 'shared/ui-components';
 
+const columns = [
+    {
+        key: 'learner',
+        text: 'Ученик'
+    },
+    {
+        key: 'teacher',
+        text: 'Преподаватель'
+    },
+    {
+        key: 'datetime',
+        text: 'Дата и время'
+    },
+    {
+        key: 'room',
+        text: 'Аудитория'
+    },
+    {
+        key: 'status',
+        text: 'Статус'
+    },
+    {
+        key: 'trial',
+        text: 'Пробный'
+    },
+    {
+        key: 'free',
+        text: 'Бесплатный'
+    },
+    {
+        key: 'confirmed',
+        text: 'Подтвержден'
+    },
+    {
+        key: 'actions'
+    }
+];
+
 export default function LessonsTable({ lessons, onEdit, onDelete }) {
     return (
         <Table className="LessonsTable">
@@ -55,7 +93,7 @@ export default function LessonsTable({ lessons, onEdit, onDelete }) {
                         </Table.Cell>
 
                         <Table.Cell>
-                            {lesson.room?.title}
+                            {lesson.room?.name}
                         </Table.Cell>
 
                         <Table.Cell>
@@ -98,41 +136,3 @@ export default function LessonsTable({ lessons, onEdit, onDelete }) {
         </Table>
     );
 }
-
-const columns = [
-    {
-        key: 'learner',
-        text: 'Ученик'
-    },
-    {
-        key: 'teacher',
-        text: 'Преподаватель'
-    },
-    {
-        key: 'datetime',
-        text: 'Дата и время'
-    },
-    {
-        key: 'room',
-        text: 'Аудитория'
-    },
-    {
-        key: 'status',
-        text: 'Статус'
-    },
-    {
-        key: 'trial',
-        text: 'Пробный'
-    },
-    {
-        key: 'free',
-        text: 'Бесплатный'
-    },
-    {
-        key: 'confirmed',
-        text: 'Подтвержден'
-    },
-    {
-        key: 'actions'
-    }
-];

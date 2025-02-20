@@ -21,6 +21,7 @@ export default function WeekTimeEvent({ event, onClick, ...props }) {
         >
             <Flex className="CalendarEvent__content">
                 <Text className="CalendarEvent__title">{event.title}</Text>
+
                 <Text className="CalendarEvent__time" size="sm">
                     {formatTime(event.startTime.hours, event.startTime.minutes)}
                     -

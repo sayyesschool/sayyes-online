@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { YOOKASSA_SCRIPT_URL } from 'shared/constants';
+import { PAY_URL, YOOKASSA_SCRIPT_URL } from 'shared/constants';
 import { useScript } from 'shared/hooks/dom';
 import http from 'shared/services/http';
 
-import CheckoutWidgetErrorState from './CheckoutWidgetErrorState';
-import CheckoutWidgetSuccessState from './CheckoutWidgetSuccessState';
+import CheckoutWidgetError from './CheckoutWidgetError';
+import CheckoutWidgetSuccess from './CheckoutWidgetSuccess';
 
 import styles from './CheckoutWidget.module.scss';
 
@@ -24,11 +24,11 @@ export default function CheckoutWidget({ data, onLoad, onComplete, onError }) {
 
         const { onLoad, onComplete, onError } = callbackRefs.current;
 
-        http.post('/api/payments', dataRef.current)
+        http.post(`${PAY_URL}/api/payments/create`, dataRef.current)
             .then(res => {
-                const data = res.data;
+                const payment = res.data;
                 const checkout = new window.YooMoneyCheckoutWidget({
-                    confirmation_token: data.confirmation.confirmationToken,
+                    confirmation_token: payment.confirmation.confirmationToken,
                     customization: {
                         colors: {
                             control_primary: '#6c167b',
@@ -36,7 +36,7 @@ export default function CheckoutWidget({ data, onLoad, onComplete, onError }) {
                         }
                     },
                     error_callback: error => {
-                        console.log(error);
+                        console.error(error);
                         onError(error);
                     }
                 });
@@ -48,19 +48,12 @@ export default function CheckoutWidget({ data, onLoad, onComplete, onError }) {
                 });
 
                 checkout.on('complete', () => {
-                    fetch('/api/payments/process', {
+                    fetch(`${PAY_URL}/api/payments/process`, {
                         method: 'post',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({
-                            source: 'client',
-                            event: 'payment.succeeded',
-                            object: {
-                                id: data.uuid,
-                                metadata: data.metadata
-                            }
-                        })
+                        body: JSON.stringify(payment)
                     }).then(() => {
                         setComplete(true);
                         onComplete?.();
@@ -80,11 +73,11 @@ export default function CheckoutWidget({ data, onLoad, onComplete, onError }) {
     }, [isLoaded]);
 
     if (isComplete) return (
-        <CheckoutWidgetSuccessState />
+        <CheckoutWidgetError />
     );
 
     if (error) return (
-        <CheckoutWidgetErrorState error={error} />
+        <CheckoutWidgetSuccess error={error} />
     );
 
     return (

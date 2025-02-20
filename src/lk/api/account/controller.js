@@ -28,28 +28,6 @@ export default ({
         });
     },
 
-    async increaseBalance(req, res, next) {
-        Payment.make({
-            amount: req.body.amount,
-            description: 'Пополнение баланса',
-            email: req.user.email,
-            returnUrl: req.body.meetingId && `/meetings/${req.body.meetingId}`,
-            metadata: {
-                userId: req.user.id,
-                meetingId: req.body.meetingId
-            }
-        }).then(payment => {
-            if (payment.confirmationUrl) {
-                return res.redirect(payment.confirmationUrl);
-            }
-
-            res.json({
-                ok: true,
-                data: payment
-            });
-        }).catch(next);
-    },
-
     async updateAvatar(req, res) {
         req.user.image = req.body.image;
 
@@ -80,5 +58,27 @@ export default ({
             ok: true,
             message: 'Пароль изменен'
         });
+    },
+
+    async increaseBalance(req, res, next) {
+        Payment.make({
+            amount: req.body.amount,
+            description: 'Пополнение баланса',
+            email: req.user.email,
+            returnUrl: req.body.meetingId && `/meetings/${req.body.meetingId}`,
+            metadata: {
+                userId: req.user.id,
+                meetingId: req.body.meetingId
+            }
+        }).then(payment => {
+            if (payment.confirmationUrl) {
+                return res.redirect(payment.confirmationUrl);
+            }
+
+            res.json({
+                ok: true,
+                data: payment
+            });
+        }).catch(next);
     }
 });

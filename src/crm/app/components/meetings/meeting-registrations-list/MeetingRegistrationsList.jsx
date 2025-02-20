@@ -1,65 +1,83 @@
-import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import ConfirmButton from '@/shared/components/confirm-button/ConfirmButton';
+import ConfirmButton from '@/shared/components/confirm-button';
+import CopyButton from '@/shared/components/copy-button';
 import {
+    ButtonGroup,
     IconButton,
     List,
     Text
 } from 'shared/ui-components';
 
-import UIContext from 'crm/contexts/ui';
-
-import styles from './MeetingRegistrationsList.module.scss';
-
-export default function MeetingRegistrationsList({ registrations, onConfirm, onCancel, onDelete }) {
-    const UI = useContext(UIContext);
-
-    function handleCopyButtonClick(value) {
-        navigator.clipboard.writeText(value);
-        UI.showNotification('Ссылка скопирована');
-    }
-
+export default function MeetingRegistrationsList({
+    meeting,
+    registrations,
+    onUpdate,
+    onDelete
+}) {
     return (
-        <List>
+        <List interactive>
             {registrations?.map(registration =>
                 <List.Item
                     key={registration.id}
-                    className={styles.item}
                     icon={getRegistrationIcon(registration)}
                     content={
                         <Link to={`/learners/${registration.userId}`}>
-                            <Text type="body-md">{`${registration.registrant.firstname} ${registration.registrant.lastname}`}</Text>
-                            <Text type="body-sm">{registration.registrant.email}</Text>
+                            <Text type="body-md">{`${registration.user?.firstname} ${registration.user?.lastname}`}</Text>
+                            <Text type="body-sm">{registration.user?.email}</Text>
                         </Link>
                     }
                     end={<>
-                        {registration.joinUrl &&
-                            <IconButton
+                        {(meeting.isScheduled || meeting.isStarted) && registration.joinUrl &&
+                            <CopyButton
                                 title="Копировать ссылку для входа"
                                 icon="link"
-                                onClick={() => handleCopyButtonClick(registration.joinUrl)}
+                                copyContent={registration.joinUrl}
                             />
                         }
 
-                        {registration.status !== 'confirmed' &&
+                        {registration.isPending &&
                             <IconButton
                                 title="Подтвердить"
                                 icon="check"
-                                onClick={() => onConfirm(registration)}
+                                onClick={() => onUpdate(registration, { status: 'approved' })}
                             />
                         }
 
-                        {registration.status !== 'canceled' &&
+                        {registration.isPending &&
                             <IconButton
                                 title="Отменить"
                                 icon="cancel"
-                                onConfirm={() => onCancel(registration)}
+                                onClick={() => onUpdate(registration, { status: 'canceled' })}
                             />
+                        }
+
+                        {meeting.isEnded &&
+                            <ButtonGroup variant="plain" spacing="4px">
+                                <IconButton
+                                    title="Отметить как присутствующего"
+                                    value="attended"
+                                    icon="person_check"
+                                    color={registration.isAttended ? 'success' : undefined}
+                                    variant={registration.isAttended ? 'soft' : undefined}
+                                    onClick={() => onUpdate(registration, { status: 'attended' })}
+                                />
+
+                                <IconButton
+                                    title="Отметить как отсутствующего"
+                                    value="missed"
+                                    icon="person_remove"
+                                    color={registration.isMissed ? 'danger' : undefined}
+                                    variant={registration.isMissed ? 'soft' : undefined}
+                                    onClick={() => onUpdate(registration, { status: 'missed' })}
+                                />
+                            </ButtonGroup>
                         }
 
                         <ConfirmButton
                             title="Удалить"
+                            message="Вы уверены, что хотите удалить регистрацию?"
+                            description="Это действие нельзя отменить"
                             icon="delete"
                             color="danger"
                             onConfirm={() => onDelete(registration)}

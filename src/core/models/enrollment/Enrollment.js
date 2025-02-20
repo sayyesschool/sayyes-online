@@ -1,5 +1,6 @@
-import moment from 'moment';
 import { Schema } from 'mongoose';
+
+import datetime from 'shared/libs/datetime';
 
 import { AgeGroup, Domain, Format, Level, TeacherType } from '../common';
 import Schedule from '../schedule';
@@ -145,12 +146,17 @@ Enrollment.virtual('comments', {
 
 Enrollment.methods.scheduleLessons = function(numberOfLessons, startDate = new Date()) {
     const lessons = [];
-    const date = moment(startDate);
+    const date = datetime(startDate);
     const schedule = this.schedule;
+
+    if (!schedule?.length) return lessons;
 
     for (let i = 0; i < numberOfLessons; i++) {
         const currentSchedule = schedule[i % schedule.length];
-        const [hours, minutes] = currentSchedule.from?.split(':') ?? [];
+
+        if (!currentSchedule) break;
+
+        const [hours, minutes] = currentSchedule?.from?.split(':') ?? [];
 
         if (currentSchedule.day <= date.weekday()) {
             date.weekday(7);
@@ -181,7 +187,7 @@ Enrollment.methods.rescheduleLessons = function(lessons, startDate = new Date())
         .map((lesson, i) => {
             const currentSchedule = this.schedule[i % this.schedule.length];
             const [hours, minutes] = currentSchedule.from?.split(':') ?? [];
-            const lessonDate = moment(lesson.date)
+            const lessonDate = datetime(lesson.date)
                 .weekday(currentSchedule.day)
                 .hours(hours)
                 .minutes(minutes)
@@ -196,6 +202,20 @@ Enrollment.methods.rescheduleLessons = function(lessons, startDate = new Date())
                 date: lessonDate.toDate()
             };
         });
+};
+
+Enrollment.methods.getStartDateForSchedule = function(from, schedule) {
+    for (const item of schedule) {
+        const date = datetime().weekday(item.day);
+
+        if (date.isBefore(from)) {
+            continue;
+        } else {
+            return date;
+        }
+    }
+
+    return this.getStartDateForSchedule(from.add(7, 'days'), schedule);
 };
 
 export default Enrollment;

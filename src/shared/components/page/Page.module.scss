@@ -1,5 +1,9 @@
+@use 'shared/styles/mq';
+
 .root {
     --page-max-width: 1280px;
+    --page-padding: 2rem 1rem 6rem;
+    --page-gap: 1rem;
 
     height: 100%;
     overflow: auto;
@@ -19,10 +23,14 @@
 .container {
     max-width: var(--page-max-width);
     margin: auto;
-    padding: 2rem 1rem 6rem;
+    padding: var(--page-padding);
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: var(--page-gap);
+
+    @include mq.to(xl) {
+        padding: 1rem;
+    }
 }
 
 .layout-wider {

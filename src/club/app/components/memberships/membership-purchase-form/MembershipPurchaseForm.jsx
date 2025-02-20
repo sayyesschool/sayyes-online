@@ -25,7 +25,11 @@ export default function MembershipPurchaseForm({ options = [] }) {
             }
 
             {showCheckout ?
-                <CheckoutWidget data={{ packId: selectedOptionId }} />
+                <CheckoutWidget
+                    data={{
+                        data: { packId: selectedOptionId }
+                    }}
+                />
                 :
                 <>
                     <List gap="sm">

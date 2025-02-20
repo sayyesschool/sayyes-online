@@ -1,0 +1,28 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.main {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.avatar {
+    --Avatar-size: 200px;
+
+    align-self: center;
+}
+
+.field {
+    
+}
+
+.loader {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}

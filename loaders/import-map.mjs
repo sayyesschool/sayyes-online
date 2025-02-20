@@ -1,25 +1,32 @@
-import { join } from 'node:path';
-
 const ROOT_PATH = process.cwd();
 
 const imports = {
-    'config': `${ROOT_PATH}/src/config.js`,
-    'core': `${ROOT_PATH}/src/core/index.js`,
-    'db': `${ROOT_PATH}/src/db.js`,
-    'auth': `${ROOT_PATH}/src/auth/index.js`,
-    'club': `${ROOT_PATH}/src/club/index.js`,
-    'cms': `${ROOT_PATH}/src/cms/index.js`,
-    'crm': `${ROOT_PATH}/src/crm/index.js`,
-    'lms': `${ROOT_PATH}/src/lms/index.js`
+    config: `${ROOT_PATH}/src/config.js`,
+    db: `${ROOT_PATH}/src/db.js`,
+    api: `${ROOT_PATH}/src/api/`,
+    auth: `${ROOT_PATH}/src/auth/`,
+    core: `${ROOT_PATH}/src/core/`,
+    club: `${ROOT_PATH}/src/club/`,
+    cms: `${ROOT_PATH}/src/cms/`,
+    crm: `${ROOT_PATH}/src/crm/`,
+    lk: `${ROOT_PATH}/src/lk/`,
+    lms: `${ROOT_PATH}/src/lms/`,
+    pay: `${ROOT_PATH}/src/pay/`,
+    server: `${ROOT_PATH}/src/server/`,
+    shared: `${ROOT_PATH}/src/shared/`,
+    test: `${ROOT_PATH}/test/`,
+    webhooks: `${ROOT_PATH}/src/webhooks/`
 };
 
 export async function resolve(specifier, context, nextResolve) {
-    if (specifier.startsWith('@/')) {
-        specifier = specifier.replace('@', join(ROOT_PATH, 'src'));
+    let [name, ...rest] = specifier.split('/');
+
+    if (name === '@') {
+        name = rest.shift();
     }
 
-    if (Object.hasOwn(imports, specifier)) {
-        return nextResolve(imports[specifier], context);
+    if (name in imports) {
+        return nextResolve(imports[name] + rest.join('/'), context);
     }
 
     return nextResolve(specifier, context);

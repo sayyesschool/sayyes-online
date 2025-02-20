@@ -16,9 +16,9 @@ export default context => {
         .delete(controller.delete);
 
     router.route('/:meetingId/registrations{/:registrationId}')
-        .post(controller.addRegistration)
+        .post(controller.createRegistration)
         .put(controller.updateRegistration)
-        .delete(controller.removeRegistration);
+        .delete(controller.deleteRegistration);
 
     return router;
 };

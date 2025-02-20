@@ -1,39 +1,67 @@
 import { Link } from 'react-router-dom';
 
+import ActionButton from 'shared/components/action-button';
+import ConfirmButton from 'shared/components/confirm-button';
 import {
     Chip,
-    Switch,
+    Flex,
+    IconButton,
     Table,
     Text
 } from 'shared/ui-components';
 
 import styles from './MeetingsTable.module.scss';
 
-export default function MeetingsTable({ meetings }) {
+const columns = [
+    { key: 'number', content: '№' },
+    { key: 'title', content: 'Тема' },
+    { key: 'date', content: 'Дата и время' },
+    { key: 'host', content: 'Ведущий' },
+    { key: 'level', content: 'Уровень' },
+    { key: 'format', content: 'Формат' },
+    { key: 'participants', content: 'Участники' },
+    { key: 'actions' }
+];
+
+export default function MeetingsTable({
+    meetings,
+    onEdit,
+    onPublish,
+    onDelete
+}) {
     return (
         <Table className={styles.root}>
             <Table.Head>
                 <Table.Row header>
-                    <Table.Cell header>Тема</Table.Cell>
-                    <Table.Cell header>Дата и время</Table.Cell>
-                    <Table.Cell header>Ведущий</Table.Cell>
-                    <Table.Cell header>Уровень</Table.Cell>
-                    <Table.Cell header>Формат</Table.Cell>
-                    <Table.Cell header>Участники</Table.Cell>
-                    <Table.Cell header>Опубликована</Table.Cell>
+                    {columns.map(column =>
+                        <Table.Cell
+                            key={column.key}
+                            content={column.content}
+                            header
+                        />
+                    )}
                 </Table.Row>
             </Table.Head>
 
             <Table.Body>
-                {meetings.map(meeting =>
+                {meetings.map((meeting, index) =>
                     <Table.Row key={meeting.id}>
+                        <Table.Cell>
+                            {index + 1}
+                        </Table.Cell>
+
                         <Table.Cell>
                             <Link to={`/meetings/${meeting.id}`}>
                                 {meeting.title}
                             </Link>
                         </Table.Cell>
 
-                        <Table.Cell>{meeting.datetime}</Table.Cell>
+                        <Table.Cell>
+                            <Flex column>
+                                <Text as="span">{meeting.dateLabel}</Text>
+                                <Text as="span" type="body-xs">{meeting.timeLabel}</Text>
+                            </Flex>
+                        </Table.Cell>
 
                         <Table.Cell>
                             {meeting.host ?
@@ -43,50 +71,81 @@ export default function MeetingsTable({ meetings }) {
                                     content={meeting.host.fullname}
                                 />
                                 :
-                                '[Ведущий не назначен]'
+                                '—'
                             }
                         </Table.Cell>
 
                         <Table.Cell>
-                            {meeting.levelLabel || '[Уровень не назначен]'}
+                            {meeting.levelLabel || '—'}
                         </Table.Cell>
 
                         <Table.Cell>{meeting.online ? 'Онлайн' : 'Оффлайн'}</Table.Cell>
 
-                        <Table.Cell numeric>
-                            <Text>
-                                <Text
-                                    content={meeting.registrations.filter(r => r.status === 'pending').length}
-                                    variant="soft"
-                                    title="Ожидают подтверждения"
-                                />
+                        <Table.Cell>
+                            {meeting.isEnded ?
+                                <Text>
+                                    <Text
+                                        content={meeting.registrations?.filter(r => r.status === 'attended').length ?? 0}
+                                        color="success"
+                                        variant="soft"
+                                        title="Посетили"
+                                    />
 
-                                ·
+                                    <Text
+                                        content={meeting.registrations?.filter(r => r.status === 'missed').length ?? 0}
+                                        color="danger"
+                                        variant="soft"
+                                        title="Пропустили"
+                                    />
+                                </Text>
+                                :
+                                <Text>
+                                    <Text
+                                        content={meeting.registrations?.filter(r => r.status === 'pending').length ?? 0}
+                                        variant="soft"
+                                        title="Ожидают подтверждения"
+                                    />
 
-                                <Text
-                                    content={meeting.registrations.filter(r => r.status === 'approved').length}
-                                    color="success"
-                                    variant="soft"
-                                    title="Подтверждено"
-                                />
+                                    <Text
+                                        content={meeting.registrations?.filter(r => r.status === 'approved').length ?? 0}
+                                        color="success"
+                                        variant="soft"
+                                        title="Подтверждено"
+                                    />
 
-                                ·
-
-                                <Text
-                                    content={meeting.registrations.filter(r => r.status === 'canceled').length}
-                                    color="danger"
-                                    variant="soft"
-                                    title="Отменено"
-                                />
-                            </Text>
+                                    <Text
+                                        content={meeting.registrations?.filter(r => r.status === 'canceled').length ?? 0}
+                                        color="danger"
+                                        variant="soft"
+                                        title="Отменено"
+                                    />
+                                </Text>
+                            }
                         </Table.Cell>
 
-                        <Table.Cell>
-                            <Switch
-                                name="published"
-                                checked={meeting.published}
-                                readOnly
-                            />
+                        <Table.Cell align="end">
+                            <IconButton.Group size="sm">
+                                <ActionButton
+                                    title={meeting.published ? 'Опубликована' : 'Не опубликована'}
+                                    icon={meeting.published ? 'public' : 'public_off'}
+                                    color={meeting.published ? 'primary' : 'neutral'}
+                                    onAction={() => onPublish(meeting)}
+                                />
+
+                                <IconButton
+                                    title="Изменить"
+                                    icon="edit"
+                                    onClick={() => onEdit(meeting)}
+                                />
+
+                                <ConfirmButton
+                                    title="Удалить"
+                                    message="Удалить встречу?"
+                                    icon="delete"
+                                    color="danger"
+                                    onConfirm={() => onDelete(meeting)}
+                                />
+                            </IconButton.Group>
                         </Table.Cell>
                     </Table.Row>
                 )}

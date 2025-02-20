@@ -6,11 +6,11 @@ export default ({
             ...req.query,
             status: { $ne: 'canceled' }
         };
-        const meetings = req.user.isTeacher ?
-            await Club.findMeetings(query)
-                .populate({ path: 'registrations', populate: { path: 'user' } })
-                .sort({ date: 1 }) :
-            await Club.findMeetings(query).sort({ date: 1 });
+        const meetings = await Club.findMeetings(query)
+            .populate(req.user.isTeacher
+                ? { path: 'registrations', populate: { path: 'user' } }
+                : 'registrations'
+            ).sort({ date: 1 });
 
         res.send({
             ok: true,
@@ -62,9 +62,10 @@ export default ({
     async join(req, res) {
         const meeting = await Club.getMeeting(req.params.meetingId);
         const registration = await Club.getRegistrationByUser(req.user.id);
+        const joinUrl = registration.joinUrl || meeting.joinUrl;
 
-        if (registration.joinUrl || meeting.joinUrl) {
-            res.redirect(registration.joinUrl);
+        if (joinUrl) {
+            res.redirect(joinUrl);
         } else {
             res.redirect('back');
         }
@@ -72,8 +73,6 @@ export default ({
 
     async start(req, res) {
         const meeting = await Club.getMeeting(req.params.meetingId);
-
-        console.log('START', meeting.hostId, req.user.id);
 
         if (meeting.hostId == req.user.id) {
             res.redirect(meeting.startUrl);
@@ -129,7 +128,7 @@ function mapMeeting(meeting, userId) {
 
     return {
         ...meeting.toJSON(),
-        isRegistered: registration?.userId == userId && registration.isApproved,
-        joinUrl: (registration?.joinUrl || meeting.joinUrl) && `/meetings/${meeting.id}/join`
+        isRegistered: registration && registration.userId == userId && registration.isApproved,
+        joinUrl: registration && registration.joinUrl || meeting?.joinUrl
     };
 }

@@ -1,7 +1,9 @@
 import { isValidElement } from 'react';
 
-import { Heading, Icon, IconButton, Surface, Text } from 'shared/ui-components';
+import { Button, Heading, Icon, IconButton, Surface, Text } from 'shared/ui-components';
 import cn from 'shared/utils/classnames';
+
+import styles from './PageSection.module.scss';
 
 export default function PageSection({
     title,
@@ -11,29 +13,36 @@ export default function PageSection({
     header,
     compact,
     plain,
+    scrollable,
 
     children,
     className,
     ...props
 }) {
-    const classNames = cn(className, 'PageSection', {
-        'PageSection--compact': compact,
-        'PageSection--plain': plain
-    });
+    const classNames = cn(
+        className,
+        'PageSection',
+        styles.root,
+        compact && styles.compact,
+        plain && styles.plain,
+        scrollable && styles.scrollable
+    );
 
     return (
         <Surface
             as="section"
             className={classNames}
+            radius="lg"
+            shadow={plain ? undefined : 'xs'}
             {...props}
         >
-            <div className="PageSection__header">
+            <div className={styles.header}>
                 {icon &&
-                    <Icon className="PageSection__header-icon">{icon}</Icon>
+                    <Icon className={styles.header_icon}>{icon}</Icon>
                 }
 
                 {(title || description) &&
-                    <div className="PageSection__header-text">
+                    <div className={styles.header_text}>
                         <Heading
                             as="h3"
                             type="h4"
@@ -49,25 +58,28 @@ export default function PageSection({
                 {header}
 
                 {actions &&
-                    <div className="PageSection__header-actions">
+                    <div className={styles.header_actions}>
                         {Array.isArray(actions) ?
                             actions.filter(a => !!a).map(action =>
-                                isValidElement(action) ?
-                                    action :
-                                    <IconButton
-                                        key={action.key}
-                                        size="sm"
-                                        variant="plain"
-                                        color="neutral"
-                                        {...action}
-                                    />
+                                isValidElement(action)
+                                    ? action
+                                    : !action.content ?
+                                        <IconButton
+                                            key={action.key}
+                                            {...action}
+                                        />
+                                        :
+                                        <Button
+                                            key={action.key}
+                                            {...action}
+                                        />
                             ) : actions
                         }
                     </div>
                 }
             </div>
 
-            <div className="PageSection__content">
+            <div className={styles.content}>
                 {children}
             </div>
         </Surface>

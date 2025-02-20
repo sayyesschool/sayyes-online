@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import moment from 'moment';
 
+import datetime from 'shared/libs/datetime';
 import { Chip, Flex, MenuButton } from 'shared/ui-components';
 import classnames from 'shared/utils/classnames';
 
@@ -16,7 +16,7 @@ export default function LessonsChipGroup({
     return (
         <Flex className="LessonsChipGroup" gap="smaller">
             {lessons
-                .map(lesson => ({ ...lesson, date: moment(lesson.date) }))
+                .map(lesson => ({ ...lesson, date: datetime(lesson.date) }))
                 .map(lesson =>
                     <LessonChip
                         key={lesson.id}

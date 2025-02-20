@@ -54,11 +54,11 @@ export const addRegistration = createAction('ADD_MEETING_REGISTRATION', (id, dat
     }
 }));
 
-export const updateRegistration = createAction('UPDATE_MEETING_REGISTRATION', (meetingId, registrationId, action) => ({
+export const updateRegistration = createAction('UPDATE_MEETING_REGISTRATION', (meetingId, registrationId, data) => ({
     request: {
         method: 'put',
         path: `meetings/${meetingId}/registrations/${registrationId}`,
-        body: { action }
+        body: data
     }
 }));
 
@@ -123,6 +123,7 @@ export const meetingsReducer = createReducer(null, {
         ({ ...meeting, ...action.data }) : meeting
     ),
     [deleteMeeting]: (state, action) => state?.filter(m => m.id !== action.data.id),
+
     [registerForMeeting]: (state, action) => state?.map(m => m.id !== action.data.meetingId ? m : ({
         ...m,
         registrations: m.registrations.concat(action.data),
@@ -137,24 +138,13 @@ export const meetingsReducer = createReducer(null, {
 
 export const meetingReducer = createReducer(null, {
     [getMeeting]: (state, action) => action.data,
-    [unsetMeeting]: (state, action) => null,
     [updateMeeting]: (state, action) => ({
         ...state,
         ...action.data
     }),
     [deleteMeeting]: (state, action) => null,
-    [addRegistration]: (state, action) => ({
-        ...state,
-        registrations: state.registrations.concat(action.data)
-    }),
-    [updateRegistration]: (state, action) => ({
-        ...state,
-        registrations: state.registrations.map(r => r.id === action.data.id ? action.data : r)
-    }),
-    [removeRegistration]: (state, action) => ({
-        ...state,
-        registrations: state.registrations.filter(r => r.id !== action.id.id)
-    }),
+    [unsetMeeting]: (state, action) => null,
+
     [registerForMeeting]: (state, action) => ({
         ...state,
         ...action.meeting
@@ -162,6 +152,22 @@ export const meetingReducer = createReducer(null, {
     [unregisterFromMeeting]: (state, action) => ({
         ...state,
         ...action.meeting
+    }),
+
+    [addRegistration]: (state, action) => ({
+        ...state,
+        registrations: state.registrations.concat(action.data)
+    }),
+    [updateRegistration]: (state, action) => ({
+        ...state,
+        registrations: state.registrations.map(r => r.id !== action.data.id ? r : {
+            ...r,
+            ...action.data
+        })
+    }),
+    [removeRegistration]: (state, action) => ({
+        ...state,
+        registrations: state.registrations.filter(r => r.id !== action.data.id)
     })
 });
 

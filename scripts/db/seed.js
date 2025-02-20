@@ -1,8 +1,8 @@
 import config from 'config';
 import core from 'core';
-import db from 'db';
+import DB from 'db';
 
-import * as data from './seed-data';
+import * as data from './data';
 
 const {
     models: {
@@ -11,11 +11,13 @@ const {
         Enrollment,
         Exercise,
         Course,
+        Data,
         Lexeme,
         Meeting,
         Membership,
         Payment,
         Registration,
+        Request,
         Room,
         User,
         Vocabulary,
@@ -23,84 +25,27 @@ const {
     }
 } = core(config);
 
-await db.connect(process.env.DB_CONNECTION_STRING);
+const db = DB(config);
 
+await db.connect();
 await db.drop();
 
-const [
-    learner,
-    manager,
-    teacher
-] = await User.create([
-    data.learner,
-    data.manager,
-    data.teacher,
-    data.editor
-]);
-
+await Assignment.create(data.assignments);
+await Comment.create(data.comments);
+await Course.create(data.courses);
+await Data.create(data.data);
+await Enrollment.create(data.enrollments);
+await Exercise.create(data.exercises);
+await Lexeme.create(data.lexemes);
+await LexemeRecord.create(data.records);
+await Membership.create(data.memberships);
+await Meeting.create(data.meetings);
+await Payment.create(data.payments);
+await Request.create(data.requests);
+await Registration.create(data.registrations);
 await Room.create(data.rooms);
-
-const exercise = await Exercise.create(data.exercise);
-
-const course = await Course.create(data.course);
-
-const enrollment = await Enrollment.create({
-    status: 'active',
-    learnerId: learner.id,
-    managerId: manager.id,
-    teacherId: teacher.id,
-    courseIds: [course.id]
-});
-
-await Assignment.create({
-    ...data.assignment,
-    exerciseIds: [exercise.id],
-    enrollmentId: enrollment.id,
-    learnerId: learner.id,
-    teacherId: teacher.id
-});
-
-await Comment.create({
-    content: 'Comment',
-    authorId: learner.id,
-    itemId: exercise.id
-});
-
-const lexemes = await Lexeme.create(data.lexemes);
-
-await LexemeRecord.create(lexemes.map(lexeme => ({
-    lexemeId: lexeme.id,
-    learnerId: learner.id
-})));
-
-await Vocabulary.create([
-    {
-        ...data.builtInVocabulary,
-        published: true,
-        lexemeIds: lexemes.slice(0, 2).map(l => l.id)
-    },
-    {
-        ...data.customVocabulary,
-        published: true,
-        learnerId: learner.id,
-        lexemeIds: lexemes.slice(3, 10).map(l => l.id)
-    }
-]);
-
-await Meeting.create(data.meetings.map(meeting => ({
-    ...meeting,
-    hostId: teacher.id
-})));
-
-await Payment.create(data.payments.map(payment => ({
-    ...payment,
-    userId: learner.id
-})));
-
-await Membership.create(data.memberships.map((membership, i) => ({
-    ...membership,
-    userId: learner.id
-})));
+await User.create(data.users);
+await Vocabulary.create(data.vocabularies);
 
 console.log('DB seeded');
 

@@ -1,0 +1,54 @@
+extends ./layout
+
+append head
+    style.
+        #password-modal .modal__body {
+            max-width: 480px;
+            padding: 20px;
+        }
+
+block main
+    +logo('english-school_purple')
+
+    +form#login-form(
+        method='post'
+        action=`/login${redirect ? `?redirect=${redirect}` : ''}`
+    )
+        input.input(
+            id="email-input"
+            type="email"
+            name="email"
+            placeholder="Электронная почта"
+            autocomplete="email"
+            required
+        )
+
+        input.input(
+            id="password-input"
+            type="password"
+            name="password"
+            minlength="6"
+            maxlength="128"
+            placeholder="Пароль"
+            autocomplete="current-password"
+            required
+        )
+
+        button.btn.btn--purple(type="submit") Войти
+
+        button.link.link--interactive(type="button" data-modal-trigger="password-modal") Забыли пароль?
+
+    +modal(
+        'Сброс пароля',
+        'Для сброса пароля введите адрес электронной почты указанный при регистрации. Вам на почту придет письмо с инструкцией.'
+    )#password-modal
+        +form(method='post' action='/reset')
+            input.input(
+                id="email-input"
+                name="email"
+                type="email"
+                placeholder="Электронная почта"
+                required
+            )
+
+            button.btn.btn--purple.btn--full(type="submit") Сбросить пароль

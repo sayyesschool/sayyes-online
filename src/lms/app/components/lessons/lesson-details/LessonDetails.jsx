@@ -46,12 +46,12 @@ export default function LessonDetails({ lesson }) {
                     <List.Item
                         content={<>
                             <Text type="body2">Аудитория</Text>
-                            <Text type="body1">{lesson.room.title}</Text>
+                            <Text type="body1">{lesson.room.name}</Text>
                         </>}
-                        end={<div>
+                        end={<>
                             <Text type="body2">{lesson.room.login}</Text>
                             <Text type="body2">{lesson.room.password}</Text>
-                        </div>}
+                        </>}
                     />
 
                     {isLocked ?

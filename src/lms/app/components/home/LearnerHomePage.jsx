@@ -1,7 +1,9 @@
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { CLUB_URL } from 'shared/constants';
 import { useEnrollments } from 'shared/hooks/enrollments';
 import { useUser } from 'shared/hooks/user';
+import { Button } from 'shared/ui-components';
 
 import EnrollmentDetailsCard from 'lms/components/enrollments/enrollment-details-card';
 
@@ -16,6 +18,15 @@ export default function LearnerHomePage() {
     return (
         <Page className="LearnerHomePage HomePage">
             <Page.Content>
+                {user.isMember &&
+                    <Button
+                        as="a"
+                        href={CLUB_URL}
+                        content="Перейти в разговорный клуб"
+                        variant="plain"
+                    />
+                }
+
                 {activeEnrollments?.map(enrollment =>
                     <EnrollmentDetailsCard
                         key={enrollment.id}

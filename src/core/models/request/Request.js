@@ -1,21 +1,29 @@
-import moment from 'moment';
 import { Schema } from 'mongoose';
 
-import { RequestChannel, RequestSource, RequestStatus } from './constants';
+import datetime from 'shared/libs/datetime';
+
+import { Customer, UTM } from '../common';
+
+import {
+    RequestChannel,
+    RequestChannelLabel,
+    RequestSource,
+    RequestSourceLabel,
+    RequestStatus,
+    RequestType,
+    RequestTypeLabel
+} from './constants';
 
 export const Request = new Schema({
+    hhid: { type: String },
     status: {
         type: String,
         enum: Object.values(RequestStatus),
         default: RequestStatus.New
     },
-    description: {
+    type: {
         type: String,
-        default: 'Заявка на обучение'
-    },
-    contact: {
-        name: { type: String },
-        phone: { type: String, set: value => value.trim().replace(/[\s()\-\+]+/g, '') }
+        enum: Object.values(RequestType)
     },
     channel: {
         type: String,
@@ -27,25 +35,27 @@ export const Request = new Schema({
         enum: Object.values(RequestSource),
         default: RequestSource.None
     },
-    referrer: { type: String },
-    utm: {
-        source: { type: String, default: '' },
-        medium: { type: String, default: '' },
-        campaign: { type: String, default: '' },
-        term: { type: String, default: '' },
-        content: { type: String, default: '' }
-    },
+    contact: { type: Customer },
     note: { type: String, trim: true, default: '' },
-    enrollmentId: { type: Schema.Types.ObjectId },
+    referrer: { type: String },
+    captcha: { type: Boolean, default: false },
+    data: { type: Object, default: {} },
+    utm: { type: UTM },
     learnerId: { type: Schema.Types.ObjectId },
     managerId: { type: Schema.Types.ObjectId },
+    paymentId: { type: Schema.Types.ObjectId },
     createdAt: { type: Date },
-    updatedAt: { type: Date }
+    updatedAt: { type: Date },
+    processedAt: { type: Date },
+    completedAt: { type: Date },
+    postponedAt: { type: Date },
+    canceledAt: { type: Date }
 }, {
     timestamps: true
 });
 
 Request.statics.Channel = RequestChannel;
+Request.statics.Type = RequestType;
 Request.statics.Source = RequestSource;
 Request.statics.Status = RequestStatus;
 
@@ -53,23 +63,32 @@ Request.virtual('url').get(function() {
     return `requests/${this.id}`;
 });
 
+Request.virtual('typeLabel').get(function() {
+    return RequestTypeLabel[this.type];
+});
+
+Request.virtual('channelLabel').get(function() {
+    return RequestChannelLabel[this.channel];
+});
+
+Request.virtual('sourceLabel').get(function() {
+    return RequestSourceLabel[this.source];
+});
+
 Request.virtual('dateString').get(function() {
-    return moment(this.createdAt).format('DD.MM.YYYY');
+    return datetime(this.createdAt).format('DD.MM.YYYY');
 });
 
 Request.virtual('timeString').get(function() {
-    return moment(this.createdAt).format('H:mm');
+    return datetime(this.createdAt).format('H:mm');
 });
 
 Request.virtual('dateTimeString').get(function() {
-    return moment(this.createdAt).format('D MMM, H:mm');
+    return datetime(this.createdAt).format('D MMM H:mm');
 });
 
-Request.virtual('enrollment', {
-    ref: 'Enrollment',
-    localField: 'enrollmentId',
-    foreignField: '_id',
-    justOne: true
+Request.virtual('hasUTM').get(function() {
+    return this.utm && Object.values(this.utm).filter(Boolean).length > 0;
 });
 
 Request.virtual('learner', {
@@ -84,6 +103,28 @@ Request.virtual('manager', {
     localField: 'managerId',
     foreignField: '_id',
     justOne: true
+});
+
+Request.pre('save', function(next) {
+    if (!this.isModified('status')) return next();
+
+    if (this.status === RequestStatus.Processing && !this.processedAt) {
+        this.processedAt = new Date();
+    }
+
+    if (this.status === RequestStatus.Completed && !this.completedAt) {
+        this.completedAt = new Date();
+    }
+
+    if (this.status === RequestStatus.Postponed && !this.postponedAt) {
+        this.postponedAt = new Date();
+    }
+
+    if (this.status === RequestStatus.Canceled && !this.canceledAt) {
+        this.canceledAt = new Date();
+    }
+
+    next();
 });
 
 export default Request;

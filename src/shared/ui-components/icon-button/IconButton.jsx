@@ -26,8 +26,12 @@ const IconButton = forwardRef(({
             variant="plain"
             {...props}
         >
-            {isValidElement(icon) ? icon :
-                <Icon name={icon} size={size} />
+            {isValidElement(icon) ?
+                icon :
+                <Icon
+                    name={icon}
+                    size={size}
+                />
             }
 
             {children}

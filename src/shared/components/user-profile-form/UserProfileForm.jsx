@@ -1,7 +1,6 @@
-import moment from 'moment';
-
 import TimeZoneSelect from 'shared/components/timezone-select';
 import { useForm } from 'shared/hooks/form';
+import datetime from 'shared/libs/datetime';
 import { Button, Form } from 'shared/ui-components';
 
 import styles from './UserProfileForm.module.scss';
@@ -23,7 +22,7 @@ const getDefaultValues = ({
     phone,
     'email*': email,
     gender,
-    dob: dob ? moment(dob).format('YYYY-MM-DD') : '',
+    dob: dob ? datetime(dob).format('YYYY-MM-DD') : '',
     timezone,
     accounts
 });

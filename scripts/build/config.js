@@ -4,7 +4,9 @@ import { sassPlugin } from 'esbuild-sass-plugin';
 
 const {
     APP_DOMAIN,
+    APP_ENV,
     APP_URL,
+    CDN_URL,
     GOOGLE_ANALYTICS_ID,
     NODE_ENV,
     STATIC_URL,
@@ -17,8 +19,11 @@ const common = {
     entryNames: '[dir]/[ext]/[name]',
     define: {
         'process.env': JSON.stringify({}),
-        'env.APP_ENV': JSON.stringify(NODE_ENV || ''),
+        'env.NODE_ENV': JSON.stringify(NODE_ENV || ''),
+        'env.APP_DOMAIN': JSON.stringify(APP_DOMAIN || ''),
+        'env.APP_ENV': JSON.stringify(APP_ENV || ''),
         'env.APP_URL': JSON.stringify(APP_URL || ''),
+        'env.CDN_URL': JSON.stringify(CDN_URL || ''),
         'env.API_URL': JSON.stringify(`//api.${APP_DOMAIN}`),
         'env.AUTH_URL': JSON.stringify(`//auth.${APP_DOMAIN}`),
         'env.CLASS_URL': JSON.stringify(`//class.${APP_DOMAIN}`),
@@ -28,6 +33,7 @@ const common = {
         'env.GOOGLE_ANALYTICS_ID': JSON.stringify(GOOGLE_ANALYTICS_ID || ''),
         'env.LK_URL': JSON.stringify(`//lk.${APP_DOMAIN}`),
         'env.LMS_URL': JSON.stringify(`//lms.${APP_DOMAIN}`),
+        'env.PAY_URL': JSON.stringify(`//pay.${APP_DOMAIN}`),
         'env.SENTRY_DSN': JSON.stringify(process.env.SENTRY_DSN || ''),
         'env.STATIC_URL': JSON.stringify(STATIC_URL || ''),
         'env.STORAGE_URL': JSON.stringify(STORAGE_URL || ''),
@@ -74,7 +80,8 @@ export const apps = {
 export const islands = {
     ...common,
     entryPoints: [
-        { in: './src/club/pages/main/client/islands.js', out: 'club-islands' }
+        { in: './src/club/islands/index.js', out: 'club-islands' },
+        { in: './src/pay/islands/index.js', out: 'pay-islands' }
     ],
     jsxImportSource: 'preact'
 };

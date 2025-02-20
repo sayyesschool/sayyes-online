@@ -1,5 +1,6 @@
-import moment from 'moment';
 import { Schema, Types } from 'mongoose';
+
+import datetime from 'shared/libs/datetime';
 
 const { ObjectId } = Types;
 
@@ -19,7 +20,7 @@ Comment.virtual('author', {
 });
 
 Comment.virtual('datetimeLabel').get(function() {
-    return moment(this.createdAt).tz('Europe/Moscow').format('D MMM YYYY в H:mm');
+    return datetime(this.createdAt).tz('Europe/Moscow').format('D MMM YYYY в H:mm');
 });
 
 export default Comment;

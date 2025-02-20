@@ -10,6 +10,7 @@ sinon.addBehavior('returnsQuery', (fake, value) => {
     });
 });
 
+export { rejects } from 'node:assert/strict';
 export { mock } from 'node:test';
 
 export function at(time = '00:00') {
@@ -28,6 +29,16 @@ export function spyOn(obj, method) {
     return expect.spyOn(obj, method);
 }
 
+export function stub(...args) {
+    return sinon.stub(...args);
+}
+
 export function toJSON(arg) {
+    if (Array.isArray(arg)) {
+        return arg.map(toJSON);
+    }
+
     return JSON.parse(JSON.stringify(arg?.toJSON ? arg.toJSON() : arg));
 }
+
+export async function noopAsync() {}

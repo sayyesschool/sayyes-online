@@ -20,14 +20,14 @@ export default function ConfirmButton({
             {icon && !content ?
                 <IconButton
                     icon={icon}
-                    onClick={() => setDialogOpen(true)}
                     {...props}
+                    onClick={() => setDialogOpen(true)}
                 /> :
                 <Button
                     content={content}
                     icon={icon}
-                    onClick={() => setDialogOpen(true)}
                     {...props}
+                    onClick={() => setDialogOpen(true)}
                 />
             }
 

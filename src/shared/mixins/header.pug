@@ -1,0 +1,19 @@
+mixin header()
+    header.header(class={
+        'header--blurred': attributes.blurred,
+    })&attributes(Object.assign({}, attributes, {
+        blurred: undefined,
+        logo: undefined,
+        link: undefined,
+        redirect: undefined
+    }))
+        div.header__main
+            div.header__container
+                a(href=attributes.link).header__logo.logo
+                    img(src=`${CDN_URL}/images/logos/${attributes.logo}` alt="Логотип Say Yes")
+
+                block 
+
+                unless attributes.auth === false
+                    div.header__menu
+                        a(href=`//auth.${APP_DOMAIN}${attributes.redirect ? ('?redirect=' + attributes.redirect) : ''}`).btn.btn--sm.btn--transparent.btn--uppercase Войти

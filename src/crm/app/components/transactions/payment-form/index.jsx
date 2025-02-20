@@ -1,10 +1,9 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import moment from 'moment';
 
+import { operatorOptions, paymentMethodOptions } from 'shared/data/payment';
 import useForm from 'shared/hooks/form';
+import datetime from 'shared/libs/datetime';
 import Form from 'shared/ui-components/form';
-
-import { paymentMethodOptions, operatorOptions } from 'shared/data/payment';
 
 import './index.scss';
 
@@ -32,14 +31,17 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
     }, [payment]);
 
     const handleSubmit = useCallback(() => {
-        data.date = moment(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
+        data.date = datetime(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
         data.status = 'succeeded';
 
         onSubmit(data);
     }, [data]);
 
     return (
-        <Form ref={formRef} className="payment-form" onSubmit={handleSubmit} {...props}>
+        <Form
+            ref={formRef} className="payment-form"
+            onSubmit={handleSubmit} {...props}
+        >
             <Form.Input
                 type="text"
                 name="description"
@@ -64,7 +66,7 @@ function PaymentForm({ payment = {}, onSubmit, ...props }, ref) {
             <Form.Input
                 type="date"
                 name="paidAt"
-                value={moment(data.paidAt).format('YYYY-MM-DD')}
+                value={datetime(data.paidAt).format('YYYY-MM-DD')}
                 label="Дата"
                 onChange={onChange}
             />

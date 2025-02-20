@@ -1,12 +1,13 @@
-import moment from 'moment';
 import { Schema } from 'mongoose';
+
+import datetime from 'shared/libs/datetime';
 
 import { LessonStatus, LessonType } from './constants';
 
 export const Lesson = new Schema({
     type: { type: String, enum: Object.values(LessonType) },
     status: { type: String, enum: Object.values(LessonStatus), default: LessonStatus.Scheduled },
-    date: { type: Date, set: value => moment(value).utc().format('YYYY-MM-DDTHH:mm:ss[Z]') },
+    date: { type: Date, set: value => datetime(value).utc().format('YYYY-MM-DDTHH:mm:ss[Z]') },
     duration: { type: Number, default: 60 },
     trial: { type: Boolean, default: false },
     free: { type: Boolean, default: false },
@@ -15,7 +16,7 @@ export const Lesson = new Schema({
     enrollmentId: { type: Schema.Types.ObjectId },
     learnerId: { type: Schema.Types.ObjectId },
     teacherId: { type: Schema.Types.ObjectId },
-    roomId: { type: Schema.Types.ObjectId, ref: 'Room' }
+    roomId: { type: Schema.Types.ObjectId }
 }, {
     timestamps: true
 });
@@ -28,11 +29,11 @@ Lesson.virtual('url').get(function() {
 });
 
 Lesson.virtual('startAt').get(function() {
-    return moment(this.date).toDate();
+    return datetime(this.date).toDate();
 });
 
 Lesson.virtual('endAt').get(function() {
-    return moment(this.date).add(this.duration, 'minutes').toDate();
+    return datetime(this.date).add(this.duration, 'minutes').toDate();
 });
 
 Lesson.virtual('enrollment', {
@@ -64,8 +65,8 @@ Lesson.virtual('room', {
 });
 
 Lesson.statics.findTodays = function() {
-    const startDate = moment().utc().startOf('day').toDate();
-    const endDate = moment().utc().endOf('day').toDate();
+    const startDate = datetime().utc().startOf('day').toDate();
+    const endDate = datetime().utc().endOf('day').toDate();
 
     return this.find({
         date: {
@@ -76,7 +77,7 @@ Lesson.statics.findTodays = function() {
 };
 
 Lesson.statics.findScheduled = function() {
-    const startOfToday = moment().utc().startOf('day').toDate();
+    const startOfToday = datetime().utc().startOf('day').toDate();
 
     return this.find({
         status: LessonStatus.Scheduled,
@@ -85,7 +86,7 @@ Lesson.statics.findScheduled = function() {
 };
 
 Lesson.statics.findConflicting = async function({ date, duration, teacherId, roomId }) {
-    const startMoment = moment(date).utc();
+    const startMoment = datetime(date).utc();
     const endMoment = startMoment.clone().add(duration, 'minutes');
     const startDate = startMoment.clone().startOf('day').toDate();
     const endDate = endMoment.toDate();
@@ -100,8 +101,8 @@ Lesson.statics.findConflicting = async function({ date, duration, teacherId, roo
     }).sort({ date: 1 });
 
     return lessons.find(lesson =>
-        moment(lesson.endAt).isAfter(startMoment, 'minutes') &&
-        moment(lesson.startAt).isBefore(endMoment, 'minutes')
+        datetime(lesson.endAt).isAfter(startMoment, 'minutes') &&
+        datetime(lesson.startAt).isBefore(endMoment, 'minutes')
     );
 };
 

@@ -1,14 +1,19 @@
 import { Link } from 'react-router-dom';
 
+import ConfirmButton from 'shared/components/confirm-button';
 import PersonChip from 'shared/components/person-chip';
-import { Table } from 'shared/ui-components';
+import { IconButton, Table } from 'shared/ui-components';
+
+import MembershipRegistrationsCounter from 'crm/components/memberships/membership-registrations-counter';
 
 const columns = [
-    { key: 'user', text: 'Пользователь' },
-    { key: 'price', text: 'Стоимость, руб.' },
-    { key: 'purchasedAt', text: 'Дата покупки' },
-    { key: 'expiresAt', text: 'Дата окончания' },
-    { key: 'registrations', text: 'Регистрации' },
+    { key: 'number', content: '№' },
+    { key: 'user', content: 'Пользователь' },
+    { key: 'price', content: 'Стоимость, руб.' },
+    { key: 'duration', content: 'Срок' },
+    { key: 'startDate', content: 'Дата начала' },
+    { key: 'endDate', content: 'Дата окончания' },
+    { key: 'registrations', content: 'Регистрации' },
     { key: 'actions' }
 ];
 
@@ -17,10 +22,10 @@ export default function MembershipsTable({ memberships, onEdit, onDelete }) {
         <Table className="MembershipsTable">
             <Table.Head>
                 <Table.Row header>
-                    {columns.map(col =>
+                    {columns.map(column =>
                         <Table.Cell
-                            key={col.key}
-                            content={col.text}
+                            key={column.key}
+                            content={column.content}
                             header
                         />
                     )}
@@ -28,23 +33,48 @@ export default function MembershipsTable({ memberships, onEdit, onDelete }) {
             </Table.Head>
 
             <Table.Body>
-                {memberships.map(membership =>
+                {memberships.map((membership, index) =>
                     <Table.Row key={membership.id}>
+                        <Table.Cell content={index + 1} />
+
                         <Table.Cell>
                             {membership.user &&
                                 <PersonChip
                                     as={Link}
                                     to={`/learners/${membership.user.id}`}
                                     imageSrc={membership.user.imageUrl}
-                                    content={membership.user.fullname}
+                                    content={membership.user.fullname || membership.user.email}
                                 />
                             }
                         </Table.Cell>
 
                         <Table.Cell content={membership.price} />
-                        <Table.Cell content={membership.purchasedAt} />
-                        <Table.Cell content={membership.expiresAt} />
-                        <Table.Cell content={`${membership.registrationsCount} / ${membership.limit}`} />
+                        <Table.Cell content={membership.durationString} />
+                        <Table.Cell content={membership.startDateString} />
+                        <Table.Cell content={membership.endDateString} />
+
+                        <Table.Cell>
+                            <MembershipRegistrationsCounter membership={membership} />
+                        </Table.Cell>
+
+                        <Table.Cell align="end">
+                            <IconButton.Group>
+                                <IconButton
+                                    title="Изменить"
+                                    icon="edit"
+                                    size="sm"
+                                    onClick={() => onEdit(membership)}
+                                />
+
+                                <ConfirmButton
+                                    title="Удалить"
+                                    message="Удалить абонемент?"
+                                    icon="delete"
+                                    size="sm"
+                                    onConfirm={() => onDelete(membership)}
+                                />
+                            </IconButton.Group>
+                        </Table.Cell>
                     </Table.Row>
                 )}
             </Table.Body>

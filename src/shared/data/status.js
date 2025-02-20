@@ -27,10 +27,10 @@ export const StatusColor = {
 export const StatusIcon = {
     [Status.Active]: 'pending',
     [Status.Canceled]: 'cancel',
-    [Status.Completed]: 'circle_check',
+    [Status.Completed]: 'check',
     [Status.Ended]: 'success',
     [Status.Missed]: 'event',
-    [Status.New]: 'new',
+    [Status.New]: 'release_alert',
     [Status.Processing]: 'pending',
     [Status.Scheduled]: 'schedule',
     [Status.Started]: 'event',

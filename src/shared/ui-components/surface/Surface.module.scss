@@ -1,0 +1,69 @@
+.root {
+    position: relative;
+}
+
+.padding {
+    &-xs {
+        padding: 8px;
+    }
+
+    &-sm {
+        padding: 12px;
+    }
+
+    &-md {
+        padding: 16px;
+    }
+
+    &-lg {
+        padding: 24px;
+    }
+
+    &-xl {
+        padding: 36px;
+    }
+}
+
+.radius {
+    &-xs {
+        border-radius: var(--joy-radius-xs);
+    }
+
+    &-sm {
+        border-radius: var(--joy-radius-sm);
+    }
+
+    &-md {
+        border-radius: var(--joy-radius-md);
+    }
+
+    &-lg {
+        border-radius: var(--joy-radius-lg);
+    }
+
+    &-xl {
+        border-radius: var(--joy-radius-xl);
+    }
+}
+
+.shadow {
+    &-xs {
+        box-shadow: var(--joy-shadow-xs);
+    }
+
+    &-sm {
+        box-shadow: var(--joy-shadow-sm);
+    }
+
+    &-md {
+        box-shadow: var(--joy-shadow-md);
+    }
+
+    &-lg {
+        box-shadow: var(--joy-shadow-lg);
+    }
+
+    &-xl {
+        box-shadow: var(--joy-shadow-xl);
+    }
+}

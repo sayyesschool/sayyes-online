@@ -1,8 +1,9 @@
-import moment from 'moment';
 import { Schema } from 'mongoose';
 
+import datetime from 'shared/libs/datetime';
+
 export const Room = new Schema({
-    name: { type: String, trim: true, alias: 'title' },
+    name: { type: String, trim: true },
     login: { type: String },
     password: { type: String },
     active: { type: Boolean, default: false }
@@ -25,21 +26,9 @@ Room.virtual('lessonCount', {
 
 const GRACE_PERIOD_MIN = 10;
 
-Room.methods.isAvailable = function(start, end) {
-    const startMoment = moment(start).utc().add(-GRACE_PERIOD_MIN, 'minutes');
-    const endMoment = moment(end).utc().add(GRACE_PERIOD_MIN, 'minutes');
-
-    const lessons = this.lessons.filter(lesson =>
-        moment(lesson.endAt).isAfter(startMoment, 'minutes') &&
-        moment(lesson.startAt).isBefore(endMoment, 'minutes')
-    );
-
-    return lessons.length === 0;
-};
-
 Room.statics.findAvailable = async function(start, end) {
-    const startDate = moment(start).utc().subtract(3, 'hours').toDate();
-    const endDate = moment(end).utc().add(GRACE_PERIOD_MIN, 'minutes').toDate();
+    const startDate = datetime(start).utc().subtract(3, 'hours').toDate();
+    const endDate = datetime(end).utc().add(GRACE_PERIOD_MIN, 'minutes').toDate();
 
     const rooms = await this.find({ active: true })
         .populate({
@@ -56,20 +45,16 @@ Room.statics.findAvailable = async function(start, end) {
     return rooms.find(room => room.isAvailable(start, end));
 };
 
-Room.statics.findWithLessonCountFor = function(amount = 0, unit = 'days') {
-    const today = moment().utc().startOf('day');
-    const before = today.clone().subtract(amount, unit);
+Room.methods.isAvailable = function(start, end) {
+    const startMoment = datetime(start).utc().add(-GRACE_PERIOD_MIN, 'minutes');
+    const endMoment = datetime(end).utc().add(GRACE_PERIOD_MIN, 'minutes');
 
-    return this.find()
-        .populate({
-            path: 'lessonCount',
-            match: {
-                date: {
-                    $gte: before.toDate(),
-                    $lt: today.toDate()
-                }
-            }
-        });
+    const lessons = this.lessons.filter(lesson =>
+        datetime(lesson.endAt).isAfter(startMoment, 'minutes') &&
+        datetime(lesson.startAt).isBefore(endMoment, 'minutes')
+    );
+
+    return lessons.length === 0;
 };
 
 export default Room;

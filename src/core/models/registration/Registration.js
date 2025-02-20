@@ -8,13 +8,14 @@ export const Registration = new Schema({
         enum: Object.values(RegistrationStatus),
         default: RegistrationStatus.Pending
     },
-    free: { type: Boolean, default: false },
-    zoomId: { type: String },
     joinUrl: { type: String },
-    meetingId: { type: Schema.Types.ObjectId },
+    zoomId: { type: String },
     userId: { type: Schema.Types.ObjectId },
+    meetingId: { type: Schema.Types.ObjectId },
     membershipId: { type: Schema.Types.ObjectId }
 });
+
+Registration.statics.Status = RegistrationStatus;
 
 Registration.statics.findByUser = function($user) {
     const userId = isObjectIdOrHexString($user) ? $user : $user?.id;
@@ -53,11 +54,11 @@ Registration.virtual('isMissed').get(function() {
 });
 
 Registration.virtual('isResolved').get(function() {
-    return this.isAttended || this.isMissed;
+    return this.isDenied || this.isCanceled || this.isAttended || this.isMissed;
 });
 
 Registration.virtual('isFree').get(function() {
-    return this.free;
+    return !this.membershipId;
 });
 
 Registration.virtual('user', {

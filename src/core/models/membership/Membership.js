@@ -1,64 +1,161 @@
-import moment from 'moment';
 import { Schema } from 'mongoose';
 
-const Membership = new Schema({
+import datetime from 'shared/libs/datetime';
+
+export const Membership = new Schema({
     limit: { type: Number, default: 1 },
     price: { type: Number, default: 0 },
-    expiresAt: { type: Date },
-    purchasedAt: { type: Date },
-    userId: { type: Schema.Types.ObjectId, ref: 'User' },
-    paymentId: { type: Schema.Types.ObjectId, ref: 'Payment' },
-    registrationIds: [{ type: Schema.Types.ObjectId, ref: 'Registration' }]
+    startDate: {
+        type: Date,
+        required: true,
+        set: value => datetime(value).utc().toDate()
+    },
+    endDate: {
+        type: Date,
+        required: true,
+        set: value => datetime(value).utc().toDate()
+    },
+    active: { type: Boolean, default: true, alias: 'isActive' },
+    userId: { type: Schema.Types.ObjectId, required: true },
+    paymentId: { type: Schema.Types.ObjectId },
+    registrationIds: [{ type: Schema.Types.ObjectId }]
 }, {
     timestamps: true
 });
 
-Membership.query.unexpired = function() {
+Membership.query.expired = function() {
+    const endOfToday = datetime().endOf('day').toDate();
+
     return this.where({
-        $or: [
-            { expiresAt: { $exists: false } },
-            { expiresAt: { $gt: new Date() } }
-        ]
+        endDate: { $lt: endOfToday }
     });
 };
 
-Membership.statics.getSoldByMonth = async function() {
-    const today = new Date();
+Membership.query.expiringIn = function(value, unit) {
+    return this.where({
+        endDate: {
+            $gt: datetime().add(value, unit).startOf(unit).toDate(),
+            $lt: datetime().add(value, unit).endOf(unit).toDate()
+        }
+    });
+};
 
+Membership.query.expiringToday = function() {
+    return this.expiringIn(0, 'days');
+};
+
+Membership.query.withUser = function(options = {}) {
+    return this.populate({
+        path: 'user',
+        select: 'firstname email',
+        options: { lean: true },
+        ...options
+    });
+};
+
+Membership.statics.getEndDate = function(startDate, pack) {
+    if (!pack.duration) return;
+
+    return datetime(startDate).add(...pack.duration).toDate();
+};
+
+Membership.statics.getSoldByMonth = async function() {
     return this.aggregate()
         .match({
-            paidAt: {
-                $gt: new Date(today.getFullYear() - 1, 11, 31),
-                $lt: new Date(today.getFullYear() + 1, 0)
+            startDate: {
+                $gt: datetime().startOf('year').toDate(),
+                $lt: datetime().endOf('year').toDate()
             }
         })
         .group({
-            _id: { $month: '$paidAt' },
+            _id: { $month: '$startDate' },
             count: { $sum: 1 },
             amount: { $sum: '$price' }
         });
 };
 
-Membership.statics.getExpiration = function(date, pack) {
-    if (!pack.duration) return;
+Membership.statics.getAlmostFullMemberships = async function({ limitDifference } = { limitDifference: 2 }) {
+    const results = await this.aggregate()
+        .match({
+            limit: { $gte: 4 },
+            endDate: { $gt: new Date() }
+        })
+        .project({
+            limit: true,
+            registrationIds: true,
+            registrationCount: { $size: '$registrationIds' }
+        })
+        .match({
+            $expr: { $eq: ['$registrationCount', { $subtract: ['$limit', limitDifference] }] }
+        });
 
-    return moment(date).add(...pack.duration).toDate();
+    return this.find({ _id: { $in: results.map(({ _id }) => _id) } }).withUser();
 };
+
+Membership.statics.getFullMemberships = async function() {
+    const results = await this.aggregate()
+        .match({
+            endDate: { $gt: new Date() }
+        })
+        .project({
+            limit: true,
+            registrationIds: true,
+            registrationCount: { $size: '$registrationIds' }
+        })
+        .match({
+            $expr: { $eq: ['$registrationCount', '$limit'] }
+        });
+
+    return this.find({ _id: { $in: results.map(({ _id }) => _id) } }).withUser();
+};
+
+Membership.virtual('uri').get(function() {
+    return `/memberships/${this.id}`;
+});
 
 Membership.virtual('registrationsCount').get(function() {
     return this.registrationIds.length;
 });
 
-Membership.virtual('isActive').get(function() {
-    return !this.isExpired && this.isValid;
+Membership.virtual('isExpiring').get(function() {
+    const expiringDate = datetime().add(3, 'days').endOf('day');
+
+    return datetime(this.endDate).isBefore(expiringDate, 'day');
 });
 
 Membership.virtual('isExpired').get(function() {
-    return this.expiresAt && moment().add(1, 'day').isAfter(this.expiresAt);
+    const endOfToday = datetime().endOf('day');
+
+    return datetime(this.endDate).isBefore(endOfToday, 'day');
+});
+
+Membership.virtual('isFull').get(function() {
+    return this.registrationsCount === this.limit;
 });
 
 Membership.virtual('isValid').get(function() {
-    return this.registrationsCount < this.limit;
+    return !this.isExpired && !this.isFull;
+});
+
+Membership.virtual('startDateString').get(function() {
+    return datetime(this.startDate).format('DD.MM.YYYY');
+});
+
+Membership.virtual('endDateString').get(function() {
+    return datetime(this.endDate).format('DD.MM.YYYY');
+});
+
+Membership.virtual('durationString').get(function() {
+    const days = datetime(this.endDate).diff(this.startDate, 'days');
+
+    return datetime.duration(days, 'days').humanize();
+});
+
+Membership.virtual('user', {
+    ref: 'User',
+    localField: 'userId',
+    foreignField: '_id',
+    justOne: true
 });
 
 Membership.virtual('registrations', {

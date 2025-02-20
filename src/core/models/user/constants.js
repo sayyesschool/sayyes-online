@@ -1,19 +1,18 @@
 export const UserRole = {
     Admin: 'admin',
-    Editor: 'editor',
     Learner: 'learner',
     Manager: 'manager',
-    Member: 'member',
     Teacher: 'teacher'
 };
 
-export const UserDomains = [
-    'cms',
-    'crm',
-    'club',
-    'lk',
-    'lms'
-];
+export const UserDomain = {
+    Class: 'class',
+    Club: 'club',
+    CMS: 'cms',
+    CRM: 'crm',
+    LK: 'lk',
+    LMS: 'lms'
+};
 
 export const UserPermissions = [
     'all',

@@ -1,7 +1,7 @@
 import AccessGuard from 'shared/components/access-guard';
 import Page from 'shared/components/page';
 import { Permissions } from 'shared/data/access';
-import { useTodaysLessons } from 'shared/hooks/lessons';
+import { isThisWeek, isToday } from 'shared/libs/datetime';
 import { Grid } from 'shared/ui-components';
 
 import LessonsList from 'crm/components/lessons/lessons-list';
@@ -12,11 +12,12 @@ import { useStore } from 'crm/hooks/store';
 export default function HomePage() {
     const [user] = useStore('user');
     const [requests] = useStore('requests.list');
+    const [lessons] = useStore('lessons.list');
     const [meetings] = useStore('meetings.list');
-    const [lessons] = useTodaysLessons();
 
-    const currentMeetings = meetings?.sort((a, b) => new Date(a.date) - new Date(b.date))
-        .filter(meeting => meeting.status === 'started' || meeting.status === 'scheduled');
+    const requestsToday = requests?.filter(request => isToday(request.createdAt));
+    const lessonsToday = lessons?.filter(lesson => isToday(lesson.date)).sort((a, b) => new Date(a.date) - new Date(b.date));
+    const meetingsThisWeek = meetings?.filter(meeting => isThisWeek(meeting.startDate));
 
     return (
         <Page id="home">
@@ -26,9 +27,13 @@ export default function HomePage() {
                 <Grid gap="medium">
                     <AccessGuard user={user} permissions={Permissions.Requests}>
                         <Grid.Item xs={3}>
-                            <Page.Section title="Новые заявки" compact>
+                            <Page.Section
+                                title="Новые заявки"
+                                description="Сегодня"
+                                compact
+                            >
                                 <RequestsList
-                                    requests={requests}
+                                    requests={requestsToday}
                                 />
                             </Page.Section>
                         </Grid.Item>
@@ -36,9 +41,13 @@ export default function HomePage() {
 
                     <AccessGuard user={user} permissions={Permissions.Lessons}>
                         <Grid.Item xs={3}>
-                            <Page.Section title="Уроки сегодня" compact>
+                            <Page.Section
+                                title="Уроки"
+                                description="Сегодня"
+                                compact
+                            >
                                 <LessonsList
-                                    lessons={lessons}
+                                    lessons={lessonsToday}
                                     statusIcon={false}
                                 />
                             </Page.Section>
@@ -47,9 +56,13 @@ export default function HomePage() {
 
                     <AccessGuard user={user} permissions={Permissions.Meetings}>
                         <Grid.Item xs={3}>
-                            <Page.Section title="Предстоящие встречи" compact>
+                            <Page.Section
+                                title="Встречи"
+                                description="Эта неделя"
+                                compact
+                            >
                                 <MeetingsList
-                                    meetings={currentMeetings}
+                                    meetings={meetingsThisWeek}
                                 />
                             </Page.Section>
                         </Grid.Item>

@@ -3,7 +3,6 @@ import { Schema } from 'mongoose';
 export const PaymentMethod = new Schema({
     id: { type: String, required: true },
     type: { type: String, required: true },
-    title: { type: String },
     saved: { type: Boolean },
     card: {
         type: { type: String },

@@ -1,41 +1,48 @@
 import { useCallback, useRef } from 'react';
 
-import moment from 'moment';
-
 import ContentEditor from 'shared/components/content-editor';
 import ImageField from 'shared/components/image-field';
 import { levelOptions } from 'shared/data/common';
+import { meetingStatusOptions } from 'shared/data/meeting';
 import { useFormData } from 'shared/hooks/form';
+import datetime, { atMSK } from 'shared/libs/datetime';
 import { Flex, Form, Grid, Surface } from 'shared/ui-components';
 
-const defaultMeeting = {
-    title: '',
-    date: new Date(),
-    level: undefined,
-    duration: 60,
-    free: false,
-    published: false,
-    image: '',
-    description: ''
-};
+const getData = ({
+    title = '',
+    startDate = new Date(),
+    duration = 50,
+    level = '',
+    status = 'scheduled',
+    hostId = '',
+    online = false,
+    free = false,
+    published = false,
+    image = {},
+    description = '',
+    materialsUrl = ''
+} = {}) => ({
+    title,
+    startDate: datetime(startDate).format('YYYY-MM-DDTHH:mm'),
+    level: level?.toString(),
+    duration,
+    status,
+    hostId,
+    online,
+    free,
+    published,
+    image,
+    description,
+    materialsUrl
+});
 
 export default function MeetingForm({
-    meeting = defaultMeeting,
+    meeting,
     hosts = [],
-    onSubmit
+    onSubmit,
+    ...props
 }) {
-    const { data, setData, handleChange } = useFormData({
-        ...defaultMeeting,
-        title: meeting.title,
-        date: moment(meeting.date).format('YYYY-MM-DDTHH:mm'),
-        hostId: meeting.hostId,
-        level: meeting.level?.toString(),
-        duration: meeting.duration,
-        free: meeting.free,
-        published: meeting.published,
-        image: meeting.image,
-        description: meeting.description
-    });
+    const { data, setData, handleChange } = useFormData(getData(meeting), [meeting?.id]);
 
     const fileInputRef = useRef();
     const contentEditorRef = useRef();
@@ -50,9 +57,13 @@ export default function MeetingForm({
             data.image = data.image || {};
         }
 
+        const startDate = datetime(data.startDate).toDate();
+        const endDate = datetime(data.startDate).add(data.duration, 'minutes').toDate();
+
         onSubmit({
             ...data,
-            date: moment(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]'),
+            startDate,
+            endDate,
             description: content
         });
 
@@ -74,12 +85,13 @@ export default function MeetingForm({
 
     return (
         <Form
-            id="meeting-form"
             onSubmit={handleSubmit}
+            {...props}
         >
             <Grid gap="m">
                 <Grid.Item
-                    lg={4} md={4}
+                    lg={4}
+                    md={4}
                     sm={12}
                 >
                     <Flex gap="s" column>
@@ -94,8 +106,18 @@ export default function MeetingForm({
                         <Form.Input
                             label="Когда"
                             type="datetime-local"
-                            name="date"
-                            value={data.date}
+                            name="startDate"
+                            value={data.startDate}
+                            message={`Московское время: ${atMSK(data.startDate).format('HH:mm')}`}
+                            required
+                            onChange={handleChange}
+                        />
+
+                        <Form.Input
+                            label="Продолжительность"
+                            type="number"
+                            name="duration"
+                            value={data.duration}
                             required
                             onChange={handleChange}
                         />
@@ -104,7 +126,7 @@ export default function MeetingForm({
                             label="Ведущий"
                             name="hostId"
                             value={data.hostId}
-                            options={hosts.map(host => ({
+                            options={hosts?.map(host => ({
                                 key: host.id,
                                 value: host.id,
                                 content: host.fullname
@@ -120,7 +142,15 @@ export default function MeetingForm({
                             onChange={handleChange}
                         />
 
-                        {!meeting.id &&
+                        <Form.Select
+                            label="Статус"
+                            name="status"
+                            value={data.status}
+                            options={meetingStatusOptions}
+                            onChange={handleChange}
+                        />
+
+                        {!meeting?.id &&
                             <Form.Switch
                                 label="Онлайн"
                                 name="online"
@@ -141,14 +171,6 @@ export default function MeetingForm({
                             label="Опубликована"
                             name="published"
                             checked={data.published}
-                            onChange={handleChange}
-                        />
-
-                        <Form.Input
-                            type="number"
-                            name="duration"
-                            value={data.duration}
-                            label="Продолжительность, мин"
                             onChange={handleChange}
                         />
 

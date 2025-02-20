@@ -1,6 +1,7 @@
 import { cloneElement, isValidElement } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
+import LoadingIndicator from 'shared/components/loading-indicator';
 import { Breadcrumbs, Button, Heading, IconButton, Link, Tabs, Text } from 'shared/ui-components';
 import classnames from 'shared/utils/classnames';
 
@@ -14,6 +15,7 @@ export default function PageHeader({
     start,
     center,
     end,
+    loading,
     className,
     children
 }) {
@@ -69,6 +71,7 @@ export default function PageHeader({
                             className="PageHeader__title"
                             type="h2"
                             content={title}
+                            end={loading && <LoadingIndicator size="sm" />}
                         />
                     )}
 
@@ -92,6 +95,7 @@ export default function PageHeader({
                         variant="plain"
                         size="sm"
                         color="primary"
+                        disableUnderline
                     />
                 }
 
@@ -107,16 +111,10 @@ export default function PageHeader({
                             .filter(a => !!a)
                             .map(action => isValidElement(action) ?
                                 cloneElement(action, {
-                                    color: 'neutral',
-                                    size: 'sm',
-                                    variant: 'soft',
                                     ...action.props
                                 }) :
                                 (action.icon && !action.content) ?
                                     <IconButton
-                                        color="neutral"
-                                        size="sm"
-                                        variant="soft"
                                         {...action}
                                     /> :
                                     <Button {...action} />

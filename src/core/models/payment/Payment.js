@@ -1,20 +1,42 @@
-import moment from 'moment';
 import { Schema } from 'mongoose';
 
-import { PaymentOperator, PaymentStatus, PaymentStatusIcon, PaymentStatusLabel } from './constants';
+import datetime from 'shared/libs/datetime';
+
+import { Customer, UTM } from '../common';
+
+import {
+    PaymentOperator,
+    PaymentPurpose,
+    PaymentStatus,
+    PaymentStatusIcon,
+    PaymentStatusLabel
+} from './constants';
 import PaymentMethod from './PaymentMethod';
 
 export const Payment = new Schema({
     uuid: { type: String },
     amount: { type: Number, default: 0, min: 0, required: true },
     currency: { type: String, default: 'RUB' },
-    status: { type: String, required: true, enum: Object.keys(PaymentStatus) },
-    paid: { type: Boolean, default: false },
+    description: { type: String, trim: true },
+    status: {
+        type: String,
+        enum: Object.values(PaymentStatus),
+        required: true
+    },
+    operator: {
+        type: String,
+        enum: Object.values(PaymentOperator)
+    },
+    purpose: {
+        type: String,
+        enum: Object.values(PaymentPurpose)
+    },
+    customer: Customer,
+    method: PaymentMethod,
+    paid: { type: Boolean, default: false, alias: 'isPaid' },
     refundable: { type: Boolean, default: false },
     refunded: { type: Boolean, default: false },
-    test: { type: Boolean },
-    operator: { type: String, enum: Object.keys(PaymentOperator) },
-    description: { type: String, trim: true },
+    test: { type: Boolean, default: false },
     confirmation: {
         type: {
             type: String,
@@ -28,16 +50,22 @@ export const Payment = new Schema({
         party: { type: String },
         reason: { type: String }
     },
-    method: PaymentMethod,
     metadata: { type: Object },
+    data: { type: Object },
+    utm: { type: UTM },
     expiresAt: { type: Date },
     paidAt: { type: Date },
-    userId: { type: Schema.Types.ObjectId }
+    processedAt: { type: Date },
+    userId: { type: Schema.Types.ObjectId },
+    requestId: { type: Schema.Types.ObjectId }
 }, {
     timestamps: true,
     toObject: { getters: true, virtuals: true },
     toJSON: { getters: true, virtuals: true }
 });
+
+Payment.statics.Status = PaymentStatus;
+Payment.statics.Purpose = PaymentPurpose;
 
 Payment.statics.getByMonth = async function() {
     const today = new Date();
@@ -60,9 +88,13 @@ Payment.virtual('url').get(function() {
     return `/payments/${this.id}`;
 });
 
+Payment.virtual('date').get(function() {
+    return this.paidAt || this.createdAt;
+});
+
 Payment.virtual('dateLabel')
     .get(function() {
-        return moment(this.createdAt).format('DD.MM.YYYY');
+        return datetime(this.createdAt).format('DD.MM.YYYY');
     });
 
 Payment.virtual('statusLabel')
@@ -99,10 +131,19 @@ Payment.virtual('isStuck').get(function() {
     return this.isPending && !this.confirmation;
 });
 
-Payment.methods.getResolveUrl = function(paymentId) {
-    return this.subscriptionId ?
-        `/user/subscription/resolve?paymentId=${paymentId}` :
-        `/user/payments/${paymentId}`;
+Payment.virtual('isProcessed').get(function() {
+    return Boolean(this.processedAt) && this.status !== 'pending';
+});
+
+Payment.virtual('user', {
+    ref: 'User',
+    localField: 'userId',
+    foreignField: '_id',
+    justOne: true
+});
+
+Payment.methods.toData = function() {
+    return this.toObject();
 };
 
 export default Payment;

@@ -4,7 +4,7 @@ export default ({
     get: (req, res, next) => {
         const query = req.query ? req.query : {};
 
-        Manager.find(query, 'firstname lastname email timezone note')
+        Manager.find(query, 'firstname lastname email dob timezone note domains')
             .then(managers => {
                 res.json({
                     ok: true,

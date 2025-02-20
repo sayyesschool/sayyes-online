@@ -1,6 +1,4 @@
-import moment from 'moment';
-
-moment.locale('ru');
+import datetime from 'shared/libs/datetime';
 
 export function slugify(string = '') {
     return string.toLowerCase().trim().replace(/[^\w\s$*_+~.()!\-:@]+/g, '').replace(/[\s]+/g, '-');
@@ -26,7 +24,7 @@ export function split(value) {
 }
 
 export function formatDate(date, format) {
-    return moment(date).format(format);
+    return datetime(date).format(format);
 }
 
 export function formatTimeSegment(s) {
@@ -54,7 +52,7 @@ export function formatTime(hours, minutes, seconds) {
 export function formatDuration(seconds = 0) {
     if (seconds === 0) return;
 
-    const duration = moment.duration(seconds, 'seconds');
+    const duration = datetime.duration(seconds, 'seconds');
     const h = duration.hours();
     const m = duration.minutes();
     const s = duration.seconds();
@@ -121,9 +119,9 @@ export function timeToSeconds(value) {
 }
 
 export function getLessonDateTimeString(lesson) {
-    const dateString = moment(lesson.date).format('dddd, DD.MM');
-    const startTime = moment(lesson.startAt).format('HH:mm');
-    const endTime = moment(lesson.endAt).format('HH:mm');
+    const dateString = datetime(lesson.date).format('dddd, DD.MM');
+    const startTime = datetime(lesson.startAt).format('HH:mm');
+    const endTime = datetime(lesson.endAt).format('HH:mm');
 
     return `${dateString}, ${startTime}-${endTime}`;
 }

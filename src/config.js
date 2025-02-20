@@ -1,18 +1,23 @@
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
-import moment from 'moment-timezone';
-
-import 'moment/locale/ru';
-
-moment.locale('ru');
+const ROOT_PATH = process.env.PWD || path.normalize(path.resolve(process.cwd()));
+const VERSION = process.env.npm_package_version || readFileSync(path.resolve(ROOT_PATH, 'package.json'), 'utf8').version;
 
 export default {
+    NODE_ENV: process.env.NODE_ENV,
+
     APP_DOMAIN: process.env.APP_DOMAIN,
-    APP_ENV: process.env.NODE_ENV,
+    APP_ENV: process.env.APP_ENV,
     APP_IP: process.env.APP_IP || '127.0.0.1',
-    APP_PATH: path.normalize(process.env.APP_PATH || path.resolve(process.cwd(), 'src')),
+    APP_PATH: path.resolve(ROOT_PATH, 'src'),
     APP_PORT: process.env.APP_PORT || process.env.PORT || 3000,
     APP_URL: process.env.APP_URL,
+    APP_VERSION: VERSION,
+
+    CDN_URL: process.env.CDN_URL,
+
+    EMAIL_DOMAIN: process.env.EMAIL_DOMAIN,
 
     FACEBOOK_PIXEL_ID: '758563291240040',
 
@@ -24,7 +29,9 @@ export default {
     MIRO_CLIENT_ID: process.env.MIRO_CLIENT_ID,
     MIRO_CLIENT_SECRET: process.env.MIRO_CLIENT_SECRET,
 
-    MONGODB_URI: process.env.DB_CONNECTION_STRING,
+    DB_CONNECTION_STRING: process.env.DB_CONNECTION_STRING,
+
+    HH_REQUEST_URL: 'https://sayes.t8s.ru/Api/V2/AddStudyRequest',
 
     RECAPTCHA_PUBLIC_KEY: process.env.RECAPTCHA_PUBLIC_KEY,
     RECAPTCHA_SECRET_KEY: process.env.RECAPTCHA_SECRET_KEY,
@@ -49,7 +56,8 @@ export default {
     YANDEX_CLOUD_STORAGE_REGION: process.env.YANDEX_CLOUD_STORAGE_REGION,
     YANDEX_CLOUD_STORAGE_BUCKET: process.env.YANDEX_CLOUD_STORAGE_BUCKET,
 
-    YANDEX_METRIKA_ID: '61110085',
+    YANDEX_METRIKA_ID: process.env.YANDEX_METRIKA_ID,
+    YANDEX_METRIKA_ID_CLUB: process.env.YANDEX_METRIKA_ID_CLUB,
 
     YOOKASSA_SHOP_ID: process.env.YOOKASSA_SHOP_ID,
     YOOKASSA_SECRET_KEY: process.env.YOOKASSA_SECRET_KEY,
@@ -57,5 +65,7 @@ export default {
     ZOOM_ACCOUNT_ID: process.env.ZOOM_ACCOUNT_ID,
     ZOOM_CLIENT_ID: process.env.ZOOM_CLIENT_ID,
     ZOOM_CLIENT_SECRET: process.env.ZOOM_CLIENT_SECRET,
-    ZOOM_USER_ID: process.env.ZOOM_USER_ID
+    ZOOM_USER_ID: process.env.ZOOM_USER_ID,
+    ZOOM_WEBHOOK_SECRET_TOKEN: process.env.ZOOM_WEBHOOK_SECRET_TOKEN,
+    ZOOM_WEBHOOK_VERIFICATION_TOKEN: process.env.ZOOM_WEBHOOK_VERIFICATION_TOKEN
 };

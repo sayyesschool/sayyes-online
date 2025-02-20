@@ -1,17 +1,35 @@
+$static-url: 'https://storage.yandexcloud.net/sayyes-static';
+
 /* Font */
 
-$font-family: 'Nunito', 'Helvetica', 'Arial', sans-serif !default;
+$font-family: 'Raleway', 'Helvetica', 'Arial', sans-serif !default;
 $font-size: 16px;
 $font-weight: 400;
 $line-height: 24px;
 
 /* Colors */
 
-$primary-color: #5a1294 !default;
-$secondary-color: #e71985 !default;
+$black: #262626;
+$white: #fffcff;
+$grey: #e5e3e2;
+$yellow: #ffd754;
+$purple: #7831b2;
+$dark-purple: #5e288a;
+$violet: #a68ad5;
+$pink: #e71985;
+$pale-pink: #f8dcd6;
+$pale-white: #f8f0ee;
+$linen: #f9e2de;
+$almond-crayola: #f6e7e5;
+$pearl-white: #f9f4f2;
+$red: #e71919;
 
-$body-color: #f1f3f4 !default;
+$primary-color: $dark-purple !default;
+$secondary-color: $yellow !default;
+
+$body-color: $pearl-white !default;
 $background-color: #ffffff !default;
+$font-color: $black;
 $surface-color: #ffffff !default;
 $error-color: #d32f2f !default;
 
@@ -22,39 +40,59 @@ $text-light-color: #ffffff !default;
 $text-dark-color: #424242 !default;
 
 $on-primary-color: $text-light-color;
+$on-secondary-color: $text-dark-color;
 
-$facebook-color: #4267b2;
-$google-color: #ea4335;
-$microsoft-color: #0078D7;
-$telegram-color: #179cde;
-$vkontakte-color: #507299;
-$yandex-color: #ffdb4d;
-$youtube-color: red;
+/* Sizes */
 
-$default-colors: ($primary-color, $secondary-color, $text-light-color, $text-dark-color);
-
-$oauth-provider-colors: (
-    vkontakte: ($vkontakte-color, $text-light-color),
-    facebook: ($facebook-color, $text-light-color),
-    google: ($google-color, $text-light-color),
-    yandex: ($yandex-color, $text-dark-color),
-    microsoft: ($microsoft-color, $text-light-color),
-    telegram: ($telegram-color, $text-light-color)
+$border-radii: (
+    xxs: 5px,
+    xs: 10px,
+    s: 15px,
+    m: 20px,
+    l: 30px,
+    xl: 40px,
+    xxl: 50px
 );
 
-/* Breakpoints */
+$br-xxs: map-get($border-radii, 'xxs');
+$br-xs: map-get($border-radii, 'xs');
+$br-s: map-get($border-radii, 's');
+$br-m: map-get($border-radii, 'm');
+$br-l: map-get($border-radii, 'l');
+$br-xl: map-get($border-radii, 'xl');
+$br-xxl: map-get($border-radii, 'xxl');
 
-$sm: '(max-width: 639px)';
-$gt-sm: '(min-width: 640px)';
+$spacing: (
+    xxs: 5px,
+    xs: 10px,
+    s: 15px,
+    m: 20px,
+    l: 30px,
+    xl: 40px,
+    xxl: 50px
+);
 
-$lt-md: '(max-width: 639px)';
-$md: '(min-width: 640px) and (max-width: 959px)';
-$md-up: '(min-width: 640px)';
-$gt-md: '(min-width: 960px)';
+$sp-xxs: map-get($spacing, 'xxs');
+$sp-xs: map-get($spacing, 'xs');
+$sp-s: map-get($spacing, 's');
+$sp-m: map-get($spacing, 'm');
+$sp-l: map-get($spacing, 'l');
+$sp-xl: map-get($spacing, 'xl');
+$sp-xxl: map-get($spacing, 'xxl');
 
-$lt-lg: '(max-width: 959px)';
-$lg: '(min-width: 960px) and (max-width: 1439px)';
-$lg-up: '(min-width: 960px)';
-$gt-lg: '(min-width: 1440px)';
+$breakpoints: (
+	xs: 360px,
+	s: 540px,
+	sm: 540px,
+	m: 768px,
+	md: 768px,
+	l: 1024px,
+	lg: 1024px,
+	xl: 1280px
+);
 
-$xl: '(min-width: 1440px)';
+$bp-xl: map-get($breakpoints, 'xl');
+$bp-l: map-get($breakpoints, 'l');
+$bp-m: map-get($breakpoints, 'm');
+$bp-s: map-get($breakpoints, 's');
+$bp-xs: map-get($breakpoints, 'xs');

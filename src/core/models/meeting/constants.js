@@ -9,6 +9,15 @@ export const LevelLabels = {
     [Level.Advanced]: 'Advanced'
 };
 
+export const SimpleLevelLabels = {
+    [Level.Elementary]: 'Начальный',
+    [Level.Beginner]: 'Начальный',
+    [Level.PreIntermediate]: 'Средний',
+    [Level.Intermediate]: 'Средний',
+    [Level.UpperIntermediate]: 'Высокий',
+    [Level.Advanced]: 'Высокий'
+};
+
 export const MeetingStatus = {
     Scheduled: 'scheduled',
     Started: 'started',

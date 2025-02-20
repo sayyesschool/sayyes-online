@@ -4,7 +4,7 @@ export default ({
     get: (req, res, next) => {
         const query = req.query ? req.query : {};
 
-        Teacher.find(query)
+        Teacher.find(query, 'firstname lastname email dob timezone note domains')
             .then(teachers => {
                 res.json({
                     ok: true,

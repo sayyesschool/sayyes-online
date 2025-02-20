@@ -1,0 +1,8 @@
+.root {
+    position: relative;
+}
+
+.full {
+    height: calc(100% - var(--AppHeader-height, 0px));
+    overflow: hidden;
+}

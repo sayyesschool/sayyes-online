@@ -1,12 +1,12 @@
 export default ({
     models: { Lesson },
-    services: { Schedule }
+    services: { Class }
 }) => ({
     async get(req, res) {
         const lessons = await Lesson.find(req.query)
-            .sort({ date: 1 })
             .populate('learner', 'firstname lastname email')
-            .populate('room', 'title login password');
+            .populate('room', 'title login password')
+            .sort({ date: 1 });
 
         res.json({
             ok: true,
@@ -26,7 +26,7 @@ export default ({
     },
 
     async create(req, res) {
-        const lesson = await Schedule.scheduleLesson(req.body);
+        const lesson = await Class.scheduleLesson(req.body);
 
         lesson.room = req.room;
 
@@ -41,7 +41,7 @@ export default ({
         let lesson;
 
         if (req.body.date && req.body.duration) {
-            lesson = await Schedule.scheduleLesson({
+            lesson = await Class.scheduleLesson({
                 id: req.params.lessonId,
                 ...req.body
             });

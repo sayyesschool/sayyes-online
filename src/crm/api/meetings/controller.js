@@ -1,120 +1,106 @@
 export default ({
-    models: { User },
     services: { Club }
 }) => ({
-    get: (req, res, next) => {
-        Club.findMeetings(req.query)
-            .limit(30)
-            .then(meetings => {
-                res.json({
-                    ok: true,
-                    data: meetings
-                });
-            })
-            .catch(next);
+    async get(req, res) {
+        const meetings = await Club.findMeetings(req.query)
+            .populate('host', 'firstname lastname email')
+            .populate('registrations')
+            .sort({ date: 1 })
+            .limit(100);
+
+        res.json({
+            ok: true,
+            data: meetings
+        });
     },
 
-    getOne: (req, res, next) => {
-        Club.getMeeting(req.params.meetingId)
-            .then(meeting => {
-                res.json({
-                    ok: true,
-                    data: meeting
-                });
-            })
-            .catch(next);
+    async getOne(req, res) {
+        const meeting = await Club.getMeeting(req.params.meetingId, {
+            populate: {
+                path: 'registrations', populate: { path: 'user' }
+            }
+        });
+
+        res.json({
+            ok: true,
+            data: meeting
+        });
     },
 
-    create: (req, res, next) => {
-        Club.createMeeting(req.body)
-            .then(meeting => {
-                res.json({
-                    ok: true,
-                    message: 'Встреча создана',
-                    data: meeting
-                });
-            })
-            .catch(next);
+    async create(req, res) {
+        const meeting = await Club.createMeeting(req.body);
+
+        res.json({
+            ok: true,
+            message: 'Встреча создана',
+            data: meeting
+        });
     },
 
-    update: (req, res, next) => {
-        Club.updateMeeting(req.params.meetingId, req.body)
-            .then(meeting => {
-                res.json({
-                    ok: true,
-                    message: 'Встреча изменена',
-                    data: meeting
-                });
-            })
-            .catch(next);
+    async update(req, res) {
+        const meeting = await Club.updateMeeting(req.params.meetingId, req.body);
+
+        res.json({
+            ok: true,
+            message: 'Встреча изменена',
+            data: meeting
+        });
     },
 
-    delete: (req, res, next) => {
-        Club.deleteMeeting(req.params.meetingId)
-            .then(() => {
-                res.json({
-                    ok: true,
-                    message: 'Встреча удалена',
-                    data: {
-                        id: req.params.meetingId
-                    }
-                });
-            })
-            .catch(next);
+    async delete(req, res) {
+        const meeting = await Club.deleteMeeting(req.params.meetingId);
+
+        res.json({
+            ok: true,
+            message: 'Встреча удалена',
+            data: {
+                id: meeting.id
+            }
+        });
     },
 
-    addRegistration: (req, res, next) => {
-        User.findOne({ email: req.body.email }, 'firstname lastname email balance')
-            .then(user => {
-                if (req.body.paid) {
-                    return Club.registerForMeeting(user, req.params.meetingId).then(([meeting]) => meeting);
-                } else {
-                    return Club.addRegistration(user, req.params.meetingId);
-                }
-            }).then(meeting => {
-                const registration = meeting.registrations.slice(-1);
+    async createRegistration(req, res) {
+        const registration = await Club.registerForMeeting(
+            req.body.userId,
+            req.params.meetingId,
+            {
+                approve: true,
+                force: req.body.force,
+                notify: req.body.notify
+            }
+        );
 
-                registration.meetingId = meeting.id;
-
-                res.json({
-                    ok: true,
-                    message: 'Регистрация добавлена',
-                    data: registration
-                });
-            })
-            .catch(next);
+        res.json({
+            ok: true,
+            message: 'Регистрация создана',
+            data: registration
+        });
     },
 
-    updateRegistration: (req, res, next) => {
-        Club.updateRegistration(req.params.meetingId, req.params.registrationId, req.body.action)
-            .then(meeting => {
-                const registration = meeting.registrations.find(r => r.id == req.params.registrationId);
+    async updateRegistration(req, res) {
+        const registration = await Club.updateRegistration(
+            req.params.meetingId,
+            req.params.registrationId,
+            req.body
+        );
 
-                registration.meetingId = req.params.meetingId;
-
-                res.json({
-                    ok: true,
-                    message: 'Регистрация изменена',
-                    data: registration
-                });
-            })
-            .catch(next);
+        res.json({
+            ok: true,
+            message: 'Регистрация изменена',
+            data: registration
+        });
     },
 
-    removeRegistration: (req, res, next) => {
-        Club.removeRegistration(req.params.meetingId, req.params.registrationId)
-            .then(() => {
-                const registration = {
-                    id: req.params.registrationId,
-                    meetingId: req.params.meetingId
-                };
+    async deleteRegistration(req, res) {
+        const registration = await Club.deleteRegistration(
+            req.params.meetingId,
+            req.params.registrationId
+        );
 
-                res.json({
-                    ok: true,
-                    message: 'Регистрация удалена',
-                    data: registration
-                });
-            })
-            .catch(next);
+        res.json({
+            ok: true,
+            message: 'Регистрация удалена',
+            data: registration
+        });
     }
 });

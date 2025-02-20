@@ -1,4 +1,4 @@
-import moment from 'moment';
+import datetime from 'shared/libs/datetime';
 
 const DAYS_IN_WEEK = 7;
 
@@ -43,6 +43,7 @@ export function getWeekData(date, events) {
         data.weekday = dayDate.weekday();
         data.isToday = dayDate.isSame(today, 'date');
         data.label = `${dayDate.format('dd')}, ${dayDate.date()}`;
+        data.events = eventsByDate.get(dayDate.valueOf()) || [];
         data.eventsByHour = getEventsByHour(eventsByDate.get(dayDate.valueOf()));
 
         weekData[i] = data;
@@ -61,7 +62,7 @@ export function getWeekLabel(date) {
 export function getMonthData(date) {
     const year = date.year();
     const month = date.month();
-    const current = moment([year, month]);
+    const current = datetime([year, month]);
     const daysInMonth = current.daysInMonth();
     const monthStartsOn = current.weekday();
     const numberOfWeeks = (daysInMonth + monthStartsOn) / DAYS_IN_WEEK;
@@ -75,7 +76,7 @@ export function getMonthData(date) {
             if ((i === 0 && j < monthStartsOn) || day > daysInMonth) {
                 result[i][j] = undefined;
             } else {
-                result[i][j] = moment([year, month, day++]);
+                result[i][j] = datetime([year, month, day++]);
             }
         }
     }

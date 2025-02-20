@@ -39,6 +39,17 @@ export const deleteManager = createAction('DELETE_MANAGER', (id, data) => ({
     }
 }));
 
+export const unsetManager = createAction('UNSET_MANAGER');
+
+export const actions = {
+    getManagers,
+    getManager,
+    createManager,
+    updateManager,
+    deleteManager,
+    unsetManager
+};
+
 export default combineReducers({
     list: createReducer(null, {
         [getManagers]: (state, action) => action.data,
@@ -48,6 +59,7 @@ export default combineReducers({
     single: createReducer(null, {
         [getManager]: (state, action) => action.data,
         [updateManager]: (state, action) => action.data,
-        [deleteManager]: (state, action) => null
+        [deleteManager]: () => null,
+        [unsetManager]: () => null
     })
 });

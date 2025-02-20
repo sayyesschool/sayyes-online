@@ -8,7 +8,7 @@ import MeetingRegistrationForm from 'crm/components/meetings/meeting-registratio
 import MeetingRegistrationsList from 'crm/components/meetings/meeting-registrations-list';
 
 export default function MeetingRegistrations({
-    registrations,
+    meeting,
     onCreate,
     onUpdate,
     onDelete
@@ -18,7 +18,6 @@ export default function MeetingRegistrations({
     const [isSearching, setSearching] = useState(false);
 
     const handleSubmit = useCallback(data => {
-        setFormOpen(false);
         onCreate(data)?.finally(() => setFormOpen(false));
     }, [onCreate]);
 
@@ -34,6 +33,7 @@ export default function MeetingRegistrations({
         });
     }, []);
 
+    const registrations = meeting?.registrations;
     const hasRegistrations = registrations?.length > 0;
 
     const filteredRegistrations = query ? registrations.filter(r => {
@@ -48,7 +48,7 @@ export default function MeetingRegistrations({
 
     return (
         <Page.Section
-            title="Участники"
+            title="Регистрации"
             actions={[
                 hasRegistrations &&
                     <IconButton
@@ -62,6 +62,7 @@ export default function MeetingRegistrations({
                     onClick={() => setFormOpen(true)}
                 />
             ]}
+            compact
         >
             {isSearching &&
                 <Input
@@ -73,20 +74,21 @@ export default function MeetingRegistrations({
 
             {filteredRegistrations?.length > 0 &&
                 <MeetingRegistrationsList
+                    meeting={meeting}
                     registrations={filteredRegistrations}
-                    onConfirm={onUpdate}
-                    onCancel={onUpdate}
+                    onUpdate={onUpdate}
                     onDelete={onDelete}
                 />
             }
 
             <FormDialog
                 title="Новая регистрация"
+                submitButtonText="Создать"
                 open={isFormOpen}
-                form="meeting-registration-form"
                 onClose={() => setFormOpen(false)}
             >
                 <MeetingRegistrationForm
+                    id="meeting-registration-form"
                     onSubmit={handleSubmit}
                 />
             </FormDialog>

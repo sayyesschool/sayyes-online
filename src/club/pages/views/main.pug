@@ -1,0 +1,182 @@
+extends ./layout
+
+append meta
+    meta(name="description" content="Разговорный клуб SAY YES! предлагает онлайн-встречи для практики английского языка с носителями и русскоязычными преподавателями. Уровни от Elementary до Advanced, актуальные темы, игры и разбор кино. Прокачайте английский, не выходя из дома!")
+    meta(name="keywords" content="английский язык, разговорный клуб, онлайн обучение, практика английского, носители языка, русскоязычные преподаватели, Zoom встречи, улучшение английского, SAY YES!")
+
+append head
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/css/intlTelInput.css")
+    link(rel="stylesheet" href="/css/club-islands.css")
+
+    style
+        include:scss ../styles/main.scss
+
+append scripts
+    script(src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/js/intlTelInput.min.js")
+    script(src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js")
+    script(src="/js/club-islands.js")
+    script.
+        window.data = {
+            meetings: !{JSON.stringify(meetings)},
+            packs: !{JSON.stringify(packs)}
+        };
+    script
+        include ../scripts/main.js
+
+block header
+    +header()(link='/' logo='speaking-club_purple.svg' redirect=CLUB_URL blurred)
+        div.header__buttons
+            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="#about") О клубе
+            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="#schedule") Расписание
+            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="#hosts") Ведущие
+            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="#testimonials") Отзывы
+            button.btn.btn--sm.btn--transparent.btn--uppercase(data-scroll-to="#faq") FAQ
+
+block main
+    div.hero
+        div.hero__content
+            h1.hero__title
+                span.yellow Разговорный клуб
+                |  реального английского
+
+            p.hero__description
+                | Игры, разбор кино, актуальные темы, спонтанная речь и встречи по навыкам - 
+                span.yellow практикуйте английский онлайн, 
+                |  выбирая нужное вам!
+
+            button.btn.btn--yellow.mt-xxl(data-scroll-to="#packages") Прокачать английский!
+
+    +section('Коротко о разговорном клубе SAY YES!')#about
+        div.grid.grid-4-lg.grid-2-sm                
+            for item in features
+                div.text-card.card.card--yellow.card--sm(class=`text-card--${item.icon}-bg`)
+                    h3.card__title= item.title
+                    p.card__description!= item.description
+
+    +section('Почему вам стоит посещать разговорные клубы?')(color='purple' padded)#reasons
+        div.grid.grid.grid-2-sm.grid-3-lg
+            for item in reasons
+                div.text-card.card.card--sm
+                    h3.card__title= item.title
+                    p.card__description= item.description
+
+    +section('Как проходят встречи разговорного клуба SAY YES?')(horizontal)#process
+        div.grid.grid-2-sm
+            for step, i in steps
+                div.text-card.card.card--sm(class=`text-card--${step.icon}-bg`)
+                    span.card__suptitle Шаг #{i + 1}
+                    h3.card__title= step.title
+                    p.card__description= step.description
+
+    +section('Ближайшие встречи', meetings.length > 0 ?
+        'Не упустите возможность попрактиковать свой английский в кругу единомышленников — записывайтесь на ближайшую встречу прямо сейчас!' :
+        'Ни одной встречи пока не запланировано.'
+    )(color='yellow' padded)#schedule
+        div#calendar-island
+
+    +section()(horizontal)#hosts
+        +section-header('Разговорный клуб проводят ТОП преподаватели SAY YES!')
+            div.text
+                p Ведущие нашего онлайн клуба — самые опытные и харизматичные преподаватели SAY YES! и носители языка из Англии и США.
+                p Наши ведущие прошли обучение формату ведения уроков онлайн и могут разговорить любого, даже самого интровертного участника.
+
+        +section-media
+            div.text-card.card
+                img.image(src=`${CDN_URL}/images/club/speakers.jpg` alt="Спикеры")
+
+    +section()(color='white' horizontal)#video.video-section.section--yellow
+        +section-header('Посмотрите, как проходят встречи нашего разговорного клуба')
+
+        +section-media
+            div.video.video--modal.video--framed
+                div.video__media
+                    img(src=`${CDN_URL}/images/club/video-poster.jpg` alt="Постер")
+            
+                button.video__btn(
+                    type="button"
+                    data-modal-trigger="video-modal"
+                    data-video-url=`${CDN_URL}/videos/speaking-club_360.mp4`
+                )
+
+    +section('Тарифы')#packages
+        div.grid.grid-1.grid-2-md
+            div.text-card.card.card--purple.flex-column.align-center.justify-center.gap-xl.text--center
+                h3.heading-2.m-none Пробное посещение разговорного клуба
+
+                p.flex-column.align-center.gap-m
+                    span.text--semibold В тариф входит 1 встреча, которую вы можете посетить в течение 2 недель с момента оплаты
+                    span.heading-1= `${trialPack.price} ₽`
+
+                button.pack-btn.btn.btn--lg.btn--yellow.mh-auto(data-pack-id=trialPack.id) Попробовать
+
+            div.flex-column.gap-m
+                for pack in packs.slice(1)
+                    div.pack-card.text-card.card.card--sm.flex
+                        div.col.gap-l
+                            div.flex-column.gap-xs
+                                h3.heading-5.m-none= pack.title
+
+                                if pack.description
+                                    p.text.text--small= pack.description
+
+                                if pack.discount
+                                    p.text= `Выгода ${pack.discount} ₽`
+
+                            button.pack-btn.btn.btn--sm.btn--outlined(data-pack-id=pack.id) Купить
+
+                        div.col
+                            div.flex-column.justify-between.gap-xs.h-100
+                                div.flex-column
+                                    h3.heading-4= `${pack.price} ₽`
+
+                                    if pack.discount
+                                        p.text.text--muted.text--strikethrough= `${pack.priceWithoutDiscount} ₽`
+                                    
+                                div.flex-column
+                                    p.text.text--small.text--muted= `${pack.pricePerMonth} ₽ / месяц`
+
+    +section('Отзывы участников')#testimonials
+        +slider.testimonials-slider                                   
+            for testimonial in testimonials
+                +slide
+                    div.testimonial-card.card
+                        div.text= testimonial.text
+                        p.text.bold= testimonial.name
+
+    +section('Часто задаваемые вопросы')#faq
+        div.flex-column.gap-l
+            div.accordion(data-tab-panel="meetings")
+                for faq in faqs
+                    div.accordion-item
+                        h3.accordion-item__title= faq.title
+                        p.accordion-item__content !{faq.content}
+            
+            div.flex-column.gap-m.align-center
+                p.text 
+                    | Не нашли ответ на свой вопрос? 
+                    a(href=`mailto:${CLUB_EMAIL}`).link.link--primary.link--underlined Напишите нам на почту
+                    |, и мы ответим вам в течение 24 часов!
+
+                // button.btn.btn--purple(data-modal-trigger="contact-modal") Задать вопрос
+
+    //- +section(
+    //-     'Мероприятия клуба',
+    //-     'Подпишитесь на рассылку и первым узнавайте о предстоящих мероприятиях разговорного клуба!'
+    //- )(color='yellow' horizontal padded)#newsletter
+    //-     form.form
+    //-         input.input(type="text" placeholder="Имя")
+    //-         input.input(type="email" placeholder="Email")
+    //-         button.btn.btn--full Записаться
+    //-         small.text.text--small
+    //-             | Нажимая «Записаться», я принимаю 
+    //-             a.link.link--underlined(href="/agreement") Пользовательское соглашение
+    //-             |  и даю согласие на обработку своих персональных данных на условиях 
+    //-             a.link.link--underlined(href="/policy") Политики конфиденциальности.
+
+    +modal#payment-modal
+        div#payment-view
+
+    +modal#meeting-modal
+        div#meeting-view
+
+    +modal(data-component="VideoModal")#video-modal
