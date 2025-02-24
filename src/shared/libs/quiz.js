@@ -1,4 +1,3 @@
-// TODO: нужно поправить в некоторых шафлах (и в компонентах) сравнения, чтобы везде использовались id, а не value и translations
 const STATISTIC_DISPLAY_INTERVAL = 5;
 const MATCH_ITEM_COUNT = 5;
 
@@ -29,7 +28,7 @@ function chunkArray(arr, n) {
 export function compareArrays(array1, array2) {
     return array1.map((item1, index) => {
         const item2 = array2[index];
-        const statusDiff = item1.value === item2.value ? 1 : -1;
+        const statusDiff = item1.id === item2.id ? 1 : -1;
 
         return {
             ...item1,
