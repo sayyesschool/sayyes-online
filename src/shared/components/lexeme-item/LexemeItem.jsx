@@ -27,8 +27,8 @@ export default function LexemeItem({
     }, [id, onSelect]);
 
     const handleContentClick = useCallback(() => {
-        return onView(id);
-    }, [id, onView]);
+        return onView(lexeme);
+    }, [lexeme, onView]);
 
     const handleStatusChange = useCallback(status => {
         onStatusUpdate(id, status);
@@ -38,7 +38,7 @@ export default function LexemeItem({
         {
             icon: user.Manager ? 'verified' : 'edit',
             title: 'Редактировать слово',
-            handler: () => onEdit(id)
+            handler: () => onEdit(lexeme)
         },
         onUnapprove && {
             icon: 'clear',

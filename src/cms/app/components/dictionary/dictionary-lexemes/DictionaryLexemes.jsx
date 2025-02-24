@@ -1,15 +1,16 @@
 import { useCallback, useState } from 'react';
 
-import LexemeSimpleForm from 'shared/components/lexeme-simple-form';
+import { LexemePublishStatus } from 'core/models/lexeme/constants';
+
 import LexemesList from 'shared/components/lexemes-list';
 import VocabularySearch from 'shared/components/vocabulary-search';
+import { CMS_URL } from 'shared/constants';
 import { useDictionaryActions } from 'shared/hooks/dictionary';
-import { Dialog, IconButton, PopoverButton, Tabs } from 'shared/ui-components';
+import { Dialog, IconButton, Tabs } from 'shared/ui-components';
 
 import Lexeme from 'cms/components/dictionary/lexeme';
 import LexemeForm from 'cms/components/dictionary/lexeme-form';
 import LexemesForm from 'cms/components/dictionary/lexeme-form/LexemesForm';
-import { LexemePublishStatus } from 'core/models/lexeme/constants';
 
 import styles from './DictionaryLexemes.module.scss';
 
@@ -17,21 +18,15 @@ const statuses = Object.values(LexemePublishStatus);
 
 export default function DictionaryLexemes({ dictionary, user }) {
     const actions = useDictionaryActions();
-
-    const [modalState, setModalState] = useState({ type: null, lexemeId: null });
+    const [modalState, setModalState] = useState({ type: null, lexeme: null });
     const [activeTabStatus, setActiveTabStatus] = useState(0);
     const [selectedLexemeIds, setSelectedLexemeIds] = useState([]);
     const [foundSearchLexeme, setFoundSearchLexeme] = useState();
 
-    const { lexemes, numberOfLexemes } = dictionary;
+    const { lexemes } = dictionary;
 
     const isPending = dictionary.publishStatus === 'pending';
     const isUnapproved = dictionary.publishStatus === 'unapproved';
-
-    const currentLexeme = lexemes.find(lexeme => lexeme.id === modalState?.lexemeId);
-
-    const isNotCreatorLexeme = currentLexeme?.createdBy !== user.id;
-    const withNotifications = isPending && isNotCreatorLexeme;
 
     const handleTabChange = useCallback((event, value) => {
         // TODO: setActiveTabStatus лучше вызывать в then или нет?
@@ -39,12 +34,12 @@ export default function DictionaryLexemes({ dictionary, user }) {
             .then(() => { setActiveTabStatus(value); });
     }, [actions]);
 
-    const handleModalOpen = useCallback((type, lexemeId = null) => {
-        setModalState({ type, lexemeId });
+    const handleModalOpen = useCallback((type, lexeme = null) => {
+        setModalState({ type, lexeme });
     }, []);
 
     const handleModalClose = useCallback(() => {
-        setModalState({ type: null, lexemeId: null });
+        setModalState({ type: null, lexeme: null });
         setFoundSearchLexeme(null);
     }, []);
 
@@ -58,9 +53,9 @@ export default function DictionaryLexemes({ dictionary, user }) {
     }, [actions, activeTabStatus, handleTabChange]);
 
     const handleUpdateLexeme = useCallback(data => {
-        return actions.updateLexeme(modalState.lexemeId, data)
+        return actions.updateLexeme(modalState.lexeme.id, data)
             .finally(() => handleModalClose());
-    }, [actions, modalState.lexemeId, handleModalClose]);
+    }, [actions, modalState.lexeme, handleModalClose]);
 
     const handleMergeLexemes = useCallback(data => {
         return actions.mergeLexemes(data)
@@ -98,16 +93,16 @@ export default function DictionaryLexemes({ dictionary, user }) {
                 return (
                     <Lexeme
                         readOnly={true}
-                        lexeme={currentLexeme}
+                        lexeme={modalState.lexeme}
                         onClose={handleModalClose}
                     />
                 );
             case 'edit-lexeme':
-                return currentLexeme && (
+                return modalState.lexeme && (
                     <LexemeForm
                         id="lexeme-edit-form"
-                        lexeme={currentLexeme}
-                        withNotifications={withNotifications}
+                        lexeme={modalState.lexeme}
+                        userId={user.id}
                         updateFoundLexeme={handleUpdateFoundLexeme}
                         onSubmit={handleUpdateLexeme}
                         onClose={handleModalClose}
@@ -137,21 +132,10 @@ export default function DictionaryLexemes({ dictionary, user }) {
                 <VocabularySearch
                     className={styles.search}
                     lexemes={lexemes}
+                    domain={CMS_URL}
                     onAddLexeme={handleAddLexeme}
+                    onEditLexeme={lexeme => handleModalOpen('edit-lexeme', lexeme)}
                 />
-
-                <PopoverButton
-                    key={numberOfLexemes}
-                    icon="add"
-                    content="Добавить слово"
-                    color="primary"
-                    variant="solid"
-                >
-                    <LexemeSimpleForm
-                        numberOfLexemes={numberOfLexemes}
-                        onSubmit={handleAddLexeme}
-                    />
-                </PopoverButton>
 
                 <IconButton
                     icon="edit"
@@ -178,8 +162,8 @@ export default function DictionaryLexemes({ dictionary, user }) {
                     user={user}
                     lexemes={lexemes}
                     selectedLexemeIds={selectedLexemeIds}
-                    onViewLexeme={id => handleModalOpen('view-lexeme', id)}
-                    onEditLexeme={id => handleModalOpen('edit-lexeme', id)}
+                    onViewLexeme={lexeme => handleModalOpen('view-lexeme', lexeme)}
+                    onEditLexeme={lexeme => handleModalOpen('edit-lexeme', lexeme)}
                     onUnapprove={!isUnapproved && handleUnapproveLexeme}
                     onDeleteLexeme={isPending && handleDeleteLexeme}
                     onSelectLexeme={handleSelectLexeme}

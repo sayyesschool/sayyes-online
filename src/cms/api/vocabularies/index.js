@@ -9,5 +9,8 @@ export default context => {
     router.route('/')
         .get(controller.getMany);
 
+    router
+        .get('/search', controller.search);
+
     return router;
 };

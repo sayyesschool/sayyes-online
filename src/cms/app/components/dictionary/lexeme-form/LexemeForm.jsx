@@ -16,7 +16,7 @@ const initialAdditionalData = { translation: false, definition: false, examples:
 export default function LexemeForm({
     lexeme,
     updateFoundLexeme,
-    withNotifications,
+    userId,
     onSubmit,
     ...props
 }) {
@@ -33,6 +33,8 @@ export default function LexemeForm({
     const [foundSearchLexemes, setFoundSearchLexemes] = useState([]);
     const [isOpenAccordion, setIsOpenAccordion] = useState(false);
     const { value, translation, definition, examples } = data;
+    const isNotCreatorLexeme = lexeme.createdBy !== userId;
+    const withNotifications = lexeme.isPending && isNotCreatorLexeme;
 
     // TODO: required не срабатывает из-за disabled
     const inputs = [

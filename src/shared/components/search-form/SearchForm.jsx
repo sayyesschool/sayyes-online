@@ -4,6 +4,8 @@ import { useDebounce } from 'shared/hooks/fn';
 import { useSearch } from 'shared/hooks/search';
 import { Autocomplete, Button, CircularProgress, Icon } from 'shared/ui-components';
 
+import './SearchForm.scss';
+
 export default function SearchForm({
     comboboxRef,
     apiUrl,
@@ -69,7 +71,7 @@ export default function SearchForm({
             });
         }
 
-        if (creatable && !results.length && params.inputValue !== '') {
+        if (creatable && params.inputValue !== '') {
             results.push({
                 type: 'addNew',
                 label: `Добавить "${params.inputValue}"`,
@@ -78,15 +80,15 @@ export default function SearchForm({
         }
 
         return results;
-    }, [filterResults, meta?.more, creatable]);
+    }, [creatable, filterResults, meta?.more]);
 
     const renderOption = useCallback((props, option) => {
         return (
             <Autocomplete.Option {...props}>
                 {(creatable && option.type === 'addNew') ?
-                    <span onClick={e => handleAddNew(e, option.value)}>
+                    <div className="add-new-option" onClick={e => handleAddNew(e, option.value)}>
                         {option.label}
-                    </span>
+                    </div>
                     :
                     option.type === 'showMore' ? (
                         <Button
