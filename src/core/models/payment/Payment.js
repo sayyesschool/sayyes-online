@@ -2,7 +2,15 @@ import { Schema } from 'mongoose';
 
 import datetime from 'shared/libs/datetime';
 
-import { PaymentOperator, PaymentStatus, PaymentStatusIcon, PaymentStatusLabel } from './constants';
+import { Customer, UTM } from '../common';
+
+import {
+    PaymentOperator,
+    PaymentPurpose,
+    PaymentStatus,
+    PaymentStatusIcon,
+    PaymentStatusLabel
+} from './constants';
 import PaymentMethod from './PaymentMethod';
 
 export const Payment = new Schema({
@@ -12,18 +20,23 @@ export const Payment = new Schema({
     description: { type: String, trim: true },
     status: {
         type: String,
-        enum: Object.keys(PaymentStatus),
+        enum: Object.values(PaymentStatus),
         required: true
     },
     operator: {
         type: String,
-        enum: Object.keys(PaymentOperator)
+        enum: Object.values(PaymentOperator)
     },
+    purpose: {
+        type: String,
+        enum: Object.values(PaymentPurpose)
+    },
+    customer: Customer,
     method: PaymentMethod,
-    paid: { type: Boolean, default: false },
+    paid: { type: Boolean, default: false, alias: 'isPaid' },
     refundable: { type: Boolean, default: false },
     refunded: { type: Boolean, default: false },
-    test: { type: Boolean },
+    test: { type: Boolean, default: false },
     confirmation: {
         type: {
             type: String,
@@ -38,10 +51,13 @@ export const Payment = new Schema({
         reason: { type: String }
     },
     metadata: { type: Object },
+    data: { type: Object },
+    utm: { type: UTM },
     expiresAt: { type: Date },
     paidAt: { type: Date },
     processedAt: { type: Date },
-    userId: { type: Schema.Types.ObjectId }
+    userId: { type: Schema.Types.ObjectId },
+    requestId: { type: Schema.Types.ObjectId }
 }, {
     timestamps: true,
     toObject: { getters: true, virtuals: true },
@@ -49,6 +65,7 @@ export const Payment = new Schema({
 });
 
 Payment.statics.Status = PaymentStatus;
+Payment.statics.Purpose = PaymentPurpose;
 
 Payment.statics.getByMonth = async function() {
     const today = new Date();

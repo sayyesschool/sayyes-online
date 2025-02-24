@@ -2,6 +2,8 @@ import { Schema } from 'mongoose';
 
 import datetime from 'shared/libs/datetime';
 
+import { Customer, UTM } from '../common';
+
 import {
     RequestChannel,
     RequestChannelLabel,
@@ -33,33 +35,15 @@ export const Request = new Schema({
         enum: Object.values(RequestSource),
         default: RequestSource.None
     },
-    contact: {
-        name: { type: String },
-        email: {
-            type: String,
-            trim: true,
-            maxlength: [256, 'Адрес электронный почты слишком длинный.'],
-            match: [/^[a-zA-Z0-9'._%+-]+@[a-zA-Z0-9-][a-zA-Z0-9.-]*\.[a-zA-Z]{2,63}$/, 'Неверный формат адреса электронной почты.']
-        },
-        phone: {
-            type: String,
-            set: (value = '') => value.trim().replace(/[\s()\-+]+/g, '')
-        }
-    },
+    contact: { type: Customer },
     note: { type: String, trim: true, default: '' },
     referrer: { type: String },
     captcha: { type: Boolean, default: false },
     data: { type: Object, default: {} },
-    utm: {
-        source: { type: String },
-        medium: { type: String },
-        campaign: { type: String },
-        term: { type: String },
-        content: { type: String }
-    },
+    utm: { type: UTM },
     learnerId: { type: Schema.Types.ObjectId },
     managerId: { type: Schema.Types.ObjectId },
-    requestId: { type: Schema.Types.ObjectId },
+    paymentId: { type: Schema.Types.ObjectId },
     createdAt: { type: Date },
     updatedAt: { type: Date },
     processedAt: { type: Date },

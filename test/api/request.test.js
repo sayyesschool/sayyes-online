@@ -1,20 +1,16 @@
 import expect from 'expect';
 
-import request from 'api/request';
-
 import { REQUEST } from 'test/_data';
 import { context } from 'test/_env';
 
-import setup from './api';
-
-const api = setup('/request', request);
+import server from './server';
 
 const {
     clients: { hh, mail, teams },
     models: { Request }
 } = context;
 
-describe('Public Request API', () => {
+describe('Request API', () => {
     after(async () => {
         await Request.deleteMany();
     });
@@ -23,7 +19,7 @@ describe('Public Request API', () => {
         it('creates a request', async function() {
             this.timeout(5000);
 
-            const { body: { data } } = await api.post('/request').send(REQUEST);
+            const { body: { data } } = await server.post('/request').send(REQUEST);
 
             expect(data).toExist();
             expect(data.hhid).toExist();

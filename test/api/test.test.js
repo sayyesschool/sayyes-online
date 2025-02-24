@@ -1,20 +1,16 @@
 import expect from 'expect';
 
-import test from 'api/test';
-
 import { TEST, TEST_RESULTS } from 'test/_data';
 import { context } from 'test/_env';
 
-import setup from './api';
-
-const api = setup('/test', test);
+import server from './server';
 
 const {
     clients: { mail },
     models: { Data, Request }
 } = context;
 
-describe('Public Test API', () => {
+describe('Test API', () => {
     before(async () => {
         await Data.create({ key: 'test', value: TEST });
     });
@@ -26,19 +22,19 @@ describe('Public Test API', () => {
 
     describe('POST /', () => {
         it('evaluates a test', async () => {
-            const { body: { data } } = await api.post('/test').send(TEST_RESULTS);
+            const { body: { data } } = await server.post('/test').send(TEST_RESULTS);
 
             expect(data).toExist();
         });
 
         it('sends an mail', async () => {
-            await api.post('/test').send(TEST_RESULTS);
+            await server.post('/test').send(TEST_RESULTS);
 
             expect(mail.send).toHaveBeenCalled();
         });
 
         it('creates a request', async () => {
-            const { body: { data: { requestId } } } = await api.post('/test').send(TEST_RESULTS);
+            const { body: { data: { requestId } } } = await server.post('/test').send(TEST_RESULTS);
 
             const request = await Request.findById(requestId);
 

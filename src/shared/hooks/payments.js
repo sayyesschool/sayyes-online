@@ -21,7 +21,6 @@ export function usePayment(id) {
     const paymentId = payment?.id;
 
     useEffect(() => {
-        console.log({ id, paymentId });
         if (paymentId === id) return;
 
         actions.getPayment(id);

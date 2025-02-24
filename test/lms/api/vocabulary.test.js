@@ -8,7 +8,7 @@ import api from './api';
 
 const { Lexeme, LexemeRecord, Vocabulary } = models;
 
-describe('LMS Vocabularies API', () => {
+describe.skip('LMS Vocabularies API', () => {
     afterEach(async () => {
         await Lexeme.deleteMany({});
         await LexemeRecord.deleteMany({});

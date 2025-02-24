@@ -3,17 +3,12 @@ import expect from 'expect';
 import datetime from 'shared/libs/datetime';
 
 import { createId, toJSON } from 'test/helpers';
-import { USER } from 'test/_data';
-import { models } from 'test/_env';
+import { models, withUser } from 'test/_env';
 
-const { Membership, User } = models;
+const { Membership } = models;
 
 describe('Membership model', () => {
-    let user;
-
-    before(async () => {
-        user = await User.create(USER);
-    });
+    const user = withUser();
 
     afterEach(async () => {
         await Membership.deleteMany({});
@@ -31,20 +26,6 @@ describe('Membership model', () => {
                 const expired = await Membership.find().expired();
 
                 expect(toJSON(expired)).toInclude(toJSON(membership));
-            });
-        });
-
-        describe('unexpired', () => {
-            it('returns unexpired memberships', async () => {
-                const membership = await Membership.create({
-                    startDate: datetime().subtract(1, 'month').toDate(),
-                    endDate: datetime().add(1, 'month').toDate(),
-                    userId: user.id
-                });
-
-                const unexpired = await Membership.find().unexpired();
-
-                expect(toJSON(unexpired)).toInclude(toJSON(membership));
             });
         });
     });

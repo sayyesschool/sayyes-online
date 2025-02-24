@@ -5,11 +5,12 @@ import setupDb from 'db';
 
 import { middleware as authMiddleware } from 'auth';
 
-import { checkout, hh, mail, storage, teams, zoom } from 'test/_mocks';
+import { captcha, checkout, hh, mail, storage, teams, zoom } from 'test/_mocks';
 
 export const db = setupDb(config);
 
 export const clients = {
+    captcha,
     checkout,
     hh,
     mail,

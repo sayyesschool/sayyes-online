@@ -16,18 +16,35 @@ export default ({
         return randomBytes(length).toString('base64');
     },
 
+    async getUser($user) {
+        const user = await User.resolve($user);
+
+        if (!user) throw {
+            code: 404,
+            message: 'Пользователь не найден'
+        };
+
+        return user;
+    },
+
     async register({
         email,
         password = this.generatePassword(),
+        name,
         firstname,
         lastname,
         role,
         domains
-    } = {}) {
+    } = {},
+    options = {
+        notify: false
+    }) {
         if (!email) throw {
             code: 403,
             message: 'Для регистрации необходимо указать адрес электронной почты'
         };
+
+        [firstname, lastname] = name ? name.split(' ') : [firstname, lastname];
 
         const user = await User.create({
             email,
@@ -37,6 +54,24 @@ export default ({
             role,
             domains
         });
+
+        if (options.notify) {
+            await Mail.send({
+                subject: 'Добро пожаловать в SAY YES!',
+                to: {
+                    name: user.fullname,
+                    email: user.email
+                },
+                templateId: 6729874,
+                variables: {
+                    name: user.firstname,
+                    email: user.email,
+                    password,
+                    loginUrl: `//auth.${config.APP_DOMAIN}/login`,
+                    supportEmail: `support@${config.APP_DOMAIN}`
+                }
+            });
+        }
 
         return user;
     },
@@ -89,7 +124,7 @@ export default ({
             templateId: 5329582,
             variables: {
                 firstname: user.firstname,
-                resetUrl: `https://auth.${config.APP_DOMAIN}/reset/${user.resetPasswordToken}`
+                resetUrl: `//auth.${config.APP_DOMAIN}/reset/${user.resetPasswordToken}`
             }
         });
     },

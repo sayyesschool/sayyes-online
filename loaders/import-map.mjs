@@ -11,9 +11,11 @@ const imports = {
     crm: `${ROOT_PATH}/src/crm/`,
     lk: `${ROOT_PATH}/src/lk/`,
     lms: `${ROOT_PATH}/src/lms/`,
+    pay: `${ROOT_PATH}/src/pay/`,
     server: `${ROOT_PATH}/src/server/`,
     shared: `${ROOT_PATH}/src/shared/`,
-    test: `${ROOT_PATH}/test/`
+    test: `${ROOT_PATH}/test/`,
+    webhooks: `${ROOT_PATH}/src/webhooks/`
 };
 
 export async function resolve(specifier, context, nextResolve) {

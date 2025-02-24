@@ -26,18 +26,6 @@ Room.virtual('lessonCount', {
 
 const GRACE_PERIOD_MIN = 10;
 
-Room.methods.isAvailable = function(start, end) {
-    const startMoment = datetime(start).utc().add(-GRACE_PERIOD_MIN, 'minutes');
-    const endMoment = datetime(end).utc().add(GRACE_PERIOD_MIN, 'minutes');
-
-    const lessons = this.lessons.filter(lesson =>
-        datetime(lesson.endAt).isAfter(startMoment, 'minutes') &&
-        datetime(lesson.startAt).isBefore(endMoment, 'minutes')
-    );
-
-    return lessons.length === 0;
-};
-
 Room.statics.findAvailable = async function(start, end) {
     const startDate = datetime(start).utc().subtract(3, 'hours').toDate();
     const endDate = datetime(end).utc().add(GRACE_PERIOD_MIN, 'minutes').toDate();
@@ -57,20 +45,16 @@ Room.statics.findAvailable = async function(start, end) {
     return rooms.find(room => room.isAvailable(start, end));
 };
 
-Room.statics.findWithLessonCountFor = function(amount = 0, unit = 'days') {
-    const today = datetime().utc().startOf('day');
-    const before = today.clone().subtract(amount, unit);
+Room.methods.isAvailable = function(start, end) {
+    const startMoment = datetime(start).utc().add(-GRACE_PERIOD_MIN, 'minutes');
+    const endMoment = datetime(end).utc().add(GRACE_PERIOD_MIN, 'minutes');
 
-    return this.find()
-        .populate({
-            path: 'lessonCount',
-            match: {
-                date: {
-                    $gte: before.toDate(),
-                    $lt: today.toDate()
-                }
-            }
-        });
+    const lessons = this.lessons.filter(lesson =>
+        datetime(lesson.endAt).isAfter(startMoment, 'minutes') &&
+        datetime(lesson.startAt).isBefore(endMoment, 'minutes')
+    );
+
+    return lessons.length === 0;
 };
 
 export default Room;

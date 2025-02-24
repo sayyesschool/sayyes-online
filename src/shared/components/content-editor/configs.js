@@ -116,9 +116,7 @@ export const defaultConfig = {
 
                 return fetch(`/api/storage/images/${filename}`, {
                     method: 'DELETE'
-                })
-                    .then(res => res.json())
-                    .then(res => console.log(res));
+                }).then(res => res.json());
             }));
         }
     }

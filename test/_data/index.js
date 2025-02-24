@@ -1,4 +1,5 @@
 export * from './checkout';
+export * from './enrollments';
 export * from './meetings';
 export * from './memberships';
 export * from './packs';
