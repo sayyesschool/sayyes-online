@@ -1,6 +1,6 @@
 import expect from 'expect';
 
-import { models, services } from 'test/func/context';
+import { models, services } from 'test/_env';
 
 const { Lexeme, LexemeRecord, User, Vocabulary } = models;
 const { Dictionary, Vocabulary: VocabularyS } = services;
@@ -19,7 +19,7 @@ import {
     UPDATED_MERGE_LEXEME_1,
     UPDATED_MERGE_LEXEME_2,
     UPDATED_MERGE_LEXEME_3
-} from 'test/data';
+} from 'test/_data';
 
 describe('DictionaryService', () => {
     let manager;
