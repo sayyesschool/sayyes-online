@@ -7,6 +7,7 @@ import Dictionary from './Dictionary';
 import Mail from './Mail';
 import Newsletter from './Newsletter';
 import Storage from './Storage';
+import Vocabulary from './Vocabulary';
 
 export default (config, clients, models) => {
     const mail = Mail({ config, clients });
@@ -59,6 +60,7 @@ export default (config, clients, models) => {
             }
         }),
         Dictionary: Dictionary({ config, models }),
+        Vocabulary: Vocabulary({ config, models }),
         Mail: mail,
         Newsletter: newsletter,
         Storage: Storage({ config, clients })
