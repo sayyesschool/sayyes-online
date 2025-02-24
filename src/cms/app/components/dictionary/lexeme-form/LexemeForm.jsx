@@ -4,7 +4,8 @@ import ImageField from 'shared/components/image-field';
 import { useDebounce } from 'shared/hooks/fn';
 import http from 'shared/services/http';
 import Storage from 'shared/services/storage';
-import { Button, Checkbox, Flex, Form } from 'shared/ui-components';
+import { Accordion, Button, Checkbox, Flex, Form } from 'shared/ui-components';
+import AccordionItem from 'shared/ui-components/accordion/AccordionItem.jsx';
 
 import LexemeExamples from './LexemeExamples';
 
@@ -29,7 +30,8 @@ export default function LexemeForm({
         examples: lexeme.examples ?? []
     });
     const [additionalData, setAdditionalData] = useState(initialAdditionalData);
-    const [foundSearchLexemes, setFoundSearchLexemes] = useState();
+    const [foundSearchLexemes, setFoundSearchLexemes] = useState([]);
+    const [isOpenAccordion, setIsOpenAccordion] = useState(false);
     const { value, translation, definition, examples } = data;
 
     // TODO: required не срабатывает из-за disabled
@@ -128,16 +130,26 @@ export default function LexemeForm({
                 onDelete={handleFileDelete}
             />
 
-            {/* TODO: Как в строчке ниже добавить пробел между тэгом */}
-            {foundSearchLexemes?.map(foundLexeme => (
-                <Button
-                    key={foundLexeme.id}
-                    variant="plain"
-                    onClick={() => updateFoundLexeme(foundLexeme, lexeme)}
-                >
-                    Использовать существующую лексиму <span className={styles.foundLexeme}>{foundLexeme.value}-{foundLexeme.translation}</span>?
-                </Button>
-            ))}
+            {!!foundSearchLexemes.length && (
+                <Accordion>
+                    <AccordionItem
+                        open={isOpenAccordion}
+                        header="Использовать похожие лексемы ?"
+                        content="234"
+                        onClick={() => setIsOpenAccordion(prev => !prev)}
+                    >
+                        {foundSearchLexemes.map(foundLexeme => (
+                            <Button
+                                key={foundLexeme.id}
+                                variant="plain"
+                                onClick={() => updateFoundLexeme(foundLexeme, lexeme)}
+                            >
+                                <p>Использовать существующую лексему <span className={styles.foundLexeme}>{foundLexeme.value}-{foundLexeme.translation}</span>?</p>
+                            </Button>
+                        ))}
+                    </AccordionItem>
+                </Accordion>
+            )}
 
             {inputs.map(({ component: Component, id, label, value, required }) => {
                 const originalIsNotEmpty = !!lexeme[id];
