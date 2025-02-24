@@ -23,20 +23,17 @@ export default ({
         });
     },
 
-    async updateLexeme(lexemeId, { value, translation, definition, examples, image, additionalData }) {
+    async updateLexeme(lexemeId, { value, translation, definition, examples, image, additionalData = {} }) {
         const lexeme = await Lexeme.findById(lexemeId);
 
-        if (!lexeme) throw {
-            code: 404,
-            message: 'Не найдено'
-        };
+        if (!lexeme) throw { code: 404, message: 'Не найдено' };
 
         const updateData = {
-            value: value,
-            image: image,
-            definition: definition,
-            translation: translation,
-            examples: examples,
+            value,
+            image,
+            definition,
+            translation,
+            examples,
             publishStatus: 'approved'
         };
 
@@ -55,32 +52,36 @@ export default ({
 
         const record = await LexemeRecord.findOne({ lexemeId: lexeme.id });
 
-        if (record) {
-            const {
-                translation: addTranslate,
-                definition: addDefinition,
-                examples: addExamples
-            } = additionalData;
-
-            if (addTranslate) {
-                record.data.translation = lexeme.translation;
-            }
-
-            if (addDefinition) {
-                record.data.definition = lexeme.definition;
-            }
-
-            if (addExamples.length) {
-                record.data.examples = addExamples;
-            }
-
-            await record.save();
+        if (record && lexeme.publishStatus === 'pending') {
+            this.savePersonalNotes(lexeme, record, additionalData);
         }
 
         return updatedLexeme.toJSON();
     },
 
-    async mergeLexemes({ newLexemeData, merge, deletedLexemeIds }) {
+    async savePersonalNotes(lexeme, record, additionalData) {
+        const {
+            translation: addTranslate,
+            definition: addDefinition,
+            examples: addExamples
+        } = additionalData;
+
+        if (addTranslate) {
+            record.data.translation = lexeme.translation;
+        }
+
+        if (addDefinition) {
+            record.data.definition = lexeme.definition;
+        }
+
+        if (addExamples?.length) {
+            record.data.examples = addExamples;
+        }
+
+        await record.save();
+    },
+
+    async mergeLexemes({ newLexemeData, merge = {}, deletedLexemeIds }) {
         const newLexeme = await Lexeme.create({ ...newLexemeData, publishStatus: 'approved' });
 
         await Lexeme.deleteMany({ _id: { $in:  deletedLexemeIds } });
@@ -117,7 +118,7 @@ export default ({
                 acc[key] = acc[key] ?
                     Array.isArray(acc[key]) ?
                         acc[key].concat(value) :
-                        `${acc[key]}  ${value}` :
+                        `${acc[key]} ${value}` :
                     value;
             });
 
@@ -128,7 +129,7 @@ export default ({
     async updatePublishStatus(lexemeId, publishStatus) {
         const lexeme = await Lexeme.findByIdAndUpdate(lexemeId, {
             publishStatus
-        });
+        }, { new: true });
 
         if (!lexeme) throw {
             code: 404,
