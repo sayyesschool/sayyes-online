@@ -16,7 +16,7 @@ export const manager = {
     email: 'manager@sayyes.school',
     password: '123456',
     role: 'manager',
-    domains: ['crm'],
+    domains: ['cms', 'crm'],
     permissions: ['all'],
     active: true
 };
