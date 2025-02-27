@@ -1,10 +1,10 @@
+import VocabularyCard from 'shared/components/vocabulary-card';
 import { Grid } from 'shared/ui-components';
-
-import VocabularyCard from 'lms/components/vocabulary/vocabulary-card';
 
 import styles from './VocabulariesGrid.module.scss';
 
 export default function VocabulariesGrid({
+    href,
     vocabularies,
     onEditVocabulary,
     onDeleteVocabulary
@@ -17,6 +17,7 @@ export default function VocabulariesGrid({
                     xs={3}
                 >
                     <VocabularyCard
+                        href={`${href}/${vocabulary.id}`}
                         vocabulary={vocabulary}
                         onEditVocabulary={onEditVocabulary}
                         onDeleteVocabulary={onDeleteVocabulary}

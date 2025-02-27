@@ -32,7 +32,7 @@ export default [
         image: {
             src: 'https://picsum.photos/200'
         },
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -69,7 +69,7 @@ export default [
         image: {
             src: 'https://picsum.photos/200'
         },
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -83,7 +83,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -97,7 +97,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -111,7 +111,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -125,7 +125,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -139,7 +139,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -153,7 +153,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -167,7 +167,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -181,7 +181,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -195,7 +195,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -209,7 +209,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -223,7 +223,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -237,7 +237,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -251,7 +251,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -265,7 +265,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -279,7 +279,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -293,7 +293,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -307,7 +307,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -321,7 +321,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -335,7 +335,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -349,7 +349,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -363,7 +363,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -377,7 +377,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -391,7 +391,7 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     },
     {
         _id: new Types.ObjectId().toHexString(),
@@ -405,6 +405,6 @@ export default [
                 translation: ''
             }
         ],
-        approved: true
+        publishStatus: 'approved'
     }
 ];

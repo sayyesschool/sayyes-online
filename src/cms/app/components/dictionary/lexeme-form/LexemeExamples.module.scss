@@ -1,0 +1,31 @@
+@use 'shared/styles/variables';
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.exampleText {}
+
+.exampleTranslation {
+    margin-left: 2.7rem;
+}
+
+// TODO: не лучшее название
+.notificationConfirmation {
+    margin: 0;
+    gap: 10px;
+
+    p {
+        padding-left: 10px;
+        margin: 0;
+    }
+}
+
+.notification {
+    margin: 0;
+    padding-left: 20px;
+    // TODO: не уверен что цвет подходящий
+    color: variables.$secondary-color;
+}

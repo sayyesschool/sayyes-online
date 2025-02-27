@@ -1,0 +1,36 @@
+@use 'shared/styles/variables';
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.imageField {
+    max-width: 480px;
+}
+
+.exampleText {}
+
+.exampleTranslation {
+    margin-left: 2.7rem;
+}
+
+// TODO: не лучшее название
+.notificationConfirmation {
+    margin: 10px 0 0; 
+    gap: 10px;
+
+    p {
+        margin: 0;
+    }
+}
+
+.notification {
+    margin: 10px 0 0;
+    color: variables.$pink;
+}
+
+.foundLexeme {
+    color: variables.$pink;
+}

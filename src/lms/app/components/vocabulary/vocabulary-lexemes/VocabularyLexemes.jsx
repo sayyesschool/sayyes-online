@@ -1,15 +1,15 @@
 import { useCallback, useState } from 'react';
 
 import FormDialog from 'shared/components/form-dialog';
+import LexemesList from 'shared/components/lexemes-list';
+import VocabularySearch from 'shared/components/vocabulary-search';
+import { LMS_URL } from 'shared/constants';
 import { useVocabularyActions } from 'shared/hooks/vocabularies';
-import { Dialog, PopoverButton } from 'shared/ui-components';
+import { Dialog } from 'shared/ui-components';
 
 import Lexeme from 'lms/components/vocabulary/lexeme';
 import LexemeForm from 'lms/components/vocabulary/lexeme-form';
-import LexemeSimpleForm from 'lms/components/vocabulary/lexeme-simple-form';
 import LexemeView from 'lms/components/vocabulary/lexeme-view';
-import LexemesList from 'lms/components/vocabulary/lexemes-list';
-import VocabularySearch from 'lms/components/vocabulary/vocabulary-search';
 
 import styles from './VocabularyLexemes.module.scss';
 
@@ -27,24 +27,23 @@ export default function VocabularyLexemes({
     inline
 }) {
     const actions = useVocabularyActions();
-
-    const [currentLexemeId, setCurrentLexemeId] = useState(null);
+    const [modalState, setModalState] = useState({ type: null, lexeme: null });
     const [selectedLexemeIds, setSelectedLexemeIds] = useState([]);
     const [filter, setFilter] = useState('all');
-    const [showViewModal, setShowViewModal] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false);
 
     const vocabularyId = vocabulary?.id;
     const isTeacher = user.isTeacher;
+    const lexemes = vocabulary.lexemes.filter(filters[filter]);
+    const showHeader = !inline || !modalState.lexeme;
+    const showList = showHeader;
+    const readOnly = isTeacher;
 
-    const closeViewModal = useCallback(() => {
-        setCurrentLexemeId(null);
-        setShowViewModal(false);
+    const handleModalOpen = useCallback((type, lexeme = null) => {
+        setModalState({ type, lexeme });
     }, []);
 
-    const closeEditModal = useCallback(() => {
-        setCurrentLexemeId(null);
-        setShowEditModal(false);
+    const handleModalClose = useCallback(() => {
+        setModalState({ type: null, lexeme: null });
     }, []);
 
     const handleAddLexeme = useCallback(data => {
@@ -53,13 +52,13 @@ export default function VocabularyLexemes({
         }
 
         return actions.addLexeme(vocabularyId, data)
-            .finally(() => setShowEditModal(false));
+            .finally(() => setModalState({ type: null, lexeme: null }));
     }, [isTeacher, learnerId, vocabularyId, actions]);
 
     const handleUpdateLexeme = useCallback(data => {
-        return actions.updateLexeme(vocabularyId, currentLexemeId, data)
-            .finally(() => setShowEditModal(false));
-    }, [vocabularyId, currentLexemeId, actions]);
+        return actions.updateLexeme(vocabularyId, modalState.lexeme.id, data)
+            .finally(() => setModalState({ type: null, lexeme: null }));
+    }, [actions, vocabularyId, modalState.lexeme?.id]);
 
     const handleDeleteLexeme = useCallback(lexemeId => {
         if (confirm('Вы уверены что хотите удалить слово')) {
@@ -81,24 +80,6 @@ export default function VocabularyLexemes({
         return actions.updateLexemeStatus(lexemeId, status);
     }, [actions]);
 
-    const handleViewLexeme = useCallback(lexemeId => {
-        setCurrentLexemeId(lexemeId);
-        setShowViewModal(true);
-        setShowEditModal(false);
-    }, []);
-
-    const handleEditLexeme = useCallback(lexemeId => {
-        setCurrentLexemeId(lexemeId);
-        setShowEditModal(true);
-        setShowViewModal(false);
-    }, []);
-
-    const lexemes = vocabulary.lexemes.filter(filters[filter]);
-    const currentLexeme = lexemes.find(lexeme => lexeme.id === currentLexemeId);
-    const showHeader = !inline || !currentLexeme;
-    const showList = showHeader;
-    const readOnly = isTeacher;
-
     return (
         <div className={styles.root}>
             {showHeader &&
@@ -112,63 +93,52 @@ export default function VocabularyLexemes({
                     <VocabularySearch
                         className={styles.search}
                         lexemes={lexemes}
+                        domain={LMS_URL}
                         onAddLexeme={handleAddLexeme}
                     />
-
-                    <PopoverButton
-                        key={vocabulary.numberOfLexemes}
-                        icon="add"
-                        content={inline ? undefined : 'Добавить слово'}
-                        color="primary"
-                        variant="solid"
-                    >
-                        <LexemeSimpleForm
-                            numberOfLexemes={vocabulary.numberOfLexemes}
-                            onSubmit={handleAddLexeme}
-                        />
-                    </PopoverButton>
                 </div>
             }
 
             <div className={styles.body}>
                 {showList &&
                     <LexemesList
+                        user={user}
                         lexemes={lexemes}
                         readOnly={readOnly}
-                        onViewLexeme={handleViewLexeme}
-                        onEditLexeme={handleEditLexeme}
+                        onViewLexeme={lexeme => handleModalOpen('view-lexeme', lexeme)}
+                        onEditLexeme={lexeme => handleModalOpen('edit-lexeme', lexeme)}
                         onSelectLexeme={handleSelectLexeme}
                         onDeleteLexeme={handleDeleteLexeme}
                         onUpdateLexemeStatus={handleUpdateLexemeStatus}
                     />
                 }
 
-                {currentLexeme && (
+                {modalState.lexeme && (
                     <LexemeView
                         as={inline ? undefined : Dialog}
-                        open={showViewModal}
-                        onClose={closeViewModal}
+                        open={modalState.type === 'view-lexeme'}
+                        onClose={handleModalClose}
                     >
                         <Lexeme
-                            lexeme={currentLexeme}
+                            lexeme={modalState.lexeme}
                             readOnly={readOnly}
                             onStatusUpdate={handleUpdateLexemeStatus}
-                            onClose={closeViewModal}
+                            onClose={handleModalClose}
                         />
                     </LexemeView>
                 )}
 
-                {currentLexeme && (
+                {modalState.lexeme && (
                     <LexemeView
                         as={inline ? undefined : FormDialog}
-                        open={showEditModal}
-                        onClose={closeViewModal}
+                        open={modalState.type === 'edit-lexeme'}
+                        onClose={handleModalClose}
                     >
                         <LexemeForm
                             id="lexeme-edit-form"
-                            lexeme={currentLexeme}
+                            lexeme={modalState.lexeme}
                             onSubmit={handleUpdateLexeme}
-                            onClose={closeEditModal}
+                            onClose={handleModalClose}
                         />
                     </LexemeView>
                 )}

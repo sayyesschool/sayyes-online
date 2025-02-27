@@ -9,3 +9,27 @@ export const USER = {
 };
 export const USER_ID = USER._id;
 export const USER_EMAIL = USER.email;
+
+export const MANAGER = {
+    _id: createId(),
+    firstname: 'John',
+    lastname: 'Doe',
+    email: 'manager@sayyes.school',
+    role: 'manager'
+};
+
+export const LEARNER = {
+    _id: createId(),
+    firstname: 'Tom',
+    lastname: 'Hanks',
+    email: 'learner@sayyes.school',
+    role: 'learner'
+};
+
+export const LEARNER_2 = {
+    _id: createId(),
+    firstname: 'Tom',
+    lastname: 'Hanks',
+    email: 'learner2@sayyes.school',
+    role: 'learner'
+};

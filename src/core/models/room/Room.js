@@ -45,6 +45,22 @@ Room.statics.findAvailable = async function(start, end) {
     return rooms.find(room => room.isAvailable(start, end));
 };
 
+Room.query.withLessonCountFor = function(amount = 0, unit = 'days') {
+    const today = datetime().utc();
+    const thirtyDaysAgo = today.clone().subtract(amount, unit);
+
+    return this.where()
+        .populate({
+            path: 'lessonCount',
+            match: {
+                date: {
+                    $gte: thirtyDaysAgo.toDate(),
+                    $lt: today.toDate()
+                }
+            }
+        });
+};
+
 Room.methods.isAvailable = function(start, end) {
     const startMoment = datetime(start).utc().add(-GRACE_PERIOD_MIN, 'minutes');
     const endMoment = datetime(end).utc().add(GRACE_PERIOD_MIN, 'minutes');

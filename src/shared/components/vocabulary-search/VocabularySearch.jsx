@@ -1,16 +1,12 @@
 import { useCallback, useRef, useState } from 'react';
 
+import LexemeSimpleForm from 'shared/components/lexeme-simple-form';
 import SearchForm from 'shared/components/search-form';
-import { LMS_URL } from 'shared/constants';
 import { Popover } from 'shared/ui-components';
-
-import LexemeSimpleForm from 'lms/components/vocabulary/lexeme-simple-form';
 
 import VocabularySearchResultItem from './VocabularySearchResultItem';
 
-const apiUrl = `${LMS_URL}/api/vocabularies/search`;
-
-export default function VocabularySearch({ lexemes, onAddLexeme, className }) {
+export default function VocabularySearch({ lexemes, onAddLexeme, onEditLexeme, domain, className }) {
     const comboboxRef = useRef();
 
     const [newLexeme, setNewLexeme] = useState();
@@ -27,7 +23,7 @@ export default function VocabularySearch({ lexemes, onAddLexeme, className }) {
         <div className={className}>
             <SearchForm
                 comboboxRef={comboboxRef}
-                apiUrl={apiUrl}
+                apiUrl={`${domain}/api/vocabularies/search`}
                 placeholder="Поиск слов"
                 params={{
                     limit: 10
@@ -39,6 +35,7 @@ export default function VocabularySearch({ lexemes, onAddLexeme, className }) {
                     <VocabularySearchResultItem
                         result={result}
                         lexemes={lexemes}
+                        onEditLexeme={onEditLexeme}
                         onAddLexeme={onAddLexeme}
                     />
                 }

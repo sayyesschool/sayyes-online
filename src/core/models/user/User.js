@@ -186,7 +186,8 @@ User.methods.toData = function() {
         permissions: this.permissions,
         isLearner: this.isLearner,
         isTeacher: this.isTeacher,
-        isMember: this.isMember
+        isMember: this.isMember,
+        isManager: this.isManager
     };
 };
 

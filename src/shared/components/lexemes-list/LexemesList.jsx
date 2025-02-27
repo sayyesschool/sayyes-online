@@ -1,12 +1,14 @@
+import LexemeItem from 'shared/components/lexeme-item';
 import { List } from 'shared/ui-components';
-
-import LexemeItem from 'lms/components/vocabulary/lexeme-item';
 
 import styles from './LexemesList.module.scss';
 
 export default function LexemesList({
+    user,
     lexemes = [],
     readOnly,
+    selectedLexemeIds,
+    onUnapprove,
     onViewLexeme,
     onEditLexeme,
     onSelectLexeme,
@@ -18,8 +20,11 @@ export default function LexemesList({
             {lexemes?.map(lexeme =>
                 <LexemeItem
                     key={lexeme.id}
+                    user={user}
                     lexeme={lexeme}
                     readOnly={readOnly}
+                    selectedLexemeIds={selectedLexemeIds}
+                    onUnapprove={onUnapprove}
                     onView={onViewLexeme}
                     onEdit={onEditLexeme}
                     onSelect={onSelectLexeme}

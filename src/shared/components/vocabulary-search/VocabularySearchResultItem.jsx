@@ -9,13 +9,16 @@ import styles from './VocabularySearchResultItem.module.scss';
 export default function VocabularySearchResultItem({
     result,
     lexemes,
-    onAddLexeme
+    onAddLexeme,
+    onEditLexeme
 }) {
     const handleAddButtonClick = useCallback(e => {
         stopPropagation(e);
 
-        return onAddLexeme({ lexemeId: result.id });
-    }, [result.id, onAddLexeme]);
+        onEditLexeme ?
+            onEditLexeme(result.data) :
+            onAddLexeme(result.data);
+    }, [onAddLexeme, onEditLexeme, result.data]);
 
     const className = cn(
         styles.root,
@@ -36,10 +39,10 @@ export default function VocabularySearchResultItem({
             </div>
 
             <IconButton
-                icon={isLexemePresent ? 'check' : 'add'}
-                title={isLexemePresent ? 'Слово уже добавлено' : 'Добавить слово'}
+                icon={onEditLexeme ? 'edit' : isLexemePresent ? 'check' : 'add'}
+                title={onEditLexeme ? 'Редактировать лексему' : isLexemePresent ? 'Слово уже добавлено' : 'Добавить слово'}
                 variant="soft"
-                disabled={isLexemePresent}
+                disabled={isLexemePresent && !onEditLexeme}
                 onClick={handleAddButtonClick}
             />
         </div>
