@@ -1,62 +1,52 @@
 export default ({
     models: { Room }
 }) => ({
-    get: (req, res, next) => {
-        Room.findWithLessonCountFor(30, 'days')
-            .then(rooms => {
-                res.json({
-                    ok: true,
-                    data: rooms
-                });
-            })
-            .catch(next);
+    async get(req, res) {
+        const rooms = await Room.find().withLessonCountFor(30, 'days');
+
+        res.json({
+            ok: true,
+            data: rooms
+        });
     },
 
-    getOne: (req, res, next) => {
-        Room.findById(req.params.id)
-            .then(room => {
-                res.json({
-                    ok: true,
-                    data: room
-                });
-            })
-            .catch(next);
+    async getOne(req, res) {
+        const room = await Room.findById(req.params.id);
+
+        res.json({
+            ok: true,
+            data: room
+        });
     },
 
-    create: (req, res, next) => {
-        Room.create(req.body)
-            .then(room => {
-                res.json({
-                    ok: true,
-                    message: 'Комната создана',
-                    data: room
-                });
-            })
-            .catch(next);
+    async create(req, res) {
+        const room = await Room.create(req.body);
+
+        res.json({
+            ok: true,
+            message: 'Комната создана',
+            data: room
+        });
     },
 
-    update: (req, res, next) => {
-        Room.findByIdAndUpdate(req.params.id, req.body, { new: true })
-            .then(room => {
-                res.json({
-                    ok: true,
-                    message: 'Комната изменена',
-                    data: room
-                });
-            })
-            .catch(next);
+    async update(req, res) {
+        const room = await Room.findByIdAndUpdate(req.params.id, req.body, { new: true });
+
+        res.json({
+            ok: true,
+            message: 'Комната изменена',
+            data: room
+        });
     },
 
-    delete: (req, res, next) => {
-        Room.findByIdAndDelete(req.params.id)
-            .select('id')
-            .then(room => {
-                res.json({
-                    ok: true,
-                    message: 'Комната удалена',
-                    data: room
-                });
-            })
-            .catch(next);
+    async delete(req, res) {
+        const room = await Room.findByIdAndDelete(req.params.id)
+            .select('id');
+
+        res.json({
+            ok: true,
+            message: 'Комната удалена',
+            data: room
+        });
     }
 });
