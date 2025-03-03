@@ -22,7 +22,7 @@ export default function VocabularySimpleForm({
     }, [numberOfVocabularies]);
 
     return (
-        <Form className={styles.form} onSubmit={handleSubmit}>
+        <Form className={styles.root} onSubmit={handleSubmit}>
             <Form.Input
                 className={styles.input}
                 name="title"
