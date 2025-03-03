@@ -1,17 +1,6 @@
-.ui-Autocomplete-listbox {
-  li {
-    .autocomplete-show-more-btn {
-      width: 100%;
-    }
-  }
-
-  .ui-Autocomplete-noOptions,
-  .ui-Autocomplete-loading {
-    padding: 5px 10px;
-  }
-}
-
 .MuiAutocomplete-listbox {
+  z-index: 1300 !important;
+
   .MuiAutocompleteOption-root {
     padding: 0;
     min-height: 100%;
