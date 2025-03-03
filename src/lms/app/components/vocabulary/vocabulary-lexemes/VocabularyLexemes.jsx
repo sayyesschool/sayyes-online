@@ -13,13 +13,6 @@ import LexemeView from 'lms/components/vocabulary/lexeme-view';
 
 import styles from './VocabularyLexemes.module.scss';
 
-const filters = {
-    all: () => true,
-    new: lexeme => lexeme.status === 0,
-    learning: lexeme => lexeme.status > 0 && lexeme.status < 5,
-    learned: lexeme => lexeme.status === 5
-};
-
 export default function VocabularyLexemes({
     vocabulary,
     user,
@@ -28,12 +21,10 @@ export default function VocabularyLexemes({
 }) {
     const actions = useVocabularyActions();
     const [modalState, setModalState] = useState({ type: null, lexeme: null });
-    const [selectedLexemeIds, setSelectedLexemeIds] = useState([]);
-    const [filter, setFilter] = useState('all');
 
     const vocabularyId = vocabulary?.id;
     const isTeacher = user.isTeacher;
-    const lexemes = vocabulary.lexemes.filter(filters[filter]);
+    const lexemes = vocabulary?.lexemes;
     const showHeader = !inline || !modalState.lexeme;
     const showList = showHeader;
     const readOnly = isTeacher;
@@ -66,30 +57,58 @@ export default function VocabularyLexemes({
         }
     }, [actions, vocabularyId]);
 
-    const handleSelectLexeme = useCallback(lexemeId => {
-        setSelectedLexemeIds(ids => {
-            const isSelected = ids.includes(lexemeId);
-
-            return isSelected ?
-                ids.filter(id => id !== lexemeId) :
-                ids.concat(lexemeId);
-        });
-    }, []);
-
     const handleUpdateLexemeStatus = useCallback((lexemeId, status) => {
         return actions.updateLexemeStatus(lexemeId, status);
     }, [actions]);
+
+    const renderModalContent = () => {
+        if (!modalState.lexeme) return null;
+
+        let ChildComponent;
+        let ParentComponent;
+
+        switch (modalState.type) {
+            case 'view-lexeme':
+                ParentComponent = Dialog;
+                ChildComponent = (
+                    <Lexeme
+                        lexeme={modalState.lexeme}
+                        readOnly={readOnly}
+                        onStatusUpdate={handleUpdateLexemeStatus}
+                        onClose={handleModalClose}
+                    />
+                );
+                break;
+            case 'edit-lexeme':
+                ParentComponent = FormDialog;
+                ChildComponent = (
+                    <LexemeForm
+                        id="lexeme-edit-form"
+                        lexeme={modalState.lexeme}
+                        onSubmit={handleUpdateLexeme}
+                        onClose={handleModalClose}
+                    />
+                );
+                break;
+            default:
+                return null;
+        }
+
+        return (
+            <LexemeView
+                as={inline ? undefined : ParentComponent}
+                open
+                onClose={handleModalClose}
+            >
+                {ChildComponent}
+            </LexemeView>
+        );
+    };
 
     return (
         <div className={styles.root}>
             {showHeader &&
                 <div className={styles.header}>
-                    {/* Временно отключили */}
-                    {/* <Checkbox
-                        checked={false}
-                        onChange={() => console.log('check')}
-                    /> */}
-
                     <VocabularySearch
                         className={styles.search}
                         lexemes={lexemes}
@@ -107,41 +126,12 @@ export default function VocabularyLexemes({
                         readOnly={readOnly}
                         onViewLexeme={lexeme => handleModalOpen('view-lexeme', lexeme)}
                         onEditLexeme={lexeme => handleModalOpen('edit-lexeme', lexeme)}
-                        onSelectLexeme={handleSelectLexeme}
                         onDeleteLexeme={handleDeleteLexeme}
                         onUpdateLexemeStatus={handleUpdateLexemeStatus}
                     />
                 }
 
-                {modalState.lexeme && (
-                    <LexemeView
-                        as={inline ? undefined : Dialog}
-                        open={modalState.type === 'view-lexeme'}
-                        onClose={handleModalClose}
-                    >
-                        <Lexeme
-                            lexeme={modalState.lexeme}
-                            readOnly={readOnly}
-                            onStatusUpdate={handleUpdateLexemeStatus}
-                            onClose={handleModalClose}
-                        />
-                    </LexemeView>
-                )}
-
-                {modalState.lexeme && (
-                    <LexemeView
-                        as={inline ? undefined : FormDialog}
-                        open={modalState.type === 'edit-lexeme'}
-                        onClose={handleModalClose}
-                    >
-                        <LexemeForm
-                            id="lexeme-edit-form"
-                            lexeme={modalState.lexeme}
-                            onSubmit={handleUpdateLexeme}
-                            onClose={handleModalClose}
-                        />
-                    </LexemeView>
-                )}
+                {renderModalContent()}
             </div>
         </div>
     );
