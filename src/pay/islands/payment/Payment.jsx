@@ -123,9 +123,12 @@ export default function PaymentComponent({ format }) {
                     data={{
                         amount: amount || pack.price,
                         contact,
-                        formatId: format?.id,
-                        typeId: type?.id,
-                        packId: pack?.id
+                        data: {
+                            formatId: format?.id,
+                            typeId: type?.id,
+                            packId: pack?.id
+                        },
+                        purpose: 'study'
                     }}
                     onComplete={() => setView(View.SUCCESS)}
                     onError={error => setError(error)}
