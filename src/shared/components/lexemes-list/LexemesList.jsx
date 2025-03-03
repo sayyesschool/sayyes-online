@@ -4,9 +4,9 @@ import { List } from 'shared/ui-components';
 import styles from './LexemesList.module.scss';
 
 export default function LexemesList({
+    inline,
     user,
     lexemes = [],
-    readOnly,
     selectedLexemeIds,
     onUnapprove,
     onViewLexeme,
@@ -20,9 +20,9 @@ export default function LexemesList({
             {lexemes?.map(lexeme =>
                 <LexemeItem
                     key={lexeme.id}
+                    inline={inline}
                     user={user}
                     lexeme={lexeme}
-                    readOnly={readOnly}
                     selectedLexemeIds={selectedLexemeIds}
                     onUnapprove={onUnapprove}
                     onView={onViewLexeme}

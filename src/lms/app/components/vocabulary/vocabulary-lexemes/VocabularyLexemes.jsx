@@ -27,7 +27,6 @@ export default function VocabularyLexemes({
     const lexemes = vocabulary?.lexemes;
     const showHeader = !inline || !modalState.lexeme;
     const showList = showHeader;
-    const readOnly = isTeacher;
 
     const handleModalOpen = useCallback((type, lexeme = null) => {
         setModalState({ type, lexeme });
@@ -73,7 +72,7 @@ export default function VocabularyLexemes({
                 ChildComponent = (
                     <Lexeme
                         lexeme={modalState.lexeme}
-                        readOnly={readOnly}
+                        readOnly={isTeacher}
                         onStatusUpdate={handleUpdateLexemeStatus}
                         onClose={handleModalClose}
                     />
@@ -121,9 +120,9 @@ export default function VocabularyLexemes({
             <div className={styles.body}>
                 {showList &&
                     <LexemesList
+                        inline={inline}
                         user={user}
                         lexemes={lexemes}
-                        readOnly={readOnly}
                         onViewLexeme={lexeme => handleModalOpen('view-lexeme', lexeme)}
                         onEditLexeme={lexeme => handleModalOpen('edit-lexeme', lexeme)}
                         onDeleteLexeme={handleDeleteLexeme}
