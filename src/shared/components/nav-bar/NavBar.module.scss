@@ -1,28 +1,35 @@
+@use 'shared/styles/mq';
+
 .root {
-
-}
-
-.item {
-    &_active {
-        --Tab-indicatorColor: var(--joy-palette-primary-plainColor) !important;
-
-        position: relative;
-    }
-}
-
-.vertical {
     .item {
-        --ListItem-paddingRight: 0.25rem;
-        --ListItem-paddingLeft: 0.25rem;
-
-        text-align: center;
-
-        &__icon {
-            font-size: 1.5rem;
+        &_active {
+            --Tab-indicatorColor: var(--joy-palette-primary-plainColor) !important;
+    
+            position: relative;
         }
-
+    
         &__text {
-            width: 100%;
+            @include mq.to(s) {
+                display: none;
+            }
+        }
+    }
+    
+    .vertical {
+        .item {
+            --ListItem-paddingRight: 0.25rem;
+            --ListItem-paddingLeft: 0.25rem;
+    
+            text-align: center;
+    
+            &__icon {
+                font-size: 1.5rem;
+            }
+    
+            &__text {
+                width: 100%;
+            }
         }
     }
 }
+
