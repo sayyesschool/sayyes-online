@@ -1,8 +1,5 @@
 import { useCallback, useState } from 'react';
 
-import ImageField from 'shared/components/image-field';
-import { useUser } from 'shared/hooks/user';
-import Storage from 'shared/services/storage';
 import { Form, Heading } from 'shared/ui-components';
 
 import { getInitialData, getLabels } from './helpers';
@@ -15,11 +12,8 @@ export default function LexemeForm({
     onSubmit,
     ...props
 }) {
-    const user = useUser();
-
     const initialData = getInitialData(lexeme);
 
-    const [file, setFile] = useState();
     const [translation, setTranslation] = useState(initialData.translation);
     const [definition, setDefinition] = useState(initialData.definition ?? '');
     const [examples, setExamples] = useState(initialData.examples ?? []);
@@ -33,28 +27,8 @@ export default function LexemeForm({
             examples
         };
 
-        if (file) {
-            const response = await Storage.upload(file, { path: 'lexemes' });
-
-            data.image = {
-                path: response.data.path
-            };
-        }
-
         onSubmit(data);
-    }, [file, translation, definition, examples, onSubmit]);
-
-    const handleFileChange = useCallback((data, file) => {
-        setFile(file);
-    }, [setFile]);
-
-    const handleFileDelete = useCallback(async image => {
-        if (user.id !== lexeme.createdBy || lexeme.isApproved) return;
-
-        await Storage.delete(image.path).then(console.log);
-        setFile(undefined);
-        onSubmit({ image: undefined });
-    }, [lexeme, user, onSubmit]);
+    }, [translation, definition, examples, onSubmit]);
 
     const handleTranslationChange = useCallback(e => {
         setTranslation(e.target.value);
@@ -68,7 +42,6 @@ export default function LexemeForm({
         setExamples(examples);
     }, [setExamples]);
 
-    const createdByUser = lexeme.createdBy === user.id;
     const labels = getLabels(lexeme.isApproved);
 
     return (
@@ -80,15 +53,6 @@ export default function LexemeForm({
             <Heading
                 content={lexeme.value}
                 type="h1"
-            />
-
-            <ImageField
-                className={styles.imageField}
-                label="Изображение"
-                image={lexeme.image || lexeme.data?.image}
-                disabled={!createdByUser || lexeme.isApproved}
-                onChange={handleFileChange}
-                onDelete={handleFileDelete}
             />
 
             {lexeme.isApproved &&
