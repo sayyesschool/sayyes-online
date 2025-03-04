@@ -51,14 +51,14 @@ export default function EnrollmentPage({ match }) {
 
     return (
         <Page className="EnrollmentPage">
-            <Page.Drawer open={isChatOpen} onClose={toggleChatOpen}>
+            {/* <Page.Drawer open={isChatOpen} onClose={toggleChatOpen}>
                 <EnrollmentChat
                     enrollment={enrollment}
                     user={user}
                     onJoined={handleChatJoined}
                     onClose={toggleChatOpen}
                 />
-            </Page.Drawer>
+            </Page.Drawer> */}
 
             <Page.Drawer open={isVocabularyOpen} onClose={toggleVocabularyOpen}>
                 <EnrollmentVocabulary
@@ -79,20 +79,20 @@ export default function EnrollmentPage({ match }) {
                         content="Перейти в класс"
                         variant="soft"
                     />,
-                    hasChat &&
-                        <Badge
-                            key="chat"
-                            badgeContent={unreadMessagesCount}
-                            showZero={false}
-                            size="sm"
-                        >
-                            <IconButton
-                                icon="chat"
-                                title="Чат"
-                                variant="soft"
-                                onClick={openChat}
-                            />
-                        </Badge>,
+                    // hasChat &&
+                    //     <Badge
+                    //         key="chat"
+                    //         badgeContent={unreadMessagesCount}
+                    //         showZero={false}
+                    //         size="sm"
+                    //     >
+                    //         <IconButton
+                    //             icon="chat"
+                    //             title="Чат"
+                    //             variant="soft"
+                    //             onClick={openChat}
+                    //         />
+                    //     </Badge>,
                     <IconButton
                         key="dictionary"
                         icon="dictionary"
