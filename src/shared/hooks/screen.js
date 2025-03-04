@@ -1,21 +1,18 @@
 import { useEffect, useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
 
 import { useMounted, useUpdated } from 'shared/hooks/lifecycle';
 import { useBoolean } from 'shared/hooks/state';
-
-export { useMediaQuery };
 
 export function useScreenSize() {
     const [screenSize, setScreenSize] = useState();
 
     useMounted(() => {
         function handleResize() {
-            if (window.innerWidth < 640 && screenSize !== 'phone') {
+            if (window.innerWidth < 540 && screenSize !== 'phone') {
                 setScreenSize('phone');
-            } else if (window.innerWidth > 640 && window.innerWidth < 960 && screenSize !== 'tablet') {
+            } else if (window.innerWidth > 540 && window.innerWidth < 1024 && screenSize !== 'tablet') {
                 setScreenSize('tablet');
-            } else if (window.innerWidth > 960 && screenSize !== 'desktop') {
+            } else if (window.innerWidth > 1024 && screenSize !== 'desktop') {
                 setScreenSize('desktop');
             }
         }
@@ -28,6 +25,12 @@ export function useScreenSize() {
     });
 
     return screenSize;
+}
+
+export function useIsMobile() {
+    const size = useScreenSize();
+
+    return size === 'phone';
 }
 
 export function useFullScreen(elementRef, deps) {

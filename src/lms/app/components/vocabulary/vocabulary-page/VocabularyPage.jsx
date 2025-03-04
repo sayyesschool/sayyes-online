@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
-import { useMediaQuery } from 'shared/hooks/screen';
+import { useIsMobile } from 'shared/hooks/screen';
 import { useUser } from 'shared/hooks/user';
 import { useVocabulary } from 'shared/hooks/vocabularies';
 import { Button, IconButton, Menu } from 'shared/ui-components';
@@ -15,7 +15,7 @@ import styles from './VocabularyPage.module.scss';
 export default function VocabularyPage({ match }) {
     const [user] = useUser();
     const [vocabulary] = useVocabulary(match.params.vocabulary);
-    const isMobile = useMediaQuery({ query: '(max-width: 540px)' });
+    const isMobile = useIsMobile();
 
     if (!vocabulary) return <LoadingIndicator />;
 
