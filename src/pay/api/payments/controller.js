@@ -5,8 +5,8 @@ export default ({
     async create(req, res) {
         let {
             amount,
-            description,
             purpose,
+            description = Payment.getPurposeLabel(purpose),
             contact: customer,
             data,
             requestId,
