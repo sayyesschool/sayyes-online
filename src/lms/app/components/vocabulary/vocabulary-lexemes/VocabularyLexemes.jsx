@@ -9,6 +9,7 @@ import { Dialog } from 'shared/ui-components';
 
 import Lexeme from 'lms/components/vocabulary/lexeme';
 import LexemeForm from 'lms/components/vocabulary/lexeme-form';
+import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 import LexemeView from 'lms/components/vocabulary/lexeme-view';
 
 import styles from './VocabularyLexemes.module.scss';
@@ -22,11 +23,10 @@ export default function VocabularyLexemes({
     const actions = useVocabularyActions();
     const [modalState, setModalState] = useState({ type: null, lexeme: null });
 
+    const { isTeacher } = user ;
     const vocabularyId = vocabulary?.id;
-    const isTeacher = user.isTeacher;
     const lexemes = vocabulary?.lexemes;
     const showHeader = !inline || !modalState.lexeme;
-    const showList = showHeader;
 
     const handleModalOpen = useCallback((type, lexeme = null) => {
         setModalState({ type, lexeme });
@@ -104,6 +104,28 @@ export default function VocabularyLexemes({
         );
     };
 
+    const getActionButtons = lexeme => {
+        const teacherIsInline = isTeacher && inline;
+
+        return [
+            <LexemeStatus
+                key={lexeme.id}
+                level={lexeme.status}
+                readOnly={teacherIsInline}
+                onChange={status => handleUpdateLexemeStatus(lexeme.id, status)}
+            />,
+            !teacherIsInline && {
+                icon: 'edit',
+                title: 'Редактировать слово',
+                handler: () => handleModalOpen('edit-lexeme', lexeme)
+            },
+            !teacherIsInline && {
+                icon: 'delete',
+                title: 'Удалить слово',
+                handler: () => handleDeleteLexeme(lexeme.id)
+            }].filter(Boolean);
+    };
+
     return (
         <div className={styles.root}>
             {showHeader &&
@@ -118,15 +140,11 @@ export default function VocabularyLexemes({
             }
 
             <div className={styles.body}>
-                {showList &&
+                {showHeader &&
                     <LexemesList
-                        inline={inline}
-                        user={user}
                         lexemes={lexemes}
+                        getActionButtons={getActionButtons}
                         onViewLexeme={lexeme => handleModalOpen('view-lexeme', lexeme)}
-                        onEditLexeme={lexeme => handleModalOpen('edit-lexeme', lexeme)}
-                        onDeleteLexeme={handleDeleteLexeme}
-                        onUpdateLexemeStatus={handleUpdateLexemeStatus}
                     />
                 }
 

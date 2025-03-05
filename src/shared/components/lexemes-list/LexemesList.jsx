@@ -4,33 +4,28 @@ import { List } from 'shared/ui-components';
 import styles from './LexemesList.module.scss';
 
 export default function LexemesList({
-    inline,
-    user,
     lexemes = [],
     selectedLexemeIds,
-    onUnapprove,
     onViewLexeme,
-    onEditLexeme,
-    onSelectLexeme,
-    onDeleteLexeme,
-    onUpdateLexemeStatus
+    getActionButtons,
+    onSelectLexeme
 }) {
     return (
         <List className={styles.root}>
-            {lexemes?.map(lexeme =>
-                <LexemeItem
-                    key={lexeme.id}
-                    inline={inline}
-                    user={user}
-                    lexeme={lexeme}
-                    selectedLexemeIds={selectedLexemeIds}
-                    onUnapprove={onUnapprove}
-                    onView={onViewLexeme}
-                    onEdit={onEditLexeme}
-                    onSelect={onSelectLexeme}
-                    onDelete={onDeleteLexeme}
-                    onStatusUpdate={onUpdateLexemeStatus}
-                />
+            {lexemes?.map(lexeme => {
+                const actionButtons = getActionButtons(lexeme);
+
+                return (
+                    <LexemeItem
+                        key={lexeme.id}
+                        lexeme={lexeme}
+                        actionButtons={actionButtons}
+                        selectedLexemeIds={selectedLexemeIds}
+                        onView={onViewLexeme}
+                        onSelect={onSelectLexeme}
+                    />
+                );
+            }
             )}
         </List>
     );

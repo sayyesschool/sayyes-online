@@ -24,6 +24,7 @@ export default function DictionaryLexemes({ dictionary, user }) {
     const [foundSearchLexeme, setFoundSearchLexeme] = useState();
 
     const { lexemes } = dictionary;
+    const userId = user.id;
 
     const isPending = dictionary.publishStatus === 'pending';
     const isUnapproved = dictionary.publishStatus === 'unapproved';
@@ -102,7 +103,7 @@ export default function DictionaryLexemes({ dictionary, user }) {
                     <LexemeForm
                         id="lexeme-edit-form"
                         lexeme={modalState.lexeme}
-                        userId={user.id}
+                        userId={userId}
                         updateFoundLexeme={handleUpdateFoundLexeme}
                         onSubmit={handleUpdateLexeme}
                         onClose={handleModalClose}
@@ -112,7 +113,7 @@ export default function DictionaryLexemes({ dictionary, user }) {
                 return (
                     <LexemesForm
                         id="lexemes-edit-form"
-                        userId={user.id}
+                        userId={userId}
                         lexemes={foundSearchLexeme ?? lexemes.filter(lexeme => selectedLexemeIds.includes(lexeme.id))}
                         initialLexeme={foundSearchLexeme?.[0]}
                         isPending={isPending}
@@ -123,6 +124,27 @@ export default function DictionaryLexemes({ dictionary, user }) {
             default:
                 return null;
         }
+    };
+
+    const getActionButtons = lexeme => {
+        const isCreatorLexeme = lexeme.createdBy === userId;
+
+        return [
+            {
+                icon: 'verified',
+                title: 'Редактировать слово',
+                handler: () => handleModalOpen('edit-lexeme', lexeme)
+            },
+            !isUnapproved && {
+                icon: 'clear',
+                title: 'Архивировать слово',
+                handler: () => handleUnapproveLexeme(lexeme.id)
+            },
+            isCreatorLexeme && {
+                icon: 'delete',
+                title: 'Удалить слово',
+                handler: () => handleDeleteLexeme(lexeme.id)
+            }].filter(Boolean);
     };
 
     return (
@@ -159,13 +181,10 @@ export default function DictionaryLexemes({ dictionary, user }) {
                 />
 
                 <LexemesList
-                    user={user}
                     lexemes={lexemes}
                     selectedLexemeIds={selectedLexemeIds}
+                    getActionButtons={getActionButtons}
                     onViewLexeme={lexeme => handleModalOpen('view-lexeme', lexeme)}
-                    onEditLexeme={lexeme => handleModalOpen('edit-lexeme', lexeme)}
-                    onUnapprove={!isUnapproved && handleUnapproveLexeme}
-                    onDeleteLexeme={isPending && handleDeleteLexeme}
                     onSelectLexeme={handleSelectLexeme}
                 />
 

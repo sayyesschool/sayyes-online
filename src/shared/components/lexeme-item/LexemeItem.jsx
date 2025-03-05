@@ -1,32 +1,17 @@
-import { useCallback } from 'react';
+import { isValidElement, useCallback } from 'react';
 
 import { Checkbox, IconButton, ListItem, Text } from 'shared/ui-components';
-
-import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 
 import styles from './LexemeItem.module.scss';
 
 export default function LexemeItem({
-    inline,
-    user,
     lexeme,
     selectedLexemeIds,
+    actionButtons,
     onView,
-    onUnapprove,
-    onEdit,
-    onSelect,
-    onDelete,
-    onStatusUpdate
+    onSelect
 }) {
-    const { id: userId, isLearner, isManager, isTeacher } = user;
-    const { id, value, translation, status, createdBy } = lexeme;
-    const isCreatorLexeme = createdBy === userId;
-    const managerIsCreator = isManager && isCreatorLexeme;
-    const teacherIsNotInline = isTeacher && !inline;
-    const isInlineTeacher = isTeacher && inline;
-    const isNotInlineTeacher = !isInlineTeacher;
-    const showDeleteBtn = onDelete && (isLearner || managerIsCreator || teacherIsNotInline);
-    const showEditBtn = isNotInlineTeacher;
+    const { id, value, translation } = lexeme;
 
     const handleCheckboxChange = useCallback(() => {
         return onSelect(id);
@@ -36,31 +21,9 @@ export default function LexemeItem({
         return onView(lexeme);
     }, [lexeme, onView]);
 
-    const handleStatusChange = useCallback(status => {
-        onStatusUpdate(id, status);
-    }, [id, onStatusUpdate]);
-
-    const actionButtons = [
-        showEditBtn && {
-            icon: user.Manager ? 'verified' : 'edit',
-            title: 'Редактировать слово',
-            handler: () => onEdit(lexeme)
-        },
-        onUnapprove && {
-            icon: 'clear',
-            title: 'Архивировать слово',
-            handler: () => onUnapprove(id)
-        },
-        showDeleteBtn && {
-            icon: 'delete',
-            title: 'Удалить слово',
-            handler: () => onDelete(id)
-        }
-    ].filter(Boolean);
-
     return (
         <ListItem className={styles.root}>
-            {isManager && (
+            {onSelect && (
                 <Checkbox
                     checked={selectedLexemeIds?.includes(id)}
                     onChange={handleCheckboxChange}
@@ -81,22 +44,18 @@ export default function LexemeItem({
             </div>
 
             <div className={styles.actions}>
-                {onStatusUpdate && (
-                    <LexemeStatus
-                        level={status}
-                        readOnly={isInlineTeacher}
-                        onChange={handleStatusChange}
-                    />
-                )}
+                {actionButtons.map((button, index) => {
+                    if (isValidElement(button)) return button;
 
-                {actionButtons.map(({ title, icon, handler }, index) => (
-                    <IconButton
-                        key={index}
-                        title={title}
-                        icon={icon}
-                        onClick={handler}
-                    />
-                ))}
+                    return (
+                        <IconButton
+                            key={index}
+                            title={button.title}
+                            icon={button.icon}
+                            onClick={button.handler}
+                        />
+                    );
+                })}
             </div>
         </ListItem>
     );
