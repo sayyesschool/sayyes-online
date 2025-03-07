@@ -48,6 +48,7 @@ export default function VocabularySearch({ lexemes, onAddLexeme, onEditLexeme, d
                     anchor={comboboxRef.current}
                     placement="bottom-start"
                     open
+                    onClose={() => setNewLexeme(null)}
                 >
                     <LexemeSimpleForm
                         lexeme={newLexeme}

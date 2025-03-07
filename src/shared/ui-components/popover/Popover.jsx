@@ -14,6 +14,7 @@ export default function Popover({
     surfaceProps,
     className,
     children,
+    onClose,
     ...props
 }) {
     const [anchor, setAnchor] = useState(_anchor);
@@ -25,7 +26,8 @@ export default function Popover({
 
     const handleClickAway = useCallback(event => {
         setAnchor(null);
-    }, []);
+        onClose?.();
+    }, [onClose]);
 
     const open = Boolean(anchor);
     const id = open ? 'simple-popper' : undefined;
