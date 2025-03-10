@@ -27,7 +27,10 @@ function ExerciseVideoItem({
     }), [path]);
 
     return (
-        <Flex padding={1} gap="small" column>
+        <Flex
+            padding={1} gap="small"
+            column
+        >
             {url &&
                 <VideoPlayer
                     src={url}

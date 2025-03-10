@@ -16,38 +16,38 @@ export default function ExercisePage({ match, history }) {
 
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
+    const section = exercise?.section;
+    const lesson = section?.lesson;
+    const unit = lesson?.unit;
+
     useEffect(() => {
         if (exercise && !exercise.items) {
             actions.getExercise(exercise.courseId, exercise.id);
         }
-    }, [exercise]);
+    }, [exercise, actions]);
 
     const handleUpdate = useCallback(data => {
         return actions.updateExercise(course.id, exercise.id, data);
-    }, [course, exercise]);
+    }, [course, exercise, actions]);
 
     const handleDelete = useCallback(() => {
         return actions.deleteExercise(course.id, exercise.id)
             .then(() => history.push(lesson.url));
-    }, [course, lesson, exercise]);
+    }, [course, lesson, exercise, actions, history]);
 
     const handleCreateItem = useCallback(data => {
         return actions.createExerciseItem(course.id, exercise.id, data);
-    }, [course, exercise]);
+    }, [course, exercise, actions]);
 
     const handleUpdateItem = useCallback((itemId, data) => {
         return actions.updateExerciseItem(course.id, exercise.id, itemId, data);
-    }, [course, exercise]);
+    }, [course, exercise, actions]);
 
     const handleDeleteItem = useCallback((itemId, data) => {
         return actions.deleteExerciseItem(course.id, exercise.id, itemId, data);
-    }, [course, exercise]);
+    }, [course, exercise, actions]);
 
     if (!exercise?.items) return <LoadingIndicator fluid />;
-
-    const section = exercise.section;
-    const lesson = section.lesson;
-    const unit = lesson.unit;
 
     return (
         <Page className="ExercisePage">

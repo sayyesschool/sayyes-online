@@ -3,14 +3,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import ExerciseItem from 'shared/components/exercise-item';
 import PageSection from 'shared/components/page-section';
+import { exerciseTypeMenuItems } from 'shared/data/exercise';
 import { useBoolean } from 'shared/hooks/state';
-import { Button, Flex, Icon, IconButton, MenuButton } from 'shared/ui-components';
+import { Button, Flex, Icon, IconButton, Menu } from 'shared/ui-components';
 
 import ExerciseItemForm from 'cms/components/courses/exercise-item-form';
 
-import './index.scss';
-
-import { exerciseTypeMenuItems } from 'shared/data/exercise';
+import './ExerciseItems.scss';
 
 export default function ExerciseItems({
     exercise,
@@ -62,13 +61,13 @@ export default function ExerciseItems({
 
         if (deletingItem.image?.url) {
             deletingItem.file = {
-                url: item.image.url
+                url: deletingItem.image.url
             };
         }
 
         if (deletingItem.audio?.url) {
             deletingItem.file = {
-                url: item.audio.url
+                url: deletingItem.audio.url
             };
         }
 
@@ -77,7 +76,7 @@ export default function ExerciseItems({
                 setActiveItemId(undefined);
                 toggleConfirmationDialogOpen(false);
             });
-    }, [exercise, activeItemId]);
+    }, [exercise, activeItemId, onDelete]);
 
     const handleDeleteRequest = useCallback(() => {
         toggleConfirmationDialogOpen(true);
@@ -141,7 +140,10 @@ export default function ExerciseItems({
                             onCancel={handleCancelEdit}
                         />
                         :
-                        <div key={item.id} id={item.id} onMouseOver={handleItemMouseOver}>
+                        <div
+                            key={item.id} id={item.id}
+                            onMouseOver={handleItemMouseOver}
+                        >
                             <ExerciseItem
                                 item={item}
                                 state={state[item.id]}
@@ -150,7 +152,7 @@ export default function ExerciseItems({
                         </div>
                 )}
 
-                <MenuButton
+                <Menu
                     trigger={
                         <Button
                             className="ExerciseItems__add-button"
@@ -166,7 +168,7 @@ export default function ExerciseItems({
             </Flex>
 
             {exercise.items &&
-                <MenuButton
+                <Menu
                     trigger={
                         <IconButton
                             ref={itemMenuButtonRef}

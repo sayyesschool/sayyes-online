@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 import Content from 'shared/components/content';
-import { Avatar, Card, Flex, Icon, IconButton, MenuButton } from 'shared/ui-components';
+import { Avatar, Card, Flex, Icon, IconButton, Menu } from 'shared/ui-components';
 
 export default function ExercisesList({
     exercises,
@@ -38,11 +38,10 @@ export default function ExercisesList({
                                 alignItems="center"
                             >
                                 <Avatar content={index + 1} size="sm" />
-
                                 <Content content={exercise.description} html />
                             </Flex>
 
-                            <MenuButton
+                            <Menu
                                 trigger={
                                     <IconButton
                                         icon="more_vert"

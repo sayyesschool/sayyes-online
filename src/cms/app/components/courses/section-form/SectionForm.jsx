@@ -36,7 +36,12 @@ export default function SectionForm({ section = defaultSection, onSubmit, ...pro
     }, [section.updatedAt]);
 
     return (
-        <Form className="SectionForm" onSubmit={handleSubmit} noValidate {...props}>
+        <Form
+            className="SectionForm"
+            noValidate
+            onSubmit={handleSubmit}
+            {...props}
+        >
             <Form.Autocomplete
                 {...data.title}
                 label="Название"

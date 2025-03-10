@@ -14,7 +14,10 @@ export default function LessonForm({ lesson = defaultLesson, onSubmit, ...props 
     }, [lesson.updatedAt]);
 
     return (
-        <Form className="LessonForm" onSubmit={handleSubmit} noValidate {...props}>
+        <Form
+            className="LessonForm" noValidate
+            onSubmit={handleSubmit} {...props}
+        >
             <Form.Input
                 {...data.title}
                 label="Название"

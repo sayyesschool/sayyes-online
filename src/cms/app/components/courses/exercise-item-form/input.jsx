@@ -49,7 +49,10 @@ function InputItemForm({
     }, []);
 
     return (
-        <Flex padding={1} gap="small" column>
+        <Flex
+            padding={1} gap="small"
+            column
+        >
             <Input
                 value={text}
                 placeholder="Вопрос"
