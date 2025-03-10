@@ -51,7 +51,7 @@ export default function LessonPage({ match, history }) {
         return actions.deleteSection(course.id, section.id);
     }, [course]);
 
-    if (!lesson) return <LoadingIndicator fluid />;
+    if (!lesson) return <LoadingIndicator fullscreen />;
 
     return (
         <Page className="LessonPage">

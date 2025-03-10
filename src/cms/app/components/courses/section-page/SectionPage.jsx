@@ -39,7 +39,7 @@ export default function SectionPage({ match, history }) {
         return actions.deleteExercise(course.id, exercise.id);
     }, [course]);
 
-    if (!section) return <LoadingIndicator fluid />;
+    if (!section) return <LoadingIndicator fullscreen />;
 
     return (
         <Page className="SectionPage">

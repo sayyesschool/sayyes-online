@@ -39,7 +39,7 @@ export default function UnitPage({ match, history }) {
         return actions.deleteLesson(course.id, lesson.id);
     }, [course]);
 
-    if (!unit) return <LoadingIndicator fluid />;
+    if (!unit) return <LoadingIndicator fullscreen />;
 
     return (
         <Page className="UnitPage">

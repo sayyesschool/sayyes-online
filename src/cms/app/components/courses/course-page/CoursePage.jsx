@@ -37,7 +37,7 @@ export default function CoursePage({ match, history }) {
         return actions.deleteUnit(course.id, unit.id);
     }, [course]);
 
-    if (!course) return <LoadingIndicator fluid />;
+    if (!course) return <LoadingIndicator fullscreen />;
 
     return (
         <Page className="CoursePage">
