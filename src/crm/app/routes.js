@@ -29,6 +29,15 @@ export default [
         permissions: ['all', 'requests']
     },
     {
+        id: 'payments',
+        name: 'Платежи',
+        path: '/payments',
+        exact: false,
+        component: Payments,
+        icon: 'payments',
+        permissions: ['all', 'payments']
+    },
+    {
         id: 'enrollments',
         name: '',
         path: '/enrollments',
@@ -64,15 +73,6 @@ export default [
         component: Memberships,
         icon: 'confirmation_number',
         permissions: ['all', 'memberships']
-    },
-    {
-        id: 'payments',
-        name: 'Платежи',
-        path: '/payments',
-        exact: false,
-        component: Payments,
-        icon: 'payments',
-        permissions: ['all', 'payments']
     },
     {
         id: 'learners',
