@@ -4,8 +4,6 @@ import Page from 'shared/components/page';
 
 import { useStore } from 'cms/store';
 
-import './index.scss';
-
 export default function HomePage() {
     const [courses] = useStore('courses.list');
     const [materials] = useStore('materials.list');
@@ -13,13 +11,21 @@ export default function HomePage() {
     return (
         <Page className="HomePage">
             <Page.Content>
-                <Page.Section title="Курсы" compact plain>
+                <Page.Section
+                    title="Курсы"
+                    compact
+                    plain
+                >
                     <CoursesGrid
                         courses={courses}
                     />
                 </Page.Section>
 
-                <Page.Section title="Материалы" compact plain>
+                <Page.Section
+                    title="Материалы"
+                    compact
+                    plain
+                >
                     <MaterialsGrid
                         materials={materials}
                     />

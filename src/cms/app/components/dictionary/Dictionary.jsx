@@ -1,13 +1,13 @@
 import { Route, Switch } from 'react-router-dom';
 
-import Dictionary from './dictionary-page';
+import DictionaryPage from './dictionary-page';
 
-export default function DictionaryRouter() {
+export default function Dictionary() {
     return (
         <Switch>
             <Route
                 path="/dictionary"
-                component={(Dictionary)}
+                component={DictionaryPage}
                 exact
             />
         </Switch>
