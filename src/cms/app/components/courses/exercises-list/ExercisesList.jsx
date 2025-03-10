@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 import Content from 'shared/components/content';
-import { Avatar, Card, Flex, Icon, IconButton, Menu } from 'shared/ui-components';
+import { Avatar, Flex, Icon, IconButton, Menu, Surface } from 'shared/ui-components';
 
 export default function ExercisesList({
     exercises,
@@ -25,9 +25,11 @@ export default function ExercisesList({
         <div className="ExercisesList">
             <Flex gap="medium" column>
                 {exercises.map((exercise, index) =>
-                    <Card
+                    <Surface
                         key={exercise.id}
-                        className="ExerciseCard"
+                        padding="md"
+                        shadow="xs"
+                        radius="lg"
                     >
                         <Flex gap="small" alignItems="flex-start">
                             <Flex
@@ -75,7 +77,7 @@ export default function ExercisesList({
                                 ]}
                             />
                         </Flex>
-                    </Card>
+                    </Surface>
                 )}
             </Flex>
         </div>

@@ -54,7 +54,7 @@ function ListItem({ index, section, first, last, onMove, onDelete }) {
             media={index + 1}
             content={<>
                 <Text>{section.title}</Text>
-                <Text type="body2">{section.exercises?.length} {exerciseWordEnding(section.exercises?.length)}</Text>
+                <Text type="body-sm">{section.exercises?.length} {exerciseWordEnding(section.exercises?.length)}</Text>
             </>}
             endAction={<>
                 {!first &&
