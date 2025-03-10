@@ -21,7 +21,7 @@ export default function UnitsList({ units, onDelete }) {
                     // media={index + 1}
                     content={<>
                         <Text>{unit.title}</Text>
-                        <Text type="body2">{unit.lessons.length} уроков</Text>
+                        <Text type="body-sm">{unit.lessons.length} уроков</Text>
                     </>}
                     endAction={
                         <IconButton
