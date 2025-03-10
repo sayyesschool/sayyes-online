@@ -1,9 +1,10 @@
 import { combineReducers, createAction, createReducer } from 'shared/store/helpers';
 
-export const getPayments = createAction('GET_PAYMENTS', () => ({
+export const getPayments = createAction('GET_PAYMENTS', query => ({
     request: {
         method: 'get',
-        path: 'payments'
+        path: 'payments',
+        query
     }
 }));
 

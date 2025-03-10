@@ -1,61 +1,88 @@
 import { useCallback } from 'react';
 
-import { operatorOptions, paymentMethodOptions } from 'shared/data/payment';
-import { useFormData } from 'shared/hooks/form';
+import {
+    paymentMethodOptions,
+    paymentOperatorOptions,
+    paymentPurposeOptions,
+    paymentStatusOptions
+} from 'shared/data/payment';
+import { useSearchData } from 'shared/hooks/search';
 import datetime from 'shared/libs/datetime';
 import { Flex, Form } from 'shared/ui-components';
 
+const getData = ({
+    date = '',
+    status = '',
+    purpose = '',
+    method = '',
+    operator = ''
+} = {}) => ({
+    date,
+    status,
+    purpose,
+    method,
+    operator
+});
+
 export default function PaymentSearchForm({
-    payment = {},
+    data: _data,
     onSubmit,
     ...props
 }) {
-    const { data, handleChange } = useFormData({
-        amount: 0,
-        description: '',
-        date: datetime(payment.date).format('YYYY-MM-DD'),
-        paymentMethod: payment.method?.type,
-        learner: payment.learner ? payment.learner.id : '',
-        ...payment
+    const { params, setParam } = useSearchData({
+        params: getData(_data),
+        onChange: data => {
+            if (data.date) {
+                data.date = datetime(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
+            }
+
+            return onSubmit(data);
+        }
     });
 
-    const handleSubmit = useCallback(() => {
-        data.date = datetime(data.date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
-        data.status = 'succeeded';
+    const handleChange = useCallback(event => {
+        const { name, value } = event.target;
 
-        onSubmit(data);
-    }, [data, onSubmit]);
+        setParam({ name, value });
+    }, [setParam]);
 
     return (
         <Form
             className="PaymentSearchForm"
-            onSubmit={handleSubmit}
             {...props}
         >
             <Flex gap="smaller">
                 <Form.Input
-                    label="Сумма"
-                    type="number"
-                    name="amount"
-                    value={data.amount}
-                    min={1}
+                    label="Дата"
+                    type="date"
+                    name="date"
+                    value={params.date ? datetime(params.date).format('YYYY-MM-DD') : ''}
                     orientation="horizontal"
                     onChange={handleChange}
                 />
 
-                <Form.Input
-                    label="Дата"
-                    type="date"
-                    name="date"
-                    value={data.date}
+                <Form.Select
+                    label="Статус"
+                    name="status"
+                    value={params.status}
+                    options={paymentStatusOptions}
+                    orientation="horizontal"
+                    onChange={handleChange}
+                />
+
+                <Form.Select
+                    label="Цель"
+                    name="purpose"
+                    value={params.purpose}
+                    options={paymentPurposeOptions}
                     orientation="horizontal"
                     onChange={handleChange}
                 />
 
                 <Form.Select
                     label="Способ оплаты"
-                    name="paymentMethod"
-                    value={data.paymentMethod}
+                    name="method"
+                    value={params.method}
                     options={paymentMethodOptions}
                     orientation="horizontal"
                     onChange={handleChange}
@@ -64,8 +91,8 @@ export default function PaymentSearchForm({
                 <Form.Select
                     label="Оператор"
                     name="operator"
-                    value={data.operator}
-                    options={operatorOptions}
+                    value={params.operator}
+                    options={paymentOperatorOptions}
                     orientation="horizontal"
                     onChange={handleChange}
                 />

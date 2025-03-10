@@ -15,6 +15,7 @@ export default function PaymentsPage({ match, history }) {
     const [payment] = usePayment(match.params.id);
 
     const [isPaymentFormOpen, togglePaymentFormOpen] = useBoolean(false);
+    const [isLoading, setLoading] = useBoolean(false);
 
     useEffect(() => {
         if (!payment?.id) return;
@@ -47,7 +48,9 @@ export default function PaymentsPage({ match, history }) {
     }, []);
 
     const handleSearch = useCallback(params => {
-        console.log(params);
+        setLoading(true);
+
+        return actions.getPayments(params).finally(() => setLoading(false));
     }, []);
 
     if (!payments) return <LoadingIndicator />;
@@ -66,6 +69,7 @@ export default function PaymentsPage({ match, history }) {
                     variant: 'solid',
                     onClick: togglePaymentFormOpen
                 }]}
+                loading={isLoading}
             />
 
             <Page.Content>

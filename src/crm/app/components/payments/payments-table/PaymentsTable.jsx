@@ -4,11 +4,12 @@ import ActionButton from 'shared/components/action-button';
 import ConfirmButton from 'shared/components/confirm-button';
 import PersonChip from 'shared/components/person-chip';
 import StatusChip from 'shared/components/status-chip';
-import { Chip, IconButton, Table } from 'shared/ui-components';
+import { PaymentOperatorLabel, PaymentPurposeLabel } from 'shared/data/payment';
+import { Chip, Flex, IconButton, Popover, Surface, Table, Text } from 'shared/ui-components';
 
 const columns = [
     { key: 'number', content: '№', align: 'center' },
-    { key: 'description', content: 'Описание' },
+    { key: 'purpose', content: 'Цель' },
     { key: 'amount', content: 'Сумма, руб.' },
     { key: 'date', content: 'Дата' },
     { key: 'user', content: 'Клиент' },
@@ -37,7 +38,7 @@ export default function PaymentsTable({ payments, onResolve, onEdit, onDelete })
                 {payments.map((payment, index) =>
                     <Table.Row key={payment.id}>
                         <Table.Cell content={index + 1} align="center" />
-                        <Table.Cell content={payment.description} />
+                        <Table.Cell content={PaymentPurposeLabel[payment.purpose]} />
                         <Table.Cell content={payment.amount} />
                         <Table.Cell content={payment.dateLabel} />
 
@@ -49,6 +50,22 @@ export default function PaymentsTable({ payments, onResolve, onEdit, onDelete })
                                     imageSrc={payment.user.imageUrl}
                                     content={payment.user.fullname}
                                 />
+                            }
+
+                            {payment.customer &&
+                                <Flex
+                                    dir="column"
+                                    gap="xxs"
+                                >
+                                    <span style={{ lineHeight: 1 }}>{payment.customer.name}</span>
+
+                                    <Text
+                                        type="body-xs"
+                                        content={`${payment.customer.phone} · ${payment.customer.email}`}
+                                        style={{ lineHeight: 1 }}
+                                        noWrap
+                                    />
+                                </Flex>
                             }
                         </Table.Cell>
 
@@ -67,12 +84,30 @@ export default function PaymentsTable({ payments, onResolve, onEdit, onDelete })
 
                         <Table.Cell>
                             {payment.operator &&
-                                <Chip content={payment.operator} />
+                                <Chip content={PaymentOperatorLabel[payment.operator]} />
                             }
                         </Table.Cell>
 
                         <Table.Cell align="end">
                             <IconButton.Group size="sm">
+                                {payment.data && (
+                                    <Popover
+                                        trigger={
+                                            <IconButton
+                                                title="Посмотреть данные"
+                                                icon="text_snippet"
+                                                size="sm"
+                                            />
+                                        }
+                                    >
+                                        <Surface padding="sm">
+                                            {Object.entries(payment.data).map(([key, value]) =>
+                                                <Text key={key}>{key}: {value}</Text>
+                                            )}
+                                        </Surface>
+                                    </Popover>
+                                )}
+
                                 {!payment.isResolved &&
                                     <ActionButton
                                         title="Обновить"
