@@ -27,12 +27,14 @@ Membership.query.expired = function() {
     const endOfToday = datetime().endOf('day').toDate();
 
     return this.where({
+        active: true,
         endDate: { $lt: endOfToday }
     });
 };
 
 Membership.query.expiringIn = function(value, unit) {
     return this.where({
+        active: true,
         endDate: {
             $gt: datetime().add(value, unit).startOf(unit).toDate(),
             $lt: datetime().add(value, unit).endOf(unit).toDate()

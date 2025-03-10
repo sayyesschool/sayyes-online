@@ -1,6 +1,8 @@
 import { useCallback, useRef, useState } from 'react';
 
 import http from 'shared/services/http';
+import { debounce } from 'shared/utils/fn';
+import { stripEmptyValues } from 'shared/utils/object';
 
 export function useSearch({
     apiUrl,
@@ -84,5 +86,66 @@ export function useSearch({
         search,
         searchMore,
         reset
+    };
+}
+
+export function useSearchData({
+    query: defaultQuery,
+    params: defaultParams,
+    changeDelay = 1000,
+    onChange,
+    onClear
+} = {}) {
+    const defaultParamsRef = useRef(defaultParams);
+    const onQueryChangeRef = useRef(debounce(data => {
+        setLoading(true);
+        onChange(data).finally(() => setLoading(false));
+    }, changeDelay));
+    const onFilterChangeRef = useRef(data => {
+        setLoading(true);
+        onChange(data).finally(() => setLoading(false));
+    });
+
+    const [query, _setQuery] = useState(defaultQuery);
+    const [params, _setParams] = useState(defaultParams);
+    const [isLoading, setLoading] = useState(false);
+
+    const setQuery = useCallback(value => {
+        _setQuery(value);
+
+        onQueryChangeRef.current?.(value ? { query: value } : {});
+    }, []);
+
+    const setParam = useCallback(({ name, value } = {}) => {
+        _setParams(filter => {
+            const newFilter = {
+                ...filter,
+                [name]: value
+            };
+
+            onFilterChangeRef.current?.(stripEmptyValues(newFilter));
+
+            return newFilter;
+        });
+    }, []);
+
+    const clearQuery = useCallback(() => {
+        _setQuery('');
+        onClear();
+    }, [onClear]);
+
+    const clearParams = useCallback(() => {
+        _setParams(defaultParamsRef.current);
+        onClear();
+    }, [onClear]);
+
+    return {
+        query,
+        params,
+        isLoading,
+        setQuery,
+        setParam,
+        clearQuery,
+        clearParams
     };
 }

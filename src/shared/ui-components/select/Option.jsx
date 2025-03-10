@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyOption from '@mui/joy/Option';
+import classnames from 'classnames';
 
 const Option = forwardRef(({
     content,

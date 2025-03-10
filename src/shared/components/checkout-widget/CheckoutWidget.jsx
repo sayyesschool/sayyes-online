@@ -63,7 +63,7 @@ export default function CheckoutWidget({ data, onLoad, onComplete, onError }) {
             })
             .catch(error => {
                 setError(error);
-                onError(error);
+                onError?.(error);
                 checkoutRef.current?.destroy();
             });
 
@@ -72,12 +72,12 @@ export default function CheckoutWidget({ data, onLoad, onComplete, onError }) {
         };
     }, [isLoaded]);
 
-    if (isComplete) return (
-        <CheckoutWidgetError />
+    if (error) return (
+        <CheckoutWidgetError error={error} />
     );
 
-    if (error) return (
-        <CheckoutWidgetSuccess error={error} />
+    if (isComplete) return (
+        <CheckoutWidgetSuccess />
     );
 
     return (

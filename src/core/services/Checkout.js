@@ -47,7 +47,7 @@ export default ({
                 message: 'Пользователь не найден'
             };
 
-            const payment = await checkout.createPayment({
+            const _payment = await checkout.createPayment({
                 amount,
                 description,
                 method,
@@ -69,52 +69,55 @@ export default ({
                 ...override
             });
 
-            if (requestId) {
-                await Request.update(requestId, {
-                    status: Request.Status.Pending,
-                    learnerId: user?.id
-                });
-            }
-
-            return await Payment.create({
-                uuid: payment.id,
-                status: payment.status,
-                amount: payment.amount.value,
-                date: payment.captured_at,
-                description: payment.description,
+            const payment = await Payment.create({
+                uuid: _payment.id,
+                status: _payment.status,
+                amount: _payment.amount.value,
+                date: _payment.captured_at,
+                description: _payment.description,
                 operator: checkout.name,
                 purpose,
                 customer,
-                paid: payment.paid,
-                refundable: payment.refundable,
-                test: payment.test,
-                confirmation: payment.confirmation && {
-                    type: payment.confirmation.type,
-                    confirmationToken: payment.confirmation.confirmation_token,
-                    confirmationUrl: payment.confirmation.confirmation_url,
-                    returnUrl: payment.confirmation.return_url
+                paid: _payment.paid,
+                refundable: _payment.refundable,
+                test: _payment.test,
+                confirmation: _payment.confirmation && {
+                    type: _payment.confirmation.type,
+                    confirmationToken: _payment.confirmation.confirmation_token,
+                    confirmationUrl: _payment.confirmation.confirmation_url,
+                    returnUrl: _payment.confirmation.return_url
                 },
-                method: payment.payment_method && {
-                    id: payment.payment_method.id,
-                    type: payment.payment_method.type,
-                    saved: payment.payment_method.saved,
-                    card: payment.payment_method.card && {
-                        type: payment.payment_method.card.card_type,
-                        last4: payment.payment_method.card.last4,
-                        month: payment.payment_method.card.expiry_month,
-                        year: payment.payment_method.card.expiry_year,
-                        country: payment.payment_method.card.issuer_country,
-                        issuer: payment.payment_method.card.issuer_name
+                method: _payment.payment_method && {
+                    id: _payment.payment_method.id,
+                    type: _payment.payment_method.type,
+                    saved: _payment.payment_method.saved,
+                    card: _payment.payment_method.card && {
+                        type: _payment.payment_method.card.card_type,
+                        last4: _payment.payment_method.card.last4,
+                        month: _payment.payment_method.card.expiry_month,
+                        year: _payment.payment_method.card.expiry_year,
+                        country: _payment.payment_method.card.issuer_country,
+                        issuer: _payment.payment_method.card.issuer_name
                     }
                 },
-                data: payment.metadata,
+                data: _payment.metadata,
                 utm,
                 userId,
                 requestId,
-                createdAt: payment.created_at,
-                expiresAt: payment.expires_at,
-                paidAt: payment.captured_at
+                createdAt: _payment.created_at,
+                expiresAt: _payment.expires_at,
+                paidAt: _payment.captured_at
             });
+
+            if (requestId) {
+                await Request.update(requestId, {
+                    status: Request.Status.Pending,
+                    learnerId: user?.id,
+                    paymentId: payment.id
+                });
+            }
+
+            return payment;
         },
 
         async processPayment(uuid) {

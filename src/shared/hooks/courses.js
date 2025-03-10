@@ -85,8 +85,8 @@ export function useExercise({ courseId, exerciseId }) {
     return useMemo(() => !course ? emptyObject : ({
         course,
         exercise,
-        // unit: course.unitsById?.get(exercise.unitId),
-        // lesson: course.lessonsById?.get(exercise.lessonId),
+        lesson: course.lessonsById?.get(exercise.lessonId),
+        unit: course.unitsById?.get(exercise.unitId),
         actions
     }), [course, exerciseId]);
 }

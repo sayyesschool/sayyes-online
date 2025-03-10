@@ -1,5 +1,13 @@
 export const emptyObject = Object.freeze({});
 
+export function isObject(arg) {
+    return arg !== null && typeof arg === 'object';
+}
+
+export function isObjectEmpty(object) {
+    return Object.keys(object).length === 0;
+}
+
 export function hasKey(object, key) {
     return !!object && key in object;
 }

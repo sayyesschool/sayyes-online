@@ -27,7 +27,10 @@ export default function MembershipPurchaseForm({ options = [] }) {
             {showCheckout ?
                 <CheckoutWidget
                     data={{
-                        data: { packId: selectedOptionId }
+                        purpose: 'membership',
+                        data: {
+                            packId: selectedOptionId
+                        }
                     }}
                 />
                 :

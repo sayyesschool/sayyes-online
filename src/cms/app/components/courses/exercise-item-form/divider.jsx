@@ -1,6 +1,6 @@
 import { forwardRef, useImperativeHandle } from 'react';
 
-function DividerItemForm({ }, ref) {
+function DividerItemForm(props, ref) {
     useImperativeHandle(ref, () => ({
         get props() { return {}; }
     }));

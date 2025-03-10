@@ -7,6 +7,7 @@ import { Customer, UTM } from '../common';
 import {
     PaymentOperator,
     PaymentPurpose,
+    PaymentPurposeLabel,
     PaymentStatus,
     PaymentStatusIcon,
     PaymentStatusLabel
@@ -66,6 +67,10 @@ export const Payment = new Schema({
 
 Payment.statics.Status = PaymentStatus;
 Payment.statics.Purpose = PaymentPurpose;
+
+Payment.statics.getPurposeLabel = function(purpose) {
+    return PaymentPurposeLabel[purpose];
+};
 
 Payment.statics.getByMonth = async function() {
     const today = new Date();

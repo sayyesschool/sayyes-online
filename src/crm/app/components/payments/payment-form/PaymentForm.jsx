@@ -1,6 +1,6 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 
-import { operatorOptions, paymentMethodOptions } from 'shared/data/payment';
+import { paymentMethodOptions, paymentOperatorOptions } from 'shared/data/payment';
 import { useFormData } from 'shared/hooks/form';
 import datetime from 'shared/libs/datetime';
 import { Form } from 'shared/ui-components';
@@ -85,7 +85,7 @@ function PaymentForm({ payment, onSubmit, ...props }, ref) {
                     name="operator"
                     value={data.operator}
                     label="Оператор"
-                    options={operatorOptions}
+                    options={paymentOperatorOptions}
                     onChange={handleChange}
                 />
             }

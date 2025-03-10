@@ -51,7 +51,6 @@ const Select = forwardRef(({
 });
 
 Select.displayName = 'Select';
-
 Select.Option = Option;
 
 export default Select;

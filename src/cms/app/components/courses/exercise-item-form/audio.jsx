@@ -1,8 +1,8 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 
-import { useFileInput } from 'shared/hooks/file';
 import AudioPlayer from 'shared/components/audio-player';
 import ContentEditor from 'shared/components/content-editor';
+import { useFileInput } from 'shared/hooks/file';
 import { Button, Flex, Input, Text } from 'shared/ui-components';
 
 import './audio.scss';
@@ -33,9 +33,15 @@ function AudioItemForm({
     }), [file, path]);
 
     return (
-        <Flex padding={1} gap="small" column>
+        <Flex
+            padding={1} gap="small"
+            column
+        >
             {file &&
-                <Flex padding="medium" gap="small" column>
+                <Flex
+                    padding="medium" gap="small"
+                    column
+                >
                     <Text size="small">Выбранный файл:</Text>
 
                     <AudioPlayer

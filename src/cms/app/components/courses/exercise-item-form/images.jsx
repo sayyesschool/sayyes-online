@@ -1,8 +1,8 @@
 import { useCallback, useRef, useState } from 'react';
 
-import storage from 'shared/services/storage';
-import { useBoolean } from 'shared/hooks/state';
 import { useFileInput } from 'shared/hooks/file';
+import { useBoolean } from 'shared/hooks/state';
+import storage from 'shared/services/storage';
 import { Button, Card, Flex, Image } from 'shared/ui-components';
 
 import './index.scss';
