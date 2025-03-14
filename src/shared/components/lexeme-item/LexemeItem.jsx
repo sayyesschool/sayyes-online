@@ -6,8 +6,8 @@ import styles from './LexemeItem.module.scss';
 
 export default function LexemeItem({
     lexeme,
-    selectedLexemeIds,
-    actionButtons,
+    actions,
+    selected,
     onView,
     onSelect
 }) {
@@ -25,7 +25,7 @@ export default function LexemeItem({
         <ListItem className={styles.root}>
             {onSelect && (
                 <Checkbox
-                    checked={selectedLexemeIds?.includes(id)}
+                    checked={selected}
                     onChange={handleCheckboxChange}
                 />
             )}
@@ -35,27 +35,23 @@ export default function LexemeItem({
                 onClick={handleContentClick}
             >
                 <Text
-                    className={styles.value} color="primary"
+                    className={styles.value}
                     content={value}
+                    color="primary"
                 />
 
-                <Text content="—" />
                 <Text className={styles.translation} content={translation} />
             </div>
 
             <div className={styles.actions}>
-                {actionButtons.map((button, index) => {
-                    if (isValidElement(button)) return button;
-
-                    return (
-                        <IconButton
-                            key={index}
-                            title={button.title}
-                            icon={button.icon}
-                            onClick={button.handler}
-                        />
-                    );
-                })}
+                {actions.filter(Boolean).map((action, index) => isValidElement(action) ? action : (
+                    <IconButton
+                        key={index}
+                        title={action.title}
+                        icon={action.icon}
+                        {...action}
+                    />
+                ))}
             </div>
         </ListItem>
     );

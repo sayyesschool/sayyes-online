@@ -5,7 +5,7 @@ import { debounce } from 'shared/utils/fn';
 import { stripEmptyValues } from 'shared/utils/object';
 
 export function useSearch({
-    apiUrl,
+    url,
     defaultParams = {}
 }) {
     const paramsRef = useRef(defaultParams);
@@ -30,7 +30,7 @@ export function useSearch({
         });
 
         try {
-            const response = await http.get(`${apiUrl}?${searchParams}`);
+            const response = await http.get(`${url}?${searchParams}`);
 
             setResults(results =>
                 options.fresh ?
@@ -48,7 +48,7 @@ export function useSearch({
         } finally {
             setLoading(false);
         }
-    }, [apiUrl]);
+    }, [url]);
 
     const search = useCallback(async (arg = {}) => {
         const params = typeof arg === 'string' ?

@@ -1,4 +1,6 @@
-export default ({ models: { Lexeme, LexemeRecord, Vocabulary } }) => ({
+export default ({
+    models: { Lexeme, LexemeRecord, Vocabulary }
+}) => ({
     async search({ q, p, c }) {
         const regex = q && new RegExp(q, 'i');
         const batch = Number(p ?? 1);

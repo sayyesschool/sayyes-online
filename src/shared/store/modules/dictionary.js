@@ -4,10 +4,11 @@ import {
     createReducer
 } from 'shared/store/helpers';
 
-export const getDictionary = createAction('GET_DICTIONARY', publishStatus => ({
+export const getDictionary = createAction('GET_DICTIONARY', query => ({
     request: {
         method: 'get',
-        path: `dictionary?publishStatus=${publishStatus}`
+        path: 'dictionary',
+        query
     }
 }));
 

@@ -27,6 +27,7 @@ export default function EnrollmentVocabulary({
                     onClick={onClose}
                 />
             }
+            shadow={false}
             compact
         >
             <VocabularyLexemes

@@ -9,7 +9,7 @@ export default function FormDialog({
     content,
     submitButtonText = 'Сохранить',
     children = content,
-    form = children?.props.id,
+    form = children?.props?.id,
     onClose,
     ...props
 }) {

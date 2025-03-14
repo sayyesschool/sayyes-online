@@ -6,26 +6,21 @@ import styles from './LexemesList.module.scss';
 export default function LexemesList({
     lexemes = [],
     selectedLexemeIds,
+    renderLexemeActions,
     onViewLexeme,
-    getActionButtons,
     onSelectLexeme
 }) {
     return (
         <List className={styles.root}>
-            {lexemes?.map(lexeme => {
-                const actionButtons = getActionButtons(lexeme);
-
-                return (
-                    <LexemeItem
-                        key={lexeme.id}
-                        lexeme={lexeme}
-                        actionButtons={actionButtons}
-                        selectedLexemeIds={selectedLexemeIds}
-                        onView={onViewLexeme}
-                        onSelect={onSelectLexeme}
-                    />
-                );
-            }
+            {lexemes?.map(lexeme =>
+                <LexemeItem
+                    key={lexeme.id}
+                    lexeme={lexeme}
+                    actions={renderLexemeActions(lexeme)}
+                    selected={selectedLexemeIds?.includes(lexeme.id)}
+                    onView={onViewLexeme}
+                    onSelect={onSelectLexeme}
+                />
             )}
         </List>
     );

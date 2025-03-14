@@ -4,11 +4,7 @@
 
 .header {
     display: flex;
-    justify-content: start;
-    align-items: center;
-    gap: 16px;
-    padding: 12px;
-    border-bottom: 1px solid var(--joy-palette-divider);
+    flex-direction: column;
 }
 
 .body {
@@ -17,8 +13,20 @@
 
 .search {
     flex: 1;
+    padding: 8px;
+    border-bottom: 1px solid var(--joy-palette-divider);
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--joy-palette-divider);
 }
 
 .select {
     flex-shrink: 0;
+}
+
+.loader {
+    margin: 1rem;
 }

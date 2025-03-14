@@ -1,9 +1,13 @@
 export default ({
     models: { Lexeme, LexemeRecord }
 }) => ({
-    async search(q, execludeId) {
+    async search(q, excludeIds) {
         const regex = q && new RegExp(q, 'i');
-        const query = { value: regex, publishStatus: 'approved', _id: { $ne: execludeId } };
+        const query = {
+            _id: { $ne: excludeIds },
+            value: regex,
+            publishStatus: 'approved'
+        };
 
         return await Promise.all([
             Lexeme.countDocuments(query),

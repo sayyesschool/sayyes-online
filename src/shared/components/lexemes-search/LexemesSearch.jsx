@@ -4,9 +4,17 @@ import LexemeSimpleForm from 'shared/components/lexeme-simple-form';
 import SearchForm from 'shared/components/search-form';
 import { Popover } from 'shared/ui-components';
 
-import VocabularySearchResultItem from './VocabularySearchResultItem';
+import LexemesSearchResultItem from './LexemesSearchResultItem';
 
-export default function VocabularySearch({ lexemes, onAddLexeme, onEditLexeme, domain, className }) {
+export default function LexemesSearch({
+    url,
+    lexemes,
+    renderResultItem,
+    renderResultItemAction,
+    onAddLexeme,
+    onSelectLexeme,
+    className
+}) {
     const comboboxRef = useRef();
 
     const [newLexeme, setNewLexeme] = useState();
@@ -23,20 +31,19 @@ export default function VocabularySearch({ lexemes, onAddLexeme, onEditLexeme, d
         <div className={className}>
             <SearchForm
                 comboboxRef={comboboxRef}
-                apiUrl={`${domain}/api/vocabularies/search`}
                 placeholder="Поиск слов"
+                url={url}
                 params={{
                     limit: 10
                 }}
                 isResultDisabled={option =>
                     !!lexemes.find(lexeme => lexeme.id === option.id)
                 }
-                renderResult={result =>
-                    <VocabularySearchResultItem
+                renderResult={result => renderResultItem?.(result) ||
+                    <LexemesSearchResultItem
                         result={result}
-                        lexemes={lexemes}
-                        onEditLexeme={onEditLexeme}
-                        onAddLexeme={onAddLexeme}
+                        action={renderResultItemAction?.(result)}
+                        onSelect={onSelectLexeme}
                     />
                 }
                 creatable

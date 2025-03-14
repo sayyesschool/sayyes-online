@@ -137,7 +137,6 @@ export default function LexemeExamples({
                                             {deleted
                                                 ? 'Добавить удалённый пример?'
                                                 : 'Добавить пользователю старый пример?'}
-
                                         </p>
 
                                         <Checkbox

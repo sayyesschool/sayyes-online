@@ -8,8 +8,8 @@ import './SearchForm.scss';
 
 export default function SearchForm({
     comboboxRef,
-    apiUrl,
-    params,
+    url,
+    params: defaultParams,
     delay = 1000,
     placeholder,
     isResultDisabled,
@@ -26,7 +26,7 @@ export default function SearchForm({
         search,
         searchMore,
         reset
-    } = useSearch({ apiUrl, defaultParams: params });
+    } = useSearch({ url, defaultParams });
 
     const [open, setOpen] = useState(false);
 

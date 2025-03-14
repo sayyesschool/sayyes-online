@@ -7,12 +7,9 @@ import LexemeExamples from './LexemeExamples';
 import styles from './Lexeme.module.scss';
 
 export default function LexemeView({ lexeme, readOnly, onChange }) {
-    const [data, setData] = useState({ examples: [], translation: '', definition: '' });
     const { value, image, definition, translation, examples } = lexeme;
-    const fields = [
-        { label: 'translation', content: translation, field: 'translation' },
-        { label: 'definition', content: definition, field: 'definition' }
-    ];
+
+    const [data, setData] = useState({ examples: [], translation: '', definition: '' });
 
     const handleToggle = useCallback((checked, field) => {
         setData(prev => ({
@@ -30,6 +27,11 @@ export default function LexemeView({ lexeme, readOnly, onChange }) {
 
         onChange(data);
     }, [data]);
+
+    const fields = [
+        { label: 'translation', content: translation, field: 'translation' },
+        { label: 'definition', content: definition, field: 'definition' }
+    ];
 
     return (
         <div className={styles.root}>

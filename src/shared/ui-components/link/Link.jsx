@@ -5,6 +5,8 @@ import classnames from 'classnames';
 
 const Link = forwardRef(({
     content,
+    start,
+    end,
 
     as,
     type,
@@ -18,8 +20,10 @@ const Link = forwardRef(({
         <JoyLink
             ref={ref}
             component={as}
-            level={type}
             className={classNames}
+            level={type}
+            startDecorator={start}
+            endDecorator={end}
             {...props}
         >
             {children}
