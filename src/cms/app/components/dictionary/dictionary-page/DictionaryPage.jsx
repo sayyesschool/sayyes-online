@@ -10,7 +10,7 @@ export default function DictionaryPage() {
     const [user] = useUser();
     const [dictionary] = useDictionary();
 
-    if (!dictionary) return <LoadingIndicator />;
+    if (!dictionary) return <LoadingIndicator fullscreen />;
 
     const { title, numberOfLexemes } = dictionary;
     const description = `${numberOfLexemes} ${getWordEnding('слов', numberOfLexemes, ['о', 'а', ''])}`;

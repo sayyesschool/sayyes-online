@@ -23,7 +23,7 @@ export default function App({ routes }) {
         materialActions.getMaterials();
     }, []);
 
-    if (!user) return <LoadingIndicator fluid />;
+    if (!user) return <LoadingIndicator fullscreen />;
 
     return (
         <AppShell className={styles.root}>
