@@ -55,6 +55,7 @@ export default function Payment({ pack, meetingId }) {
                 <Checkout
                     data={{
                         contact,
+                        purpose: 'membership',
                         data: {
                             packId: pack.id,
                             meetingId
