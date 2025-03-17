@@ -15,13 +15,12 @@ const initialAdditionalData = { translation: false, definition: false, examples:
 
 export default function LexemeForm({
     lexeme,
-    updateFoundLexeme,
     userId,
+    updateFoundLexeme,
     onSubmit,
     ...props
 }) {
     // TODO: стоит ли file тоже добавить в data?
-    const [isSending, setIsSending] = useState(false);
     const [file, setFile] = useState();
     const [data, setData] = useState({
         value: lexeme.value,
@@ -29,9 +28,11 @@ export default function LexemeForm({
         definition: lexeme.definition ?? '',
         examples: lexeme.examples ?? []
     });
+    const [isSending, setIsSending] = useState(false);
     const [additionalData, setAdditionalData] = useState(initialAdditionalData);
     const [foundSearchLexemes, setFoundSearchLexemes] = useState([]);
     const [isOpenAccordion, setIsOpenAccordion] = useState(false);
+
     const { value, translation, definition, examples } = data;
     const isNotCreatorLexeme = lexeme.createdBy !== userId;
     const withNotifications = lexeme.isPending && isNotCreatorLexeme;
@@ -101,7 +102,7 @@ export default function LexemeForm({
     }, []);
 
     // TODO: раньше я делал эту логику через экшны, но по-сути было нелогично зранить респонс в глобальном стейте, поэтому сделал так (мб стоит вынести в хук, но у нас уже есть похожий хук в поиске)
-    const onSearch = useCallback(async value => {
+    const search = useCallback(async value => {
         try {
             const response = await http.get(`api/dictionary/search?q=${value}&e=${lexeme.id}`);
 
@@ -111,11 +112,11 @@ export default function LexemeForm({
         }
     }, [lexeme.id]);
 
-    const deboundedSearch = useDebounce(onSearch, 500);
+    const debouncedSearch = useDebounce(search, 500, [search]);
 
     useEffect(() => {
-        deboundedSearch(value);
-    }, [deboundedSearch, value]);
+        debouncedSearch(value);
+    }, [debouncedSearch, value]);
 
     return (
         <Form
@@ -136,7 +137,7 @@ export default function LexemeForm({
                 <Accordion>
                     <AccordionItem
                         open={isOpenAccordion}
-                        header="Использовать похожие лексемы ?"
+                        header="Использовать похожие лексемы?"
                         content="234"
                         onClick={() => setIsOpenAccordion(prev => !prev)}
                     >
@@ -144,7 +145,7 @@ export default function LexemeForm({
                             <Button
                                 key={foundLexeme.id}
                                 variant="plain"
-                                onClick={() => updateFoundLexeme(foundLexeme, lexeme)}
+                                onClick={() => updateFoundLexeme?.(foundLexeme, lexeme)}
                             >
                                 <p>Использовать существующую лексему <span className={styles.foundLexeme}>{foundLexeme.value}-{foundLexeme.translation}</span>?</p>
                             </Button>

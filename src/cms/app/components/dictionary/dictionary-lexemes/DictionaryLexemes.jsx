@@ -23,7 +23,7 @@ const tabs = [
     { value: LexemePublishStatus.Unapproved, content: 'Архивные', icon: 'archive' }
 ];
 
-export default function DictionaryLexemes({ dictionary, user }) {
+export default function DictionaryLexemes({ dictionary, user, onAddLexeme }) {
     const actions = useDictionaryActions();
 
     const [activeTab, setActiveTab] = useState(LexemePublishStatus.Pending);
@@ -45,8 +45,11 @@ export default function DictionaryLexemes({ dictionary, user }) {
 
     const handleAddLexeme = useCallback(data => {
         return actions.addLexeme(data)
-            .then(() => setActiveTab(0));
-    }, [actions]);
+            .then(lexeme => {
+                setActiveTab(0);
+                onAddLexeme(lexeme);
+            });
+    }, [actions, onAddLexeme]);
 
     const handleUpdateLexeme = useCallback(data => {
         return actions.updateLexeme(editingLexeme?.id, data)

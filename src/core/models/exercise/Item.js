@@ -12,7 +12,8 @@ const BlockType = {
     Image: 'image',
     Input: 'input',
     Text: 'text',
-    Video: 'video'
+    Video: 'video',
+    Vocabulary: 'vocabulary'
 };
 
 export const Item = new Schema({

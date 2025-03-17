@@ -15,6 +15,7 @@ import ImagesItem from './images';
 import InputItem from './input';
 import TextItem from './text';
 import VideoItem from './video';
+import VocabularyItem from './VocabularyItem';
 
 import './index.scss';
 
@@ -29,7 +30,8 @@ const Components = {
     images: ImagesItem,
     input: InputItem,
     text: TextItem,
-    video: VideoItem
+    video: VideoItem,
+    vocabulary: VocabularyItem
 };
 
 const labelsByType = {
@@ -43,7 +45,8 @@ const labelsByType = {
     images: 'Изображения',
     input: 'Ввод',
     text: 'Текст',
-    video: 'Видео'
+    video: 'Видео',
+    vocabulary: 'Список слов'
 };
 
 const defaultItem = {
