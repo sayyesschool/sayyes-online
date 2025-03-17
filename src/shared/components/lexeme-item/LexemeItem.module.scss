@@ -7,18 +7,24 @@
 }
 
 .content {
-    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
     display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
     gap: 8px;
     cursor:pointer;
 }
 
 .value {
     font-weight: 900;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .translation {
-    
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .actions {
