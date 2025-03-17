@@ -16,8 +16,13 @@ const Autocomplete = forwardRef(({
     const classNames = classnames('ui-Autocomplete', className);
 
     const handleChange = useCallback((event, value, reason) => {
-        onChange?.(event, typeof value === 'object' ? value?.value : value, reason);
-    }, [onChange]);
+        onChange?.({
+            target: {
+                name,
+                value: typeof value === 'object' ? value?.value : value
+            }
+        }, value, reason);
+    }, [name, onChange]);
 
     return (
         <JoyAutocomplete
