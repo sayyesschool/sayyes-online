@@ -161,7 +161,7 @@ export default function DictionaryLexemes({ dictionary, user }) {
                                 title: 'Архивировать слово',
                                 onClick: () => handleArchiveLexeme(lexeme.id)
                             },
-                            lexeme.createdBy === userId && {
+                            lexeme.createdBy === userId && isPending && {
                                 icon: 'delete',
                                 title: 'Удалить слово',
                                 onClick: () => handleDeleteLexeme(lexeme.id)
