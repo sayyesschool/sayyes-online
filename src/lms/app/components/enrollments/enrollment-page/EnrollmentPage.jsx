@@ -21,6 +21,8 @@ import EnrollmentSchedule from 'lms/components/enrollments/enrollment-schedule';
 import EnrollmentTeacher from 'lms/components/enrollments/enrollment-teacher';
 import EnrollmentVocabulary from 'lms/components/enrollments/enrollment-vocabulary';
 
+import styles from './EnrollmentPage.module.scss';
+
 export default function EnrollmentPage({ match }) {
     const [user] = useUser();
     const [enrollment] = useEnrollment(match.params.id);
@@ -50,7 +52,7 @@ export default function EnrollmentPage({ match }) {
     const hasChat = enrollment.learner && enrollment.teacher;
 
     return (
-        <Page className="EnrollmentPage">
+        <Page className={styles.root}>
             {/* <Page.Drawer open={isChatOpen} onClose={toggleChatOpen}>
                 <EnrollmentChat
                     enrollment={enrollment}
