@@ -6,23 +6,25 @@ export default ({
         const batch = Number(p ?? 1);
         const limit = Number(c ?? 0);
         const skip = (batch - 1) * limit;
-        const query = { value: regex, publishStatus: 'approved' };
+        const query = {
+            value: regex,
+            publishStatus: 'approved'
+        };
 
         const [count, lexemes] = await Promise.all([
             Lexeme.countDocuments(query),
             Lexeme.find(query).skip(skip).limit(limit)
         ]);
-
         const more = skip + lexemes.length < count;
 
         return {
+            lexemes,
             meta: {
                 totalCount: count,
                 count: lexemes.length,
                 batch,
                 more
-            },
-            lexemes
+            }
         };
     },
 
@@ -32,20 +34,12 @@ export default ({
         });
     },
 
-    async getMy(learnerId, userId) {
-    // TODO: убрать костыль
-        if (learnerId === '') {
-            throw {
-                code: 404,
-                message: 'Словарь не найден'
-            };
-        }
-
+    async getVirtual(learnerId, data = {}) {
         const records = await LexemeRecord.find({
-            learnerId: learnerId || userId
+            learnerId
         })
-            .sort({ createdAt: -1 })
-            .populate('lexeme');
+            .populate('lexeme')
+            .sort({ createdAt: -1 });
 
         const lexemes = records.map(record => ({
             ...record.lexeme.toJSON(),
@@ -54,7 +48,13 @@ export default ({
             data: record.data
         }));
 
-        return lexemes;
+        return {
+            ...data,
+            lexemes,
+            lexemeIds: lexemes.map(lexeme => lexeme.id),
+            numberOfLexemes: lexemes.length,
+            learnerId
+        };
     },
 
     async getOne(reqVocabulary) {
@@ -113,54 +113,47 @@ export default ({
     },
 
     async addLexeme(
-        userId,
-        vocabularyId,
-        reqVocabulary,
-        { learnerId, lexemeId, value, translation, definition }
+        vocabulary,
+        { id: lexemeId, value, translation, definition, createdBy, learnerId }
     ) {
         let lexeme = await (lexemeId
             ? Lexeme.findById(lexemeId)
             : Lexeme.findOne({
-                value: value,
-                translation: translation,
+                value,
+                translation,
                 publishStatus: 'approved'
             }));
 
         if (!lexeme) {
             lexeme = await Lexeme.create({
-                value: value,
-                translation: translation,
-                definition: definition,
-                createdBy: userId
+                value,
+                translation,
+                definition,
+                createdBy
             });
         }
 
         let record = await LexemeRecord.findOne({
             lexemeId: lexeme.id,
-            learnerId: learnerId || userId
+            learnerId
         });
 
         if (lexeme && !record) {
             record = await LexemeRecord.create({
                 lexemeId: lexeme.id,
-                learnerId: learnerId || userId
+                learnerId
             });
-        } else {
-            throw {
-                code: 403,
-                message: 'Слово уже добавлено'
-            };
+        }
+
+        if (vocabulary) {
+            await vocabulary.addLexeme(lexeme.id);
         }
 
         const data = lexeme.toJSON();
 
         data.status = record.status;
         data.reviewDate = record.reviewDate;
-
-        if (vocabularyId) {
-            await reqVocabulary.addLexeme(lexeme.id);
-            data.vocabularyId = reqVocabulary.id;
-        }
+        data.vocabularyId = vocabulary?.id;
 
         return data;
     },
@@ -223,11 +216,10 @@ export default ({
                     return lexeme;
                 });
 
-        if (!updatedLexeme)
-            throw {
-                code: 403,
-                message: 'Данные нельзя обновить'
-            };
+        if (!updatedLexeme) throw {
+            code: 403,
+            message: 'Данные нельзя обновить'
+        };
 
         const data = updatedLexeme.toJSON();
 
@@ -239,7 +231,7 @@ export default ({
     },
 
     async removeLexeme(vocabulary, lexemeId) {
-        await vocabulary.removeLexeme(lexemeId);
+        return vocabulary.removeLexeme(lexemeId);
     },
 
     async deleteLexeme(lexemeId, learnerId) {
@@ -248,11 +240,10 @@ export default ({
             learnerId
         });
 
-        if (!record)
-            throw {
-                code: 404,
-                message: 'Не найдено'
-            };
+        if (!record) throw {
+            code: 404,
+            message: 'Не найдено'
+        };
 
         return record;
     },
