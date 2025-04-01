@@ -15,7 +15,7 @@ export default context => {
         .post(controller.create);
 
     router.route('/my{/:lexemeId}')
-        .get(controller.getMy)
+        .get(controller.getVirtual)
         .post(controller.addLexeme)
         .put(controller.updateLexeme)
         .delete(controller.deleteLexeme);

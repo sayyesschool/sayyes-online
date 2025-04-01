@@ -6,8 +6,8 @@ export default ({
 
         res.json({
             ok: true,
-            meta,
-            data: lexemes
+            data: lexemes,
+            meta
         });
     },
 
@@ -20,28 +20,27 @@ export default ({
         });
     },
 
-    async getMy(req, res) {
-        const lexemes = await VocabularyService.getMy(req.query.learnerId, req.user.id);
-
-        res.json({
-            ok: true,
-            data: {
-                id: 'my',
-                title: 'Мой словарь',
-                lexemes,
-                lexemeIds: lexemes.map(lexeme => lexeme.id),
-                numberOfLexemes: lexemes.length,
-                learnerId: req.user.id
-            }
-        });
-    },
-
     async getOne(req, res) {
         const data = await VocabularyService.getOne(req.vocabulary);
 
         res.json({
             ok: true,
             data
+        });
+    },
+
+    async getVirtual(req, res) {
+        const vocabulary = await VocabularyService.getVirtual(
+            req.query.learnerId || req.user.id,
+            {
+                id: 'my',
+                title: 'Мой словарь'
+            }
+        );
+
+        res.json({
+            ok: true,
+            data: vocabulary
         });
     },
 
@@ -75,7 +74,11 @@ export default ({
     },
 
     async addLexeme(req, res) {
-        const data = await VocabularyService.addLexeme(req.user.id, req.params.vocabularyId, req.vocabulary, req.body);
+        console.log('addLexeme', req.vocabulary);
+        const data = await VocabularyService.addLexeme(
+            req.vocabulary,
+            req.body
+        );
 
         res.json({
             ok: true,
@@ -84,7 +87,12 @@ export default ({
     },
 
     async updateLexeme(req, res) {
-        const data = await VocabularyService.updateLexeme(req.user.id, req.vocabulary?.id, req.params, req.body);
+        const data = await VocabularyService.updateLexeme(
+            req.user.id,
+            req.vocabulary?.id,
+            req.params,
+            req.body
+        );
 
         res.json({
             ok: true,
