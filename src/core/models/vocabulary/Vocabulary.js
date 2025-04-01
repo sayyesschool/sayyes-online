@@ -37,8 +37,12 @@ Vocabulary.virtual('lexemes', {
     foreignField: '_id'
 });
 
+Vocabulary.methods.hasLexeme = function(lexemeId) {
+    this.lexemeIds.includes(lexemeId);
+};
+
 Vocabulary.methods.addLexeme = async function(lexemeId) {
-    this.lexemeIds.push(lexemeId);
+    this.lexemeIds.addToSet(lexemeId);
 
     return this.save();
 };
