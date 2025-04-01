@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useForm } from 'shared/hooks/form';
 import { Button, Form } from 'shared/ui-components';
@@ -13,15 +13,21 @@ const getDefaultData = ({
     'translation*': translation
 });
 
-// TODO: этот компонент очень похож на VocabularySimpleForm, возможно, стоит их объединить
 export default function LexemeShortForm({
     lexeme,
     numberOfLexemes,
     onSubmit
 }) {
+    const [isLoading, setLoading] = useState(false);
+
     const { data, handleChange, handleSubmit } = useForm({
         values: getDefaultData(lexeme),
-        onSubmit
+        onSubmit: data => {
+            setLoading(true);
+
+            return onSubmit(data)
+                .finally(() => setLoading(false));
+        }
     }, [numberOfLexemes]);
 
     const valueInputRef = useRef();
@@ -51,7 +57,12 @@ export default function LexemeShortForm({
                 onChange={handleChange}
             />
 
-            <Button type="submit" content="Добавить" />
+            <Button
+                type="submit"
+                content="Добавить"
+                disabled={isLoading}
+                loading={isLoading}
+            />
         </Form>
     );
 }
