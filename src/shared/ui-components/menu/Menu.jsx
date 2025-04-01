@@ -30,6 +30,7 @@ const Menu = forwardRef(({
     onClose = Function.prototype,
 
     className,
+    children,
     ...props
 }, ref) => {
     const [open, setOpen] = useState(_open);
@@ -93,6 +94,8 @@ const Menu = forwardRef(({
                                 onMenuClose={onClose}
                             />
                     )}
+
+                    {children}
                 </MenuList>
             </ClickAwayListener>
         </Popper>
