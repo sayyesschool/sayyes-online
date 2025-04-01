@@ -71,7 +71,7 @@ export default function SearchForm({
             });
         }
 
-        if (creatable && params.inputValue !== '') {
+        if (creatable && !loading && params.inputValue !== '') {
             results.push({
                 type: 'addNew',
                 label: `Добавить "${params.inputValue}"`,
@@ -80,7 +80,7 @@ export default function SearchForm({
         }
 
         return results;
-    }, [creatable, filterResults, meta?.more]);
+    }, [creatable, loading, filterResults, meta?.more]);
 
     const renderOption = useCallback((props, option) => {
         return (
