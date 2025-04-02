@@ -2,7 +2,7 @@ import PageSection from 'shared/components/page-section';
 import { useVocabulary } from 'shared/hooks/vocabularies';
 import { IconButton } from 'shared/ui-components';
 
-import VocabularyLexemes from 'lms/components/vocabulary/vocabulary-lexemes';
+import Vocabulary from 'lms/components/vocabulary/vocabulary';
 
 import styles from './EnrollmentVocabulary.module.scss';
 
@@ -11,7 +11,9 @@ export default function EnrollmentVocabulary({
     user,
     onClose
 }) {
-    const [vocabulary] = useVocabulary('my', { learnerId: enrollment?.learner.id || '' });
+    const [vocabulary] = useVocabulary('my', {
+        learnerId: enrollment?.learner.id || ''
+    });
 
     if (!vocabulary) return null;
 
@@ -30,10 +32,10 @@ export default function EnrollmentVocabulary({
             shadow={false}
             compact
         >
-            <VocabularyLexemes
+            <Vocabulary
                 vocabulary={vocabulary}
-                user={user}
                 learnerId={enrollment.learner?.id}
+                userId={enrollment.learner?.id}
                 inline
             />
         </PageSection>
