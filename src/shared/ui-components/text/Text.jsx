@@ -10,7 +10,7 @@ const Text = forwardRef(({
     end,
     inline,
 
-    as,
+    as = inline ? 'span' : undefined,
     className,
     children = content,
     ...props
