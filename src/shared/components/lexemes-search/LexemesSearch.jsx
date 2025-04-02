@@ -8,7 +8,7 @@ import LexemesSearchResultItem from './LexemesSearchResultItem';
 
 export default function LexemesSearch({
     url,
-    lexemes,
+    isResultDisabled,
     renderResultItem,
     renderResultItemAction,
     onAddLexeme,
@@ -20,7 +20,7 @@ export default function LexemesSearch({
     const [newLexeme, setNewLexeme] = useState();
 
     const handleSubmit = useCallback(data => {
-        onAddLexeme(data).finally(() => setNewLexeme(null));
+        return onAddLexeme(data).finally(() => setNewLexeme(null));
     }, [onAddLexeme]);
 
     const handleCreate = useCallback(value => {
@@ -36,9 +36,7 @@ export default function LexemesSearch({
                 params={{
                     limit: 10
                 }}
-                isResultDisabled={option =>
-                    !!lexemes.find(lexeme => lexeme.id === option.id)
-                }
+                isResultDisabled={isResultDisabled}
                 renderResult={result => renderResultItem?.(result) ||
                     <LexemesSearchResultItem
                         result={result}
