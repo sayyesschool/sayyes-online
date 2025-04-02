@@ -11,9 +11,9 @@ import { Dialog, IconButton, Tabs } from 'shared/ui-components';
 
 import Lexeme from 'cms/components/dictionary/lexeme';
 import LexemeForm from 'cms/components/dictionary/lexeme-form';
-import LexemesForm from 'cms/components/dictionary/lexeme-form/LexemesForm';
+import LexemesForm from 'cms/components/dictionary/lexemes-form';
 
-import styles from './DictionaryLexemes.module.scss';
+import styles from './Dictionary.module.scss';
 
 const SEARCH_URL = `${CMS_URL}/api/vocabularies/search`;
 
@@ -23,7 +23,7 @@ const tabs = [
     { value: LexemePublishStatus.Unapproved, content: 'Архивные', icon: 'archive' }
 ];
 
-export default function DictionaryLexemes({ dictionary, user }) {
+export default function Dictionary({ dictionary, user }) {
     const actions = useDictionaryActions();
 
     const [activeTab, setActiveTab] = useState(LexemePublishStatus.Pending);
@@ -45,7 +45,7 @@ export default function DictionaryLexemes({ dictionary, user }) {
 
     const handleAddLexeme = useCallback(data => {
         return actions.addLexeme(data)
-            .then(() => setActiveTab(0));
+            .then(() => setActiveTab(LexemePublishStatus.Pending));
     }, [actions]);
 
     const handleUpdateLexeme = useCallback(data => {
@@ -82,7 +82,8 @@ export default function DictionaryLexemes({ dictionary, user }) {
         setMergingLexemes(lexemes.filter(lexeme => selectedLexemeIds.includes(lexeme.id)));
     }, [lexemes, selectedLexemeIds]);
 
-    const handleUpdateFoundLexeme = useCallback((foundLexeme, chosenLexeme) => {
+    const handleMatch = useCallback((foundLexeme, chosenLexeme) => {
+        setEditingLexeme(null);
         setMergingLexemes([foundLexeme, chosenLexeme]);
     }, []);
 
@@ -106,7 +107,9 @@ export default function DictionaryLexemes({ dictionary, user }) {
                 <LexemesSearch
                     className={styles.search}
                     url={SEARCH_URL}
-                    lexemes={lexemes}
+                    isResultDisabled={result =>
+                        !!lexemes.find(lexeme => lexeme.id === result.id)
+                    }
                     renderResultItemAction={result =>
                         <IconButton
                             icon="edit"
@@ -173,7 +176,11 @@ export default function DictionaryLexemes({ dictionary, user }) {
                 }
             </div>
 
-            <Dialog open={isModalOpen} onClose={handleModalClose}>
+            <Dialog
+                className={styles.dialog}
+                open={isModalOpen}
+                onClose={handleModalClose}
+            >
                 {viewingLexeme ? (
                     <Lexeme
                         lexeme={viewingLexeme}
@@ -184,7 +191,7 @@ export default function DictionaryLexemes({ dictionary, user }) {
                         id="lexeme-edit-form"
                         lexeme={editingLexeme}
                         userId={userId}
-                        updateFoundLexeme={handleUpdateFoundLexeme}
+                        onMatch={handleMatch}
                         onSubmit={handleUpdateLexeme}
                     />
                 ) : mergingLexemes ? (

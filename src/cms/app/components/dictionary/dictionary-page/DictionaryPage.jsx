@@ -4,11 +4,11 @@ import { useDictionary } from 'shared/hooks/dictionary';
 import { useUser } from 'shared/hooks/user';
 import { getWordEnding } from 'shared/utils/format';
 
-import DictionaryLexemes from 'cms/components/dictionary/dictionary-lexemes';
+import Dictionary from 'cms/components/dictionary/dictionary/Dictionary'; // Import from file to avoid circular dependency
 
 export default function DictionaryPage() {
-    const [user] = useUser();
     const [dictionary] = useDictionary();
+    const [user] = useUser();
 
     if (!dictionary) return <LoadingIndicator fullscreen />;
 
@@ -24,9 +24,9 @@ export default function DictionaryPage() {
 
             <Page.Content>
                 <Page.Section variant="outlined" compact>
-                    <DictionaryLexemes
-                        user={user}
+                    <Dictionary
                         dictionary={dictionary}
+                        user={user}
                     />
                 </Page.Section>
             </Page.Content>
