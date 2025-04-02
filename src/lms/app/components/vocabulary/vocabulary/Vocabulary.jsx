@@ -13,14 +13,14 @@ import LexemeForm from 'lms/components/vocabulary/lexeme-form';
 import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 import LexemeView from 'lms/components/vocabulary/lexeme-view';
 
-import styles from './VocabularyLexemes.module.scss';
+import styles from './Vocabulary.module.scss';
 
 const SEARCH_URL = `${LMS_URL}/api/vocabularies/search`;
 
-export default function VocabularyLexemes({
+export default function Vocabulary({
     vocabulary,
-    user,
     learnerId,
+    userId,
     inline
 }) {
     const actions = useVocabularyActions();
@@ -30,15 +30,15 @@ export default function VocabularyLexemes({
     const [editingLexeme, setEditingLexeme] = useState(null);
 
     const vocabularyId = vocabulary?.id;
-    const { isTeacher } = user;
+    const isMain = vocabularyId === 'my';
+    const isOwn = userId === learnerId;
+    const isDelegated = userId !== learnerId;
 
     const handleAddLexeme = useCallback(data => {
-        if (isTeacher) {
-            data = { ...data, learnerId };
-        }
+        data = { ...data, learnerId, createdBy: userId };
 
         return actions.addLexeme(vocabularyId, data);
-    }, [isTeacher, learnerId, vocabularyId, actions]);
+    }, [userId, learnerId, vocabularyId, actions]);
 
     const handleUpdateLexeme = useCallback(data => {
         return actions.updateLexeme(vocabularyId, editingLexeme?.id, data)
@@ -47,6 +47,12 @@ export default function VocabularyLexemes({
 
     const handleDeleteLexeme = useCallback(lexemeId => {
         if (confirm('Вы уверены что хотите удалить слово')) {
+            return actions.deleteLexeme(vocabularyId, lexemeId);
+        }
+    }, [actions, vocabularyId]);
+
+    const handleRemoveLexeme = useCallback(lexemeId => {
+        if (confirm('Вы уверены что хотите убрать слово из словаря? Оно останется в общем списке.')) {
             return actions.deleteLexeme(vocabularyId, lexemeId);
         }
     }, [actions, vocabularyId]);
@@ -62,7 +68,7 @@ export default function VocabularyLexemes({
 
     const lexemes = vocabulary?.lexemes;
     const showHeader = !inline || (!viewingLexeme && !editingLexeme);
-    const teacherIsInline = isTeacher && inline;
+    const teacherIsInline = isDelegated && inline;
 
     return (
         <div className={styles.root}>
@@ -71,7 +77,9 @@ export default function VocabularyLexemes({
                     <LexemesSearch
                         className={styles.search}
                         url={SEARCH_URL}
-                        lexemes={lexemes}
+                        isResultDisabled={result =>
+                            !!lexemes.find(lexeme => lexeme.id === result.id)
+                        }
                         renderResultItemAction={result => result.disabled ?
                             'Уже в словаре' :
                             <IconButton
@@ -82,6 +90,7 @@ export default function VocabularyLexemes({
                             />
                         }
                         onAddLexeme={handleAddLexeme}
+                        onSelectLexeme={handleAddLexeme}
                     />
                 </div>
             }
@@ -91,18 +100,25 @@ export default function VocabularyLexemes({
                     <LexemesList
                         lexemes={lexemes}
                         renderLexemeActions={lexeme => {
-                            const iconButtons = [!teacherIsInline && {
-                                key: 'edit',
-                                icon: 'edit',
-                                title: 'Редактировать слово',
-                                onClick: () => setEditingLexeme(lexeme)
-                            },
-                            !teacherIsInline && {
-                                key: 'delete',
-                                icon: 'delete',
-                                title: 'Удалить слово',
-                                onClick: () => handleDeleteLexeme(lexeme.id)
-                            }];
+                            const iconButtons = isOwn && [
+                                {
+                                    key: 'edit',
+                                    icon: 'edit',
+                                    title: 'Редактировать слово',
+                                    onClick: () => setEditingLexeme(lexeme)
+                                },
+                                isMain ? {
+                                    key: 'delete',
+                                    icon: 'delete',
+                                    title: 'Удалить слово',
+                                    onClick: () => handleDeleteLexeme(lexeme.id)
+                                } : {
+                                    key: 'remove',
+                                    icon: 'remove',
+                                    title: 'Убрать слово',
+                                    onClick: () => handleRemoveLexeme(lexeme.id)
+                                }
+                            ];
 
                             return [
                                 <LexemeStatus
@@ -136,7 +152,7 @@ export default function VocabularyLexemes({
                 >
                     <Lexeme
                         lexeme={viewingLexeme}
-                        readOnly={isTeacher}
+                        readOnly={isDelegated}
                         onStatusUpdate={handleUpdateLexemeStatus}
                     />
                 </LexemeView>

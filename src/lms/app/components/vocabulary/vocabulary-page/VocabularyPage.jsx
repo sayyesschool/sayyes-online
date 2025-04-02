@@ -8,7 +8,7 @@ import { useVocabulary } from 'shared/hooks/vocabularies';
 import { Button, IconButton, Menu } from 'shared/ui-components';
 import { getWordEnding } from 'shared/utils/format';
 
-import VocabularyLexemes from 'lms/components/vocabulary/vocabulary-lexemes';
+import Vocabulary from 'lms/components/vocabulary/vocabulary';
 
 import styles from './VocabularyPage.module.scss';
 
@@ -90,9 +90,10 @@ export default function VocabularyPage({ match }) {
 
             <Page.Content className={styles.content}>
                 <Page.Section variant="outlined" compact>
-                    <VocabularyLexemes
+                    <Vocabulary
                         vocabulary={vocabulary}
-                        user={user}
+                        learnerId={user.id}
+                        userId={user.id}
                     />
                 </Page.Section>
             </Page.Content>
