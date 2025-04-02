@@ -5,16 +5,13 @@ import { Level } from '../common';
 import Image from '../image';
 
 import { LexemeKind, LexemePublishStatus, LexemeType } from './constants';
+import LexemeExample from './LexemeExample';
 
 export const Lexeme = new Schema({
     value: { type: String, required: true, index: true },
     definition: { type: String },
     translation: { type: String },
-    examples: [{
-        id: { type: Schema.Types.UUID },
-        text: { type: String, require: true },
-        translation: { type: String }
-    }],
+    examples: [LexemeExample],
     image: { type: Image },
     audio: { type: Audio },
     type: {
