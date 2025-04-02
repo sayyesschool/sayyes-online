@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useState } from 'react';
 
 import { useForm } from 'shared/hooks/form';
 import { Button, Form } from 'shared/ui-components';
@@ -7,18 +7,21 @@ import styles from './VocabularySimpleForm.module.scss';
 
 export default function VocabularySimpleForm({
     numberOfVocabularies,
-    onAddVocabulary
+    onSubmit
 }) {
-    const onSubmit = useCallback(data => {
-        onAddVocabulary(data);
-    }, [onAddVocabulary]);
+    const [isLoading, setLoading] = useState(false);
 
     const { data, handleChange, handleSubmit } = useForm({
         values: {
             'title*': '',
-            'description*': ''
+            'description': ''
         },
-        onSubmit
+        onSubmit: data => {
+            setLoading(true);
+
+            return onSubmit(data)
+                .finally(() => setLoading(false));
+        }
     }, [numberOfVocabularies]);
 
     return (
@@ -41,7 +44,12 @@ export default function VocabularySimpleForm({
                 onChange={handleChange}
             />
 
-            <Button type="submit" content="Добавить" />
+            <Button
+                type="submit"
+                content="Добавить"
+                disabled={isLoading}
+                loading={isLoading}
+            />
         </Form>
     );
 }

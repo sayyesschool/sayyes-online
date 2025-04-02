@@ -56,7 +56,7 @@ export default function VocabulariesPage() {
                     >
                         <VocabularySimpleForm
                             numberOfVocabularies={numberOfVocabularies}
-                            onAddVocabulary={handleAddVocabulary}
+                            onSubmit={handleAddVocabulary}
                         />
                     </PopoverButton>
                 ]}
