@@ -4,24 +4,25 @@ import ImageField from 'shared/components/image-field';
 import { useDebounce } from 'shared/hooks/fn';
 import http from 'shared/services/http';
 import Storage from 'shared/services/storage';
-import { Accordion, Button, Checkbox, Flex, Form } from 'shared/ui-components';
-import AccordionItem from 'shared/ui-components/accordion/AccordionItem.jsx';
+import { Alert, Button, Checkbox, Chip, ChipGroup, Flex, Form, Text } from 'shared/ui-components';
 
 import LexemeExamples from './LexemeExamples';
 
 import styles from './LexemeForm.module.scss';
 
-const initialAdditionalData = { translation: false, definition: false, examples: [] };
+const initialAdditionalData = {
+    translation: false,
+    definition: false,
+    examples: []
+};
 
 export default function LexemeForm({
     lexeme,
-    updateFoundLexeme,
     userId,
+    onMatch,
     onSubmit,
     ...props
 }) {
-    // TODO: стоит ли file тоже добавить в data?
-    const [isSending, setIsSending] = useState(false);
     const [file, setFile] = useState();
     const [data, setData] = useState({
         value: lexeme.value,
@@ -30,35 +31,19 @@ export default function LexemeForm({
         examples: lexeme.examples ?? []
     });
     const [additionalData, setAdditionalData] = useState(initialAdditionalData);
-    const [foundSearchLexemes, setFoundSearchLexemes] = useState([]);
-    const [isOpenAccordion, setIsOpenAccordion] = useState(false);
-    const { value, translation, definition, examples } = data;
-    const isNotCreatorLexeme = lexeme.createdBy !== userId;
-    const withNotifications = lexeme.isPending && isNotCreatorLexeme;
+    const [matchingLexemes, setMatchingLexemes] = useState([]);
+    const [isCommitted, setCommitted] = useState(false);
 
-    // TODO: required не срабатывает из-за disabled
-    const inputs = [
-        {
-            component: Form.Input,
-            id: 'value',
-            label: 'Лексема',
-            required: true,
-            value
-        },
-        {
-            component: Form.Input,
-            id: 'translation',
-            label: 'Переводы',
-            required: true,
-            value: translation
-        },
-        {
-            component: Form.Textarea,
-            id: 'definition',
-            label: 'Определение',
-            value: definition
-        }
-    ];
+    const { value, translation, definition, examples } = data;
+
+    const search = useDebounce(value => {
+        http.get(`api/dictionary/search?q=${value}&e=${lexeme.id}`)
+            .then(response => setMatchingLexemes(response.data));
+    }, 500, lexeme.id);
+
+    useEffect(() => {
+        search(value);
+    }, [value, search]);
 
     const handleSubmit = useCallback(async event => {
         event.preventDefault();
@@ -100,22 +85,24 @@ export default function LexemeForm({
         setAdditionalData(prev => ({ ...prev, examples }));
     }, []);
 
-    // TODO: раньше я делал эту логику через экшны, но по-сути было нелогично зранить респонс в глобальном стейте, поэтому сделал так (мб стоит вынести в хук, но у нас уже есть похожий хук в поиске)
-    const onSearch = useCallback(async value => {
-        try {
-            const response = await http.get(`api/dictionary/search?q=${value}&e=${lexeme.id}`);
-
-            setFoundSearchLexemes(response.data);
-        } catch (e) {
-            console.log(e);
+    // TODO: required не срабатывает из-за disabled
+    const inputs = [
+        {
+            component: Form.Input,
+            id: 'translation',
+            label: 'Переводы',
+            required: true,
+            value: translation
+        },
+        {
+            component: Form.Textarea,
+            id: 'definition',
+            label: 'Определение',
+            value: definition
         }
-    }, [lexeme.id]);
+    ];
 
-    const deboundedSearch = useDebounce(onSearch, 500);
-
-    useEffect(() => {
-        deboundedSearch(value);
-    }, [deboundedSearch, value]);
+    const withNotifications = lexeme.isPending && lexeme.createdBy !== userId;
 
     return (
         <Form
@@ -124,101 +111,83 @@ export default function LexemeForm({
             {...props}
         >
             <ImageField
-                className={styles.imageField}
                 label="Изображение"
                 image={lexeme.image || lexeme.data?.image}
-                disabled={isSending}
+                disabled={isCommitted}
                 onChange={handleFileChange}
                 onDelete={handleFileDelete}
             />
 
-            {!!foundSearchLexemes.length && (
-                <Accordion>
-                    <AccordionItem
-                        open={isOpenAccordion}
-                        header="Использовать похожие лексемы ?"
-                        content="234"
-                        onClick={() => setIsOpenAccordion(prev => !prev)}
-                    >
-                        {foundSearchLexemes.map(foundLexeme => (
-                            <Button
-                                key={foundLexeme.id}
-                                variant="plain"
-                                onClick={() => updateFoundLexeme(foundLexeme, lexeme)}
-                            >
-                                <p>Использовать существующую лексему <span className={styles.foundLexeme}>{foundLexeme.value}-{foundLexeme.translation}</span>?</p>
-                            </Button>
-                        ))}
-                    </AccordionItem>
-                </Accordion>
-            )}
+            <Form.Input
+                id="value"
+                label="Лексема"
+                value={value}
+                message={matchingLexemes.length > 0 &&
+                    <LexemeMatchMessage
+                        matchingLexemes={matchingLexemes}
+                        lexeme={lexeme}
+                        onMatch={onMatch}
+                    />
+                }
+                required
+            />
 
             {inputs.map(({ component: Component, id, label, value, required }) => {
-                const originalIsNotEmpty = !!lexeme[id];
-                const valuesAreDifferent = lexeme[id] !== value;
-                const isNotLexemeValue = id !== 'value';
-                const showNotification =
-                    originalIsNotEmpty && valuesAreDifferent && isNotLexemeValue && withNotifications;
+                const originalValue = lexeme[id];
+                const showMessage =
+                    originalValue &&
+                    originalValue !== value &&
+                    withNotifications;
 
                 return (
-                    <div key={id}>
-                        <Component
-                            label={label}
-                            value={value}
-                            disabled={isSending}
-                            required={required}
-                            onChange={e => setData(prev => ({ ...prev, [id]: e.target.value }))}
-                        />
-
-                        {showNotification &&
-                            (isSending ? (
-                                <Flex
-                                    justifyContent="space-between"
-                                    alignItems="center"
-                                    className={styles.notificationConfirmation}
-                                >
-                                    <p>
-                                        Добавить юзеру значение{' '}
-                                        <span className={styles.notification}>"{lexeme[id]}"</span>
-                                    </p>
-
-                                    <Checkbox
-                                        checked={additionalData[id]}
-                                        onChange={() =>
-                                            setAdditionalData(prev => {
-                                                const oldValue = prev[id];
-
-                                                return { ...prev, [id]: !oldValue };
-                                            })
-                                        }
-                                    />
-                                </Flex>
+                    <Component
+                        key={id}
+                        label={label}
+                        value={value}
+                        readOnly={isCommitted}
+                        required={required}
+                        message={showMessage &&
+                            (isCommitted ? (
+                                <Checkbox
+                                    label={<>
+                                        Добавить пользователю создавшему лексему оригинальное значение{' '}
+                                        <i>{lexeme[id]}</i>
+                                    </>}
+                                    checked={additionalData[id]}
+                                    size="sm"
+                                    onChange={() =>
+                                        setAdditionalData(prev => ({
+                                            ...prev,
+                                            [id]: !prev[id]
+                                        }))
+                                    }
+                                />
                             ) : (
-                                <p className={styles.notification}>
-                                    * Старое значение - {lexeme[id]}
-                                </p>
-                            ))}
-                    </div>
+                                <>Старое значение - <i>{lexeme[id]}</i></>
+                            ))
+                        }
+                        onChange={e => setData(prev => ({ ...prev, [id]: e.target.value }))}
+                    />
                 );
             })}
 
             <LexemeExamples
-                isSending={isSending}
                 examples={examples}
                 existingExamples={lexeme.examples}
                 additionalExamples={additionalData.examples}
                 withNotifications={withNotifications}
-                setAdditionalExamples={handleAdditionalExamplesChange}
+                readOnly={isCommitted}
                 onChange={handleExamplesChange}
+                onAdditionalChange={handleAdditionalExamplesChange}
             />
 
-            {isSending ? (
+            {isCommitted ? (
                 <Flex justifyContent="space-between">
                     <Button
                         content="Назад"
                         variant="soft"
                         onClick={() => {
-                            setIsSending(false);
+                            setCommitted(false);
                             setAdditionalData(initialAdditionalData);
                         }}
                     />
@@ -230,8 +199,41 @@ export default function LexemeForm({
                     />
                 </Flex>
             ) : (
-                <Button content="Далее" onClick={() => setIsSending(true)} />
+                <Button content="Далее" onClick={() => setCommitted(true)} />
             )}
         </Form>
+    );
+}
+
+function LexemeMatchMessage({ matchingLexemes, lexeme, onMatch }) {
+    return (
+        <>
+            В словаре уже есть похожие лексемы:
+
+            <ChipGroup>
+                {matchingLexemes.map(foundLexeme => (
+                    <Chip
+                        key={foundLexeme.id}
+                        size="sm"
+                        variant="soft"
+                        onClick={() => onMatch(foundLexeme, lexeme)}
+                    >
+                        <Flex gap="xxs" alignItems="baseline">
+                            <Text
+                                content={foundLexeme.value}
+                                type="body-sm"
+                                inline
+                            />
+
+                            <Text
+                                content={foundLexeme.translation}
+                                type="body-xs"
+                                inline
+                            />
+                        </Flex>
+                    </Chip>
+                ))}
+            </ChipGroup>
+        </>
     );
 }

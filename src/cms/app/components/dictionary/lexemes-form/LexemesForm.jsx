@@ -5,56 +5,37 @@ import Storage from 'shared/services/storage';
 import { Button, Form } from 'shared/ui-components';
 
 import Lexeme from 'cms/components/dictionary/lexeme';
-
-import LexemeExamples from './LexemeExamples';
+import { LexemeExamples } from 'cms/components/dictionary/lexeme-form';
 
 import styles from './LexemesForm.module.scss';
 
 export default function LexemesForm({
     userId,
-    lexemes,
+    lexemes = [],
     initialLexeme,
     isPending,
     onSubmit,
     ...props
 }) {
-    const [file, setFile] = useState();
     const [data, setData] = useState({
         value: initialLexeme?.value || '',
         translation: initialLexeme?.translation || '',
         definition: initialLexeme?.definition || '',
-        examples: initialLexeme?.examples || []
+        examples: lexemes.flatMap(l => l.examples) || []
     });
+    const [file, setFile] = useState();
     const [additionalData, setAdditionalData] = useState(
-        lexemes.reduce((object, { id, translation, definition, examples }) => {
-            object[id] = { translation, definition, examples };
+        lexemes.reduce((acc, { id, translation, definition, examples }) => {
+            acc[id] = { translation, definition, examples };
 
-            return object;
+            return acc;
         }, {})
     );
     const { value, translation, definition, examples } = data;
-    const inputs = [
-        {
-            component: Form.Input,
-            id: 'value',
-            label: 'Лексема',
-            required: true,
-            value
-        },
-        {
-            component: Form.Input,
-            id: 'translation',
-            label: 'Переводы',
-            required: true,
-            value: translation
-        },
-        {
-            component: Form.Textarea,
-            id: 'definition',
-            label: 'Определение',
-            value: definition
-        }
-    ];
+
+    const handleLexemeChange = useCallback((lexemeId, data) => {
+        setAdditionalData(prev => ({ ...prev, [lexemeId]: data }));
+    }, []);
 
     const handleExamplesChange = useCallback(examples => {
         setData(prev => ({ ...prev, examples }));
@@ -95,29 +76,29 @@ export default function LexemesForm({
         onSubmit(data);
     }, [value, translation, definition, examples, additionalData, lexemes, file, onSubmit]);
 
+    const handleChange = useCallback(event => {
+        const { id, value } = event.target;
+
+        setData(prev => ({ ...prev, [id]: value }));
+    }, []);
+
     return (
         <Form
             className={styles.root}
             onSubmit={handleSubmit}
             {...props}
         >
-            {lexemes.map(lexeme => {
-                const isEditorLexeme = lexeme?.createdBy === userId;
-                const isLexemeNotPending = lexeme.publishStatus !== 'pending';
-
-                const changeAdditionalData = data => {
-                    setAdditionalData(prev => ({ ...prev, [lexeme.id]: data }));
-                };
-
-                return (
+            <div className={styles.lexemes}>
+                {lexemes.map(lexeme =>
                     <Lexeme
                         key={lexeme.id}
+                        className={styles.lexeme}
                         lexeme={lexeme}
-                        readOnly={!isPending || isEditorLexeme || isLexemeNotPending}
-                        onChange={changeAdditionalData}
+                        readOnly={!isPending || lexeme?.createdBy === userId || lexeme.publishStatus !== 'pending'}
+                        onChange={handleLexemeChange}
                     />
-                );
-            })}
+                )}
+            </div>
 
             <hr />
 
@@ -129,15 +110,28 @@ export default function LexemesForm({
                 onDelete={handleFileDelete}
             />
 
-            {inputs.map(({ component: Component, id, label, value, required }) => (
-                <Component
-                    key={id}
-                    label={label}
-                    value={value}
-                    required={required}
-                    onChange={e => setData(prev => ({ ...prev, [id]: e.target.value }))}
-                />
-            ))}
+            <Form.Input
+                id="value"
+                label="Лексема"
+                value={value}
+                required
+                onChange={handleChange}
+            />
+
+            <Form.Input
+                id="translation"
+                label="Переводы"
+                value={translation}
+                required
+                onChange={handleChange}
+            />
+
+            <Form.Textarea
+                id="definition"
+                label="Определение"
+                value={definition}
+                onChange={handleChange}
+            />
 
             <LexemeExamples
                 examples={examples}

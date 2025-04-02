@@ -1,3 +1,8 @@
-.root {}
+.root {
+    position: relative;
+}
 
-.example {}
+.item {
+    --ListItem-paddingLeft: 0;
+    --ListItem-paddingRight: 0;
+}

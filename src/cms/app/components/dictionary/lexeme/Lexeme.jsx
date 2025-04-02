@@ -1,15 +1,24 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { Checkbox, Flex, Heading, Image, Text } from 'shared/ui-components';
+import cn from 'shared/utils/classnames';
 
 import LexemeExamples from './LexemeExamples';
 
 import styles from './Lexeme.module.scss';
 
-export default function LexemeView({ lexeme, readOnly, onChange }) {
-    const { value, image, definition, translation, examples } = lexeme;
+export default function Lexeme({ lexeme, readOnly, onChange, className }) {
+    const { id, value, image, definition, translation, examples } = lexeme;
 
-    const [data, setData] = useState({ examples: [], translation: '', definition: '' });
+    const [data, setData] = useState({
+        translation: '',
+        definition: '',
+        examples: []
+    });
+
+    useEffect(() => {
+        onChange?.(id, data);
+    }, [id, data, onChange]);
 
     const handleToggle = useCallback((checked, field) => {
         setData(prev => ({
@@ -18,23 +27,17 @@ export default function LexemeView({ lexeme, readOnly, onChange }) {
         }));
     }, [lexeme]);
 
-    const onChangeExamples = useCallback(examples => {
+    const handleExamplesChange = useCallback(examples => {
         setData(prev => ({ ...prev, examples }));
     }, []);
 
-    useEffect(() => {
-        if (!onChange) return;
-
-        onChange(data);
-    }, [data]);
-
     const fields = [
-        { label: 'translation', content: translation, field: 'translation' },
-        { label: 'definition', content: definition, field: 'definition' }
+        { id: 'translation', content: translation },
+        { id: 'definition', content: definition }
     ];
 
     return (
-        <div className={styles.root}>
+        <div className={cn(className, styles.root)}>
             <section className={styles.content}>
                 {image &&
                     <Image
@@ -51,24 +54,23 @@ export default function LexemeView({ lexeme, readOnly, onChange }) {
                         type="h1"
                     />
 
-                    {fields.map(({ label, content, field }) => (
+                    {fields.map(({ id, content }) => (
                         content && (
                             <Flex
-                                key={field}
+                                key={id}
                                 justifyContent="space-between"
                                 alignItems="center"
-                                className={styles.notificationConfirmation}
                             >
                                 <Text
-                                    className={styles[label]}
+                                    className={styles[id]}
                                     content={content}
                                     type="body-lg"
                                 />
 
                                 {!readOnly && (
                                     <Checkbox
-                                        checked={!!data[field]}
-                                        onChange={e => handleToggle(e.target.checked, field)}
+                                        checked={!!data[id]}
+                                        onChange={e => handleToggle(e.target.checked, id)}
                                     />
                                 )}
                             </Flex>
@@ -82,7 +84,7 @@ export default function LexemeView({ lexeme, readOnly, onChange }) {
                     title="Примеры:"
                     examples={examples}
                     readOnly={readOnly}
-                    onChangeExamples={onChangeExamples}
+                    onChange={handleExamplesChange}
                 />
             }
         </div>

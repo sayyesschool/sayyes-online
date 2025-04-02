@@ -2,27 +2,21 @@ import { useCallback, useState } from 'react';
 
 import { v4 as uuid } from 'uuid';
 
-import {
-    Avatar,
-    Button,
-    Checkbox,
-    Flex,
-    Form,
-    Heading,
-    IconButton,
-    Surface
-} from 'shared/ui-components';
+import { Button, Flex, Heading } from 'shared/ui-components';
+
+import LexemeExample from './LexemeExample';
 
 import styles from './LexemeExamples.module.scss';
 
 export default function LexemeExamples({
-    isSending,
     examples,
     existingExamples,
     additionalExamples,
     withNotifications,
     setAdditionalExamples,
+    readOnly,
     onChange,
+    onAdditionalChange,
     ...props
 }) {
     const [allExamples, setAllExamples] = useState(examples);
@@ -41,13 +35,19 @@ export default function LexemeExamples({
     const handleChange = useCallback((id, { target }) => {
         const { name, value } = target;
 
-        setAllExamples(prev => prev.map(ex => ex.id === id ? { ...ex, [name]: value } : ex));
-        onChange(examples.map(ex => ex.id === id ? { ...ex, [name]: value } : ex));
+        setAllExamples(prev => prev.map(ex => ex.id !== id ? ex : {
+            ...ex, [name]: value
+        }));
+
+        onChange(examples.map(ex => ex.id !== id ? ex : {
+            ...ex,
+            [name]: value
+        }));
     }, [examples, onChange]);
 
     const handleDelete = useCallback(id => {
+        setAllExamples(prev => prev.map(ex => ex.id === id ? { ...ex, deleted: !ex.deleted } : ex));
         onChange(examples.filter(ex => ex.id !== id));
-        setAllExamples(prev => prev.map(ex => ex.id === id ? { ...ex, deleted: true } : ex));
     }, [examples, onChange, setAllExamples]);
 
     const toggleCheckbox = useCallback(id => {
@@ -58,111 +58,51 @@ export default function LexemeExamples({
             ? additionalExamples.filter(ex => ex.id !== id)
             : [...additionalExamples, currentLexeme];
 
-        setAdditionalExamples(examples);
-    }, [additionalExamples, existingExamples, setAdditionalExamples]);
+        onAdditionalChange(examples);
+    }, [additionalExamples, existingExamples, onAdditionalChange]);
 
-    const shouldShowNotification = useCallback((id, text, translation, deleted) => {
+    const shouldShowNotification = useCallback(({ id, text, translation, deleted }) => {
         const existingExample = existingExamples?.find(ex => ex.id === id);
 
         return (
-            withNotifications && !!setAdditionalExamples && !!existingExample &&
+            withNotifications &&
+            !!onAdditionalChange &&
+            !!existingExample &&
             (deleted ||
                 text !== existingExample.text ||
-                translation !== existingExample.translation)
+                translation !== existingExample.translation
+            )
         );
-    }, [existingExamples, setAdditionalExamples, withNotifications]);
+    }, [existingExamples, onAdditionalChange, withNotifications]);
 
     return (
-        <Surface className={styles.root} {...props}>
+        <div className={styles.root} {...props}>
             <Heading content="Примеры" type="title-sm" />
 
             <Flex gap="small" column>
-                {allExamples.map(({ id, text, translation, deleted }, i) => {
-                    const isChecked = !!additionalExamples?.find(ex => ex.id === id);
-                    const showNotification = shouldShowNotification(
-                        id,
-                        text,
-                        translation,
-                        deleted
-                    );
+                {allExamples.map((example, i) =>
+                    <LexemeExample
+                        key={example.id}
+                        example={example}
+                        number={i + 1}
+                        checked={!!additionalExamples?.find(e => e.id === example.id)}
+                        shouldShowNotification={shouldShowNotification(example)}
+                        readOnly={readOnly}
+                        onCheck={toggleCheckbox}
+                        onChange={handleChange}
+                        onDelete={handleDelete}
+                    />
+                )}
 
-                    return (
-                        <div key={id} className={styles.example}>
-                            {!deleted && (
-                                <div>
-                                    <Form.Input
-                                        placeholder="Пример"
-                                        name="text"
-                                        value={text}
-                                        variant="plain"
-                                        start={<Avatar content={i + 1} size="sm" />}
-                                        end={
-                                            <IconButton
-                                                size="sm"
-                                                variant="plain"
-                                                color="neutral"
-                                                icon="delete"
-                                                title="Удалить пример"
-                                                disabled={isSending}
-                                                onClick={() => handleDelete(id)}
-                                            />
-                                        }
-                                        disabled={isSending}
-                                        required
-                                        onChange={e => handleChange(id, e)}
-                                    />
-
-                                    <Form.Input
-                                        className={styles.exampleTranslation}
-                                        placeholder="Перевод"
-                                        name="translation"
-                                        value={translation}
-                                        variant="plain"
-                                        size="sm"
-                                        disabled={isSending}
-                                        required
-                                        onChange={e => handleChange(id, e)}
-                                    />
-                                </div>
-                            )}
-
-                            {showNotification &&
-                                (isSending ? (
-                                    <Flex
-                                        justifyContent="space-between"
-                                        alignItems="center"
-                                        className={styles.notificationConfirmation}
-                                    >
-                                        <p className={styles.notification}>
-                                            {deleted
-                                                ? 'Добавить удалённый пример?'
-                                                : 'Добавить пользователю старый пример?'}
-                                        </p>
-
-                                        <Checkbox
-                                            checked={isChecked}
-                                            onChange={() => toggleCheckbox(id)}
-                                        />
-                                    </Flex>
-                                ) : (
-                                    <p className={styles.notification}>
-                                        {deleted
-                                            ? '* Пример был удалён'
-                                            : '* Пример отличается от добавленного пользователем'}
-                                    </p>
-                                ))}
-                        </div>
-                    );
-                })}
-
-                <Button
-                    icon="add"
-                    content="Добавить пример"
-                    variant="outlined"
-                    disabled={isSending}
-                    onClick={handleAdd}
-                />
+                {!readOnly &&
+                    <Button
+                        icon="add"
+                        content="Добавить пример"
+                        variant="outlined"
+                        onClick={handleAdd}
+                    />
+                }
             </Flex>
-        </Surface>
+        </div>
     );
 }

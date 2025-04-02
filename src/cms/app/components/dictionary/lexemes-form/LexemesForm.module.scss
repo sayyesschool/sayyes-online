@@ -1,0 +1,16 @@
+@use 'shared/styles/variables';
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.lexemes {
+    display: flex;
+    gap: 16px;
+}
+
+.lexeme {
+    flex: 1;
+}

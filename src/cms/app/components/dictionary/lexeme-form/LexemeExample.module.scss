@@ -1,11 +1,5 @@
 .root {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.example {
-    display: flex;
     gap: 8px;
     align-items: flex-start;
 }
@@ -14,4 +8,11 @@
     --Input-minHeight: auto !important;
     --Input-paddingInline: 4px !important;
     --Input-focusedThickness: 1px !important;
+}
+
+.deleted {
+    .input input {
+        text-decoration: line-through;
+        opacity: 0.5;
+    }
 }
