@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 
 import LessonPillGroup from 'shared/components/lessons-pill-group';
 import ScheduleSelect from 'shared/components/schedule-select';
@@ -6,31 +6,29 @@ import { useFormData } from 'shared/hooks/form';
 import { useBoolean } from 'shared/hooks/state';
 import datetime from 'shared/libs/datetime';
 import { rescheduleLessons } from 'shared/libs/enrollment';
-import { Checkbox, Form, FormInput } from 'shared/ui-components';
+import { Button, Checkbox, Form, FormInput } from 'shared/ui-components';
 import { Text } from 'shared/ui-components';
 
 export default function EnrollmentScheduleForm({ enrollment, onSubmit, ...props }) {
-    const [lessons, setLessons] = useState([]);
     const [shouldUpdateLessons, toggleShouldUpdateLessons] = useBoolean(false);
 
-    const { data, handleChange } = useFormData({
+    const { data, setData, handleChange } = useFormData({
         schedule: enrollment.schedule,
         startDate: enrollment.lessons.length > 0 ? new Date() : undefined
     });
 
-    useEffect(() => {
-        const lessons = rescheduleLessons({
-            schedule: data.schedule,
-            lessons: enrollment.lessons,
-            startDate: typeof data.startDate === 'string' ? new Date(data.startDate) : data.startDate
-        });
-
-        setLessons(lessons);
-    }, [data]);
-
     const handleSubmit = useCallback(() => {
-        onSubmit(data);
-    }, [data]);
+        return onSubmit(data);
+    }, [data, onSubmit]);
+
+    const handleAdd = useCallback(() => {
+        setData(data => ({
+            ...data,
+            schedule: data.schedule.concat({ day: 0, from: '00:00', to: '00:00' })
+        }));
+    }, [setData]);
+
+    console.log('EnrollmentScheduleForm', data.schedule);
 
     return (
         <Form
@@ -41,6 +39,14 @@ export default function EnrollmentScheduleForm({ enrollment, onSubmit, ...props 
                 name="schedule"
                 schedule={data.schedule}
                 onChange={handleChange}
+            />
+
+            <Button
+                type="button"
+                icon="add"
+                variant="plain"
+                content="Добавить"
+                onClick={handleAdd}
             />
 
             {enrollment.lessons?.length > 0 &&
@@ -72,7 +78,11 @@ export default function EnrollmentScheduleForm({ enrollment, onSubmit, ...props 
                     <Text>Новое расписание:</Text>
 
                     <LessonPillGroup
-                        lessons={lessons}
+                        lessons={rescheduleLessons({
+                            lessons: enrollment.lessons,
+                            schedule: data.schedule,
+                            startDate: typeof data.startDate === 'string' ? new Date(data.startDate) : data.startDate
+                        })}
                     />
                 </>
             }

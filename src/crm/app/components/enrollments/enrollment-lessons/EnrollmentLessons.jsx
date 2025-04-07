@@ -6,14 +6,14 @@ import LessonPillGroup from 'shared/components/lessons-pill-group';
 import PageSection from 'shared/components/page-section';
 import { useBoolean } from 'shared/hooks/state';
 import http from 'shared/services/http';
-import { Alert, IconButton, MenuButton, Text } from 'shared/ui-components';
+import { Alert, IconButton, Menu, Text } from 'shared/ui-components';
 
 import LessonForm from 'crm/components/lessons/lesson-form';
 import LessonsForm from 'crm/components/lessons/lessons-form';
 import { useActions } from 'crm/store';
 
 export default function EnrollmentLessons({ enrollment }) {
-    const lessonActions = useActions('lessons');
+    const actions = useActions('lessons');
 
     const [lesson, setLesson] = useState();
     const [lessonsToRefund, setLessonsToRefund] = useState();
@@ -31,36 +31,36 @@ export default function EnrollmentLessons({ enrollment }) {
             lesson.teacherId = enrollment.teacherId;
         });
 
-        return lessonActions.createLessons(lessons)
+        return actions.createLessons(lessons)
             .then(() => toggleLessonsFormOpen(false));
-    }, [enrollment]);
+    }, [enrollment, actions, toggleLessonsFormOpen]);
 
     const createLesson = useCallback(data => {
         data.enrollment = enrollment.id;
 
-        return lessonActions.createLesson(data)
+        return actions.createLesson(data)
             .then(() => toggleNewLessonFormOpen(false));
-    }, [enrollment]);
+    }, [enrollment, actions, toggleNewLessonFormOpen]);
 
     const updateLesson = useCallback(data => {
-        return lessonActions.updateLesson(lesson.id, data)
+        return actions.updateLesson(lesson.id, data)
             .then(() => toggleEditLessonFormOpen(false));
-    }, [lesson]);
+    }, [lesson, actions, toggleEditLessonFormOpen]);
 
     const deleteLesson = useCallback(() => {
-        return lessonActions.deleteLesson(lesson.id)
+        return actions.deleteLesson(lesson.id)
             .then(() => toggleConfirmationDialogOpen(false));
-    }, [lesson]);
+    }, [lesson, actions, toggleConfirmationDialogOpen]);
 
     const handleEdit = useCallback(lesson => {
         setLesson(lesson);
         toggleEditLessonFormOpen(true);
-    }, []);
+    }, [toggleEditLessonFormOpen]);
 
     const handleDelete = useCallback(lesson => {
         setLesson(lesson);
         toggleConfirmationDialogOpen(true);
-    }, []);
+    }, [toggleConfirmationDialogOpen]);
 
     const handleRefund = useCallback(() => {
         return http.post(`/admin/api/enrollments/${enrollment.id}/refund`, {
@@ -68,7 +68,7 @@ export default function EnrollmentLessons({ enrollment }) {
         }).finally(() => {
             toggleRefundDialog(false);
         });
-    }, [enrollment, lessonsToRefund]);
+    }, [enrollment, lessonsToRefund, toggleRefundDialog]);
 
     const handleRefundSingleLesson = useCallback(lesson => {
         return http.post(`/admin/api/enrollments/${enrollment.id}/refund`, {
@@ -76,8 +76,9 @@ export default function EnrollmentLessons({ enrollment }) {
         }).finally(() => {
             toggleRefundDialog(false);
         });
-    }, [enrollment]);
+    }, [enrollment, toggleRefundDialog]);
 
+    const hasSchedule = enrollment.schedule?.length > 0;
     const availableLessons = enrollment.lessons.filter(lesson => lesson.status === 'scheduled');
 
     return (
@@ -86,27 +87,24 @@ export default function EnrollmentLessons({ enrollment }) {
             title="Занятия"
             actions={
                 <>
-                    <MenuButton
+                    <Menu
                         trigger={
                             <IconButton
                                 icon="add"
                                 title="Создать"
-                                color="neutral"
                                 size="sm"
-                                variant="plain"
+                                disabled={!hasSchedule}
                             />
                         }
                         items={[
                             {
                                 key: 'single',
                                 content: 'Создать один урок',
-                                disabled: enrollment.schedule?.length === 0,
                                 onClick: toggleNewLessonFormOpen
                             },
                             {
                                 key: 'multiple',
                                 content: 'Создать несколько уроков',
-                                disabled: enrollment.schedule?.length === 0,
                                 onClick: toggleLessonsFormOpen
                             }
                         ]}
@@ -122,11 +120,13 @@ export default function EnrollmentLessons({ enrollment }) {
                 </>
             }
         >
-            {enrollment.status === 'active' && enrollment.lessons.filter(l => l.status === 'scheduled').length === 0 &&
-                <Alert
-                    content="Закончились уроки"
-                    color="danger"
-                />
+            {enrollment.status === 'active' &&
+                enrollment.lessons.length > 0 &&
+                enrollment.lessons.filter(l => l.status === 'scheduled').length === 0 &&
+                    <Alert
+                        content="Закончились уроки"
+                        color="danger"
+                    />
             }
 
             {enrollment.lessons?.length > 0 &&

@@ -12,7 +12,7 @@ export default function EnrollmentSchedule({ enrollment, onUpdate }) {
     const handleSubmit = useCallback(data => {
         onUpdate(data)
             .then(() => toggleFormOpen(false));
-    }, []);
+    }, [onUpdate, toggleFormOpen]);
 
     const hasSchedule = enrollment.schedule?.length > 0;
 
@@ -23,6 +23,7 @@ export default function EnrollmentSchedule({ enrollment, onUpdate }) {
             actions={[{
                 key: 'edit',
                 icon: hasSchedule ? 'edit' : 'add',
+                size: 'sm',
                 onClick: toggleFormOpen
             }]}
             compact

@@ -2,10 +2,9 @@ import { useCallback } from 'react';
 
 import Comment from 'shared/components/comment';
 import CommentForm from 'shared/components/comment-form';
-import EmptyState from 'shared/components/empty-state';
 import PageSection from 'shared/components/page-section';
 import { useBoolean } from 'shared/hooks/state';
-import { Button, Text } from 'shared/ui-components';
+import { Button, Flex, Text } from 'shared/ui-components';
 
 import { useActions, useStore } from 'crm/store';
 
@@ -23,54 +22,63 @@ export default function EnrollmentComments({ enrollment }) {
 
         return actions.createComment(data)
             .then(() => toggleCommenting(false));
-    }, [user, enrollment]);
+    }, [user, enrollment, actions, toggleCommenting]);
 
     const updateComment = useCallback((commentId, data) => {
         return actions.updateComment(commentId, data);
-    }, []);
+    }, [actions]);
 
     const deleteComment = useCallback(commentId => {
         return actions.deleteComment(commentId);
-    }, []);
+    }, [actions]);
 
     return (
         <PageSection
             className="EnrollmentComments"
             title="Комментарии"
+            actions={!isCommenting && [{
+                key: 'add',
+                icon: 'add',
+                size: 'sm',
+                onClick: toggleCommenting
+            }]}
         >
-            {enrollment.comments?.length > 0 ?
-                enrollment.comments?.map(comment =>
-                    <Comment
-                        key={comment.id}
-                        user={user}
-                        comment={comment}
-                        onSave={updateComment}
-                        onDelete={deleteComment}
-                    />
-                )
-                :
-                <EmptyState
-                    icon="comment"
-                    title="Комментариев нет"
+            {enrollment.comments?.map(comment =>
+                <Comment
+                    key={comment.id}
+                    user={user}
+                    comment={comment}
+                    onSave={updateComment}
+                    onDelete={deleteComment}
                 />
-            }
+            )}
 
             {isCommenting &&
-                <div>
-                    <Text>Новый комментарий</Text>
+                <Flex dir="column" gap="xs">
+                    <Flex alignItems="center" justifyContent="space-between">
+                        <Text type="title-sm">Новый комментарий</Text>
 
-                    <Button
-                        icon="close"
-                        onClick={toggleCommenting}
-                    />
+                    </Flex>
 
                     <CommentForm
                         id="comment-form"
                         onSubmit={createComment}
                     />
 
-                    <Button type="submit" form="comment-form">Отправить</Button>
-                </div>
+                    <Flex alignItems="center" justifyContent="space-between">
+                        <Button
+                            content="Отменить"
+                            variant="plain"
+                            onClick={toggleCommenting}
+                        />
+
+                        <Button
+                            type="submit"
+                            form="comment-form"
+                            content="Отправить"
+                        />
+                    </Flex>
+                </Flex>
             }
         </PageSection>
     );

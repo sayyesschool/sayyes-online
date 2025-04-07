@@ -1,6 +1,6 @@
 import Stepper from 'shared/components/stepper';
 import { statusOptions } from 'shared/data/enrollment';
-import { IconButton, MenuButton } from 'shared/ui-components';
+import { IconButton, Menu } from 'shared/ui-components';
 
 import './EnrollmentStatus.scss';
 
@@ -51,13 +51,11 @@ export default function EnrollmentStatus({ enrollment, onUpdate }) {
                 />
             </Stepper>
 
-            <MenuButton
+            <Menu
                 trigger={
                     <IconButton
                         icon="more_vert"
-                        color="neutral"
                         size="sm"
-                        variant="plain"
                     />
                 }
                 items={statusOptions.map(status => ({

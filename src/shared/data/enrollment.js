@@ -25,11 +25,20 @@ export const TypeLabel = {
     [EnrollmentType.Group]: 'В группе'
 };
 
-export const statusOptions = Object.entries(StatusLabel).map(([key, value]) => ({
-    key,
-    value: key,
-    label: value,
-    content: value
+export const statusOptions = [
+    EnrollmentStatus.Processing,
+    EnrollmentStatus.Trial,
+    EnrollmentStatus.Payment,
+    EnrollmentStatus.Active,
+    EnrollmentStatus.Completed,
+    EnrollmentStatus.Canceled,
+    EnrollmentStatus.Postponed
+].map(status => ({
+    key: status,
+    value: status,
+    label: StatusLabel[status],
+    content: StatusLabel[status],
+    icon: StatusIcon[status]
 }));
 
 export const typeOptions = [

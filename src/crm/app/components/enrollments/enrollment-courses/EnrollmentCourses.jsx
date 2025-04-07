@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import CoursesList from 'shared/components/courses-list';
 import PageSection from 'shared/components/page-section';
-import { IconButton, MenuButton } from 'shared/ui-components';
+import { IconButton, Menu } from 'shared/ui-components';
 
 import { useActions, useStore } from 'crm/store';
 
@@ -40,13 +40,11 @@ export default function EnrollmentCourses({ enrollment }) {
             className="EnrollmentCourses"
             title="Курсы"
             actions={
-                <MenuButton
+                <Menu
                     trigger={
                         <IconButton
                             icon="add"
-                            color="neutral"
                             size="sm"
-                            variant="plain"
                         />
                     }
                     items={items}

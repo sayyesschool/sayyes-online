@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 
+import ConfirmButton from 'shared/components/confirm-button';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
@@ -7,7 +8,7 @@ import Page from 'shared/components/page';
 import { DomainLabel } from 'shared/data/common';
 import { useEnrollment } from 'shared/hooks/enrollments';
 import { useBoolean } from 'shared/hooks/state';
-import { Badge, Flex, Grid, IconButton } from 'shared/ui-components';
+import { Flex, Grid } from 'shared/ui-components';
 
 import EnrollmentComments from 'crm/components/enrollments/enrollment-comments';
 import EnrollmentCourses from 'crm/components/enrollments/enrollment-courses';
@@ -26,26 +27,23 @@ import './EnrollmentPage.scss';
 export default function EnrollmentPage({ match, history }) {
     const [enrollment, actions] = useEnrollment(match.params.enrollmentId);
 
-    const [isSidePanelOpen, toggleSidePanel] = useBoolean(false);
     const [isEnrollmentFormOpen, toggleEnrollmentFormOpen] = useBoolean(false);
-    const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
 
     const updateEnrollment = useCallback(data => {
         return actions.updateEnrollment(enrollment.id, data)
             .then(() => toggleEnrollmentFormOpen(false));
-    }, [enrollment]);
+    }, [enrollment, actions, toggleEnrollmentFormOpen]);
 
     const updateEnrollmentSchedule = useCallback(data => {
         return actions.updateSchedule(enrollment.id, data);
-    }, [enrollment]);
+    }, [enrollment, actions]);
 
     const deleteEnrollment = useCallback(() => {
         return actions.deleteEnrollment(enrollment.id)
             .then(() => {
                 history.push(`/learners/${enrollment.learners.id}`);
-                toggleConfirmationDialogOpen(false);
             });
-    }, [enrollment]);
+    }, [enrollment, actions, history]);
 
     if (!enrollment) return <LoadingIndicator />;
 
@@ -65,25 +63,20 @@ export default function EnrollmentPage({ match, history }) {
                         icon: 'link',
                         title: 'Открыть в Hollihop'
                     }),
-                    <Badge key="comments" badgeContent={enrollment.comments.length}>
-                        <IconButton
-                            icon="comment"
-                            title="Открыть комментарии"
-                            onClick={toggleSidePanel}
-                        />
-                    </Badge>,
                     {
                         key: 'edit',
                         title: 'Изменить',
                         icon: 'edit',
                         onClick: toggleEnrollmentFormOpen
                     },
-                    {
-                        key: 'delete',
-                        title: 'Удалить',
-                        icon: 'delete',
-                        onClick: toggleConfirmationDialogOpen
-                    }
+                    <ConfirmButton
+                        key="delete"
+                        message="Вы действительно хотите удалить обучение?"
+                        icon="delete"
+                        color="neutral"
+                        variant="plain"
+                        onConfirm={deleteEnrollment}
+                    />
                 ]}
             />
 
@@ -158,14 +151,6 @@ export default function EnrollmentPage({ match, history }) {
                     onSubmit={updateEnrollment}
                 />
             </FormDialog>
-
-            <ConfirmationDialog
-                title="Подтвердите действие"
-                message="Вы действительно хотите удалить обучение?"
-                open={isConfirmationDialogOpen}
-                onConfirm={deleteEnrollment}
-                onClose={toggleConfirmationDialogOpen}
-            />
         </Page>
     );
 }
