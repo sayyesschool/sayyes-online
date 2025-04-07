@@ -10,6 +10,7 @@ const Tabs = forwardRef(({
     color,
     variant,
     tabColor,
+    tabFlex,
     tabVariant,
     disableIndicator,
     disableUnderline,
@@ -33,6 +34,7 @@ const Tabs = forwardRef(({
                     color={color}
                     variant={variant}
                     tabColor={tabColor}
+                    tabFlex={tabFlex}
                     tabVariant={tabVariant}
                     disableIndicator={disableIndicator}
                     disableUnderline={disableUnderline}

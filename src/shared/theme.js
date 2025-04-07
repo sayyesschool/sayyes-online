@@ -119,10 +119,17 @@ const newTheme = extendTheme({
     },
     components: {
         ...config.components,
+        JoyAutocomplete: {
+            styleOverrides: {
+                root: {
+                    borderRadius: '10px'
+                }
+            }
+        },
         JoyButton: {
             styleOverrides: {
                 root: {
-                    borderRadius: '40px'
+                    borderRadius: '10px'
                 }
             }
         },
@@ -141,10 +148,31 @@ const newTheme = extendTheme({
                 }
             }
         },
+        JoyInput: {
+            styleOverrides: {
+                root: {
+                    borderRadius: '10px'
+                }
+            }
+        },
         JoyModalDialog: {
             styleOverrides: {
                 root: {
                     borderRadius: '20px'
+                }
+            }
+        },
+        JoySelect: {
+            styleOverrides: {
+                root: {
+                    borderRadius: '10px'
+                }
+            }
+        },
+        JoyTextarea: {
+            styleOverrides: {
+                root: {
+                    borderRadius: '10px'
                 }
             }
         }

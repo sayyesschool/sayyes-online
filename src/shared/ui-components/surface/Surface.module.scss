@@ -26,23 +26,23 @@
 
 .radius {
     &-xs {
-        border-radius: var(--joy-radius-xs);
+        border-radius: 8px;
     }
 
     &-sm {
-        border-radius: var(--joy-radius-sm);
+        border-radius: 12px;
     }
 
     &-md {
-        border-radius: var(--joy-radius-md);
+        border-radius: 16px;
     }
 
     &-lg {
-        border-radius: var(--joy-radius-lg);
+        border-radius: 20px;
     }
 
     &-xl {
-        border-radius: var(--joy-radius-xl);
+        border-radius: 24px;
     }
 }
 

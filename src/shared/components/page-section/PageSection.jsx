@@ -32,7 +32,7 @@ export default function PageSection({
         <Surface
             as="section"
             className={classNames}
-            radius="lg"
+            radius="md"
             shadow={plain ? undefined : 'xs'}
             {...props}
         >
