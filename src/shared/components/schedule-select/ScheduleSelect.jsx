@@ -1,38 +1,35 @@
 import { useCallback } from 'react';
 
-import { Button, FormSelect, FormInput, IconButton, Text } from 'shared/ui-components';
+import { FormInput, FormSelect, IconButton, Text } from 'shared/ui-components';
 
-import './index.scss';
+import styles from './ScheduleSelect.module.scss';
 
 const dayLabels = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
 export default function ScheduleSelect({ name, label, schedule, onChange }) {
-    const handleAdd = useCallback(() => {
-        onChange({
-            target: {
-                name,
-                value: schedule.concat({ day: 0, from: '00:00', to: '00:00' })
-            }
-        });
-    }, [name, schedule, onChange]);
-
-    const handleDayChange = useCallback((itemToChange, target) => {
+    const handleDayChange = useCallback((itemToChange, index, target) => {
         onChange({
             target: {
                 name,
                 value: schedule.map(item =>
-                    itemToChange !== item ? item : { ...item, day: Number(target.value) }
+                    itemToChange !== item ? item : {
+                        ...item,
+                        day: Number(target.value)
+                    }
                 )
             }
         });
     }, [name, schedule, onChange]);
 
-    const handleTimeChange = useCallback((itemToChange, target) => {
+    const handleTimeChange = useCallback((itemToChange, index, target) => {
         onChange({
             target: {
                 name,
                 value: schedule.map(item =>
-                    itemToChange !== item ? item : { ...item, [target.name]: target.value }
+                    itemToChange !== item ? item : {
+                        ...item,
+                        [target.name]: target.value
+                    }
                 )
             }
         });
@@ -48,15 +45,15 @@ export default function ScheduleSelect({ name, label, schedule, onChange }) {
     }, [name, schedule, onChange]);
 
     return (
-        <div className="ScheduleSelect">
+        <div className={styles.root}>
             {label &&
                 <Text>{label}</Text>
             }
 
             {schedule?.map((item, index) =>
-                <div key={index} className="ScheduleSelectItem">
+                <div key={index} className={styles.item}>
                     <FormSelect
-                        className="ScheduleSelectItem__day-select"
+                        className={styles.select}
                         label="День недели"
                         name="day"
                         value={String(item.day)}
@@ -66,27 +63,27 @@ export default function ScheduleSelect({ name, label, schedule, onChange }) {
                             label,
                             content: label
                         }))}
-                        onChange={event => handleDayChange(item, event.target)}
+                        onChange={event => handleDayChange(item, index, event.target)}
                     />
 
                     <FormInput
-                        className="ScheduleSelectItem__time-input"
+                        className={styles.input}
                         type="time"
                         name="from"
                         value={item.from}
                         label="С"
                         step="1800"
-                        onChange={event => handleTimeChange(item, event.target)}
+                        onChange={event => handleTimeChange(item, index, event.target)}
                     />
 
                     <FormInput
-                        className="ScheduleSelectItem__time-input"
+                        className={styles.input}
                         type="time"
                         name="to"
                         value={item.to}
                         label="До"
                         step="1800"
-                        onChange={event => handleTimeChange(item, event.target)}
+                        onChange={event => handleTimeChange(item, index, event.target)}
                     />
 
                     <IconButton
@@ -97,15 +94,6 @@ export default function ScheduleSelect({ name, label, schedule, onChange }) {
                     />
                 </div>
             )}
-
-            <Button
-                className="ScheduleSelect__add-button"
-                type="button"
-                icon="add"
-                variant="soft"
-                content="Добавить"
-                onClick={handleAdd}
-            />
         </div>
     );
 }

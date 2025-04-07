@@ -1,0 +1,15 @@
+.root {
+    position: relative;
+}
+
+.item {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    margin-bottom: .5rem;
+}
+
+.select,
+.input {
+    flex: 1;
+}
