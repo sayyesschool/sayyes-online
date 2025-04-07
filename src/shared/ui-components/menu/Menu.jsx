@@ -64,7 +64,7 @@ const Menu = forwardRef(({
     return (<>
         {isValidElement(trigger) &&
             cloneElement(trigger, {
-                disabled,
+                disabled: disabled || trigger.props.disabled,
                 onClick: handleTriggerClick
             })
         }
