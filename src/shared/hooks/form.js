@@ -120,15 +120,17 @@ export function useFormData(initialData, deps = []) {
             if (Array.isArray(data[name1])) {
                 const array = data[name1].slice();
 
-                if (checked) {
-                    array.push(value);
-                } else {
-                    array.splice(array.indexOf(value), 1);
+                if (typeof checked === 'boolean') {
+                    if (checked) {
+                        array.push(value);
+                    } else {
+                        array.splice(array.indexOf(value), 1);
+                    }
                 }
 
                 return {
                     ...data,
-                    [name1]: array
+                    [name1]: array.length !== value.length ? array : value
                 };
             } else if (isObject(data[name1])) {
                 return {
