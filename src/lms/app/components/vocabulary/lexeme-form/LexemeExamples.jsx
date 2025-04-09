@@ -2,13 +2,11 @@ import { useCallback } from 'react';
 
 import { v4 as uuid } from 'uuid';
 
-import { Avatar, Button, Flex, Form, Heading, IconButton, Surface } from 'shared/ui-components';
+import { Avatar, Button, Flex, IconButton, Input } from 'shared/ui-components';
 
 import styles from './LexemeExamples.module.scss';
 
-export default function LexemeExamples({ approved, examples, onChange, ...props }) {
-    const headingText = approved ? 'Мои примеры' : 'Примеры';
-
+export default function LexemeExamples({ examples, onChange, ...props }) {
     const handleAdd = useCallback(() => {
         const newExample = {
             id: uuid(),
@@ -21,6 +19,7 @@ export default function LexemeExamples({ approved, examples, onChange, ...props 
 
     const handleChange = useCallback((id, { target }) => {
         const { name, value } = target;
+
         const updatedExamples = examples.map(example =>
             example.id === id ? { ...example, [name]: value } : example
         );
@@ -30,40 +29,29 @@ export default function LexemeExamples({ approved, examples, onChange, ...props 
 
     const handleDelete = useCallback(id => {
         const updatedExamples = examples.filter(example => example.id !== id);
+
         onChange(updatedExamples);
     }, [examples, onChange]);
 
     return (
-        <Surface className={styles.root} {...props}>
-            <Heading content={headingText} type="title-sm" />
+        <div className={styles.root} {...props}>
+            {examples.map(({ id, text, translation }, i) => (
+                <div key={id} className={styles.item}>
+                    <Avatar content={i + 1} size="sm" />
 
-            <Flex gap="small" column>
-                {examples.map(({ id, text, translation }, i) => (
-                    <div key={id} className={styles.example}>
-                        <Form.Input
+                    <Flex dir="column" flex="1">
+                        <Input
+                            className={styles.input}
                             placeholder="Пример"
                             name="text"
                             value={text}
                             variant="plain"
-                            start={
-                                <Avatar content={i + 1} size="sm" />
-                            }
-                            end={
-                                <IconButton
-                                    size="sm"
-                                    variant="plain"
-                                    color="neutral"
-                                    icon="delete"
-                                    title="Удалить пример"
-                                    onClick={() => handleDelete(id)}
-                                />
-                            }
                             required
-                            onChange={e =>  handleChange(id, e)}
+                            onChange={e => handleChange(id, e)}
                         />
 
-                        <Form.Input
-                            className={styles.exampleTranslation}
+                        <Input
+                            className={styles.input}
                             placeholder="Перевод"
                             name="translation"
                             value={translation}
@@ -72,16 +60,25 @@ export default function LexemeExamples({ approved, examples, onChange, ...props 
                             required
                             onChange={e => handleChange(id, e)}
                         />
-                    </div>
-                ))}
+                    </Flex>
 
-                <Button
-                    icon="add"
-                    content="Добавить пример"
-                    variant="outlined"
-                    onClick={handleAdd}
-                />
-            </Flex>
-        </Surface>
+                    <IconButton
+                        icon="delete"
+                        color="neutral"
+                        size="sm"
+                        variant="plain"
+                        title="Удалить пример"
+                        onClick={() => handleDelete(id)}
+                    />
+                </div>
+            ))}
+
+            <Button
+                icon="add"
+                content="Добавить пример"
+                variant="plain"
+                onClick={handleAdd}
+            />
+        </div>
     );
 }

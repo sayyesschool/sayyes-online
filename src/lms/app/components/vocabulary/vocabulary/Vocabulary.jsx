@@ -35,21 +35,24 @@ export default function Vocabulary({
     const isDelegated = userId !== learnerId;
 
     const handleAddLexeme = useCallback(data => {
-        data = { ...data, learnerId, createdBy: userId };
-
-        return actions.addLexeme(vocabularyId, data);
-    }, [userId, learnerId, vocabularyId, actions]);
+        return actions.addLexeme(vocabularyId, {
+            data,
+            learnerId
+        });
+    }, [actions, vocabularyId, learnerId]);
 
     const handleUpdateLexeme = useCallback(data => {
-        return actions.updateLexeme(vocabularyId, editingLexeme?.id, data)
-            .finally(() => setEditingLexeme(null));
-    }, [actions, vocabularyId, editingLexeme?.id]);
+        return actions.updateLexeme(vocabularyId, editingLexeme?.id, {
+            data,
+            learnerId
+        }).finally(() => setEditingLexeme(null));
+    }, [actions, vocabularyId, editingLexeme?.id, learnerId]);
 
     const handleDeleteLexeme = useCallback(lexemeId => {
         if (confirm('Вы уверены что хотите удалить слово')) {
-            return actions.deleteLexeme(vocabularyId, lexemeId);
+            return actions.deleteLexeme(vocabularyId, lexemeId, { learnerId });
         }
-    }, [actions, vocabularyId]);
+    }, [actions, vocabularyId, learnerId]);
 
     const handleRemoveLexeme = useCallback(lexemeId => {
         if (confirm('Вы уверены что хотите убрать слово из словаря? Оно останется в общем списке.')) {

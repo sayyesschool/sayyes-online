@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { Form, Heading } from 'shared/ui-components';
+import { Flex, Form, Heading } from 'shared/ui-components';
 
 import { getInitialData, getLabels } from './helpers';
 import LexemeExamples from './LexemeExamples';
@@ -72,8 +72,8 @@ export default function LexemeForm({
             }
 
             <Form.Input
-                value={translation}
                 label={labels.translation}
+                value={translation}
                 onChange={handleTranslationChange}
             />
 
@@ -83,11 +83,17 @@ export default function LexemeForm({
                 onChange={handleDefinitionChange}
             />
 
-            <LexemeExamples
-                examples={examples}
-                approved={lexeme.isApproved}
-                onChange={handleExamplesChange}
-            />
+            <Flex dir="column" gap="sm">
+                <Heading
+                    content={lexeme.isApproved ? 'Мои примеры' : 'Примеры'}
+                    type="title-sm"
+                />
+
+                <LexemeExamples
+                    examples={examples}
+                    onChange={handleExamplesChange}
+                />
+            </Flex>
         </Form>
     );
 }
