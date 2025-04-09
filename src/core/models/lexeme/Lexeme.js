@@ -29,11 +29,14 @@ export const Lexeme = new Schema({
         enum: Object.values(LexemePublishStatus),
         default: LexemePublishStatus.Pending
     },
-    public: { type: Boolean, default: false },
     createdBy: { type: Schema.Types.ObjectId }
 }, {
     timestamps: true
 });
+
+Lexeme.statics.Type = LexemeType;
+Lexeme.statics.Kind = LexemeKind;
+Lexeme.statics.Status = LexemePublishStatus;
 
 Lexeme.virtual('record', {
     ref: 'Record',
@@ -50,8 +53,8 @@ Lexeme.virtual('isApproved').get(function() {
     return this.publishStatus === LexemePublishStatus.Approved;
 });
 
-Lexeme.virtual('isUnapproved').get(function() {
-    return this.publishStatus === LexemePublishStatus.Unapproved;
+Lexeme.virtual('isArchived').get(function() {
+    return this.publishStatus === LexemePublishStatus.Archived;
 });
 
 export default Lexeme;

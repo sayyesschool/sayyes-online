@@ -114,10 +114,13 @@ export default ({
 
     async addLexeme(
         vocabulary,
-        { id: lexemeId, value, translation, definition, createdBy, learnerId }
+        data,
+        learnerId
     ) {
-        let lexeme = await (lexemeId
-            ? Lexeme.findById(lexemeId)
+        const { id, value, translation, definition } = data.id;
+
+        let lexeme = await (id
+            ? Lexeme.findById(id)
             : Lexeme.findOne({
                 value,
                 translation,
@@ -129,7 +132,7 @@ export default ({
                 value,
                 translation,
                 definition,
-                createdBy
+                createdBy: learnerId
             });
         }
 
@@ -149,85 +152,64 @@ export default ({
             await vocabulary.addLexeme(lexeme.id);
         }
 
-        const data = lexeme.toJSON();
+        lexeme.record = record;
 
-        data.status = record.status;
-        data.reviewDate = record.reviewDate;
-        data.vocabularyId = vocabulary?.id;
-
-        return data;
+        return lexeme;
     },
 
     async updateLexeme(
-        userId,
-        vocabularyId,
-        { lexemeId, vocabulary },
-        { image, definition, translation, examples }
+        lexemeId,
+        data,
+        learnerId
     ) {
         const lexeme = await Lexeme.findById(lexemeId);
 
-        if (!lexeme)
-            throw {
-                code: 404,
-                message: 'Не найдено'
-            };
-
-        const updateData = {
-            image: image,
-            definition: definition,
-            translation: translation,
-            examples: examples
+        if (!lexeme) throw {
+            code: 404,
+            message: 'Лексема на найдена'
         };
 
         const updatedLexeme = !lexeme.isApproved
             ? await Lexeme.findOneAndUpdate(
                 {
                     _id: lexemeId,
-                    createdBy: userId
+                    createdBy: lexeme.createdBy
                 },
-                updateData,
+                data,
                 { new: true }
             ).populate({
                 path: 'record',
-                match: { learnerId: userId },
-                transform: this.transformRecord
+                match: { learnerId },
+                transform: transformRecord
             })
             : await LexemeRecord.findOneAndUpdate(
                 {
-                    lexemeId: lexemeId,
-                    learnerId: userId
+                    lexemeId,
+                    learnerId
                 },
                 {
-                    data: updateData
+                    data
                 },
                 {
                     new: true,
                     upsert: true
                 }
-            )
-                .populate({
-                    path: 'lexeme'
-                })
-                .then(record => {
-                    const lexeme = record.lexeme;
+            ).populate({
+                path: 'lexeme'
+            }).then(record => {
+                const lexeme = record.lexeme;
 
-                    lexeme.record = this.transformRecord(record);
+                lexeme.record = transformRecord(record);
 
-                    return lexeme;
-                });
+                return lexeme;
+            });
 
         if (!updatedLexeme) throw {
             code: 403,
             message: 'Данные нельзя обновить'
         };
 
-        const data = updatedLexeme.toJSON();
-
-        if (vocabulary) {
-            data.vocabularyId = vocabularyId;
-        }
-
-        return data;
+        return updatedLexeme;
     },
 
     async removeLexeme(vocabulary, lexemeId) {
@@ -270,23 +252,15 @@ export default ({
             };
 
         return record;
-    },
-
-    transformRecord(record) {
-        return (
-            record && {
-                data: record.data,
-                status: record.status,
-                reviewDate: record.reviewDate
-            }
-        );
-    },
-
-    transformLexeme(lexeme) {
-        return {
-            ...lexeme,
-            ...lexeme.record,
-            record: undefined
-        };
     }
 });
+
+function transformRecord(record) {
+    return (
+        record && {
+            data: record.data,
+            status: record.status,
+            reviewDate: record.reviewDate
+        }
+    );
+}
