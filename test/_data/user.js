@@ -20,16 +20,18 @@ export const MANAGER = {
 
 export const LEARNER = {
     _id: createId(),
-    firstname: 'Tom',
-    lastname: 'Hanks',
+    firstname: 'Jane',
+    lastname: 'Doe',
     email: 'learner@sayyes.school',
     role: 'learner'
 };
 
+export const LEARNER_1 = LEARNER;
+
 export const LEARNER_2 = {
     _id: createId(),
-    firstname: 'Tom',
-    lastname: 'Hanks',
+    firstname: 'Jake',
+    lastname: 'Doe',
     email: 'learner2@sayyes.school',
     role: 'learner'
 };

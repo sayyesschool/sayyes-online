@@ -1,10 +1,10 @@
 import { v4 as uuid } from 'uuid';
 
-export const LEXEME = { value: 'car', translation: 'авто' };
+import { LEARNER, MANAGER } from './user';
 
 export const LEXEMES = [
     { value: 'dog', translation: 'собака', publishStatus: 'pending' },
-    { value: 'cat', translation: 'киса', publishStatus: 'unapproved' },
+    { value: 'cat', translation: 'киса', publishStatus: 'archived' },
     { value: 'cat', translation: 'кошка', publishStatus: 'approved' },
     { value: 'cat', translation: 'кот', publishStatus: 'approved' },
     { value: 'cat', translation: 'котёнок', publishStatus: 'approved' },
@@ -26,12 +26,31 @@ export const LEXEMES = [
     { value: 'fight', translation: 'драться', publishStatus: 'approved' }
 ];
 
+export const LEXEME_DATA = {
+    value: 'car',
+    translation: 'авто'
+};
+
+export const LEXEME_WITH_LEARNER = {
+    ...LEXEME_DATA,
+    createdBy: LEARNER._id
+};
+
+export const LEXEME_WITH_MANAGER = {
+    ...LEXEME_DATA,
+    createdBy: MANAGER._id
+};
+
 export const UPDATED_LEXEME_DATA = {
     value: 'auto',
     translation: 'машина',
     definition: 'есть руль и 4 колеса',
     examples: [
-        { id: uuid(), text: 'I have a red car', translation: 'У меня есть красная машина' }
+        {
+            id: uuid(),
+            text: 'I have a red car',
+            translation: 'У меня есть красная машина'
+        }
     ]
 };
 
@@ -39,24 +58,76 @@ export const APPROVED_LEXEME_DATA = {
     translation: 'автомобиль',
     definition: 'транспортное средство',
     examples: [
-        { id: uuid(), text: 'The car is already coming', translation: 'Машина уже подъезжает' },
-        { id: uuid(), text: 'The car crashed', translation: 'Машина разбилась' }
+        {
+            id: uuid(),
+            text: 'The car is already coming',
+            translation: 'Машина уже подъезжает'
+        },
+        {
+            id: uuid(),
+            text: 'The car crashed',
+            translation: 'Машина разбилась'
+        }
     ]
 };
 
 export const MERGE_LEXEME_1 = {
     value: 'cat',
-    translation: 'кот'
+    translation: 'кот',
+    definition: 'an animal that meows',
+    examples: [
+        {
+            id: uuid(),
+            text: 'The cat is sleeping',
+            translation: 'Кот спит'
+        },
+        {
+            id: uuid(),
+            text: 'The cat is eating',
+            translation: 'Кот ест'
+        }
+    ]
 };
 
 export const MERGE_LEXEME_2 = {
     value: 'dog',
-    translation: 'пёс'
+    translation: 'пёс',
+    definition: 'an animal that barks',
+    examples: [
+        {
+            id: uuid(),
+            text: 'The dog is barking',
+            translation: 'Пёс лает'
+        },
+        {
+            id: uuid(),
+            text: 'The dog is running',
+            translation: 'Пёс бегает'
+        }
+    ]
 };
 
 export const MERGE_LEXEME_3 = {
     value: 'fox',
-    translation: 'лиса'
+    translation: 'лиса',
+    definition: 'a wild animal that is red',
+    examples: [
+        {
+            id: uuid(),
+            text: 'The fox is clever',
+            translation: 'Лиса хитрая'
+        },
+        {
+            id: uuid(),
+            text: 'The fox is running',
+            translation: 'Лиса бегает'
+        }
+    ]
+};
+
+export const MERGED_LEXEME = {
+    value: 'catdog',
+    translation: 'котопёс'
 };
 
 export const UPDATED_MERGE_LEXEME_1 = {
@@ -64,7 +135,11 @@ export const UPDATED_MERGE_LEXEME_1 = {
     translation: 'котёнок',
     definition: 'мяукает',
     examples: [
-        { id: uuid(), text: 'The kitten loves milk', translation: 'Котёнок любит молоко' }
+        {
+            id: uuid(),
+            text: 'The kitten loves milk',
+            translation: 'Котёнок любит молоко'
+        }
     ]
 };
 
@@ -73,7 +148,11 @@ export const UPDATED_MERGE_LEXEME_2 = {
     translation: 'пёсель',
     definition: 'гавкает',
     examples: [
-        { id: uuid(), text: 'The doggie is wagging its tail', translation: 'Пёсель виляет хвостом' }
+        {
+            id: uuid(),
+            text: 'The doggie is wagging its tail',
+            translation: 'Пёсель виляет хвостом'
+        }
     ]
 };
 
@@ -82,11 +161,10 @@ export const UPDATED_MERGE_LEXEME_3 = {
     translation: 'лисичка',
     definition: 'рыжая',
     examples: [
-        { id: uuid(), text: 'The foxie ate the chicken', translation: 'Лисичка съела цыпленка' }
+        {
+            id: uuid(),
+            text: 'The foxie ate the chicken',
+            translation: 'Лисичка съела цыпленка'
+        }
     ]
-};
-
-export const MERGED_LEXEME = {
-    value: 'CatDog',
-    translation: 'КотоПёс'
 };
