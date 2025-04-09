@@ -1,21 +1,19 @@
 export default ({
     models: { Lexeme, LexemeRecord }
 }) => ({
-    async search(string = '', { batch = 1, limit = 0, exclude = [] } = { }) {
-        const regex = new RegExp(string, 'i');
+    async search(params, { batch = 1, limit = 0, exclude = [] } = { }) {
+        const query = typeof params === 'string' ? {
+            value: new RegExp(params, 'i')
+        } : params;
         const skip = (batch - 1) * limit;
-        const query = {
-            value: regex,
-            publishStatus: 'approved'
-        };
 
         if (exclude.length) {
             query._id = { $nin: exclude };
         }
 
-        const [count, lexemes] = await Promise.all([
-            Lexeme.countDocuments(query),
-            Lexeme.find(query).skip(skip).limit(limit)
+        const [lexemes, count] = await Promise.all([
+            Lexeme.find(query).skip(skip).limit(limit),
+            Lexeme.countDocuments(query)
         ]);
         const more = skip + lexemes.length < count;
 
@@ -80,8 +78,8 @@ export default ({
         };
 
         const record = await LexemeRecord.findOne({
-            learnerId: lexeme.createdBy,
-            lexemeId: lexeme.id
+            lexemeId: lexeme.id,
+            learnerId: lexeme.createdBy
         });
 
         if (record && recordData) {
@@ -106,10 +104,15 @@ export default ({
             await record.save();
         }
 
-        return this.updateLexeme(lexemeId, {
-            ...lexemeData,
-            publishStatus: 'approved'
-        });
+        return Lexeme.update(lexemeId, {
+            $set: {
+                ...lexemeData,
+                publishStatus: 'approved'
+            },
+            $unset: {
+                createdBy: true
+            }
+        }, { new: true });
     },
 
     async mergeLexemes(lexemeIds, newLexemeData, oldLexemesDataById) {
