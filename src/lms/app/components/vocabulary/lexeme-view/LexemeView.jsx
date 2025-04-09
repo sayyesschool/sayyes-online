@@ -10,7 +10,11 @@ export default function LexemeView({
     ...props
 }) {
     return !inline && Component ? (
-        <Component onClose={onClose} {...props}>
+        <Component
+            className={styles.modal}
+            onClose={onClose}
+            {...props}
+        >
             {children}
         </Component>
     ) : (

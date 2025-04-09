@@ -198,7 +198,7 @@ export default function Dictionary({ dictionary, user }) {
             </div>
 
             <Dialog
-                className={styles.dialog}
+                className={styles.modal}
                 open={isModalOpen}
                 onClose={handleModalClose}
             >

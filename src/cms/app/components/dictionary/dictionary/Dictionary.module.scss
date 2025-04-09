@@ -1,3 +1,5 @@
+@use 'shared/styles/mq';
+
 .root {
     position: relative;
 }
@@ -28,6 +30,8 @@
     margin: 1rem;
 }
 
-.dialog {
-    --ModalDialog-minWidth: 640px;
+.modal {
+    @include mq.from(lg) {
+        --ModalDialog-minWidth: 640px;
+    }
 }
