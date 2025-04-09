@@ -1,19 +1,19 @@
 import { useCallback, useState } from 'react';
 
 import ImageField from 'shared/components/image-field';
+import { lexemeKindOptions, lexemeTypeOptions } from 'shared/data/lexeme';
 import Storage from 'shared/services/storage';
 import { Button, Form } from 'shared/ui-components';
 
 import Lexeme from 'cms/components/dictionary/lexeme';
 import { LexemeExamples } from 'cms/components/dictionary/lexeme-form';
 
-import styles from './LexemesForm.module.scss';
+import styles from './LexemesMergeForm.module.scss';
 
-export default function LexemesForm({
+export default function LexemesMergeForm({
     userId,
     lexemes = [],
     initialLexeme,
-    isPending,
     onSubmit,
     ...props
 }) {
@@ -21,6 +21,8 @@ export default function LexemesForm({
         value: initialLexeme?.value || '',
         translation: initialLexeme?.translation || '',
         definition: initialLexeme?.definition || '',
+        type: initialLexeme?.type || '',
+        kind: initialLexeme?.kind || '',
         examples: lexemes.flatMap(l => l.examples) || []
     });
     const [file, setFile] = useState();
@@ -31,7 +33,8 @@ export default function LexemesForm({
             return acc;
         }, {})
     );
-    const { value, translation, definition, examples } = data;
+
+    const { value, translation, definition, type, kind, examples } = data;
 
     const handleLexemeChange = useCallback((lexemeId, data) => {
         setAdditionalData(prev => ({ ...prev, [lexemeId]: data }));
@@ -55,14 +58,14 @@ export default function LexemesForm({
         event.preventDefault();
 
         const data = {
+            lexemeIds: lexemes.map(lexeme => lexeme.id),
             newLexemeData: {
                 value,
                 translation,
                 definition,
                 examples
             },
-            merge: additionalData,
-            deletedLexemeIds: lexemes.map(lexeme => lexeme.id)
+            oldLexemesDataById: additionalData
         };
 
         if (file) {
@@ -77,9 +80,9 @@ export default function LexemesForm({
     }, [value, translation, definition, examples, additionalData, lexemes, file, onSubmit]);
 
     const handleChange = useCallback(event => {
-        const { id, value } = event.target;
+        const { name, value } = event.target;
 
-        setData(prev => ({ ...prev, [id]: value }));
+        setData(prev => ({ ...prev, [name]: value }));
     }, []);
 
     return (
@@ -94,7 +97,7 @@ export default function LexemesForm({
                         key={lexeme.id}
                         className={styles.lexeme}
                         lexeme={lexeme}
-                        readOnly={!isPending || lexeme?.createdBy === userId || lexeme.publishStatus !== 'pending'}
+                        readOnly={!lexeme.isPending || lexeme?.createdBy === userId}
                         onChange={handleLexemeChange}
                     />
                 )}
@@ -111,7 +114,7 @@ export default function LexemesForm({
             />
 
             <Form.Input
-                id="value"
+                name="value"
                 label="Лексема"
                 value={value}
                 required
@@ -119,7 +122,7 @@ export default function LexemesForm({
             />
 
             <Form.Input
-                id="translation"
+                name="translation"
                 label="Переводы"
                 value={translation}
                 required
@@ -127,9 +130,25 @@ export default function LexemesForm({
             />
 
             <Form.Textarea
-                id="definition"
+                name="definition"
                 label="Определение"
                 value={definition}
+                onChange={handleChange}
+            />
+
+            <Form.Select
+                name="type"
+                label="Тип"
+                value={type}
+                options={lexemeTypeOptions}
+                onChange={handleChange}
+            />
+
+            <Form.Select
+                name="kind"
+                label="Вид"
+                value={kind}
+                options={lexemeKindOptions}
                 onChange={handleChange}
             />
 
@@ -138,7 +157,7 @@ export default function LexemesForm({
                 onChange={handleExamplesChange}
             />
 
-            <Button content="Утвердить" type="submit" />
+            <Button content="Сохранить" type="submit" />
         </Form>
     );
 }

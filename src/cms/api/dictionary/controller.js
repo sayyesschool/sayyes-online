@@ -2,19 +2,21 @@ export default ({
     services: { Dictionary }
 }) => ({
     async search(req, res) {
-        const [count, lexemes] = await Dictionary.search(req.query.q, req.query.e);
+        const { results, totalCount } = await Dictionary.search(req.query.q, {
+            exclude: req.query.e
+        });
 
         res.json({
             ok: true,
+            data: results,
             meta: {
-                totalCount: count
-            },
-            data: lexemes
+                totalCount
+            }
         });
     },
 
     async get(req, res) {
-        const lexemes = await Dictionary.get(req.query.publishStatus);
+        const lexemes = await Dictionary.find(req.query);
 
         res.json({
             ok: true,
@@ -30,14 +32,13 @@ export default ({
         });
     },
 
-    async addLexeme(req, res) {
-        const lexeme = await Dictionary.addLexeme(req.user.id, req.body);
-
-        const data = lexeme.toJSON();
+    async createLexeme(req, res) {
+        const lexeme = await Dictionary.createLexeme(req.body, req.user.id);
 
         res.json({
             ok: true,
-            data
+            message: 'Лексема создана',
+            data: lexeme
         });
     },
 
@@ -46,28 +47,52 @@ export default ({
 
         res.json({
             ok: true,
+            message: 'Лексема обновлена',
             data
         });
     },
 
-    async mergeLexemes(req, res) {
-        const newLexeme = await Dictionary.mergeLexemes(req.body);
+    async updatePublishStatus(req, res) {
+        const lexeme = await Dictionary.updatePublishStatus(
+            req.params.lexemeId,
+            req.body.status
+        );
 
         res.json({
             ok: true,
-            data: {
-                deletedLexemeIds: req.body.deletedLexemeIds,
-                newLexeme
-            }
+            message: 'Статус публикации лексемы обновлён',
+            data: lexeme
         });
     },
 
-    async updatePublishStatus(req, res) {
-        const lexeme = await Dictionary.updatePublishStatus(req.params.lexemeId, req.body.status);
+    async approveLexeme(req, res) {
+        const lexeme = await Dictionary.approveLexeme(
+            req.params.lexemeId,
+            req.body.lexemeData,
+            req.body.recordData
+        );
 
         res.json({
             ok: true,
+            message: 'Лексема одобрена',
             data: lexeme
+        });
+    },
+
+    async mergeLexemes(req, res) {
+        const newLexeme = await Dictionary.mergeLexemes(
+            req.body.lexemeIds,
+            req.body.newLexemeData,
+            req.body.oldLexemesDataById
+        );
+
+        res.json({
+            ok: true,
+            message: 'Лексемы объединены',
+            data: {
+                mergedLexemeIds: req.body.lexemeIds,
+                newLexeme
+            }
         });
     },
 
@@ -76,6 +101,7 @@ export default ({
 
         res.json({
             ok: true,
+            message: 'Лексема удалена',
             data: lexeme
         });
     }

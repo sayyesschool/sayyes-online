@@ -29,6 +29,7 @@ export default function LexemeExamples({
         };
 
         setAllExamples([...allExamples, newExample]);
+
         onChange([...examples, newExample]);
     }, [allExamples, examples, onChange, setAllExamples]);
 
@@ -36,7 +37,8 @@ export default function LexemeExamples({
         const { name, value } = target;
 
         setAllExamples(prev => prev.map(ex => ex.id !== id ? ex : {
-            ...ex, [name]: value
+            ...ex,
+            [name]: value
         }));
 
         onChange(examples.map(ex => ex.id !== id ? ex : {
@@ -46,7 +48,11 @@ export default function LexemeExamples({
     }, [examples, onChange]);
 
     const handleDelete = useCallback(id => {
-        setAllExamples(prev => prev.map(ex => ex.id === id ? { ...ex, deleted: !ex.deleted } : ex));
+        setAllExamples(prev => prev.map(ex => ex.id === id ? {
+            ...ex,
+            deleted: !ex.deleted
+        } : ex));
+
         onChange(examples.filter(ex => ex.id !== id));
     }, [examples, onChange, setAllExamples]);
 
@@ -62,18 +68,17 @@ export default function LexemeExamples({
     }, [additionalExamples, existingExamples, onAdditionalChange]);
 
     const shouldShowNotification = useCallback(({ id, text, translation, deleted }) => {
-        const existingExample = existingExamples?.find(ex => ex.id === id);
+        const existingExample = existingExamples?.find(e => e.id === id);
 
         return (
             withNotifications &&
-            !!onAdditionalChange &&
             !!existingExample &&
             (deleted ||
                 text !== existingExample.text ||
                 translation !== existingExample.translation
             )
         );
-    }, [existingExamples, onAdditionalChange, withNotifications]);
+    }, [existingExamples, withNotifications]);
 
     return (
         <div className={styles.root} {...props}>
