@@ -4,8 +4,8 @@ export default ({
     async get(req, res) {
         const query = req.query;
 
-        if (query.search) {
-            const regex = new RegExp(query.search, 'i');
+        if (query.q) {
+            const regex = new RegExp(query.q, 'i');
 
             query.$or = [
                 { firstname: regex },
@@ -14,7 +14,7 @@ export default ({
                 { phone: regex }
             ];
 
-            delete query.search;
+            delete query.q;
         }
 
         const users = await User.find(query);

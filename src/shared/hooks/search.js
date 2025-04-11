@@ -16,18 +16,16 @@ export function useSearch({
     const [loading, setLoading] = useState(false);
 
     const _search = useCallback(async (params, options = { fresh: true }) => {
-        if (!params.query) return;
+        if (!params.q) return;
 
-        paramsRef.current = params;
-        setQuery(params.query);
+        paramsRef.current = {
+            ...paramsRef.current,
+            ...params
+        };
+        setQuery(params.q);
         setLoading(true);
 
-        const searchParams = new URLSearchParams({
-            q: params.query,
-            b: params.batch,
-            c: params.limit,
-            ...params
-        });
+        const searchParams = new URLSearchParams(paramsRef.current);
 
         try {
             const response = await http.get(`${url}?${searchParams}`);
@@ -52,7 +50,7 @@ export function useSearch({
 
     const search = useCallback(async (arg = {}) => {
         const params = typeof arg === 'string' ?
-            { query: arg } : arg;
+            { q: arg } : arg;
 
         const response = await _search(params);
 
@@ -63,7 +61,7 @@ export function useSearch({
         if (!meta.more) return;
 
         const response = await _search({
-            batch: meta.batch + 1,
+            b: meta.batch + 1,
             ...paramsRef.current
         }, {
             fresh: false

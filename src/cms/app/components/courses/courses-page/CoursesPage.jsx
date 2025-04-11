@@ -23,17 +23,18 @@ export default function CoursesPage() {
             .then(() => toggleFormDialogOpen(false));
     }, []);
 
-    if (!courses) return <LoadingIndicator />;
+    if (!courses) return <LoadingIndicator fullscreen />;
 
     return (
         <Page className="CoursesPage">
             <Page.Header
                 title="Курсы"
-                toolbar={[
+                actions={[
                     {
                         key: 'add',
-                        title: 'Создать',
+                        content: 'Создать курс',
                         icon: 'add',
+                        variant: 'solid',
                         onClick: toggleFormDialogOpen
                     }
                 ]}

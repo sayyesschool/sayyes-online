@@ -48,7 +48,7 @@ export default function EnrollmentCourses({ enrollment }) {
                         />
                     }
                     items={items}
-                    onMenuItemClick={handleAddCourse}
+                    onItemClick={handleAddCourse}
                 />
             }
             compact

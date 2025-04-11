@@ -8,16 +8,19 @@ import { useBoolean } from 'shared/hooks/state';
 import {
     Avatar,
     Button,
-    Card,
     Chip,
     Flex,
     Icon,
     IconButton,
-    MenuButton
+    Menu,
+    Skeleton,
+    Surface
 } from 'shared/ui-components';
 
 import ExerciseComments from 'lms/components/courses/exercise-comments';
 import ExerciseContent from 'lms/components/courses/exercise-content';
+
+import styles from './Exercise.module.scss';
 
 export default function Exercise({
     index,
@@ -104,11 +107,23 @@ export default function Exercise({
         (item.type === 'input' && item.items?.length > 0)
     );
 
-    if (!exercise) return <LoadingIndicator />;
+    if (!exercise) return (
+        <Skeleton
+            width="100%"
+            height="80px"
+            animation="wave"
+            variant="rectangular"
+            radius="md"
+        />
+    );
 
     return (
-        <Card className="Exercise">
-            <header className="Exercise__header" onClick={toggleCollapsed}>
+        <Surface
+            className={styles.root}
+            padding="md"
+            shadow="sm"
+        >
+            <div className={styles.header} onClick={toggleCollapsed}>
                 <Avatar
                     content={index + 1}
                     color={exercise.completed ? 'primary' : undefined}
@@ -116,12 +131,14 @@ export default function Exercise({
                 />
 
                 <Content
+                    className={styles.description}
                     content={exercise.description}
                     html
                 />
 
                 <Flex
-                    alignItems="center" alignSelf="start"
+                    alignItems="center"
+                    alignSelf="start"
                     gap="small"
                 >
                     {assignments?.length > 0 && (
@@ -156,7 +173,7 @@ export default function Exercise({
                     )}
 
                     {showMenu &&
-                        <MenuButton
+                        <Menu
                             trigger={
                                 <IconButton
                                     icon="assignment_add"
@@ -188,63 +205,65 @@ export default function Exercise({
                         />
                     }
                 </Flex>
-            </header>
+            </div>
 
-            {!isCollapsed && <>
-                <ExerciseContent
-                    exercise={exercise}
-                    state={state}
-                    checked={isChecked}
-                    disabled={user.isTeacher}
-                    onUpdateState={handleUpdateState}
-                />
+            {!isCollapsed &&
+                <div className={styles.content}>
+                    <ExerciseContent
+                        exercise={exercise}
+                        state={state}
+                        checked={isChecked}
+                        disabled={user.isTeacher}
+                        onUpdateState={handleUpdateState}
+                    />
 
-                <footer className="Exercise__footer">
-                    {hasCheckableItems &&
-                        <Button
-                            content="Проверить"
-                            icon="done"
-                            variant="outlined"
-                            onClick={handleCheck}
-                        />
-                    }
+                    <Flex gap="sm">
+                        {hasCheckableItems &&
+                            <Button
+                                content="Проверить"
+                                icon="done"
+                                variant="outlined"
+                                onClick={handleCheck}
+                            />
+                        }
 
-                    {hasSaveableItems &&
-                        <Button
-                            content="Сохранить"
-                            icon="save"
-                            variant="outlined"
-                            disabled={isSaving}
-                            onClick={handleSave}
-                        />
-                    }
+                        {hasSaveableItems &&
+                            <Button
+                                content="Сохранить"
+                                icon="save"
+                                variant="outlined"
+                                disabled={isSaving}
+                                onClick={handleSave}
+                            />
+                        }
 
-                    {/* <Button
+                        {/* <Button
                             label="Оставить комментарий"
                             icon="comment"
                             outlined
                             onClick={toggleCommenting}
                         /> */}
 
-                    {user.isTeacher &&
-                        <Button
-                            content={exercise.completed ? 'Отметить как невыполненное' : 'Отметить как выполненное'}
-                            icon={exercise.completed ? 'task_alt' : undefined}
-                            variant="outlined"
-                            disabled={isSaving}
-                            onClick={handleComplete}
-                        />
-                    }
-                </footer>
+                        {user.isTeacher &&
+                            <Button
+                                content={exercise.completed ? 'Отметить как невыполненное' : 'Отметить как выполненное'}
+                                icon={exercise.completed ? 'task_alt' : undefined}
+                                variant="outlined"
+                                disabled={isSaving}
+                                onClick={handleComplete}
+                            />
+                        }
+                    </Flex>
 
-                {/* TODO: решили убрать коментарии из упражнений и оставить для задания */}
-                {/* <ExerciseComments
+                    {/* TODO: решили убрать коментарии из упражнений и оставить для задания */}
+                    {/* <ExerciseComments
                     exercise={exercise}
                     onCreate={handleCreateComment}
                     onUpdate={handleUpdateComment}
                     onDelete={handleDeleteComment}
                 /> */}
-            </>}
-        </Card>
+                </div>
+            }
+        </Surface>
     );
 }

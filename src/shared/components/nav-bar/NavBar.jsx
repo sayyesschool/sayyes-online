@@ -32,11 +32,11 @@ export default function NavBar({
                 <TabList disableUnderline>
                     {items.map(item =>
                         <Tab
-                            key={item.to}
+                            key={item.to ?? item.path}
                             component={NavLink}
-                            to={item.to}
+                            to={item.to ?? item.path}
                             exact={item.exact}
-                            value={item.to}
+                            value={item.to ?? item.path}
                             className={styles.item}
                             activeClassName={styles.item_active}
                             orientation={orientation}
@@ -52,7 +52,7 @@ export default function NavBar({
                             <Text
                                 className={styles.item__text}
                                 type="body-xs"
-                                content={item.text}
+                                content={item.text ?? item.title}
                                 noWrap
                             />
                         </Tab>

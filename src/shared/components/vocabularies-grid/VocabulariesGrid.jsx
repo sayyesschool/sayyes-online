@@ -5,7 +5,6 @@ import { Grid } from 'shared/ui-components';
 import styles from './VocabulariesGrid.module.scss';
 
 export default function VocabulariesGrid({
-    href,
     vocabularies,
     onEditVocabulary,
     onDeleteVocabulary
@@ -19,14 +18,14 @@ export default function VocabulariesGrid({
             columns={columns}
             gap="medium"
         >
-            {vocabularies.map(vocabulary =>
+            {vocabularies?.map(vocabulary =>
                 <Grid.Item
                     key={vocabulary.id}
                     className={styles.item}
                 >
                     <VocabularyCard
-                        href={`${href}/${vocabulary.id}`}
                         vocabulary={vocabulary}
+                        readOnly={!onEditVocabulary && !onDeleteVocabulary}
                         onEditVocabulary={onEditVocabulary}
                         onDeleteVocabulary={onDeleteVocabulary}
                     />

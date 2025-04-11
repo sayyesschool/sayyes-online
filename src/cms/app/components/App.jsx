@@ -6,19 +6,18 @@ import AppHeader from 'shared/components/app-header';
 import AppNav from 'shared/components/app-nav';
 import AppShell from 'shared/components/app-shell';
 import LoadingIndicator from 'shared/components/loading-indicator';
+import { useUser } from 'shared/hooks/user';
 
-import navItems from 'cms/data/nav';
-import { useActions, useStore } from 'cms/store';
+import { useActions } from 'cms/store';
 
 import styles from './App.module.scss';
 
 export default function App({ routes }) {
-    const [user, userActions] = useStore('user');
+    const [user] = useUser();
     const courseActions = useActions('courses');
     const materialActions = useActions('materials');
 
     useEffect(() => {
-        userActions.getUser();
         courseActions.getCourses();
         materialActions.getMaterials();
     }, []);
@@ -29,7 +28,7 @@ export default function App({ routes }) {
         <AppShell className={styles.root}>
             <AppHeader user={user}>
                 <AppNav
-                    items={navItems}
+                    items={routes}
                     orientation="horizontal"
                     invertedColors
                 />

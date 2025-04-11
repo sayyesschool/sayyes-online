@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { Card, Flex, IconButton, Image, Link, Menu, Surface, Text } from 'shared/ui-components';
+import { Card, IconButton, Image, Link, Menu, Text } from 'shared/ui-components';
 import { getWordEnding } from 'shared/utils/format';
 
 import styles from './VocabularyCard.module.scss';
@@ -23,7 +23,7 @@ export default function VocabularyCard({
         return onDeleteVocabulary(vocabulary.id);
     }, [vocabulary.id, onDeleteVocabulary]);
 
-    const { title, subtitle, imageUrl, numberOfLexemes, lexemes, courseUrl } = vocabulary;
+    const { title, subtitle, imageUrl, numberOfLexemes, lexemes } = vocabulary;
     const description = `${numberOfLexemes} ${getWordEnding('слов', numberOfLexemes, ['о', 'а', ''])}`;
 
     // const newCount = vocabulary.lexemes.filter(lexeme => lexeme.status === 0, 0);
@@ -42,12 +42,13 @@ export default function VocabularyCard({
                 </Card.Cover>
             }
 
-            <header className={styles.header}>
+            <div className={styles.header}>
                 <div className={styles.info}>
                     <Link
                         component={RouterLink}
-                        to={href}
+                        to={vocabulary.url}
                         content={title}
+                        end={lexemes.length > 0 && `(${lexemes.length})`}
                         type="title-lg"
                     />
 
@@ -65,7 +66,6 @@ export default function VocabularyCard({
                         trigger={
                             <IconButton
                                 icon="more_vert"
-                                title="Подробнее"
                                 size="sm"
                             />
                         }
@@ -86,7 +86,7 @@ export default function VocabularyCard({
                         ]}
                     />
                 )}
-            </header>
+            </div>
 
             {/* <Surface className={styles.content} variant="soft">
                 <div className={styles.stats}>
@@ -106,13 +106,6 @@ export default function VocabularyCard({
                     </div>
                 </div>
             </Surface> */}
-
-            {courseUrl &&
-                <Text type="body-sm">
-                    Из курса -
-                    <Link component={RouterLink} to={courseUrl}>General English</Link>
-                </Text>
-            }
         </Card>
     );
 }

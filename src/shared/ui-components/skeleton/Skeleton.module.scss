@@ -1,0 +1,47 @@
+.root {
+    border-radius: var(--Skeleton-radius) !important;
+}
+
+.radius {
+    &-xs {
+        --Skeleton-radius: 8px;
+    }
+
+    &-sm {
+        --Skeleton-radius: 12px;
+    }
+
+    &-md {
+        --Skeleton-radius: 16px;
+    }
+
+    &-lg {
+        --Skeleton-radius: 20px;
+    }
+
+    &-xl {
+        --Skeleton-radius: 24px;
+    }
+}
+
+.shadow {
+    &-xs {
+        box-shadow: var(--joy-shadow-xs);
+    }
+
+    &-sm {
+        box-shadow: var(--joy-shadow-sm);
+    }
+
+    &-md {
+        box-shadow: var(--joy-shadow-md);
+    }
+
+    &-lg {
+        box-shadow: var(--joy-shadow-lg);
+    }
+
+    &-xl {
+        box-shadow: var(--joy-shadow-xl);
+    }
+}

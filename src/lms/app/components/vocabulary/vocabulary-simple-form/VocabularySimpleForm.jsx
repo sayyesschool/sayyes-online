@@ -30,7 +30,7 @@ export default function VocabularySimpleForm({
                 className={styles.input}
                 name="title"
                 value={data.title.value}
-                placeholder="Словарь"
+                placeholder="Название"
                 autoComplete="off"
                 onChange={handleChange}
             />
@@ -46,7 +46,7 @@ export default function VocabularySimpleForm({
 
             <Button
                 type="submit"
-                content="Добавить"
+                content="Создать"
                 disabled={isLoading}
                 loading={isLoading}
             />

@@ -16,7 +16,7 @@ export default {
 
     exercises: {
         list: null,
-        single: null
+        map: null
     },
 
     materials: {

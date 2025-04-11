@@ -39,7 +39,9 @@ export const deleteExercise = createAction('DELETE_EXERCISE', id => ({
     }
 }));
 
-export const unsetExercise = createAction('UNSET_EXERCISE');
+export const unsetExercise = createAction('UNSET_EXERCISE', exerciseId => ({
+    exerciseId
+}));
 
 // Items
 
@@ -92,7 +94,7 @@ export const actions = {
     updateExerciseProgress
 };
 
-export const exercisesReducer = createReducer(null, {
+export const exercisesListReducer = createReducer(null, {
     [getExercises]: (state, action) => action.data,
 
     [createExercise]: (state, action) => state && state.concat(action.data) || [action.data],
@@ -105,6 +107,44 @@ export const exercisesReducer = createReducer(null, {
     ),
 
     [deleteExercise]: (state, action) => state && state.filter(exercise => exercise.id !== action.data.id)
+});
+
+export const exercisesMapReducer = createReducer(null, {
+    [getExercises]: (state, action) => action.data.reduce((map, exercise) => {
+        map[exercise.id] = exercise;
+
+        return map;
+    }, {}),
+
+    [getExercise]: (state, action) => ({
+        ...state,
+        [action.data.id]: action.data
+    }),
+
+    [unsetExercise]: (state, action) => {
+        return state && {
+            ...state,
+            [action.exerciseId]: null
+        };
+    },
+
+    [createExercise]: (state, action) => ({
+        ...state,
+        [action.data.id]: action.data
+    }),
+
+    [updateExercise]: (state, action) => ({
+        ...state,
+        [action.data.id]: {
+            ...state[action.data.id],
+            ...action.data
+        }
+    }),
+    [deleteExercise]: (state, action) => {
+        const { [action.data.id]: _, ...rest } = state;
+
+        return rest;
+    }
 });
 
 export const exerciseReducer = createReducer(null, {
@@ -136,6 +176,7 @@ export const exerciseReducer = createReducer(null, {
 });
 
 export default combineReducers({
-    list: exercisesReducer,
-    single: exerciseReducer
+    list: exercisesListReducer,
+    map: exercisesMapReducer
+    //single: exerciseReducer
 });

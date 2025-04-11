@@ -1,4 +1,4 @@
-import { useCallback, useEffect, } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
@@ -25,18 +25,18 @@ export default function Materials() {
             .then(() => toggleFormOpen(false));
     }, []);
 
-    if (!materials) return <LoadingIndicator />;
+    if (!materials) return <LoadingIndicator fullscreen />;
 
     return (
         <Page id="materials" loading={!materials}>
             <PageHeader
                 title="Материалы"
-                toolbar={[
+                actions={[
                     {
                         key: 'add',
-                        title: 'Создать',
+                        content: 'Создать материал',
                         icon: 'add',
-                        iconOnly: true,
+                        variant: 'solid',
                         onClick: toggleFormOpen
                     }
                 ]}

@@ -1,4 +1,4 @@
 export default [
     { key: 'home', to: '/', text: 'Главная', icon: 'home', exact: true },
-    { key: 'vocabularies', to: '/vocabularies', text: 'Словарь', icon: 'dictionary', exact: false }
+    { key: 'dictionary', to: '/dictionary', text: 'Словарь', icon: 'dictionary', exact: false }
 ];

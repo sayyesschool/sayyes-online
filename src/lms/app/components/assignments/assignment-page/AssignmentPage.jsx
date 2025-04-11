@@ -62,9 +62,10 @@ export default function AssignmentPage({ match, location, history }) {
 
     const isTeacher = user.isTeacher;
     const isLearner = user.isLearner;
+    const hasExercises = assignment.exercises.length > 0;
 
     return (
-        <Page className="AssignmentPage">
+        <Page className="AssignmentPage" layout="narrow">
             <Page.Header
                 breadcrumbs={[
                     {
@@ -85,7 +86,7 @@ export default function AssignmentPage({ match, location, history }) {
                         }
                     />
                 }
-                description={
+                description={assignment.dueAt &&
                     <Text
                         content="Дата выполнения:"
                         end={
@@ -99,65 +100,61 @@ export default function AssignmentPage({ match, location, history }) {
                     />
                 }
                 actions={
-                    isTeacher && [
-                        {
-                            key: 'delete',
-                            icon: 'delete',
-                            title: 'Удалить задание',
-                            onClick: toggleConfirmationDialogOpen
-                        },
-                        {
-                            key: 'save',
-                            icon: 'save',
-                            title: 'Сохранить задание',
-                            onClick: handleSave
-                        }
-                    ]
-                    ||
                     isLearner && getLearnerAssignmentActions(assignment.status, updateAssignmentStatus)
+                    ||
+                    isTeacher && [{
+                        key: 'save',
+                        icon: 'save',
+                        title: 'Сохранить задание',
+                        onClick: handleSave
+                    }, {
+                        key: 'delete',
+                        icon: 'delete',
+                        color: 'danger',
+                        title: 'Удалить задание',
+                        onClick: toggleConfirmationDialogOpen
+                    }]
                 }
             />
 
             <Page.Content>
-                {
-                    isTeacher && (
-                        <Surface variant="outlined">
+                <Page.Section compact>
+                    {
+                        isTeacher && (
                             <ContentEditor
                                 ref={editorRef}
                                 content={assignment.content}
                             />
-                        </Surface>
-                    )
-                    ||
-                    isLearner && assignment.content && (
-                        <Content
-                            content={assignment.content}
-                            html
-                        />
-                    )
-                }
+                        )
+                        ||
+                        isLearner && assignment.content && (
+                            <Content
+                                content={assignment.content}
+                                html
+                            />
+                        )
+                    }
+                </Page.Section>
 
-                {assignment.exercises.length > 0 ? assignment.exercises.map((exercise, index) =>
-                    <Exercise
-                        key={exercise.id}
-                        id={exercise.id}
-                        index={index}
-                        user={user}
-                        exercise={exercise}
-                        showRemoveFromAssignment={isTeacher}
-                        onRemoveFromAssignment={handleRemoveExercise}
-                        onProgressChange={handleExerciseProgressChange}
-                    />
-                ) : (
-                    <>
-                        <Text content="Нет упражнений" />
-
-                        <Text
-                            content="Добавьте упражнения в задание на странице курса"
-                            type="body-sm"
+                <Page.Section
+                    title={hasExercises ? 'Упражнения' : 'Нет упражнений'}
+                    description={!hasExercises && 'Добавьте упражнения в задание на странице курса'}
+                    compact
+                    plain
+                >
+                    {assignment.exercises?.map((exercise, index) =>
+                        <Exercise
+                            key={exercise.id}
+                            id={exercise.id}
+                            index={index}
+                            user={user}
+                            exercise={exercise}
+                            showRemoveFromAssignment={isTeacher}
+                            onRemoveFromAssignment={handleRemoveExercise}
+                            onProgressChange={handleExerciseProgressChange}
                         />
-                    </>
-                )}
+                    )}
+                </Page.Section>
             </Page.Content>
 
             <ConfirmationDialog

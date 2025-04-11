@@ -1,0 +1,26 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.header {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+
+    &:hover {
+        cursor: pointer;
+        user-select: none;
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.description {
+    flex: 1;
+}

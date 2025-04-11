@@ -6,6 +6,14 @@ import { Autocomplete, Button, CircularProgress, Icon } from 'shared/ui-componen
 
 import './SearchForm.scss';
 
+function defaultRenderResult(result) {
+    return result.label;
+}
+
+function getDefaultOptionLabel(option) {
+    return option?.label ?? '';
+}
+
 export default function SearchForm({
     comboboxRef,
     url,
@@ -14,7 +22,8 @@ export default function SearchForm({
     placeholder,
     isResultDisabled,
     filterResults,
-    renderResult,
+    getOptionLabel = getDefaultOptionLabel,
+    renderResult = defaultRenderResult,
     creatable,
     onCreate
 }) {
@@ -83,27 +92,32 @@ export default function SearchForm({
     }, [creatable, loading, filterResults, meta?.more]);
 
     const renderOption = useCallback((props, option) => {
-        return (
-            <Autocomplete.Option {...props}>
-                {(creatable && option.type === 'addNew') ?
-                    <div className="add-new-option" onClick={e => handleAddNew(e, option.value)}>
-                        {option.label}
-                    </div>
-                    :
-                    option.type === 'showMore' ? (
-                        <Button
-                            content="Показать ещё"
-                            onClick={handleLoadMore}
-                        />
-                    ) : renderResult({
-                        ...option,
-                        data: option,
-                        disabled: props['aria-disabled'],
-                        selected: props['aria-selected']
-                    })}
-            </Autocomplete.Option>
-        );
-    }, [creatable, handleAddNew, handleLoadMore, renderResult]);
+        return renderResult ?
+            renderResult({
+                data: option,
+                disabled: props['aria-disabled'],
+                selected: props['aria-selected'],
+                ...props
+            }) : (
+                <Autocomplete.Option {...props}>
+                    {option.type === 'addNew' ?
+                        <div
+                            className="add-new-option"
+                            onClick={e => handleAddNew(e, option.value)}
+                        >
+                            {option.label}
+                        </div>
+                        :
+                        (option.type === 'showMore' ? (
+                            <Button
+                                content="Показать ещё"
+                                onClick={handleLoadMore}
+                            />
+                        ) : option.label)
+                    }
+                </Autocomplete.Option>
+            );
+    }, [handleAddNew, handleLoadMore, renderResult]);
 
     const isOpen = open && !!query.length;
 
@@ -117,15 +131,16 @@ export default function SearchForm({
             ref={comboboxRef}
             options={options}
             placeholder={placeholder}
-            getOptionLabel={option => option?.label ?? ''}
-            getOptionDisabled={isResultDisabled}
             startDecorator={<Icon name="search" />}
             endDecorator={loading &&
                 <CircularProgress size="sm" />
             }
+            loadingText="Загрузка..."
             noOptionsText="Ничего не найдено"
-            renderOption={renderOption}
+            getOptionLabel={getOptionLabel}
+            getOptionDisabled={isResultDisabled}
             filterOptions={filterOptions}
+            renderOption={renderOption}
             open={isOpen}
             loading={loading}
             clearOnBlur

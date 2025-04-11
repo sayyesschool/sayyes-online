@@ -9,5 +9,5 @@ export default [
     { id: 'courses', title: 'Курсы', path: '/courses', exact: false, component: Courses, icon: 'library_books' },
     { id: 'materials', title: 'Материалы', path: '/materials', exact: false, component: Materials, icon: 'book' },
     { id: 'dictionary', title: 'Глобальный словарь', path: '/dictionary', exact: false, component: Dictionary, icon: 'dictionary' },
-    { id: 'vocabularies', title: 'Экстра словари', path: '/vocabularies', exact: false, component: Vocabularies, icon: 'dictionary' }
+    { id: 'vocabularies', title: 'Экстра словари', path: '/vocabularies', exact: false, component: Vocabularies, icon: 'lists' }
 ];

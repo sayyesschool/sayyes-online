@@ -48,7 +48,7 @@ export default function EnrollmentMaterials({ enrollment }) {
                         />
                     }
                     items={items}
-                    onMenuItemClick={handleAddMaterial}
+                    onItemClick={handleAddMaterial}
                 />
             }
             compact
