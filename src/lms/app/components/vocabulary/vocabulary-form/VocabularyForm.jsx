@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { Form, Heading } from 'shared/ui-components';
+import { Form } from 'shared/ui-components';
 
 import styles from './VocabularyForm.module.scss';
 
@@ -13,16 +13,12 @@ export default function VocabularyForm({
     const [title, setTitle] = useState(vocabulary.title ?? '');
     const [description, setDescription] = useState(vocabulary.description ?? '');
 
-    const handleSubmit = e => {
-        e.preventDefault();
-
-        const formData = {
+    const handleSubmit = useCallback(() => {
+        onSubmit(vocabulary.id, {
             title,
             description
-        };
-
-        submit(vocabulary.id, formData);
-    };
+        });
+    }, [title, description, vocabulary?.id, onSubmit]);
 
     const handleTitleChange = useCallback(e => {
         setTitle(e.target.value);
@@ -33,13 +29,11 @@ export default function VocabularyForm({
     }, [setDescription]);
 
     return (
-        <Form className={styles.root} onSubmit={handleSubmit} {...props}>
-            <Heading
-                className={styles.value}
-                content={'Редактирование словаря'}
-                type="h2"
-            />
-
+        <Form
+            className={styles.root}
+            onSubmit={handleSubmit}
+            {...props}
+        >
             <Form.Input
                 value={title}
                 label="Заголовок"

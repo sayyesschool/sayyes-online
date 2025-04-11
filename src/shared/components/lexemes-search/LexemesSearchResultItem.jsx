@@ -9,11 +9,14 @@ import styles from './LexemesSearchResultItem.module.scss';
 export default function LexemesSearchResultItem({
     result,
     action,
-    onSelect
+    onSelect,
+    ...props
 }) {
+    const lexeme = result.data;
+
     const handleClick = useCallback(e => {
-        onSelect(result.data);
-    }, [onSelect, result.data]);
+        onSelect(lexeme);
+    }, [onSelect, lexeme]);
 
     const className = cn(
         styles.root,
@@ -23,12 +26,11 @@ export default function LexemesSearchResultItem({
     return (
         <div
             className={className}
-            onClick={handleClick}
+            {...props}
         >
-            <div className={styles.text}>
-                <Text color="primary">{result.value}</Text>
-                <Text content="-" />
-                <Text>{result.translation}</Text>
+            <div className={styles.text} onClick={handleClick}>
+                <Text type="body-md" color="primary">{lexeme.value}</Text>
+                <Text type="body-sm">{lexeme.translation}</Text>
             </div>
 
             <div className={styles.action} onClick={stopPropagation}>

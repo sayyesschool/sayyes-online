@@ -42,7 +42,7 @@ export default function VocabulariesPage() {
         setCurrentVocabulary(null);
     }, []);
 
-    if (!vocabularies) return <LoadingIndicator />;
+    if (!userVocabulary || !vocabularies) return <LoadingIndicator fullscreen />;
 
     return (
         <Page className="VocabulariesPage" layout="narrow">
@@ -66,7 +66,6 @@ export default function VocabulariesPage() {
                 <Flex gap="medium" column>
                     {userVocabulary &&
                         <VocabularyCard
-                            href={`vocabulary/${userVocabulary.id}`}
                             vocabulary={userVocabulary}
                             orientation="horizontal"
                             readOnly
@@ -74,7 +73,6 @@ export default function VocabulariesPage() {
                     }
 
                     <VocabulariesGrid
-                        href="vocabulary"
                         vocabularies={vocabularies}
                         onEditVocabulary={handleEditVocabulary}
                         onDeleteVocabulary={handleDeleteVocabulary}
@@ -84,14 +82,14 @@ export default function VocabulariesPage() {
 
             {currentVocabulary && (
                 <FormDialog
-                    title="Редактирование"
+                    title="Редактирование словаря"
                     open={!!currentVocabulary}
                     onClose={handleCloseFormDialog}
                 >
                     <VocabularyForm
                         id="vocabulary-edit-form"
                         vocabulary={currentVocabulary}
-                        submit={handleUpdateVocabulary}
+                        onSubmit={handleUpdateVocabulary}
                     />
                 </FormDialog>
             )}

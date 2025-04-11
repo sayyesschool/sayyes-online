@@ -1,35 +1,52 @@
 @use 'shared/styles/mq';
 
 .root {
-    .item {
-        &_active {
-            --Tab-indicatorColor: var(--joy-palette-primary-plainColor) !important;
+    position: relative;
+}
+
+.list {
     
-            position: relative;
-        }
-    
-        &__text {
-            @include mq.to(s) {
-                display: none;
-            }
-        }
+}
+
+.item {
+    &_active {
+        --Tab-indicatorColor: var(--joy-palette-primary-plainColor) !important;
+
+        position: relative;
     }
-    
-    .vertical {
-        .item {
-            --ListItem-paddingRight: 0.25rem;
-            --ListItem-paddingLeft: 0.25rem;
-    
-            text-align: center;
-    
-            &__icon {
-                font-size: 1.5rem;
-            }
-    
-            &__text {
-                width: 100%;
-            }
+
+    &__text {
+        color: inherit !important;
+        
+        @include mq.to(s) {
+            display: none;
         }
     }
 }
 
+.horizontal {
+    .list {
+        gap: 8px;
+    }
+
+    .item {
+        border-radius: 12px !important;
+    }
+}
+
+.vertical {
+    .item {
+        --ListItem-paddingRight: 0.25rem;
+        --ListItem-paddingLeft: 0.25rem;
+
+        text-align: center;
+
+        &__icon {
+            font-size: 1.5rem;
+        }
+
+        &__text {
+            width: 100%;
+        }
+    }
+}

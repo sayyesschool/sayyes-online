@@ -17,7 +17,7 @@ export default function VocabularyPage({ match }) {
     const [vocabulary] = useVocabulary(match.params.vocabulary);
     const isMobile = useIsMobile();
 
-    if (!vocabulary) return <LoadingIndicator />;
+    if (!vocabulary) return <LoadingIndicator fullscreen />;
 
     const { id, title, numberOfLexemes } = vocabulary;
     const description = `${numberOfLexemes} ${getWordEnding('слов', numberOfLexemes, ['о', 'а', ''])}`;

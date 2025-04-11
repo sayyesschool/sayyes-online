@@ -6,7 +6,7 @@ import LexemesSearch from 'shared/components/lexemes-search';
 import { LMS_URL } from 'shared/constants';
 import { useIsMobile } from 'shared/hooks/screen';
 import { useVocabularyActions } from 'shared/hooks/vocabularies';
-import { Dialog, IconButton, Menu } from 'shared/ui-components';
+import { Dialog, IconButton, Menu, Text } from 'shared/ui-components';
 
 import Lexeme from 'lms/components/vocabulary/lexeme';
 import LexemeForm from 'lms/components/vocabulary/lexeme-form';
@@ -84,10 +84,11 @@ export default function Vocabulary({
                             !!lexemes.find(lexeme => lexeme.id === result.id)
                         }
                         renderResultItemAction={result => result.disabled ?
-                            'Уже в словаре' :
+                            <Text content="Уже в словаре" type="body-sm" /> :
                             <IconButton
                                 icon="add"
                                 title="Добавить слово в словарь"
+                                size="sm"
                                 variant="soft"
                                 onClick={() => handleAddLexeme(result.data)}
                             />

@@ -31,16 +31,18 @@ export default ({
 
     async getVirtual(req, res) {
         const vocabulary = await Vocabulary.getVirtual(
-            req.query.learnerId || req.user.id,
-            {
-                id: 'my',
-                title: 'Мой словарь'
-            }
+            req.query.learnerId || req.user.id
         );
+
+        const data = vocabulary.toJSON();
+
+        data.id = 'my';
+        data.title = 'Мой словарь';
+        data.url = '/vocabularies/my';
 
         res.json({
             ok: true,
-            data: vocabulary
+            data
         });
     },
 

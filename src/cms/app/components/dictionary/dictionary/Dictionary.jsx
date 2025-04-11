@@ -114,17 +114,15 @@ export default function Dictionary({ dictionary, user }) {
                 <LexemesSearch
                     className={styles.search}
                     url={SEARCH_URL}
-                    isResultDisabled={result =>
-                        !!lexemes.find(lexeme => lexeme.id === result.id)
-                    }
                     renderResultItemAction={result =>
                         <IconButton
                             icon="edit"
                             title="Редактировать лексему"
-                            variant="soft"
+                            variant="plain"
                             onClick={() => setEditingLexeme(result.data)}
                         />
                     }
+                    onSelectLexeme={setViewingLexeme}
                     onAddLexeme={handleCreateLexeme}
                 />
 

@@ -28,7 +28,7 @@ export const Vocabulary = new Schema({
 });
 
 Vocabulary.virtual('url').get(function() {
-    return `/vocabularies/${this._id}`;
+    return `/vocabularies/${this.id}`;
 });
 
 Vocabulary.virtual('numberOfLexemes').get(function() {

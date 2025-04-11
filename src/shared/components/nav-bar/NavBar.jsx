@@ -29,18 +29,20 @@ export default function NavBar({
                 defaultValue={selectedItemValue}
                 sx={{ flexDirection: orientation === 'vertical' ? 'column' : 'row' }}
             >
-                <TabList disableUnderline>
+                <TabList className={styles.list} disableUnderline>
                     {items.map(item =>
                         <Tab
                             key={item.to ?? item.path}
-                            component={NavLink}
+                            component={item.href ? 'a' : NavLink}
                             to={item.to ?? item.path}
+                            href={item.href}
                             exact={item.exact}
                             value={item.to ?? item.path}
                             className={styles.item}
                             activeClassName={styles.item_active}
                             orientation={orientation}
                             indicatorPlacement={IndicatorPlacementByOrientation[orientation]}
+                            disableIndicator={orientation === 'horizontal'}
                         >
                             {item.icon &&
                                 <Icon
@@ -51,7 +53,7 @@ export default function NavBar({
 
                             <Text
                                 className={styles.item__text}
-                                type="body-xs"
+                                type={orientation === 'horizontal' ? 'body-sm' : 'body-xs'}
                                 content={item.text ?? item.title}
                                 noWrap
                             />

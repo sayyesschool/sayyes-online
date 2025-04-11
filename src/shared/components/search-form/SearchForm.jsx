@@ -92,31 +92,32 @@ export default function SearchForm({
     }, [creatable, loading, filterResults, meta?.more]);
 
     const renderOption = useCallback((props, option) => {
-        return renderResult ?
-            renderResult({
-                data: option,
-                disabled: props['aria-disabled'],
-                selected: props['aria-selected'],
-                ...props
-            }) : (
-                <Autocomplete.Option {...props}>
-                    {option.type === 'addNew' ?
-                        <div
-                            className="add-new-option"
-                            onClick={e => handleAddNew(e, option.value)}
-                        >
-                            {option.label}
-                        </div>
-                        :
-                        (option.type === 'showMore' ? (
-                            <Button
-                                content="Показать ещё"
-                                onClick={handleLoadMore}
-                            />
-                        ) : option.label)
-                    }
-                </Autocomplete.Option>
-            );
+        return (
+            <Autocomplete.Option {...props}>
+                {option.type === 'addNew' ? (
+                    <div
+                        className="add-new-option"
+                        onClick={e => handleAddNew(e, option.value)}
+                    >
+                        {option.label}
+                    </div>
+                ) : option.type === 'showMore' ? (
+                    <Button
+                        content="Показать ещё"
+                        onClick={handleLoadMore}
+                    />
+                ) : renderResult ?
+                    renderResult({
+                        data: option,
+                        disabled: props['aria-disabled'],
+                        selected: props['aria-selected'],
+                        ...props
+                    })
+                    :
+                    option.label
+                }
+            </Autocomplete.Option>
+        );
     }, [handleAddNew, handleLoadMore, renderResult]);
 
     const isOpen = open && !!query.length;

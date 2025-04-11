@@ -1,13 +1,7 @@
 .MuiAutocomplete-listbox {
   z-index: 1300 !important;
 
-  .MuiAutocompleteOption-root {
-    padding: 0;
-    min-height: 100%;
-  }
-
   .add-new-option {
     width: 100%;
-    padding: 5px;
   }
 }

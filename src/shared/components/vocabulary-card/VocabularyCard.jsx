@@ -7,7 +7,6 @@ import { getWordEnding } from 'shared/utils/format';
 import styles from './VocabularyCard.module.scss';
 
 export default function VocabularyCard({
-    href,
     vocabulary,
     orientation,
     readOnly,
@@ -23,7 +22,7 @@ export default function VocabularyCard({
         return onDeleteVocabulary(vocabulary.id);
     }, [vocabulary.id, onDeleteVocabulary]);
 
-    const { title, subtitle, imageUrl, numberOfLexemes, lexemes } = vocabulary;
+    const { title, subtitle, imageUrl, numberOfLexemes } = vocabulary;
     const description = `${numberOfLexemes} ${getWordEnding('слов', numberOfLexemes, ['о', 'а', ''])}`;
 
     // const newCount = vocabulary.lexemes.filter(lexeme => lexeme.status === 0, 0);
@@ -48,7 +47,6 @@ export default function VocabularyCard({
                         component={RouterLink}
                         to={vocabulary.url}
                         content={title}
-                        end={lexemes.length > 0 && `(${lexemes.length})`}
                         type="title-lg"
                     />
 

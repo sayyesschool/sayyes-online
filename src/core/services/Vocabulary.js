@@ -34,7 +34,7 @@ export default ({
         });
     },
 
-    async getVirtual(learnerId, data = {}) {
+    async getVirtual(learnerId) {
         const records = await LexemeRecord.find({
             learnerId
         })
@@ -48,13 +48,14 @@ export default ({
             data: record.data
         }));
 
-        return {
-            ...data,
-            lexemes,
-            lexemeIds: lexemes.map(lexeme => lexeme.id),
-            numberOfLexemes: lexemes.length,
-            learnerId
-        };
+        const vocabulary = new Vocabulary({
+            learnerId,
+            lexemeIds: lexemes.map(lexeme => lexeme.id)
+        });
+
+        vocabulary.lexemes = lexemes;
+
+        return vocabulary;
     },
 
     async getOne(reqVocabulary) {
@@ -117,7 +118,7 @@ export default ({
         data,
         learnerId
     ) {
-        const { id, value, translation, definition } = data.id;
+        const { id, value, translation, definition } = data;
 
         let lexeme = await (id
             ? Lexeme.findById(id)
