@@ -51,7 +51,7 @@ describe.skip('LMS Vocabularies API', () => {
                     { value: 'dog', publishStatus: 'approved' },
                     { value: 'fish', publishStatus: 'approved' },
                     { value: 'catnip', publishStatus: 'approved' },
-                    { value: 'catdog', publishStatus: 'unapproved' }
+                    { value: 'catdog', publishStatus: 'archived' }
                 ]);
 
                 await LexemeRecord.create(lexemes.map(l => ({
@@ -118,7 +118,7 @@ describe.skip('LMS Vocabularies API', () => {
                     { value: 'dog', publishStatus: 'approved' },
                     { value: 'fish', publishStatus: 'approved' },
                     { value: 'catnip', publishStatus: 'approved' },
-                    { value: 'catdog', publishStatus: 'unapproved' }
+                    { value: 'catdog', publishStatus: 'archived' }
                 ]);
             });
 
@@ -304,7 +304,7 @@ describe.skip('LMS Vocabularies API', () => {
             it('should update the lexeme if it has not yet been approved', async () => {
                 const lexeme = await Lexeme.create({
                     ...initialData,
-                    publishStatus: 'unapproved'
+                    publishStatus: 'archived'
                 });
                 const vocabulary = await Vocabulary.create({
                     lexemeIds: [lexeme.id],

@@ -1,13 +1,17 @@
-@use 'shared/styles/variables';
-
 .root {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-.exampleText {}
+.item {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+}
 
-.exampleTranslation {
-    margin-left: 2.7rem;
+.input {
+    --Input-minHeight: auto !important;
+    --Input-paddingInline: 4px !important;
+    --Input-focusedThickness: 1px !important;
 }

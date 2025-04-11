@@ -15,7 +15,7 @@ export default function LexemeExamples({ title, examples }) {
                 {examples.map((example, index, array) => (
                     <div key={example.id}>
                         <List.Item
-                            className={styles.example}
+                            className={styles.item}
                             decorator={
                                 <Avatar
                                     content={index + 1} color="neutral"

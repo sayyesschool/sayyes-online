@@ -1,16 +1,16 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import ImageField from 'shared/components/image-field';
-import { useDebounce } from 'shared/hooks/fn';
-import http from 'shared/services/http';
+import { fieldLabels, lexemeKindOptions, lexemeTypeOptions } from 'shared/data/lexeme';
 import Storage from 'shared/services/storage';
-import { Alert, Button, Checkbox, Chip, ChipGroup, Flex, Form, Text } from 'shared/ui-components';
+import { Button, Checkbox, Chip, ChipGroup, Flex, Form, Text } from 'shared/ui-components';
 
 import LexemeExamples from './LexemeExamples';
+import useMatchingLexemes from './useMatchingLexemes';
 
 import styles from './LexemeForm.module.scss';
 
-const initialAdditionalData = {
+const initialRecordData = {
     translation: false,
     definition: false,
     examples: []
@@ -23,49 +23,49 @@ export default function LexemeForm({
     onSubmit,
     ...props
 }) {
-    const [file, setFile] = useState();
     const [data, setData] = useState({
         value: lexeme.value,
         translation: lexeme.translation,
         definition: lexeme.definition ?? '',
         examples: lexeme.examples ?? []
     });
-    const [additionalData, setAdditionalData] = useState(initialAdditionalData);
-    const [matchingLexemes, setMatchingLexemes] = useState([]);
+    const [file, setFile] = useState();
+    const [recordData, setRecordData] = useState(initialRecordData);
     const [isCommitted, setCommitted] = useState(false);
 
     const { value, translation, definition, examples } = data;
 
-    const search = useDebounce(value => {
-        http.get(`api/dictionary/search?q=${value}&e=${lexeme.id}`)
-            .then(response => setMatchingLexemes(response.data));
-    }, 500, lexeme.id);
-
-    useEffect(() => {
-        search(value);
-    }, [value, search]);
+    const matchingLexemes = useMatchingLexemes(lexeme.id, value);
 
     const handleSubmit = useCallback(async event => {
         event.preventDefault();
 
-        const data = {
+        const lexemeData = {
             value,
             translation,
             definition,
-            examples,
-            additionalData
+            examples
         };
 
         if (file) {
             const response = await Storage.upload(file, { path: 'lexemes' });
 
-            data.image = {
+            lexemeData.image = {
                 path: response.data.path
             };
         }
 
-        onSubmit(data);
-    }, [value, translation, definition, examples, additionalData, file, onSubmit]);
+        return onSubmit({
+            lexemeData,
+            recordData
+        });
+    }, [value, translation, definition, examples, recordData, file, onSubmit]);
+
+    const handleChange = useCallback(event => {
+        const { name, value } = event.target;
+
+        setData(prev => ({ ...prev, [name]: value }));
+    }, []);
 
     const handleFileChange = useCallback((data, file) => {
         setFile(file);
@@ -73,8 +73,10 @@ export default function LexemeForm({
 
     const handleFileDelete = useCallback(async image => {
         await Storage.delete(image.path).then(console.log);
+
         setFile(undefined);
-        onSubmit({ image: undefined });
+
+        return onSubmit({ image: undefined });
     }, [onSubmit]);
 
     const handleExamplesChange = useCallback(examples => {
@@ -82,27 +84,10 @@ export default function LexemeForm({
     }, []);
 
     const handleAdditionalExamplesChange = useCallback(examples => {
-        setAdditionalData(prev => ({ ...prev, examples }));
+        setRecordData(prev => ({ ...prev, examples }));
     }, []);
 
-    // TODO: required не срабатывает из-за disabled
-    const inputs = [
-        {
-            component: Form.Input,
-            id: 'translation',
-            label: 'Переводы',
-            required: true,
-            value: translation
-        },
-        {
-            component: Form.Textarea,
-            id: 'definition',
-            label: 'Определение',
-            value: definition
-        }
-    ];
-
-    const withNotifications = lexeme.isPending && lexeme.createdBy !== userId;
+    const showValueMessages = lexeme.isPending && lexeme.createdBy !== userId;
 
     return (
         <Form
@@ -120,7 +105,7 @@ export default function LexemeForm({
 
             <Form.Input
                 id="value"
-                label="Лексема"
+                label="Значение"
                 value={value}
                 message={matchingLexemes.length > 0 &&
                     <LexemeMatchMessage
@@ -129,53 +114,60 @@ export default function LexemeForm({
                         onMatch={onMatch}
                     />
                 }
+                disabled={isCommitted}
                 required
+                onChange={handleChange}
             />
 
-            {inputs.map(({ component: Component, id, label, value, required }) => {
-                const originalValue = lexeme[id];
-                const showMessage =
-                    originalValue &&
-                    originalValue !== value &&
-                    withNotifications;
+            {['translation', 'definition'].map(field =>
+                <Form.Input
+                    key={field}
+                    label={fieldLabels[field]}
+                    name={field}
+                    value={data[field]}
+                    message={showValueMessages &&
+                        <LexemeValueMessage
+                            currentValue={data[field]}
+                            originalValue={lexeme[field]}
+                            committed={isCommitted}
+                            checked={recordData[field]}
+                            onChecked={() =>
+                                setRecordData(prev => ({
+                                    ...prev,
+                                    [field]: !prev.translation
+                                }))
+                            }
+                        />
+                    }
+                    disabled={isCommitted}
+                    required
+                    onChange={handleChange}
+                />
+            )}
 
-                return (
-                    <Component
-                        key={id}
-                        label={label}
-                        value={value}
-                        readOnly={isCommitted}
-                        required={required}
-                        message={showMessage &&
-                            (isCommitted ? (
-                                <Checkbox
-                                    label={<>
-                                        Добавить пользователю создавшему лексему оригинальное значение{' '}
-                                        <i>{lexeme[id]}</i>
-                                    </>}
-                                    checked={additionalData[id]}
-                                    size="sm"
-                                    onChange={() =>
-                                        setAdditionalData(prev => ({
-                                            ...prev,
-                                            [id]: !prev[id]
-                                        }))
-                                    }
-                                />
-                            ) : (
-                                <>Старое значение - <i>{lexeme[id]}</i></>
-                            ))
-                        }
-                        onChange={e => setData(prev => ({ ...prev, [id]: e.target.value }))}
-                    />
-                );
-            })}
+            <Form.Select
+                name="type"
+                label="Тип"
+                value={lexeme.type}
+                options={lexemeTypeOptions}
+                disabled={isCommitted}
+                onChange={handleChange}
+            />
+
+            <Form.Select
+                name="kind"
+                label="Вид"
+                value={lexeme.kind}
+                options={lexemeKindOptions}
+                disabled={isCommitted}
+                onChange={handleChange}
+            />
 
             <LexemeExamples
                 examples={examples}
                 existingExamples={lexeme.examples}
-                additionalExamples={additionalData.examples}
-                withNotifications={withNotifications}
+                additionalExamples={recordData.examples}
+                withNotifications={showValueMessages}
                 readOnly={isCommitted}
                 onChange={handleExamplesChange}
                 onAdditionalChange={handleAdditionalExamplesChange}
@@ -185,10 +177,10 @@ export default function LexemeForm({
                 <Flex justifyContent="space-between">
                     <Button
                         content="Назад"
-                        variant="soft"
+                        variant="plain"
                         onClick={() => {
                             setCommitted(false);
-                            setAdditionalData(initialAdditionalData);
+                            setRecordData(initialRecordData);
                         }}
                     />
 
@@ -203,6 +195,26 @@ export default function LexemeForm({
             )}
         </Form>
     );
+}
+
+function LexemeValueMessage({ currentValue, originalValue, committed, checked, onChecked }) {
+    const showMessage =
+        originalValue &&
+        originalValue !== currentValue;
+
+    return showMessage && (committed ? (
+        <Checkbox
+            label={<>
+                Добавить пользователю создавшему лексему оригинальное значение{' '}
+                <i>{originalValue}</i>
+            </>}
+            checked={checked}
+            size="sm"
+            onChange={onChecked}
+        />
+    ) : (
+        <>Старое значение - <i>{originalValue}</i></>
+    ));
 }
 
 function LexemeMatchMessage({ matchingLexemes, lexeme, onMatch }) {

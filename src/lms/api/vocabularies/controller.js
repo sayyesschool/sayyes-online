@@ -1,8 +1,8 @@
 export default ({
-    services: { Vocabulary: VocabularyService }
+    services: { Vocabulary }
 }) => ({
     async search(req, res) {
-        const { lexemes, meta } = await VocabularyService.search(req.query);
+        const { lexemes, meta } = await Vocabulary.search(req.query);
 
         res.json({
             ok: true,
@@ -12,7 +12,7 @@ export default ({
     },
 
     async getMany(req, res) {
-        const vocabularies = await VocabularyService.getMany(req.user.id);
+        const vocabularies = await Vocabulary.getMany(req.user.id);
 
         res.json({
             ok: true,
@@ -21,7 +21,7 @@ export default ({
     },
 
     async getOne(req, res) {
-        const data = await VocabularyService.getOne(req.vocabulary);
+        const data = await Vocabulary.getOne(req.vocabulary);
 
         res.json({
             ok: true,
@@ -30,7 +30,7 @@ export default ({
     },
 
     async getVirtual(req, res) {
-        const vocabulary = await VocabularyService.getVirtual(
+        const vocabulary = await Vocabulary.getVirtual(
             req.query.learnerId || req.user.id,
             {
                 id: 'my',
@@ -45,7 +45,7 @@ export default ({
     },
 
     async create(req, res) {
-        const vocabulary = await VocabularyService.create(req.user.id, req.body);
+        const vocabulary = await Vocabulary.create(req.user.id, req.body);
 
         res.json({
             ok: true,
@@ -54,7 +54,7 @@ export default ({
     },
 
     async update(req, res) {
-        const vocabulary = await VocabularyService.update(req.params.vocabularyId, req.body);
+        const vocabulary = await Vocabulary.update(req.params.vocabularyId, req.body);
 
         res.json({
             ok: true,
@@ -63,7 +63,7 @@ export default ({
     },
 
     async delete(req, res) {
-        const vocabulary = await VocabularyService.delete(req.params.vocabularyId);
+        const vocabulary = await Vocabulary.delete(req.params.vocabularyId);
 
         res.json({
             ok: true,
@@ -74,37 +74,52 @@ export default ({
     },
 
     async addLexeme(req, res) {
-        console.log('addLexeme', req.vocabulary);
-        const data = await VocabularyService.addLexeme(
+        const lexeme = await Vocabulary.addLexeme(
             req.vocabulary,
-            req.body
+            req.body.data,
+            req.body.learnerId
         );
+
+        const data = lexeme.toJSON();
+
+        data.status = lexeme.record.status;
+        data.reviewDate = lexeme.record.reviewDate;
+        data.vocabularyId = req.vocabulary?.id;
+        delete data.record;
 
         res.json({
             ok: true,
+            message: 'Успешно добавлено',
             data
         });
     },
 
     async updateLexeme(req, res) {
-        const data = await VocabularyService.updateLexeme(
-            req.user.id,
-            req.vocabulary?.id,
-            req.params,
-            req.body
+        const lexeme = await Vocabulary.updateLexeme(
+            req.params.lexemeId,
+            req.body.data,
+            req.body.learnerId
         );
+
+        const data = lexeme.toJSON();
+
+        data.status = lexeme.record?.status;
+        data.reviewDate = lexeme.record?.reviewDate;
+        delete data.record;
 
         res.json({
             ok: true,
-            data: VocabularyService.transformLexeme(data)
+            message: 'Успешно обновлено',
+            data
         });
     },
 
     async removeLexeme(req, res) {
-        await VocabularyService.removeLexeme(req.vocabulary, req.params.lexemeId);
+        await Vocabulary.removeLexeme(req.vocabulary, req.params.lexemeId);
 
         res.json({
             ok: true,
+            message: 'Успешно удалено',
             data: {
                 id: req.params.lexemeId,
                 vocabularyId: req.params.vocabularyId
@@ -113,10 +128,11 @@ export default ({
     },
 
     async deleteLexeme(req, res) {
-        const record = await VocabularyService.deleteLexeme(req.params.lexemeId, req.user.id);
+        const record = await Vocabulary.deleteLexeme(req.params.lexemeId, req.body.learnerId);
 
         res.json({
             ok: true,
+            message: 'Успешно удалено',
             data: {
                 id: record.lexemeId
             }
@@ -124,7 +140,7 @@ export default ({
     },
 
     async updateLexemeStatus(req, res) {
-        const record = await VocabularyService.updateLexemeStatus(req.params.lexemeId, req.user.id, req.body.status);
+        const record = await Vocabulary.updateLexemeStatus(req.params.lexemeId, req.user.id, req.body.status);
 
         res.json({
             ok: true,

@@ -7,10 +7,12 @@ import styles from './LexemeShortForm.module.scss';
 
 const getDefaultData = ({
     value = '',
-    translation = ''
+    translation = '',
+    definition = ''
 } = {}) => ({
     'value*': value,
-    'translation*': translation
+    'translation': translation,
+    'definition': definition
 });
 
 export default function LexemeShortForm({
@@ -41,18 +43,27 @@ export default function LexemeShortForm({
             <Form.Input
                 ref={valueInputRef}
                 className={styles.input}
+                placeholder="Слово"
                 name="value"
                 value={data.value.value}
-                placeholder="Слово"
                 autoComplete="off"
                 onChange={handleChange}
             />
 
             <Form.Input
                 className={styles.input}
+                placeholder="Перевод"
                 name="translation"
                 value={data.translation.value}
-                placeholder="Перевод"
+                autoComplete="off"
+                onChange={handleChange}
+            />
+
+            <Form.Input
+                className={styles.input}
+                placeholder="Значение"
+                name="definition"
+                value={data.definition.value}
                 autoComplete="off"
                 onChange={handleChange}
             />

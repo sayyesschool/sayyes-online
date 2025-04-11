@@ -7,11 +7,11 @@ import LexemesSearch from 'shared/components/lexemes-search';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import { CMS_URL } from 'shared/constants';
 import { useDictionaryActions } from 'shared/hooks/dictionary';
-import { Dialog, IconButton, Tabs } from 'shared/ui-components';
+import { Button, Dialog, Flex, IconButton, Tabs, Text } from 'shared/ui-components';
 
 import Lexeme from 'cms/components/dictionary/lexeme';
 import LexemeForm from 'cms/components/dictionary/lexeme-form';
-import LexemesForm from 'cms/components/dictionary/lexemes-form';
+import LexemesMergeForm from 'cms/components/dictionary/lexemes-merge-form';
 
 import styles from './Dictionary.module.scss';
 
@@ -20,7 +20,7 @@ const SEARCH_URL = `${CMS_URL}/api/vocabularies/search`;
 const tabs = [
     { value: LexemePublishStatus.Pending, content: 'На проверке', icon: 'pending' },
     { value: LexemePublishStatus.Approved, content: 'Утверждённые', icon: 'verified' },
-    { value: LexemePublishStatus.Unapproved, content: 'Архивные', icon: 'archive' }
+    { value: LexemePublishStatus.Archived, content: 'Архивные', icon: 'archive' }
 ];
 
 export default function Dictionary({ dictionary, user }) {
@@ -43,8 +43,8 @@ export default function Dictionary({ dictionary, user }) {
             .finally(() => setLoading(false));
     }, [activeTab, actions]);
 
-    const handleAddLexeme = useCallback(data => {
-        return actions.addLexeme(data)
+    const handleCreateLexeme = useCallback(data => {
+        return actions.createLexeme(data)
             .then(() => setActiveTab(LexemePublishStatus.Pending));
     }, [actions]);
 
@@ -55,7 +55,10 @@ export default function Dictionary({ dictionary, user }) {
 
     const handleMergeLexemes = useCallback(data => {
         return actions.mergeLexemes(data)
-            .finally(() => setMergingLexemes(null));
+            .finally(() => {
+                setSelectedLexemeIds([]);
+                setMergingLexemes(null);
+            });
     }, [actions]);
 
     const handleDeleteLexeme = useCallback(lexemeId => {
@@ -66,7 +69,7 @@ export default function Dictionary({ dictionary, user }) {
 
     const handleArchiveLexeme = useCallback(lexemeId => {
         if (confirm('Вы уверены что хотите архивировать слово')) {
-            return actions.updateLexemePublishStatus(lexemeId, LexemePublishStatus.Unapproved);
+            return actions.updateLexemePublishStatus(lexemeId, LexemePublishStatus.Archived);
         }
     }, [actions]);
 
@@ -79,7 +82,13 @@ export default function Dictionary({ dictionary, user }) {
     }, []);
 
     const handleMergeLexemesRequest = useCallback(() => {
-        setMergingLexemes(lexemes.filter(lexeme => selectedLexemeIds.includes(lexeme.id)));
+        const lexemesById = lexemes.reduce((acc, lexeme) => {
+            acc[lexeme.id] = lexeme;
+
+            return acc;
+        }, {});
+
+        setMergingLexemes(selectedLexemeIds.map(id => lexemesById[id]));
     }, [lexemes, selectedLexemeIds]);
 
     const handleMatch = useCallback((foundLexeme, chosenLexeme) => {
@@ -97,8 +106,6 @@ export default function Dictionary({ dictionary, user }) {
         setMergingLexemes(null);
     }, []);
 
-    const isPending = dictionary.publishStatus === 'pending';
-    const isUnapproved = dictionary.publishStatus === 'unapproved';
     const isModalOpen = viewingLexeme || editingLexeme || mergingLexemes;
 
     return (
@@ -118,31 +125,45 @@ export default function Dictionary({ dictionary, user }) {
                             onClick={() => setEditingLexeme(result.data)}
                         />
                     }
-                    onAddLexeme={handleAddLexeme}
+                    onAddLexeme={handleCreateLexeme}
+                />
+
+                <Tabs
+                    className={styles.tabs}
+                    value={activeTab}
+                    items={tabs.map(tab => ({
+                        key: tab.value,
+                        value: tab.value,
+                        icon: tab.icon,
+                        content: tab.content,
+                        color: tab.value === activeTab ? 'primary' : undefined
+                    }))}
+                    tabFlex={1}
+                    tabVariant="plain"
+                    variant="plain"
+                    onChange={handleTabChange}
                 />
 
                 <div className={styles.toolbar}>
-                    <Tabs
-                        value={activeTab}
-                        items={tabs.map(tab => ({
-                            key: tab.value,
-                            value: tab.value,
-                            icon: tab.icon,
-                            content: tab.content,
-                            color: tab.value === activeTab ? 'primary' : undefined
-                        }))}
-                        tabVariant="plain"
-                        variant="plain"
-                        disableUnderline
-                        onChange={handleTabChange}
-                    />
-
                     {selectedLexemeIds.length > 1 &&
-                        <IconButton
-                            icon="edit"
-                            title="Редактировать несколько лексем"
-                            onClick={handleMergeLexemesRequest}
-                        />
+                        <Flex alignItems="center" justifyContent="space-between">
+                            <Text
+                                content={`Выбрано ${selectedLexemeIds.length} лексемы`} end={
+                                    <Button
+                                        content="Снять выделение"
+                                        variant="plain"
+                                        size="sm"
+                                        onClick={() => selectedLexemeIds([])}
+                                    />
+                                }
+                            />
+
+                            <IconButton
+                                icon="join"
+                                title="Объединить лексемы"
+                                onClick={handleMergeLexemesRequest}
+                            />
+                        </Flex>
                     }
                 </div>
             </div>
@@ -155,16 +176,16 @@ export default function Dictionary({ dictionary, user }) {
                         selectedLexemeIds={selectedLexemeIds}
                         renderLexemeActions={lexeme => [
                             {
-                                icon: 'edit',
-                                title: 'Редактировать слово',
+                                icon: lexeme.isApproved ? 'edit' : 'checklist',
+                                title: `${lexeme.isApproved ? 'Редактировать' : 'Утвердить'} слово`,
                                 onClick: () => setEditingLexeme(lexeme)
                             },
-                            !isUnapproved && {
+                            !lexeme.isArchived && {
                                 icon: 'archive',
                                 title: 'Архивировать слово',
                                 onClick: () => handleArchiveLexeme(lexeme.id)
                             },
-                            lexeme.createdBy === userId && isPending && {
+                            !lexeme.isApproved && {
                                 icon: 'delete',
                                 title: 'Удалить слово',
                                 onClick: () => handleDeleteLexeme(lexeme.id)
@@ -177,7 +198,7 @@ export default function Dictionary({ dictionary, user }) {
             </div>
 
             <Dialog
-                className={styles.dialog}
+                className={styles.modal}
                 open={isModalOpen}
                 onClose={handleModalClose}
             >
@@ -195,12 +216,11 @@ export default function Dictionary({ dictionary, user }) {
                         onSubmit={handleUpdateLexeme}
                     />
                 ) : mergingLexemes ? (
-                    <LexemesForm
+                    <LexemesMergeForm
                         id="lexemes-edit-form"
                         userId={userId}
                         lexemes={mergingLexemes}
                         initialLexeme={mergingLexemes?.[0]}
-                        isPending={isPending}
                         onSubmit={handleMergeLexemes}
                     />
                 ) : null}

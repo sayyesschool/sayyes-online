@@ -14,7 +14,7 @@ export const getDictionary = createAction('GET_DICTIONARY', query => ({
 
 export const unsetDictionary = createAction('UNSET_DICTIONARY');
 
-export const addLexeme = createAction('DICTIONARY_ADD_LEXEME', data => ({
+export const createLexeme = createAction('DICTIONARY_CREATE_LEXEME', data => ({
     request: {
         method: 'post',
         path: 'dictionary',
@@ -30,10 +30,18 @@ export const updateLexeme = createAction('DICTIONARY_UPDATE_LEXEME', (lexemeId, 
     }
 }));
 
+export const approveLexeme = createAction('DICTIONARY_APPROVE_LEXEME', (lexemeId, data) => ({
+    request: {
+        method: 'post',
+        path: `dictionary/${lexemeId}`,
+        body: data
+    }
+}));
+
 export const mergeLexemes = createAction('MERGE_LEXEMES', data => ({
     request: {
         method: 'put',
-        path: 'dictionary',
+        path: 'dictionary/merge',
         body: data
     }
 }));
@@ -43,7 +51,7 @@ export const updateLexemePublishStatus = createAction(
     (lexemeId, status) => ({
         request: {
             method: 'put',
-            path: `dictionary/status/${lexemeId}`,
+            path: `dictionary/${lexemeId}/status`,
             body: { status }
         }
     })
@@ -59,15 +67,15 @@ export const deleteLexeme = createAction('DICTIONARY_DELETE_LEXEME', lexemeId =>
 export const actions = {
     getDictionary,
     unsetDictionary,
-    addLexeme,
-    updateLexemePublishStatus,
+    createLexeme,
     updateLexeme,
+    updateLexemePublishStatus,
     mergeLexemes,
     deleteLexeme
 };
 
 export const dictionariesReducer = createReducer(null, {
-    [addLexeme]: (state, action) =>
+    [createLexeme]: (state, action) =>
         state &&
     state.map(vocabulary =>
         vocabulary.id === action.data.vocabularyId ?
@@ -84,7 +92,7 @@ export const dictionaryReducer = createReducer(null, {
 
     [unsetDictionary]: (state, action) => null,
 
-    [addLexeme]: (state, action) => {
+    [createLexeme]: (state, action) => {
         return {
             ...state,
             lexemes: [action.data, ...state.lexemes]

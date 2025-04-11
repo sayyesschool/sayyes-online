@@ -1,23 +1,24 @@
 export const LexemeType = {
-    Word: 'word',
-    Phrase: 'phrase'
+    Phrase: 'phrase',
+    Sentence: 'sentence',
+    Word: 'word'
 };
 
 export const LexemeKind = {
-    Noun: 'noun',
-    Verb: 'verb',
     Adjective: 'adjective',
     Adverb: 'adverb',
+    Article: 'article',
+    Conjunction: 'conjunction',
+    Determiner: 'determiner',
+    Interjection: 'interjection',
+    Noun: 'noun',
     Pronoun: 'pronoun',
     Preposition: 'preposition',
-    Conjunction: 'conjunction',
-    Interjection: 'interjection',
-    Determiner: 'determiner',
-    Article: 'article'
+    Verb: 'verb'
 };
 
 export const LexemePublishStatus = {
-    Pending: 'pending',
     Approved: 'approved',
-    Unapproved: 'unapproved'
+    Pending: 'pending',
+    Archived: 'archived'
 };

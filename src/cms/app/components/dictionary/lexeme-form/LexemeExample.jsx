@@ -15,7 +15,7 @@ export default function LexemeExample({
     number,
     checked: isChecked,
     shouldShowNotification,
-    readOnly,
+    disabled,
     onCheck,
     onChange,
     onDelete
@@ -33,7 +33,7 @@ export default function LexemeExample({
                     name="text"
                     value={text}
                     variant="plain"
-                    readOnly={readOnly}
+                    disabled={disabled}
                     required
                     onChange={e => onChange(id, e)}
                 />
@@ -45,13 +45,13 @@ export default function LexemeExample({
                     value={translation}
                     variant="plain"
                     size="sm"
-                    readOnly={readOnly}
+                    disabled={disabled}
                     required
                     onChange={e => onChange(id, e)}
                 />
 
                 {shouldShowNotification &&
-                    (readOnly ? (
+                    (disabled ? (
                         <Checkbox
                             label={deleted
                                 ? 'Сохранить пользователю удалённый пример?'
@@ -74,7 +74,7 @@ export default function LexemeExample({
                 }
             </Flex>
 
-            {!readOnly &&
+            {!disabled &&
                 <IconButton
                     size="sm"
                     variant="plain"
