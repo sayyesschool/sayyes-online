@@ -27,6 +27,10 @@ export default ({
         });
     },
 
+    async getLexemes(lexemeIds) {
+        return await Lexeme.find({ _id: { $in: lexemeIds } });
+    },
+
     async updateLexeme(lexemeId, { value, translation, definition, examples, image, additionalData = {} }) {
         const lexeme = await Lexeme.findById(lexemeId);
 

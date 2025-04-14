@@ -85,6 +85,8 @@ export const dictionaryReducer = createReducer(null, {
     [unsetDictionary]: (state, action) => null,
 
     [addLexeme]: (state, action) => {
+        if (!state?.lexemes) return state;
+
         return {
             ...state,
             lexemes: [action.data, ...state.lexemes]
@@ -92,6 +94,8 @@ export const dictionaryReducer = createReducer(null, {
     },
 
     [updateLexeme]: (state, action) => {
+        if (!state?.lexemes) return state;
+
         const updatedLexemes = state.lexemes.map(lexeme =>
             lexeme.id === action.data.id ? action.data : lexeme
         );
@@ -118,6 +122,8 @@ export const dictionaryReducer = createReducer(null, {
     },
 
     [updateLexemePublishStatus]: (state, action) => {
+        if (!state?.lexemes) return state;
+
         return {
             ...state,
             lexemes: state.lexemes.filter(lexeme => lexeme.id !== action.data.id)

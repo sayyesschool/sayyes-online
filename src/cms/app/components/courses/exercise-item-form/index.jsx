@@ -91,7 +91,8 @@ export default function ExerciseItemForm({
         <form
             id={item.id}
             className={classNames}
-            onSubmit={handleSubmit}
+            // TODO: не отправлялась форма в айтеме словаря
+            // onSubmit={(handleSubmit)}
             {...props}
         >
             <Flex
@@ -106,10 +107,10 @@ export default function ExerciseItemForm({
                     buttons={[
                         {
                             key: 'save',
-                            type: 'submit',
                             icon: 'save',
                             title: 'Сохранить',
-                            disabled: isLoading
+                            disabled: isLoading,
+                            onClick: handleSubmit
                         },
                         {
                             key: 'close',

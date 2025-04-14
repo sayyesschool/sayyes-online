@@ -140,27 +140,39 @@ export const vocabularyReducer = createReducer(null, {
 
     [unsetVocabulary]: (state, action) => null,
 
-    [addLexeme]: (state, action) => ({
-        ...state,
-        lexemes: [action.data, ...state.lexemes],
-        numberOfLexemes: state.numberOfLexemes + 1
-    }),
+    [addLexeme]: (state, action) => {
+        if (!state?.lexemes) return state;
 
-    [updateLexeme]: (state, action) => ({
-        ...state,
-        lexemes: state.lexemes.map(lexeme =>
-            lexeme.id !== action.data.id ? lexeme : {
-                ...lexeme,
-                ...action.data
-            }
-        )
-    }),
+        return {
+            ...state,
+            lexemes: [action.data, ...state.lexemes],
+            numberOfLexemes: state.numberOfLexemes + 1
+        };
+    },
 
-    [deleteLexeme]: (state, action) => ({
-        ...state,
-        lexemes: state.lexemes.filter(lexeme => lexeme.id !== action.data.id),
-        numberOfLexemes: state.numberOfLexemes - 1
-    }),
+    [updateLexeme]: (state, action) => {
+        if (!state?.lexemes) return state;
+
+        return {
+            ...state,
+            lexemes: state.lexemes.map(lexeme =>
+                lexeme.id !== action.data.id ? lexeme : {
+                    ...lexeme,
+                    ...action.data
+                }
+            )
+        };
+    },
+
+    [deleteLexeme]: (state, action) => {
+        if (!state?.lexemes) return state;
+
+        return {
+            ...state,
+            lexemes: state.lexemes.filter(lexeme => lexeme.id !== action.data.id),
+            numberOfLexemes: state.numberOfLexemes - 1
+        };
+    },
 
     [updateLexemeStatus]: (state, action) => state && ({
         ...state,

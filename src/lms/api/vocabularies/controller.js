@@ -74,6 +74,15 @@ export default ({
         });
     },
 
+    async getLexemes(req, res) {
+        const data = await VocabularyService.getLexemes(req.user.id, req.body.lexemeIds);
+
+        res.json({
+            ok: true,
+            data
+        });
+    },
+
     async addLexeme(req, res) {
         const data = await VocabularyService.addLexeme(req.user.id, req.params.vocabularyId, req.vocabulary, req.body);
 
@@ -105,13 +114,11 @@ export default ({
     },
 
     async deleteLexeme(req, res) {
-        const record = await VocabularyService.deleteLexeme(req.params.lexemeId, req.user.id);
+        const lexeme = await VocabularyService.deleteLexeme(req.params.lexemeId, req.user.id);
 
         res.json({
             ok: true,
-            data: {
-                id: record.lexemeId
-            }
+            data: lexeme
         });
     },
 

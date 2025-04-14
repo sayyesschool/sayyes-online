@@ -163,7 +163,7 @@ export default function ExerciseItems({
                         />
                     }
                     items={exerciseTypeMenuItems}
-                    onMenuItemClick={handleCreate}
+                    onItemClick={handleCreate}
                 />
             </Flex>
 

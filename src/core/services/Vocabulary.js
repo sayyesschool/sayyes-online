@@ -32,6 +32,25 @@ export default ({
         });
     },
 
+    // TODO: переписать на populate
+    async getLexemes(learnerId, lexemeIds) {
+        const lexemes = await Lexeme.find({ _id: { $in: lexemeIds } });
+
+        return Promise.all(
+            lexemes.map(async lexeme => {
+                const record = await LexemeRecord.findOne({
+                    lexemeId: lexeme._id,
+                    learnerId
+                });
+
+                return {
+                    ...lexeme.toJSON(),
+                    ...this.transformRecord(record)
+                };
+            })
+        );
+    },
+
     async getMy(learnerId, userId) {
     // TODO: убрать костыль
         if (learnerId === '') {
@@ -152,10 +171,7 @@ export default ({
             };
         }
 
-        const data = lexeme.toJSON();
-
-        data.status = record.status;
-        data.reviewDate = record.reviewDate;
+        const data = { ...lexeme.toJSON(), ...this.transformRecord(record) };
 
         if (vocabularyId) {
             await reqVocabulary.addLexeme(lexeme.id);
@@ -246,6 +262,8 @@ export default ({
         const record = await LexemeRecord.findOneAndDelete({
             lexemeId,
             learnerId
+        }).populate({
+            path: 'lexeme'
         });
 
         if (!record)
@@ -254,7 +272,7 @@ export default ({
                 message: 'Не найдено'
             };
 
-        return record;
+        return record.lexeme;
     },
 
     async updateLexemeStatus(lexemeId, learnerId, status) {

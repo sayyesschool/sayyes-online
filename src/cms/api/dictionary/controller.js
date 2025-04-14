@@ -30,6 +30,15 @@ export default ({
         });
     },
 
+    async getLexemes(req, res) {
+        const data = await Dictionary.getLexemes(req.body.lexemeIds);
+
+        res.json({
+            ok: true,
+            data
+        });
+    },
+
     async addLexeme(req, res) {
         const lexeme = await Dictionary.addLexeme(req.user.id, req.body);
 

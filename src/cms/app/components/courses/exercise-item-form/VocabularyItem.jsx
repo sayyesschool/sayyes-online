@@ -1,5 +1,7 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
+import { LexemePublishStatus } from 'core/models/lexeme/constants';
+
 import LexemesList from 'shared/components/lexemes-list';
 import LexemesSearch from 'shared/components/lexemes-search';
 import { CMS_URL } from 'shared/constants';
@@ -11,24 +13,24 @@ import { Dialog, IconButton } from 'shared/ui-components';
 import Lexeme from 'cms/components/dictionary/lexeme';
 import LexemeForm from 'cms/components/dictionary/lexeme-form';
 
-import styles from './VocabularyItemForm.module.scss';
+import styles from './VocabularyItem.module.scss';
 
 const SEARCH_URL = `${CMS_URL}/api/vocabularies/search`;
 
 function VocabularyItemForm({ lexemeIds = [] }, ref) {
     const [user] = useUser();
-    const actions = useDictionaryActions();
+    const { addLexeme, updateLexeme, updateLexemePublishStatus } = useDictionaryActions();
 
     const lexemeIdsRef = useRef(lexemeIds);
 
-    const [lexemes, setLexemes] = useState(lexemeIds);
+    const [lexemes, setLexemes] = useState([]);
     const [viewingLexeme, setViewingLexeme] = useState();
     const [editingLexeme, setEditingLexeme] = useState();
 
     useEffect(() => {
-        http.get('/lexemes', { params: { ids: lexemeIds } })
+        http.post('/api/dictionary/lexemes', { lexemeIds })
             .then(response => setLexemes(response.data));
-    }, [/* no deps */]);
+    }, []);
 
     useImperativeHandle(ref, () => ({
         get props() {
@@ -38,15 +40,28 @@ function VocabularyItemForm({ lexemeIds = [] }, ref) {
         }
     }));
 
-    const updateLexeme = useCallback(data => {
-        return actions.updateLexeme(editingLexeme?.id, data)
+    const handleUpdateLexeme = useCallback(data => {
+        return updateLexeme(editingLexeme?.id, data)
+            .then(() => {
+                setLexemes(lexemes => lexemes.map(l => l.id === editingLexeme.id ? data : l));
+            })
             .finally(() => setEditingLexeme(null));
-    }, [editingLexeme?.id, actions]);
+    }, [editingLexeme?.id, updateLexeme]);
 
-    const addLexeme = useCallback(lexeme => {
+    const handleAddLexeme = useCallback(lexeme => {
         lexemeIdsRef.current.push(lexeme.id);
+
         setLexemes(lexemes => lexemes.concat(lexeme));
     }, []);
+
+    const handleCreateLexeme = useCallback(async lexeme => {
+        return addLexeme(lexeme)
+            .then(response => {
+                return updateLexemePublishStatus(response.data.id, LexemePublishStatus.Approved);
+            }).then(response => {
+                handleAddLexeme(response.data);
+            });
+    }, [addLexeme, handleAddLexeme, updateLexemePublishStatus]);
 
     const removeLexeme = useCallback(lexeme => {
         lexemeIdsRef.current = lexemeIdsRef.current.filter(id => id !== lexeme.id);
@@ -70,10 +85,10 @@ function VocabularyItemForm({ lexemeIds = [] }, ref) {
                         icon="add"
                         title="Добавить слово"
                         variant="soft"
-                        onClick={() => addLexeme(result.data)}
+                        onClick={() => handleAddLexeme(result.data)}
                     />
                 }
-                onAddLexeme={addLexeme}
+                onAddLexeme={handleCreateLexeme}
             />
 
             <LexemesList
@@ -104,7 +119,7 @@ function VocabularyItemForm({ lexemeIds = [] }, ref) {
                         id="lexeme-edit-form"
                         lexeme={editingLexeme}
                         userId={user?.id}
-                        onSubmit={updateLexeme}
+                        onSubmit={handleUpdateLexeme}
                     />
                 ) : null}
             </Dialog>
