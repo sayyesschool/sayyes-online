@@ -13,7 +13,7 @@ export default function UserSearch({ onResult, ...props }) {
     const search = useDebounce(query => {
         setLoading(true);
 
-        http.get(`/api/users?search=${query}&role=learner`)
+        http.get(`/api/users?q=${query}&role=learner`)
             .then(res => setUsers(res.data))
             .finally(() => setLoading(false));
     }, 1000);

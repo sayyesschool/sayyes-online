@@ -15,11 +15,13 @@ const Autocomplete = forwardRef(({
 }, ref) => {
     const classNames = classnames('ui-Autocomplete', className);
 
-    const handleChange = useCallback((event, value, reason) => {
+    const handleChange = useCallback((event, _value, reason) => {
+        const value = typeof _value === 'object' ? _value?.value : _value;
+
         onChange?.({
             target: {
                 name,
-                value: typeof value === 'object' ? value?.value : value
+                value
             }
         }, value, reason);
     }, [name, onChange]);
