@@ -17,6 +17,7 @@ const ListItem = forwardRef(({
     decorator = typeof icon === 'string' ? <Icon name={icon} /> : icon,
     interactive,
     selected,
+    disabled,
     to,
     color,
     variant,
@@ -26,7 +27,11 @@ const ListItem = forwardRef(({
     className,
     ...props
 }, ref) => {
-    const classNames = classnames('ui-ListItem', className);
+    const classNames = classnames(
+        'ui-ListItem',
+        className,
+        disabled && 'ui-ListItem--disabled'
+    );
 
     const listItemContent = (<>
         {decorator &&

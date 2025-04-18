@@ -44,9 +44,10 @@ export default function MembershipPurchaseForm({ options = [] }) {
                                     secondary: option.description
                                 }}
                                 start={
-                                    <Radio checked={option.id === selectedOptionId} />
+                                    <Radio checked={option.id === selectedOptionId} disabled={!option.available} />
                                 }
                                 end={<Text type="title-lg" content={`${option.price} ₽`} />}
+                                disabled={!option.available}
                                 interactive
                                 onClick={() => setSelectedOptionId(option.id)}
                             />
