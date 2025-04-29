@@ -15,7 +15,8 @@ export default context => {
         .post(controller.create);
 
     router.route('/lexemes')
-        .post(controller.getLexemes);
+        .get(controller.getLexemes)
+        .post(controller.addLexemes);
 
     router.route('/my{/:lexemeId}')
         .get(controller.getMy)

@@ -28,7 +28,10 @@ function VocabularyItemForm({ lexemeIds = [] }, ref) {
     const [editingLexeme, setEditingLexeme] = useState();
 
     useEffect(() => {
-        http.post('/api/dictionary/lexemes', { lexemeIds })
+        const params = new URLSearchParams();
+        lexemeIds?.forEach(id => params.append('lexemeIds', id));
+
+        http.get(`/api/dictionary/lexemes?${params.toString()}`)
             .then(response => setLexemes(response.data));
     }, []);
 

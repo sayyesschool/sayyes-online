@@ -31,7 +31,13 @@ export default ({
     },
 
     async getLexemes(req, res) {
-        const data = await Dictionary.getLexemes(req.body.lexemeIds);
+        let lexemeIds = req.query.lexemeIds;
+
+        if (!Array.isArray(lexemeIds)) {
+            lexemeIds = lexemeIds ? [lexemeIds] : [];
+        }
+
+        const data = await Dictionary.getLexemes(lexemeIds);
 
         res.json({
             ok: true,

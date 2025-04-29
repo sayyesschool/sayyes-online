@@ -51,6 +51,26 @@ export default ({
         );
     },
 
+    async addLexemes(learnerId, newLexemeIds) {
+        const lexemes = await Lexeme.find({ _id: { $in: newLexemeIds } });
+
+        const result = await Promise.all(
+            lexemes.map(async lexeme => {
+                const record = await LexemeRecord.create({
+                    lexemeId: lexeme._id,
+                    learnerId
+                });
+
+                return {
+                    ...lexeme.toJSON(),
+                    ...this.transformRecord(record)
+                };
+            })
+        );
+
+        return result;
+    },
+
     async getMy(learnerId, userId) {
     // TODO: убрать костыль
         if (learnerId === '') {

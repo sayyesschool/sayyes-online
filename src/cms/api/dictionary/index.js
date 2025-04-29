@@ -13,7 +13,7 @@ export default context => {
 
     router.get('/search', controller.search);
 
-    router.post('/lexemes', controller.getLexemes);
+    router.get('/lexemes', controller.getLexemes);
 
     router.route('/:lexemeId')
         .put(controller.updateLexeme)
