@@ -1,8 +1,4 @@
-import {
-    combineReducers,
-    createAction,
-    createReducer
-} from 'shared/store/helpers';
+import { createAction, createReducer } from 'shared/store/helpers';
 
 export const getDictionary = createAction('GET_DICTIONARY', query => ({
     request: {
@@ -70,22 +66,10 @@ export const actions = {
     createLexeme,
     updateLexeme,
     updateLexemePublishStatus,
+    approveLexeme,
     mergeLexemes,
     deleteLexeme
 };
-
-export const dictionariesReducer = createReducer(null, {
-    [createLexeme]: (state, action) =>
-        state &&
-    state.map(vocabulary =>
-        vocabulary.id === action.data.vocabularyId ?
-            {
-                ...vocabulary,
-                numberOfLexemes: vocabulary.numberOfLexemes + 1
-            } :
-            vocabulary
-    )
-});
 
 export const dictionaryReducer = createReducer(null, {
     [getDictionary]: (state, action) => action.data,
@@ -100,14 +84,18 @@ export const dictionaryReducer = createReducer(null, {
     },
 
     [updateLexeme]: (state, action) => {
-        const updatedLexemes = state.lexemes.map(lexeme =>
-            lexeme.id === action.data.id ? action.data : lexeme
-        );
-        const filteredLexemes = state.lexemes.filter(lexeme => lexeme.id !== action.data.id);
-
         return {
             ...state,
-            lexemes: state.publishStatus === 'approved' ? updatedLexemes : filteredLexemes
+            lexemes: state.lexemes.map(l => l.id === action.data.id ? action.data : l)
+        };
+    },
+
+    [approveLexeme]: (state, action) => {
+        return {
+            ...state,
+            lexemes: state.lexemes
+                .map(l => l.id === action.data.id ? action.data : l)
+                .filter(l => l.publishStatus === state.publishStatus)
         };
     },
 
@@ -140,7 +128,4 @@ export const dictionaryReducer = createReducer(null, {
     }
 });
 
-export default combineReducers({
-    list: dictionariesReducer,
-    single: dictionaryReducer
-});
+export default dictionaryReducer;

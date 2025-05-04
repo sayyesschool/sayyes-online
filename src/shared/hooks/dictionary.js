@@ -1,16 +1,13 @@
 import { useEffect } from 'react';
 
-import { useActions, useStore } from 'shared/hooks/store';
-import { actions as dictionaryActions } from 'shared/store/modules/dictionary';
-import { hasKey } from 'shared/utils/object';
-
 import { LexemePublishStatus } from 'core/models/lexeme/constants';
 
+import { useActions, useStore } from 'shared/hooks/store';
+import { actions as dictionaryActions } from 'shared/store/modules/dictionary';
+
 export function useDictionary(publishStatus = LexemePublishStatus.Pending) {
-    const [vocabulary, actions] = useStore(
-        state => state && hasKey(state.dictionary, 'single') ?
-            state.dictionary.single :
-            state.dictionary,
+    const [dictionary, actions] = useStore(
+        state => state.dictionary,
         dictionaryActions
     );
 
@@ -20,11 +17,9 @@ export function useDictionary(publishStatus = LexemePublishStatus.Pending) {
         actions.getDictionary(publishStatus);
     }, [actions, publishStatus]);
 
-    return [vocabulary, actions];
+    return [dictionary, actions];
 }
 
 export function useDictionaryActions() {
-    return useActions(
-        dictionaryActions
-    );
+    return useActions(dictionaryActions);
 }
