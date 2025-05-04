@@ -3,10 +3,10 @@ import { useCallback, useState } from 'react';
 import ImageField from 'shared/components/image-field';
 import { lexemeKindOptions, lexemeTypeOptions } from 'shared/data/lexeme';
 import Storage from 'shared/services/storage';
-import { Button, Form } from 'shared/ui-components';
+import { Form } from 'shared/ui-components';
 
 import Lexeme from 'cms/components/dictionary/lexeme';
-import { LexemeExamples } from 'cms/components/dictionary/lexeme-form';
+import { LexemeExamples } from 'cms/components/dictionary/lexeme-approve-form';
 
 import styles from './LexemesMergeForm.module.scss';
 
@@ -156,8 +156,6 @@ export default function LexemesMergeForm({
                 examples={examples}
                 onChange={handleExamplesChange}
             />
-
-            <Button content="Сохранить" type="submit" />
         </Form>
     );
 }

@@ -1,65 +1,44 @@
 import { useCallback, useState } from 'react';
 
 import ImageField from 'shared/components/image-field';
-import { fieldLabels, lexemeKindOptions, lexemeTypeOptions } from 'shared/data/lexeme';
+import { lexemeKindOptions, lexemeTypeOptions } from 'shared/data/lexeme';
 import Storage from 'shared/services/storage';
-import { Button, Checkbox, Chip, ChipGroup, Flex, Form, Text } from 'shared/ui-components';
+import { Form } from 'shared/ui-components';
 
-import LexemeExamples from './LexemeExamples';
-import useMatchingLexemes from './useMatchingLexemes';
+import LexemeFormExamples from './LexemeFormExamples';
 
 import styles from './LexemeForm.module.scss';
-
-const initialRecordData = {
-    translation: false,
-    definition: false,
-    examples: []
-};
 
 export default function LexemeForm({
     lexeme,
     userId,
+    disabled,
+    readOnly,
     onMatch,
     onSubmit,
     ...props
 }) {
+    const [file, setFile] = useState();
     const [data, setData] = useState({
         value: lexeme.value,
         translation: lexeme.translation,
         definition: lexeme.definition ?? '',
         examples: lexeme.examples ?? []
     });
-    const [file, setFile] = useState();
-    const [recordData, setRecordData] = useState(initialRecordData);
-    const [isCommitted, setCommitted] = useState(false);
-
-    const { value, translation, definition, examples } = data;
-
-    const matchingLexemes = useMatchingLexemes(lexeme.id, value);
 
     const handleSubmit = useCallback(async event => {
         event.preventDefault();
 
-        const lexemeData = {
-            value,
-            translation,
-            definition,
-            examples
-        };
-
         if (file) {
             const response = await Storage.upload(file, { path: 'lexemes' });
 
-            lexemeData.image = {
+            data.image = {
                 path: response.data.path
             };
         }
 
-        return onSubmit({
-            lexemeData,
-            recordData
-        });
-    }, [value, translation, definition, examples, recordData, file, onSubmit]);
+        return onSubmit(data);
+    }, [data, file, onSubmit]);
 
     const handleChange = useCallback(event => {
         const { name, value } = event.target;
@@ -83,12 +62,6 @@ export default function LexemeForm({
         setData(prev => ({ ...prev, examples }));
     }, []);
 
-    const handleAdditionalExamplesChange = useCallback(examples => {
-        setRecordData(prev => ({ ...prev, examples }));
-    }, []);
-
-    const showValueMessages = lexeme.isPending && lexeme.createdBy !== userId;
-
     return (
         <Form
             className={styles.root}
@@ -96,156 +69,71 @@ export default function LexemeForm({
             {...props}
         >
             <ImageField
+                name="image"
                 label="Изображение"
                 image={lexeme.image || lexeme.data?.image}
-                disabled={isCommitted}
+                disabled={disabled}
+                readOnly={readOnly}
                 onChange={handleFileChange}
                 onDelete={handleFileDelete}
             />
 
             <Form.Input
-                id="value"
                 label="Значение"
-                value={value}
-                message={matchingLexemes.length > 0 &&
-                    <LexemeMatchMessage
-                        matchingLexemes={matchingLexemes}
-                        lexeme={lexeme}
-                        onMatch={onMatch}
-                    />
-                }
-                disabled={isCommitted}
+                name="value"
+                value={data.value}
+                disabled={disabled}
+                readOnly={readOnly}
                 required
                 onChange={handleChange}
             />
 
-            {['translation', 'definition'].map(field =>
-                <Form.Input
-                    key={field}
-                    label={fieldLabels[field]}
-                    name={field}
-                    value={data[field]}
-                    message={showValueMessages &&
-                        <LexemeValueMessage
-                            currentValue={data[field]}
-                            originalValue={lexeme[field]}
-                            committed={isCommitted}
-                            checked={recordData[field]}
-                            onChecked={() =>
-                                setRecordData(prev => ({
-                                    ...prev,
-                                    [field]: !prev.translation
-                                }))
-                            }
-                        />
-                    }
-                    disabled={isCommitted}
-                    required
-                    onChange={handleChange}
-                />
-            )}
+            <Form.Input
+                label="Перевод"
+                name="translation"
+                value={data.translation}
+                disabled={disabled}
+                readOnly={readOnly}
+                required
+                onChange={handleChange}
+            />
+
+            <Form.Input
+                label="Определение"
+                name="definition"
+                value={data.definition}
+                disabled={disabled}
+                readOnly={readOnly}
+                required
+                onChange={handleChange}
+            />
 
             <Form.Select
-                name="type"
                 label="Тип"
+                name="type"
                 value={lexeme.type}
                 options={lexemeTypeOptions}
-                disabled={isCommitted}
+                disabled={disabled}
+                readOnly={readOnly}
                 onChange={handleChange}
             />
 
             <Form.Select
-                name="kind"
                 label="Вид"
+                name="kind"
                 value={lexeme.kind}
                 options={lexemeKindOptions}
-                disabled={isCommitted}
+                disabled={disabled}
+                readOnly={readOnly}
                 onChange={handleChange}
             />
 
-            <LexemeExamples
-                examples={examples}
-                existingExamples={lexeme.examples}
-                additionalExamples={recordData.examples}
-                withNotifications={showValueMessages}
-                readOnly={isCommitted}
+            <LexemeFormExamples
+                examples={data.examples}
+                disabled={disabled}
+                readOnly={readOnly}
                 onChange={handleExamplesChange}
-                onAdditionalChange={handleAdditionalExamplesChange}
             />
-
-            {isCommitted ? (
-                <Flex justifyContent="space-between">
-                    <Button
-                        content="Назад"
-                        variant="plain"
-                        onClick={() => {
-                            setCommitted(false);
-                            setRecordData(initialRecordData);
-                        }}
-                    />
-
-                    <Button
-                        content="Утвердить"
-                        disabled={!value || !translation}
-                        type="submit"
-                    />
-                </Flex>
-            ) : (
-                <Button content="Далее" onClick={() => setCommitted(true)} />
-            )}
         </Form>
-    );
-}
-
-function LexemeValueMessage({ currentValue, originalValue, committed, checked, onChecked }) {
-    const showMessage =
-        originalValue &&
-        originalValue !== currentValue;
-
-    return showMessage && (committed ? (
-        <Checkbox
-            label={<>
-                Добавить пользователю создавшему лексему оригинальное значение{' '}
-                <i>{originalValue}</i>
-            </>}
-            checked={checked}
-            size="sm"
-            onChange={onChecked}
-        />
-    ) : (
-        <>Старое значение - <i>{originalValue}</i></>
-    ));
-}
-
-function LexemeMatchMessage({ matchingLexemes, lexeme, onMatch }) {
-    return (
-        <>
-            В словаре уже есть похожие лексемы:
-
-            <ChipGroup>
-                {matchingLexemes.map(foundLexeme => (
-                    <Chip
-                        key={foundLexeme.id}
-                        size="sm"
-                        variant="soft"
-                        onClick={() => onMatch(foundLexeme, lexeme)}
-                    >
-                        <Flex gap="xxs" alignItems="baseline">
-                            <Text
-                                content={foundLexeme.value}
-                                type="body-sm"
-                                inline
-                            />
-
-                            <Text
-                                content={foundLexeme.translation}
-                                type="body-xs"
-                                inline
-                            />
-                        </Flex>
-                    </Chip>
-                ))}
-            </ChipGroup>
-        </>
     );
 }

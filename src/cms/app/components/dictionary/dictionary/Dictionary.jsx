@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { LexemePublishStatus } from 'core/models/lexeme/constants';
 
+import FormDialog from '@/shared/components/form-dialog';
 import LexemesList from 'shared/components/lexemes-list';
 import LexemesSearch from 'shared/components/lexemes-search';
 import LoadingIndicator from 'shared/components/loading-indicator';
@@ -10,6 +11,7 @@ import { useDictionaryActions } from 'shared/hooks/dictionary';
 import { Button, Dialog, Flex, IconButton, Tabs, Text } from 'shared/ui-components';
 
 import Lexeme from 'cms/components/dictionary/lexeme';
+import LexemeApproveForm from 'cms/components/dictionary/lexeme-approve-form';
 import LexemeForm from 'cms/components/dictionary/lexeme-form';
 import LexemesMergeForm from 'cms/components/dictionary/lexemes-merge-form';
 
@@ -28,6 +30,7 @@ export default function Dictionary({ dictionary, user }) {
 
     const [activeTab, setActiveTab] = useState(LexemePublishStatus.Pending);
     const [viewingLexeme, setViewingLexeme] = useState();
+    const [approvingLexeme, setApprovingLexeme] = useState();
     const [editingLexeme, setEditingLexeme] = useState();
     const [mergingLexemes, setMergingLexemes] = useState();
     const [selectedLexemeIds, setSelectedLexemeIds] = useState([]);
@@ -48,10 +51,15 @@ export default function Dictionary({ dictionary, user }) {
             .then(() => setActiveTab(LexemePublishStatus.Pending));
     }, [actions]);
 
+    const handleApproveLexeme = useCallback(data => {
+        return actions.approveLexeme(editingLexeme?.id, data)
+            .finally(() => setApprovingLexeme(null));
+    }, [actions, editingLexeme]);
+
     const handleUpdateLexeme = useCallback(data => {
         return actions.updateLexeme(editingLexeme?.id, data)
             .finally(() => setEditingLexeme(null));
-    }, [actions, editingLexeme?.id]);
+    }, [actions, editingLexeme]);
 
     const handleMergeLexemes = useCallback(data => {
         return actions.mergeLexemes(data)
@@ -92,21 +100,13 @@ export default function Dictionary({ dictionary, user }) {
     }, [lexemes, selectedLexemeIds]);
 
     const handleMatch = useCallback((foundLexeme, chosenLexeme) => {
-        setEditingLexeme(null);
+        setApprovingLexeme(null);
         setMergingLexemes([foundLexeme, chosenLexeme]);
     }, []);
 
     const handleTabChange = useCallback((event, value) => {
         setActiveTab(value);
     }, []);
-
-    const handleModalClose = useCallback(() => {
-        setViewingLexeme(null);
-        setEditingLexeme(null);
-        setMergingLexemes(null);
-    }, []);
-
-    const isModalOpen = viewingLexeme || editingLexeme || mergingLexemes;
 
     return (
         <div className={styles.root}>
@@ -173,10 +173,14 @@ export default function Dictionary({ dictionary, user }) {
                         lexemes={lexemes}
                         selectedLexemeIds={selectedLexemeIds}
                         renderLexemeActions={lexeme => [
-                            {
-                                icon: lexeme.isApproved ? 'edit' : 'checklist',
-                                title: `${lexeme.isApproved ? 'Редактировать' : 'Утвердить'} слово`,
+                            lexeme.isApproved ? {
+                                icon: 'edit',
+                                title: 'Редактировать слово',
                                 onClick: () => setEditingLexeme(lexeme)
+                            } : {
+                                icon: 'checklist',
+                                title: 'Утвердить слово',
+                                onClick: () => setApprovingLexeme(lexeme)
                             },
                             !lexeme.isArchived && {
                                 icon: 'archive',
@@ -197,32 +201,61 @@ export default function Dictionary({ dictionary, user }) {
 
             <Dialog
                 className={styles.modal}
-                open={isModalOpen}
-                onClose={handleModalClose}
+                open={!!viewingLexeme}
+                onClose={() => setViewingLexeme(null)}
             >
-                {viewingLexeme ? (
-                    <Lexeme
-                        lexeme={viewingLexeme}
-                        readOnly
-                    />
-                ) : editingLexeme ? (
-                    <LexemeForm
-                        id="lexeme-edit-form"
-                        lexeme={editingLexeme}
-                        userId={userId}
-                        onMatch={handleMatch}
-                        onSubmit={handleUpdateLexeme}
-                    />
-                ) : mergingLexemes ? (
-                    <LexemesMergeForm
-                        id="lexemes-edit-form"
-                        userId={userId}
-                        lexemes={mergingLexemes}
-                        initialLexeme={mergingLexemes?.[0]}
-                        onSubmit={handleMergeLexemes}
-                    />
-                ) : null}
+                <Lexeme
+                    lexeme={viewingLexeme}
+                    readOnly
+                />
             </Dialog>
+
+            <FormDialog
+                className={styles.modal}
+                title="Утверждение лексемы"
+                submitButtonText="Утвердить"
+                open={!!approvingLexeme}
+                onClose={() => setApprovingLexeme(null)}
+                onSubmit={handleApproveLexeme}
+            >
+                <LexemeApproveForm
+                    id="lexeme-approve-form"
+                    lexeme={approvingLexeme}
+                    userId={userId}
+                    onMatch={handleMatch}
+                />
+            </FormDialog>
+
+            <FormDialog
+                className={styles.modal}
+                title="Редактирование лексемы"
+                open={!!editingLexeme}
+                onClose={() => setEditingLexeme(null)}
+                onSubmit={handleUpdateLexeme}
+            >
+                <LexemeForm
+                    id="lexeme-edit-form"
+                    lexeme={editingLexeme}
+                    userId={userId}
+                    onMatch={handleMatch}
+                />
+            </FormDialog>
+
+            <FormDialog
+                className={styles.modal}
+                title="Объединение лексем"
+                submitButtonText="Объединить"
+                open={!!mergingLexemes}
+                onClose={() => setMergingLexemes(null)}
+                onSubmit={handleMergeLexemes}
+            >
+                <LexemesMergeForm
+                    id="lexemes-merge-form"
+                    userId={userId}
+                    lexemes={mergingLexemes}
+                    initialLexeme={mergingLexemes?.[0]}
+                />
+            </FormDialog>
         </div>
     );
 }

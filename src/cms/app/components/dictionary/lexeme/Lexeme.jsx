@@ -7,7 +7,12 @@ import LexemeExamples from './LexemeExamples';
 
 import styles from './Lexeme.module.scss';
 
-export default function Lexeme({ lexeme, readOnly, onChange, className }) {
+export default function Lexeme({
+    lexeme,
+    readOnly,
+    onChange,
+    className
+}) {
     const { id, value, image, definition, translation, examples } = lexeme;
 
     const [data, setData] = useState({

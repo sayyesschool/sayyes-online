@@ -1,24 +1,22 @@
 import {
     Avatar,
-    Checkbox,
     Flex,
     IconButton,
-    Input,
-    Text
+    Input
 } from 'shared/ui-components';
 import cn from 'shared/utils/classnames';
 
-import styles from './LexemeExample.module.scss';
+import styles from './LexemeFormExample.module.scss';
 
-export default function LexemeExample({
+export default function LexemeFormExample({
     example,
     number,
-    checked: isChecked,
-    shouldShowNotification,
     disabled,
-    onCheck,
+    readOnly,
     onChange,
-    onDelete
+    onDelete,
+
+    children
 }) {
     const { id, text, translation, deleted } = example;
 
@@ -34,6 +32,7 @@ export default function LexemeExample({
                     value={text}
                     variant="plain"
                     disabled={disabled}
+                    readOnly={readOnly}
                     required
                     onChange={e => onChange(id, e)}
                 />
@@ -46,41 +45,22 @@ export default function LexemeExample({
                     variant="plain"
                     size="sm"
                     disabled={disabled}
+                    readOnly={readOnly}
                     required
                     onChange={e => onChange(id, e)}
                 />
 
-                {shouldShowNotification &&
-                    (disabled ? (
-                        <Checkbox
-                            label={deleted
-                                ? 'Сохранить пользователю удалённый пример?'
-                                : 'Сохранить пользователю оригинальный пример?'
-                            }
-                            checked={isChecked}
-                            size="sm"
-                            onChange={() => onCheck(id)}
-                        />
-                    ) : (
-                        <Text
-                            content={deleted
-                                ? 'Пример был удалён'
-                                : 'Пример отличается от добавленного пользователем'
-                            }
-                            type="body-sm"
-                            color={deleted ? 'danger' : 'warning'}
-                        />
-                    ))
-                }
+                {children}
             </Flex>
 
-            {!disabled &&
+            {!readOnly &&
                 <IconButton
                     size="sm"
                     variant="plain"
                     color="neutral"
                     icon={deleted ? 'undo' : 'delete'}
                     title={deleted ? 'Восстановить пример' : 'Удалить пример'}
+                    disabled={disabled}
                     onClick={() => onDelete(id)}
                 />
             }

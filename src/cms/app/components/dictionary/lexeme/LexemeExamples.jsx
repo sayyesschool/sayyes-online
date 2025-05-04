@@ -4,7 +4,12 @@ import { Avatar, Checkbox, Heading, List } from 'shared/ui-components';
 
 import styles from './LexemeExamples.module.scss';
 
-export default function LexemeExamples({ title, examples, readOnly, onChange }) {
+export default function LexemeExamples({
+    title,
+    examples,
+    readOnly,
+    onChange
+}) {
     const [activeExamples, setActiveExamples] = useState([]);
 
     useEffect(() => {

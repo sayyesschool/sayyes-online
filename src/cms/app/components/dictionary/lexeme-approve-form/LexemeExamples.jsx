@@ -2,9 +2,9 @@ import { useCallback, useState } from 'react';
 
 import { v4 as uuid } from 'uuid';
 
-import { Button, Flex, Heading } from 'shared/ui-components';
+import { Button, Checkbox, Flex, Heading } from 'shared/ui-components';
 
-import LexemeExample from './LexemeExample';
+import { LexemeFormExample } from '@/cms/app/components/dictionary/lexeme-form';
 
 import styles from './LexemeExamples.module.scss';
 
@@ -86,7 +86,7 @@ export default function LexemeExamples({
 
             <Flex gap="small" column>
                 {allExamples.map((example, i) =>
-                    <LexemeExample
+                    <LexemeFormExample
                         key={example.id}
                         example={example}
                         number={i + 1}
@@ -96,7 +96,19 @@ export default function LexemeExamples({
                         onCheck={toggleCheckbox}
                         onChange={handleChange}
                         onDelete={handleDelete}
-                    />
+                    >
+                        {shouldShowNotification &&
+                            <Checkbox
+                                label={example.deleted
+                                    ? 'Сохранить пользователю удалённый пример?'
+                                    : 'Сохранить пользователю оригинальный пример?'
+                                }
+                                checked={!!additionalExamples?.find(e => e.id === example.id)}
+                                size="sm"
+                                onChange={() => toggleCheckbox(example.id)}
+                            />
+                        }
+                    </LexemeFormExample>
                 )}
 
                 {!readOnly &&
