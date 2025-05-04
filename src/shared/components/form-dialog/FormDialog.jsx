@@ -13,15 +13,24 @@ export default function FormDialog({
     onClose,
     ...props
 }) {
+    const mountedRef = useRef(true);
     const onSubmitRef = useRef(children.props?.onSubmit);
 
     const [isSubmitting, toggleSubmitting] = useBoolean(false);
 
     useEffect(() => {
+        mountedRef.current = true;
+
+        return () => {
+            mountedRef.current = false;
+        };
+    }, []);
+
+    useEffect(() => {
         if (!open) {
             toggleSubmitting(false);
         }
-    }, [open]);
+    }, [open, toggleSubmitting]);
 
     useEffect(() => {
         onSubmitRef.current = children.props?.onSubmit;
@@ -30,8 +39,12 @@ export default function FormDialog({
     const handleSubmit = useCallback(event => {
         toggleSubmitting(true);
 
-        onSubmitRef?.current(event).finally(() => toggleSubmitting(false));
-    }, []);
+        onSubmitRef?.current(event).finally(() => {
+            if (mountedRef.current) {
+                toggleSubmitting(false);
+            }
+        });
+    }, [toggleSubmitting]);
 
     return (
         <Dialog
