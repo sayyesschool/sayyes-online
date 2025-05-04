@@ -26,7 +26,6 @@ export default ({
                 lexemes,
                 lexemeIds: lexemes.map(lexeme => lexeme.id),
                 numberOfLexemes: lexemes.length,
-                learnerId: req.user.id,
                 publishStatus: req.query.publishStatus
             }
         });
