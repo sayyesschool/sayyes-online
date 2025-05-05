@@ -90,14 +90,11 @@ export default function LexemeExamples({
                         key={example.id}
                         example={example}
                         number={i + 1}
-                        checked={!!additionalExamples?.find(e => e.id === example.id)}
-                        shouldShowNotification={shouldShowNotification(example)}
                         readOnly={readOnly}
-                        onCheck={toggleCheckbox}
                         onChange={handleChange}
                         onDelete={handleDelete}
                     >
-                        {shouldShowNotification &&
+                        {shouldShowNotification(example) &&
                             <Checkbox
                                 label={example.deleted
                                     ? 'Сохранить пользователю удалённый пример?'
