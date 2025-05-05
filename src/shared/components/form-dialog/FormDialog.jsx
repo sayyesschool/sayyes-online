@@ -10,6 +10,7 @@ export default function FormDialog({
     submitButtonText = 'Сохранить',
     children = content,
     form = children?.props?.id,
+    onSubmit = children?.props?.onSubmit,
     onClose,
     ...props
 }) {
@@ -36,10 +37,10 @@ export default function FormDialog({
         onSubmitRef.current = children.props?.onSubmit;
     }, [children.props?.onSubmit]);
 
-    const handleSubmit = useCallback(event => {
+    const handleSubmit = useCallback((...args) => {
         toggleSubmitting(true);
 
-        onSubmitRef?.current(event).finally(() => {
+        onSubmitRef?.current?.(...args)?.finally(() => {
             if (mountedRef.current) {
                 toggleSubmitting(false);
             }
