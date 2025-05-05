@@ -1,5 +1,5 @@
 export default ({
-    models: { Lexeme, LexemeRecord }
+    models: { Lexeme, LexemeRecord, Vocabulary }
 }) => ({
     async search(params, { batch = 1, limit = 0, exclude = [] } = { }) {
         const query = typeof params === 'string' ? {
@@ -162,6 +162,18 @@ export default ({
             code: 404,
             message: 'Лексема не найдена'
         };
+
+        await LexemeRecord.deleteMany({
+            lexemeId: lexeme.id
+        });
+
+        await Vocabulary.updateMany({
+            lexemeIds: lexeme.id
+        }, {
+            $pull: {
+                lexemeIds: lexeme.id
+            }
+        });
 
         return lexeme;
     }
