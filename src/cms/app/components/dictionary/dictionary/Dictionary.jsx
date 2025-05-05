@@ -52,9 +52,11 @@ export default function Dictionary({ dictionary, user }) {
     }, [actions]);
 
     const handleApproveLexeme = useCallback(data => {
-        return actions.approveLexeme(editingLexeme?.id, data)
+        console.log('handleApproveLexeme', approvingLexeme, data);
+
+        return actions.approveLexeme(approvingLexeme?.id, data)
             .finally(() => setApprovingLexeme(null));
-    }, [actions, editingLexeme]);
+    }, [actions, approvingLexeme]);
 
     const handleUpdateLexeme = useCallback(data => {
         return actions.updateLexeme(editingLexeme?.id, data)
@@ -216,13 +218,13 @@ export default function Dictionary({ dictionary, user }) {
                 submitButtonText="Утвердить"
                 open={!!approvingLexeme}
                 onClose={() => setApprovingLexeme(null)}
-                onSubmit={handleApproveLexeme}
             >
                 <LexemeApproveForm
                     id="lexeme-approve-form"
                     lexeme={approvingLexeme}
                     userId={userId}
                     onMatch={handleMatch}
+                    onSubmit={handleApproveLexeme}
                 />
             </FormDialog>
 
@@ -231,13 +233,13 @@ export default function Dictionary({ dictionary, user }) {
                 title="Редактирование лексемы"
                 open={!!editingLexeme}
                 onClose={() => setEditingLexeme(null)}
-                onSubmit={handleUpdateLexeme}
             >
                 <LexemeForm
                     id="lexeme-edit-form"
                     lexeme={editingLexeme}
                     userId={userId}
                     onMatch={handleMatch}
+                    onSubmit={handleUpdateLexeme}
                 />
             </FormDialog>
 
@@ -247,13 +249,13 @@ export default function Dictionary({ dictionary, user }) {
                 submitButtonText="Объединить"
                 open={!!mergingLexemes}
                 onClose={() => setMergingLexemes(null)}
-                onSubmit={handleMergeLexemes}
             >
                 <LexemesMergeForm
                     id="lexemes-merge-form"
                     userId={userId}
                     lexemes={mergingLexemes}
                     initialLexeme={mergingLexemes?.[0]}
+                    onSubmit={handleMergeLexemes}
                 />
             </FormDialog>
         </div>

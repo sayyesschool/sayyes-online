@@ -17,6 +17,7 @@ export default function LexemesMergeForm({
     onSubmit,
     ...props
 }) {
+    const [file, setFile] = useState();
     const [data, setData] = useState({
         value: initialLexeme?.value || '',
         translation: initialLexeme?.translation || '',
@@ -25,7 +26,6 @@ export default function LexemesMergeForm({
         kind: initialLexeme?.kind || '',
         examples: lexemes.flatMap(l => l.examples) || []
     });
-    const [file, setFile] = useState();
     const [additionalData, setAdditionalData] = useState(
         lexemes.reduce((acc, { id, translation, definition, examples }) => {
             acc[id] = { translation, definition, examples };
@@ -114,39 +114,39 @@ export default function LexemesMergeForm({
             />
 
             <Form.Input
-                name="value"
                 label="Лексема"
+                name="value"
                 value={value}
                 required
                 onChange={handleChange}
             />
 
             <Form.Input
-                name="translation"
                 label="Переводы"
+                name="translation"
                 value={translation}
                 required
                 onChange={handleChange}
             />
 
             <Form.Textarea
-                name="definition"
                 label="Определение"
+                name="definition"
                 value={definition}
                 onChange={handleChange}
             />
 
             <Form.Select
-                name="type"
                 label="Тип"
+                name="type"
                 value={type}
                 options={lexemeTypeOptions}
                 onChange={handleChange}
             />
 
             <Form.Select
-                name="kind"
                 label="Вид"
+                name="kind"
                 value={kind}
                 options={lexemeKindOptions}
                 onChange={handleChange}

@@ -23,8 +23,6 @@ export default function LexemeApproveForm({
     onSubmit,
     ...props
 }) {
-    console.log('LexemeApproveForm', lexeme);
-
     const [file, setFile] = useState();
     const [data, setData] = useState({
         value: lexeme.value,
