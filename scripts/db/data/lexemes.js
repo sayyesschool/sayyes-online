@@ -80,7 +80,7 @@ export default [
             {
                 id: uuid(),
                 text: 'She drives a red sports car.',
-                translation: ''
+                translation: 'Она ездит на красной спортивной машине.'
             }
         ],
         publishStatus: 'approved'
@@ -94,7 +94,7 @@ export default [
             {
                 id: uuid(),
                 text: 'The children climbed the tree to pick apples.',
-                translation: ''
+                translation: 'Дети забрались на дерево, чтобы сорвать яблоки.'
             }
         ],
         publishStatus: 'approved'
@@ -108,7 +108,7 @@ export default [
             {
                 id: uuid(),
                 text: 'They went fishing in the river.',
-                translation: ''
+                translation: 'Они отправились порыбачить на реку.'
             }
         ],
         publishStatus: 'approved'
@@ -122,7 +122,7 @@ export default [
             {
                 id: uuid(),
                 text: 'I use my computer for work and entertainment.',
-                translation: ''
+                translation: 'Я использую свой компьютер для работы и развлечений.'
             }
         ],
         publishStatus: 'approved'
@@ -136,7 +136,7 @@ export default [
             {
                 id: uuid(),
                 text: 'The sun rises in the east and sets in the west.',
-                translation: ''
+                translation: 'Солнце встает на востоке и садится на западе.'
             }
         ],
         publishStatus: 'approved'
@@ -150,7 +150,7 @@ export default [
             {
                 id: uuid(),
                 text: 'Listening to music helps me relax.',
-                translation: ''
+                translation: 'Прослушивание музыки помогает мне расслабиться.'
             }
         ],
         publishStatus: 'approved'
@@ -164,7 +164,7 @@ export default [
             {
                 id: uuid(),
                 text: 'She received a bouquet of flowers on her birthday.',
-                translation: ''
+                translation: 'На свой день рождения она получила букет цветов.'
             }
         ],
         publishStatus: 'approved'
@@ -178,7 +178,7 @@ export default [
             {
                 id: uuid(),
                 text: 'She\'s my best friend.',
-                translation: ''
+                translation: 'Она моя лучшая подруга.'
             }
         ],
         publishStatus: 'approved'
@@ -192,7 +192,7 @@ export default [
             {
                 id: uuid(),
                 text: 'They enjoyed walking along the beach at sunset.',
-                translation: ''
+                translation: 'Им нравилось гулять по пляжу на закате.'
             }
         ],
         publishStatus: 'approved'
@@ -206,7 +206,7 @@ export default [
             {
                 id: uuid(),
                 text: 'Learning a new language opens doors to new opportunities.',
-                translation: ''
+                translation: 'Изучение нового языка открывает двери для новых возможностей.'
             }
         ],
         publishStatus: 'approved'
@@ -220,7 +220,7 @@ export default [
             {
                 id: uuid(),
                 text: 'They climbed the mountain to reach the summit.',
-                translation: ''
+                translation: 'Они взобрались на гору, чтобы достичь вершины.'
             }
         ],
         publishStatus: 'approved'
@@ -234,7 +234,7 @@ export default [
             {
                 id: uuid(),
                 text: 'We enjoyed delicious food at the restaurant.',
-                translation: ''
+                translation: 'Мы наслаждались вкусной едой в ресторане.'
             }
         ],
         publishStatus: 'approved'
@@ -248,7 +248,7 @@ export default [
             {
                 id: uuid(),
                 text: 'She teaches at a local elementary school.',
-                translation: ''
+                translation: 'Она преподает в местной начальной школе.'
             }
         ],
         publishStatus: 'approved'
@@ -262,7 +262,7 @@ export default [
             {
                 id: uuid(),
                 text: 'They drank refreshing cold water after the hike.',
-                translation: ''
+                translation: 'После прогулки они пили освежающую холодную воду.'
             }
         ],
         publishStatus: 'approved'
@@ -276,7 +276,7 @@ export default [
             {
                 id: uuid(),
                 text: 'Their friendship grew stronger over the years.',
-                translation: ''
+                translation: 'С годами их дружба становилась все крепче.'
             }
         ],
         publishStatus: 'approved'
@@ -290,7 +290,7 @@ export default [
             {
                 id: uuid(),
                 text: 'She answered the phone and spoke to her friend.',
-                translation: ''
+                translation: 'Она сняла трубку и поговорила со своей подругой.'
             }
         ],
         publishStatus: 'approved'
@@ -304,7 +304,7 @@ export default [
             {
                 id: uuid(),
                 text: 'She saved up her money to buy a new bicycle.',
-                translation: ''
+                translation: 'Она накопила денег, чтобы купить новый велосипед.'
             }
         ],
         publishStatus: 'approved'
@@ -318,7 +318,7 @@ export default [
             {
                 id: uuid(),
                 text: 'The sky was clear and blue.',
-                translation: ''
+                translation: 'Небо было ясным и голубым.'
             }
         ],
         publishStatus: 'approved'
@@ -332,7 +332,7 @@ export default [
             {
                 id: uuid(),
                 text: 'New York City is known as "The Big Apple".',
-                translation: ''
+                translation: 'Нью-Йорк известен как "Большое яблоко".'
             }
         ],
         publishStatus: 'approved'
@@ -346,7 +346,7 @@ export default [
             {
                 id: uuid(),
                 text: 'She traveled to a foreign country for vacation.',
-                translation: ''
+                translation: 'Она отправилась в отпуск в другую страну.'
             }
         ],
         publishStatus: 'approved'
@@ -360,7 +360,7 @@ export default [
             {
                 id: uuid(),
                 text: 'They have a large family with four children.',
-                translation: ''
+                translation: 'У них большая семья с четырьмя детьми.'
             }
         ],
         publishStatus: 'approved'
@@ -374,7 +374,7 @@ export default [
             {
                 id: uuid(),
                 text: 'We played a board game together.',
-                translation: ''
+                translation: 'Мы вместе играли в настольную игру.'
             }
         ],
         publishStatus: 'approved'
@@ -388,7 +388,7 @@ export default [
             {
                 id: uuid(),
                 text: 'They watched a great movie last night.',
-                translation: ''
+                translation: 'Вчера вечером они посмотрели отличный фильм.'
             }
         ],
         publishStatus: 'approved'
@@ -402,7 +402,7 @@ export default [
             {
                 id: uuid(),
                 text: 'He plays soccer and tennis as his favorite sports.',
-                translation: ''
+                translation: 'Его любимыми видами спорта являются футбол и теннис.'
             }
         ],
         publishStatus: 'approved'
