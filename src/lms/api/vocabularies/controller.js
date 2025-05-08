@@ -130,7 +130,7 @@ export default ({
     },
 
     async deleteLexeme(req, res) {
-        const record = await Vocabulary.deleteLexeme(req.params.lexemeId, req.body.learnerId);
+        const record = await Vocabulary.deleteLexeme(req.params.lexemeId, req.user.id);
 
         res.json({
             ok: true,
