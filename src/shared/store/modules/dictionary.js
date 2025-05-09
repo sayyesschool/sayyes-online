@@ -101,7 +101,7 @@ export const dictionaryReducer = createReducer(null, {
 
     [mergeLexemes]: (state, action) => {
         const filteredLexemes = state.lexemes.filter(
-            lexeme => !action.data.deletedLexemeIds.includes(lexeme.id)
+            lexeme => !action.data.mergedLexemeIds.includes(lexeme.id)
         );
 
         return {

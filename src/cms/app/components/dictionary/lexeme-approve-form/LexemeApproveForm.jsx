@@ -131,7 +131,7 @@ export default function LexemeApproveForm({
                             onChecked={() =>
                                 setRecordData(prev => ({
                                     ...prev,
-                                    [field]: !prev.translation
+                                    [field]: !prev[field]
                                 }))
                             }
                         />
@@ -174,7 +174,7 @@ function LexemeValueMessage({ currentValue, originalValue, committed, checked, o
         originalValue &&
         originalValue !== currentValue;
 
-    return showMessage && (committed ? (
+    return showMessage && (
         <Checkbox
             label={<>
                 Добавить пользователю создавшему лексему оригинальное значение{' '}
@@ -184,9 +184,7 @@ function LexemeValueMessage({ currentValue, originalValue, committed, checked, o
             size="sm"
             onChange={onChecked}
         />
-    ) : (
-        <>Старое значение - <i>{originalValue}</i></>
-    ));
+    );
 }
 
 function LexemeMatchMessage({ matchingLexemes, lexeme, onMatch }) {
