@@ -105,6 +105,7 @@ export default function LexemeApproveForm({
                 id="value"
                 label="Значение"
                 value={value}
+                name="value"
                 message={matchingLexemes.length > 0 &&
                     <LexemeMatchMessage
                         matchingLexemes={matchingLexemes}
