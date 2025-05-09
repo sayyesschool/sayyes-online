@@ -27,7 +27,7 @@ export default ({
     },
 
     async find(query) {
-        return Lexeme.find(query).sort({ createdAt: -1 });
+        return Lexeme.find(query).sort({ updatedAt: -1 });
     },
 
     async getLexeme(query) {
