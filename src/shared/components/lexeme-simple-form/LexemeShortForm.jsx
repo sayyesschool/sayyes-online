@@ -61,7 +61,7 @@ export default function LexemeShortForm({
 
             <Form.Input
                 className={styles.input}
-                placeholder="Значение"
+                placeholder="Определение"
                 name="definition"
                 value={data.definition.value}
                 autoComplete="off"

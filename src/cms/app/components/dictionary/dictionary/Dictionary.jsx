@@ -153,7 +153,7 @@ export default function Dictionary({ dictionary, user }) {
                                         content="Снять выделение"
                                         variant="plain"
                                         size="sm"
-                                        onClick={() => selectedLexemeIds([])}
+                                        onClick={() => setSelectedLexemeIds([])}
                                     />
                                 }
                             />

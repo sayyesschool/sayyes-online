@@ -102,8 +102,8 @@ export default function LexemeApproveForm({
             />
 
             <Form.Input
-                id="value"
                 label="Значение"
+                name="value"
                 value={value}
                 message={matchingLexemes.length > 0 &&
                     <LexemeMatchMessage
@@ -130,7 +130,7 @@ export default function LexemeApproveForm({
                             onChecked={() =>
                                 setRecordData(prev => ({
                                     ...prev,
-                                    [field]: !prev.translation
+                                    [field]: !prev[field]
                                 }))
                             }
                         />
@@ -141,16 +141,16 @@ export default function LexemeApproveForm({
             )}
 
             <Form.Select
-                name="type"
                 label="Тип"
+                name="type"
                 value={lexeme.type}
                 options={lexemeTypeOptions}
                 onChange={handleChange}
             />
 
             <Form.Select
-                name="kind"
                 label="Вид"
+                name="kind"
                 value={lexeme.kind}
                 options={lexemeKindOptions}
                 onChange={handleChange}
@@ -173,7 +173,7 @@ function LexemeValueMessage({ currentValue, originalValue, committed, checked, o
         originalValue &&
         originalValue !== currentValue;
 
-    return showMessage && (committed ? (
+    return showMessage && (
         <Checkbox
             label={<>
                 Добавить пользователю создавшему лексему оригинальное значение{' '}
@@ -183,9 +183,7 @@ function LexemeValueMessage({ currentValue, originalValue, committed, checked, o
             size="sm"
             onChange={onChecked}
         />
-    ) : (
-        <>Старое значение - <i>{originalValue}</i></>
-    ));
+    );
 }
 
 function LexemeMatchMessage({ matchingLexemes, lexeme, onMatch }) {

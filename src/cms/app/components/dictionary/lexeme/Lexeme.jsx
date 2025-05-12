@@ -75,7 +75,6 @@ export default function Lexeme({
                                 {!readOnly && (
                                     <Checkbox
                                         checked={!!data[id]}
-                                        size="small"
                                         onChange={e => handleToggle(e.target.checked, id)}
                                     />
                                 )}
