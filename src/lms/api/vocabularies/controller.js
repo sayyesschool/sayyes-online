@@ -142,7 +142,7 @@ export default ({
     },
 
     async updateLexemeStatus(req, res) {
-        const record = await Vocabulary.updateLexemeStatus(req.params.lexemeId, req.user.id, req.body.status);
+        const record = await Vocabulary.updateLexemeStatus(req.params.lexemeId, req.body.userId, req.body.status);
 
         res.json({
             ok: true,
