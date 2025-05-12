@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDebounce } from 'shared/hooks/fn';
 import http from 'shared/services/http';
 
-const API_URL = 'api/dictionary/search';
+const API_URL = 'api/dictionary/match';
 const DEBOUNCE_DELAY = 500;
 
 export default function useMatchingLexemes(lexemeId, value) {

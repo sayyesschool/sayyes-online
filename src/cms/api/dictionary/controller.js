@@ -15,6 +15,18 @@ export default ({
         });
     },
 
+    async match(req, res) {
+        const lexemes = await Dictionary.find({
+            _id: { $nin: req.query.e },
+            value: req.query.q
+        });
+
+        res.json({
+            ok: true,
+            data: lexemes
+        });
+    },
+
     async get(req, res) {
         const lexemes = await Dictionary.find(req.query);
 
