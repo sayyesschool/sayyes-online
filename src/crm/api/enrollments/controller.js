@@ -55,24 +55,36 @@ export default ({
     },
 
     update: (req, res, next) => {
-        const keys = Object.keys(req.body);
+        // TODO: Fix keys
+        // const keys = Object.keys(req.body);
+        console.log(999, req.body);
 
-        const query = Enrollment.findByIdAndUpdate(req.params.id, req.body, {
-            projection: keys.join(' '),
+        const data = {
+            ...req.body,
+            info: {
+                purpose: req.body.purpose,
+                experience: req.body.experience,
+                preferences: req.body.preferences,
+                note: req.body.note
+            }
+        };
+
+        const query = Enrollment.findByIdAndUpdate(req.params.id, data, {
+            // projection: keys.join(' '),
             new: true
         });
 
-        if (keys.includes('learner')) {
-            query.populate('learner', 'firstname lastname');
-        }
+        // if (keys.includes('learner')) {
+        //     query.populate('learner', 'firstname lastname');
+        // }
 
-        if (keys.includes('managers')) {
-            query.populate('managers', 'firstname lastname imageUrl');
-        }
+        // if (keys.includes('managers')) {
+        //     query.populate('managers', 'firstname lastname imageUrl');
+        // }
 
-        if (keys.includes('teachers')) {
-            query.populate('teachers', 'firstname lastname imageUrl');
-        }
+        // if (keys.includes('teachers')) {
+        //     query.populate('teachers', 'firstname lastname imageUrl');
+        // }
 
         query.then(enrollment => {
             res.json({

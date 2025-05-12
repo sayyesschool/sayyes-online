@@ -38,7 +38,18 @@ export default ({
     },
 
     async update(req, res) {
-        const learner = await Learner.findByIdAndUpdate(req.params.id, req.body, {
+        const data = {
+            ...req.body,
+            timezone: req.body.timezone,
+            data: {
+                hhid: req.body.hhid,
+                address: req.body.address,
+                occupation: req.body.occupation,
+                interests: req.body.interests
+            }
+        };
+
+        const learner = await Learner.findByIdAndUpdate(req.params.id, data, {
             new: true
         });
 

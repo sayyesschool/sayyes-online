@@ -11,7 +11,6 @@ const genderOptions = [
 ];
 
 const getFormData = ({
-    hhid = '',
     firstname = '',
     lastname = '',
     patronym = '',
@@ -20,11 +19,14 @@ const getFormData = ({
     dob = '',
     phone = '',
     altPhone = '',
-    address = '',
-    occupation = '',
-    interests = '',
     timezone = '',
-    note = ''
+    note = '',
+    data: {
+        hhid = '',
+        address = '',
+        occupation = '',
+        interests = ''
+    }
 }) => ({
     hhid,
     firstname,
@@ -133,21 +135,21 @@ const LearnerForm = forwardRef(({
                     <Form.Input
                         type="date"
                         name="dob"
-                        value={data.dob}
+                        value={data.dob.value}
                         label="Дата рождения"
                         onChange={handleChange}
                     />
 
                     <TimeZoneSelect
                         name="timezone"
-                        value={data.timezone}
+                        value={data.timezone.value}
                         onChange={handleChange}
                     />
 
                     <Form.Input
                         type="text"
                         name="address"
-                        value={data.address}
+                        value={data.address.value}
                         label="Адрес"
                         onChange={handleChange}
                     />
@@ -155,7 +157,7 @@ const LearnerForm = forwardRef(({
                     <Form.Input
                         type="text"
                         name="occupation"
-                        value={data.occupation}
+                        value={data.occupation.value}
                         label="Род деятельности"
                         onChange={handleChange}
                     />
@@ -163,7 +165,7 @@ const LearnerForm = forwardRef(({
                     <Form.Input
                         type="text"
                         name="interests"
-                        value={data.interests}
+                        value={data.interests.value}
                         label="Интересы"
                         onChange={handleChange}
                     />

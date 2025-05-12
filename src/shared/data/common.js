@@ -24,7 +24,7 @@ export const LevelLabel = {
     [Level.Intermediate]: 'Intermediate (B1)',
     [Level.UpperIntermediate]: 'Upper-Intermediate (B2)',
     [Level.Advanced]: 'Advanced (C1)',
-    [Level.Proficiency]: 'Proficiency (C2)'
+    [Level.Proficient]: 'Proficiency (C2)'
 };
 
 export const PurposeLabel = {

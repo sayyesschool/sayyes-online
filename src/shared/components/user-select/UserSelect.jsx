@@ -16,7 +16,7 @@ export default function UserSelect({
             options={options}
             getOptionKey={option => option.value}
             getOptionLabel={option => option.label || optionsMap.get(option)}
-            isOptionEqualToValue={(option, value) => option.value === value.value}
+            isOptionEqualToValue={(option, value) => option.value === value?.value}
             clearOnBlur={false}
             openOnFocus={false}
             {...props}

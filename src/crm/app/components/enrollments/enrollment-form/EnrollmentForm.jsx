@@ -44,15 +44,27 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
 
     const { data, handleChange } = useFormData({
         ...defaultEnrollment,
-        ...enrollment,
+        domain: enrollment.domain || '',
+        type: enrollment.type || '',
+        format: enrollment.format || '',
         learnerId: enrollment.learnerId || '',
+        lessonDuration: enrollment.lessonDuration || 0,
+        teacherType: enrollment.teacherType,
         managerId: enrollment.managerId,
         teacherId: enrollment.teacherId,
+        ageGroup: enrollment.ageGroup,
+        level: String(enrollment.level),
+        purpose: enrollment.info?.purpose,
+        experience: enrollment.info?.experience,
+        preferences: enrollment.info?.preferences,
+        note: enrollment.info?.note,
         courseIds: undefined,
         materialIds: undefined,
         lessons: undefined,
         payments: undefined
-    });
+    }, [enrollment.updateAt]);
+
+    console.log(111, enrollment, data);
 
     useImperativeHandle(ref, () => ({
         get form() { return formRef.current; },
@@ -60,7 +72,12 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
     }));
 
     const handleSubmit = useCallback(() => {
-        onSubmit(data);
+        onSubmit({
+            ...data,
+            managerId: data.managerId || null,
+            teacherId: data.teacherId || null,
+            level: Number(data.level)
+        });
     }, [data, onSubmit]);
 
     const managersMap = new Map(managers.map(manager => [manager.id, manager]));
@@ -99,8 +116,8 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
             />
 
             <Form.Select
-                name="age"
-                value={data.age}
+                name="ageGroup"
+                value={data.ageGroup}
                 label="Возрастная группа"
                 options={ageGroupOptions}
                 onChange={handleChange}
