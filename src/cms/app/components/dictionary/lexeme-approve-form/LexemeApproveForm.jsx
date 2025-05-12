@@ -102,10 +102,9 @@ export default function LexemeApproveForm({
             />
 
             <Form.Input
-                id="value"
                 label="Значение"
-                value={value}
                 name="value"
+                value={value}
                 message={matchingLexemes.length > 0 &&
                     <LexemeMatchMessage
                         matchingLexemes={matchingLexemes}
@@ -142,16 +141,16 @@ export default function LexemeApproveForm({
             )}
 
             <Form.Select
-                name="type"
                 label="Тип"
+                name="type"
                 value={lexeme.type}
                 options={lexemeTypeOptions}
                 onChange={handleChange}
             />
 
             <Form.Select
-                name="kind"
                 label="Вид"
+                name="kind"
                 value={lexeme.kind}
                 options={lexemeKindOptions}
                 onChange={handleChange}

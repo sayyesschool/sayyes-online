@@ -50,19 +50,19 @@ export default function Vocabulary({
 
     const handleDeleteLexeme = useCallback(lexemeId => {
         if (confirm('Вы уверены что хотите удалить слово')) {
-            return actions.deleteLexeme(vocabularyId, lexemeId);
+            return actions.deleteLexeme(vocabularyId, { lexemeId, learnerId });
         }
-    }, [actions, vocabularyId]);
+    }, [actions, vocabularyId, learnerId]);
 
     const handleRemoveLexeme = useCallback(lexemeId => {
         if (confirm('Вы уверены что хотите убрать слово из словаря? Оно останется в общем списке.')) {
-            return actions.deleteLexeme(vocabularyId, lexemeId);
+            return actions.deleteLexeme(vocabularyId, { lexemeId, learnerId });
         }
-    }, [actions, vocabularyId]);
+    }, [actions, vocabularyId, learnerId]);
 
     const handleUpdateLexemeStatus = useCallback((lexemeId, status) => {
-        return actions.updateLexemeStatus(lexemeId, status);
-    }, [actions]);
+        return actions.updateLexemeStatus(lexemeId, { status, learnerId });
+    }, [actions, learnerId]);
 
     const handleModalClose = useCallback(() => {
         setViewingLexeme(null);

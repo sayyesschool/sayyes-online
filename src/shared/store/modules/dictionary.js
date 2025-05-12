@@ -36,7 +36,7 @@ export const approveLexeme = createAction('DICTIONARY_APPROVE_LEXEME', (lexemeId
 
 export const mergeLexemes = createAction('MERGE_LEXEMES', data => ({
     request: {
-        method: 'put',
+        method: 'post',
         path: 'dictionary/merge',
         body: data
     }

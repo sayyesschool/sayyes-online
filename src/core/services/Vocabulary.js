@@ -41,12 +41,14 @@ export default ({
             .populate('lexeme')
             .sort({ createdAt: -1 });
 
-        const lexemes = records.map(record => ({
-            ...record.lexeme.toJSON(),
-            status: record.status,
-            reviewDate: record.reviewDate,
-            data: record.data
-        }));
+        const lexemes = records
+            .filter(r => r.lexeme) // filter out deleted lexemes. This is actually a problem, because a record should NOT exist without a lexeme
+            .map(r => ({
+                ...r.lexeme.toJSON(),
+                status: r.status,
+                reviewDate: r.reviewDate,
+                data: r.data
+            }));
 
         const vocabulary = new Vocabulary({
             learnerId,
