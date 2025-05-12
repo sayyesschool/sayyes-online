@@ -19,9 +19,8 @@ export const Vocabulary = new Schema({
     description: { type: String },
     image: { type: Image },
     published: { type: Boolean, default: false },
-    courseId: { type: Schema.Types.ObjectId },
     learnerId: { type: Schema.Types.ObjectId },
-    teacherId: { type: Schema.Types.ObjectId },
+    createdBy: { type: Schema.Types.ObjectId },
     lexemeIds: [{ type: Schema.Types.ObjectId }]
 }, {
     timestamps: true
