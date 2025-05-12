@@ -116,6 +116,24 @@ export default ({
         });
     },
 
+    async updateLexemeStatus(req, res) {
+        const record = await Vocabulary.updateLexemeStatus(
+            req.params.lexemeId,
+            req.body.learnerId,
+            req.body.status
+        );
+
+        res.json({
+            ok: true,
+            data: {
+                id: record.lexemeId,
+                data: record.data,
+                status: record.status,
+                reviewDate: record.reviewDate
+            }
+        });
+    },
+
     async removeLexeme(req, res) {
         await Vocabulary.removeLexeme(req.vocabulary, req.params.lexemeId);
 
@@ -130,27 +148,16 @@ export default ({
     },
 
     async deleteLexeme(req, res) {
-        const record = await Vocabulary.deleteLexeme(req.params.lexemeId, req.body.learnerId);
+        const record = await Vocabulary.deleteLexeme(
+            req.params.lexemeId,
+            req.body.learnerId
+        );
 
         res.json({
             ok: true,
             message: 'Успешно удалено',
             data: {
                 id: record.lexemeId
-            }
-        });
-    },
-
-    async updateLexemeStatus(req, res) {
-        const record = await Vocabulary.updateLexemeStatus(req.params.lexemeId, req.body.userId, req.body.status);
-
-        res.json({
-            ok: true,
-            data: {
-                id: record.lexemeId,
-                data: record.data,
-                status: record.status,
-                reviewDate: record.reviewDate
             }
         });
     }
