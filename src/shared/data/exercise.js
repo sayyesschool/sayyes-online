@@ -52,5 +52,10 @@ export const exerciseTypeMenuItems = [
         key: 'fib',
         content: 'Заполнить пробелы',
         value: 'fib'
+    },
+    {
+        key: 'vocabulary',
+        content: 'Список слов',
+        value: 'vocabulary'
     }
 ];

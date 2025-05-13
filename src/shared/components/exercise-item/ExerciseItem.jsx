@@ -13,6 +13,7 @@ import ImageItem from './Image';
 import InputItem from './Input';
 import TextItem from './Text';
 import VideoItem from './Video';
+import VocabularyItem from './VocabularyItem';
 
 const Components = {
     audio: AudioItem,
@@ -24,7 +25,8 @@ const Components = {
     image: ImageItem,
     input: InputItem,
     text: TextItem,
-    video: VideoItem
+    video: VideoItem,
+    vocabulary: VocabularyItem
 };
 
 function ExerciseItem({

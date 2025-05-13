@@ -41,6 +41,10 @@ export default ({
         return lexeme;
     },
 
+    async getLexemes(lexemeIds) {
+        return Lexeme.find({ _id: { $in: lexemeIds } });
+    },
+
     async createLexeme(data, createdBy) {
         return Lexeme.create({ ...data, createdBy: data.createdBy || createdBy });
     },

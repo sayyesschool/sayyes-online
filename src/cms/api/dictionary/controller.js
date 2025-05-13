@@ -43,6 +43,21 @@ export default ({
         });
     },
 
+    async getLexemes(req, res) {
+        let lexemeIds = req.query.lexemeIds;
+
+        if (!Array.isArray(lexemeIds)) {
+            lexemeIds = lexemeIds ? [lexemeIds] : [];
+        }
+
+        const data = await Dictionary.getLexemes(lexemeIds);
+
+        res.json({
+            ok: true,
+            data
+        });
+    },
+
     async createLexeme(req, res) {
         const lexeme = await Dictionary.createLexeme(req.body, req.user.id);
 

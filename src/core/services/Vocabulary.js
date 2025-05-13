@@ -29,9 +29,48 @@ export default ({
     },
 
     async getMany(learnerId) {
-        return await Vocabulary.find({
+        return Vocabulary.find({
             $or: [{ learnerId }, { learnerId: { $exists: false } }]
         });
+    },
+
+    // TODO: переписать на populate
+    async getLexemes(learnerId, lexemeIds) {
+        const lexemes = await Lexeme.find({ _id: { $in: lexemeIds } });
+
+        return Promise.all(
+            lexemes.map(async lexeme => {
+                const record = await LexemeRecord.findOne({
+                    lexemeId: lexeme._id,
+                    learnerId
+                });
+
+                return {
+                    ...lexeme.toJSON(),
+                    ...this.transformRecord(record)
+                };
+            })
+        );
+    },
+
+    async addLexemes(learnerId, newLexemeIds) {
+        const lexemes = await Lexeme.find({ _id: { $in: newLexemeIds } });
+
+        const result = await Promise.all(
+            lexemes.map(async lexeme => {
+                const record = await LexemeRecord.create({
+                    lexemeId: lexeme._id,
+                    learnerId
+                });
+
+                return {
+                    ...lexeme.toJSON(),
+                    ...this.transformRecord(record)
+                };
+            })
+        );
+
+        return result;
     },
 
     async getVirtual(learnerId) {
@@ -223,6 +262,8 @@ export default ({
         const record = await LexemeRecord.findOneAndDelete({
             lexemeId,
             learnerId
+        }).populate({
+            path: 'lexeme'
         });
 
         if (!record) throw {
@@ -230,7 +271,7 @@ export default ({
             message: 'Не найдено'
         };
 
-        return record;
+        return record.lexeme;
     },
 
     async updateLexemeStatus(lexemeId, learnerId, status) {

@@ -75,6 +75,30 @@ export default ({
         });
     },
 
+    async getLexemes(req, res) {
+        let lexemeIds = req.query.lexemeIds;
+
+        if (!Array.isArray(lexemeIds)) {
+            lexemeIds = lexemeIds ? [lexemeIds] : [];
+        }
+
+        const data = await VocabularyService.getLexemes(req.user.id, lexemeIds);
+
+        res.json({
+            ok: true,
+            data
+        });
+    },
+
+    async addLexemes(req, res) {
+        const data = await VocabularyService.addLexemes(req.user.id, req.body.newLexemeIds);
+
+        res.json({
+            ok: true,
+            data
+        });
+    },
+
     async addLexeme(req, res) {
         const lexeme = await Vocabulary.addLexeme(
             req.vocabulary,

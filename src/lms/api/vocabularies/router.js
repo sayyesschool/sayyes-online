@@ -14,6 +14,10 @@ export default context => {
         .get(controller.getMany)
         .post(controller.create);
 
+    router.route('/lexemes')
+        .get(controller.getLexemes)
+        .post(controller.addLexemes);
+
     router.route('/my{/:lexemeId}')
         .get(controller.getVirtual)
         .post(controller.addLexeme)

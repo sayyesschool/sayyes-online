@@ -114,6 +114,8 @@ export const dictionaryReducer = createReducer(null, {
     },
 
     [updateLexemePublishStatus]: (state, action) => {
+        if (!state?.lexemes) return state;
+
         return {
             ...state,
             lexemes: state.lexemes.filter(lexeme => lexeme.id !== action.data.id)
