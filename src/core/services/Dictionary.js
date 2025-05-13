@@ -2,9 +2,13 @@ export default ({
     models: { Lexeme, LexemeRecord, Vocabulary }
 }) => ({
     async search(params, { batch = 1, limit = 0, exclude = [] } = { }) {
-        const query = typeof params === 'string' ? {
-            value: new RegExp(params, 'i')
-        } : params;
+        const { q, ...rest } = typeof params === 'string'
+            ? { q: params }
+            : params;
+        const query = {
+            value: new RegExp(q, 'i'),
+            ...rest
+        };
         const skip = (batch - 1) * limit;
 
         if (exclude.length) {
@@ -41,7 +45,7 @@ export default ({
         return lexeme;
     },
 
-    async getLexemes(lexemeIds) {
+    async getLexemes(lexemeIds = []) {
         return Lexeme.find({ _id: { $in: lexemeIds } });
     },
 

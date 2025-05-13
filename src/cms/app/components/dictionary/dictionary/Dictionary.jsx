@@ -17,7 +17,7 @@ import LexemesMergeForm from 'cms/components/dictionary/lexemes-merge-form';
 
 import styles from './Dictionary.module.scss';
 
-const SEARCH_URL = `${CMS_URL}/api/vocabularies/search`;
+const SEARCH_URL = `${CMS_URL}/api/dictionary/search`;
 
 const tabs = [
     { value: LexemePublishStatus.Pending, content: 'На проверке', icon: 'pending' },

@@ -14,7 +14,9 @@ export default context => {
         .get(controller.getMany)
         .post(controller.create);
 
-    router.route('/lexemes')
+    router.get('/search', controller.search);
+
+    router.route('/my/lexemes')
         .get(controller.getLexemes)
         .post(controller.addLexemes);
 
@@ -23,8 +25,6 @@ export default context => {
         .post(controller.addLexeme)
         .put(controller.updateLexeme)
         .delete(controller.deleteLexeme);
-
-    router.get('/search', controller.search);
 
     router.put('/status/:lexemeId', controller.updateLexemeStatus);
 

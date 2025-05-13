@@ -1,100 +1,86 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import FormDialog from 'shared/components/form-dialog';
 import LexemesList from 'shared/components/lexemes-list';
+import LoadingIndicator from 'shared/components/loading-indicator';
+import { useLexiconApi } from 'shared/hooks/lexicon';
 import { useUser } from 'shared/hooks/user';
-import { useVocabularyActions } from 'shared/hooks/vocabularies';
-import http from 'shared/services/http';
-import { Dialog, Flex, IconButton, Surface, Text } from 'shared/ui-components';
+import { Dialog, IconButton, Surface } from 'shared/ui-components';
 
 import Lexeme from 'lms/components/vocabulary/lexeme';
-import LexemeForm from 'lms/components/vocabulary/lexeme-form';
 import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
-import LexemeView from 'lms/components/vocabulary/lexeme-view';
 
-export default function VocabularyItem({ lexemeIds }) {
+export default function VocabularyItem({
+    learnerId,
+    lexemeIds,
+    className
+}) {
     const [user] = useUser();
-    const { addLexeme, updateLexeme, deleteLexeme, updateLexemeStatus } = useVocabularyActions();
-    const [lexemes, setLexemes] = useState([]);
+    const {
+        getLexemes,
+        addLexeme,
+        addLexemes,
+        updateLexemeStatus,
+        deleteLexeme
+    } = useLexiconApi();
+
+    const [lexemes, setLexemes] = useState(null);
     const [viewingLexeme, setViewingLexeme] = useState();
-    const [editingLexeme, setEditingLexeme] = useState();
 
-    const newLexemeIds = lexemes.filter(({ data }) => !data).map(({ id }) => id);
-    const disableAddAllBtn = newLexemeIds.length === 0;
-
-    const updateList = useCallback(lexeme => {
-        setLexemes(lexemes => lexemes.map(item => item.id === lexeme.id ? lexeme : item));
-    }, []);
+    const newLexemeIds = lexemes?.filter(({ data }) => !data).map(({ id }) => id);
+    const disableAddAllBtn = newLexemeIds?.length === 0;
 
     useEffect(() => {
-        const domain = window.location.hostname.startsWith('cms') ? 'dictionary' : 'vocabularies';
+        getLexemes(lexemeIds)
+            .then(setLexemes);
+    }, []);
 
-        const params = new URLSearchParams();
-        lexemeIds?.forEach(id => params.append('lexemeIds', id));
-
-        http.get(`/api/${domain}/lexemes?${params.toString()}`)
-            .then(response => setLexemes(response.data));
+    const updateList = useCallback(lexeme => {
+        setLexemes(lexemes => lexemes.map(l => l.id === lexeme.id ? lexeme : l));
     }, []);
 
     const handleAddLexeme = useCallback(data => {
-        return addLexeme('my', data).then(response => {
-            updateList(response.data);
-        });
+        return addLexeme(data)
+            .then(lexeme => {
+                updateList(lexeme);
+            });
     }, [addLexeme, updateList]);
 
     const handleAddAllLexemes = useCallback(() => {
-        http.post('/api/vocabularies/lexemes', { newLexemeIds })
-            .then(({ data }) => setLexemes(prev =>
-                prev.map(item => data.find(u => u.id === item.id) || item)
-            ));
-    }, [newLexemeIds]);
+        return addLexemes(newLexemeIds)
+            .then(({ data }) => {
+                setLexemes(prev =>
+                    prev.map(item => data.find(u => u.id === item.id) || item)
+                );
+            });
+    }, [newLexemeIds, addLexemes]);
 
-    const handleUpdateLexeme = useCallback(data => {
-        return updateLexeme('my', editingLexeme?.id, data).then(response => {
-            updateList(response.data);
-        }).finally(() => setEditingLexeme(null));
-    }, [updateLexeme, editingLexeme?.id, updateList]);
+    const handleUpdateLexemeStatus = useCallback((lexemeId, status) => {
+        return updateLexemeStatus(lexemeId, { status })
+            .then(lexeme => {
+                updateList(lexeme);
+            });
+    }, [updateLexemeStatus, updateList]);
 
     const handleDeleteLexeme = useCallback(lexemeId => {
         if (confirm('Вы уверены что хотите удалить слово')) {
-            return deleteLexeme('my', lexemeId).then(response => {
-                updateList(response.data);
-            });
+            return deleteLexeme(lexemeId)
+                .then(lexeme => {
+                    updateList(lexeme);
+                });
+        } else {
+            return Promise.resolve();
         }
     }, [deleteLexeme, updateList]);
 
-    const handleUpdateLexemeStatus = useCallback((lexemeId, status) => {
-        return updateLexemeStatus(lexemeId, status).then(response => {
-            updateList(response.data);
-        });
-    }, [updateLexemeStatus, updateList]);
-
-    const handleModalClose = useCallback(() => {
-        setViewingLexeme(null);
-        setEditingLexeme(null);
-    }, []);
+    if (!lexemes) return <LoadingIndicator />;
 
     return (
-        <>
-            <Flex
-                alignItems="center"
-                justifyContent="space-between"
-            >
-                <Text>Vocabulary</Text>
-
-                {!user.isManager && <IconButton
-                    title="Добавить все слова"
-                    icon="add"
-                    disabled={disableAddAllBtn}
-                    onClick={() => handleAddAllLexemes()}
-                />}
-            </Flex>
-
+        <div className={className}>
             <Surface variant="outlined">
                 <LexemesList
                     lexemes={lexemes}
                     renderLexemeActions={lexeme => {
-                        if (user.isManager) return [];
+                        if (!learnerId) return [];
 
                         return lexeme.data ? [
                             <LexemeStatus
@@ -104,53 +90,43 @@ export default function VocabularyItem({ lexemeIds }) {
                                 onChange={status => handleUpdateLexemeStatus(lexeme.id, status)}
                             />,
                             {
-                                icon: 'edit',
-                                title: 'Редактировать слово',
-                                onClick: () => setEditingLexeme(lexeme)
-                            },
-                            {
-                                icon: 'delete',
-                                title: 'Удалить слово',
+                                icon: 'remove',
+                                title: 'Удалить слово из словаря',
                                 onClick: () => handleDeleteLexeme(lexeme.id)
-                            }] : [{
-                            icon: 'add',
-                            title: 'Добавить слово',
-                            onClick: () => handleAddLexeme(lexeme)
-                        }];
+                            }
+                        ] : [
+                            {
+                                icon: 'add',
+                                title: 'Добавить слово в словарь',
+                                onClick: () => handleAddLexeme(lexeme)
+                            }
+                        ];
                     }}
                     onViewLexeme={setViewingLexeme}
                 />
 
-                {viewingLexeme &&
-                    <LexemeView
-                        as={Dialog}
-                        open
-                        onClose={handleModalClose}
-                    >
-                        <Lexeme
-                            lexeme={viewingLexeme}
-                            readOnly={user.isTeacher}
-                            onStatusUpdate={handleUpdateLexemeStatus}
-                        />
-                    </LexemeView>
-                }
-
-                {editingLexeme &&
-                    <LexemeView
-                        as={FormDialog}
-                        open
-                        onClose={handleModalClose}
-                    >
-                        <LexemeForm
-                            id="lexeme-edit-form"
-                            lexeme={editingLexeme}
-                            onSubmit={handleUpdateLexeme}
-                        />
-                    </LexemeView>
+                {learnerId &&
+                    <IconButton
+                        title="Добавить все слова"
+                        icon="add"
+                        disabled={disableAddAllBtn}
+                        onClick={handleAddAllLexemes}
+                    />
                 }
             </Surface>
 
-        </>
-
+            {viewingLexeme &&
+                <Dialog
+                    open
+                    onClose={() => setViewingLexeme(null)}
+                >
+                    <Lexeme
+                        lexeme={viewingLexeme}
+                        readOnly={user.isTeacher}
+                        onStatusUpdate={handleUpdateLexemeStatus}
+                    />
+                </Dialog>
+            }
+        </div>
     );
 }

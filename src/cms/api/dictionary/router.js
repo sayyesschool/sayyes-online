@@ -13,6 +13,8 @@ export default context => {
 
     router.get('/search', controller.search);
     router.get('/match', controller.match);
+    router.route('/lexemes')
+        .get(controller.getLexemes);
 
     router.post('/merge', controller.mergeLexemes);
 

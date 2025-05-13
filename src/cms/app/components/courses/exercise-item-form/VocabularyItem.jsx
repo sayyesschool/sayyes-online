@@ -2,12 +2,11 @@ import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useSta
 
 import { LexemePublishStatus } from 'core/models/lexeme/constants';
 
+import FormDialog from '@/shared/components/form-dialog';
 import LexemesList from 'shared/components/lexemes-list';
 import LexemesSearch from 'shared/components/lexemes-search';
-import { CMS_URL } from 'shared/constants';
-import { useDictionaryActions } from 'shared/hooks/dictionary';
-import { useUser } from 'shared/hooks/user';
-import http from 'shared/services/http';
+import LoadingIndicator from 'shared/components/loading-indicator';
+import { useDictionaryApi } from 'shared/hooks/dictionary';
 import { Dialog, IconButton } from 'shared/ui-components';
 
 import Lexeme from 'cms/components/dictionary/lexeme';
@@ -15,25 +14,20 @@ import LexemeForm from 'cms/components/dictionary/lexeme-form';
 
 import styles from './VocabularyItem.module.scss';
 
-const SEARCH_URL = `${CMS_URL}/api/vocabularies/search`;
+const SEARCH_URL = '/api/dictionary/search';
 
 function VocabularyItemForm({ lexemeIds = [] }, ref) {
-    const [user] = useUser();
-    const { addLexeme, updateLexeme, updateLexemePublishStatus } = useDictionaryActions();
+    const {
+        getLexemes,
+        createLexeme,
+        updateLexeme
+    } = useDictionaryApi();
 
     const lexemeIdsRef = useRef(lexemeIds);
 
-    const [lexemes, setLexemes] = useState([]);
+    const [lexemes, setLexemes] = useState(null);
     const [viewingLexeme, setViewingLexeme] = useState();
     const [editingLexeme, setEditingLexeme] = useState();
-
-    useEffect(() => {
-        const params = new URLSearchParams();
-        lexemeIds?.forEach(id => params.append('lexemeIds', id));
-
-        http.get(`/api/dictionary/lexemes?${params.toString()}`)
-            .then(response => setLexemes(response.data));
-    }, []);
 
     useImperativeHandle(ref, () => ({
         get props() {
@@ -43,6 +37,30 @@ function VocabularyItemForm({ lexemeIds = [] }, ref) {
         }
     }));
 
+    useEffect(() => {
+        getLexemes(lexemeIdsRef.current)
+            .then(lexemes => setLexemes(lexemes));
+    }, [getLexemes]);
+
+    const addLexeme = useCallback(lexeme => {
+        lexemeIdsRef.current.push(lexeme.id);
+        setLexemes(lexemes => lexemes.concat(lexeme));
+    }, []);
+
+    const removeLexeme = useCallback(lexeme => {
+        lexemeIdsRef.current = lexemeIdsRef.current.filter(id => id !== lexeme.id);
+        setLexemes(lexemes => lexemes.filter(l => l.id !== lexeme.id));
+    }, []);
+
+    const handleAddLexeme = useCallback(lexeme => {
+        return createLexeme({
+            ...lexeme,
+            publishStatus: LexemePublishStatus.Approved
+        }).then(response => {
+            addLexeme(response.data);
+        });
+    }, [createLexeme, addLexeme]);
+
     const handleUpdateLexeme = useCallback(data => {
         return updateLexeme(editingLexeme?.id, data)
             .then(() => {
@@ -51,47 +69,25 @@ function VocabularyItemForm({ lexemeIds = [] }, ref) {
             .finally(() => setEditingLexeme(null));
     }, [editingLexeme?.id, updateLexeme]);
 
-    const handleAddLexeme = useCallback(lexeme => {
-        lexemeIdsRef.current.push(lexeme.id);
-
-        setLexemes(lexemes => lexemes.concat(lexeme));
-    }, []);
-
-    const handleCreateLexeme = useCallback(async lexeme => {
-        return addLexeme(lexeme)
-            .then(response => {
-                return updateLexemePublishStatus(response.data.id, LexemePublishStatus.Approved);
-            }).then(response => {
-                handleAddLexeme(response.data);
-            });
-    }, [addLexeme, handleAddLexeme, updateLexemePublishStatus]);
-
-    const removeLexeme = useCallback(lexeme => {
-        lexemeIdsRef.current = lexemeIdsRef.current.filter(id => id !== lexeme.id);
-        setLexemes(lexemes => lexemes.filter(l => l.id !== lexeme.id));
-    }, []);
-
-    const closeModal = useCallback(() => {
-        setViewingLexeme(null);
-        setEditingLexeme(null);
-    }, []);
-
-    const isModalOpen = viewingLexeme || editingLexeme;
+    if (!lexemes) return <LoadingIndicator />;
 
     return (
         <div className={styles.root}>
             <LexemesSearch
+                key={lexemes.length}
+                className={styles.search}
                 url={SEARCH_URL}
                 lexemes={lexemes}
+                params={{ publishStatus: LexemePublishStatus.Approved }}
                 renderResultItemAction={result =>
                     <IconButton
                         icon="add"
                         title="Добавить слово"
                         variant="soft"
-                        onClick={() => handleAddLexeme(result.data)}
+                        onClick={() => addLexeme(result.data)}
                     />
                 }
-                onAddLexeme={handleCreateLexeme}
+                onAddLexeme={handleAddLexeme}
             />
 
             <LexemesList
@@ -103,29 +99,35 @@ function VocabularyItemForm({ lexemeIds = [] }, ref) {
                         onClick: () => setEditingLexeme(lexeme)
                     },
                     {
-                        icon: 'delete',
-                        title: 'Удалить слово',
+                        icon: 'remove',
+                        title: 'Убрать слово',
                         onClick: () => removeLexeme(lexeme)
                     }
                 ]}
                 onViewLexeme={setViewingLexeme}
             />
 
-            <Dialog open={isModalOpen} onClose={closeModal}>
-                {viewingLexeme ? (
-                    <Lexeme
-                        lexeme={viewingLexeme}
-                        readOnly
-                    />
-                ) : editingLexeme ? (
-                    <LexemeForm
-                        id="lexeme-edit-form"
-                        lexeme={editingLexeme}
-                        userId={user?.id}
-                        onSubmit={handleUpdateLexeme}
-                    />
-                ) : null}
+            <Dialog
+                open={!!viewingLexeme}
+                onClose={() => setViewingLexeme(null)}
+            >
+                <Lexeme
+                    lexeme={viewingLexeme}
+                    readOnly
+                />
             </Dialog>
+
+            <FormDialog
+                title="Редактирование лексемы"
+                open={!!editingLexeme}
+                onClose={() => setEditingLexeme(null)}
+            >
+                <LexemeForm
+                    id="lexeme-edit-form"
+                    lexeme={editingLexeme}
+                    onSubmit={handleUpdateLexeme}
+                />
+            </FormDialog>
         </div>
     );
 }

@@ -34,45 +34,28 @@ export default ({
         });
     },
 
-    // TODO: переписать на populate
-    async getLexemes(learnerId, lexemeIds) {
-        const lexemes = await Lexeme.find({ _id: { $in: lexemeIds } });
+    async getOne(reqVocabulary) {
+        const vocabulary = await reqVocabulary.populate({
+            path: 'lexemes',
+            populate: {
+                path: 'record',
+                transform: this.transformRecord
+            }
+        });
 
-        return Promise.all(
-            lexemes.map(async lexeme => {
-                const record = await LexemeRecord.findOne({
-                    lexemeId: lexeme._id,
-                    learnerId
-                });
+        const data = vocabulary.toJSON();
 
-                return {
-                    ...lexeme.toJSON(),
-                    ...this.transformRecord(record)
-                };
-            })
-        );
+        data.lexemes = data.lexemes.map(lexeme => ({
+            ...lexeme,
+            status: 0,
+            ...lexeme.record,
+            record: undefined
+        }));
+
+        return data;
     },
 
-    async addLexemes(learnerId, newLexemeIds) {
-        const lexemes = await Lexeme.find({ _id: { $in: newLexemeIds } });
-
-        const result = await Promise.all(
-            lexemes.map(async lexeme => {
-                const record = await LexemeRecord.create({
-                    lexemeId: lexeme._id,
-                    learnerId
-                });
-
-                return {
-                    ...lexeme.toJSON(),
-                    ...this.transformRecord(record)
-                };
-            })
-        );
-
-        return result;
-    },
-
+    // TODO: Move to Lexicon
     async getVirtual(learnerId) {
         const records = await LexemeRecord.find({
             learnerId
@@ -97,27 +80,6 @@ export default ({
         vocabulary.lexemes = lexemes;
 
         return vocabulary;
-    },
-
-    async getOne(reqVocabulary) {
-        const vocabulary = await reqVocabulary.populate({
-            path: 'lexemes',
-            populate: {
-                path: 'record',
-                transform: this.transformRecord
-            }
-        });
-
-        const data = vocabulary.toJSON();
-
-        data.lexemes = data.lexemes.map(lexeme => ({
-            ...lexeme,
-            status: 0,
-            ...lexeme.record,
-            record: undefined
-        }));
-
-        return data;
     },
 
     async create(userId, { title, description, image }) {
@@ -154,6 +116,43 @@ export default ({
         return vocabulary;
     },
 
+    // TODO: Move to Lexicon
+    async getLexemes(lexemeIds = [], learnerId) {
+        // TODO: переписать на populate
+        const lexemes = await Lexeme.find({ _id: { $in: lexemeIds } });
+
+        return Promise.all(
+            lexemes.map(async lexeme => {
+                const record = await LexemeRecord.findOne({
+                    lexemeId: lexeme._id,
+                    learnerId
+                });
+
+                lexeme.record = transformRecord(record);
+
+                return lexeme;
+            })
+        );
+    },
+
+    // TODO: Move to Lexicon
+    async addLexemes(lexemeIds = [], learnerId) {
+        const lexemes = await Lexeme.find({ _id: { $in: lexemeIds } });
+
+        return Promise.all(
+            lexemes.map(async lexeme => {
+                const record = await LexemeRecord.create({
+                    lexemeId: lexeme._id,
+                    learnerId
+                });
+
+                lexeme.record = transformRecord(record);
+
+                return lexeme;
+            })
+        );
+    },
+
     async addLexeme(
         vocabulary,
         data,
@@ -161,6 +160,7 @@ export default ({
     ) {
         const { id, value, translation, definition } = data;
 
+        // TODO: Move to Dictionary
         let lexeme = await (id
             ? Lexeme.findById(id)
             : Lexeme.findOne({
@@ -178,6 +178,7 @@ export default ({
             });
         }
 
+        // TODO: Move to Lexicon
         let record = await LexemeRecord.findOne({
             lexemeId: lexeme.id,
             learnerId
@@ -259,6 +260,7 @@ export default ({
     },
 
     async deleteLexeme(lexemeId, learnerId) {
+        // TODO: Move to Lexicon
         const record = await LexemeRecord.findOneAndDelete({
             lexemeId,
             learnerId
@@ -275,6 +277,7 @@ export default ({
     },
 
     async updateLexemeStatus(lexemeId, learnerId, status) {
+        // TODO: Move to Lexicon
         const record = await LexemeRecord.findOneAndUpdate(
             {
                 lexemeId,
@@ -289,11 +292,10 @@ export default ({
             }
         );
 
-        if (!record)
-            throw {
-                code: 404,
-                message: 'Не найдено'
-            };
+        if (!record) throw {
+            code: 404,
+            message: 'Не найдено'
+        };
 
         return record;
     }

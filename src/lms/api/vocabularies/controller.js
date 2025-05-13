@@ -75,27 +75,30 @@ export default ({
         });
     },
 
+    // TODO: Move to Lexicon
     async getLexemes(req, res) {
-        let lexemeIds = req.query.lexemeIds;
-
-        if (!Array.isArray(lexemeIds)) {
-            lexemeIds = lexemeIds ? [lexemeIds] : [];
-        }
-
-        const data = await VocabularyService.getLexemes(req.user.id, lexemeIds);
+        const lexemes = await Vocabulary.getLexemes(
+            req.query.ids?.split(','),
+            req.user.id
+        );
 
         res.json({
             ok: true,
-            data
+            data: lexemes
         });
     },
 
+    // TODO: Move to Lexicon
     async addLexemes(req, res) {
-        const data = await VocabularyService.addLexemes(req.user.id, req.body.newLexemeIds);
+        const lexemes = await Vocabulary.addLexemes(
+            req.body.ids?.split(','),
+            req.user.id
+        );
 
         res.json({
             ok: true,
-            data
+            message: 'Успешно добавлены',
+            data: lexemes
         });
     },
 
@@ -140,6 +143,7 @@ export default ({
         });
     },
 
+    // TODO: Move to Lexicon
     async updateLexemeStatus(req, res) {
         const record = await Vocabulary.updateLexemeStatus(
             req.params.lexemeId,
@@ -171,6 +175,7 @@ export default ({
         });
     },
 
+    // TODO: Move to Lexicon
     async deleteLexeme(req, res) {
         const record = await Vocabulary.deleteLexeme(
             req.params.lexemeId,

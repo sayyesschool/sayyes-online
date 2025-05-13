@@ -2,15 +2,20 @@ export default ({
     services: { Dictionary }
 }) => ({
     async search(req, res) {
-        const { results, totalCount } = await Dictionary.search(req.query.q, {
-            exclude: req.query.e
+        const { b, e, limit, ...query } = req.query;
+        const { results, totalCount, batch, more } = await Dictionary.search(query, {
+            batch: b,
+            exclude: e,
+            limit
         });
 
         res.json({
             ok: true,
             data: results,
             meta: {
-                totalCount
+                totalCount,
+                batch,
+                more
             }
         });
     },
@@ -44,13 +49,7 @@ export default ({
     },
 
     async getLexemes(req, res) {
-        let lexemeIds = req.query.lexemeIds;
-
-        if (!Array.isArray(lexemeIds)) {
-            lexemeIds = lexemeIds ? [lexemeIds] : [];
-        }
-
-        const data = await Dictionary.getLexemes(lexemeIds);
+        const data = await Dictionary.getLexemes(req.query.ids?.split(','));
 
         res.json({
             ok: true,
@@ -69,12 +68,12 @@ export default ({
     },
 
     async updateLexeme(req, res) {
-        const data = await Dictionary.updateLexeme(req.params.lexemeId, req.body);
+        const lexeme = await Dictionary.updateLexeme(req.params.lexemeId, req.body);
 
         res.json({
             ok: true,
             message: 'Лексема обновлена',
-            data
+            data: lexeme
         });
     },
 
