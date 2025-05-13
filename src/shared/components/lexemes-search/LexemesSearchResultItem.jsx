@@ -15,7 +15,7 @@ export default function LexemesSearchResultItem({
     const lexeme = result.data;
 
     const handleClick = useCallback(e => {
-        onSelect(lexeme);
+        onSelect?.(lexeme);
     }, [onSelect, lexeme]);
 
     const className = cn(

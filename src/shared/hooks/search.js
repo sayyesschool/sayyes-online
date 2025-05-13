@@ -52,22 +52,18 @@ export function useSearch({
         const params = typeof arg === 'string' ?
             { q: arg } : arg;
 
-        const response = await _search(params);
-
-        return response;
+        return _search(params);
     }, [_search]);
 
     const searchMore = useCallback(async () => {
         if (!meta.more) return;
 
-        const response = await _search({
+        return _search({
             b: meta.batch + 1,
             ...paramsRef.current
         }, {
             fresh: false
         });
-
-        return response;
     }, [_search, meta]);
 
     const reset = useCallback(() => {

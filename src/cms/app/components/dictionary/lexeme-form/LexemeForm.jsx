@@ -11,10 +11,8 @@ import styles from './LexemeForm.module.scss';
 
 export default function LexemeForm({
     lexeme,
-    userId,
     disabled,
     readOnly,
-    onMatch,
     onSubmit,
     ...props
 }) {

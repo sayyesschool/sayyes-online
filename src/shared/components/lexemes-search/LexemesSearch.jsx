@@ -33,9 +33,6 @@ export default function LexemesSearch({
                 comboboxRef={comboboxRef}
                 placeholder="Поиск слов"
                 url={url}
-                params={{
-                    limit: 10
-                }}
                 isResultDisabled={isResultDisabled}
                 renderResult={result => renderResultItem?.(result) ||
                     <LexemesSearchResultItem

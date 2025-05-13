@@ -34,6 +34,7 @@ function ExerciseItem({
     checked,
     completed,
     state,
+    readOnly,
     onUpdateState
 }) {
     const Component = Components[item?.type];
@@ -48,6 +49,7 @@ function ExerciseItem({
             checked={checked}
             completed={completed}
             state={state}
+            readOnly={readOnly}
             onUpdateState={onUpdateState}
         />
     ) : null;

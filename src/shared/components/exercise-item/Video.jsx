@@ -1,6 +1,6 @@
-import { useBoolean } from 'shared/hooks/state';
 import Content from 'shared/components/content';
 import VideoPlayer from 'shared/components/video-player';
+import { useBoolean } from 'shared/hooks/state';
 import { Button, Icon } from 'shared/ui-components';
 
 import './Video.scss';
@@ -21,10 +21,10 @@ export default function VideoItem({
                 className="VideoItem__player"
                 src={url}
                 provider={provider}
-                controls
                 options={{
                     stretching: 'fill'
                 }}
+                controls
             />
 
             {script &&

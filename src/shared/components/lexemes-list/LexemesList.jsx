@@ -16,7 +16,7 @@ export default function LexemesList({
                 <LexemeItem
                     key={lexeme.id}
                     lexeme={lexeme}
-                    actions={renderLexemeActions(lexeme)}
+                    actions={renderLexemeActions?.(lexeme)}
                     selected={selectedLexemeIds?.includes(lexeme.id)}
                     onView={onViewLexeme}
                     onSelect={onSelectLexeme}

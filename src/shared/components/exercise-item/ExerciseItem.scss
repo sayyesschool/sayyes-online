@@ -1,4 +1,6 @@
 .ExerciseItem {
+    position: relative;
+
     &__item + &__item {
         margin-top: .5rem;
     }

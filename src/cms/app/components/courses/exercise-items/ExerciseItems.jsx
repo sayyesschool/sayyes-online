@@ -141,7 +141,8 @@ export default function ExerciseItems({
                         />
                         :
                         <div
-                            key={item.id} id={item.id}
+                            key={item.id}
+                            id={item.id}
                             onMouseOver={handleItemMouseOver}
                         >
                             <ExerciseItem
