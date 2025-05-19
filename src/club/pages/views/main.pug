@@ -100,7 +100,7 @@ block main
 
     //+section('Тарифы')#packages
     +section('Стоимость')#packages
-        div.grid.grid-1
+        div.grid.grid-2
             div.text-card.card.card--purple.flex-column.align-center.justify-center.gap-xl.text--center
                 h3.heading-2.m-none Разовое посещение разговорного клуба
 
@@ -110,31 +110,31 @@ block main
 
                 p.text--semibold В тариф входит 1 встреча, которую вы можете посетить в течение 2 недель с момента оплаты
 
-            //- div.flex-column.gap-m
-            //-     for pack in packs.slice(1)
-            //-         div.pack-card.text-card.card.card--sm.flex
-            //-             div.col.gap-l
-            //-                 div.flex-column.gap-xs
-            //-                     h3.heading-5.m-none= pack.title
+            div.flex-column.gap-m
+                for pack in packs.slice(1)
+                    div.pack-card.text-card.card.card--sm.flex
+                        div.col.gap-l
+                            div.flex-column.gap-xs
+                                h3.heading-5.m-none= pack.title
 
-            //-                     if pack.description
-            //-                         p.text.text--small= pack.description
+                                if pack.description
+                                    p.text.text--small= pack.description
 
-            //-                     if pack.discount
-            //-                         p.text= `Выгода ${pack.discount} ₽`
+                                if pack.discount
+                                    p.text= `Выгода ${pack.discount} ₽`
 
-            //-                 button.pack-btn.btn.btn--sm.btn--outlined(data-pack-id=pack.id) Купить
+                            button.pack-btn.btn.btn--sm.btn--outlined(data-pack-id=pack.id) Купить
 
-            //-             div.col
-            //-                 div.flex-column.justify-between.gap-xs.h-100
-            //-                     div.flex-column
-            //-                         h3.heading-4= `${pack.price} ₽`
+                        div.col
+                            div.flex-column.justify-between.gap-xs.h-100
+                                div.flex-column
+                                    h3.heading-4= `${pack.price} ₽`
 
-            //-                         if pack.discount
-            //-                             p.text.text--muted.text--strikethrough= `${pack.priceWithoutDiscount} ₽`
+                                    if pack.discount
+                                        p.text.text--muted.text--strikethrough= `${pack.priceWithoutDiscount} ₽`
                                     
-            //-                     div.flex-column
-            //-                         p.text.text--small.text--muted= `${pack.pricePerMonth} ₽ / месяц`
+                                div.flex-column
+                                    p.text.text--small.text--muted= `${pack.pricePerMonth} ₽ / месяц`
 
     +section('Отзывы участников')#testimonials
         +slider.testimonials-slider                                   
