@@ -5,8 +5,7 @@ export default ({
         const meetings = await Club.findMeetings(req.query)
             .populate('host', 'firstname lastname email')
             .populate('registrations')
-            .sort({ date: 1 })
-            .limit(100);
+            .sort({ date: 1 });
 
         res.json({
             ok: true,
