@@ -250,10 +250,7 @@ export default ({
                 timezone: 'Europe/Moscow',
                 settings: {
                     join_before_host: false,
-                    waiting_room: false,
-                    approval_type: 0, // automatically approve
-                    close_registration: true,
-                    registrants_email_notification: false
+                    waiting_room: false
                 }
             });
 
@@ -482,58 +479,27 @@ export default ({
         return registration;
     },
 
-    async createRegistration($meeting, $user, membership, { status } = { status: 'pending' }) {
+    async createRegistration($meeting, $user, membership, { status } = {}) {
         const meeting = await this.getMeeting($meeting);
         const user = await Auth.getUser($user);
 
-        const registration = new Registration({
+        return Registration.create({
             status,
-            free: meeting.isFree,
+            joinUrl: meeting.joinUrl,
             meetingId: meeting.id,
-            userId: user.id,
-            membershipId: meeting.isFree ? undefined : membership?.id
+            membershipId: meeting.free ? undefined : membership?.id,
+            userId: user.id
         });
-
-        if (meeting.isScheduled && meeting.zoomId) {
-            const { join_url, registrant_id } = await zoom.meetings.addRegistrant(meeting.zoomId, {
-                email: user.email,
-                first_name: user.firstname,
-                last_name: user.lastname
-            });
-
-            registration.zoomId = registrant_id;
-            registration.joinUrl = join_url;
-        }
-
-        return Registration.create(registration);
     },
 
     async updateRegistration($meeting, $registration, data = {}) {
-        const meeting = await this.getMeeting($meeting);
         const registration = await this.getRegistration($registration);
 
-        if (meeting.zoomId && registration.zoomId && data.status in registrationStatusToAction) {
-            await zoom.meetings.updateRegistrantStatus(meeting.zoomId, {
-                action: registrationStatusToAction[data.status],
-                registrants: [{
-                    id: registration.zoomId
-                }]
-            });
-        }
-
-        return Registration.findByIdAndUpdate(registration.id, {
-            ...data,
-            free: meeting.free
-        }, { new: true });
+        return Registration.findByIdAndUpdate(registration.id, data, { new: true });
     },
 
     async deleteRegistration($meeting, $registration) {
-        const meeting = await this.getMeeting($meeting);
         const registration = await this.getRegistration($registration);
-
-        if (registration.zoomId) {
-            await zoom.meetings.removeRegistrant(meeting.zoomId, registration.zoomId);
-        }
 
         const deletedRegistration = await Registration.findByIdAndDelete(registration._id);
 
@@ -684,13 +650,32 @@ export default ({
     },
 
     async sendMembershipsReminders() {
+        const now = new Date();
+
         const almostFullMemberships = await Membership.getAlmostFullMemberships({
             limitDifference: ALMOST_FULL_LIMIT_DIFFERENCE
+        }, {
+            'notifications.almostFull': { $exists: false }
         });
-        const fullMemberships = await Membership.getFullMemberships();
-        const membershipsExpiringIn3Days = await Membership.find().expiringIn(3, 'days').withUser();
-        const membershipsExpiringIn1Day = await Membership.find().expiringIn(1, 'days').withUser();
-        const expiredMemberships = await Membership.find().expired().withUser();
+
+        const fullMemberships = await Membership.getFullMemberships({
+            'notifications.full': { $exists: false }
+        });
+
+        const membershipsExpiringIn3Days = await Membership.find()
+            .expiringIn(3, 'days')
+            .where({ 'notifications.expiringIn3Days': { $exists: false } })
+            .withUser();
+
+        const membershipsExpiringIn1Day = await Membership.find()
+            .expiringIn(1, 'days')
+            .where({ 'notifications.expiringIn1Day': { $exists: false } })
+            .withUser();
+
+        const expiredMemberships = await Membership.find()
+            .expired()
+            .where({ 'notifications.expired': { $exists: false } })
+            .withUser();
 
         const almostFullMessages = almostFullMemberships.map(m => ({
             to: {
@@ -764,5 +749,48 @@ export default ({
             ...messagesExpiringIn1Day,
             ...expiredMessages
         ]);
+
+        if (almostFullMemberships.length > 0) {
+            await Membership.updateMany(
+                { _id: { $in: almostFullMemberships.map(m => m._id) } },
+                { 'notifications.almostFull': now }
+            );
+        }
+
+        if (fullMemberships.length > 0) {
+            await Membership.updateMany(
+                { _id: { $in: fullMemberships.map(m => m._id) } },
+                { 'notifications.full': now }
+            );
+        }
+
+        if (membershipsExpiringIn3Days.length > 0) {
+            await Membership.updateMany(
+                { _id: { $in: membershipsExpiringIn3Days.map(m => m._id) } },
+                { 'notifications.expiringIn3Days': now }
+            );
+        }
+
+        if (membershipsExpiringIn1Day.length > 0) {
+            await Membership.updateMany(
+                { _id: { $in: membershipsExpiringIn1Day.map(m => m._id) } },
+                { 'notifications.expiringIn1Day': now }
+            );
+        }
+
+        if (expiredMemberships.length > 0) {
+            await Membership.updateMany(
+                { _id: { $in: expiredMemberships.map(m => m._id) } },
+                { 'notifications.expired': now }
+            );
+        }
+
+        return {
+            almostFullCount: almostFullMemberships.length,
+            fullCount: fullMemberships.length,
+            expiringIn3DaysCount: membershipsExpiringIn3Days.length,
+            expiringIn1DayCount: membershipsExpiringIn1Day.length,
+            expiredCount: expiredMemberships.length
+        };
     }
 });

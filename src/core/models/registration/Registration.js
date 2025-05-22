@@ -9,10 +9,9 @@ export const Registration = new Schema({
         default: RegistrationStatus.Pending
     },
     joinUrl: { type: String },
-    zoomId: { type: String },
-    userId: { type: Schema.Types.ObjectId },
     meetingId: { type: Schema.Types.ObjectId },
-    membershipId: { type: Schema.Types.ObjectId }
+    membershipId: { type: Schema.Types.ObjectId },
+    userId: { type: Schema.Types.ObjectId }
 });
 
 Registration.statics.Status = RegistrationStatus;

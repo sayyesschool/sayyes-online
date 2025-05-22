@@ -18,7 +18,14 @@ export const Membership = new Schema({
     active: { type: Boolean, default: true, alias: 'isActive' },
     userId: { type: Schema.Types.ObjectId, required: true },
     paymentId: { type: Schema.Types.ObjectId },
-    registrationIds: [{ type: Schema.Types.ObjectId }]
+    registrationIds: [{ type: Schema.Types.ObjectId }],
+    notifications: {
+        full: { type: Date },
+        almostFull: { type: Date },
+        expiringIn3Days: { type: Date },
+        expiringIn1Day: { type: Date },
+        expired: { type: Date }
+    }
 }, {
     timestamps: true
 });
@@ -76,9 +83,10 @@ Membership.statics.getSoldByMonth = async function() {
         });
 };
 
-Membership.statics.getAlmostFullMemberships = async function({ limitDifference } = { limitDifference: 2 }) {
+Membership.statics.getAlmostFullMemberships = async function({ limitDifference } = { limitDifference: 2 }, query = {}, ...rest) {
     const results = await this.aggregate()
         .match({
+            active: true,
             limit: { $gte: 4 },
             endDate: { $gt: new Date() }
         })
@@ -91,12 +99,18 @@ Membership.statics.getAlmostFullMemberships = async function({ limitDifference }
             $expr: { $eq: ['$registrationCount', { $subtract: ['$limit', limitDifference] }] }
         });
 
-    return this.find({ _id: { $in: results.map(({ _id }) => _id) } }).withUser();
+    if (results.length === 0) return [];
+
+    return this.find({
+        _id: { $in: results.map(({ _id }) => _id) },
+        ...query
+    }, ...rest).withUser();
 };
 
-Membership.statics.getFullMemberships = async function() {
+Membership.statics.getFullMemberships = async function(query = {}, ...rest) {
     const results = await this.aggregate()
         .match({
+            active: true,
             endDate: { $gt: new Date() }
         })
         .project({
@@ -108,7 +122,12 @@ Membership.statics.getFullMemberships = async function() {
             $expr: { $eq: ['$registrationCount', '$limit'] }
         });
 
-    return this.find({ _id: { $in: results.map(({ _id }) => _id) } }).withUser();
+    if (results.length === 0) return [];
+
+    return this.find({
+        _id: { $in: results.map(({ _id }) => _id) },
+        ...query
+    }, ...rest).withUser();
 };
 
 Membership.virtual('uri').get(function() {
