@@ -30,6 +30,10 @@ const DICTIONARY_URL = `${CMS_URL}/api/dictionary`;
 
 export function useDictionaryApi() {
     const getLexemes = useCallback(ids => {
+        if (!ids || ids.length === 0) {
+            return Promise.resolve([]);
+        }
+
         return http.get(`${DICTIONARY_URL}/lexemes?ids=${ids.join(',')}`)
             .then(response => response.data);
     }, []);

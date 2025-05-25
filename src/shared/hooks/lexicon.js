@@ -7,6 +7,10 @@ const BASE_URL = `${LMS_URL}/api/vocabularies`;
 
 export function useLexiconApi() {
     const getLexemes = useCallback(ids => {
+        if (!ids || ids.length === 0) {
+            return Promise.resolve([]);
+        }
+
         return http.get(`${BASE_URL}/my/lexemes?ids=${ids.join(',')}`)
             .then(response => response.data);
     }, []);
