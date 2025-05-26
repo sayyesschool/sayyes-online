@@ -1,7 +1,7 @@
 import TimeZoneSelect from 'shared/components/timezone-select';
 import { useForm } from 'shared/hooks/form';
 import datetime from 'shared/libs/datetime';
-import { Button, Flex, Form, Grid } from 'shared/ui-components';
+import { Button, Form } from 'shared/ui-components';
 
 import styles from './ProfileForm.module.scss';
 
@@ -28,7 +28,6 @@ const getDefaultValues = ({
 });
 
 const socialFields = [
-    { name: 'skype', label: 'Skype' },
     { name: 'telegram', label: 'Telegram' },
     { name: 'zoom', label: 'Zoom' }
 ];

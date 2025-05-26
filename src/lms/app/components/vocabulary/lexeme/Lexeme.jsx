@@ -66,7 +66,7 @@ export default function LexemeView({
                         className={styles.translation}
                         content={translation}
                         color="neutral"
-                        type="body-lg"
+                        type="body-md"
                     />
 
                     {data?.translation &&
