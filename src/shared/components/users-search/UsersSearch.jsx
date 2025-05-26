@@ -3,15 +3,13 @@ import { Link } from 'react-router-dom';
 import SearchForm from 'shared/components/search-form';
 import { ListItem } from 'shared/ui-components';
 
-const defaultParams = {
-    role: 'learner'
-};
+export default function UsersSearch({ params }) {
+    console.log('UsersSearch params:', params);
 
-export default function LearnersSearchForm() {
     return (
         <SearchForm
             url="/api/users"
-            params={defaultParams}
+            params={params}
             getOptionLabel={option => option?.fullname ?? ''}
             renderResult={result =>
                 <ListItem

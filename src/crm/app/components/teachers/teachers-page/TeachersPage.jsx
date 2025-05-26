@@ -4,6 +4,7 @@ import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import UsersSearch from 'shared/components/users-search';
 import { useBoolean } from 'shared/hooks/state';
 
 import TeacherForm from 'crm/components/teachers/teacher-form';
@@ -20,7 +21,7 @@ export default function TeachersPage({ history }) {
     const createTeacher = useCallback(data => {
         return actions.createTeacher(data)
             .finally(() => toggleFormOpen(false));
-    }, []);
+    }, [actions]);
 
     const deleteTeacher = useCallback(() => {
         return actions.deleteTeacher(teacher.id)
@@ -28,7 +29,7 @@ export default function TeachersPage({ history }) {
                 setTeacher(null);
                 toggleConfirmationDialogOpen(false);
             });
-    }, [teacher]);
+    }, [teacher, actions]);
 
     const handleEdit = useCallback(teacher => {
         history.push(teacher.url, { edit: true });
@@ -54,6 +55,8 @@ export default function TeachersPage({ history }) {
             />
 
             <Page.Content>
+                <UsersSearch params={{ role: 'teacher' }} />
+
                 <Page.Section variant="outlined" compact>
                     <TeachersTable
                         teachers={teachers}

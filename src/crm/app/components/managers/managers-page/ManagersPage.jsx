@@ -4,6 +4,7 @@ import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import UsersSearch from 'shared/components/users-search';
 import { useBoolean } from 'shared/hooks/state';
 
 import ManagerForm from 'crm/components/managers/manager-form';
@@ -58,6 +59,8 @@ export default function ManagersPage({ history }) {
             />
 
             <Page.Content>
+                <UsersSearch params={{ role: 'manager' }} />
+
                 <Page.Section variant="outlined" compact>
                     <ManagersTable
                         managers={managers}

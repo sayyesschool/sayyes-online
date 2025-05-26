@@ -4,10 +4,10 @@ import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import UsersSearch from 'shared/components/users-search';
 import { useBoolean } from 'shared/hooks/state';
 
 import LearnerForm from 'crm/components/learners/learner-form';
-import LearnersSearchForm from 'crm/components/learners/learners-search-form';
 import LearnersTable from 'crm/components/learners/learners-table';
 import { useStore } from 'crm/hooks/store';
 
@@ -59,7 +59,7 @@ export default function LearnersPage({ history }) {
             />
 
             <Page.Content>
-                <LearnersSearchForm />
+                <UsersSearch params={{ role: 'learner' }} />
 
                 <Page.Section variant="outlined" compact>
                     <LearnersTable
