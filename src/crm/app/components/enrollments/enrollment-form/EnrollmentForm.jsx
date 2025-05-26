@@ -19,22 +19,45 @@ import { Form } from 'shared/ui-components';
 
 import { useStore } from 'crm/store';
 
-const defaultEnrollment = {
-    status: EnrollmentStatus.Processing,
-    domain: '',
-    type: '',
-    format: '',
-    ageGroup: '',
-    teacherType: '',
-    level: '',
-    purpose: '',
-    experience: '',
-    preferences: '',
-    lessonDuration: 50,
-    schedule: [],
-    trialLessonSchedule: [],
-    note: ''
-};
+const getFormData = ({
+    status = EnrollmentStatus.Processing,
+    domain = '',
+    type = '',
+    format = '',
+    ageGroup = '',
+    level = 0,
+    teacherType = '',
+    lessonDuration = 50,
+    schedule = [],
+    trialLessonSchedule = [],
+    info = {
+        purpose: '',
+        experience: '',
+        preferences: '',
+        note: ''
+    },
+    learnerId = '',
+    managerId = null,
+    teacherId = null
+}) => ({
+    status,
+    domain,
+    type,
+    format,
+    ageGroup,
+    teacherType,
+    level: String(level),
+    lessonDuration,
+    schedule,
+    trialLessonSchedule,
+    purpose: info.purpose,
+    experience: info.experience,
+    preferences: info.preferences,
+    note: info.note,
+    learnerId,
+    managerId,
+    teacherId
+});
 
 function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
     const formRef = useRef();
@@ -42,29 +65,12 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
     const [managers] = useStore('managers.list');
     const [teachers] = useStore('teachers.list');
 
-    const { data, handleChange } = useFormData({
-        ...defaultEnrollment,
-        domain: enrollment.domain || '',
-        type: enrollment.type || '',
-        format: enrollment.format || '',
-        learnerId: enrollment.learnerId || '',
-        lessonDuration: enrollment.lessonDuration || 0,
-        teacherType: enrollment.teacherType,
-        managerId: enrollment.managerId,
-        teacherId: enrollment.teacherId,
-        ageGroup: enrollment.ageGroup,
-        level: String(enrollment.level),
-        purpose: enrollment.info?.purpose,
-        experience: enrollment.info?.experience,
-        preferences: enrollment.info?.preferences,
-        note: enrollment.info?.note,
-        courseIds: undefined,
-        materialIds: undefined,
-        lessons: undefined,
-        payments: undefined
-    }, [enrollment.updateAt]);
+    const { data, handleChange } = useFormData(
+        getFormData(enrollment),
+        [enrollment.updateAt]
+    );
 
-    console.log(111, enrollment, data);
+    console.log('EnrollmentForm', enrollment, data);
 
     useImperativeHandle(ref, () => ({
         get form() { return formRef.current; },
@@ -85,117 +91,119 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
 
     return (
         <Form
-            ref={formRef} className="EnrollmentForm"
-            onSubmit={handleSubmit} {...props}
+            ref={formRef}
+            className="EnrollmentForm"
+            onSubmit={handleSubmit}
+            {...props}
         >
             <Form.Select
+                label="Направление"
                 name="domain"
                 value={data.domain}
-                label="Направление"
                 options={domainOptions}
                 required
                 onChange={handleChange}
             />
 
             <Form.Select
+                label="Тип"
                 name="type"
                 value={data.type}
-                label="Тип"
                 options={typeOptions}
                 required
                 onChange={handleChange}
             />
 
             <Form.Select
+                label="Формат"
                 name="format"
                 value={data.format}
-                label="Формат"
                 options={formatOptions}
                 required
                 onChange={handleChange}
             />
 
             <Form.Select
+                label="Возрастная группа"
                 name="ageGroup"
                 value={data.ageGroup}
-                label="Возрастная группа"
                 options={ageGroupOptions}
                 onChange={handleChange}
             />
 
             <Form.Select
+                label="Тип преподавателя"
                 name="teacherType"
                 value={data.teacherType}
-                label="Тип преподавателя"
                 options={teacherTypeOptions}
                 onChange={handleChange}
             />
 
             <Form.Input
-                type="number"
+                label="Продолжительность урока"
                 name="lessonDuration"
                 value={data.lessonDuration}
-                label="Продолжительность урока"
+                type="number"
                 onChange={handleChange}
             />
 
             <Form.Select
+                label="Уровень"
                 name="level"
                 value={data.level}
-                label="Уровень"
                 options={levelOptions}
                 onChange={handleChange}
             />
 
             <Form.Select
+                label="Цель"
                 name="purpose"
                 value={data.purpose}
-                label="Цель"
                 options={purposeOptions}
                 onChange={handleChange}
             />
 
             <Form.Textarea
+                label="Опыт"
                 name="experience"
                 value={data.experience}
-                label="Опыт"
                 onChange={handleChange}
             />
 
             <Form.Textarea
+                label="Пожелания"
                 name="preferences"
                 value={data.preferences}
-                label="Пожелания"
                 onChange={handleChange}
             />
 
             {/* <DateTimeSelect
-                name="trialLesson"
                 label="Пробный урок"
+                name="trialLesson"
                 items={data.trialLessonSchedule}
                 onChange={handleChange}
             />
 
             <ScheduleSelect
-                name="schedule"
                 label="Расписание"
+                name="schedule"
                 schedule={data.schedule}
                 onChange={handleChange}
             /> */}
 
             <Form.Textarea
+                label="Примечание"
                 name="note"
                 value={data.note}
-                label="Примечание"
                 onChange={handleChange}
             />
 
             {enrollment.id &&
                 <>
                     <UserSelect
+                        label="Менеджеры"
                         name="managerId"
                         value={data.managerId}
-                        label="Менеджеры"
                         options={managers.map(manager => ({
                             key: manager.id,
                             value: manager.id,
@@ -205,9 +213,9 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
                     />
 
                     <UserSelect
+                        label="Преподаватели"
                         name="teacherId"
                         value={data.teacherId}
-                        label="Преподаватели"
                         options={teachers.map(teacher => ({
                             key: teacher.id,
                             value: teacher.id,
