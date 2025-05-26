@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
-import { IconButton, Image, List } from 'shared/ui-components';
+import { IconButton, List } from 'shared/ui-components';
 
 export default function CoursesList({ courses, onRemove }) {
     const handleRemove = useCallback((event, courseId) => {
@@ -18,9 +18,6 @@ export default function CoursesList({ courses, onRemove }) {
                     key={course.id}
                     as={Link}
                     to={course.url}
-                    decorator={course.imageUrl &&
-                        <Image imageUrl={course.imageUrl} alt="" />
-                    }
                     content={course.title}
                     endAction={onRemove &&
                         <IconButton

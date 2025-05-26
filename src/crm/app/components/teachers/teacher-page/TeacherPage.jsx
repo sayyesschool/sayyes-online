@@ -52,10 +52,7 @@ export default function TeacherPage({ match, location, history }) {
             <Page.Header
                 title={teacher.fullname}
                 breadcrumbs={[
-                    {
-                        text: 'Преподаватели',
-                        url: '/teachers'
-                    }
+                    { content: 'Преподаватели', to: '/teachers' }
                 ]}
                 description={
                     <Chip.Group
