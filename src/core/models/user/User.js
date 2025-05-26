@@ -23,11 +23,6 @@ export const User = new Schema([Person, {
         set: hashPassword
     },
     image: { type: Image },
-    accounts: {
-        type: Map,
-        of: String,
-        default: {}
-    },
     role: {
         type: String,
         enum: Object.values(UserRole),
@@ -35,6 +30,11 @@ export const User = new Schema([Person, {
     },
     active: { type: Boolean, default: false, alias: 'isActive' },
     blocked: { type: Boolean, default: false, alias: 'isBlocked' },
+    accounts: {
+        type: Map,
+        of: String,
+        default: {}
+    },
     domains: {
         type: [String],
         enum: Object.values(UserDomain),
@@ -175,6 +175,7 @@ User.methods.toData = function() {
         lastname: this.lastname,
         patronym: this.patronym,
         fullname: this.fullname,
+        role: this.role,
         email: this.email,
         phone: this.phone,
         dob: this.dob,
@@ -182,7 +183,7 @@ User.methods.toData = function() {
         initials: this.initials,
         timezone: this.timezone,
         accounts: this.accounts,
-        role: this.role,
+        domains: this.domains,
         permissions: this.permissions,
         isLearner: this.isLearner,
         isTeacher: this.isTeacher,
