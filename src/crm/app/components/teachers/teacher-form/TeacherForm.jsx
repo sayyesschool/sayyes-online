@@ -6,7 +6,7 @@ import { useFormData } from 'shared/hooks/form';
 import datetime from 'shared/libs/datetime';
 import { Flex, Form } from 'shared/ui-components';
 
-const getDefaultData = ({
+const getFormData = ({
     firstname = '',
     lastname = '',
     patronym = '',
@@ -42,7 +42,10 @@ function TeacherForm({
         get data() { return data; }
     }));
 
-    const { data, handleChange } = useFormData(getDefaultData(teacher));
+    const { data, handleChange } = useFormData(
+        getFormData(teacher),
+        [teacher?.id]
+    );
 
     const handleSubmit = useCallback(() => {
         onSubmit(data);

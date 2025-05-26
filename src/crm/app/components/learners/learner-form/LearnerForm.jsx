@@ -1,14 +1,10 @@
-import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 
 import TimeZoneSelect from 'shared/components/timezone-select';
-import { useForm } from 'shared/hooks/form';
+import { genderOptions, userDomainOptions } from 'shared/data/user';
+import { useFormData } from 'shared/hooks/form';
 import datetime from 'shared/libs/datetime';
-import { Form } from 'shared/ui-components';
-
-const genderOptions = [
-    { key: 'male', value: 'male', label: 'Мужской' },
-    { key: 'female', value: 'female', label: 'Женский' }
-];
+import { Flex, Form } from 'shared/ui-components';
 
 const getFormData = ({
     firstname = '',
@@ -26,7 +22,8 @@ const getFormData = ({
         address = '',
         occupation = '',
         interests = ''
-    }
+    },
+    domains = ['lk', 'lms']
 }) => ({
     hhid,
     firstname,
@@ -41,13 +38,13 @@ const getFormData = ({
     occupation,
     interests,
     timezone,
-    note
+    note,
+    domains
 });
 
 const LearnerForm = forwardRef(({
     learner = {},
     onSubmit,
-
     ...props
 }, ref) => {
     const formRef = useRef();
@@ -57,10 +54,22 @@ const LearnerForm = forwardRef(({
         get data() { return data; }
     }));
 
-    const { data, handleChange, handleSubmit } = useForm({
-        values: getFormData(learner),
-        onSubmit
-    }, [learner?.id]);
+    const { data, handleChange } = useFormData(
+        getFormData(learner),
+        [learner?.id]
+    );
+
+    const handleSubmit = useCallback(() => {
+        onSubmit({
+            ...data,
+            data: {
+                hhid: data.hhid,
+                address: data.address,
+                occupation: data.occupation,
+                interests: data.interests
+            }
+        });
+    }, [data, onSubmit]);
 
     return (
         <Form
@@ -71,14 +80,14 @@ const LearnerForm = forwardRef(({
         >
             <Form.Input
                 name="hhid"
-                value={data.hhid.value}
+                value={data.hhid}
                 label="Hollihop ID"
                 onChange={handleChange}
             />
 
             <Form.Input
                 name="firstname"
-                value={data.firstname.value}
+                value={data.firstname}
                 label="Имя"
                 required
                 onChange={handleChange}
@@ -86,14 +95,14 @@ const LearnerForm = forwardRef(({
 
             <Form.Input
                 name="lastname"
-                value={data.lastname.value}
+                value={data.lastname}
                 label="Фамилия"
                 onChange={handleChange}
             />
 
             <Form.Input
                 name="patronym"
-                value={data.patronym.value}
+                value={data.patronym}
                 label="Отчество"
                 onChange={handleChange}
             />
@@ -101,7 +110,7 @@ const LearnerForm = forwardRef(({
             <Form.Input
                 type="phone"
                 name="phone"
-                value={data.phone.value}
+                value={data.phone}
                 label="Телефон"
                 onChange={handleChange}
             />
@@ -109,7 +118,7 @@ const LearnerForm = forwardRef(({
             <Form.Input
                 type="phone"
                 name="altPhone"
-                value={data.altPhone.value}
+                value={data.altPhone}
                 label="Дополнительный телефон"
                 onChange={handleChange}
             />
@@ -117,14 +126,14 @@ const LearnerForm = forwardRef(({
             <Form.Input
                 type="email"
                 name="email"
-                value={data.email.value}
+                value={data.email}
                 label="Электронная почта"
                 onChange={handleChange}
             />
 
             <Form.RadioGroup
                 name="gender"
-                value={data.gender.value}
+                value={data.gender}
                 label="Пол"
                 items={genderOptions}
                 onChange={handleChange}
@@ -135,21 +144,21 @@ const LearnerForm = forwardRef(({
                     <Form.Input
                         type="date"
                         name="dob"
-                        value={data.dob.value}
+                        value={data.dob}
                         label="Дата рождения"
                         onChange={handleChange}
                     />
 
                     <TimeZoneSelect
                         name="timezone"
-                        value={data.timezone.value}
+                        value={data.timezone}
                         onChange={handleChange}
                     />
 
                     <Form.Input
                         type="text"
                         name="address"
-                        value={data.address.value}
+                        value={data.address}
                         label="Адрес"
                         onChange={handleChange}
                     />
@@ -157,7 +166,7 @@ const LearnerForm = forwardRef(({
                     <Form.Input
                         type="text"
                         name="occupation"
-                        value={data.occupation.value}
+                        value={data.occupation}
                         label="Род деятельности"
                         onChange={handleChange}
                     />
@@ -165,7 +174,7 @@ const LearnerForm = forwardRef(({
                     <Form.Input
                         type="text"
                         name="interests"
-                        value={data.interests.value}
+                        value={data.interests}
                         label="Интересы"
                         onChange={handleChange}
                     />
@@ -179,6 +188,21 @@ const LearnerForm = forwardRef(({
                 resize="auto"
                 onChange={handleChange}
             />
+
+            <Form.Field label="Доступ">
+                <Flex dir="column" gap="md">
+                    {userDomainOptions.map(option => (
+                        <Form.Checkbox
+                            key={option.key}
+                            name={`domains.${option.value}`}
+                            value={option.value}
+                            checked={data.domains.includes(option.value)}
+                            onChange={handleChange}
+                            {...option}
+                        />
+                    ))}
+                </Flex>
+            </Form.Field>
         </Form>
     );
 });

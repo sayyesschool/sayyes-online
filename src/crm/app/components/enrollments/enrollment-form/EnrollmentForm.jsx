@@ -70,8 +70,6 @@ function EnrollmentForm({ enrollment = {}, onSubmit, ...props }, ref) {
         [enrollment.updateAt]
     );
 
-    console.log('EnrollmentForm', enrollment, data);
-
     useImperativeHandle(ref, () => ({
         get form() { return formRef.current; },
         get data() { return data; }
