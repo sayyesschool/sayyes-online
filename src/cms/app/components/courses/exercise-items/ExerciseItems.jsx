@@ -38,7 +38,7 @@ export default function ExerciseItems({
     const handleCreate = useCallback((_, { value }) => {
         return onCreate({ data: { type: value } })
             .then(response => setEditingItemId(response.data.item.id));
-    }, []);
+    }, [onCreate]);
 
     const handleAdd = useCallback((type, dir) => {
         const activeItemIndex = exercise.items.findIndex(item => item.id === activeItemId);
@@ -47,12 +47,12 @@ export default function ExerciseItems({
             data: { type },
             position: activeItemIndex + dir
         }).then(response => setEditingItemId(response.data.item.id));
-    }, [exercise, activeItemId]);
+    }, [exercise, activeItemId, onCreate]);
 
     const handleUpdate = useCallback(data => {
         return onUpdate(editingItemId, data)
             .then(() => setEditingItemId(undefined));
-    }, [editingItemId]);
+    }, [editingItemId, onUpdate]);
 
     const handleDelete = useCallback(() => {
         const deletingItem = exercise.items.find(item => item.id === activeItemId);
@@ -76,11 +76,11 @@ export default function ExerciseItems({
                 setActiveItemId(undefined);
                 toggleConfirmationDialogOpen(false);
             });
-    }, [exercise, activeItemId, onDelete]);
+    }, [exercise, activeItemId, onDelete, toggleConfirmationDialogOpen]);
 
     const handleDeleteRequest = useCallback(() => {
         toggleConfirmationDialogOpen(true);
-    }, []);
+    }, [toggleConfirmationDialogOpen]);
 
     const handleMove = useCallback((itemId, dir) => {
         const itemIndex = exercise.items.findIndex(item => item.id === itemId);
@@ -92,7 +92,7 @@ export default function ExerciseItems({
         items[itemIndex] = otherItem;
 
         onReorder({ items });
-    }, [exercise]);
+    }, [exercise, onReorder]);
 
     const handleEdit = useCallback(() => {
         setEditingItemId(activeItemId);
