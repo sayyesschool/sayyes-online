@@ -41,7 +41,7 @@ export default function EnrollmentPage({ match, history }) {
     const deleteEnrollment = useCallback(() => {
         return actions.deleteEnrollment(enrollment.id)
             .then(() => {
-                history.push(`/learners/${enrollment.learners.id}`);
+                history.push(`/learners/${enrollment.learnerId}`);
             });
     }, [enrollment, actions, history]);
 
