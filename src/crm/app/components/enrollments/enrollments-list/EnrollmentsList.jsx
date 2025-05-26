@@ -14,7 +14,7 @@ export default function EnrollmentsList({ enrollments }) {
                     as={Link}
                     to={enrollment.url}
                     decorator={
-                        <StatusIcon status="info" />
+                        <StatusIcon status={enrollment.status} />
                     }
                     content={<>
                         <Text type="body-md" content={DomainLabel[enrollment.domain]} />
