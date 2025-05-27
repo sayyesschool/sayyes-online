@@ -13,6 +13,7 @@
     "container:dev": "docker compose --env-file .env.dev up --build --detach",
     "container:local": "docker compose --env-file .env.local up --build --detach",
     "container:prod": "docker compose --env-file .env.prod up --build --detach",
+    "container:test": "docker compose --env-file .env.test up --build --detach",
     "cron": "node --import ./loaders/register.cjs ./src/cron.js",
     "cron:local": "nodemon --import ./loaders/register.cjs --env-file=.env.local ./src/cron.js",
     "db-backup": "node --env-file=.env.local ./scripts/db/backup.js",
