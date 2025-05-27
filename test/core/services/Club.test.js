@@ -298,7 +298,7 @@ describe('ClubService', () => {
             it('registers if previously canceled', async () => {
                 await Membership.create(MEMBERSHIP);
                 const firstRegistration = await Club.registerForMeeting(user.id, meeting.id);
-                const canceledRegistration = await Club.cancelRegistration(meeting.id, firstRegistration);
+                const canceledRegistration = await Club.cancelRegistration(firstRegistration);
 
                 const secondRegistration = await Club.registerForMeeting(user.id, meeting.id);
 
@@ -398,21 +398,6 @@ describe('ClubService', () => {
 
                 expect(registration.status).toEqual('approved');
             });
-
-            it('calls Zoom API', async () => {
-                const meeting = await Meeting.create(ZOOM_MEETING);
-                const membership = await Membership.create(MEMBERSHIP);
-
-                const registration = await Club.createRegistration(meeting.id, user.id, membership);
-
-                expect(registration.zoomId).toExist();
-                expect(registration.joinUrl).toExist();
-                expect(zoom.meetings.addRegistrant).toHaveBeenCalledWith(meeting.zoomId, {
-                    email: user.email,
-                    first_name: user.firstname,
-                    last_name: user.lastname
-                });
-            });
         });
 
         describe('updateRegistration', () => {
@@ -420,28 +405,11 @@ describe('ClubService', () => {
                 const membership = await Membership.create(MEMBERSHIP);
                 const registration = await Club.createRegistration(meeting.id, user.id, membership);
 
-                const updatedRegistration = await Club.updateRegistration(meeting.id, registration.id, {
+                const updatedRegistration = await Club.updateRegistration(registration.id, {
                     status: 'pending'
                 });
 
                 expect(updatedRegistration.status).toEqual('pending');
-            });
-
-            it('calls Zoom API', async () => {
-                const meeting = await Meeting.create(ZOOM_MEETING);
-                const membership = await Membership.create(MEMBERSHIP);
-                const registration = await Club.createRegistration(meeting.id, user.id, membership);
-
-                await Club.updateRegistration(meeting.id, registration.id, {
-                    status: 'canceled'
-                });
-
-                expect(zoom.meetings.updateRegistrantStatus).toHaveBeenCalledWith(meeting.zoomId, {
-                    action: 'cancel',
-                    registrants: [{
-                        id: registration.zoomId
-                    }]
-                });
             });
         });
 
@@ -450,21 +418,11 @@ describe('ClubService', () => {
                 const membership = await Membership.create(MEMBERSHIP);
                 const registration = await Club.createRegistration(meeting.id, user.id, membership);
 
-                const deletedRegistration = await Club.deleteRegistration(meeting.id, registration.id);
+                const deletedRegistration = await Club.deleteRegistration(registration.id);
                 const updatedMembership = await Membership.findById(membership.id);
 
                 expect(deletedRegistration).toExist();
                 expect(updatedMembership.registrationIds).toExclude(deletedRegistration.id);
-            });
-
-            it('calls Zoom API', async () => {
-                const meeting = await Meeting.create(ZOOM_MEETING);
-                const membership = await Membership.create(MEMBERSHIP);
-                const registration = await Club.createRegistration(meeting.id, user.id, membership);
-
-                await Club.deleteRegistration(meeting.id, registration.id);
-
-                expect(zoom.meetings.removeRegistrant).toHaveBeenCalledWith(meeting.zoomId, registration.zoomId);
             });
         });
 
@@ -475,28 +433,11 @@ describe('ClubService', () => {
                     status: 'pending'
                 });
 
-                const approvedRegistration = await Club.approveRegistration(meeting.id, registration.id);
+                const approvedRegistration = await Club.approveRegistration(registration.id);
                 const updatedMembership = await Membership.findById(membership.id);
 
                 expect(approvedRegistration.status).toEqual('approved');
                 expect(updatedMembership.registrationIds).toInclude(approvedRegistration.id);
-            });
-
-            it('calls Zoom API', async () => {
-                const meeting = await Meeting.create(ZOOM_MEETING);
-                const membership = await Membership.create(MEMBERSHIP);
-                const registration = await Club.createRegistration(meeting.id, user.id, membership);
-
-                await Club.updateRegistration(meeting.id, registration.id, {
-                    status: 'approved'
-                });
-
-                expect(zoom.meetings.updateRegistrantStatus).toHaveBeenCalledWith(meeting.zoomId, {
-                    action: 'approve',
-                    registrants: [{
-                        id: registration.zoomId
-                    }]
-                });
             });
         });
 
@@ -505,28 +446,11 @@ describe('ClubService', () => {
                 const membership = await Membership.create(MEMBERSHIP);
                 const registration = await Club.createRegistration(meeting.id, user.id, membership);
 
-                const canceledRegistration = await Club.cancelRegistration(meeting.id, registration.id);
+                const canceledRegistration = await Club.cancelRegistration(registration.id);
                 const updatedMembership = await Membership.findById(membership.id);
 
                 expect(canceledRegistration.status).toEqual('canceled');
                 expect(updatedMembership.registrationIds).toExclude(canceledRegistration.id);
-            });
-
-            it('calls Zoom API', async () => {
-                const meeting = await Meeting.create(ZOOM_MEETING);
-                const membership = await Membership.create(MEMBERSHIP);
-                const registration = await Club.createRegistration(meeting.id, user.id, membership);
-
-                await Club.updateRegistration(meeting, registration.id, {
-                    status: 'canceled'
-                });
-
-                expect(zoom.meetings.updateRegistrantStatus).toHaveBeenCalledWith(meeting.zoomId, {
-                    action: 'cancel',
-                    registrants: [{
-                        id: registration.zoomId
-                    }]
-                });
             });
         });
     });
