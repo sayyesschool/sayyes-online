@@ -5,8 +5,7 @@ export default ({
         const meetings = await Club.findMeetings(req.query)
             .populate('host', 'firstname lastname email')
             .populate('registrations')
-            .sort({ date: 1 })
-            .limit(100);
+            .sort({ date: 1 });
 
         res.json({
             ok: true,
@@ -79,7 +78,6 @@ export default ({
 
     async updateRegistration(req, res) {
         const registration = await Club.updateRegistration(
-            req.params.meetingId,
             req.params.registrationId,
             req.body
         );
@@ -92,10 +90,7 @@ export default ({
     },
 
     async deleteRegistration(req, res) {
-        const registration = await Club.deleteRegistration(
-            req.params.meetingId,
-            req.params.registrationId
-        );
+        const registration = await Club.deleteRegistration(req.params.registrationId);
 
         res.json({
             ok: true,
