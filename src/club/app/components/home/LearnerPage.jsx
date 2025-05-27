@@ -36,9 +36,10 @@ export default function LearnerPage() {
             <Page.Content>
                 <Flex dir="column" gap="lg">
                     <Alert color="warning" variant="soft">
+                        {/** TODO: Make this message configurable in the admin panel */}
                         <Flex dir="column" gap="sm">
                             <Text>До конца апреля разговорный клуб работает в обычном режиме. В мае уходит на паузу. В июне мы вернемся к вам с новым летним расписанием.</Text>
-                            <Text><strong>В апреле вы можете оплачивать встречи разово.</strong></Text>
+                            <Text><strong>В апреле вы можете приобрести 1 или 4 встречи.</strong></Text>
                             <Text>С уважением,<br /> команда школы SAY YES!</Text>
                         </Flex>
                     </Alert>

@@ -25,7 +25,7 @@ export default ({
 
         res.render('pages/views/main', {
             trialPack: packs[0],
-            packs,
+            packs: packs.filter(p => p.available),
             meetings,
             ...data
         });
