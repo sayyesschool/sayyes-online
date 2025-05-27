@@ -8,7 +8,7 @@ import { useFormData } from 'shared/hooks/form';
 import datetime, { atMSK } from 'shared/libs/datetime';
 import { Flex, Form, Grid, Surface } from 'shared/ui-components';
 
-const getData = ({
+const getFormData = ({
     title = '',
     startDate = new Date(),
     duration = 50,
@@ -42,7 +42,10 @@ export default function MeetingForm({
     onSubmit,
     ...props
 }) {
-    const { data, setData, handleChange } = useFormData(getData(meeting), [meeting?.id]);
+    const { data, setData, handleChange } = useFormData(
+        getFormData(meeting),
+        [meeting?.id]
+    );
 
     const fileInputRef = useRef();
     const contentEditorRef = useRef();
@@ -173,14 +176,6 @@ export default function MeetingForm({
                             checked={data.published}
                             onChange={handleChange}
                         />
-
-                        <Form.Input
-                            type="url"
-                            name="materialsUrl"
-                            value={data.materialsUrl}
-                            label="Ссылка на материалы"
-                            onChange={handleChange}
-                        />
                     </Flex>
                 </Grid.Item>
 
@@ -199,6 +194,14 @@ export default function MeetingForm({
                                 aspectRatio: 16 / 9
                             }}
                             onDelete={handleDeleteImage}
+                        />
+
+                        <Form.Input
+                            type="url"
+                            name="materialsUrl"
+                            value={data.materialsUrl}
+                            label="Ссылка на материалы"
+                            onChange={handleChange}
                         />
 
                         <Form.Field label="Описание">
