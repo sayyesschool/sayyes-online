@@ -23,12 +23,6 @@ const emailTemplates = {
     MEETING_REMINDER_1H: 6476573
 };
 
-const registrationStatusToAction = {
-    approved: 'approve',
-    canceled: 'cancel',
-    denied: 'deny'
-};
-
 const durationLabels = {
     week: ['неделя', 'недели', 'недель'],
     month: ['месяц', 'месяца', 'месяцев']
@@ -189,7 +183,6 @@ export default ({
         }
 
         const membership = await this.createMembership(user.id, payment.data.packId, payment.id);
-
         const registration = payment.data.meetingId
             ? await this.registerForMeeting(user, payment.data.meetingId)
             : null;
@@ -296,7 +289,7 @@ export default ({
         });
 
         const deletedRegistrations = await Promise.all(
-            registrations.map(registration => this.deleteRegistration(meeting, registration))
+            registrations.map(registration => this.deleteRegistration(registration))
         );
 
         const messages = deletedRegistrations.map(registration => ({
@@ -361,7 +354,7 @@ export default ({
             options.force ||
             (meeting.isFree && registration.isCanceled)
         ) {
-            registration = await this.approveRegistration(meeting, registration, membership);
+            registration = await this.approveRegistration(registration, membership);
         }
 
         if (options.notify) {
@@ -409,11 +402,7 @@ export default ({
             message: 'Отменить подтвержденную регистрацию нельзя'
         };
 
-        if (meeting.zoomId && registration.zoomId) {
-            await zoom.meetings.removeRegistrant(meeting.zoomId, registration.zoomId);
-        }
-
-        const canceledRegistration = await this.cancelRegistration(meeting, registration);
+        const canceledRegistration = await this.cancelRegistration(registration);
 
         return canceledRegistration;
     },
@@ -492,13 +481,13 @@ export default ({
         });
     },
 
-    async updateRegistration($meeting, $registration, data = {}) {
+    async updateRegistration($registration, data = {}) {
         const registration = await this.getRegistration($registration);
 
         return Registration.findByIdAndUpdate(registration.id, data, { new: true });
     },
 
-    async deleteRegistration($meeting, $registration) {
+    async deleteRegistration($registration) {
         const registration = await this.getRegistration($registration);
 
         const deletedRegistration = await Registration.findByIdAndDelete(registration._id);
@@ -518,11 +507,11 @@ export default ({
         });
     },
 
-    async approveRegistration($meeting, $registration, membership) {
-        const meeting = await this.getMeeting($meeting);
+    async approveRegistration($registration, membership) {
         const registration = await this.getRegistration($registration);
+        const meeting = await this.getMeeting(registration.meetingId);
 
-        const approvedRegistration = await this.updateRegistration(meeting, registration.id, {
+        const approvedRegistration = await this.updateRegistration(registration.id, {
             status: 'approved',
             membershipId: meeting.isFree ? undefined : membership?.id
         });
@@ -538,11 +527,10 @@ export default ({
         return approvedRegistration;
     },
 
-    async cancelRegistration($meeting, $registration) {
-        const meeting = await this.getMeeting($meeting);
+    async cancelRegistration($registration) {
         const registration = await this.getRegistration($registration);
 
-        const canceledRegistration = await this.updateRegistration(meeting, registration.id, {
+        const canceledRegistration = await this.updateRegistration(registration.id, {
             status: 'canceled',
             membershipId: null
         });
