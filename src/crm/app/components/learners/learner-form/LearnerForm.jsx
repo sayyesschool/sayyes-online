@@ -24,6 +24,9 @@ const getFormData = ({
         interests = ''
     },
     domains = ['lk', 'lms']
+} = {
+    data: {},
+    domains: []
 }) => ({
     hhid,
     firstname,
