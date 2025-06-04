@@ -76,11 +76,11 @@ export const deleteLexeme = createAction(
 
 export const updateLexemeStatus = createAction(
     'UPDATE_LEXEME_STATUS',
-    (lexemeId, status) => ({
+    (lexemeId, { learnerId, status }) => ({
         request: {
             method: 'put',
             path: `vocabularies/status/${lexemeId}`,
-            body: { status }
+            body: { learnerId, status }
         }
     })
 );
