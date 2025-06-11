@@ -46,7 +46,7 @@ const getFormData = ({
 });
 
 const LearnerForm = forwardRef(({
-    learner = {},
+    learner,
     onSubmit,
     ...props
 }, ref) => {
