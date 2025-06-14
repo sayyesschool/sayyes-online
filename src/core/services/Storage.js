@@ -22,6 +22,19 @@ export default ({
         return this.isFilename(path) ? path : join(path, this.getUniqueFilename(file));
     },
 
-    put: storage.put,
-    delete: storage.delete
+    async put(...args) {
+        return storage.put(...args)
+            .catch(error => {
+                error.message = 'Ну удалось загрузить файл' + (error.message ? `: ${error.message}` : '');
+                throw error;
+            });;
+    },
+
+    async delete(...args) {
+        return storage.delete(...args)
+            .catch(error => {
+                error.message = 'Ну удалось удалить файл' + (error.message ? `: ${error.message}` : '');
+                throw error;
+            });
+    }
 });
