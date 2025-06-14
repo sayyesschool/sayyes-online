@@ -46,8 +46,7 @@ export default context => {
 
     return {
         add(name, mod) {
-            const app = App(name, context);
-            server.use(vhost(`${name}.${config.APP_DOMAIN}`, mod(app, context)));
+            server.use(vhost(`${name}.${config.APP_DOMAIN}`, App(name, context, mod)));
 
             return this;
         },
