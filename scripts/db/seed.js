@@ -20,6 +20,7 @@ const {
         Request,
         Room,
         User,
+        Task,
         Vocabulary,
         LexemeRecord
     }
@@ -44,6 +45,7 @@ await Payment.create(data.payments);
 await Request.create(data.requests);
 await Registration.create(data.registrations);
 await Room.create(data.rooms);
+await Task.create(data.tasks);
 await User.create(data.users);
 await Vocabulary.create(data.vocabularies);
 

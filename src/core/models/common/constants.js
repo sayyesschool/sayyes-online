@@ -40,3 +40,27 @@ export const TeacherType = {
     Bilingual: 'bilingual',
     Native: 'native'
 };
+
+export const Priority = {
+    Low: 'low',
+    Medium: 'medium',
+    High: 'high'
+};
+
+export const Theme = {
+    Relevance: 'relevance',
+    Payment: 'payment',
+    Trial: 'trial',
+    Other: 'other'
+};
+
+export const Completed = {
+    Open: false,
+    Completed: true
+};
+
+export const RefEntity = {
+    Learner: 'learner',
+    Teacher: 'teacher',
+    Enrollment: 'enrollment'
+};

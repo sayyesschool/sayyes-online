@@ -17,7 +17,7 @@ export default function LearnerContacts({ learner, onUpdate }) {
 
     const createContact = useCallback(data => {
         onUpdate({
-            contacts: learner.contacts.concat(data)
+            contacts: learner.contacts?.concat(data)
         }).then(() => toggleCreateForm(false));
     }, [learner]);
 

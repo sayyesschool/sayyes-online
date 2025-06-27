@@ -1,9 +1,12 @@
 import { useCallback, useEffect } from 'react';
 
+import { RefEntity } from 'core/models/common';
+
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
+import { useManagers } from 'shared/hooks/managers';
 import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
 import { Flex, Grid } from 'shared/ui-components';
@@ -17,11 +20,13 @@ import LearnerPayments from 'crm/components/learners/learner-payments';
 import LearnerRequests from 'crm/components/learners/learner-requests';
 import LearnerTransactions from 'crm/components/learners/learner-transactions';
 import PasswordForm from 'crm/components/shared/password-form';
+import TasksReference from 'crm/components/tasks/tasks-reference';
 import { useStore } from 'crm/store';
 
 export default function LearnerPage({ match, location, history }) {
-    const user = useUser();
+    const [user] = useUser();
     const [learner, learnerActions] = useStore('learners.single');
+    const [managers] = useManagers();
 
     const [isLearnerFormOpen, toggleLearnerFormOpen] = useBoolean(false);
     const [isPasswordDialogOpen, togglePasswordDialogOpen] = useBoolean(false);
@@ -135,6 +140,18 @@ export default function LearnerPage({ match, location, history }) {
                                 learner={learner}
                             />
                         </Flex>
+                    </Grid.Item>
+
+                    <Grid.Item
+                        lg={12}
+                        md={12}
+                        sm={12}
+                    >
+                        <TasksReference
+                            user={user}
+                            taskRef={{ id: learner?.id, entity: RefEntity.Learner }}
+                            managers={managers}
+                        />
                     </Grid.Item>
                 </Grid>
             </Page.Content>

@@ -8,6 +8,7 @@ import Memberships from 'crm/components/memberships';
 import Payments from 'crm/components/payments';
 import Requests from 'crm/components/requests';
 import Settings from 'crm/components/settings';
+import Tasks from 'crm/components/tasks';
 import Teachers from 'crm/components/teachers';
 
 export default [
@@ -18,6 +19,14 @@ export default [
         exact: true,
         component: Home,
         icon: 'dashboard'
+    },
+    {
+        id: 'tasks',
+        name: 'Задачи',
+        path: '/tasks',
+        exact: false,
+        component: Tasks,
+        icon: 'assignment'
     },
     {
         id: 'requests',
