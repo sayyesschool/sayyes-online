@@ -17,7 +17,7 @@
 .selectedChars,
 .availableChars {
     display: flex;
-    gap: 4px;
+    gap: 2px;
 }
 
 .availableChar,
@@ -25,7 +25,9 @@
     flex: 1;
 }
 
+.availableChar,
 .selectedChar {
     padding: .5rem !important;
-    min-width: 2.75rem !important;
+    min-width: 2rem !important;
+    min-height: 2rem !important;
 }
