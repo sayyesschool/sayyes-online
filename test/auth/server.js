@@ -4,7 +4,6 @@ import auth from 'auth';
 
 import { App, context, Server } from 'test/_env';
 
-const app = App('auth', context);
-const server = Server(auth(app, context));
+const server = Server(App('auth', context, auth));
 
 export default supertest(server);
