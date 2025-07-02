@@ -12,5 +12,6 @@ export { default as records } from './records';
 export { default as registrations } from './registrations';
 export { default as requests } from './requests';
 export { default as rooms } from './rooms';
+export { default as tasks } from './tasks';
 export { default as users } from './users';
 export { default as vocabularies } from './vocabularies';

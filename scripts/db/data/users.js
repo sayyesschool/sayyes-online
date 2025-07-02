@@ -3,6 +3,7 @@ import { Types } from 'mongoose';
 export const learner = {
     _id: new Types.ObjectId().toHexString(),
     firstname: 'Ученик',
+    lastname: 'Учеников',
     email: 'learner@sayyes.school',
     password: '123456',
     role: 'learner',
@@ -13,7 +14,32 @@ export const learner = {
 export const manager = {
     _id: new Types.ObjectId().toHexString(),
     firstname: 'Менеджер',
+    lastname: 'Менеджерович',
     email: 'manager@sayyes.school',
+    password: '123456',
+    role: 'manager',
+    domains: ['cms', 'crm'],
+    permissions: ['all'],
+    active: true
+};
+
+export const manager2 = {
+    _id: new Types.ObjectId().toHexString(),
+    firstname: 'Таск',
+    lastname: 'Таскович',
+    email: 'manager2@sayyes.school',
+    password: '123456',
+    role: 'manager',
+    domains: ['cms', 'crm'],
+    permissions: ['all'],
+    active: true
+};
+
+export const manager3 = {
+    _id: new Types.ObjectId().toHexString(),
+    firstname: 'Дедлайн',
+    lastname: 'Дедлайнович',
+    email: 'manager3@sayyes.school',
     password: '123456',
     role: 'manager',
     domains: ['cms', 'crm'],
@@ -31,4 +57,4 @@ export const teacher = {
     active: true
 };
 
-export default [learner, manager, teacher];
+export default [learner, manager, manager2, manager3, teacher];

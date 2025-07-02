@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
 
+import { RefEntity } from 'core/models/common';
+
 import ConfirmButton from 'shared/components/confirm-button';
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
@@ -7,7 +9,9 @@ import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { DomainLabel } from 'shared/data/common';
 import { useEnrollment } from 'shared/hooks/enrollments';
+import { useManagers } from 'shared/hooks/managers';
 import { useBoolean } from 'shared/hooks/state';
+import { useUser } from 'shared/hooks/user';
 import { Flex, Grid } from 'shared/ui-components';
 
 import EnrollmentComments from 'crm/components/enrollments/enrollment-comments';
@@ -20,11 +24,14 @@ import EnrollmentMeta from 'crm/components/enrollments/enrollment-meta';
 // import EnrollmentPayments from 'crm/components/enrollments/enrollment-payments';
 import EnrollmentSchedule from 'crm/components/enrollments/enrollment-schedule';
 import EnrollmentStatus from 'crm/components/enrollments/enrollment-status';
+import TasksReference from 'crm/components/tasks/tasks-reference';
 
 // import EnrollmentTrialLesson from 'crm/components/enrollments/enrollment-trial-lesson';
 import './EnrollmentPage.scss';
 
 export default function EnrollmentPage({ match, history }) {
+    const [user] = useUser();
+    const [managers] = useManagers();
     const [enrollment, actions] = useEnrollment(match.params.enrollmentId);
 
     const [isEnrollmentFormOpen, toggleEnrollmentFormOpen] = useBoolean(false);
@@ -130,6 +137,18 @@ export default function EnrollmentPage({ match, history }) {
                                 enrollment={enrollment}
                             />
                         </Flex>
+                    </Grid.Item>
+
+                    <Grid.Item
+                        lg={12}
+                        md={12}
+                        sm={12}
+                    >
+                        <TasksReference
+                            user={user}
+                            taskRef={{ id: enrollment?.id, entity: RefEntity.Enrollment }}
+                            managers={managers}
+                        />
                     </Grid.Item>
 
                     {/* <EnrollmentTrialLesson

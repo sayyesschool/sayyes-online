@@ -1,22 +1,29 @@
 import { useCallback, useEffect } from 'react';
 
+import { RefEntity } from 'core/models/common';
+
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { UserDomainLabel } from 'shared/data/user';
+import { useManagers } from 'shared/hooks/managers';
 import { useBoolean } from 'shared/hooks/state';
 import { useTeacher } from 'shared/hooks/teachers';
+import { useUser } from 'shared/hooks/user';
 import { Chip, Grid } from 'shared/ui-components';
 
 import PasswordForm from 'crm/components/shared/password-form';
+import TasksReference from 'crm/components/tasks/tasks-reference';
 import TeacherDetails from 'crm/components/teachers/teacher-details';
 import TeacherEnrollments from 'crm/components/teachers/teacher-enrollments';
 import TeacherForm from 'crm/components/teachers/teacher-form';
 import TeacherLessons from 'crm/components/teachers/teacher-lessons';
 
 export default function TeacherPage({ match, location, history }) {
+    const [user] = useUser();
     const [teacher, actions] = useTeacher(match.params.id);
+    const [managers] = useManagers();
 
     const [isTeacherFormOpen, toggleTeacherFormOpen] = useBoolean(false);
     const [isPasswordDialogOpen, togglePasswordDialogOpen] = useBoolean(false);
@@ -103,6 +110,18 @@ export default function TeacherPage({ match, location, history }) {
                     <Grid.Item xs={3}>
                         <TeacherEnrollments
                             teacher={teacher}
+                        />
+                    </Grid.Item>
+
+                    <Grid.Item
+                        lg={12}
+                        md={12}
+                        sm={12}
+                    >
+                        <TasksReference
+                            user={user}
+                            taskRef={{ id: teacher?.id, entity: RefEntity.Teacher }}
+                            managers={managers}
                         />
                     </Grid.Item>
                 </Grid>

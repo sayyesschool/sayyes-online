@@ -41,9 +41,10 @@ export default function VocabularyPage({ match }) {
                             ) : (
                                 <Button
                                     icon="exercise"
-                                    color="primary"
                                     content="Тренировка"
-                                    variant="soft"
+                                    size="lg"
+                                    color="primary"
+                                    variant="solid"
                                 />)
                         }
                         disabled={numberOfLexemes === 0}

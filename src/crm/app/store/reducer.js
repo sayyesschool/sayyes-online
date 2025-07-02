@@ -13,6 +13,7 @@ import packs from 'shared/store/modules/packs';
 import payments from 'shared/store/modules/payments';
 import requests from 'shared/store/modules/requests';
 import rooms from 'shared/store/modules/rooms';
+import tasks from 'shared/store/modules/tasks';
 import teachers from 'shared/store/modules/teachers';
 import user from 'shared/store/modules/user';
 
@@ -28,6 +29,7 @@ export default combineReducers({
     notification,
     packs,
     payments,
+    tasks,
     requests,
     rooms,
     teachers,
