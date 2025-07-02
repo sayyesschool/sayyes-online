@@ -27,9 +27,10 @@ export default {
         });
     },
 
-    async delete(url, options) {
+    async delete(url, body, options) {
         return request(url, {
             method: 'DELETE',
+            body,
             ...options
         });
     }

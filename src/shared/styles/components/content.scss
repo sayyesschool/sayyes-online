@@ -38,6 +38,16 @@
     }
 }
 
+.overline {
+    display: block;
+    margin-bottom: .25rem;
+    font-size: 12px;
+    font-weight: normal;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: variables.$text-muted-color;
+}
+
 .Content,
 .ContentEditor {
     p:last-child {

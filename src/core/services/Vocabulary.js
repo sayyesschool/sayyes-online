@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 export default ({
     models: { Lexeme, LexemeRecord, Vocabulary }
 }) => ({
@@ -118,45 +120,26 @@ export default ({
 
     // TODO: Move to Lexicon
     async getLexemes(lexemeIds = [], learnerId) {
-        // TODO: переписать на populate
-        const lexemes = await Lexeme.find({ _id: { $in: lexemeIds } });
-
-        return Promise.all(
-            lexemes.map(async lexeme => {
-                const record = await LexemeRecord.findOne({
-                    lexemeId: lexeme._id,
-                    learnerId
-                });
-
-                lexeme.record = transformRecord(record);
-
-                return lexeme;
-            })
-        );
+        return Lexeme.find({ _id: { $in: lexemeIds } })
+            .populate({
+                path: 'record',
+                match: {
+                    learnerId: new Types.ObjectId(learnerId) // The cast is needed as Mongooses doesn't do it for `match` params
+                }
+            });
     },
 
     // TODO: Move to Lexicon
     async addLexemes(lexemeIds = [], learnerId) {
-        const lexemes = await Lexeme.find({ _id: { $in: lexemeIds } });
-
-        return Promise.all(
-            lexemes.map(async lexeme => {
-                const record = await LexemeRecord.create({
-                    lexemeId: lexeme._id,
-                    learnerId
-                });
-
-                lexeme.record = transformRecord(record);
-
-                return lexeme;
-            })
-        );
+        return Promise.all(lexemeIds.map(id =>
+            this.addLexeme({ id }, learnerId)
+        ));
     },
 
     async addLexeme(
-        vocabulary,
         data,
-        learnerId
+        learnerId,
+        vocabulary
     ) {
         const { id, value, translation, definition } = data;
 
@@ -255,29 +238,8 @@ export default ({
         return updatedLexeme;
     },
 
-    async removeLexeme(vocabulary, lexemeId) {
-        return vocabulary.removeLexeme(lexemeId);
-    },
-
-    async deleteLexeme(lexemeId, learnerId) {
-        // TODO: Move to Lexicon
-        const record = await LexemeRecord.findOneAndDelete({
-            lexemeId,
-            learnerId
-        }).populate({
-            path: 'lexeme'
-        });
-
-        if (!record) throw {
-            code: 404,
-            message: 'Не найдено'
-        };
-
-        return record.lexeme;
-    },
-
+    // TODO: Move to Lexicon
     async updateLexemeStatus(lexemeId, learnerId, status) {
-        // TODO: Move to Lexicon
         const record = await LexemeRecord.findOneAndUpdate(
             {
                 lexemeId,
@@ -298,6 +260,27 @@ export default ({
         };
 
         return record;
+    },
+
+    async removeLexeme(vocabulary, lexemeId) {
+        return vocabulary.removeLexeme(lexemeId);
+    },
+
+    async deleteLexeme(lexemeId, learnerId) {
+        // TODO: Move to Lexicon
+        const record = await LexemeRecord.findOneAndDelete({
+            lexemeId,
+            learnerId
+        }).populate({
+            path: 'lexeme'
+        });
+
+        if (!record) throw {
+            code: 404,
+            message: 'Не найдено'
+        };
+
+        return record.lexeme;
     }
 });
 

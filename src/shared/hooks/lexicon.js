@@ -17,11 +17,11 @@ export function useLexiconApi() {
 
     const addLexeme = useCallback(data => {
         return http.post(`${BASE_URL}/my`, data)
-            .then(response => response.data);;
+            .then(response => response.data);
     }, []);
 
-    const addLexemes = useCallback(ids => {
-        return http.post(`${BASE_URL}/my/lexemes`, { ids })
+    const addLexemes = useCallback((lexemeIds, data) => {
+        return http.post(`${BASE_URL}/my/lexemes`, { lexemeIds, ...data })
             .then(response => response.data);
     }, []);
 
@@ -30,14 +30,14 @@ export function useLexiconApi() {
             .then(response => response.data);
     }, []);
 
-    const updateLexemeStatus = useCallback((lexemeId, status) => {
-        return http.put(`${BASE_URL}/status/${lexemeId}`, { status })
+    const updateLexemeStatus = useCallback((lexemeId, data) => {
+        return http.put(`${BASE_URL}/status/${lexemeId}`, data)
             .then(response => response.data);
     }, []);
 
-    const deleteLexeme = useCallback(lexemeId => {
+    const deleteLexeme = useCallback((lexemeId, data) => {
         if (confirm('Вы уверены что хотите удалить слово')) {
-            return http.delete(`${BASE_URL}/my/${lexemeId}`)
+            return http.delete(`${BASE_URL}/my/${lexemeId}`, data)
                 .then(response => response.data);
         }
     }, []);
