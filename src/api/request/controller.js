@@ -11,15 +11,8 @@ export default ({
             channel,
             source,
             data,
-            captcha,
-            test
+            captcha
         } = req.body;
-
-        if (test === 'test') {
-            return res.json({
-                ok: true
-            });
-        }
 
         if (!contact?.phone) throw {
             code: 400,
