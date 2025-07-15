@@ -60,11 +60,11 @@ export default function TaskForm({
         const content = noteEditorRef.current.getData();
 
         const dueAt = isDueAtChecked
-            ? datetime(data.startDate).add(data.dueAt, 'minutes').toDate()
-            : undefined;
+            ? datetime(data.dueAt).add(data.dueAt, 'minutes').toDate()
+            : null;
         const remindAt = isRemindAtChecked
-            ? datetime(data.remindAt).add(data.duration, 'minutes').toDate()
-            : undefined;
+            ? datetime(data.remindAt).add(data.remindAt, 'minutes').toDate()
+            : null;
         const refs = task?.refs.length ? task?.refs : taskRef ? [taskRef] : [];
 
         onSubmit({
