@@ -72,6 +72,11 @@ export default function TasksContent({
             <FormDialog
                 title={task?.id ? 'Изменить задачу' : 'Новая задача'}
                 open={isFormOpen}
+                sx={{
+                    width: '70%',
+                    minHeight: '70%',
+                    maxWidth: 'none'
+                }}
                 onClose={handleFormClose}
             >
                 <TaskForm
