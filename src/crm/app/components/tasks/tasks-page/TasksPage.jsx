@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { Completed, DueAt } from 'core/models/common';
+
 import Page from 'shared/components/page';
 import { useManagers } from 'shared/hooks/managers';
 import { useUser } from 'shared/hooks/user';
@@ -11,16 +13,24 @@ import TasksSearch from 'crm/components/tasks/tasks-search';
 const defaultFilters = {
     theme: '',
     priority: '',
-    completed: '',
-    performer: ''
+    performer: '',
+    dueAt: DueAt.Today,
+    completed: String(Completed.Open)
 };
+
+const getDefaultFilters = userId => ({
+    ...defaultFilters,
+    performer: userId
+});
 
 export default function TasksPage() {
     const [user] = useUser();
     const [managers] = useManagers();
-    const [filters, setFilters] = useState(defaultFilters);
+    const [filters, setFilters] = useState(getDefaultFilters(user.id));
     const [isFormOpen, setFormOpen] = useState(false);
     const [isLoading, setLoading] = useState(false);
+
+    console.log('TasksPage filters', filters);
 
     return (
         <Page id="payments">

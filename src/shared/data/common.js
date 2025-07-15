@@ -2,6 +2,7 @@ import {
     AgeGroup,
     Completed,
     Domain,
+    DueAt,
     Format,
     Level,
     Priority,
@@ -71,6 +72,12 @@ export const RefLinkLabel = {
 export const CompletedLabel = {
     [Completed.Open]: 'Открыт',
     [Completed.Completed]: 'Выполнен'
+};
+
+export const dueAtLabel = {
+    [DueAt.Today]: 'Сегодня',
+    [DueAt.Week]: 'На этой неделе',
+    [DueAt.Overdue]: 'Просроченные'
 };
 
 export const PurposeLabel = {
@@ -176,6 +183,15 @@ export const themeOptions = [
 
 export const completedOptions = [
     ...Object.entries(CompletedLabel).map(([key, value]) => ({
+        key,
+        value: key,
+        label: value,
+        content: value
+    }))
+];
+
+export const dueAtOptions = [
+    ...Object.entries(dueAtLabel).map(([key, value]) => ({
         key,
         value: key,
         label: value,

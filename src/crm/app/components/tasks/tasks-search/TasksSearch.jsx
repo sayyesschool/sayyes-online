@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 
 import {
     completedOptions as _completedOptions,
+    dueAtOptions as _dueAtOptions,
     priorityOptions as _priorityOptions,
     themeOptions as _themeOptions
 } from 'shared/data/common';
@@ -24,6 +25,12 @@ const priorityOptions = _priorityOptions.concat({
 });
 
 const completedOptions = _completedOptions.concat({
+    key: 'all',
+    value: '',
+    content: 'Все'
+});
+
+const dueAtOptions = _dueAtOptions.concat({
     key: 'all',
     value: '',
     content: 'Все'
@@ -151,6 +158,15 @@ export default function TasksSearch({
                     name="performer"
                     value={filters.performer}
                     options={performerOptions}
+                    orientation="horizontal"
+                    onChange={handleFilterChange}
+                />
+
+                <Form.Select
+                    label="Дата выполнения"
+                    name="dueAt"
+                    value={filters.dueAt}
+                    options={dueAtOptions}
                     orientation="horizontal"
                     onChange={handleFilterChange}
                 />

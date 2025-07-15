@@ -64,3 +64,9 @@ export const RefEntity = {
     Teacher: 'teacher',
     Enrollment: 'enrollment'
 };
+
+export const DueAt = {
+    Today: 'today',
+    Week: 'week',
+    Overdue: 'overdue'
+};

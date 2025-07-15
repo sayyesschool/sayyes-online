@@ -1,18 +1,8 @@
 export default ({
-    models: { Task }
+    services: { Task }
 }) => ({
     async get(req, res) {
-        const filters = req.query?.note
-            ? { ...req.query, note: new RegExp(req.query.note, 'i') }
-            : req.query;
-
-        const tasks = await Task.find(filters)
-            .sort({ createdAt: -1 })
-            .populate('manager', 'firstname lastname')
-            .populate({
-                path: 'comments.author',
-                model: 'User'
-            });
+        const tasks = await Task.get(req.query);
 
         res.json({
             ok: true,
@@ -21,12 +11,7 @@ export default ({
     },
 
     async getOne(req, res) {
-        const task = await Task.findById(req.params.id)
-            .populate('manager', 'firstname lastname')
-            .populate({
-                path: 'comments.author',
-                model: 'User'
-            });
+        const task = await Task.getOne(req.params);
 
         res.json({
             ok: true,
@@ -34,11 +19,8 @@ export default ({
         });
     },
 
-    // TODO: populate нельзя применить напрямую к create?
     async create(req, res) {
-        const createdTask = await Task.create(req.body);
-        const task = await Task.findById(createdTask._id)
-            .populate('manager', 'firstname lastname');
+        const task = await Task.create(req.body);
 
         res.json({
             ok: true,
@@ -48,8 +30,7 @@ export default ({
     },
 
     async update(req, res) {
-        const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true })
-            .populate('manager', 'firstname lastname');
+        const task = await Task.update(req.params, req.body);
 
         res.json({
             ok: true,
@@ -59,7 +40,7 @@ export default ({
     },
 
     async delete(req, res) {
-        const task = await Task.findByIdAndDelete(req.params.id);
+        const task = await Task.delete(req.params);
 
         res.json({
             ok: true,

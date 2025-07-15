@@ -7,6 +7,7 @@ import Dictionary from './Dictionary';
 import Mail from './Mail';
 import Newsletter from './Newsletter';
 import Storage from './Storage';
+import Task from './Task';
 import Vocabulary from './Vocabulary';
 
 export default (config, clients, models) => {
@@ -60,6 +61,7 @@ export default (config, clients, models) => {
             }
         }),
         Dictionary: Dictionary({ config, models }),
+        Task: Task({ config, models }),
         Vocabulary: Vocabulary({ config, models }),
         Mail: mail,
         Newsletter: newsletter,
