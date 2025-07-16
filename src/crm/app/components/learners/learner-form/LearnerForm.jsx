@@ -24,6 +24,9 @@ const getFormData = ({
         interests = ''
     },
     domains = ['lk', 'lms']
+} = {
+    data: {},
+    domains: []
 }) => ({
     hhid,
     firstname,
@@ -43,7 +46,7 @@ const getFormData = ({
 });
 
 const LearnerForm = forwardRef(({
-    learner = {},
+    learner,
     onSubmit,
     ...props
 }, ref) => {

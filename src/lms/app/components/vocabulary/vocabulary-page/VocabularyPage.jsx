@@ -42,7 +42,6 @@ export default function VocabularyPage({ match }) {
                                 <Button
                                     icon="exercise"
                                     content="Тренировка"
-                                    size="lg"
                                     color="primary"
                                     variant="solid"
                                 />)

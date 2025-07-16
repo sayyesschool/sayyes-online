@@ -91,8 +91,8 @@ export default ({
     // TODO: Move to Lexicon
     async addLexemes(req, res) {
         const lexemes = await Vocabulary.addLexemes(
-            req.body.ids?.split(','),
-            req.user.id
+            req.body.lexemeIds,
+            req.body.learnerId
         );
 
         res.json({
@@ -104,22 +104,15 @@ export default ({
 
     async addLexeme(req, res) {
         const lexeme = await Vocabulary.addLexeme(
-            req.vocabulary,
             req.body.data,
-            req.body.learnerId
+            req.body.learnerId,
+            req.vocabulary
         );
-
-        const data = lexeme.toJSON();
-
-        data.status = lexeme.record.status;
-        data.reviewDate = lexeme.record.reviewDate;
-        data.vocabularyId = req.vocabulary?.id;
-        delete data.record;
 
         res.json({
             ok: true,
             message: 'Успешно добавлено',
-            data
+            data: lexeme
         });
     },
 
@@ -130,16 +123,10 @@ export default ({
             req.body.learnerId
         );
 
-        const data = lexeme.toJSON();
-
-        data.status = lexeme.record?.status;
-        data.reviewDate = lexeme.record?.reviewDate;
-        delete data.record;
-
         res.json({
             ok: true,
             message: 'Успешно обновлено',
-            data
+            data: lexeme
         });
     },
 
@@ -177,7 +164,7 @@ export default ({
 
     // TODO: Move to Lexicon
     async deleteLexeme(req, res) {
-        const record = await Vocabulary.deleteLexeme(
+        const lexeme = await Vocabulary.deleteLexeme(
             req.params.lexemeId,
             req.body.learnerId
         );
@@ -185,9 +172,7 @@ export default ({
         res.json({
             ok: true,
             message: 'Успешно удалено',
-            data: {
-                id: record.lexemeId
-            }
+            data: lexeme
         });
     }
 });

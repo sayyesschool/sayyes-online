@@ -23,23 +23,22 @@ export default function LessonExercises({
     const handleCreate = useCallback(data => {
         return onCreate(data)
             .finally(() => toggleFormOpen(false));
-    }, []);
+    }, [onCreate]);
 
     const handleDelete = useCallback(() => {
         return onDelete(exercise)
             .finally(() => toggleConfirmationDialogOpen(false));
-    }, [exercise]);
+    }, [exercise, onDelete]);
 
-    const handleReorder = useCallback((index, dir) => {
+    const handleReorder = useCallback((atIndex, toIndex) => {
+        console.log({ atIndex, toIndex });
         const exercises = lesson._exercises.slice();
-        const exercise = exercises[index];
-        const otherExercise = exercises[index + dir];
+        const exercise = exercises[atIndex];
+        const otherExercise = exercises[toIndex];
 
-        exercises[index + dir] = exercise;
-        exercises[index] = otherExercise;
-
-        onReorder({ _exercises: exercises });
-    }, [lesson]);
+        exercises[toIndex] = exercise;
+        exercises[atIndex] = otherExercise;
+    }, [lesson, onReorder]);
 
     const handleDeleteRequest = useCallback(exercise => {
         setExercise(exercise);

@@ -12,6 +12,7 @@ import { Text } from 'shared/ui-components';
 
 import AssignmentForm from 'lms/components/assignments/assignment-form';
 import LessonContent from 'lms/components/courses/lesson-content';
+import { LearnerContextProvider } from 'lms/contexts/learner';
 
 export default function LessonPage({ match, location }) {
     const [course, actions] = useCourse(match.params.course, location.search);
@@ -64,48 +65,49 @@ export default function LessonPage({ match, location }) {
     const lesson = course?.lessonsById.get(match.params.lesson);
     const unit = course?.unitsById.get(lesson.unitId);
 
-    if (!lesson) return <LoadingIndicator />;
+    if (!enrollment || !lesson) return <LoadingIndicator />;
 
     const query = enrollment?.id ? `?enrollmentId=${enrollment.id}` : '';
 
     return (
-        <Page className="LessonPage">
-            <Page.Header
-                breadcrumbs={[
-                    { to: course.uri + query, content: course.title },
-                    { to: unit.uri + query, content: unit.title }
-                ]}
-                title={lesson.title}
-                description={lesson.description &&
-                    <Text type="body-md">
-                        <span dangerouslySetInnerHTML={{ __html: lesson.description }}
-                        />
-                    </Text>
-                }
-            />
-
-            <Page.Content>
-                <LessonContent
-                    lesson={lesson}
-                    assignments={assignments}
-                    user={user}
-                    onExerciseProgressChange={handleExerciseProgressChange}
-                    onAddExerciseToAssignment={handleAddExerciseToAssignment}
-                    onAddExerciseToNewAssignment={handleAddExerciseToNewAssignment}
-                    onRemoveExerciseFromAssignment={handleRemoveExerciseFromAssignment}
+        <LearnerContextProvider learnerId={enrollment.learnerId}>
+            <Page className="LessonPage">
+                <Page.Header
+                    breadcrumbs={[
+                        { to: course.uri + query, content: course.title },
+                        { to: unit.uri + query, content: unit.title }
+                    ]}
+                    title={lesson.title}
+                    description={lesson.description &&
+                        <Text type="body-md">
+                            <span dangerouslySetInnerHTML={{ __html: lesson.description }}/>
+                        </Text>
+                    }
                 />
-            </Page.Content>
 
-            <FormDialog
-                title="Новое задание"
-                open={isFormDialogOpen}
-                onClose={toggleFormDialogOpen}
-            >
-                <AssignmentForm
-                    id="new-assignment-form"
-                    onSubmit={handleSubmitAssignment}
-                />
-            </FormDialog>
-        </Page>
+                <Page.Content>
+                    <LessonContent
+                        lesson={lesson}
+                        assignments={assignments}
+                        user={user}
+                        onExerciseProgressChange={handleExerciseProgressChange}
+                        onAddExerciseToAssignment={handleAddExerciseToAssignment}
+                        onAddExerciseToNewAssignment={handleAddExerciseToNewAssignment}
+                        onRemoveExerciseFromAssignment={handleRemoveExerciseFromAssignment}
+                    />
+                </Page.Content>
+
+                <FormDialog
+                    title="Новое задание"
+                    open={isFormDialogOpen}
+                    onClose={toggleFormDialogOpen}
+                >
+                    <AssignmentForm
+                        id="new-assignment-form"
+                        onSubmit={handleSubmitAssignment}
+                    />
+                </FormDialog>
+            </Page>
+        </LearnerContextProvider>
     );
 }

@@ -58,25 +58,25 @@ export default function EnrollmentDetails({ enrollment }) {
                         key: 'purpose',
                         icon: 'flag',
                         header: 'Цель',
-                        content: PurposeLabel[enrollment.purpose]
+                        content: PurposeLabel[enrollment.info.purpose]
                     },
                     {
                         key: 'experience',
                         icon: 'star',
                         header: 'Опыт',
-                        content: enrollment.experience
+                        content: enrollment.info.experience
                     },
                     {
                         key: 'preferences',
                         icon: 'checklist',
                         header: 'Предпочтения',
-                        content: enrollment.preferences
+                        content: enrollment.info.preferences
                     },
                     enrollment.note && {
                         key: 'note',
                         icon: 'notes',
                         header: 'Примечание',
-                        content: enrollment.note
+                        content: enrollment.info.note
                     }
                 ]}
             />

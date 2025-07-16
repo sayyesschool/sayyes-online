@@ -37,16 +37,16 @@ export default function SectionExercises({
             .finally(() => toggleConfirmationDialogOpen(false));
     }, [exercise]);
 
-    const handleReorder = useCallback((index, dir) => {
+    const handleReorder = useCallback((atIndex, toIndex) => {
         const exercises = section._exercises.slice();
-        const exercise = exercises[index];
-        const otherExercise = exercises[index + dir];
+        const exercise = exercises[atIndex];
+        const otherExercise = exercises[toIndex];
 
-        exercises[index + dir] = exercise;
-        exercises[index] = otherExercise;
+        exercises[toIndex] = exercise;
+        exercises[atIndex] = otherExercise;
 
         onReorder({ _exercises: exercises });
-    }, [section]);
+    }, [section, onReorder]);
 
     const handleDeleteRequest = useCallback(exercise => {
         setExercise(exercise);

@@ -2,7 +2,7 @@ import { resolve } from 'node:path';
 
 import express from 'express';
 
-export default (name, context) => {
+export default (name, context, setup) => {
     const app = express();
 
     app.set('name', name);
@@ -15,13 +15,17 @@ export default (name, context) => {
         YEAR: new Date().getFullYear()
     });
 
+    setup(app, context);
+
     app.use((error, req, res, next) => {
         if (error instanceof Error) {
             console.error(error);
         }
 
-        if (req.is('json')) {
-            res.status(error.code ?? error.status ?? 500).send({
+        if (req.host.startsWith('api') || req.is('json')) {
+            const code = error.code ?? error.status;
+
+            res.status(isNaN(code) ? 500 : code).send({
                 ok: false,
                 error: typeof error === 'object' ? error.message : error
             });

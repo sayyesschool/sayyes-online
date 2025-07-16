@@ -50,13 +50,13 @@ export default function Vocabulary({
 
     const handleDeleteLexeme = useCallback(lexemeId => {
         if (confirm('Вы уверены что хотите удалить слово')) {
-            return actions.deleteLexeme(vocabularyId, { lexemeId, learnerId });
+            return actions.deleteLexeme(vocabularyId, lexemeId, { learnerId });
         }
     }, [actions, vocabularyId, learnerId]);
 
     const handleRemoveLexeme = useCallback(lexemeId => {
         if (confirm('Вы уверены что хотите убрать слово из словаря? Оно останется в общем списке.')) {
-            return actions.deleteLexeme(vocabularyId, { lexemeId, learnerId });
+            return actions.deleteLexeme(vocabularyId, lexemeId, { learnerId });
         }
     }, [actions, vocabularyId, learnerId]);
 

@@ -4,13 +4,16 @@ import LexemesList from 'shared/components/lexemes-list';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import { useLexiconApi } from 'shared/hooks/lexicon';
 import { useUser } from 'shared/hooks/user';
-import { Dialog, IconButton, Surface } from 'shared/ui-components';
+import { Button, Dialog, Flex, Surface } from 'shared/ui-components';
+import cn from 'shared/utils/classnames';
 
 import Lexeme from 'lms/components/vocabulary/lexeme';
 import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
+import { useLearnerContext } from 'lms/contexts/learner';
+
+import styles from './VocabularyItem.module.scss';
 
 export default function VocabularyItem({
-    learnerId,
     lexemeIds,
     className
 }) {
@@ -22,67 +25,89 @@ export default function VocabularyItem({
         updateLexemeStatus,
         deleteLexeme
     } = useLexiconApi();
+    const { learnerId } = useLearnerContext();
 
     const [lexemes, setLexemes] = useState(null);
     const [viewingLexeme, setViewingLexeme] = useState();
+    const [isLoading, setLoading] = useState(false);
 
-    const newLexemeIds = lexemes?.filter(({ data }) => !data).map(({ id }) => id);
-    const disableAddAllBtn = newLexemeIds?.length === 0;
+    const newLexemeIds = lexemes?.filter(({ status }) => status === undefined).map(({ id }) => id);
+    const disableAddAllButton = newLexemeIds?.length === 0 || isLoading;
 
     useEffect(() => {
         getLexemes(lexemeIds)
             .then(setLexemes);
     }, []);
 
-    const updateList = useCallback(lexeme => {
-        setLexemes(lexemes => lexemes.map(l => l.id === lexeme.id ? lexeme : l));
+    const updateLexemes = useCallback(lexeme => {
+        setLexemes(lexemes => lexemes.map(l => l.id === lexeme.id ? { ...l, ...lexeme } : l));
     }, []);
 
     const handleAddLexeme = useCallback(data => {
-        return addLexeme(data)
+        return addLexeme({ data, learnerId })
             .then(lexeme => {
-                updateList(lexeme);
+                updateLexemes(lexeme);
             });
-    }, [addLexeme, updateList]);
+    }, [learnerId, addLexeme, updateLexemes]);
 
     const handleAddAllLexemes = useCallback(() => {
-        return addLexemes(newLexemeIds)
-            .then(({ data }) => {
+        setLoading(true);
+
+        return addLexemes(newLexemeIds, { learnerId })
+            .then(addedLexemes => {
                 setLexemes(prev =>
-                    prev.map(item => data.find(u => u.id === item.id) || item)
+                    prev.map(lexeme => addedLexemes.find(l => l.id === lexeme.id) || lexeme)
                 );
+            }).finally(() => {
+                setLoading(false);
             });
-    }, [newLexemeIds, addLexemes]);
+    }, [newLexemeIds, learnerId, addLexemes]);
 
     const handleUpdateLexemeStatus = useCallback((lexemeId, status) => {
-        return updateLexemeStatus(lexemeId, { status })
+        return updateLexemeStatus(lexemeId, { learnerId, status })
             .then(lexeme => {
-                updateList(lexeme);
+                updateLexemes(lexeme);
             });
-    }, [updateLexemeStatus, updateList]);
+    }, [learnerId, updateLexemeStatus, updateLexemes]);
 
     const handleDeleteLexeme = useCallback(lexemeId => {
         if (confirm('Вы уверены что хотите удалить слово')) {
-            return deleteLexeme(lexemeId)
+            return deleteLexeme(lexemeId, { learnerId })
                 .then(lexeme => {
-                    updateList(lexeme);
+                    updateLexemes(lexeme);
                 });
         } else {
             return Promise.resolve();
         }
-    }, [deleteLexeme, updateList]);
+    }, [learnerId, deleteLexeme, updateLexemes]);
 
     if (!lexemes) return <LoadingIndicator />;
 
     return (
-        <div className={className}>
+        <div className={cn(className, styles.root)}>
+            <Flex align="center" justify="space-between">
+                <span className="overline">Vocabulary</span>
+
+                {learnerId &&
+                    <Button
+                        content="Добавить все слова в словарь"
+                        icon="add"
+                        size="sm"
+                        variant="plain"
+                        disabled={disableAddAllButton}
+                        loading={isLoading}
+                        onClick={handleAddAllLexemes}
+                    />
+                }
+            </Flex>
+
             <Surface variant="outlined">
                 <LexemesList
                     lexemes={lexemes}
                     renderLexemeActions={lexeme => {
                         if (!learnerId) return [];
 
-                        return lexeme.data ? [
+                        return lexeme.record ? [
                             <LexemeStatus
                                 key={lexeme.id}
                                 level={lexeme.status}
@@ -104,15 +129,6 @@ export default function VocabularyItem({
                     }}
                     onViewLexeme={setViewingLexeme}
                 />
-
-                {learnerId &&
-                    <IconButton
-                        title="Добавить все слова"
-                        icon="add"
-                        disabled={disableAddAllBtn}
-                        onClick={handleAddAllLexemes}
-                    />
-                }
             </Surface>
 
             {viewingLexeme &&

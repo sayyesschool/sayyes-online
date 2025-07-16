@@ -27,9 +27,6 @@ export default ({
                     url: `${endpoint}/${bucket}/${key}`,
                     path: key
                 };
-            }).catch(error => {
-                error.message = `There was an error uploading your file: ${error.message}`;
-                throw error;
             });
         },
 
@@ -42,9 +39,6 @@ export default ({
                     url: `${endpoint}/${bucket}/${key}`,
                     path: key
                 };
-            }).catch(error => {
-                error.message = `There was an error deleting your file: ${error.message}`;
-                throw error;
             });
         }
     };

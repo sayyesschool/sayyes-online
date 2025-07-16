@@ -9,13 +9,21 @@ export default function ExercisesList({
     onReorder,
     onDelete
 }) {
+    const handleMoveToTop = useCallback(index => {
+        onReorder(index, 0);
+    }, [onReorder]);
+
     const handleMoveUp = useCallback(index => {
-        onReorder(index, -1);
+        onReorder(index, index - 1);
     }, [onReorder]);
 
     const handleMoveDown = useCallback(index => {
-        onReorder(index, 1);
+        onReorder(index, index + 1);
     }, [onReorder]);
+
+    const handleMoveToBottom = useCallback(index => {
+        onReorder(index, exercises.length - 1);
+    }, [exercises.length, onReorder]);
 
     const handleDelete = useCallback(exercise => {
         onDelete(exercise);
@@ -55,17 +63,31 @@ export default function ExercisesList({
                                 items={[
                                     {
                                         key: 'move-up',
-                                        decorator: <Icon name="arrow_upward" />,
-                                        content: 'Поднять',
+                                        decorator: <Icon name="keyboard_double_arrow_up" />,
+                                        content: 'Поднять вверх',
+                                        disabled: index === 0,
+                                        onClick: () => handleMoveToTop(index)
+                                    },
+                                    {
+                                        key: 'move-up',
+                                        decorator: <Icon name="keyboard_arrow_up" />,
+                                        content: 'Поднять выше',
                                         disabled: index === 0,
                                         onClick: () => handleMoveUp(index)
                                     },
                                     {
                                         key: 'move-down',
-                                        decorator: <Icon name="arrow_downward" />,
-                                        content: 'Опустить',
+                                        decorator: <Icon name="keyboard_arrow_down" />,
+                                        content: 'Опустить ниже',
                                         disabled: index === exercises.length - 1,
                                         onClick: () => handleMoveDown(index)
+                                    },
+                                    {
+                                        key: 'move-down',
+                                        decorator: <Icon name="keyboard_double_arrow_down" />,
+                                        content: 'Опустить вниз',
+                                        disabled: index === exercises.length - 1,
+                                        onClick: () => handleMoveToBottom(index)
                                     },
                                     {
                                         key: 'delete',

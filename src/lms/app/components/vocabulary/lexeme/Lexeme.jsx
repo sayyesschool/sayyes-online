@@ -66,7 +66,7 @@ export default function LexemeView({
                         className={styles.translation}
                         content={translation}
                         color="neutral"
-                        type="body-md"
+                        type="body-lg"
                     />
 
                     {data?.translation &&
@@ -74,7 +74,7 @@ export default function LexemeView({
                             className={styles.translation}
                             content={`Мои переводы: ${data.translation}`}
                             color="neutral"
-                            type="body-md"
+                            type="body-lg"
                         />
                     }
 
@@ -82,7 +82,7 @@ export default function LexemeView({
                         <Text
                             className={styles.definition}
                             content={definition}
-                            type="body-lg"
+                            type="body-md"
                         />
                     }
 
@@ -91,7 +91,7 @@ export default function LexemeView({
                             className={styles.definition}
                             content={`Моё определение: ${data.definition}`}
                             color="neutral"
-                            type="body-lg"
+                            type="body-md"
                         />
                     }
                 </div>

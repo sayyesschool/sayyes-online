@@ -1,4 +1,5 @@
-import { forwardRef, useImperativeHandle, useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+
 import Plyr from 'plyr';
 
 import classnames from 'shared/utils/classnames';
@@ -20,7 +21,11 @@ const AudioPlayer = forwardRef(function AudioPlayer({
     useEffect(() => {
         const player = new Plyr(audioRef.current, {
             ...options,
-            i18n: defaultI18n
+            i18n: defaultI18n,
+            speed: {
+                selected: 1,
+                options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
+            }
         });
 
         playerRef.current = player;

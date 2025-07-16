@@ -97,7 +97,6 @@ export default ({
 
     async updateRegistration(req, res) {
         const registration = await Club.updateRegistration(
-            req.params.meetingId,
             req.params.registrationId,
             { status: req.body.status }
         );

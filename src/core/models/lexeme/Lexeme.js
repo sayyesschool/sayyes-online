@@ -57,4 +57,16 @@ Lexeme.virtual('isArchived').get(function() {
     return this.publishStatus === LexemePublishStatus.Archived;
 });
 
+Lexeme.virtual('status').get(function() {
+    return this.record?.status;
+});
+
+Lexeme.virtual('reviewDate').get(function() {
+    return this.record?.reviewDate;
+});
+
+Lexeme.virtual('data').get(function() {
+    return this.record?.data;
+});
+
 export default Lexeme;

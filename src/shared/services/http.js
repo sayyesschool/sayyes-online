@@ -1,3 +1,41 @@
+export default {
+    async get(url = '', options) {
+        return request(url, options);
+    },
+
+    async post(url, body, options) {
+        return request(url, {
+            method: 'POST',
+            body,
+            ...options
+        });
+    },
+
+    async put(url, body, options) {
+        return request(url, {
+            method: 'PUT',
+            body,
+            ...options
+        });
+    },
+
+    async patch(url, body, options) {
+        return request(url, {
+            method: 'PATCH',
+            body,
+            ...options
+        });
+    },
+
+    async delete(url, body, options) {
+        return request(url, {
+            method: 'DELETE',
+            body,
+            ...options
+        });
+    }
+};
+
 export async function request(url, { headers = {}, body, ...rest } = {}) {
     const isJSON = (typeof body === 'object') && !(body instanceof FormData);
     const options = {
@@ -32,40 +70,3 @@ export async function request(url, { headers = {}, body, ...rest } = {}) {
             }
         });
 }
-
-export default {
-    async get(url = '', options) {
-        return request(url, options);
-    },
-
-    async post(url, body, options) {
-        return request(url, {
-            method: 'POST',
-            body,
-            ...options
-        });
-    },
-
-    async put(url, body, options) {
-        return request(url, {
-            method: 'PUT',
-            body,
-            ...options
-        });
-    },
-
-    async patch(url, body, options) {
-        return request(url, {
-            method: 'PATCH',
-            body,
-            ...options
-        });
-    },
-
-    async delete(url, options) {
-        return request(url, {
-            method: 'DELETE',
-            ...options
-        });
-    }
-};
