@@ -86,12 +86,12 @@ export default function AssignmentPage({ match, location, history }) {
                         }
                     />
                 }
-                description={assignment.dueAt &&
+                description={assignment.dueDate &&
                     <Text
                         content="Дата выполнения:"
                         end={
                             <Text
-                                content={datetime(assignment.dueAt).calendar()}
+                                content={datetime(assignment.dueDate).calendar()}
                                 variant="soft"
                                 type="body-sm"
                                 fontWeight="lg"

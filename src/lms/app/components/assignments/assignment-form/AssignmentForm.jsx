@@ -53,8 +53,8 @@ export default function AssignmentForm({
             <Form.Input
                 label="Дата выполнения"
                 type="date"
-                name="dueAt"
-                value={datetime(data.dueAt).format('YYYY-MM-DD')}
+                name="dueDate"
+                value={datetime(data.dueDate).format('YYYY-MM-DD')}
                 required
                 onChange={handleChange}
             />
