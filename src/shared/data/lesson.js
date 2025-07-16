@@ -1,4 +1,4 @@
-import { LessonStatus } from 'core/models/lesson';
+import { LessonStatus } from 'core/models/lesson/constants';
 
 export const LessonStatusLabel = {
     [LessonStatus.Scheduled]: 'Запланирован',
