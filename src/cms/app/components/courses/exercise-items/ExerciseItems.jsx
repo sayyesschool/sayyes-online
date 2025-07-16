@@ -84,11 +84,16 @@ export default function ExerciseItems({
 
     const handleMove = useCallback((itemId, dir) => {
         const itemIndex = exercise.items.findIndex(item => item.id === itemId);
+        const otherItemIndex = dir === -Infinity
+            ? 0
+            : dir === Infinity
+                ? exercise.items.length - 1
+                : itemIndex + dir;
         const items = exercise.items.slice();
         const item = items[itemIndex];
-        const otherItem = items[itemIndex + dir];
+        const otherItem = items[otherItemIndex];
 
-        items[itemIndex + dir] = item;
+        items[otherItemIndex] = item;
         items[itemIndex] = otherItem;
 
         onReorder({ items });
@@ -200,18 +205,32 @@ export default function ExerciseItems({
                             kind: 'divider'
                         },
                         {
+                            key: 'move_top',
+                            decorator: <Icon size="small">keyboard_double_arrow_up</Icon>,
+                            content: 'Переместить вверх',
+                            disabled: firstItem?.id === activeItemId,
+                            onClick: () => handleMove(activeItemId, -Infinity)
+                        },
+                        {
                             key: 'move_up',
-                            decorator: <Icon size="small">move_up</Icon>,
+                            decorator: <Icon size="small">keyboard_arrow_up</Icon>,
                             content: 'Переместить выше',
                             disabled: firstItem?.id === activeItemId,
                             onClick: () => handleMove(activeItemId, -1)
                         },
                         {
                             key: 'move_down',
-                            decorator: <Icon size="small">move_down</Icon>,
+                            decorator: <Icon size="small">keyboard_arrow_down</Icon>,
                             content: 'Переместить ниже',
                             disabled: lastItem?.id === activeItemId,
                             onClick: () => handleMove(activeItemId, 1)
+                        },
+                        {
+                            key: 'move_bottom',
+                            decorator: <Icon size="small">keyboard_double_arrow_down</Icon>,
+                            content: 'Переместить вниз',
+                            disabled: lastItem?.id === activeItemId,
+                            onClick: () => handleMove(activeItemId, Infinity)
                         },
                         {
                             key: 'divider-2',
