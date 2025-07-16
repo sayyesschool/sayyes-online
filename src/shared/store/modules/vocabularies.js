@@ -66,10 +66,11 @@ export const updateLexeme = createAction(
 
 export const deleteLexeme = createAction(
     'DELETE_LEXEME',
-    (vocabularyId, lexemeId) => ({
+    (vocabularyId, lexemeId, data) => ({
         request: {
             method: 'delete',
-            path: `vocabularies/${vocabularyId}/${lexemeId}`
+            path: `vocabularies/${vocabularyId}/${lexemeId}`,
+            body: data
         }
     })
 );
