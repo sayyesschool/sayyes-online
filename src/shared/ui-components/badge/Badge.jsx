@@ -1,10 +1,11 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyBadge from '@mui/joy/Badge';
+import classnames from 'classnames';
 
 const Badge = forwardRef(({
     content,
+    inset,
 
     className,
     ...props
@@ -16,6 +17,7 @@ const Badge = forwardRef(({
             ref={ref}
             className={classNames}
             badgeContent={content}
+            badgeInset={inset}
             {...props}
         />
     );
