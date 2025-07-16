@@ -2,27 +2,31 @@ export default ({
     models: { Task }
 }) => ({
     async get(query) {
-        const filters = query?.note
-            ? { ...query, note: new RegExp(query.note, 'i') }
+        const filters = query?.description
+            ? {
+                ...query,
+                description: new RegExp(query.description, 'i')
+            }
             : query;
 
-        if (filters.dueAt) {
-            const dueAtFilter = getDueAtFilter(filters.dueAt);
-            Object.assign(filters, dueAtFilter);
+        if (filters.due) {
+            delete filters.due;
+            Object.assign(filters, getDueDateFilter(filters.dueDate));
         }
 
-        return await Task.find(filters)
+        return Task.find(filters)
             .sort({ createdAt: -1 })
-            .populate('manager', 'firstname lastname')
+            .populate('owner', 'firstname lastname')
+            .populate('assignee', 'firstname lastname')
             .populate({
-                path: 'comments.author',
-                model: 'User'
+                path: 'comments.author'
             });
     },
 
     async getOne(params) {
-        return await Task.findById(params.id)
-            .populate('manager', 'firstname lastname')
+        return Task.findById(params.id)
+            .populate('owner', 'firstname lastname')
+            .populate('assignee', 'firstname lastname')
             .populate({
                 path: 'comments.author',
                 model: 'User'
@@ -33,23 +37,21 @@ export default ({
         const createdTask = await Task.create(body);
 
         // TODO: populate нельзя применить напрямую к create?
-        return await Task.findById(createdTask._id)
-            .populate('manager', 'firstname lastname');
+        return Task.findById(createdTask._id)
+            .populate('assignee', 'firstname lastname');
     },
 
     async update(params, body) {
-        console.log(898, params, body);
-
-        return await Task.findByIdAndUpdate(params.id, body, { new: true })
-            .populate('manager', 'firstname lastname');
+        return Task.findByIdAndUpdate(params.id, body, { new: true })
+            .populate('assignee', 'firstname lastname');
     },
 
     async delete(params) {
-        return await Task.findByIdAndDelete(params.id);
+        return Task.findByIdAndDelete(params.id);
     }
 });
 
-function getDueAtFilter(value) {
+function getDueDateFilter(value) {
     const now = new Date();
 
     switch (value) {
@@ -60,7 +62,7 @@ function getDueAtFilter(value) {
             const end = new Date();
             end.setHours(23, 59, 59, 999);
 
-            return { dueAt: { $gte: start, $lte: end } };
+            return { dueDate: { $gte: start, $lte: end } };
         }
 
         case 'week': {
@@ -75,11 +77,11 @@ function getDueAtFilter(value) {
             end.setDate(start.getDate() + 6);
             end.setHours(23, 59, 59, 999);
 
-            return { dueAt: { $gte: start, $lte: end } };
+            return { dueDate: { $gte: start, $lte: end } };
         }
 
         case 'overdue': {
-            return { dueAt: { $lt: now } };
+            return { dueDate: { $lt: now } };
         }
 
         default:
