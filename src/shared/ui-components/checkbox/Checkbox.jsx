@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyCheckbox from '@mui/joy/Checkbox';
+import classnames from 'classnames';
 
 const Checkbox = forwardRef(({
     className,

@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import classnames from 'classnames';
 
 import JoyAvatar from '@mui/joy/Avatar';
+import classnames from 'classnames';
 
 const Avatar = forwardRef(({
     content,
