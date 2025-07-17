@@ -1,20 +1,12 @@
 .root {
   width: 100%;
-  padding: 10px;
-
-  text-align: left;
+  padding: 8px;
 }
 
 .header {
   display: flex;
   align-items: center;
-  gap: 15px;
-
-  margin-bottom: 10px;
-}
-
-.meta {
-  margin-right: auto;
+  gap: 16px;
 }
 
 .editor {

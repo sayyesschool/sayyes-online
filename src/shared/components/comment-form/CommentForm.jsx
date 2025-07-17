@@ -13,7 +13,11 @@ export default function CommentForm({ comment = {}, onSubmit, ...props }) {
     }, []);
 
     return (
-        <Form className="CommentForm" onSubmit={handleSubmit} {...props}>
+        <Form
+            className="CommentForm"
+            onSubmit={handleSubmit}
+            {...props}
+        >
             <ContentEditor
                 ref={editorRef}
                 defaultValue={comment.content}

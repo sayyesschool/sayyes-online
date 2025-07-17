@@ -3,7 +3,7 @@ import { useState } from 'react';
 import PageSection from 'shared/components/page-section';
 import { Surface } from 'shared/ui-components';
 
-import TasksContent from 'crm/components/tasks/tasks-content';
+import Tasks from 'crm/components/tasks/tasks';
 
 export default function TasksReference({ user, taskRef, managers }) {
     const [isFormOpen, setFormOpen] = useState(false);
@@ -21,7 +21,7 @@ export default function TasksReference({ user, taskRef, managers }) {
             ]}
         >
             <Surface variant="outlined">
-                <TasksContent
+                <Tasks
                     user={user}
                     taskRef={taskRef}
                     filters={{ 'refs.id': taskRef?.id, completed: false }}

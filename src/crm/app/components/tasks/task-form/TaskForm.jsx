@@ -1,154 +1,83 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
+
+import { Priority, Status, Topic } from 'core/models/task/constants';
 
 import ContentEditor from 'shared/components/content-editor';
-import { priorityOptions, themeOptions } from 'shared/data/common';
+import { priorityOptions, topicOptions } from 'shared/data/task';
 import { useFormData } from 'shared/hooks/form';
-import datetime, { atMSK } from 'shared/libs/datetime';
-import { Flex, Form, Grid, Surface } from 'shared/ui-components';
-
-import TaskComments from 'crm/components/tasks/task-comments';
+import datetime from 'shared/libs/datetime';
+import { Checkbox, Flex, Form, Grid, Surface } from 'shared/ui-components';
 
 const getData = ({
-    performer,
-    theme = 'other',
-    completed = false,
-    priority = 'medium',
-    note = '',
-    dueAt,
-    remindAt
+    topic = Topic.Other,
+    description = '',
+    completed = Status.Open,
+    priority = Priority.Medium,
+    ownerId,
+    assigneeId,
+    dueDate,
+    reminderDate
 } = {}) => ({
-    performer,
-    theme,
-    dueAt: dueAt ? datetime(dueAt).format('YYYY-MM-DDTHH:mm') : undefined,
-    remindAt: remindAt
-        ? datetime(remindAt).format('YYYY-MM-DDTHH:mm')
-        : undefined,
+    topic,
+    description,
     completed,
     priority,
-    note
+    ownerId,
+    assigneeId,
+    dueDate: dueDate ? datetime(dueDate).format('YYYY-MM-DDTHH:mm') : undefined,
+    reminderDate: reminderDate
+        ? datetime(reminderDate).format('YYYY-MM-DDTHH:mm')
+        : undefined
 });
 
 export default function TaskForm({
-    user,
-    taskRef,
     task,
-    managers = [],
+    assignees = [],
     onSubmit,
+    children,
     ...props
 }) {
     const { data, handleChange } = useFormData(
-        getData({ performer: user.id, ...task }),
+        getData(task),
         [task?.id]
     );
-    const noteEditorRef = useRef();
-    const [comments, setComments] = useState(task?.comments || []);
-    const [isDueAtChecked, setIsDueAtChecked] = useState(Boolean(data.dueAt));
-    const [isRemindAtChecked, setIsRemindAtChecked] = useState(
-        Boolean(data.remindAt)
-    );
 
-    const sortedManagers = useMemo(() => {
-        if (!managers) return managers;
-
-        return [
-            managers.find(m => m.id === user.id),
-            ...managers.filter(m => m.id !== user.id)
-        ];
-    }, [managers, user.id]);
+    const editorRef = useRef();
 
     const handleSubmit = useCallback(() => {
-        const content = noteEditorRef.current.getData();
-
-        const dueAt = isDueAtChecked
-            ? datetime(data.dueAt).add(data.dueAt, 'minutes').toDate()
-            : null;
-        const remindAt = isRemindAtChecked
-            ? datetime(data.remindAt).add(data.remindAt, 'minutes').toDate()
-            : null;
-        const refs = task?.refs.length ? task?.refs : taskRef ? [taskRef] : [];
+        const content = editorRef.current.getData();
 
         onSubmit({
             ...data,
-            dueAt,
-            remindAt,
-            refs,
-            note: content,
-            comments
+            description: content
         });
     }, [
-        comments,
         data,
-        isDueAtChecked,
-        isRemindAtChecked,
-        onSubmit,
-        task?.refs,
-        taskRef
+        onSubmit
     ]);
-
-    const onChangeDueAtSwitch = useCallback(() => {
-        if (isDueAtChecked) {
-            setIsRemindAtChecked(false);
-        }
-
-        setIsDueAtChecked(prev => !prev);
-    }, [isDueAtChecked]);
-
-    const onRemindAtSwitch = useCallback(() => {
-        setIsRemindAtChecked(prev => !prev);
-    }, []);
-
-    useEffect(() => {
-        if (task?.comments) {
-            setComments(task.comments);
-        }
-    }, [task?.comments]);
 
     return (
         <Form onSubmit={handleSubmit} {...props}>
             <Grid gap="m">
                 <Grid.Item
-                    lg={8} md={8}
-                    sm={12} xs={12}
+                    md={4}
+                    xs={12}
                 >
                     <Flex gap="m" column>
+                        {task.id &&
+                            <Checkbox
+                                label="Выполнена"
+                                name="completed"
+                                checked={data.completed}
+                                onChange={handleChange}
+                            />
+                        }
+
                         <Form.Select
                             label="Тема"
-                            name="theme"
-                            value={data.theme}
-                            options={themeOptions}
-                            onChange={handleChange}
-                        />
-
-                        <Form.Field label="Описание">
-                            <Surface variant="outlined">
-                                <ContentEditor ref={noteEditorRef} content={data.note ?? ''} />
-                            </Surface>
-                        </Form.Field>
-                    </Flex>
-                </Grid.Item>
-
-                <Grid.Item
-                    lg={4} md={4}
-                    sm={12} xs={12}
-                >
-                    <Flex gap="m" column>
-                        <Form.Switch
-                            label="Выполнена"
-                            name="completed"
-                            checked={data.completed}
-                            onChange={handleChange}
-                        />
-
-                        <Form.Select
-                            label="Исполнитель"
-                            name="performer"
-                            value={data.performer}
-                            options={sortedManagers?.map(manager => ({
-                                key: manager.id,
-                                value: manager.id,
-                                content: manager.id === user.id ? 'Я' : manager.fullname
-                            }))}
-                            required
+                            name="topic"
+                            value={data.topic}
+                            options={topicOptions}
                             onChange={handleChange}
                         />
 
@@ -160,59 +89,56 @@ export default function TaskForm({
                             onChange={handleChange}
                         />
 
-                        <Flex gap="s" column>
-                            <Form.Switch
-                                label="Истекает"
-                                checked={isDueAtChecked}
-                                onChange={onChangeDueAtSwitch}
-                            />
+                        <Form.Select
+                            label="Исполнитель"
+                            name="assigneeId"
+                            value={data.assigneeId}
+                            options={assignees?.map(a => ({
+                                key: a.id,
+                                value: a.id,
+                                content: a.fullname
+                            }))}
+                            onChange={handleChange}
+                        />
 
-                            {isDueAtChecked && (
-                                <Form.Input
-                                    type="datetime-local"
-                                    name="dueAt"
-                                    value={data.dueAt}
-                                    message={`Московское время: ${atMSK(data.dueAt).format(
-                                        'HH:mm'
-                                    )}`}
-                                    required
-                                    onChange={handleChange}
-                                />
-                            )}
-                        </Flex>
+                        <Form.Input
+                            label="Срок"
+                            type="date"
+                            name="dueDate"
+                            value={data.dueDate}
+                            onChange={handleChange}
+                        />
 
-                        <Flex gap="s" column>
-                            <Form.Switch
-                                label="Напоминание"
-                                checked={isRemindAtChecked}
-                                disabled={!isDueAtChecked}
-                                onChange={onRemindAtSwitch}
-                            />
-
-                            {isRemindAtChecked && (
-                                <Form.Input
-                                    type="datetime-local"
-                                    name="remindAt"
-                                    value={data.remindAt}
-                                    required
-                                    onChange={handleChange}
-                                />
-                            )}
-                        </Flex>
+                        <Form.Input
+                            label="Напоминание"
+                            type="datetime-local"
+                            name="reminderDate"
+                            value={data.reminderDate}
+                            onChange={handleChange}
+                        />
                     </Flex>
                 </Grid.Item>
 
                 <Grid.Item
-                    lg={12} md={12}
-                    sm={12} xs={12}
+                    md={4}
+                    xs={12}
                 >
-                    <Form.Field label="Комментарии">
-                        <TaskComments
-                            user={user}
-                            comments={comments}
-                            setComments={setComments}
-                        />
+                    <Form.Field label="Описание">
+                        <Surface variant="outlined">
+                            <ContentEditor
+                                ref={editorRef}
+                                content={data.description}
+                                simple
+                            />
+                        </Surface>
                     </Form.Field>
+                </Grid.Item>
+
+                <Grid.Item
+                    md={4}
+                    xs={12}
+                >
+                    {children}
                 </Grid.Item>
             </Grid>
         </Form>

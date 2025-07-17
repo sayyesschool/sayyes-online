@@ -1,21 +1,34 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 
-import { useBoolean } from 'shared/hooks/state';
-import CommentForm from 'shared/components/comment-form';
 import Content from 'shared/components/content';
-import { Avatar, Box, Button, Flex, Icon, IconButton, MenuButton, Text } from 'shared/ui-components';
+import ContentEditor from 'shared/components/content-editor';
+import { useBoolean } from 'shared/hooks/state';
+import datetime from 'shared/libs/datetime';
+import { Avatar, Button, Flex, Icon, IconButton, MenuButton, Text } from 'shared/ui-components';
+import cn from 'shared/utils/classnames';
+
+import styles from './Comment.module.scss';
 
 export default function Comment({
-    user = {},
     comment = {},
+    user = {},
+    size,
     editing = false,
+    noAvatar,
+    noAuthor,
+    noDatetime,
+    readOnly,
     onToggle = Function.prototype,
     onSave,
     onDelete
 }) {
+    const editorRef = useRef();
+
     const [isEditing, toggleEditing] = useBoolean(editing);
 
-    const handleSubmit = useCallback(data => {
+    const handleSave = useCallback(() => {
+        const data = editorRef.current?.getData();
+
         return onSave(comment.id, data);
     }, [comment, onSave]);
 
@@ -26,19 +39,20 @@ export default function Comment({
     const handleToggle = useCallback(() => {
         onToggle();
         toggleEditing(false);
-    }, [onToggle]);
+    }, [onToggle, toggleEditing]);
 
     const author = comment.author || user;
 
     return isEditing ? (
-        <div className="Comment Comment--editing">
-            <CommentForm
-                id="comment-form"
-                comment={comment}
-                onSubmit={handleSubmit}
+        <div className={cn(styles.root, editing && styles.editing)}>
+            <ContentEditor
+                ref={editorRef}
+                className={styles.editor}
+                content={comment?.content ?? ''}
+                simple
             />
 
-            <Flex justifyContent="space-between" sx={{ width: '100%' }}>
+            <div className={styles.actions}>
                 <Button
                     type="button"
                     content="Отменить"
@@ -48,37 +62,49 @@ export default function Comment({
                 />
 
                 <Button
-                    type="submit"
                     content="Сохранить"
-                    form="comment-form"
+                    onClick={handleSave}
                 />
-            </Flex>
+            </div>
         </div>
     ) : (
-        <div className="Comment">
-            <Avatar
-                src="https://api-prod-minimal-v4.vercel.app/assets/images/avatars/avatar_1.jpg"
-            />
-
-            <Box sx={{ flex: '1' }}>
-                <Text
-                    type="body2"
-                    content={author.fullname}
-                    sx={{ lineHeight: '1' }}
+        <div className={styles.root}>
+            {!noAvatar &&
+                <Avatar
+                    className={styles.avatar}
+                    src={author.imageUrl}
+                    content={comment.author?.initials}
+                    size={size}
                 />
+            }
 
-                <Text
-                    type="body3"
-                    content={comment.datetimeLabel}
-                />
+            <div className={styles.main}>
+                <Flex gap="xs" align="center">
+                    {!noAuthor &&
+                        <Text
+                            content={author.fullname}
+                            type="body-sm"
+                        />
+                    }
+
+                    {!noDatetime &&
+                        <Text
+                            content={datetime(comment.createdAt)
+                                .tz('Europe/Moscow')
+                                .format('D MMM YYYY в H:mm')}
+                            type="body-xs"
+                        />
+                    }
+                </Flex>
 
                 <Content content={comment.content} html />
-            </Box>
+            </div>
 
-            {user?.id === author?.id &&
+            {user?.id === author?.id && !readOnly &&
                 <MenuButton
                     trigger={
                         <IconButton
+                            className={styles.menu}
                             icon="more_vert"
                             color="neutral"
                             size="sm"

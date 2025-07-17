@@ -1,18 +1,18 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import {
-    completedOptions as _completedOptions,
-    dueAtOptions as _dueAtOptions,
+    duePeriodOptions as _duePeriodOptions,
     priorityOptions as _priorityOptions,
-    themeOptions as _themeOptions
-} from 'shared/data/common';
+    statusOptions as _statusOptions,
+    topicOptions as _topicOptions
+} from 'shared/data/task';
 import { useDebounce } from 'shared/hooks/fn';
 import { Form, Icon, IconButton } from 'shared/ui-components';
 import { stripEmptyValues } from 'shared/utils/object';
 
 import styles from './TasksSearch.module.scss';
 
-const themeOptions = _themeOptions.concat({
+const topicOptions = _topicOptions.concat({
     key: 'all',
     value: '',
     content: 'Все'
@@ -24,22 +24,31 @@ const priorityOptions = _priorityOptions.concat({
     content: 'Все'
 });
 
-const completedOptions = _completedOptions.concat({
+const statusOptions = _statusOptions.concat({
     key: 'all',
     value: '',
     content: 'Все'
 });
 
-const dueAtOptions = _dueAtOptions.concat({
+const duePeriodOptions = _duePeriodOptions.concat({
     key: 'all',
     value: '',
     content: 'Все'
 });
 
-const getPerformerOptions = (managers, userId) => {
-    return managers
+export default function TasksSearch({
+    filters,
+    user,
+    managers,
+    defaultFilters,
+    setFilters,
+    ...props
+}) {
+    const [search, setSearch] = useState('');
+
+    const assigneeOptions = useMemo(() => managers
         ?.map(({ id, fullname }) => {
-            const label = id === userId ? 'Я' : fullname;
+            const label = id === user.id ? 'Я' : fullname;
 
             return {
                 key: id,
@@ -52,20 +61,7 @@ const getPerformerOptions = (managers, userId) => {
             key: 'all',
             value: '',
             content: 'Все'
-        });
-};
-
-export default function TasksSearch({
-    filters,
-    user,
-    managers,
-    defaultFilters,
-    setFilters,
-    ...props
-}) {
-    const [search, setSearch] = useState('');
-
-    const performerOptions = getPerformerOptions(managers, user.id);
+        }), [managers, user.id]);
 
     const searchNote = useDebounce(value => {
         setFilters(prev =>
@@ -112,10 +108,10 @@ export default function TasksSearch({
         <Form className={styles.root} {...props}>
             <Form.Input
                 className={styles.search}
-                start={<Icon name="search" />}
+                placeholder="Описание"
                 name="note"
                 value={search}
-                placeholder="Описание"
+                start={<Icon name="search" />}
                 end={search && (
                     <Icon
                         as="button" name="clear"
@@ -128,9 +124,9 @@ export default function TasksSearch({
             <div className={styles.filters}>
                 <Form.Select
                     label="Тема"
-                    name="theme"
-                    value={filters.theme}
-                    options={themeOptions}
+                    name="topic"
+                    value={filters.topic}
+                    options={topicOptions}
                     orientation="horizontal"
                     onChange={handleFilterChange}
                 />
@@ -146,36 +142,35 @@ export default function TasksSearch({
 
                 <Form.Select
                     label="Статус"
-                    name="completed"
-                    value={filters.completed}
-                    options={completedOptions}
+                    name="status"
+                    value={filters.status}
+                    options={statusOptions}
                     orientation="horizontal"
                     onChange={handleFilterChange}
                 />
 
                 <Form.Select
                     label="Исполнитель"
-                    name="performer"
-                    value={filters.performer}
-                    options={performerOptions}
+                    name="assigneeId"
+                    value={filters.assignee}
+                    options={assigneeOptions}
                     orientation="horizontal"
                     onChange={handleFilterChange}
                 />
 
                 <Form.Select
-                    label="Дата выполнения"
-                    name="dueAt"
-                    value={filters.dueAt}
-                    options={dueAtOptions}
+                    label="Срок выполнения"
+                    name="duePeriod"
+                    value={filters.dueDate}
+                    options={duePeriodOptions}
                     orientation="horizontal"
                     onChange={handleFilterChange}
                 />
 
                 <IconButton
-                    icon="clear"
                     title="Очистить"
-                    variant="soft"
-                    color="primary"
+                    icon="clear"
+                    variant="outlined"
                     onClick={handleClearFilter}
                 />
             </div>

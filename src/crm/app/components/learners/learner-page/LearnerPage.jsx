@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
-import { RefEntity } from 'core/models/common';
+import { RefEntity } from 'core/models/common/constants';
 
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
@@ -18,6 +18,7 @@ import LearnerForm from 'crm/components/learners/learner-form';
 import LearnerMemberships from 'crm/components/learners/learner-memberships';
 import LearnerPayments from 'crm/components/learners/learner-payments';
 import LearnerRequests from 'crm/components/learners/learner-requests';
+import LearnerTasks from 'crm/components/learners/learner-tasks';
 import LearnerTransactions from 'crm/components/learners/learner-transactions';
 import PasswordForm from 'crm/components/shared/password-form';
 import TasksReference from 'crm/components/tasks/tasks-reference';
@@ -142,16 +143,8 @@ export default function LearnerPage({ match, location, history }) {
                         </Flex>
                     </Grid.Item>
 
-                    <Grid.Item
-                        lg={12}
-                        md={12}
-                        sm={12}
-                    >
-                        <TasksReference
-                            user={user}
-                            taskRef={{ id: learner?.id, entity: RefEntity.Learner }}
-                            managers={managers}
-                        />
+                    <Grid.Item xs={12}>
+                        <LearnerTasks learner={learner} />
                     </Grid.Item>
                 </Grid>
             </Page.Content>

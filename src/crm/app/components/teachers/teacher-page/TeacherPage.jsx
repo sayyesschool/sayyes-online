@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
-import { RefEntity } from 'core/models/common';
+import { RefEntity } from 'core/models/common/constants';
 
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
@@ -19,6 +19,7 @@ import TeacherDetails from 'crm/components/teachers/teacher-details';
 import TeacherEnrollments from 'crm/components/teachers/teacher-enrollments';
 import TeacherForm from 'crm/components/teachers/teacher-form';
 import TeacherLessons from 'crm/components/teachers/teacher-lessons';
+import TeacherTasks from 'crm/components/teachers/teacher-tasks';
 
 export default function TeacherPage({ match, location, history }) {
     const [user] = useUser();
@@ -113,15 +114,9 @@ export default function TeacherPage({ match, location, history }) {
                         />
                     </Grid.Item>
 
-                    <Grid.Item
-                        lg={12}
-                        md={12}
-                        sm={12}
-                    >
-                        <TasksReference
-                            user={user}
-                            taskRef={{ id: teacher?.id, entity: RefEntity.Teacher }}
-                            managers={managers}
+                    <Grid.Item xs={12}>
+                        <TeacherTasks
+                            teacher={teacher}
                         />
                     </Grid.Item>
                 </Grid>

@@ -21,7 +21,8 @@ export const Task = new Schema({
         entity: String
     }],
     ownerId: { type: ObjectId, required: true },
-    assigneeId: { type: ObjectId }
+    assigneeId: { type: ObjectId },
+    assignerId: { type: ObjectId }
 }, {
     timestamps: true
 });

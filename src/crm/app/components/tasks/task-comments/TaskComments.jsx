@@ -1,25 +1,25 @@
 import { useCallback } from 'react';
 
+import Comment from 'shared/components/comment';
 import { useBoolean } from 'shared/hooks/state';
 import { Button, Flex } from 'shared/ui-components';
 
-import TaskComment from 'crm/components/tasks/task-comment';
-
-export default function TaskComments({ user, comments, setComments }) {
+export default function TaskComments({ comments, user, onChange }) {
     const [isCommenting, toggleCommenting] = useBoolean(false);
 
     const handleCreateComment = useCallback(data => {
         const newComment = {
             content: data,
-            authorId: user.id,
-            createdAt: new Date().toISOString()
+            authorId: user.id
         };
 
-        setComments(prev => [newComment, ...prev]);
-    }, [setComments, user]);
+        toggleCommenting(false);
 
-    const handleUpdateComment = useCallback((data, commentId) => {
-        setComments(prev => {
+        onChange(prev => [newComment, ...prev]);
+    }, [user, toggleCommenting, onChange]);
+
+    const handleUpdateComment = useCallback((commentId, data) => {
+        onChange(prev => {
             return prev.map(comment => {
                 if (comment.id === commentId) {
                     return { ...comment, content: data };
@@ -28,22 +28,22 @@ export default function TaskComments({ user, comments, setComments }) {
                 return comment;
             });
         });
-    }, [setComments]);
+    }, [onChange]);
 
     const handleDeleteComment = useCallback(commentId => {
-        return setComments(prev => {
+        return onChange(prev => {
             return prev.filter(comment => comment.id !== commentId);
         });
-    }, [setComments]);
+    }, [onChange]);
 
     return (
-        <Flex gap="smaller" column>
+        <Flex gap="m" column>
             {isCommenting ? (
-                <TaskComment
+                <Comment
                     user={user}
-                    toggleCommenting={toggleCommenting}
                     editing
                     onSave={handleCreateComment}
+                    onCancel={toggleCommenting}
                 />
             ) : (
                 <Button
@@ -56,10 +56,10 @@ export default function TaskComments({ user, comments, setComments }) {
             )}
 
             {comments.map(comment => (
-                <TaskComment
+                <Comment
                     key={comment.id}
-                    user={user}
                     comment={comment}
+                    user={user}
                     onSave={handleUpdateComment}
                     onDelete={handleDeleteComment}
                 />

@@ -1,41 +1,48 @@
 import { useState } from 'react';
 
-import { Completed, DueAt } from 'core/models/common';
-
 import Page from 'shared/components/page';
+import { defaultFilters } from 'shared/data/task';
 import { useManagers } from 'shared/hooks/managers';
 import { useUser } from 'shared/hooks/user';
 import { stripEmptyValues } from 'shared/utils/object';
 
-import TasksContent from 'crm/components/tasks/tasks-content';
+import Tasks from 'crm/components/tasks/tasks';
 import TasksSearch from 'crm/components/tasks/tasks-search';
-
-const defaultFilters = {
-    theme: '',
-    priority: '',
-    performer: '',
-    dueAt: DueAt.Today,
-    completed: String(Completed.Open)
-};
-
-const getDefaultFilters = userId => ({
-    ...defaultFilters,
-    performer: userId
-});
 
 export default function TasksPage() {
     const [user] = useUser();
     const [managers] = useManagers();
-    const [filters, setFilters] = useState(getDefaultFilters(user.id));
+
+    const [filters, setFilters] = useState(defaultFilters);
+    const [filter, setFilter] = useState('own');
     const [isFormOpen, setFormOpen] = useState(false);
     const [isLoading, setLoading] = useState(false);
 
-    console.log('TasksPage filters', filters);
-
     return (
-        <Page id="payments">
+        <Page id="tasks">
             <Page.Header
-                title="Мои задачи"
+                title="Задачи"
+                tabs={{
+                    defaultValue: filter,
+                    onChange: (event, value) => setFilter(value),
+                    items: [
+                        {
+                            key: 'own',
+                            value: 'own',
+                            content: 'Личные'
+                        },
+                        {
+                            key: 'assignedToMe',
+                            value: 'assignedToMe',
+                            content: 'Назначенные мне'
+                        },
+                        {
+                            key: 'assignedByMe',
+                            value: 'assignedByMe',
+                            content: 'Назначенные мной'
+                        }
+                    ]
+                }}
                 actions={[
                     {
                         key: 'add',
@@ -59,13 +66,13 @@ export default function TasksPage() {
 
             <Page.Content>
                 <Page.Section variant="outlined" compact>
-                    <TasksContent
-                        user={user}
+                    <Tasks
                         filters={stripEmptyValues(filters)}
-                        managers={managers}
+                        filter={filter}
                         isFormOpen={isFormOpen}
                         setFormOpen={setFormOpen}
                         setLoading={setLoading}
+                        showRefs
                     />
                 </Page.Section>
             </Page.Content>

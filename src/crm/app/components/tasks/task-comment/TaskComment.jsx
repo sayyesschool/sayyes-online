@@ -1,5 +1,4 @@
 import { useCallback, useRef } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 
 import Content from 'shared/components/content';
 import ContentEditor from 'shared/components/content-editor';
@@ -11,7 +10,6 @@ import {
     Button,
     Flex,
     IconButton,
-    Link,
     Menu,
     Surface,
     Text
@@ -22,16 +20,20 @@ import { useActions } from 'crm/hooks/store';
 import styles from './TaskComment.module.scss';
 
 export default function TaskComment({
-    user,
     comment,
+    user,
     editing = false,
-    toggleCommenting,
+    readOnly = false,
+    size,
+    variant,
     onSave,
-    onDelete,
-    readOnly = false
+    onCancel,
+    onDelete
 }) {
-    const editorRef = useRef();
     const { showNotification } = useActions('notification');
+
+    const editorRef = useRef();
+
     const [isEditing, toggleEditing] = useBoolean(editing);
 
     const author = comment?.author || user;
@@ -48,16 +50,14 @@ export default function TaskComment({
             return;
         }
 
-        onSave(data, comment?.id);
-
         toggleEditing(false);
-        toggleCommenting?.(false);
-    }, [comment?.id, onSave, showNotification, toggleCommenting, toggleEditing]);
+        onSave(comment?.id, data);
+    }, [comment?.id, onSave, showNotification, toggleEditing]);
 
     const handleCancel = useCallback(() => {
         toggleEditing(false);
-        toggleCommenting?.(false);
-    }, [toggleCommenting, toggleEditing]);
+        onCancel?.(false);
+    }, [toggleEditing, onCancel]);
 
     const handleDelete = useCallback(() => {
         onDelete(comment.id);
@@ -65,8 +65,12 @@ export default function TaskComment({
 
     return isEditing ? (
         <Box>
-            <Surface variant="outlined" className={styles.editor}>
-                <ContentEditor ref={editorRef} content={comment?.content ?? ''} />
+            <Surface variant={variant} className={styles.editor}>
+                <ContentEditor
+                    ref={editorRef}
+                    content={comment?.content ?? ''}
+                    simple
+                />
             </Surface>
 
             <Flex justifyContent="space-between">
@@ -79,27 +83,24 @@ export default function TaskComment({
             </Flex>
         </Box>
     ) : (
-        <Surface variant="outlined" className={styles.root}>
+        <Surface variant={variant} className={styles.root}>
             <Box className={styles.header}>
-                <Avatar src="https://placehold.co/50" />
-
-                <Box className={styles.meta}>
-                    <Link
-                        component={RouterLink}
-                        fontWeight="lg"
-                        to={`/managers/${author.id}`}
-                    >
-                        {/* {user.id === author.id ? 'Я' : author.fullname} */}
-                        {author.fullname}
-                    </Link>
+                <Flex
+                    align="center"
+                    gap="xs"
+                >
+                    <Avatar
+                        content={comment.author?.initials}
+                        size={size}
+                    />
 
                     <Text
-                        fontWeight="lg"
                         content={datetime(comment.createdAt)
                             .tz('Europe/Moscow')
                             .format('D MMM YYYY в H:mm')}
+                        type="body-xs"
                     />
-                </Box>
+                </Flex>
 
                 {user.id === author.id && !readOnly && (
                     <Menu

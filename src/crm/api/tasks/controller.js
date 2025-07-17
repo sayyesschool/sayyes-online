@@ -2,6 +2,13 @@ export default ({
     services: { Task }
 }) => ({
     async get(req, res) {
+        if (!req.query.assigneeId && !req.query.ownerId) {
+            req.query.$or = [
+                { ownerId: req.user.id },
+                { assigneeId: req.user.id }
+            ];
+        }
+
         const tasks = await Task.get(req.query);
 
         res.json({

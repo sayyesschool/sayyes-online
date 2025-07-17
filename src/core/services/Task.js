@@ -2,12 +2,11 @@ export default ({
     models: { Task }
 }) => ({
     async get(query) {
-        const filters = query?.description
-            ? {
-                ...query,
-                description: new RegExp(query.description, 'i')
-            }
-            : query;
+        const filters = query;
+
+        if (query.description) {
+            filters.description = new RegExp(query.description, 'i');
+        }
 
         if (filters.due) {
             delete filters.due;

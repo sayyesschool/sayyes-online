@@ -23,6 +23,8 @@ export default function PageHeader({
         'PageHeader--with-tabs': Boolean(tabs)
     }, className);
 
+    const tabProps = Array.isArray(tabs) ? { items: tabs } : tabs;
+
     return (
         <header className={classNames}>
             <div className="PageHeader__row">
@@ -95,7 +97,9 @@ export default function PageHeader({
                         variant="plain"
                         size="sm"
                         color="primary"
+                        disableIndicator
                         disableUnderline
+                        {...tabProps}
                     />
                 }
 
