@@ -64,7 +64,7 @@ export default function TaskForm({
                     xs={12}
                 >
                     <Flex gap="m" column>
-                        {task.id &&
+                        {task?.id &&
                             <Checkbox
                                 label="Выполнена"
                                 name="completed"

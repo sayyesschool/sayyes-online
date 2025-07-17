@@ -26,7 +26,7 @@ export default [
         path: '/tasks',
         exact: false,
         component: Tasks,
-        icon: 'assignment'
+        icon: 'checklist'
     },
     {
         id: 'requests',
@@ -62,7 +62,7 @@ export default [
         path: '/lessons',
         exact: false,
         component: Lessons,
-        icon: 'event',
+        icon: 'calendar_month',
         permissions: ['all', 'lessons']
     },
     {
