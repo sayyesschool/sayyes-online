@@ -7,9 +7,11 @@ import { Button, Flex } from 'shared/ui-components';
 export default function TaskComments({ comments, user, onChange }) {
     const [isCommenting, toggleCommenting] = useBoolean(false);
 
-    const handleCreateComment = useCallback(data => {
+    const handleCreateComment = useCallback((_, data) => {
+        console.log('handleCreateComment', data);
+
         const newComment = {
-            content: data,
+            ...data,
             authorId: user.id
         };
 
@@ -19,10 +21,11 @@ export default function TaskComments({ comments, user, onChange }) {
     }, [user, toggleCommenting, onChange]);
 
     const handleUpdateComment = useCallback((commentId, data) => {
+        console.log('handleUpdateComment', commentId, data);
         onChange(prev => {
             return prev.map(comment => {
                 if (comment.id === commentId) {
-                    return { ...comment, content: data };
+                    return { ...comment, ...data };
                 }
 
                 return comment;

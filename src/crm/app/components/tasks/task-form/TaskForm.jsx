@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef } from 'react';
 
 import { Priority, Status, Topic } from 'core/models/task/constants';
 
@@ -55,6 +55,8 @@ export default function TaskForm({
         data,
         onSubmit
     ]);
+
+    console.log('TaskForm', { task, data });
 
     return (
         <Form onSubmit={handleSubmit} {...props}>

@@ -134,6 +134,7 @@ export default function Tasks({
             >
                 <TaskForm
                     id="task-form"
+                    task={task}
                     assignees={assignees}
                     onSubmit={task?.id ? handleUpdate : handleSubmit}
                 >

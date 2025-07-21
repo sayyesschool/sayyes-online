@@ -4,7 +4,7 @@ import Content from 'shared/components/content';
 import ContentEditor from 'shared/components/content-editor';
 import { useBoolean } from 'shared/hooks/state';
 import datetime from 'shared/libs/datetime';
-import { Avatar, Button, Flex, Icon, IconButton, MenuButton, Text } from 'shared/ui-components';
+import { Avatar, Button, Flex, Icon, IconButton, Menu, Surface, Text } from 'shared/ui-components';
 import cn from 'shared/utils/classnames';
 
 import styles from './Comment.module.scss';
@@ -27,30 +27,32 @@ export default function Comment({
     const [isEditing, toggleEditing] = useBoolean(editing);
 
     const handleSave = useCallback(() => {
-        const data = editorRef.current?.getData();
-
-        return onSave(comment.id, data);
-    }, [comment, onSave]);
+        toggleEditing(false);
+        onSave(comment.id, {
+            content: editorRef.current?.getData()
+        });
+    }, [comment, toggleEditing, onSave]);
 
     const handleDelete = useCallback(() => {
-        return onDelete(comment.id);
+        onDelete(comment.id);
     }, [comment, onDelete]);
 
     const handleToggle = useCallback(() => {
-        onToggle();
         toggleEditing(false);
-    }, [onToggle, toggleEditing]);
+        onToggle();
+    }, [toggleEditing, onToggle]);
 
     const author = comment.author || user;
 
     return isEditing ? (
-        <div className={cn(styles.root, editing && styles.editing)}>
-            <ContentEditor
-                ref={editorRef}
-                className={styles.editor}
-                content={comment?.content ?? ''}
-                simple
-            />
+        <div className={cn(styles.root, isEditing && styles.editing)}>
+            <Surface className={styles.editor} variant="outlined">
+                <ContentEditor
+                    ref={editorRef}
+                    content={comment?.content ?? ''}
+                    simple
+                />
+            </Surface>
 
             <div className={styles.actions}>
                 <Button
@@ -87,6 +89,8 @@ export default function Comment({
                         />
                     }
 
+                    {!noAuthor && !noDatetime && <span>·</span>}
+
                     {!noDatetime &&
                         <Text
                             content={datetime(comment.createdAt)
@@ -100,8 +104,8 @@ export default function Comment({
                 <Content content={comment.content} html />
             </div>
 
-            {user?.id === author?.id && !readOnly &&
-                <MenuButton
+            {user?.id === author?.id && !readOnly && !isEditing &&
+                <Menu
                     trigger={
                         <IconButton
                             className={styles.menu}

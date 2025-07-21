@@ -15,7 +15,7 @@ import { Badge, Checkbox } from 'shared/ui-components';
 
 const columns = [
     { key: 'task', content: 'Задача' },
-    { key: 'comment', content: 'Последний комментарий' },
+    { key: 'comment', content: 'Последний комментарий', width: '40%' },
     { key: 'actions', content: 'Действия' }
 ];
 
@@ -34,8 +34,8 @@ export default function TasksTable({
                     {columns.map(col =>
                         <Table.Cell
                             key={col.key}
-                            content={col.content}
                             header
+                            {...col}
                         />
                     )}
                 </Table.Row>
@@ -139,7 +139,7 @@ export default function TasksTable({
                                     user={user}
                                     comment={task.lastComment}
                                     size="sm"
-                                    noAvatar
+                                    noAuthor
                                     readOnly
                                 />
                             )}
