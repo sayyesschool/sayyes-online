@@ -90,6 +90,14 @@ export default function PaymentsTable({ payments, onResolve, onEdit, onDelete })
 
                         <Table.Cell align="end">
                             <IconButton.Group size="sm">
+                                {!payment.isResolved &&
+                                    <ActionButton
+                                        title="Обновить"
+                                        icon="refresh"
+                                        onAction={() => onResolve(payment)}
+                                    />
+                                }
+
                                 {payment.data && (
                                     <Popover
                                         trigger={
@@ -107,14 +115,6 @@ export default function PaymentsTable({ payments, onResolve, onEdit, onDelete })
                                         </Surface>
                                     </Popover>
                                 )}
-
-                                {!payment.isResolved &&
-                                    <ActionButton
-                                        title="Обновить"
-                                        icon="refresh"
-                                        onAction={() => onResolve(payment)}
-                                    />
-                                }
 
                                 <IconButton
                                     title="Изменить"
