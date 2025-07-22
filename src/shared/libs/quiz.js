@@ -1,4 +1,4 @@
-export const STATISTIC_DISPLAY_INTERVAL = 5;
+const STATISTIC_DISPLAY_INTERVAL = 5;
 const MATCH_ITEM_COUNT = 5;
 
 export function sessionCardsCount(length) {

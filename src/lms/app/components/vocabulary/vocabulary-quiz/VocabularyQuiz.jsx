@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 
-import { STATISTIC_DISPLAY_INTERVAL } from '@/shared/libs/quiz';
 import Page from 'shared/components/page';
 import { getComponent } from 'shared/components/quiz';
 import { useQuiz } from 'shared/hooks/quizzes';
@@ -31,10 +30,7 @@ export default function VocabularyQuiz({
     } = useQuiz(vocabulary?.lexemes, getData, updateLexemeStatus);
 
     const onFinish = useCallback(() => {
-        if (
-            currentItemIndex === 0 ||
-            currentItemIndex === STATISTIC_DISPLAY_INTERVAL
-        ) {
+        if (currentItemIndex === 0) {
             onBack();
 
             return;
@@ -54,7 +50,7 @@ export default function VocabularyQuiz({
                         key: 'front_hand',
                         icon: 'front_hand',
                         variant: 'soft',
-                        content: 'Прекратить тренировку',
+                        content: 'Завершить тренировку',
                         onClick: onFinish
                     }
                 ]}
