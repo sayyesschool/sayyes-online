@@ -106,6 +106,7 @@ export default function TasksSearch({
 
     const handleClearFilter = useCallback(() => {
         setFilters(defaultFilters);
+        setSearch('');
     }, [defaultFilters, setFilters]);
 
     return (
@@ -146,8 +147,8 @@ export default function TasksSearch({
 
                 <Form.Select
                     label="Статус"
-                    name="status"
-                    value={filters.status}
+                    name="completed"
+                    value={filters.completed}
                     options={statusOptions}
                     orientation="horizontal"
                     onChange={handleFilterChange}
@@ -156,7 +157,7 @@ export default function TasksSearch({
                 <Form.Select
                     label="Исполнитель"
                     name="assigneeId"
-                    value={filters.assignee}
+                    value={filters.assigneeId}
                     options={assigneeOptions}
                     orientation="horizontal"
                     onChange={handleFilterChange}

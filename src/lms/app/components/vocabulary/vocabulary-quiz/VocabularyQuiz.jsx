@@ -1,5 +1,7 @@
-import { useHistory } from 'react-router-dom';
+import { useCallback } from 'react';
 
+import { STATISTIC_DISPLAY_INTERVAL } from '@/shared/libs/quiz';
+import Page from 'shared/components/page';
 import { getComponent } from 'shared/components/quiz';
 import { useQuiz } from 'shared/hooks/quizzes';
 
@@ -12,11 +14,10 @@ import styles from './VocabularyQuiz.module.scss';
 export default function VocabularyQuiz({
     vocabulary,
     quizType,
+    onBack,
     updateLexemeStatus
 }) {
-    const history = useHistory();
-
-    const { Component, getData } = getComponent(quizType);
+    const { name, Component, getData } = getComponent(quizType);
 
     const {
         numberOfItems,
@@ -25,38 +26,68 @@ export default function VocabularyQuiz({
         updateStatus,
         continueQuiz,
         statistic,
-        showStatistic
+        showStatistic,
+        finishQuiz
     } = useQuiz(vocabulary?.lexemes, getData, updateLexemeStatus);
 
-    const handleBack = () => history.goBack();
+    const onFinish = useCallback(() => {
+        if (
+            currentItemIndex === 0 ||
+            currentItemIndex === STATISTIC_DISPLAY_INTERVAL
+        ) {
+            onBack();
+
+            return;
+        }
+
+        finishQuiz();
+    }, [currentItemIndex, finishQuiz, onBack]);
 
     if (!Component) throw new Error('No component for quiz');
 
     return (
-        <div className={styles.quiz}>
-            {showStatistic ?
-                <VocabularyQuizStatistic
-                    statistic={statistic}
-                    onContinue={continueQuiz}
-                    onBack={handleBack}
-                /> :
-                <VocabularyQuizItem
-                    item={currentItem}
-                    itemIndex={currentItemIndex}
-                    numberOfItems={numberOfItems}
-                >
-                    {currentItem ? (
-                        <Component
+        <>
+            <Page.Header
+                title={name}
+                actions={!showStatistic && [
+                    {
+                        key: 'front_hand',
+                        icon: 'front_hand',
+                        variant: 'soft',
+                        content: 'Прекратить тренировку',
+                        onClick: onFinish
+                    }
+                ]}
+            />
+
+            <Page.Content>
+                <div className={styles.quiz}>
+                    {showStatistic ? (
+                        <VocabularyQuizStatistic
+                            statistic={statistic}
+                            onContinue={continueQuiz}
+                            onBack={onBack}
+                        />
+                    ) : (
+                        <VocabularyQuizItem
                             item={currentItem}
                             itemIndex={currentItemIndex}
                             numberOfItems={numberOfItems}
-                            updateStatus={updateStatus}
-                        />
-                    ) : (
-                        <VocabularyQuizEmptyState onAction={handleBack} />
+                        >
+                            {currentItem ? (
+                                <Component
+                                    item={currentItem}
+                                    itemIndex={currentItemIndex}
+                                    numberOfItems={numberOfItems}
+                                    updateStatus={updateStatus}
+                                />
+                            ) : (
+                                <VocabularyQuizEmptyState onAction={onBack} />
+                            )}
+                        </VocabularyQuizItem>
                     )}
-                </VocabularyQuizItem>
-            }
-        </div>
+                </div>
+            </Page.Content>
+        </>
     );
 }

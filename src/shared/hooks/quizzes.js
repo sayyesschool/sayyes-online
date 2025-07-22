@@ -6,6 +6,7 @@ export function useQuiz(_items, getData, updateItemStatus) {
     const [items, setItems] = useState(getData(_items));
     const [count, setCount] = useState(0);
     const [statistic, setStatistic] = useState([]);
+    const [isFinished, setIsFinished] = useState(false);
 
     useEffect(() => {
         if (items || !_items) return;
@@ -15,7 +16,7 @@ export function useQuiz(_items, getData, updateItemStatus) {
     const flatItems = Array.isArray(items?.[0]) ? items.flat() : items;
     const currentItem = items?.[count];
     const statisticInterval = sessionCardsCount(items?.length);
-    const showStatistic = shouldShowStatistic(count, statisticInterval);
+    const showStatistic = shouldShowStatistic(count, statisticInterval) || isFinished;
 
     const updateStatistics = useCallback((itemId, newStatus) => {
         const newStatusPositive = Math.max(0, newStatus);
@@ -56,7 +57,12 @@ export function useQuiz(_items, getData, updateItemStatus) {
         setItems(getData(_items));
         setCount(0);
         setStatistic([]);
+        setIsFinished(false);
     }, [_items, getData, items?.length]);
+
+    const finishQuiz = useCallback(() => {
+        setIsFinished(true);
+    }, []);
 
     return {
         items,
@@ -66,6 +72,7 @@ export function useQuiz(_items, getData, updateItemStatus) {
         statistic,
         updateStatus,
         continueQuiz,
-        showStatistic
+        showStatistic,
+        finishQuiz
     };
 }
