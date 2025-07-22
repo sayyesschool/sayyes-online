@@ -8,9 +8,9 @@ export default ({
             filters.description = new RegExp(query.description, 'i');
         }
 
-        if (filters.duePeriod) {
-            Object.assign(filters, getDueDateFilter(filters.duePeriod));
-            delete filters.duePeriod;
+        if (filters.due) {
+            Object.assign(filters, getDueDateFilter(filters.due));
+            delete filters.due;
         }
 
         return Task.find(filters)
