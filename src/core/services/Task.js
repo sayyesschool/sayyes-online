@@ -16,7 +16,7 @@ export default ({
         return Task.find(filters)
             .sort({ createdAt: -1 })
             .populate('owner', 'firstname lastname')
-            .populate('assignee', 'firstname lastname')
+            .populate('assignee', 'firstname lastname role')
             .populate({
                 path: 'comments.author'
             });
@@ -25,10 +25,9 @@ export default ({
     async getOne(params) {
         return Task.findById(params.id)
             .populate('owner', 'firstname lastname')
-            .populate('assignee', 'firstname lastname')
+            .populate('assignee', 'firstname lastname role')
             .populate({
-                path: 'comments.author',
-                model: 'User'
+                path: 'comments.author'
             });
     },
 
