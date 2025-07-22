@@ -15,29 +15,19 @@ export default function VocabularyQuizPage({ match }) {
     const [vocabulary, actions] = useVocabulary(match.params.vocabulary);
 
     const handleBack = useCallback(() => {
-        history.goBack();
-    }, [history]);
+        history.push(`/vocabularies/${vocabulary.id}`);
+    }, [history, vocabulary?.id]);
 
     if (!vocabulary) return <LoadingIndicator />;
 
     return (
         <Page className={styles.root}>
-            <Page.Header
-                title="Тренажер слов"
-                breadcrumbs={[{
-                    content: 'Словарь',
-                    to: `/vocabulary/${vocabulary.id}`
-                }]}
+            <VocabularyQuiz
+                vocabulary={vocabulary}
+                quizType={match.params.quiz}
+                updateLexemeStatus={actions.updateLexemeStatus}
+                onBack={handleBack}
             />
-
-            <Page.Content>
-                <VocabularyQuiz
-                    vocabulary={vocabulary}
-                    quizType={match.params.quiz}
-                    updateLexemeStatus={actions.updateLexemeStatus}
-                    onBack={handleBack}
-                />
-            </Page.Content>
         </Page>
     );
 }

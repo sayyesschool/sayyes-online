@@ -5,8 +5,8 @@ import Scrabble, { getData as getScrabbleData } from './scrabble';
 import TrueFalse, { getData as getTrueFalseData } from './true-false';
 
 const components = {
-    'flip-card': {
-        name: 'Flip Card',
+    'flip-cards': {
+        name: 'Flip Cards',
         Component: FlipCard,
         getData: getFlipCardData
     },

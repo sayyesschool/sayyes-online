@@ -51,7 +51,7 @@ export default function VocabularyPage({ match }) {
                             {
                                 key: 'flip-cards',
                                 as: Link,
-                                to: `${id}/quiz/flip-card`,
+                                to: `${id}/quiz/flip-cards`,
                                 icon: 'autorenew',
                                 content: 'Flip Cards'
                             },
