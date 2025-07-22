@@ -10,14 +10,8 @@ export const Priority = {
     High: 'high'
 };
 
-export const Status = {
-    Open: false,
-    Completed: true
-};
-
 export const Topic = {
     Relevance: 'relevance',
     Payment: 'payment',
-    Trial: 'trial',
-    Other: 'other'
+    Trial: 'trial'
 };

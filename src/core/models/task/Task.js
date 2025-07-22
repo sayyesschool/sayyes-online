@@ -3,23 +3,22 @@ import { Schema, Types } from 'mongoose';
 import { PriorityLabel, TopicLabel } from 'shared/data/task';
 import datetime from 'shared/libs/datetime';
 
+import { EntityRef } from '../common';
+
 import { Comment } from './Comment';
-import { Priority, Status, Topic } from './constants';
+import { Priority, Topic } from './constants';
 
 const { ObjectId } = Types;
 
 export const Task = new Schema({
-    topic: { type: String, default: Topic.Other },
     description: { type: String, trim: true, default: '' },
-    completed: { type: Boolean, default: Status.Open },
+    completed: { type: Boolean, default: false },
+    topic: { type: String, enum: Object.values(Topic) },
     priority: { type: String, default: Priority.Medium },
     dueDate: { type: Date },
     reminderDate: { type: Date },
     comments: [Comment],
-    refs: [{
-        id: ObjectId,
-        entity: String
-    }],
+    refs: [EntityRef],
     ownerId: { type: ObjectId, required: true },
     assigneeId: { type: ObjectId },
     assignerId: { type: ObjectId }

@@ -2,8 +2,7 @@ import { Schema, Types } from 'mongoose';
 
 export const Comment = new Schema({
     content: { type: String, trim: true, required: true },
-    authorId: { type: Types.ObjectId, required: true },
-    createdAt: { type: Date, required: true }
+    authorId: { type: Types.ObjectId, required: true }
 });
 
 Comment.virtual('author', {
