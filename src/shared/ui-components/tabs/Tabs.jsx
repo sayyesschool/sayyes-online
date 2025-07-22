@@ -20,7 +20,7 @@ const Tabs = forwardRef(({
     className,
     ...props
 }, ref) => {
-    const classNames = classnames('ui-Tabs', className);
+    const classNames = classnames(className, 'ui-Tabs');
 
     return (
         <JoyTabs

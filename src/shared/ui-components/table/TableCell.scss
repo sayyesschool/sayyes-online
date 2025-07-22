@@ -11,6 +11,18 @@
         text-align: right !important;
     }
 
+    &--alignV-start {
+        vertical-align: top !important;
+    }
+
+    &--alignV-center {
+        vertical-align: middle !important;
+    }
+
+    &--alignV-end {
+        vertical-align: bottom !important;
+    }
+
     &#{&}--header {
         --TableCell-headBackground: transparent;
     }

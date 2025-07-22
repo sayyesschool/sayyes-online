@@ -6,6 +6,7 @@ const TableCell = forwardRef(({
     header,
     content,
     align,
+    alignV,
 
     as: Tag = header ? 'th' : 'td',
     children = content,
@@ -14,7 +15,8 @@ const TableCell = forwardRef(({
 }, ref) => {
     const classNames = classnames('ui-TableCell', {
         'ui-TableCell--header': header,
-        [`ui-TableCell--align-${align}`]: align
+        [`ui-TableCell--align-${align}`]: align,
+        [`ui-TableCell--alignV-${alignV}`]: alignV
     }, className);
 
     return (

@@ -8,6 +8,10 @@ export function isToday(date) {
     return moment(date).isSame(moment(), 'day');
 }
 
+export function isBeforeToday(date) {
+    return moment(date).isBefore(moment(), 'day');
+}
+
 export function isThisWeek(date) {
     return moment(date).isSame(moment(), 'week');
 }
