@@ -63,11 +63,11 @@ export default function TasksSearch({
             content: 'Все'
         }), [managers, user.id]);
 
-    const searchNote = useDebounce(value => {
+    const searchDescription = useDebounce(value => {
         setFilters(prev =>
             stripEmptyValues({
                 ...prev,
-                note: value
+                description: value
             })
         );
     }, 1000);
@@ -78,9 +78,9 @@ export default function TasksSearch({
         setSearch(value);
 
         if (value) {
-            searchNote(value);
+            searchDescription(value);
         }
-    }, [searchNote]);
+    }, [searchDescription]);
 
     const handleFilterChange = useCallback(event => {
         const { name, value } = event.target;
@@ -96,12 +96,13 @@ export default function TasksSearch({
     }, [setFilters]);
 
     const handleClearSearch = useCallback(() => {
-        setFilters(prev => ({ ...prev, note: '' }));
+        setFilters(prev => ({ ...prev, description: '' }));
         setSearch('');
     }, [setFilters]);
 
     const handleClearFilter = useCallback(() => {
         setFilters(defaultFilters);
+        setSearch('');
     }, [defaultFilters, setFilters]);
 
     return (
@@ -109,7 +110,7 @@ export default function TasksSearch({
             <Form.Input
                 className={styles.search}
                 placeholder="Описание"
-                name="note"
+                name="description"
                 value={search}
                 start={<Icon name="search" />}
                 end={search && (
@@ -142,8 +143,8 @@ export default function TasksSearch({
 
                 <Form.Select
                     label="Статус"
-                    name="status"
-                    value={filters.status}
+                    name="completed"
+                    value={filters.completed}
                     options={statusOptions}
                     orientation="horizontal"
                     onChange={handleFilterChange}
@@ -152,7 +153,7 @@ export default function TasksSearch({
                 <Form.Select
                     label="Исполнитель"
                     name="assigneeId"
-                    value={filters.assignee}
+                    value={filters.assigneeId}
                     options={assigneeOptions}
                     orientation="horizontal"
                     onChange={handleFilterChange}
@@ -161,7 +162,7 @@ export default function TasksSearch({
                 <Form.Select
                     label="Срок выполнения"
                     name="duePeriod"
-                    value={filters.dueDate}
+                    value={filters.duePeriod}
                     options={duePeriodOptions}
                     orientation="horizontal"
                     onChange={handleFilterChange}

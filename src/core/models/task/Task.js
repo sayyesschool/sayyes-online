@@ -20,9 +20,9 @@ export const Task = new Schema({
         id: ObjectId,
         entity: String
     }],
-    ownerId: { type: ObjectId, required: true },
-    assigneeId: { type: ObjectId },
-    assignerId: { type: ObjectId }
+    ownerId: { type: ObjectId, required: true }, // Создатель задачи
+    assigneeId: { type: ObjectId }, // Исполнитель задачи
+    assignerId: { type: ObjectId } // Тот, кто назначил задачу
 }, {
     timestamps: true
 });

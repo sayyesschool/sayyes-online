@@ -4,7 +4,7 @@ export const defaultFilters = {
     topic: '',
     priority: '',
     assigneeId: '',
-    due: DuePeriod.Today,
+    duePeriod: DuePeriod.Today,
     completed: String(Status.Open)
 };
 
@@ -25,6 +25,7 @@ export const statusOptions = [
 export const DuePeriodLabel = {
     [DuePeriod.Today]: 'Сегодня',
     [DuePeriod.Week]: 'На этой неделе',
+    [DuePeriod.None]: 'Без срока',
     [DuePeriod.Overdue]: 'Просроченные'
 };
 

@@ -1,6 +1,7 @@
 export const DuePeriod = {
     Today: 'today',
     Week: 'week',
+    None: 'none',
     Overdue: 'overdue'
 };
 

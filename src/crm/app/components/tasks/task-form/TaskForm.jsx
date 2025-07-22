@@ -24,7 +24,7 @@ const getData = ({
     priority,
     ownerId,
     assigneeId,
-    dueDate: dueDate ? datetime(dueDate).format('YYYY-MM-DDTHH:mm') : undefined,
+    dueDate: dueDate ? datetime(dueDate).format('YYYY-MM-DD') : undefined,
     reminderDate: reminderDate
         ? datetime(reminderDate).format('YYYY-MM-DDTHH:mm')
         : undefined
@@ -55,8 +55,6 @@ export default function TaskForm({
         data,
         onSubmit
     ]);
-
-    console.log('TaskForm', { task, data });
 
     return (
         <Form onSubmit={handleSubmit} {...props}>

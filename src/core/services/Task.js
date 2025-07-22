@@ -8,9 +8,9 @@ export default ({
             filters.description = new RegExp(query.description, 'i');
         }
 
-        if (filters.due) {
-            delete filters.due;
-            Object.assign(filters, getDueDateFilter(filters.dueDate));
+        if (filters.duePeriod) {
+            Object.assign(filters, getDueDateFilter(filters.duePeriod));
+            delete filters.duePeriod;
         }
 
         return Task.find(filters)
@@ -81,6 +81,10 @@ function getDueDateFilter(value) {
 
         case 'overdue': {
             return { dueDate: { $lt: now } };
+        }
+
+        case 'none': {
+            return { dueDate: { $exists: false } };
         }
 
         default:
