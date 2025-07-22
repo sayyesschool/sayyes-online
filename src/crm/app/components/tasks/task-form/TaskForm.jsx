@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react';
 
-import { Priority, Status, Topic } from 'core/models/task/constants';
+import { Priority } from 'core/models/task/constants';
 
 import ContentEditor from 'shared/components/content-editor';
 import { priorityOptions, topicOptions } from 'shared/data/task';
@@ -9,9 +9,9 @@ import datetime from 'shared/libs/datetime';
 import { Button, Checkbox, Flex, Form, Grid, Surface } from 'shared/ui-components';
 
 const getData = ({
-    topic = Topic.Other,
     description = '',
-    completed = Status.Open,
+    completed = false,
+    topic,
     priority = Priority.Medium,
     ownerId,
     assigneeId,
