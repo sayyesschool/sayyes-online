@@ -16,3 +16,8 @@ export const Topic = {
     Payment: 'payment',
     Trial: 'trial'
 };
+
+export const Status = {
+    Open: 'open',
+    Completed: 'completed'
+};
