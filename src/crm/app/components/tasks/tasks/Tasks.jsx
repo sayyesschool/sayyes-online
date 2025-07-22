@@ -14,7 +14,7 @@ import TasksTable from 'crm/components/tasks/tasks-table';
 import styles from './Tasks.module.scss';
 
 const filterFns = {
-    own: (task, userId) => task.ownerId === userId,
+    own: (task, userId) => task.ownerId === userId && !task.assigneeId,
     assignedToMe: (task, userId) => task.assigneeId === userId,
     assignedByMe: (task, userId) => task.assignerId === userId
 };
@@ -28,7 +28,7 @@ export default function Tasks({
     setFormOpen,
     setLoading
 }) {
-    const [tasks, actions] = useTasks(filters);
+    const [tasks = [], actions] = useTasks(filters);
     const [user] = useUser();
     const [managers] = useManagers();
 
@@ -45,7 +45,7 @@ export default function Tasks({
         return managers?.filter(m => m.id !== user.id) ?? [];
     }, [managers, user.id]);
 
-    const filteredTasks = tasks?.filter(task => filterFns[filter]?.(task, user.id)) ?? [];
+    const filteredTasks = filter ? tasks?.filter(task => filterFns[filter]?.(task, user.id)) : tasks;
 
     const handleSubmit = useCallback(data => {
         setLoading(true);
@@ -81,7 +81,9 @@ export default function Tasks({
 
         data.comments = comments;
 
-        if (!data.assigneeId) {
+        if (data.assigneeId) {
+            data.assignerId = user.id;
+        } else {
             data.assignerId = null;
         }
 
@@ -89,7 +91,7 @@ export default function Tasks({
             .updateTask(task.id, data)
             .then(() => setFormOpen(false))
             .finally(() => setLoading(false));
-    }, [actions, comments, setFormOpen, setLoading, task?.id]);
+    }, [actions, comments, user, setFormOpen, setLoading, task?.id]);
 
     const handleDelete = useCallback(id => {
         setLoading(true);

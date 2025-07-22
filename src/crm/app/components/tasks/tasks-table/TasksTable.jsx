@@ -5,9 +5,11 @@ import ConfirmButton from 'shared/components/confirm-button';
 import Content from 'shared/components/content';
 import { RefEntityLabel as EntityRefLabel } from 'shared/data/common';
 import { PriorityColor, PriorityLabel } from 'shared/data/task';
+import { isBeforeToday, isToday } from 'shared/libs/datetime';
 import {
     Chip,
     Flex,
+    Icon,
     IconButton,
     Table
 } from 'shared/ui-components';
@@ -44,7 +46,7 @@ export default function TasksTable({
             <Table.Body>
                 {tasks.map(task => (
                     <Table.Row key={task.id}>
-                        <Table.Cell>
+                        <Table.Cell alignV="start">
                             <Flex
                                 gap="smaller"
                                 column
@@ -65,11 +67,13 @@ export default function TasksTable({
                                     gap="smaller"
                                     sx={{ marginLeft: '30px' }}
                                 >
-                                    <Chip
-                                        title="Тема"
-                                        content={task.topicLabel}
-                                        size="sm"
-                                    />
+                                    {task.topic &&
+                                        <Chip
+                                            title="Тема"
+                                            content={task.topicLabel}
+                                            size="sm"
+                                        />
+                                    }
 
                                     <Chip
                                         title="Приоритет"
@@ -90,7 +94,7 @@ export default function TasksTable({
                                             content={
                                                 user.id === task.assignee?.id
                                                     ? 'Я'
-                                                    : task.assignee?.firstname
+                                                    : task.assignee?.fullname
                                             }
                                             color={task.assignee?.id === user.id ? 'primary' : 'neutral'}
                                             size="sm"
@@ -103,6 +107,8 @@ export default function TasksTable({
                                             icon="today"
                                             content={task.dueDateLabel}
                                             size="sm"
+                                            color={isToday(task.dueDate) ? 'primary' : (isBeforeToday(task.dueDate) ? 'danger' : undefined)}
+                                            end={isBeforeToday(task.dueDate) ? <Icon name="error" /> : undefined}
                                         />
                                     )}
 
@@ -133,7 +139,7 @@ export default function TasksTable({
                             </Flex>
                         </Table.Cell>
 
-                        <Table.Cell>
+                        <Table.Cell alignV="start">
                             {task.lastComment && (
                                 <Comment
                                     user={user}
@@ -145,7 +151,7 @@ export default function TasksTable({
                             )}
                         </Table.Cell>
 
-                        <Table.Cell align="end">
+                        <Table.Cell align="end" alignV="start">
                             <IconButton.Group>
                                 <Badge
                                     content={task.comments.length > 0 ? task.comments.length : undefined}
@@ -155,6 +161,8 @@ export default function TasksTable({
                                 >
                                     <IconButton
                                         icon="comment"
+                                        content={task.comments.length}
+                                        disabled
                                     />
                                 </Badge>
 

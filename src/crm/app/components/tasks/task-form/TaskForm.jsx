@@ -6,7 +6,7 @@ import ContentEditor from 'shared/components/content-editor';
 import { priorityOptions, topicOptions } from 'shared/data/task';
 import { useFormData } from 'shared/hooks/form';
 import datetime from 'shared/libs/datetime';
-import { Checkbox, Flex, Form, Grid, Surface } from 'shared/ui-components';
+import { Button, Checkbox, Flex, Form, Grid, Surface } from 'shared/ui-components';
 
 const getData = ({
     topic = Topic.Other,
@@ -24,7 +24,7 @@ const getData = ({
     priority,
     ownerId,
     assigneeId,
-    dueDate: dueDate ? datetime(dueDate).format('YYYY-MM-DDTHH:mm') : undefined,
+    dueDate: dueDate ? datetime(dueDate).format('YYYY-MM-DD') : undefined,
     reminderDate: reminderDate
         ? datetime(reminderDate).format('YYYY-MM-DDTHH:mm')
         : undefined
@@ -37,7 +37,7 @@ export default function TaskForm({
     children,
     ...props
 }) {
-    const { data, handleChange } = useFormData(
+    const { data, setData, handleChange } = useFormData(
         getData(task),
         [task?.id]
     );
@@ -56,13 +56,11 @@ export default function TaskForm({
         onSubmit
     ]);
 
-    console.log('TaskForm', { task, data });
-
     return (
         <Form onSubmit={handleSubmit} {...props}>
             <Grid gap="m">
                 <Grid.Item
-                    md={4}
+                    md={6}
                     xs={12}
                 >
                     <Flex gap="m" column>
@@ -74,6 +72,16 @@ export default function TaskForm({
                                 onChange={handleChange}
                             />
                         }
+
+                        <Form.Field label="Описание">
+                            <Surface variant="outlined">
+                                <ContentEditor
+                                    ref={editorRef}
+                                    content={data.description}
+                                    simple
+                                />
+                            </Surface>
+                        </Form.Field>
 
                         <Form.Select
                             label="Тема"
@@ -100,6 +108,17 @@ export default function TaskForm({
                                 value: a.id,
                                 content: a.fullname
                             }))}
+                            end={data.assigneeId &&
+                                <Button
+                                    icon="clear"
+                                    variant="plain"
+                                    size="sm"
+                                    onClick={() => setData(data => ({
+                                        ...data,
+                                        assigneeId: null
+                                    }))}
+                                />
+                            }
                             onChange={handleChange}
                         />
 
@@ -111,33 +130,18 @@ export default function TaskForm({
                             onChange={handleChange}
                         />
 
-                        <Form.Input
+                        {/* <Form.Input
                             label="Напоминание"
                             type="datetime-local"
                             name="reminderDate"
                             value={data.reminderDate}
                             onChange={handleChange}
-                        />
+                        /> */}
                     </Flex>
                 </Grid.Item>
 
                 <Grid.Item
-                    md={4}
-                    xs={12}
-                >
-                    <Form.Field label="Описание">
-                        <Surface variant="outlined">
-                            <ContentEditor
-                                ref={editorRef}
-                                content={data.description}
-                                simple
-                            />
-                        </Surface>
-                    </Form.Field>
-                </Grid.Item>
-
-                <Grid.Item
-                    md={4}
+                    md={6}
                     xs={12}
                 >
                     {children}
