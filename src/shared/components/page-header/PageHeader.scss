@@ -18,7 +18,8 @@
     }
 
     &__center {
-        margin: 0 auto;
+        display: flex;
+        align-items: center;
     }
 
     &__tabs {

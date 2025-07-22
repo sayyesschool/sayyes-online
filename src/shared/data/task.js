@@ -4,23 +4,9 @@ export const defaultFilters = {
     topic: '',
     priority: '',
     assigneeId: '',
-    duePeriod: DuePeriod.Today,
-    completed: String(Status.Open)
+    due: DuePeriod.Today,
+    completed: false
 };
-
-export const StatusLabel = {
-    [Status.Open]: 'Открыта',
-    [Status.Completed]: 'Выполнена'
-};
-
-export const statusOptions = [
-    ...Object.entries(StatusLabel).map(([key, value]) => ({
-        key,
-        value: key,
-        label: value,
-        content: value
-    }))
-];
 
 export const DuePeriodLabel = {
     [DuePeriod.Today]: 'Сегодня',
@@ -31,6 +17,27 @@ export const DuePeriodLabel = {
 
 export const duePeriodOptions = [
     ...Object.entries(DuePeriodLabel).map(([key, value]) => ({
+        key,
+        value: key,
+        label: value,
+        content: value
+    }))
+];
+
+export const PriorityLabel = {
+    [Priority.Low]: 'Низкий',
+    [Priority.Medium]: 'Средний',
+    [Priority.High]: 'Высокий'
+};
+
+export const PriorityColor = {
+    [Priority.High]: 'danger',
+    [Priority.Medium]: 'warning',
+    [Priority.Low]: 'success'
+};
+
+export const priorityOptions = [
+    ...Object.entries(PriorityLabel).map(([key, value]) => ({
         key,
         value: key,
         label: value,
@@ -54,20 +61,13 @@ export const topicOptions = [
     }))
 ];
 
-export const PriorityLabel = {
-    [Priority.Low]: 'Низкий',
-    [Priority.Medium]: 'Средний',
-    [Priority.High]: 'Высокий'
+export const StatusLabel = {
+    [Status.Open]: 'Открыта',
+    [Status.Completed]: 'Выполнена'
 };
 
-export const PriorityColor = {
-    [Priority.High]: 'danger',
-    [Priority.Medium]: 'warning',
-    [Priority.Low]: 'success'
-};
-
-export const priorityOptions = [
-    ...Object.entries(PriorityLabel).map(([key, value]) => ({
+export const statusOptions = [
+    ...Object.entries(StatusLabel).map(([key, value]) => ({
         key,
         value: key,
         label: value,

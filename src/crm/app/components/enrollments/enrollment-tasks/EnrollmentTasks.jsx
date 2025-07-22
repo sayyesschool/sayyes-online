@@ -3,7 +3,6 @@ import { useMemo, useState } from 'react';
 import { RefEntity as EntityRef } from 'core/models/common/constants';
 
 import PageSection from 'shared/components/page-section';
-import { Surface } from 'shared/ui-components';
 
 import Tasks from 'crm/components/tasks/tasks';
 
@@ -29,16 +28,15 @@ export default function EnrollmentTasks({ enrollment }) {
                 icon: 'add',
                 onClick: () => setFormOpen(true)
             }]}
+            compact
         >
-            <Surface variant="outlined">
-                <Tasks
-                    entity={entity}
-                    filters={filters}
-                    isFormOpen={isFormOpen}
-                    setLoading={setLoading}
-                    setFormOpen={setFormOpen}
-                />
-            </Surface>
+            <Tasks
+                entity={entity}
+                filters={filters}
+                isFormOpen={isFormOpen}
+                setLoading={setLoading}
+                setFormOpen={setFormOpen}
+            />
         </PageSection>
     );
 }

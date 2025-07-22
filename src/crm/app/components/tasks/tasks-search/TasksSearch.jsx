@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
     duePeriodOptions as _duePeriodOptions,
@@ -46,41 +46,45 @@ export default function TasksSearch({
 }) {
     const [search, setSearch] = useState('');
 
-    const assigneeOptions = useMemo(() => managers
-        ?.map(({ id, fullname }) => {
-            const label = id === user.id ? 'Я' : fullname;
+    useEffect(() => {
+        const params = new URLSearchParams(stripEmptyValues(filters)).toString();
 
-            return {
-                key: id,
-                value: id,
-                label: label,
-                content: label
-            };
-        })
+        if (params && history.pushState) {
+            const path = window.location.protocol + '//' + window.location.host + window.location.pathname + '?' + params;
+            window.history.pushState({ path }, '', path);
+        }
+    }, [filters]);
+
+    const assigneeOptions = useMemo(() => managers
+        ?.filter(m => m.id !== user.id)
+        .map(({ id, fullname }) => ({
+            key: id,
+            value: id,
+            label: fullname,
+            content: fullname
+        }))
         .concat({
             key: 'all',
             value: '',
             content: 'Все'
         }), [managers, user.id]);
 
-    const searchDescription = useDebounce(value => {
+    const debouncedSearch = useDebounce(params => {
         setFilters(prev =>
             stripEmptyValues({
                 ...prev,
-                description: value
+                ...params
             })
         );
     }, 1000);
 
     const handleSearchChange = useCallback(event => {
-        const value = event.target.value;
+        const { name, value } = event.target;
 
         setSearch(value);
 
-        if (value) {
-            searchDescription(value);
-        }
-    }, [searchDescription]);
+        debouncedSearch({ [name]: value });
+    }, [debouncedSearch]);
 
     const handleFilterChange = useCallback(event => {
         const { name, value } = event.target;
@@ -96,8 +100,8 @@ export default function TasksSearch({
     }, [setFilters]);
 
     const handleClearSearch = useCallback(() => {
-        setFilters(prev => ({ ...prev, description: '' }));
         setSearch('');
+        setFilters(prev => ({ ...prev, description: '' }));
     }, [setFilters]);
 
     const handleClearFilter = useCallback(() => {
@@ -161,8 +165,8 @@ export default function TasksSearch({
 
                 <Form.Select
                     label="Срок выполнения"
-                    name="duePeriod"
-                    value={filters.duePeriod}
+                    name="due"
+                    value={filters.dueDate}
                     options={duePeriodOptions}
                     orientation="horizontal"
                     onChange={handleFilterChange}
