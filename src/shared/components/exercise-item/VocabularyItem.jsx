@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import FormDialog from 'shared/components/form-dialog';
 import LexemesList from 'shared/components/lexemes-list';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import { useLexiconApi } from 'shared/hooks/lexicon';
@@ -8,7 +9,9 @@ import { Button, Dialog, Flex, Surface } from 'shared/ui-components';
 import cn from 'shared/utils/classnames';
 
 import Lexeme from 'lms/components/vocabulary/lexeme';
+import LexemeForm from 'lms/components/vocabulary/lexeme-form';
 import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
+import LexemeView from 'lms/components/vocabulary/lexeme-view';
 import { useLearnerContext } from 'lms/contexts/learner';
 
 import styles from './VocabularyItem.module.scss';
@@ -22,6 +25,7 @@ export default function VocabularyItem({
         getLexemes,
         addLexeme,
         addLexemes,
+        updateLexeme,
         updateLexemeStatus,
         deleteLexeme
     } = useLexiconApi();
@@ -29,6 +33,7 @@ export default function VocabularyItem({
 
     const [lexemes, setLexemes] = useState(null);
     const [viewingLexeme, setViewingLexeme] = useState();
+    const [editingLexeme, setEditingLexeme] = useState();
     const [isLoading, setLoading] = useState(false);
 
     const newLexemeIds = lexemes?.filter(({ status }) => status === undefined).map(({ id }) => id);
@@ -63,6 +68,16 @@ export default function VocabularyItem({
             });
     }, [newLexemeIds, learnerId, addLexemes]);
 
+    const handleUpdateLexeme = useCallback(data => {
+        return updateLexeme(editingLexeme?.id, {
+            data,
+            learnerId
+        }).then(lexeme => {
+            updateLexemes(lexeme);
+            setEditingLexeme(null);
+        });
+    }, [editingLexeme?.id, learnerId, updateLexeme, updateLexemes]);
+
     const handleUpdateLexemeStatus = useCallback((lexemeId, status) => {
         return updateLexemeStatus(lexemeId, { learnerId, status })
             .then(lexeme => {
@@ -74,12 +89,12 @@ export default function VocabularyItem({
         if (confirm('Вы уверены что хотите удалить слово')) {
             return deleteLexeme(lexemeId, { learnerId })
                 .then(lexeme => {
-                    updateLexemes(lexeme);
+                    setLexemes(lexemes => lexemes.map(l => l.id === lexeme.id ? lexeme : l));
                 });
         } else {
             return Promise.resolve();
         }
-    }, [learnerId, deleteLexeme, updateLexemes]);
+    }, [deleteLexeme, learnerId]);
 
     if (!lexemes) return <LoadingIndicator />;
 
@@ -115,6 +130,11 @@ export default function VocabularyItem({
                                 onChange={status => handleUpdateLexemeStatus(lexeme.id, status)}
                             />,
                             {
+                                icon: 'edit',
+                                title: 'Редактировать слово',
+                                onClick: () => setEditingLexeme(lexeme)
+                            },
+                            {
                                 icon: 'remove',
                                 title: 'Удалить слово из словаря',
                                 onClick: () => handleDeleteLexeme(lexeme.id)
@@ -142,6 +162,20 @@ export default function VocabularyItem({
                         onStatusUpdate={handleUpdateLexemeStatus}
                     />
                 </Dialog>
+            }
+
+            {editingLexeme &&
+                <LexemeView
+                    as={FormDialog}
+                    open
+                    onClose={() => setEditingLexeme(null)}
+                >
+                    <LexemeForm
+                        id="lexeme-edit-form"
+                        lexeme={editingLexeme}
+                        onSubmit={handleUpdateLexeme}
+                    />
+                </LexemeView>
             }
         </div>
     );

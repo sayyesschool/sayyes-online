@@ -57,7 +57,7 @@ function VocabularyItemForm({ lexemeIds = [] }, ref) {
             ...lexeme,
             publishStatus: LexemePublishStatus.Approved
         }).then(response => {
-            addLexeme(response.data);
+            addLexeme(response);
         });
     }, [createLexeme, addLexeme]);
 
