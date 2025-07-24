@@ -8,16 +8,10 @@ import Tasks from 'crm/components/tasks/tasks';
 
 export default function LearnerTasks({ learner }) {
     const [isFormOpen, setFormOpen] = useState(false);
-    const [isLoading, setLoading] = useState(false);
 
     const entity = useMemo(() => ({
         id: learner?.id,
         type: EntityRef.Learner
-    }), [learner?.id]);
-
-    const filters = useMemo(() => ({
-        'refs.id': learner?.id,
-        completed: false
     }), [learner?.id]);
 
     return (
@@ -32,9 +26,7 @@ export default function LearnerTasks({ learner }) {
         >
             <Tasks
                 entity={entity}
-                filters={filters}
                 isFormOpen={isFormOpen}
-                setLoading={setLoading}
                 setFormOpen={setFormOpen}
             />
         </PageSection>

@@ -1,13 +1,14 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import {
+    defaultFilters,
     duePeriodOptions as _duePeriodOptions,
     priorityOptions as _priorityOptions,
     statusOptions as _statusOptions,
     topicOptions as _topicOptions
 } from 'shared/data/task';
-import { useDebounce } from 'shared/hooks/fn';
 import { Form, Icon, IconButton } from 'shared/ui-components';
+import { debounce } from 'shared/utils/fn';
 import { stripEmptyValues } from 'shared/utils/object';
 
 import styles from './TasksSearch.module.scss';
@@ -37,14 +38,23 @@ const duePeriodOptions = _duePeriodOptions.concat({
 });
 
 export default function TasksSearch({
-    filters,
     user,
     managers,
-    defaultFilters,
-    setFilters,
+    onParamsChange,
     ...props
 }) {
+    const onParamsChangeRef = useRef(debounce(onParamsChange, 1000));
+
     const [search, setSearch] = useState('');
+    const [filters, setFilters] = useState(defaultFilters);
+
+    useEffect(() => {
+        onParamsChange?.(stripEmptyValues(filters));
+    }, []);
+
+    useEffect(() => {
+        onParamsChangeRef?.current(stripEmptyValues(filters));
+    }, [filters]);
 
     useEffect(() => {
         const params = new URLSearchParams(stripEmptyValues(filters)).toString();
@@ -54,6 +64,36 @@ export default function TasksSearch({
             window.history.pushState({ path }, '', path);
         }
     }, [filters]);
+
+    const handleSearchChange = useCallback(event => {
+        const { name, value } = event.target;
+
+        setSearch(value);
+
+        setFilters(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    }, []);
+
+    const handleFilterChange = useCallback(event => {
+        const { name, value } = event.target;
+
+        setFilters(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    }, []);
+
+    const handleClearSearch = useCallback(() => {
+        setSearch('');
+        setFilters(prev => ({ ...prev }));
+    }, [setFilters]);
+
+    const handleClearFilter = useCallback(() => {
+        setSearch('');
+        setFilters(defaultFilters);
+    }, []);
 
     const assigneeOptions = useMemo(() => managers
         ?.filter(m => m.id !== user.id)
@@ -68,46 +108,6 @@ export default function TasksSearch({
             value: '',
             content: 'Все'
         }), [managers, user.id]);
-
-    const debouncedSearch = useDebounce(params => {
-        setFilters(prev =>
-            stripEmptyValues({
-                ...prev,
-                ...params
-            })
-        );
-    }, 1000);
-
-    const handleSearchChange = useCallback(event => {
-        const { name, value } = event.target;
-
-        setSearch(value);
-
-        debouncedSearch({ [name]: value });
-    }, [debouncedSearch]);
-
-    const handleFilterChange = useCallback(event => {
-        const { name, value } = event.target;
-
-        setFilters(filter => {
-            const newFilter = {
-                ...filter,
-                [name]: value
-            };
-
-            return stripEmptyValues(newFilter);
-        });
-    }, [setFilters]);
-
-    const handleClearSearch = useCallback(() => {
-        setSearch('');
-        setFilters(prev => ({ ...prev, description: '' }));
-    }, [setFilters]);
-
-    const handleClearFilter = useCallback(() => {
-        setFilters(defaultFilters);
-        setSearch('');
-    }, [defaultFilters, setFilters]);
 
     return (
         <Form className={styles.root} {...props}>
@@ -147,8 +147,8 @@ export default function TasksSearch({
 
                 <Form.Select
                     label="Статус"
-                    name="completed"
-                    value={filters.completed}
+                    name="status"
+                    value={filters.status}
                     options={statusOptions}
                     orientation="horizontal"
                     onChange={handleFilterChange}
@@ -166,7 +166,7 @@ export default function TasksSearch({
                 <Form.Select
                     label="Срок выполнения"
                     name="due"
-                    value={filters.dueDate}
+                    value={filters.due}
                     options={duePeriodOptions}
                     orientation="horizontal"
                     onChange={handleFilterChange}

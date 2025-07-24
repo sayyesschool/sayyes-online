@@ -4,8 +4,8 @@ export const defaultFilters = {
     topic: '',
     priority: '',
     assigneeId: '',
-    due: DuePeriod.Today,
-    completed: false
+    due: '',
+    status: ''
 };
 
 export const DuePeriodLabel = {

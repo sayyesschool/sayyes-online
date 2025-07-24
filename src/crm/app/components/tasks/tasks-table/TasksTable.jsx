@@ -13,7 +13,7 @@ import {
     IconButton,
     Table
 } from 'shared/ui-components';
-import { Badge, Checkbox } from 'shared/ui-components';
+import { Checkbox } from 'shared/ui-components';
 
 const columns = [
     { key: 'task', content: 'Задача' },
@@ -104,11 +104,11 @@ export default function TasksTable({
                                     {task.dueDate && (
                                         <Chip
                                             title="Срок"
-                                            icon="today"
+                                            start={<Icon name="today" size="xs" />}
                                             content={task.dueDateLabel}
-                                            size="sm"
+                                            end={isBeforeToday(task.dueDate) ? <Icon name="error" size="xs" /> : undefined}
                                             color={isToday(task.dueDate) ? 'primary' : (isBeforeToday(task.dueDate) ? 'danger' : undefined)}
-                                            end={isBeforeToday(task.dueDate) ? <Icon name="error" /> : undefined}
+                                            size="sm"
                                         />
                                     )}
 
@@ -130,11 +130,20 @@ export default function TasksTable({
                                                     to: `/${ref.entity}s/${ref.id}`
                                                 }
                                             }}
-                                            // as={RouterLink}
-                                            // to={`/${ref.entity}s/${ref.id}`}
+                                            as={RouterLink}
+                                            to={`/${ref.entity}s/${ref.id}`}
                                             content={EntityRefLabel[ref.entity]}
+                                            size="sm"
                                         />
                                     ))}
+
+                                    {task.comments.length > 0 &&
+                                        <Chip
+                                            start={<Icon name="comment" size="xs" />}
+                                            content={task.comments.length}
+                                            size="sm"
+                                        />
+                                    }
                                 </Flex>
                             </Flex>
                         </Table.Cell>
@@ -153,19 +162,6 @@ export default function TasksTable({
 
                         <Table.Cell align="end" alignV="start">
                             <IconButton.Group>
-                                <Badge
-                                    content={task.comments.length > 0 ? task.comments.length : undefined}
-                                    inset="10%"
-                                    size="sm"
-                                    variant="plain"
-                                >
-                                    <IconButton
-                                        icon="comment"
-                                        content={task.comments.length}
-                                        disabled
-                                    />
-                                </Badge>
-
                                 <IconButton
                                     title="Изменить"
                                     icon="edit"
