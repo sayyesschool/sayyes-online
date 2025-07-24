@@ -82,14 +82,24 @@ export default function ExerciseItems({
         toggleConfirmationDialogOpen(true);
     }, [toggleConfirmationDialogOpen]);
 
-    const handleMove = useCallback((itemId, dir) => {
-        const itemIndex = exercise.items.findIndex(item => item.id === itemId);
-        const otherItemIndex = dir === -Infinity
-            ? 0
-            : dir === Infinity
-                ? exercise.items.length - 1
-                : itemIndex + dir;
+    const handleMoveTo = useCallback((itemId, to) => {
         const items = exercise.items.slice();
+        const itemIndex = exercise.items.findIndex(item => item.id === itemId);
+        const movedItems = items.splice(itemIndex, 1);
+
+        if (to === 0) { // top
+            items.unshift(...movedItems);
+        } else if (to === -1) { // bottom
+            items.push(...movedItems);
+        }
+
+        onReorder({ items });
+    }, [exercise, onReorder]);
+
+    const handleMove = useCallback((itemId, dir) => {
+        const items = exercise.items.slice();
+        const itemIndex = exercise.items.findIndex(item => item.id === itemId);
+        const otherItemIndex = itemIndex + dir;
         const item = items[itemIndex];
         const otherItem = items[otherItemIndex];
 
@@ -209,7 +219,7 @@ export default function ExerciseItems({
                             decorator: <Icon size="small">keyboard_double_arrow_up</Icon>,
                             content: 'Переместить вверх',
                             disabled: firstItem?.id === activeItemId,
-                            onClick: () => handleMove(activeItemId, -Infinity)
+                            onClick: () => handleMoveTo(activeItemId, 0)
                         },
                         {
                             key: 'move_up',
@@ -230,7 +240,7 @@ export default function ExerciseItems({
                             decorator: <Icon size="small">keyboard_double_arrow_down</Icon>,
                             content: 'Переместить вниз',
                             disabled: lastItem?.id === activeItemId,
-                            onClick: () => handleMove(activeItemId, Infinity)
+                            onClick: () => handleMoveTo(activeItemId, -1)
                         },
                         {
                             key: 'divider-2',
