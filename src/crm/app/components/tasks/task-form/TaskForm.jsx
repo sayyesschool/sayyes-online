@@ -15,7 +15,7 @@ const getData = ({
     priority = Priority.Medium,
     ownerId,
     assigneeId,
-    dueDate,
+    dueDate = new Date(),
     reminderDate
 } = {}) => ({
     topic,
