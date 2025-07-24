@@ -1,37 +1,37 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
     defaultFilters,
-    duePeriodOptions as _duePeriodOptions,
-    priorityOptions as _priorityOptions,
-    statusOptions as _statusOptions,
-    topicOptions as _topicOptions
+    duePeriodOptions,
+    priorityOptions,
+    statusOptions,
+    topicOptions
 } from 'shared/data/task';
+import { useDebounce } from 'shared/hooks/fn';
 import { Form, Icon, IconButton } from 'shared/ui-components';
-import { debounce } from 'shared/utils/fn';
 import { stripEmptyValues } from 'shared/utils/object';
 
 import styles from './TasksSearch.module.scss';
 
-const topicOptions = _topicOptions.concat({
+topicOptions.unshift({
     key: 'all',
     value: '',
     content: 'Все'
 });
 
-const priorityOptions = _priorityOptions.concat({
+priorityOptions.unshift({
     key: 'all',
     value: '',
     content: 'Все'
 });
 
-const statusOptions = _statusOptions.concat({
+statusOptions.unshift({
     key: 'all',
     value: '',
     content: 'Все'
 });
 
-const duePeriodOptions = _duePeriodOptions.concat({
+duePeriodOptions.unshift({
     key: 'all',
     value: '',
     content: 'Все'
@@ -43,38 +43,35 @@ export default function TasksSearch({
     onParamsChange,
     ...props
 }) {
-    const onParamsChangeRef = useRef(debounce(onParamsChange, 1000));
-
     const [search, setSearch] = useState('');
     const [filters, setFilters] = useState(defaultFilters);
 
     useEffect(() => {
         onParamsChange?.(stripEmptyValues(filters));
-    }, []);
-
-    useEffect(() => {
-        onParamsChangeRef?.current(stripEmptyValues(filters));
-    }, [filters]);
+    }, [filters, onParamsChange]);
 
     useEffect(() => {
         const params = new URLSearchParams(stripEmptyValues(filters)).toString();
 
-        if (params && history.pushState) {
-            const path = window.location.protocol + '//' + window.location.host + window.location.pathname + '?' + params;
+        if (history.pushState) {
+            const path = window.location.protocol + '//' + window.location.host + window.location.pathname + (params ? `?${params}` : '');
             window.history.pushState({ path }, '', path);
         }
     }, [filters]);
 
-    const handleSearchChange = useCallback(event => {
+    const handleSearchInput = useCallback(event => {
+        setSearch(event.target.value);
+    }, []);
+
+    const handleSearchChange = useDebounce(event => {
         const { name, value } = event.target;
 
         setSearch(value);
-
         setFilters(prev => ({
             ...prev,
             [name]: value
         }));
-    }, []);
+    }, 1000);
 
     const handleFilterChange = useCallback(event => {
         const { name, value } = event.target;
@@ -95,19 +92,21 @@ export default function TasksSearch({
         setFilters(defaultFilters);
     }, []);
 
-    const assigneeOptions = useMemo(() => managers
-        ?.filter(m => m.id !== user.id)
-        .map(({ id, fullname }) => ({
-            key: id,
-            value: id,
-            label: fullname,
-            content: fullname
-        }))
-        .concat({
+    const assigneeOptions = useMemo(() => [
+        {
             key: 'all',
             value: '',
             content: 'Все'
-        }), [managers, user.id]);
+        },
+        ...(managers || [])
+            .filter(m => m.id !== user.id)
+            .map(({ id, fullname }) => ({
+                key: id,
+                value: id,
+                label: fullname,
+                content: fullname
+            }))
+    ], [managers, user.id]);
 
     return (
         <Form className={styles.root} {...props}>
@@ -115,14 +114,16 @@ export default function TasksSearch({
                 className={styles.search}
                 placeholder="Описание"
                 name="description"
-                value={search}
+                defaultValue=""
                 start={<Icon name="search" />}
                 end={search && (
                     <Icon
-                        as="button" name="clear"
+                        as="button"
+                        name="clear"
                         onClick={handleClearSearch}
                     />
                 )}
+                onInput={handleSearchInput}
                 onChange={handleSearchChange}
             />
 

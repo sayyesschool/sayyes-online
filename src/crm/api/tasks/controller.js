@@ -2,14 +2,21 @@ export default ({
     services: { Task }
 }) => ({
     async get(req, res) {
-        if (!req.query.assigneeId && !req.query.ownerId) {
-            req.query.$or = [
+        const query = { ...req.query };
+
+        if (!query.assigneeId && !query.ownerId) {
+            query.$or = [
                 { ownerId: req.user.id },
                 { assigneeId: req.user.id }
             ];
         }
 
-        const tasks = await Task.get(req.query);
+        if (query.status) {
+            query.completed = query.status === 'completed';
+            delete query.status;
+        }
+
+        const tasks = await Task.get(query);
 
         res.json({
             ok: true,
