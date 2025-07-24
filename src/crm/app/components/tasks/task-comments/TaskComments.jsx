@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
 
+import { v4 as uuid } from 'uuid';
+
 import Comment from 'shared/components/comment';
 import { useBoolean } from 'shared/hooks/state';
 import { Button, Flex } from 'shared/ui-components';
@@ -8,11 +10,11 @@ export default function TaskComments({ comments, user, onChange }) {
     const [isCommenting, toggleCommenting] = useBoolean(false);
 
     const handleCreateComment = useCallback((_, data) => {
-        console.log('handleCreateComment', data);
-
         const newComment = {
-            ...data,
-            authorId: user.id
+            id: uuid(),
+            authorId: user.id,
+            createdAt: new Date().toISOString(),
+            ...data
         };
 
         toggleCommenting(false);
@@ -21,11 +23,14 @@ export default function TaskComments({ comments, user, onChange }) {
     }, [user, toggleCommenting, onChange]);
 
     const handleUpdateComment = useCallback((commentId, data) => {
-        console.log('handleUpdateComment', commentId, data);
         onChange(prev => {
             return prev.map(comment => {
                 if (comment.id === commentId) {
-                    return { ...comment, ...data };
+                    return {
+                        ...comment,
+                        ...data,
+                        updatedAt: new Date().toISOString()
+                    };
                 }
 
                 return comment;
