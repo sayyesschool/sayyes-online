@@ -17,6 +17,7 @@ export const LexemeKindLabel = {
     [LexemeKind.Determiner]: 'Определитель',
     [LexemeKind.Interjection]: 'Междометие',
     [LexemeKind.Noun]: 'Существительное',
+    [LexemeKind.Numeral]: 'Числительное',
     [LexemeKind.Pronoun]: 'Местоимение',
     [LexemeKind.Preposition]: 'Предлог',
     [LexemeKind.Verb]: 'Глагол'
