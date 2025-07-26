@@ -1,12 +1,20 @@
 import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 
 export default ({
-    YANDEX_CLOUD_ACCESS_KEY_ID: accessKeyId,
-    YANDEX_CLOUD_SECRET_ACCESS_KEY: secretAccessKey,
-    YANDEX_CLOUD_STORAGE_ENDPOINT: endpoint,
-    YANDEX_CLOUD_STORAGE_REGION: region,
-    YANDEX_CLOUD_STORAGE_BUCKET: bucket
+    S3_ACCESS_KEY_ID: accessKeyId,
+    S3_SECRET_ACCESS_KEY: secretAccessKey,
+    S3_STORAGE_ENDPOINT: endpoint,
+    S3_STORAGE_REGION: region,
+    S3_STORAGE_BUCKET: bucket
 }) => {
+    console.log({
+        endpoint,
+        region,
+        credentials: {
+            accessKeyId,
+            secretAccessKey
+        }
+    });
     const client = new S3Client({
         endpoint,
         region,

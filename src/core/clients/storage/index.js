@@ -1,1 +1,1 @@
-export { default as YandexCloudStorage } from './yandex-cloud';
+export { default as S3 } from './s3';
