@@ -2,7 +2,8 @@ import { useRouteMatch } from 'react-router-dom';
 
 import NavBar from 'shared/components/nav-bar';
 import UserMenu from 'shared/components/user-menu';
-import { AUTH_URL, LK_URL } from 'shared/constants';
+import { APP_DOMAIN, AUTH_URL, LK_URL } from 'shared/constants';
+import { UserDomainLabel } from 'shared/data/user';
 import cn from 'shared/utils/classnames';
 
 import styles from './AppBar.module.scss';
@@ -13,6 +14,8 @@ export default function AppBar({
     ...props
 }) {
     const match = useRouteMatch('/:path?');
+
+    console.log(user);
 
     return (
         <div className={cn('AppBar', styles.root)} {...props}>
@@ -36,6 +39,12 @@ export default function AppBar({
                 className={styles.menu}
                 user={user}
                 items={[
+                    ...user.domains.map(domain => ({
+                        key: domain,
+                        as: 'a',
+                        href: `//${domain}.${APP_DOMAIN}`,
+                        content: UserDomainLabel[domain]
+                    })),
                     {
                         key: 'account',
                         as: 'a',
