@@ -16,11 +16,11 @@ export default context => {
 
     router.get('/search', controller.search);
 
-    router.route('/my/lexemes')
+    router.route(['/my/lexemes', '/learner/lexemes'])
         .get(controller.getLexemes)
         .post(controller.addLexemes);
 
-    router.route('/my{/:lexemeId}')
+    router.route(['/my{/:lexemeId}', '/learner{/:lexemeId}'])
         .get(controller.getVirtual)
         .post(controller.addLexeme)
         .put(controller.updateLexeme)

@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import PageSection from 'shared/components/page-section';
 import { useVocabulary } from 'shared/hooks/vocabularies';
 import { IconButton } from 'shared/ui-components';
@@ -11,7 +13,7 @@ export default function EnrollmentVocabulary({
     user,
     onClose
 }) {
-    const [vocabulary] = useVocabulary('my', {
+    const [vocabulary] = useVocabulary('learner', {
         learnerId: enrollment?.learner.id || ''
     });
 
@@ -20,7 +22,7 @@ export default function EnrollmentVocabulary({
     return (
         <PageSection
             className={styles.root}
-            title="Словарь ученика"
+            title={vocabulary.title}
             actions={
                 <IconButton
                     icon="close"

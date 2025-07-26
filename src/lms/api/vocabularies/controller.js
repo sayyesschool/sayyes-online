@@ -36,9 +36,9 @@ export default ({
 
         const data = vocabulary.toJSON();
 
-        data.id = 'my';
-        data.title = 'Мой словарь';
-        data.url = '/vocabularies/my';
+        data.id = req.query.learnerId ? 'learner' : 'my';
+        data.title = req.query.learnerId ? 'Словарь ученика' : 'Мой словарь';
+        data.url = req.query.learnerId ? undefined : '/vocabularies/my';
 
         res.json({
             ok: true,

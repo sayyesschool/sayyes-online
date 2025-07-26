@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { useRequest } from 'shared/hooks/request';
 import { useActions, useStore } from 'shared/hooks/store';
 import { actions as vocabulariesActions } from 'shared/store/modules/vocabularies';
 import { hasKey } from 'shared/utils/object';
@@ -31,11 +32,11 @@ export function useVocabulary(id, { learnerId } = {}) {
 
     const vocabularyId = vocabulary?.id;
 
-    useEffect(() => {
-        if (id === vocabularyId || learnerId === '') return;
+    useRequest(async () => {
+        if (id === vocabularyId) return;
 
         actions.unsetVocabulary();
-        actions.getVocabulary(id, learnerId ? { learnerId } : undefined);
+        await actions.getVocabulary(id, learnerId ? { learnerId } : undefined);
     }, [id, vocabularyId, actions, learnerId]);
 
     return [vocabulary, actions];
