@@ -1,11 +1,9 @@
 import { useState } from 'react';
 
 import Page from 'shared/components/page';
-import { defaultFilters } from 'shared/data/task';
 import { useManagers } from 'shared/hooks/managers';
 import { useUser } from 'shared/hooks/user';
 import { Chip, Flex } from 'shared/ui-components';
-import { stripEmptyValues } from 'shared/utils/object';
 
 import Tasks from 'crm/components/tasks/tasks';
 import TasksSearch from 'crm/components/tasks/tasks-search';
@@ -16,10 +14,9 @@ export default function TasksPage() {
     const [user] = useUser();
     const [managers] = useManagers();
 
-    const [filters, setFilters] = useState(defaultFilters);
+    const [query, setQuery] = useState();
     const [filter, setFilter] = useState();
     const [isFormOpen, setFormOpen] = useState(false);
-    const [isLoading, setLoading] = useState(false);
 
     const handleChipClick = event => {
         const value = event.target.value;
@@ -80,25 +77,21 @@ export default function TasksPage() {
                         onClick: () => setFormOpen(true)
                     }
                 ]}
-                loading={isLoading}
             >
                 <TasksSearch
-                    filters={filters}
                     user={user}
                     managers={managers}
-                    defaultFilters={defaultFilters}
-                    setFilters={setFilters}
+                    onParamsChange={setQuery}
                 />
             </Page.Header>
 
             <Page.Content>
                 <Page.Section variant="outlined" compact>
                     <Tasks
-                        filters={stripEmptyValues(filters)}
+                        query={query}
                         filter={filter}
                         isFormOpen={isFormOpen}
                         setFormOpen={setFormOpen}
-                        setLoading={setLoading}
                         showRefs
                     />
                 </Page.Section>

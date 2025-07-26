@@ -21,19 +21,22 @@ const filterFns = {
 
 export default function Tasks({
     entity,
-    filters,
+    query = {},
     filter,
     showRefs,
     isFormOpen,
-    setFormOpen,
-    setLoading
+    setFormOpen
 }) {
-    const [tasks = [], actions] = useTasks(filters);
     const [user] = useUser();
     const [managers] = useManagers();
+    const [tasks = [], actions] = useTasks(entity ? {
+        'refs.id': entity.id,
+        ...query
+    } : query);
 
     const [task, setTask] = useState();
     const [comments, setComments] = useState(task?.comments || []);
+    const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
         if (task?.comments) {
@@ -44,8 +47,6 @@ export default function Tasks({
     const assignees = useMemo(() => {
         return managers?.filter(m => m.id !== user.id) ?? [];
     }, [managers, user.id]);
-
-    const filteredTasks = filter ? tasks?.filter(task => filterFns[filter]?.(task, user.id)) : tasks;
 
     const handleSubmit = useCallback(data => {
         setLoading(true);
@@ -115,11 +116,14 @@ export default function Tasks({
 
     if (!tasks) return <LoadingIndicator />;
 
+    const filteredTasks = filter ? tasks?.filter(task => filterFns[filter]?.(task, user.id)) : tasks;
+    const sortedTasks = filteredTasks.toSorted((a, b) => Number(a.completed) - Number(b.completed));
+
     return (
-        <>
-            {Boolean(filteredTasks?.length) && (
+        <div className={styles.root}>
+            {Boolean(sortedTasks?.length) && (
                 <TasksTable
-                    tasks={filteredTasks}
+                    tasks={sortedTasks}
                     user={user}
                     showRefs={showRefs}
                     onCheck={handleCheck}
@@ -149,6 +153,6 @@ export default function Tasks({
                     </FormField>
                 </TaskForm>
             </FormDialog>
-        </>
+        </div>
     );
 }

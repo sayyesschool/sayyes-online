@@ -12,8 +12,9 @@ export const Priority = {
 };
 
 export const Topic = {
-    Relevance: 'relevance',
+    Hiring: 'hiring',
     Payment: 'payment',
+    Relevance: 'relevance',
     Trial: 'trial'
 };
 

@@ -4,8 +4,8 @@ export const defaultFilters = {
     topic: '',
     priority: '',
     assigneeId: '',
-    due: DuePeriod.Today,
-    completed: false
+    due: '',
+    status: ''
 };
 
 export const DuePeriodLabel = {
@@ -46,10 +46,10 @@ export const priorityOptions = [
 ];
 
 export const TopicLabel = {
-    [Topic.Relevance]: 'Актуальность',
+    [Topic.Hiring]: 'Найм',
     [Topic.Payment]: 'Оплата',
-    [Topic.Trial]: 'Пробный урок',
-    [Topic.Other]: '(Не указано)'
+    [Topic.Relevance]: 'Актуальность',
+    [Topic.Trial]: 'Пробный урок'
 };
 
 export const topicOptions = [

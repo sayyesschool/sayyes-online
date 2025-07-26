@@ -8,16 +8,10 @@ import Tasks from 'crm/components/tasks/tasks';
 
 export default function EnrollmentTasks({ enrollment }) {
     const [isFormOpen, setFormOpen] = useState(false);
-    const [isLoading, setLoading] = useState(false);
 
     const entity = useMemo(() => ({
         id: enrollment?.id,
         type: EntityRef.Enrollment
-    }), [enrollment?.id]);
-
-    const filters = useMemo(() => ({
-        'refs.id': enrollment?.id,
-        completed: false
     }), [enrollment?.id]);
 
     return (
@@ -32,9 +26,7 @@ export default function EnrollmentTasks({ enrollment }) {
         >
             <Tasks
                 entity={entity}
-                filters={filters}
                 isFormOpen={isFormOpen}
-                setLoading={setLoading}
                 setFormOpen={setFormOpen}
             />
         </PageSection>

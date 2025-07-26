@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
-    duePeriodOptions as _duePeriodOptions,
-    priorityOptions as _priorityOptions,
-    statusOptions as _statusOptions,
-    topicOptions as _topicOptions
+    defaultFilters,
+    duePeriodOptions,
+    priorityOptions,
+    statusOptions,
+    topicOptions
 } from 'shared/data/task';
 import { useDebounce } from 'shared/hooks/fn';
 import { Form, Icon, IconButton } from 'shared/ui-components';
@@ -12,102 +13,100 @@ import { stripEmptyValues } from 'shared/utils/object';
 
 import styles from './TasksSearch.module.scss';
 
-const topicOptions = _topicOptions.concat({
+topicOptions.unshift({
     key: 'all',
     value: '',
     content: 'Все'
 });
 
-const priorityOptions = _priorityOptions.concat({
+priorityOptions.unshift({
     key: 'all',
     value: '',
     content: 'Все'
 });
 
-const statusOptions = _statusOptions.concat({
+statusOptions.unshift({
     key: 'all',
     value: '',
     content: 'Все'
 });
 
-const duePeriodOptions = _duePeriodOptions.concat({
+duePeriodOptions.unshift({
     key: 'all',
     value: '',
     content: 'Все'
 });
 
 export default function TasksSearch({
-    filters,
     user,
     managers,
-    defaultFilters,
-    setFilters,
+    onParamsChange,
     ...props
 }) {
     const [search, setSearch] = useState('');
+    const [filters, setFilters] = useState(defaultFilters);
+
+    useEffect(() => {
+        onParamsChange?.(stripEmptyValues(filters));
+    }, [filters, onParamsChange]);
 
     useEffect(() => {
         const params = new URLSearchParams(stripEmptyValues(filters)).toString();
 
-        if (params && history.pushState) {
-            const path = window.location.protocol + '//' + window.location.host + window.location.pathname + '?' + params;
+        if (history.pushState) {
+            const path = window.location.protocol + '//' + window.location.host + window.location.pathname + (params ? `?${params}` : '');
             window.history.pushState({ path }, '', path);
         }
     }, [filters]);
 
-    const assigneeOptions = useMemo(() => managers
-        ?.filter(m => m.id !== user.id)
-        .map(({ id, fullname }) => ({
-            key: id,
-            value: id,
-            label: fullname,
-            content: fullname
-        }))
-        .concat({
-            key: 'all',
-            value: '',
-            content: 'Все'
-        }), [managers, user.id]);
+    const handleSearchInput = useCallback(event => {
+        setSearch(event.target.value);
+    }, []);
 
-    const debouncedSearch = useDebounce(params => {
-        setFilters(prev =>
-            stripEmptyValues({
-                ...prev,
-                ...params
-            })
-        );
-    }, 1000);
-
-    const handleSearchChange = useCallback(event => {
+    const handleSearchChange = useDebounce(event => {
         const { name, value } = event.target;
 
         setSearch(value);
-
-        debouncedSearch({ [name]: value });
-    }, [debouncedSearch]);
+        setFilters(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    }, 1000);
 
     const handleFilterChange = useCallback(event => {
         const { name, value } = event.target;
 
-        setFilters(filter => {
-            const newFilter = {
-                ...filter,
-                [name]: value
-            };
-
-            return stripEmptyValues(newFilter);
-        });
-    }, [setFilters]);
+        setFilters(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    }, []);
 
     const handleClearSearch = useCallback(() => {
         setSearch('');
-        setFilters(prev => ({ ...prev, description: '' }));
+        setFilters(prev => ({ ...prev }));
     }, [setFilters]);
 
     const handleClearFilter = useCallback(() => {
-        setFilters(defaultFilters);
         setSearch('');
-    }, [defaultFilters, setFilters]);
+        setFilters(defaultFilters);
+    }, []);
+
+    const assigneeOptions = useMemo(() => [
+        {
+            key: 'all',
+            value: '',
+            content: 'Все'
+        },
+        ...(managers || [])
+            .filter(m => m.id !== user.id)
+            .map(({ id, fullname }) => ({
+                key: id,
+                value: id,
+                label: fullname,
+                content: fullname
+            }))
+    ], [managers, user.id]);
 
     return (
         <Form className={styles.root} {...props}>
@@ -115,14 +114,16 @@ export default function TasksSearch({
                 className={styles.search}
                 placeholder="Описание"
                 name="description"
-                value={search}
+                defaultValue=""
                 start={<Icon name="search" />}
                 end={search && (
                     <Icon
-                        as="button" name="clear"
+                        as="button"
+                        name="clear"
                         onClick={handleClearSearch}
                     />
                 )}
+                onInput={handleSearchInput}
                 onChange={handleSearchChange}
             />
 
@@ -147,8 +148,8 @@ export default function TasksSearch({
 
                 <Form.Select
                     label="Статус"
-                    name="completed"
-                    value={filters.completed}
+                    name="status"
+                    value={filters.status}
                     options={statusOptions}
                     orientation="horizontal"
                     onChange={handleFilterChange}
@@ -166,7 +167,7 @@ export default function TasksSearch({
                 <Form.Select
                     label="Срок выполнения"
                     name="due"
-                    value={filters.dueDate}
+                    value={filters.due}
                     options={duePeriodOptions}
                     orientation="horizontal"
                     onChange={handleFilterChange}

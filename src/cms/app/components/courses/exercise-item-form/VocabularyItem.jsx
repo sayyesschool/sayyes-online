@@ -88,6 +88,7 @@ function VocabularyItemForm({ lexemeIds = [] }, ref) {
                     />
                 }
                 onAddLexeme={handleAddLexeme}
+                onSelectLexeme={handleAddLexeme}
             />
 
             <LexemesList

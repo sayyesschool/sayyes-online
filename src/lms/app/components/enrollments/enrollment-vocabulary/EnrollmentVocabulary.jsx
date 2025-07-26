@@ -20,7 +20,7 @@ export default function EnrollmentVocabulary({
     return (
         <PageSection
             className={styles.root}
-            title="Словарь"
+            title="Словарь ученика"
             actions={
                 <IconButton
                     icon="close"
