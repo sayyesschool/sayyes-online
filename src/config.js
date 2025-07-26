@@ -28,9 +28,6 @@ export default {
     MAILJET_API_KEY: process.env.MAILJET_API_KEY,
     MAILJET_API_SECRET: process.env.MAILJET_API_SECRET,
 
-    MIRO_CLIENT_ID: process.env.MIRO_CLIENT_ID,
-    MIRO_CLIENT_SECRET: process.env.MIRO_CLIENT_SECRET,
-
     DB_CONNECTION_STRING: process.env.DB_CONNECTION_STRING,
 
     HH_REQUEST_URL: 'https://sayes.t8s.ru/Api/V2/AddStudyRequest',

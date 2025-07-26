@@ -7,14 +7,6 @@ export default ({
     S3_STORAGE_REGION: region,
     S3_STORAGE_BUCKET: bucket
 }) => {
-    console.log({
-        endpoint,
-        region,
-        credentials: {
-            accessKeyId,
-            secretAccessKey
-        }
-    });
     const client = new S3Client({
         endpoint,
         region,
