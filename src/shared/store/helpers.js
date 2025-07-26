@@ -34,6 +34,18 @@ export function createAction(type, fn) {
     return actionCreator;
 }
 
+export function createAsyncAction(type, fn) {
+    const actionCreator = createAction(type, fn);
+
+    actionCreator.request = {
+        type: `${type}_REQUEST`,
+        toString: () => `${type}_REQUEST`,
+        match: action => action.type === type
+    };
+
+    return actionCreator;
+}
+
 export function createReducer(initialState, caseReducers) {
     return function(state = initialState, action) {
         return Object.entries(caseReducers)
