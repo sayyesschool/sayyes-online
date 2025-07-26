@@ -4,6 +4,8 @@ import path from 'node:path';
 const ROOT_PATH = process.env.PWD || path.normalize(path.resolve(process.cwd()));
 const VERSION = process.env.npm_package_version || readFileSync(path.resolve(ROOT_PATH, 'package.json'), 'utf8').version;
 
+process.env.STORAGE_URL = `${process.env.S3_STORAGE_ENDPOINT}/${process.env.S3_STORAGE_BUCKET}`;
+
 export default {
     NODE_ENV: process.env.NODE_ENV,
 
@@ -36,6 +38,12 @@ export default {
     RECAPTCHA_PUBLIC_KEY: process.env.RECAPTCHA_PUBLIC_KEY,
     RECAPTCHA_SECRET_KEY: process.env.RECAPTCHA_SECRET_KEY,
 
+    S3_ACCESS_KEY_ID: process.env.S3_ACCESS_KEY_ID,
+    S3_SECRET_ACCESS_KEY: process.env.S3_SECRET_ACCESS_KEY,
+    S3_STORAGE_ENDPOINT: process.env.S3_STORAGE_ENDPOINT,
+    S3_STORAGE_REGION: process.env.S3_STORAGE_REGION,
+    S3_STORAGE_BUCKET: process.env.S3_STORAGE_BUCKET,
+
     SESSION_SECRET: 'BHve6rr4mAAP2w4G93qK',
 
     SSL_CERT_PATH: process.env.SSL_CERT_PATH,
@@ -49,12 +57,6 @@ export default {
     TWILIO_API_SECRET: process.env.TWILIO_API_SECRET,
     TWILIO_CHAT_SERVICE_ID: process.env.TWILIO_CHAT_SERVICE_ID,
     TWILIO_SYNC_SERVICE_ID: process.env.TWILIO_SYNC_SERVICE_ID,
-
-    YANDEX_CLOUD_ACCESS_KEY_ID: process.env.YANDEX_CLOUD_ACCESS_KEY_ID,
-    YANDEX_CLOUD_SECRET_ACCESS_KEY: process.env.YANDEX_CLOUD_SECRET_ACCESS_KEY,
-    YANDEX_CLOUD_STORAGE_ENDPOINT: process.env.YANDEX_CLOUD_STORAGE_ENDPOINT,
-    YANDEX_CLOUD_STORAGE_REGION: process.env.YANDEX_CLOUD_STORAGE_REGION,
-    YANDEX_CLOUD_STORAGE_BUCKET: process.env.YANDEX_CLOUD_STORAGE_BUCKET,
 
     YANDEX_METRIKA_ID: process.env.YANDEX_METRIKA_ID,
     YANDEX_METRIKA_ID_CLUB: process.env.YANDEX_METRIKA_ID_CLUB,
