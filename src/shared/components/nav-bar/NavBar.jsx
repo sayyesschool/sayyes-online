@@ -32,14 +32,14 @@ export default function NavBar({
                 <TabList className={styles.list} disableUnderline>
                     {items.map(item =>
                         <Tab
-                            key={item.to ?? item.path}
+                            key={item.key ?? item.to ?? item.path}
+                            className={styles.item}
                             component={item.href ? 'a' : NavLink}
                             to={item.to ?? item.path}
                             href={item.href}
-                            exact={item.exact}
-                            value={item.to ?? item.path}
-                            className={styles.item}
-                            activeClassName={styles.item_active}
+                            value={item.to && item.path}
+                            exact={item.to && item.exact}
+                            activeClassName={item.to && styles.item_active}
                             orientation={orientation}
                             indicatorPlacement={IndicatorPlacementByOrientation[orientation]}
                             disableIndicator={orientation === 'horizontal'}
