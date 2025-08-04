@@ -9,141 +9,101 @@ import styles from './Scrabble.module.scss';
 
 export const getData = data => shuffleAndFilter(data);
 
-const displayChar = char => (char === ' ' ? '_' : char);
+const groupByChar = str => {
+    const map = new Map();
+
+    for (const char of str) {
+        map.set(char, (map.get(char) || 0) + 1);
+    }
+
+    return [...map.entries()].map(([char, count]) => ({
+        char,
+        count,
+        disabled: false
+    }));
+};
+
+const groupSelectedChars = (selectedChars, value) => {
+    const lengths = value.split(' ').map(word => word.length);
+    let pointer = 0;
+
+    return lengths.map(len => {
+        const slice = selectedChars.slice(pointer, pointer + len);
+        pointer += len;
+
+        return slice;
+    });
+};
 
 export default function Scrabble({ item, updateStatus }) {
     const { id, value, translation, status } = item;
 
-    const [shuffledWord, setShuffledWord] = useState(shuffleLetters(value));
-    const [selectedChars, setSelectedChars] = useState(Array(value.length).fill(null));
-    const [availableChars, setAvailableChars] = useState(
-        shuffledWord.split('').map((char, index) => ({
-            id: `${char}-${index}`,
-            char,
-            disabled: false
-        }))
-    );
+    const [selectedChars, setSelectedChars] = useState([]);
+    const [availableChars, setAvailableChars] = useState([]);
+
+    const isResetDisabled = selectedChars.every(c => c === null);
+    const isNextDisabled = availableChars.some(c => !c.disabled);
+
+    const groupedSelectedChars = groupSelectedChars(selectedChars, value);
 
     const reset = useCallback(() => {
-        const shuffled = shuffleLetters(value);
+        const shuffled = shuffleLetters(value.replace(/ /g, ''));
 
-        setShuffledWord(shuffled);
-        setSelectedChars(Array(value.length).fill(null));
-        setAvailableChars(
-            shuffled.split('').map((char, index) => ({
-                char,
-                id: `${char}-${index}`,
-                disabled: false
-            }))
-        );
+        setSelectedChars(Array(shuffled.length).fill(null));
+        setAvailableChars(groupByChar(shuffled));
     }, [value]);
 
     const next = useCallback(() => {
-        const newStatus =
-          selectedChars.map(char => char?.char).join('') === value
-              ? status + 1
-              : status - 1;
+        const trimed = value.replace(/ /g, '');
+        const assembled = selectedChars.map(c => c?.char).join('');
+        const newStatus = assembled === trimed ? status + 1 : status - 1;
 
         updateStatus([{ id, newStatus }]);
     }, [id, status, updateStatus, selectedChars, value]);
 
-    const handleKeyPress = useCallback(({ key }) => {
-        if (key === 'Backspace') {
-            setSelectedChars(prev => {
-                const lastCharIndex = prev.findLastIndex(char => char !== null);
+    const handleSelect = useCallback(char => {
+        const index = selectedChars.findIndex(c => c === null);
 
-                if (lastCharIndex !== -1) {
-                    const lastChar = prev[lastCharIndex];
+        if (index === -1) return;
 
-                    setAvailableChars(chars =>
-                        chars.map(char =>
-                            char.id === lastChar.id ? { ...char, disabled: false } : char
-                        )
-                    );
-
-                    const newUserInput = [...prev];
-                    newUserInput[lastCharIndex] = null;
-
-                    return newUserInput;
-                }
-
-                return prev;
-            });
-        } else {
-            const charIndex = availableChars.findIndex(char => char.char === key && !char.disabled);
-            const firstEmptyIndex = selectedChars.findIndex(char => char === null);
-
-            if (charIndex === -1 || firstEmptyIndex === -1) return;
-
-            setSelectedChars(prev => {
-                const newUserInput = [...prev];
-                newUserInput[firstEmptyIndex] = availableChars[charIndex];
-
-                return newUserInput;
-            });
-
-            setAvailableChars(prev =>
-                prev.map((char, index) =>
-                    index === charIndex ? { ...char, disabled: true } : char
-                )
-            );
-        }
-    }, [availableChars, selectedChars]);
-
-    useEffect(() => {
-        window.addEventListener('keydown', handleKeyPress);
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyPress);
-        };
-    }, [handleKeyPress]);
-
-    useEffect(() => {
-        reset();
-    }, [value, reset]);
-
-    const handleClickSelectedChar = useCallback((charObj, index) => {
         setSelectedChars(prev => {
             const next = [...prev];
+            next[index] = { char };
 
+            return next;
+        });
+
+        setAvailableChars(prev =>
+            prev.map(c =>
+                c.char === char
+                    ? { ...c, count: c.count - 1, disabled: c.count - 1 <= 0 }
+                    : c
+            )
+        );
+    }, [selectedChars]);
+
+    const handleDeselect = useCallback((charObj, index) => {
+        if (!charObj) return;
+
+        setSelectedChars(prev => {
+            const next = [...prev];
             next[index] = null;
 
             return next;
         });
 
         setAvailableChars(prev =>
-            prev.map(char =>
-                char.id === charObj.id ? { ...char, disabled: false } : char
+            prev.map(c =>
+                c.char === charObj.char
+                    ? { ...c, count: c.count + 1, disabled: false }
+                    : c
             )
         );
     }, []);
 
-    const handleClickAvailableChar = useCallback(charObj => {
-        const charIndex = availableChars.findIndex(char => char.id === charObj.id && !char.disabled);
-
-        if (charIndex === -1) return;
-
-        const firstEmptyIndex = selectedChars.findIndex(char => char === null);
-
-        if (firstEmptyIndex === -1) return;
-
-        setSelectedChars(prev => {
-            const next = [...prev];
-
-            next[firstEmptyIndex] = availableChars[charIndex];
-
-            return next;
-        });
-
-        setAvailableChars(prev =>
-            prev.map((char, index) =>
-                index === charIndex ? { ...char, disabled: true } : char
-            )
-        );
-    }, [availableChars, selectedChars]);
-
-    const isResetDisabled = selectedChars.every(char => char === null);
-    const isNextDisabled = availableChars.some(char => !char.disabled);
+    useEffect(() => {
+        reset();
+    }, [reset]);
 
     return (
         <div className={styles.root}>
@@ -153,40 +113,51 @@ export default function Scrabble({ item, updateStatus }) {
                     content={translation}
                     end={
                         <LexemeStatus
-                            level={status}
-                            tooltipPlacement="right"
+                            level={status} tooltipPlacement="right"
                             readOnly
                         />
                     }
                 />
 
                 <div className={styles.selectedChars}>
-                    {selectedChars.map((charObj, index) =>
-                        <Button
-                            key={index}
-                            className={styles.selectedChar}
-                            content={charObj ? displayChar(charObj.char) : ''}
-                            color="neutral"
-                            size="lg"
-                            variant="outlined"
-                            disabled={!charObj}
-                            onClick={charObj && (() => handleClickSelectedChar(charObj, index))}
-                        />
-                    )}
+                    {groupedSelectedChars.map((wordGroup, wordIndex) => {
+                        const groupOffset = groupedSelectedChars
+                            .slice(0, wordIndex)
+                            .reduce((sum, g) => sum + g.length, 0);
+
+                        return (
+                            <div key={wordIndex} className={styles.wordRow}>
+                                {wordGroup.map((charObj, index) => (
+                                    <Button
+                                        key={index}
+                                        className={styles.selectedChar}
+                                        content={charObj ? charObj.char : ''}
+                                        color="neutral"
+                                        size="lg"
+                                        variant="outlined"
+                                        disabled={!charObj}
+                                        onClick={() => handleDeselect(charObj, groupOffset + index)}
+                                    />
+                                ))}
+                            </div>
+                        );
+                    })}
                 </div>
 
                 <div className={styles.availableChars}>
-                    {availableChars.map(charObj =>
+                    {availableChars.map(({ char, count, disabled }, index) => (
                         <Button
-                            key={charObj.id}
+                            key={`${char}-${count}-${index}`}
                             className={styles.availableChar}
-                            content={displayChar(charObj.char)}
                             color="neutral"
                             variant="soft"
-                            disabled={charObj.disabled}
-                            onClick={() => handleClickAvailableChar(charObj)}
-                        />
-                    )}
+                            disabled={disabled}
+                            onClick={() => handleSelect(char)}
+                        >
+                            <span>{char}</span>
+                            {count > 1 && <span>{count}</span>}
+                        </Button>
+                    ))}
                 </div>
 
                 <Button
