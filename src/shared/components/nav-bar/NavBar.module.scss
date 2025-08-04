@@ -18,8 +18,8 @@
     &__text {
         color: inherit !important;
         
-        @include mq.to(s) {
-            display: none;
+        @include mq.to(m) {
+            display: none !important;
         }
     }
 }
