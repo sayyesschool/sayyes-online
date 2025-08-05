@@ -91,8 +91,6 @@ export default function ExerciseItemForm({
         <form
             id={item.id}
             className={classNames}
-            // TODO: не отправлялась форма в айтеме словаря
-            // onSubmit={(handleSubmit)}
             {...props}
         >
             <Flex

@@ -34,7 +34,8 @@ function AudioItemForm({
 
     return (
         <Flex
-            padding={1} gap="small"
+            padding={1}
+            gap="small"
             column
         >
             {file &&

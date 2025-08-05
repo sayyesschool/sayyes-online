@@ -31,7 +31,7 @@ export default function VideoItem({
                 <div className="VideoItem__script">
                     <Button
                         icon={<Icon>{isScriptOpen ? 'subtitles_off' : 'subtitles'}</Icon>}
-                        content={isScriptOpen ? 'Закрыть скрипт' : 'Показать скрипт'}
+                        content={isScriptOpen ? 'Закрыть текст к видео' : 'Показать текст к видео'}
                         variant="plain"
                         size="sm"
                         onClick={toggleScriptOpen}

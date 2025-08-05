@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 
-import MediaContext from 'shared/contexts/media';
-import { useBoolean } from 'shared/hooks/state';
 import AudioPlayer from 'shared/components/audio-player';
 import Content from 'shared/components/content';
+import MediaContext from 'shared/contexts/media';
+import { useBoolean } from 'shared/hooks/state';
 import { Button, Icon } from 'shared/ui-components';
 
 import './Audio.scss';
@@ -26,7 +26,7 @@ export default function AudioItem({ url, script, className }) {
                 <div className="AudioItem__script">
                     <Button
                         icon={<Icon>{isScriptOpen ? 'subtitles_off' : 'subtitles'}</Icon>}
-                        content={isScriptOpen ? 'Закрыть скрипт' : 'Показать скрипт'}
+                        content={isScriptOpen ? 'Закрыть текст к аудио' : 'Показать текст к аудио'}
                         variant="plain"
                         size="sm"
                         onClick={toggleScriptOpen}
