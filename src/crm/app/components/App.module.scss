@@ -2,7 +2,7 @@
 
 .root {
     height: 100dvh;
-    margin-left: 73px;
+    margin-left: var(--AppBar-width);
     overflow-x: hidden;
     overflow-y: auto;
 
