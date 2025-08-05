@@ -39,7 +39,7 @@ export default function NavBar({
                             href={item.href}
                             value={item.to && item.path}
                             exact={item.to && item.exact}
-                            activeClassName={item.to && styles.item_active}
+                            // activeClassName={item.to && styles.item_active}
                             orientation={orientation}
                             indicatorPlacement={IndicatorPlacementByOrientation[orientation]}
                             disableIndicator={orientation === 'horizontal'}
