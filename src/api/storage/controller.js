@@ -2,12 +2,14 @@ export default ({
     services: { Storage }
 }) => ({
     async uploadFile(req, res) {
-        if (!req.file) throw new Error('No file');
-        if (!req.body.path) throw new Error('No path');
-
         const file = req.file;
-        const path = Storage.getNormalizedPath(req.body.path, file);
-        const response = await Storage.put(path, file.buffer);
+        const path = req.body.path || req.url;
+
+        if (!file) throw new Error('No file');
+        if (!path) throw new Error('No path');
+
+        const normalizedPath = Storage.getNormalizedPath(req.body.path, file);
+        const response = await Storage.put(normalizedPath, file.buffer);
 
         res.json({
             ok: true,
@@ -19,10 +21,12 @@ export default ({
     },
 
     async deleteFile(req, res) {
-        if (!req.body.path) throw new Error('No path');
+        const path = req.body?.path || req.url;
 
-        const path = Storage.getNormalizedPath(req.body.path, {});
-        const response = await Storage.delete(path);
+        if (!path) throw new Error('No path');
+
+        const normalizedPath = Storage.getNormalizedPath(path, {});
+        const response = await Storage.delete(normalizedPath);
 
         res.json({
             ok: true,

@@ -8,8 +8,8 @@ export default context => {
     const { uploadFile, deleteFile } = Controller(context);
     const { file } = Middleware(context);
 
-    router.post('/', file, uploadFile);
-    router.delete('/', deleteFile);
+    router.post('/{*path}', file, uploadFile);
+    router.delete('/{*path}', deleteFile);
 
     return router;
 };

@@ -9,6 +9,7 @@ function ContentEditor({
     value,
     content = value,
     simple,
+    uploadUrl,
     onChange = Function.prototype,
     ...props
 }, ref) {
@@ -31,7 +32,12 @@ function ContentEditor({
                 ref={editorRef}
                 editor={ClassicEditor}
                 data={content}
-                config={simple ? simpleConfig : defaultConfig}
+                config={simple ? simpleConfig : uploadUrl ? {
+                    ...defaultConfig,
+                    uploadAdapter: {
+                        uploadUrl
+                    }
+                } : defaultConfig}
                 onChange={handleChange}
                 {...props}
             />

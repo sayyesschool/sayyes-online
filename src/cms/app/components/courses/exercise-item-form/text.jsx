@@ -1,6 +1,7 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 
 import ContentEditor from 'shared/components/content-editor';
+import { STORAGE_API } from 'shared/constants';
 
 function TextItemForm({ content }, ref) {
     const editorRef = useRef();
@@ -17,6 +18,7 @@ function TextItemForm({ content }, ref) {
         <ContentEditor
             ref={editorRef}
             content={content}
+            uploadUrl={`${STORAGE_API}`}
         />
     );
 }

@@ -14,6 +14,7 @@ export const LMS_URL = env.LMS_URL;
 export const PAY_URL = env.PAY_URL;
 export const SENTRY_DSN = env.SENTRY_DSN;
 export const STATIC_URL = env.STATIC_URL;
+export const STORAGE_API = env.STORAGE_API;
 export const STORAGE_URL = env.STORAGE_URL;
 export const YANDEX_METRIKA_ID = env.YANDEX_METRIKA_ID;
 export const YOOKASSA_SCRIPT_URL = 'https://yookassa.ru/checkout-widget/v1/checkout-widget.js';

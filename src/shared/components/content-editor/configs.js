@@ -1,3 +1,4 @@
+import { STORAGE_API } from 'shared/constants';
 import ImageRemoveEventPlugin from 'shared/libs/editor/image-remove-event';
 import { UploadAdapterPlugin } from 'shared/libs/editor/upload-adapter';
 
@@ -7,7 +8,7 @@ export const defaultConfig = {
     },
     extraPlugins: [UploadAdapterPlugin, ImageRemoveEventPlugin],
     uploadAdapter: {
-        uploadUrl: '/api/storage/images'
+        uploadUrl: STORAGE_API
     },
     style: {
         definitions: [
@@ -111,10 +112,12 @@ export const defaultConfig = {
     imageRemoveEvent: {
         callback: (imagesSrc, nodeObjects) => {
             return Promise.allSettled(imagesSrc.map(src => {
+                if (!src) return;
+
                 const pathSegments = new URL(src).pathname.split('/');
                 const filename = pathSegments[pathSegments.length - 1];
 
-                return fetch(`/api/storage/images/${filename}`, {
+                return fetch(`${STORAGE_API}/images/${filename}`, {
                     method: 'DELETE'
                 }).then(res => res.json());
             }));
