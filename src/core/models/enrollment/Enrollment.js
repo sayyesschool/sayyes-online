@@ -10,7 +10,7 @@ import { EnrollmentStatus, EnrollmentType } from './constants';
 export const Enrollment = new Schema({
     hhid: { type: String },
     ageGroup: { type: String, default: AgeGroup.Adults },
-    domain: { type: String, enum: Object.values(Domain), default: Domain.general },
+    domain: { type: String, enum: Object.values(Domain), default: Domain.General },
     format: { type: String, default: Format.online },
     type: { type: String, enum: Object.values(EnrollmentType), default: EnrollmentType.Individual },
     teacherType: { type: String, default: TeacherType.Russian },
