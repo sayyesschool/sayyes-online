@@ -9,7 +9,7 @@ Project for the SayYes platform.
 - [Node.js](https://nodejs.org/) (LTS version recommended)
 - [npm](https://www.npmjs.com/)
 - [Docker](https://www.docker.com/) (used to run MongoDB locally)
-- `.env.local` file (see below)
+- `.env.local` and `ssl` files (see below)
 
 ---
 
@@ -43,6 +43,8 @@ Add the following lines to your system’s `hosts` file to enable local subdomai
 Ask the administrator or team lead for the following file:
 
 - `.env.local`
+- `ssl/local.cert`
+- `ssl/local.key`
 
 Do **not** commit this file to version control.
 
