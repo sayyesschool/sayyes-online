@@ -86,8 +86,12 @@ export default function ManagerPage({ match, location, history }) {
             />
 
             <Page.Content>
-                <Grid spacing={2}>
-                    <Grid.Item xs={4}>
+                <Grid>
+                    <Grid.Item
+                        xs={12}
+                        sm={4}
+                        lg={3}
+                    >
                         <Flex gap="medium" column>
                             <ManagerDetails
                                 manager={manager}
@@ -96,7 +100,11 @@ export default function ManagerPage({ match, location, history }) {
                         </Flex>
                     </Grid.Item>
 
-                    <Grid.Item xs={8}>
+                    <Grid.Item
+                        xs={12}
+                        sm={8}
+                        lg={9}
+                    >
                         <Flex gap="medium" column>
                             <ManagerRequests
                                 requests={manager.requests}

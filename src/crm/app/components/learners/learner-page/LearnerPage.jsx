@@ -1,7 +1,5 @@
 import { useCallback, useEffect } from 'react';
 
-import { RefEntity } from 'core/models/common/constants';
-
 import ConfirmationDialog from 'shared/components/confirmation-dialog';
 import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
@@ -21,7 +19,6 @@ import LearnerRequests from 'crm/components/learners/learner-requests';
 import LearnerTasks from 'crm/components/learners/learner-tasks';
 import LearnerTransactions from 'crm/components/learners/learner-transactions';
 import PasswordForm from 'crm/components/shared/password-form';
-import TasksReference from 'crm/components/tasks/tasks-reference';
 import { useStore } from 'crm/store';
 
 export default function LearnerPage({ match, location, history }) {
@@ -101,8 +98,12 @@ export default function LearnerPage({ match, location, history }) {
             />
 
             <Page.Content>
-                <Grid spacing={2}>
-                    <Grid.Item xs={4}>
+                <Grid>
+                    <Grid.Item
+                        xs={12}
+                        sm={4}
+                        lg={3}
+                    >
                         <Flex gap="medium" column>
                             <LearnerDetails
                                 learner={learner}
@@ -115,7 +116,11 @@ export default function LearnerPage({ match, location, history }) {
                         </Flex>
                     </Grid.Item>
 
-                    <Grid.Item xs={8}>
+                    <Grid.Item
+                        xs={12}
+                        sm={8}
+                        lg={9}
+                    >
                         <Flex gap="medium" column>
                             <LearnerRequests
                                 requests={learner?.requests}
