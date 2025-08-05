@@ -15,8 +15,6 @@ export default function AppBar({
 }) {
     const match = useRouteMatch('/:path?');
 
-    console.log(user);
-
     return (
         <div className={cn('AppBar', styles.root)} {...props}>
             <div className={styles.logo}>

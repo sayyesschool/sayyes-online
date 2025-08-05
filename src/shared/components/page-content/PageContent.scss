@@ -2,12 +2,4 @@
 
 .PageContent {
     width: 100%;
-    
-    > .ui-Grid {
-        align-items: flex-start;
-
-        @include mixins.breakpoint(lt-lg) {
-            grid-template-columns: 100%;
-        }
-    }
 }
