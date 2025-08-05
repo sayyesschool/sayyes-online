@@ -16,6 +16,8 @@ import { Heading, Surface, Text } from 'shared/ui-components';
 
 import Exercise from 'lms/components/courses/exercise';
 
+import styles from './AssignmentPage.module.scss';
+
 export default function AssignmentPage({ match, location, history }) {
     const [assignment, actions] = useAssignment(match.params.id, location.search);
     const exerciseActions = useExerciseActions();
@@ -65,7 +67,7 @@ export default function AssignmentPage({ match, location, history }) {
     const hasExercises = assignment.exercises.length > 0;
 
     return (
-        <Page className="AssignmentPage" layout="narrow">
+        <Page className={styles.root} layout="narrow">
             <Page.Header
                 breadcrumbs={[
                     {
@@ -130,6 +132,7 @@ export default function AssignmentPage({ match, location, history }) {
                         isLearner && assignment.content && (
                             <Content
                                 content={assignment.content}
+                                className={styles.description}
                                 html
                             />
                         )
