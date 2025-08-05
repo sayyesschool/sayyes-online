@@ -64,14 +64,14 @@ export default function AssignmentPage({ match, location, history }) {
 
     const isTeacher = user.isTeacher;
     const isLearner = user.isLearner;
-    const hasExercises = assignment.exercises.length > 0;
+    const hasExercises = assignment.exercises?.length > 0;
 
     return (
         <Page className={styles.root} layout="narrow">
             <Page.Header
                 breadcrumbs={[
                     {
-                        content: DomainLabel[assignment.enrollment.domain],
+                        content: DomainLabel[assignment.enrollment?.domain],
                         to: `/enrollments/${assignment.enrollmentId}`
                     }
                 ]}

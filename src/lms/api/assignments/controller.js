@@ -44,7 +44,9 @@ export default ({
         }, req.body, {
             new: true,
             projection: Object.keys(req.body)
-        });
+        }).populate('enrollment', 'domain')
+            .populate('exercises')
+            .populate('comments');
 
         res.json({
             ok: true,
