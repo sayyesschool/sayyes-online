@@ -76,6 +76,10 @@ User.virtual('url').get(function() {
     return this.id ? `/${this.role ?? 'user'}s/${this.id}` : undefined;
 });
 
+User.virtual('imageUrl').get(function() {
+    return this.image ? this.image.url : undefined;
+});
+
 User.virtual('isAdmin').get(function() {
     return this.role && this.role === UserRole.Admin;
 });
