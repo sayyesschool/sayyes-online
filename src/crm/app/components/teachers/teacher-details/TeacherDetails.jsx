@@ -10,7 +10,7 @@ export default function TeacherDetails({ teacher }) {
             {teacher.imageUrl &&
                 <Image
                     src={teacher.imageUrl}
-                    ratio="1/1"
+                    alt=""
                 />
             }
 

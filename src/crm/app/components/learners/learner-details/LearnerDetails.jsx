@@ -4,6 +4,7 @@ import DetailsList from 'shared/components/details-list';
 import PageSection from 'shared/components/page-section';
 import DataContext from 'shared/contexts/data';
 import datetime from 'shared/libs/datetime';
+import { Image } from 'shared/ui-components';
 
 export default function LearnerDetails({ learner }) {
     const data = useContext(DataContext);
@@ -14,6 +15,13 @@ export default function LearnerDetails({ learner }) {
             title="Основные данные"
             compact
         >
+            {learner.imageUrl &&
+                <Image
+                    src={learner.imageUrl}
+                    alt=""
+                />
+            }
+
             <DetailsList
                 items={[
                     {
