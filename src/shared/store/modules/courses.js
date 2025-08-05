@@ -2,15 +2,13 @@ import { combineReducers, createAction, createReducer } from 'shared/store/helpe
 
 // Courses
 
-export const getCourses = createAction('GET_COURSES', query => {
-    return {
-        request: {
-            method: 'get',
-            path: 'courses',
-            query
-        }
-    };
-});
+export const getCourses = createAction('GET_COURSES', query => ({
+    request: {
+        method: 'get',
+        path: 'courses',
+        query
+    }
+}));
 
 export const getCourse = createAction('GET_COURSE', (courseId, query) => ({
     request: {

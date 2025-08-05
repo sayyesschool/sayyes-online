@@ -5,10 +5,11 @@ import { createComment, deleteComment, updateComment } from './comments';
 import { createLesson, createLessons, deleteLesson, updateLesson } from './lessons';
 import { createPayment, deletePayment, updatePayment } from './payments';
 
-export const getEnrollments = createAction('GET_ENROLLMENTS', () => ({
+export const getEnrollments = createAction('GET_ENROLLMENTS', query => ({
     request: {
         method: 'get',
-        path: 'enrollments'
+        path: 'enrollments',
+        query
     }
 }));
 
@@ -18,6 +19,8 @@ export const getEnrollment = createAction('GET_ENROLLMENT', id => ({
         path: `enrollments/${id}`
     }
 }));
+
+export const unsetEnrollment = createAction('UNSET_ENROLLMENT');
 
 export const createEnrollment = createAction('CREATE_ENROLLMENT', data => ({
     request: {
@@ -61,6 +64,7 @@ export const updateSchedule = createAction('UPDATE_ENROLLMENT_SCHEDULE', (id, da
 export const actions = {
     getEnrollments,
     getEnrollment,
+    unsetEnrollment,
     createEnrollment,
     updateEnrollment,
     deleteEnrollment,
@@ -77,6 +81,7 @@ export const enrollmentsReducer = createReducer(null, {
 
 export const enrollmentReducer = createReducer(null, {
     [getEnrollment]: (state, action) => action.data,
+    [unsetEnrollment]: (state, action) => null,
     [updateEnrollment]: (state, action) => ({ ...state, ...action.data }),
     [deleteEnrollment]: (state, action) => null,
 
