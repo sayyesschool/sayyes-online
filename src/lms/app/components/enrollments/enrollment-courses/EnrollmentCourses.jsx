@@ -5,7 +5,7 @@ import CoursesList from 'shared/components/courses-list';
 import PageSection from 'shared/components/page-section';
 import { useCourses } from 'shared/hooks/courses';
 import { useBoolean } from 'shared/hooks/state';
-import { IconButton, MenuButton } from 'shared/ui-components';
+import { IconButton, Menu } from 'shared/ui-components';
 
 import { useActions } from 'lms/store/hooks';
 
@@ -56,7 +56,7 @@ export default function EnrollmentCourses({ enrollment, readonly }) {
             className="EnrollmentCourses"
             title="Курсы"
             actions={!readonly &&
-                <MenuButton
+                <Menu
                     trigger={
                         <IconButton
                             icon="add"
