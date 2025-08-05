@@ -52,7 +52,7 @@ export default function EnrollmentDetails({ enrollment }) {
                         {
                             key: 'preferences',
                             icon: 'checklist',
-                            header: 'Предпочтения',
+                            header: 'Пожелания',
                             content: enrollment.preferences || '[Не указаны]'
                         },
                         enrollment.note && {

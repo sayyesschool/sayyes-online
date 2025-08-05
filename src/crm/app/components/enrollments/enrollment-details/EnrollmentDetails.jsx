@@ -69,7 +69,7 @@ export default function EnrollmentDetails({ enrollment }) {
                     {
                         key: 'preferences',
                         icon: 'checklist',
-                        header: 'Предпочтения',
+                        header: 'Пожелания',
                         content: enrollment.info.preferences
                     },
                     enrollment.note && {
