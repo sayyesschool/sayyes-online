@@ -71,8 +71,8 @@ export default function EnrollmentPage({ match }) {
             </Page.Drawer>
 
             <Page.Header
-                overline={DomainLabel[enrollment.domain]}
                 title={enrollment.learner?.fullname}
+                description={DomainLabel[enrollment.domain]}
                 actions={[
                     <Button
                         key="class"
