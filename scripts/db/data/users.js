@@ -8,7 +8,10 @@ export const learner = {
     password: '123456',
     role: 'learner',
     domains: ['club', 'lk', 'lms'],
-    active: true
+    active: true,
+    image: {
+        src: 'https://i.pravatar.cc/300'
+    }
 };
 
 export const learner2 = {
@@ -31,7 +34,10 @@ export const manager = {
     role: 'manager',
     domains: ['cms', 'crm'],
     permissions: ['all'],
-    active: true
+    active: true,
+    image: {
+        src: 'https://i.pravatar.cc/300'
+    }
 };
 
 export const manager2 = {
