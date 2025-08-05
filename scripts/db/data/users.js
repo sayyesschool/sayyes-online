@@ -11,6 +11,17 @@ export const learner = {
     active: true
 };
 
+export const learner2 = {
+    _id: new Types.ObjectId().toHexString(),
+    firstname: 'Студент',
+    lastname: 'Студентов',
+    email: 'learner2@sayyes.school',
+    password: '123456',
+    role: 'learner',
+    domains: ['club', 'lk', 'lms'],
+    active: true
+};
+
 export const manager = {
     _id: new Types.ObjectId().toHexString(),
     firstname: 'Менеджер',
@@ -57,4 +68,14 @@ export const teacher = {
     active: true
 };
 
-export default [learner, manager, manager2, manager3, teacher];
+export const teacher2 = {
+    _id: new Types.ObjectId().toHexString(),
+    firstname: 'Тичер',
+    email: 'teacher2@sayyes.school',
+    password: '123456',
+    role: 'teacher',
+    domains: ['club', 'lk', 'lms'],
+    active: true
+};
+
+export default [learner, learner2, manager, manager2, manager3, teacher, teacher2];
