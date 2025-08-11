@@ -12,7 +12,7 @@ import { useExerciseActions } from 'shared/hooks/exercises';
 import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
 import datetime from 'shared/libs/datetime';
-import { Heading, Surface, Text } from 'shared/ui-components';
+import { Heading, Text } from 'shared/ui-components';
 
 import Exercise from 'lms/components/courses/exercise';
 

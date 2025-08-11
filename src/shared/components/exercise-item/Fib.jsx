@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from 'react';
 
-import { parseFromHtml } from 'shared/libs/eml';
-import { render } from 'shared/libs/jsx';
 import Content from 'shared/components/content';
 import Input from 'shared/components/inline-input';
 import Select from 'shared/components/inline-select';
+import { parseFromHtml } from 'shared/libs/eml';
+import { render } from 'shared/libs/jsx';
 
 import './Fib.scss';
 
