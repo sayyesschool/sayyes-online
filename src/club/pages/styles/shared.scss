@@ -7,7 +7,7 @@ body {
 .header {
     --header-background-color: rgba(249, 244, 242, .75);
     --header-font-color: var(--primary-color);
-    --header-border-radius: 0;
+    --header-border-radius: 0 0 20px 20px;
     --header-blur: 5px;
 }
 
