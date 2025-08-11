@@ -8,6 +8,7 @@ import { defaultConfig, simpleConfig } from './configs';
 function ContentEditor({
     value,
     content = value,
+    placeholder,
     simple,
     onChange = Function.prototype,
     ...props
@@ -25,13 +26,15 @@ function ContentEditor({
         onChange(event, editor.getData());
     }, [onChange]);
 
+    const config = Object.assign({ placeholder }, simple ? simpleConfig : defaultConfig);
+
     return (
         <div className="ContentEditor">
             <CKEditor
                 ref={editorRef}
                 editor={ClassicEditor}
                 data={content}
-                config={simple ? simpleConfig : defaultConfig}
+                config={config}
                 onChange={handleChange}
                 {...props}
             />

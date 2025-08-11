@@ -121,22 +121,19 @@ export default function AssignmentPage({ match, location, history }) {
 
             <Page.Content>
                 <Page.Section compact>
-                    {
-                        isTeacher && (
-                            <ContentEditor
-                                ref={editorRef}
-                                content={assignment.content}
-                            />
-                        )
-                        ||
-                        isLearner && assignment.content && (
-                            <Content
-                                content={assignment.content}
-                                className={styles.description}
-                                html
-                            />
-                        )
-                    }
+                    {isTeacher ? (
+                        <ContentEditor
+                            ref={editorRef}
+                            content={assignment.content}
+                            placeholder="Напишите что необходимо сделать"
+                        />
+                    ) : isLearner && assignment.content && (
+                        <Content
+                            content={assignment.content}
+                            className={styles.description}
+                            html
+                        />
+                    )}
                 </Page.Section>
 
                 <Page.Section
