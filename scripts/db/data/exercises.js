@@ -3,6 +3,7 @@ export const exercise = {
     courseId: '5fb265487ef0653994e53a26',
     sectionId: '64b6c8b8368b0620f3298514',
     description: '<p class="directions">Complete the conversations. Use the conversations above to help you. Then practice with a partner. Use your own names.</p><p>Заполните пропуски, используя диалоги выше. Затем попрактикуйте данные диалоги с партнёром, используя свои собственные имена.</p>',
+    notes: '<p>Level: A1–B1 · Time: 15–20 minutes · Focus: speaking & functional phrases</p><h2>Objective</h2><p>Students complete gaps using model dialogues, then practise the conversations aloud using their own names.</p><h2>Procedure (15–20 min)</h2><ul><li><strong>2 min</strong> – Quick review of the example dialogue.</li><li><strong>6–8 min</strong> – Fill the gaps individually; teacher monitors and helps.</li><li><strong>7–10 min</strong> – Pair practice; students swap names and improvise.</li></ul><h2>Common Issues & Tips</h2><ul><li>Over-reliance on the model → ask students to change details.</li><li>Pronunciation problems → model key lines before pair work.</li></ul><h2>Extension / Homework</h2><p>Write a short dialogue with different names and details to read next class.</p>',
     items: [
         {
             _id: 'a43ffd3b-0624-4c67-9b75-f04e45ddc80a',

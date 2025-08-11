@@ -19,6 +19,7 @@ import {
 
 import ExerciseComments from 'lms/components/courses/exercise-comments';
 import ExerciseContent from 'lms/components/courses/exercise-content';
+import ExerciseNotes from 'lms/components/courses/exercise-notes';
 
 import styles from './Exercise.module.scss';
 
@@ -216,6 +217,8 @@ export default function Exercise({
                         disabled={user.isTeacher}
                         onUpdateState={handleUpdateState}
                     />
+
+                    {user.isTeacher && <ExerciseNotes exercise={exercise} />}
 
                     <Flex gap="sm">
                         {hasCheckableItems &&
