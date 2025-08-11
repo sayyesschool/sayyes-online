@@ -15,7 +15,7 @@ export default function ExerciseNotes({ exercise, onUpdate }) {
     return (
         <PageSection
             className="ExerciseNotes"
-            title="Заметки"
+            title="Заметки преподавателя"
             actions={[{
                 key: 'save',
                 icon: 'save',
