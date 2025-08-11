@@ -14,11 +14,13 @@ export default ({
         const assignment = await Assignment.findById(req.params.id)
             .populate('enrollment', 'domain')
             .populate('exercises')
-            .populate('comments');
+            .populate('comments')
+            .populate('learner');
 
         if (!assignment) {
             const error = new Error('Задание не найдена');
             error.status = 404;
+
             return next(error);
         }
 

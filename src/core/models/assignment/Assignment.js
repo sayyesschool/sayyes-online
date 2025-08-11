@@ -36,6 +36,13 @@ Assignment.virtual('exercises', {
     foreignField: '_id'
 });
 
+Assignment.virtual('learner', {
+    ref: 'Learner',
+    localField: 'learnerId',
+    foreignField: '_id',
+    justOne: true
+});
+
 Assignment.virtual('comments', {
     ref: 'Comment',
     localField: '_id',
