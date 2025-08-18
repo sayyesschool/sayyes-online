@@ -17,7 +17,10 @@ import { LearnerContextProvider } from 'lms/contexts/learner';
 export default function LessonPage({ match, location }) {
     const [course, actions] = useCourse(match.params.course, location.search);
     const [enrollment] = useEnrollment(course?.enrollmentId);
-    const [assignments, assignmentActions] = useAssignments({ enrollmentId: course?.enrollmentId });
+    const assignmentsQuery = course?.enrollmentId ?
+        { enrollmentId: course?.enrollmentId } :
+        null;
+    const [assignments, assignmentActions] = useAssignments(assignmentsQuery);
     const [user] = useUser();
 
     const [exerciseIdForNewAssignment, setExerciseIdForNewAssignment] = useState();

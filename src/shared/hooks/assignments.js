@@ -4,7 +4,7 @@ import { useActions, useStore } from 'shared/hooks/store';
 import { actions as assignmentActions } from 'shared/store/modules/assignments';
 import { hasKey } from 'shared/utils/object';
 
-export function useAssignments() {
+export function useAssignments(query) {
     const [assignments, actions] = useStore(
         state => state && hasKey(state.assignments, 'list') ?
             state.assignments.list :
@@ -13,10 +13,10 @@ export function useAssignments() {
     );
 
     useEffect(() => {
-        if (!assignments) {
-            actions.getAssignments();
+        if (!assignments && query) {
+            actions.getAssignments(query);
         }
-    }, [assignments]);
+    }, [actions, assignments, query]);
 
     return [assignments, actions];
 }
