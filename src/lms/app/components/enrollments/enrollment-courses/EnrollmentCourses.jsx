@@ -62,6 +62,7 @@ export default function EnrollmentCourses({ enrollment, readonly }) {
                             icon="add"
                             title="Добавить курс"
                             size="sm"
+                            disabled={!items?.length}
                         />
                     }
                     items={items}
