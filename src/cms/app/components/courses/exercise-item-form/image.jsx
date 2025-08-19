@@ -54,6 +54,14 @@ function ExerciseImageItem({
                 </div>
             </>}
 
+            <Button
+                type="button"
+                content={url ? 'Выбрать другое изображение' : 'Выбрать изображение'}
+                variant="outlined"
+                size="sm"
+                onClick={pick}
+            />
+
             {!file && <>
                 {url &&
                     <figure className="ImageItemForm__image">
@@ -77,14 +85,6 @@ function ExerciseImageItem({
                     defaultValue={caption}
                 />
             </>}
-
-            <Button
-                type="button"
-                content={url ? 'Выбрать другое изображение' : 'Выбрать изображение'}
-                variant="outlined"
-                size="sm"
-                onClick={pick}
-            />
         </Flex>
     );
 }

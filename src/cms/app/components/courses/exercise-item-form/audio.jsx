@@ -57,6 +57,14 @@ function AudioItemForm({
                 </Flex>
             }
 
+            <Button
+                type="button"
+                content={url ? 'Выбрать другой файл' : 'Выбрать файл'}
+                variant="outlined"
+                size="sm"
+                onClick={pick}
+            />
+
             {!file && <>
                 {url &&
                     <AudioPlayer
@@ -76,14 +84,6 @@ function AudioItemForm({
                     content={script}
                 />
             </>}
-
-            <Button
-                type="button"
-                content={url ? 'Выбрать другой файл' : 'Выбрать файл'}
-                variant="outlined"
-                size="sm"
-                onClick={pick}
-            />
         </Flex>
     );
 }

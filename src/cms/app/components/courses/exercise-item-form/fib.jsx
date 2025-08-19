@@ -7,7 +7,7 @@ import { parseFromHtml, renderToString } from 'shared/libs/eml';
 import { traverse } from 'shared/libs/jsx';
 import { Checkbox, Flex, Text } from 'shared/ui-components';
 
-function FibItemForm({ content, required = false }, ref) {
+function FibItemForm({ content, required = false, ...props }, ref) {
     const editorRef = useRef();
 
     const [isRequired, setRequired] = useState(required);
@@ -45,9 +45,10 @@ function FibItemForm({ content, required = false }, ref) {
                 direction="column" px={2}
                 py={1} spacing={1}
             >
-                <Text as="small" type="body2">
-                    Для текстового поля используйте <code>{'{ответ 1|ответ 2|ответ 3}'}</code>.<br />
-                    Для выбора используйте <code>{'[ответ 1|ответ 2|ответ 3*]'}</code> (<sup>*</sup> отмечается правильный вариант).
+                <Text as="small" type="body-sm">
+                    Для текстового поля используйте <code>{'{ответ 1|ответ 2|ответ 3}'}</code> (все ответы будут считаться правильными).
+                    <br />
+                    Для выбора используйте <code>{'[ответ 1|ответ 2|ответ 3*]'}</code> (<code>*</code> отмечается правильный вариант).
                 </Text>
 
                 <Checkbox
