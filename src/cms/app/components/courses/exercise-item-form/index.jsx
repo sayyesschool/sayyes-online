@@ -1,5 +1,6 @@
-import { createElement, useCallback, useRef, useState } from 'react';
+import { createElement, useCallback, useMemo, useRef, useState } from 'react';
 
+import { ContentEditorContext } from 'shared/components/content-editor';
 import { Flex, IconButton, Text } from 'shared/ui-components';
 import classnames from 'shared/utils/classnames';
 import { capitalize } from 'shared/utils/string';
@@ -85,6 +86,10 @@ export default function ExerciseItemForm({
         }
     }, [item, onSubmit]);
 
+    const editorContextValue = useMemo(() => ({
+        uploadPath: `courses/${item.courseId}/images`
+    }), [item.courseId]);
+
     const classNames = classnames('ExerciseItemForm', `${capitalize(item.type)}ItemForm`);
 
     return (
@@ -124,11 +129,13 @@ export default function ExerciseItemForm({
                 />
             </Flex>
 
-            {createElement(Components[item.type], {
-                key: item.id,
-                ref: itemRef,
-                ...item.props
-            })}
+            <ContentEditorContext.Provider value={editorContextValue}>
+                {createElement(Components[item.type], {
+                    key: item.id,
+                    ref: itemRef,
+                    ...item.props
+                })}
+            </ContentEditorContext.Provider>
         </form>
     );
 }

@@ -1,19 +1,22 @@
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
+import { forwardRef, useCallback, useContext, useImperativeHandle, useRef } from 'react';
 
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@sayyes/ckeditor5-classic';
 
 import { defaultConfig, simpleConfig } from './configs';
+import context from './context';
 
 function ContentEditor({
     value,
     content = value,
     placeholder,
     simple,
-    uploadUrl,
+    uploadPath: _uploadPath,
     onChange = Function.prototype,
     ...props
 }, ref) {
+    const { uploadPath = _uploadPath } = useContext(context);
+
     const editorRef = useRef();
 
     useImperativeHandle(ref, () => ({
@@ -27,10 +30,11 @@ function ContentEditor({
         onChange(event, editor.getData());
     }, [onChange]);
 
-    const config = Object.assign({ placeholder }, simple ? simpleConfig : uploadUrl ? {
+    const config = Object.assign({ placeholder }, simple ? simpleConfig : uploadPath ? {
         ...defaultConfig,
         uploadAdapter: {
-            uploadUrl
+            ...defaultConfig.uploadAdapter,
+            uploadPath
         }
     } : defaultConfig);
 

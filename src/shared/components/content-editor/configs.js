@@ -8,7 +8,8 @@ export const defaultConfig = {
     },
     extraPlugins: [UploadAdapterPlugin, ImageRemoveEventPlugin],
     uploadAdapter: {
-        uploadUrl: STORAGE_API
+        uploadUrl: STORAGE_API,
+        uploadPath: ''
     },
     style: {
         definitions: [

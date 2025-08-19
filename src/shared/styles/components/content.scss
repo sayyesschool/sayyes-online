@@ -48,6 +48,38 @@
     color: variables.$text-muted-color;
 }
 
+.Content {
+    .image {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1em;
+
+        &.image-style-block-align-left {
+            justify-content: flex-start;
+        }
+
+        &.image-style-block-align-right {
+            justify-content: flex-end;
+        }
+    }
+
+    .text-left {
+        text-align: left;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    .text-justify {
+        text-align: justify;
+    }
+}
+
 .Content,
 .ContentEditor {
     p:last-child {
@@ -249,9 +281,5 @@
 
     span.muted-color {
         color: variables.$text-muted-color;
-    }
-
-    .text-center {
-        text-align: center;
     }
 }
