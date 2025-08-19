@@ -125,7 +125,7 @@ export default function AssignmentPage({ match, location, history }) {
                         <ContentEditor
                             ref={editorRef}
                             content={assignment.content}
-                            placeholder="Напишите что необходимо сделать"
+                            placeholder="Напишите, что необходимо сделать"
                         />
                     ) : isLearner && assignment.content && (
                         <Content
