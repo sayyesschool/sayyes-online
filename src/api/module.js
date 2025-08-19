@@ -18,5 +18,9 @@ export default (app, context) => {
     app.use('/test', test(context));
     app.use('/twilio', twilio(context));
 
+    app.get('/', (req, res) => {
+        res.send('OK');
+    });
+
     return app;
 };
