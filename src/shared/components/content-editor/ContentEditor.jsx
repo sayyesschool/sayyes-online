@@ -10,6 +10,7 @@ function ContentEditor({
     content = value,
     placeholder,
     simple,
+    uploadUrl,
     onChange = Function.prototype,
     ...props
 }, ref) {
@@ -26,7 +27,12 @@ function ContentEditor({
         onChange(event, editor.getData());
     }, [onChange]);
 
-    const config = Object.assign({ placeholder }, simple ? simpleConfig : defaultConfig);
+    const config = Object.assign({ placeholder }, simple ? simpleConfig : uploadUrl ? {
+        ...defaultConfig,
+        uploadAdapter: {
+            uploadUrl
+        }
+    } : defaultConfig);
 
     return (
         <div className="ContentEditor">

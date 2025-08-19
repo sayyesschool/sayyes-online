@@ -10,9 +10,10 @@ const {
     GOOGLE_ANALYTICS_ID,
     NODE_ENV,
     STATIC_URL,
-    STORAGE_URL,
     YANDEX_METRIKA_ID
 } = process.env;
+
+const STORAGE_URL = `${process.env.S3_STORAGE_ENDPOINT}/${process.env.S3_STORAGE_BUCKET}`;
 
 const common = {
     outdir: 'public',
@@ -36,6 +37,7 @@ const common = {
         'env.PAY_URL': JSON.stringify(`//pay.${APP_DOMAIN}`),
         'env.SENTRY_DSN': JSON.stringify(process.env.SENTRY_DSN || ''),
         'env.STATIC_URL': JSON.stringify(STATIC_URL || ''),
+        'env.STORAGE_API': JSON.stringify(`//api.${APP_DOMAIN}/storage` || ''),
         'env.STORAGE_URL': JSON.stringify(STORAGE_URL || ''),
         'env.YANDEX_METRIKA_ID': JSON.stringify(YANDEX_METRIKA_ID || '')
     },
