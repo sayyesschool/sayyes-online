@@ -149,7 +149,7 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                                     </Popover>
                                 )}
 
-                                {!request.managerId &&
+                                {!request.managerId ? (
                                     <ConfirmButton
                                         title="Обработать"
                                         message="Обработать заявку?"
@@ -157,15 +157,14 @@ export default function RequestsTable({ requests, manager, onProcess, onEdit, on
                                         size="sm"
                                         onConfirm={() => onProcess(request)}
                                     />
-                                }
-
-                                <IconButton
-                                    title="Изменить"
-                                    icon="edit"
-                                    size="sm"
-                                    disabled={request.manager && request.manager?.id !== manager?.id}
-                                    onClick={() => onEdit(request)}
-                                />
+                                ) : (
+                                    <IconButton
+                                        title="Изменить"
+                                        icon="edit"
+                                        size="sm"
+                                        onClick={() => onEdit(request)}
+                                    />
+                                )}
 
                                 <ConfirmButton
                                     title="Удалить"
