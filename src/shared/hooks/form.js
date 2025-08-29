@@ -118,19 +118,22 @@ export function useFormData(initialData, deps = []) {
             const [name1, name2] = name.split('.');
 
             if (Array.isArray(data[name1])) {
-                const array = data[name1].slice();
+                const prevValues = data[name1];
+                const nextValues = prevValues.slice();
 
                 if (typeof checked === 'boolean') {
                     if (checked) {
-                        array.push(value);
+                        nextValues.push(value);
                     } else {
-                        array.splice(array.indexOf(value), 1);
+                        nextValues.splice(nextValues.indexOf(value), 1);
                     }
                 }
 
                 return {
                     ...data,
-                    [name1]: array.length !== value.length ? array : value
+                    [name1]: prevValues.length !== nextValues.length
+                        ? nextValues
+                        : prevValues
                 };
             } else if (isObject(data[name1])) {
                 return {
