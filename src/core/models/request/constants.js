@@ -45,11 +45,12 @@ export const RequestStatus = {
 
 export const RequestStatusLabel = {
     [RequestStatus.New]: 'Новая',
-    [RequestStatus.Processing]: 'В обработке',
-    [RequestStatus.Pending]: 'В ожидании',
+    [RequestStatus.Processing]: 'В процессе',
+    [RequestStatus.Pending]: 'В ожидании', // ???
     [RequestStatus.Postponed]: 'Отложена',
-    [RequestStatus.Completed]: 'Выполнена',
-    [RequestStatus.Canceled]: 'Отменена'
+    [RequestStatus.Completed]: 'Обработана',
+    [RequestStatus.Rejected]: 'Отказ',
+    [RequestStatus.NonTarget]: 'Нецелевое обращение'
 };
 
 export const RequestType = {
