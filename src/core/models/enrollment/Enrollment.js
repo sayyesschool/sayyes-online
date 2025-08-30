@@ -9,15 +9,45 @@ import { EnrollmentStatus, EnrollmentType } from './constants';
 
 export const Enrollment = new Schema({
     hhid: { type: String },
-    ageGroup: { type: String, default: AgeGroup.Adults },
-    domain: { type: String, enum: Object.values(Domain), default: Domain.General },
-    format: { type: String, default: Format.online },
-    type: { type: String, enum: Object.values(EnrollmentType), default: EnrollmentType.Individual },
-    teacherType: { type: String, default: TeacherType.Russian },
-    status: { type: String, enum: Object.values(EnrollmentStatus), default: EnrollmentStatus.Processing },
-    level: { type: Number, enum: Object.values(Level) },
-    lessonDuration: { type: Number, default: 50 },
-    lessonPrice: { type: Number, default: 0 },
+    ageGroup: {
+        type: String,
+        default: AgeGroup.Adults
+    },
+    domain: {
+        type: String,
+        enum: Object.values(Domain),
+        default: Domain.General
+    },
+    format: {
+        type: String,
+        default: Format.online
+    },
+    type: {
+        type: String,
+        enum: Object.values(EnrollmentType),
+        default: EnrollmentType.Individual
+    },
+    teacherType: {
+        type: String,
+        default: TeacherType.Russian
+    },
+    status: {
+        type: String,
+        enum: Object.values(EnrollmentStatus),
+        default: EnrollmentStatus.Processing
+    },
+    level: {
+        type: Number,
+        enum: Object.values(Level)
+    },
+    lessonDuration: {
+        type: Number,
+        default: 50
+    },
+    lessonPrice: {
+        type: Number,
+        default: 0
+    },
     schedule: [Schedule],
     trialLessonSchedule: [Schedule],
     info: {
@@ -34,6 +64,8 @@ export const Enrollment = new Schema({
 }, {
     timestamps: true
 });
+
+Enrollment.statics.Status = EnrollmentStatus;
 
 Enrollment.virtual('url').get(function() {
     return `/enrollments/${this.id}`;
