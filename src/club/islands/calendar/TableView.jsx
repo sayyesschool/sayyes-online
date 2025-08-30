@@ -91,9 +91,17 @@ function Event({ event, onClick, ...props }) {
                 {event.title}
             </span>
 
-            <span className={styles.level}>
-                {event.simpleLevelLabel}
-            </span>
+            <div className={styles.meta}>
+                <span className={styles.level}>
+                    {event.simpleLevelLabel}
+                </span>
+
+                ·
+
+                <span className={styles.format}>
+                    {event.online ? 'Онлайн' : 'Офлайн'}
+                </span>
+            </div>
         </button>
     );
 }
