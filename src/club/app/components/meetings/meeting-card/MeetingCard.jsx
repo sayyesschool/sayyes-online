@@ -71,12 +71,19 @@ export default function MeetingCard({
                         />
 
                         <Text
-                            content={`${meeting.online ? 'Онлайн' : 'Офлайн'} · ${meeting.datetime}`}
+                            content={meeting.datetime}
                             type="body-sm"
                         />
                     </Flex>
 
                     <Flex gap="small">
+                        <Chip
+                            content={meeting.online ? 'Онлайн' : 'Офлайн'}
+                            color={meeting.online ? 'primary' : 'neutral'}
+                            variant="soft"
+                            inline
+                        />
+
                         {meeting.host &&
                             <Chip
                                 start={meeting.host.avatarUrl ?
