@@ -118,23 +118,27 @@ export function useFormData(initialData, deps = []) {
             const [name1, name2] = name.split('.');
 
             if (Array.isArray(data[name1])) {
-                const prevValues = data[name1];
-                const nextValues = prevValues.slice();
-
                 if (typeof checked === 'boolean') {
-                    if (checked) {
+                    const prevValues = data[name1];
+                    const nextValues = prevValues.slice();
+                    const hasValue = nextValues.indexOf(value) !== -1;
+
+                    if (checked && !hasValue) {
                         nextValues.push(value);
-                    } else {
+                    } else if (!checked && hasValue) {
                         nextValues.splice(nextValues.indexOf(value), 1);
                     }
-                }
 
-                return {
-                    ...data,
-                    [name1]: prevValues.length !== nextValues.length
-                        ? nextValues
-                        : prevValues
-                };
+                    return {
+                        ...data,
+                        [name1]: nextValues
+                    };
+                } else {
+                    return {
+                        ...data,
+                        [name1]: Array.isArray(value) ? value : [value]
+                    };
+                }
             } else if (isObject(data[name1])) {
                 return {
                     ...data,
