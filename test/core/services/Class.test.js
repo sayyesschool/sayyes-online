@@ -14,7 +14,7 @@ const {
 
 describe('ClassService', () => {
     describe('scheduleLesson', () => {
-        withModel(Lesson, { afterEach: true });
+        withModel(Lesson, { cleanupAfterEach: true });
 
         describe('with one room', () => {
             const room = withRoom({ title: 'A', active: true });

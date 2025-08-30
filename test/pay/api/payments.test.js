@@ -14,8 +14,8 @@ const {
 describe('Pay API', function() {
     withEnrollmentPacks();
     withModel(Data);
-    withModel(Payment, { afterEach: true });
-    withModel(Request, { afterEach: true });
+    withModel(Payment, { cleanupAfterEach: true });
+    withModel(Request, { cleanupAfterEach: true });
     withModel(Registration);
 
     describe('unauthenticated', () => {
