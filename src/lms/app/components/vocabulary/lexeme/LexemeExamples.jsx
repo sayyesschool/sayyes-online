@@ -18,7 +18,8 @@ export default function LexemeExamples({ title, examples }) {
                             className={styles.item}
                             decorator={
                                 <Avatar
-                                    content={index + 1} color="neutral"
+                                    content={index + 1}
+                                    color="primary"
                                     size="sm"
                                 />
                             }
