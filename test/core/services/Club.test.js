@@ -296,7 +296,7 @@ describe('ClubService', () => {
                 expect(registration.userId).toEqual(user.id);
             });
 
-            it.only('registers without membership with active enrollment', async () => {
+            it('registers without membership with active enrollment', async () => {
                 await Enrollment.create({
                     learnerId: user.id,
                     status: Enrollment.Status.Active
@@ -343,7 +343,7 @@ describe('ClubService', () => {
                 });
             });
 
-            it.only('throws if registering without membership and no active enrollments', async () => {
+            it('throws if registering without membership and no active enrollments', async () => {
                 await Enrollment.create({
                     learnerId: user.id,
                     status: Enrollment.Status.Processing
