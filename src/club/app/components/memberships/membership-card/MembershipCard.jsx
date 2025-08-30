@@ -6,15 +6,19 @@ import { getWordEnding } from 'shared/utils/format';
 import styles from './MembershipCard.module.scss';
 
 export default function MembershipCard({ membership, ...props }) {
-    const heading = `${membership.limit} ${getWordEnding('встреч', membership.limit, ['а', 'и', ''])}`;
+    const heading = membership.limit === null
+        ? 'Безлимитный'
+        : `${membership.limit} ${getWordEnding('встреч', membership.limit, ['а', 'и', ''])}`;
     const durationInWeeks = datetime(membership.endDate).diff(membership.startDate, 'weeks');
     const durationUnit = durationInWeeks >= 4 ? 'months' : 'weeks';
     const durationValue = Math.round(datetime(membership.endDate).diff(membership.startDate, durationUnit, durationUnit));
-    const durationPeriod = `${durationValue} ${durationUnit === 'months' ?
+    const durationPeriod = durationValue ? `${durationValue} ${durationUnit === 'months' ?
         getWordEnding('месяц', durationValue, ['', 'а', 'ев']) :
         getWordEnding('недел', durationValue, ['я', 'и', 'ь'])
-    }`;
-    const durationFromTo = `${datetime(membership.startDate).format('DD.MM.YYYY')} - ${datetime(membership.endDate).format('DD.MM.YYYY')}`;
+    }` : '';
+    const durationFromTo = membership.isUnlimited
+        ? 'На время обучения'
+        : `${datetime(membership.startDate).format('DD.MM.YYYY')} - ${datetime(membership.endDate).format('DD.MM.YYYY')}`;
 
     return (
         <Card

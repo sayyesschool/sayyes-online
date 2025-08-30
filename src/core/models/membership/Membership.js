@@ -139,12 +139,16 @@ Membership.virtual('registrationsCount').get(function() {
 });
 
 Membership.virtual('isExpiring').get(function() {
+    if (!this.endDate) return false;
+
     const expiringDate = datetime().add(3, 'days').endOf('day');
 
     return datetime(this.endDate).isBefore(expiringDate, 'day');
 });
 
 Membership.virtual('isExpired').get(function() {
+    if (!this.endDate) return false;
+
     const endOfToday = datetime().endOf('day');
 
     return datetime(this.endDate).isBefore(endOfToday, 'day');
@@ -158,15 +162,21 @@ Membership.virtual('isValid').get(function() {
     return !this.isExpired && !this.isFull;
 });
 
+Membership.virtual('isUnlimited').get(function() {
+    return this.limit === null;
+});
+
 Membership.virtual('startDateString').get(function() {
-    return datetime(this.startDate).format('DD.MM.YYYY');
+    return this.startDate && datetime(this.startDate).format('DD.MM.YYYY');
 });
 
 Membership.virtual('endDateString').get(function() {
-    return datetime(this.endDate).format('DD.MM.YYYY');
+    return this.endDate && datetime(this.endDate).format('DD.MM.YYYY');
 });
 
 Membership.virtual('durationString').get(function() {
+    if (!this.startDate || !this.endDate) return;
+
     const days = datetime(this.endDate).diff(this.startDate, 'days');
 
     return datetime.duration(days, 'days').humanize();

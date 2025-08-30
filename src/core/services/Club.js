@@ -151,10 +151,25 @@ export default ({
 
     async findUserMemberships($user) {
         const userId = isObjectIdOrHexString($user) ? $user : $user?.id;
-
-        return Membership.find({ userId })
+        const memberships = await Membership.find({ userId })
             .populate('registrations')
             .sort({ endDate: 1 });
+        const activeEnrollments = !memberships.find(m => m.isValid)
+            ? await Enrollment.find({
+                learnerId: userId,
+                status: Enrollment.Status.Active
+            })
+            : [];
+
+        if (memberships.length === 0 && activeEnrollments.length > 0) {
+            memberships.push(new Membership({
+                limit: null,
+                userId,
+                registrations: []
+            }));
+        }
+
+        return memberships;
     },
 
     async findUserMembership($user) {
@@ -336,11 +351,6 @@ export default ({
         const user = await Auth.getUser($user);
         const meeting = await this.getMeeting($meeting);
         const membership = await this.findUserMembership(user);
-        const activeEnrollments = await Enrollment.find({
-            learnerId: user.id,
-            status: Enrollment.Status.Active
-        });
-
         let registration = await Registration.findOne({
             meetingId: meeting.id,
             userId: user.id
@@ -350,7 +360,6 @@ export default ({
             meeting,
             membership,
             registration,
-            activeEnrollments,
             options.force
         );
 
@@ -360,7 +369,6 @@ export default ({
 
         if (
             membership ||
-            activeEnrollments.length > 0 ||
             options.approve ||
             options.force ||
             (meeting.isFree && registration.isCanceled)
@@ -423,17 +431,12 @@ export default ({
         const meeting = await this.getMeeting($meeting);
         const membership = await this.findUserMembership(user);
         const registration = meeting.findRegistrationByUser(user);
-        const activeEnrollments = await Enrollment.find({
-            learnerId: user.id,
-            status: Enrollment.Status.Active
-        });
 
         try {
             this.checkRegistration(
                 meeting,
                 membership,
-                registration,
-                activeEnrollments
+                registration
             );
 
             return true;
@@ -442,13 +445,15 @@ export default ({
         }
     },
 
-    checkRegistration(meeting, membership, registration, activeEnrollments, force = false) {
+    checkRegistration(meeting, membership, registration, force = false) {
+        console.log('checkRegistration', membership);
+
         if (registration && !registration.isCanceled) throw {
             code: 409,
             message: 'Пользователь уже зарегистрирован на встречу'
         };
 
-        if (force || meeting.isFree || activeEnrollments.length > 0) return;
+        if (force || meeting.isFree) return;
 
         if (!membership) throw {
             code: 402,
@@ -492,11 +497,15 @@ export default ({
         const user = await Auth.getUser($user);
         const meeting = await this.getMeeting($meeting);
 
+        console.log('createRegistration', membership);
+
         return Registration.create({
             status,
             joinUrl: meeting.joinUrl,
             meetingId: meeting.id,
-            membershipId: meeting.free ? undefined : membership?.id,
+            membershipId: (meeting.free || membership.isUnlimited)
+                ? undefined
+                : membership?.id,
             userId: user.id
         });
     },
@@ -533,7 +542,9 @@ export default ({
 
         const approvedRegistration = await this.updateRegistration(registration.id, {
             status: 'approved',
-            membershipId: meeting.isFree ? undefined : membership?.id
+            membershipId: (meeting.isFree || membership.isUnlimited)
+                ? undefined
+                : membership?.id
         });
 
         if (!meeting.isFree && approvedRegistration.membershipId) {

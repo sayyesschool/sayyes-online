@@ -81,9 +81,13 @@ export const membershipReducer = createReducer(null, {
     [unsetMembership]: () => null,
 
     [registerForMeeting]: (state, action) =>
-        state?.id !== action.data.membershipId ? state : registerForMeetingUpdate(state, action.data),
+        state && state.id === action.data.membershipId
+            ? registerForMeetingUpdate(state, action.data)
+            : state,
     [unregisterFromMeeting]: (state, action) =>
-        state?.id !== action.data.membershipId ? state : unregisterFromMeetingUpdate(state, action.data)
+        state && state.id === action.data.membershipId
+            ? unregisterFromMeetingUpdate(state, action.data)
+            : state
 });
 
 export default combineReducers({
@@ -91,30 +95,30 @@ export default combineReducers({
     single: membershipReducer
 });
 
-function registerForMeetingUpdate(meeting, data) {
-    const registrationsCount = meeting.registrationsCount + (data.isFree ? 0 : 1);
-    const isFull = meeting.limit && registrationsCount === meeting.limit;
-    const isValid = !meeting.isExpired && !isFull;
+function registerForMeetingUpdate(membership, data) {
+    const registrationsCount = membership.registrationsCount + (data.isFree ? 0 : 1);
+    const isFull = membership.limit && registrationsCount === membership.limit;
+    const isValid = !membership.isExpired && !isFull;
 
     return {
-        ...meeting,
-        registrationIds: meeting.registrationIds.concat(data.id),
+        ...membership,
+        registrationIds: membership.registrationIds.concat(data.id),
         registrationsCount,
-        registrations: meeting.registrations.concat(data),
+        registrations: membership.registrations.concat(data),
         isValid
     };
 }
 
-function unregisterFromMeetingUpdate(meeting, data) {
-    const registrationsCount = meeting.registrationsCount - (data.isFree ? 0 : 1);
-    const isFull = meeting.limit && registrationsCount === meeting.limit;
-    const isValid = !meeting.isExpired && !isFull;
+function unregisterFromMeetingUpdate(membership, data) {
+    const registrationsCount = membership.registrationsCount - (data.isFree ? 0 : 1);
+    const isFull = membership.limit && registrationsCount === membership.limit;
+    const isValid = !membership.isExpired && !isFull;
 
     return {
-        ...meeting,
-        registrationIds: meeting.registrationIds.filter(id => id !== data.meetingId),
+        ...membership,
+        registrationIds: membership.registrationIds.filter(id => id !== data.meetingId),
         registrationsCount,
-        registrations: meeting.registrations.filter(r => r.id !== data.id),
+        registrations: membership.registrations.filter(r => r.id !== data.id),
         isValid
     };
 }
