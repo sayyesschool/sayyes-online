@@ -22,6 +22,7 @@ const TabList = forwardRef(({
         <JoyTabList
             ref={ref}
             className={classNames}
+            sx={{ zIndex: 0 }}
             {...props}
         >
             {items?.map(item => isValidElement(item) ?
