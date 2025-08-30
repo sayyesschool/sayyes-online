@@ -22,13 +22,13 @@ export default function MeetingsSection({ ...props }) {
         }
     }, [actions]);
 
+    if (!meetings) return <LoadingIndicator fullscreen />;
+
     const startedMeeting = meetings.find(m => m.isRegistered && m.isStarted);
     const registeredMeetings = meetings.filter(m => m.isRegistered && m.isScheduled).sort(sortMeetingByDateAsc);
     const scheduledMeetings = meetings.filter(m => !m.isRegistered && m.isScheduled).sort(sortMeetingByDateAsc);
     const pastMeetings = meetings.filter(m => m.isEnded).sort(sortMeetingByDateDesc);
     const filteredMeetings = tab === 'scheduled' ? scheduledMeetings : pastMeetings;
-
-    if (!meetings) return <LoadingIndicator fullscreen />;
 
     return (
         <Page.Section
