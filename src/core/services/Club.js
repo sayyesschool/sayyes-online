@@ -31,7 +31,7 @@ const durationLabels = {
 export default ({
     config,
     clients: { zoom },
-    models: { Data, Meeting, Membership, Registration, User },
+    models: { Data, Enrollment, Meeting, Membership, Registration },
     services: { Auth, Mail, Newsletter }
 }) => ({
     clubName: CLUB_NAME,
@@ -336,20 +336,31 @@ export default ({
         const user = await Auth.getUser($user);
         const meeting = await this.getMeeting($meeting);
         const membership = await this.findUserMembership(user);
+        const activeEnrollments = await Enrollment.find({
+            learnerId: user.id,
+            status: Enrollment.Status.Active
+        });
 
         let registration = await Registration.findOne({
             meetingId: meeting.id,
             userId: user.id
         });
 
-        this.checkRegistration(user, meeting, membership, registration, options.force);
+        this.checkRegistration(
+            meeting,
+            membership,
+            registration,
+            activeEnrollments,
+            options.force
+        );
 
         if (!registration) {
-            registration = await this.createRegistration(meeting, user, membership);
+            registration = await this.createRegistration(user, meeting, membership);
         }
 
         if (
             membership ||
+            activeEnrollments.length > 0 ||
             options.approve ||
             options.force ||
             (meeting.isFree && registration.isCanceled)
@@ -412,9 +423,18 @@ export default ({
         const meeting = await this.getMeeting($meeting);
         const membership = await this.findUserMembership(user);
         const registration = meeting.findRegistrationByUser(user);
+        const activeEnrollments = await Enrollment.find({
+            learnerId: user.id,
+            status: Enrollment.Status.Active
+        });
 
         try {
-            this.checkRegistration(user, meeting, membership, registration);
+            this.checkRegistration(
+                meeting,
+                membership,
+                registration,
+                activeEnrollments
+            );
 
             return true;
         } catch {
@@ -422,13 +442,13 @@ export default ({
         }
     },
 
-    checkRegistration(user, meeting, membership, registration, force = false) {
+    checkRegistration(meeting, membership, registration, activeEnrollments, force = false) {
         if (registration && !registration.isCanceled) throw {
             code: 409,
             message: 'Пользователь уже зарегистрирован на встречу'
         };
 
-        if (force || meeting.isFree) return;
+        if (force || meeting.isFree || activeEnrollments.length > 0) return;
 
         if (!membership) throw {
             code: 402,
@@ -468,9 +488,9 @@ export default ({
         return registration;
     },
 
-    async createRegistration($meeting, $user, membership, { status } = {}) {
-        const meeting = await this.getMeeting($meeting);
+    async createRegistration($user, $meeting, membership, { status } = {}) {
         const user = await Auth.getUser($user);
+        const meeting = await this.getMeeting($meeting);
 
         return Registration.create({
             status,

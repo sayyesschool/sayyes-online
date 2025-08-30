@@ -20,8 +20,8 @@ import { context, withMeeting, withMembershipPacks, withUser } from 'test/_env';
 import { withMailClient, withMembership, withModel, withPayment } from 'test/_env/helpers';
 
 const {
-    clients: { mail, zoom },
-    models: { Meeting, Membership, Registration, User },
+    clients: { mail },
+    models: { Enrollment, Meeting, Membership, Registration, User },
     services: { Club }
 } = context;
 
@@ -78,7 +78,7 @@ describe('ClubService', () => {
     });
 
     describe('memberships', () => {
-        withModel(Membership, { afterEach: true });
+        withModel(Membership, { cleanupAfterEach: true });
 
         describe('createMembership', () => {
             for (const pack of PACKS) {
@@ -118,7 +118,7 @@ describe('ClubService', () => {
     describe('payments', () => {
         const payment = withPayment(PAID_PAYMENT);
         const meeting = withMeeting();
-        withModel(Membership, { afterEach: true });
+        withModel(Membership, { cleanupAfterEach: true });
         withModel(Registration);
 
         describe('processPayment', () => {
@@ -206,7 +206,7 @@ describe('ClubService', () => {
         describe('cancelMeeting', () => {
             const meeting = withMeeting();
             withMembership();
-            withModel(Registration, { afterEach: true });
+            withModel(Registration, { cleanupAfterEach: true });
 
             beforeEach(async () => {
                 await Club.registerForMeeting(user.id, meeting.id);
@@ -267,8 +267,9 @@ describe('ClubService', () => {
     });
 
     describe('registrations', () => {
-        withModel(Membership, { afterEach: true });
-        withModel(Registration, { afterEach: true });
+        withModel(Membership, { cleanupAfterEach: true });
+        withModel(Registration, { cleanupAfterEach: true });
+        withModel(Enrollment, { cleanupAfterEach: true });
         const meeting = withMeeting();
 
         describe('registerForMeeting', () => {
@@ -289,6 +290,19 @@ describe('ClubService', () => {
 
             it('registers without membership with force flag', async () => {
                 const registration = await Club.registerForMeeting(user.id, meeting.id, { force: true });
+
+                expect(registration).toExist();
+                expect(registration.isApproved).toBe(true);
+                expect(registration.userId).toEqual(user.id);
+            });
+
+            it.only('registers without membership with active enrollment', async () => {
+                await Enrollment.create({
+                    learnerId: user.id,
+                    status: Enrollment.Status.Active
+                });
+
+                const registration = await Club.registerForMeeting(user.id, meeting.id);
 
                 expect(registration).toExist();
                 expect(registration.isApproved).toBe(true);
@@ -322,6 +336,19 @@ describe('ClubService', () => {
             });
 
             it('throws if registering without membership', async () => {
+                await rejects(async () => {
+                    await Club.registerForMeeting(user.id, meeting.id);
+                }, {
+                    message: 'Нет абонемента'
+                });
+            });
+
+            it.only('throws if registering without membership and no active enrollments', async () => {
+                await Enrollment.create({
+                    learnerId: user.id,
+                    status: Enrollment.Status.Processing
+                });
+
                 await rejects(async () => {
                     await Club.registerForMeeting(user.id, meeting.id);
                 }, {
@@ -457,8 +484,8 @@ describe('ClubService', () => {
 
     describe('reminders', () => {
         describe('sendMeetingsReminders', () => {
-            withModel(Meeting, { afterEach: true });
-            withModel(Registration, { afterEach: true });
+            withModel(Meeting, { cleanupAfterEach: true });
+            withModel(Registration, { cleanupAfterEach: true });
 
             it('sends reminders for next hour', async () => {
                 const nextHour = datetime().add(1, 'hour').toDate();
@@ -490,7 +517,7 @@ describe('ClubService', () => {
         });
 
         describe('sendMembershipsReminders', () => {
-            withModel(Membership, { afterEach: true });
+            withModel(Membership, { cleanupAfterEach: true });
 
             it('sends reminders for almost full memberships', async () => {
                 await Membership.create([MEMBERSHIP, MEMBERSHIP_ALMOST_FULL]);
