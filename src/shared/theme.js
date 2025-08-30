@@ -56,6 +56,16 @@ const config = {
                 }
             }
         },
+        JoyChip: {
+            styleOverrides: {
+                label: {
+                    zIndex: 0
+                },
+                endDecorator: {
+                    zIndex: 0
+                }
+            }
+        },
         JoyListItemButton: {
             styleOverrides: {
                 root: {
@@ -95,6 +105,13 @@ const config = {
             styleOverrides: {
                 root: {
                     backgroundColor: 'transparent'
+                }
+            }
+        },
+        JoyTabList: {
+            styleOverrides: {
+                root: {
+                    zIndex: 0
                 }
             }
         },
