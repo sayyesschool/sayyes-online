@@ -1,11 +1,15 @@
 import Page from 'shared/components/page';
+import { useMembershipOptions, useMemberships } from 'shared/hooks/memberships';
 import { useBoolean } from 'shared/hooks/state';
 import { Button, Dialog, Flex } from 'shared/ui-components';
 
 import MembershipCard from 'club/components/memberships/membership-card';
 import MembershipPurchaseForm from 'club/components/memberships/membership-purchase-form';
 
-export default function MembershipsSection({ memberships, options, ...props }) {
+export default function MembershipsSection({ ...props }) {
+    const [memberships] = useMemberships();
+    const options = useMembershipOptions();
+
     const [isDialogOpen, toggleDialogOpen] = useBoolean(false);
 
     if (!memberships) return null;

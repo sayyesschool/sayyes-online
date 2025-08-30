@@ -1,24 +1,34 @@
 import { useCallback, useState } from 'react';
 
+import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { Dialog, Flex, Grid, Heading, Tabs } from 'shared/components/ui';
+import { useMeetings } from 'shared/hooks/meetings';
 import { sortByDateAsc, sortByDateDesc } from 'shared/utils/sort';
 
 import MeetingCard from 'club/components/meetings/meeting-card';
 
-export default function MeetingsSection({ meetings, onRegister, ...props }) {
+export default function MeetingsSection({ ...props }) {
+    const [meetings, actions] = useMeetings();
+
     const [meeting, setMeeting] = useState();
     const [tab, setTab] = useState('scheduled');
 
     const handleRegister = useCallback(meeting => {
-        return onRegister?.(meeting).then(() => setMeeting());
-    }, [onRegister]);
+        if (meeting.isRegistered || meeting.isPending) {
+            return actions.unregisterFromMeeting(meeting.id);
+        } else {
+            return actions.registerForMeeting(meeting.id);
+        }
+    }, [actions]);
 
     const startedMeeting = meetings.find(m => m.isRegistered && m.isStarted);
     const registeredMeetings = meetings.filter(m => m.isRegistered && m.isScheduled).sort(sortMeetingByDateAsc);
     const scheduledMeetings = meetings.filter(m => !m.isRegistered && m.isScheduled).sort(sortMeetingByDateAsc);
     const pastMeetings = meetings.filter(m => m.isEnded).sort(sortMeetingByDateDesc);
     const filteredMeetings = tab === 'scheduled' ? scheduledMeetings : pastMeetings;
+
+    if (!meetings) return <LoadingIndicator fullscreen />;
 
     return (
         <Page.Section
@@ -50,7 +60,7 @@ export default function MeetingsSection({ meetings, onRegister, ...props }) {
                                     <MeetingCard
                                         meeting={meeting}
                                         onView={() => setMeeting(meeting)}
-                                        onRegister={onRegister}
+                                        onRegister={handleRegister}
                                     />
                                 </Grid.Item>
                             )}
@@ -76,7 +86,7 @@ export default function MeetingsSection({ meetings, onRegister, ...props }) {
                                     <MeetingCard
                                         meeting={meeting}
                                         onView={() => setMeeting(meeting)}
-                                        onRegister={onRegister}
+                                        onRegister={handleRegister}
                                     />
                                 </Grid.Item>
                             )}
