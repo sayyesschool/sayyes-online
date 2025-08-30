@@ -2,7 +2,7 @@ import { cloneElement, isValidElement } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 import LoadingIndicator from 'shared/components/loading-indicator';
-import { Breadcrumbs, Button, Heading, IconButton, Link, Tabs, Text } from 'shared/ui-components';
+import { Breadcrumbs, Button, Heading, Icon, IconButton, Link, Tabs, Text } from 'shared/ui-components';
 import classnames from 'shared/utils/classnames';
 
 export default function PageHeader({
@@ -38,6 +38,7 @@ export default function PageHeader({
                     {breadcrumbs?.length > 0 &&
                         <Breadcrumbs
                             className="PageHeader__breadcrumbs"
+                            separator={<Icon name="chevron_forward" />}
                             sx={{ padding: '0' }}
                         >
                             {breadcrumbs.map(props =>
