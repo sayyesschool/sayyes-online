@@ -70,25 +70,30 @@ export function withDocument(Model, data, options = {}) {
     });
 }
 
-export function withModel(Model, options = { after: true }) {
+export function withModel(Model, options = {
+    cleanupBefore: false,
+    cleanupBeforeEach: false,
+    cleanupAfterEach: false,
+    cleanupAfter: true
+}) {
     async function cleanup() {
         await Model.deleteMany({});
     }
 
-    if (options.before) {
+    if (options.cleanupBefore) {
         before(cleanup);
     }
 
-    if (options.after) {
-        after(cleanup);
-    }
-
-    if (options.beforeEach) {
+    if (options.cleanupBeforeEach) {
         beforeEach(cleanup);
     }
 
-    if (options.afterEach) {
+    if (options.cleanupAfterEach) {
         afterEach(cleanup);
+    }
+
+    if (options.cleanupAfter) {
+        after(cleanup);
     }
 }
 
