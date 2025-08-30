@@ -125,7 +125,7 @@ export default function AssignmentPage({ match, location, history }) {
                         <ContentEditor
                             ref={editorRef}
                             content={assignment.content}
-                            placeholder="Напишите небольшое приветственно-мотивационное вступление к новому домашнему заданию. Похвалите ваших учеников за отличную работу, а также коротко обозначьте дальнейшие планы относительно программы обучения. Завершите сообщение интересной good-bye phrase."
+                            placeholder="Напишите небольшое приветственно-мотивационное вступление к новому домашнему заданию."
                         />
                     ) : isLearner && assignment.content && (
                         <Content
