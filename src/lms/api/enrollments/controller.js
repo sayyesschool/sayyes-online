@@ -22,9 +22,9 @@ export default ({
 
     async getOne(req, res, next) {
         const enrollment = await Enrollment.findById(req.params.id)
-            .populate('learner', 'firstname lastname email imageUrl')
-            .populate('teacher', 'firstname lastname imageUrl zoomUrl')
-            .populate('manager', 'firstname lastname imageUrl email phone')
+            .populate('learner', 'firstname lastname email image')
+            .populate('teacher', 'firstname lastname image zoomUrl')
+            .populate('manager', 'firstname lastname image email phone')
             .populate('lessons', 'title status date duration')
             .populate('assignments', 'title status dueAt')
             .populate('courses', 'title')
