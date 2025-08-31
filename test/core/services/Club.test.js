@@ -409,7 +409,7 @@ describe('ClubService', () => {
             it('creates registration', async () => {
                 const membership = await Membership.create(MEMBERSHIP);
 
-                const registration = await Club.createRegistration(meeting.id, user.id, membership);
+                const registration = await Club.createRegistration(user.id, meeting.id, membership);
 
                 expect(registration.userId).toEqual(user.id);
                 expect(registration.membershipId).toEqual(membership.id);
@@ -419,7 +419,7 @@ describe('ClubService', () => {
             it('creates registration with status', async () => {
                 const membership = await Membership.create(MEMBERSHIP);
 
-                const registration = await Club.createRegistration(meeting.id, user.id, membership, {
+                const registration = await Club.createRegistration(user.id, meeting.id, membership, {
                     status: 'approved'
                 });
 
@@ -430,7 +430,7 @@ describe('ClubService', () => {
         describe('updateRegistration', () => {
             it('updates registration', async () => {
                 const membership = await Membership.create(MEMBERSHIP);
-                const registration = await Club.createRegistration(meeting.id, user.id, membership);
+                const registration = await Club.createRegistration(user.id, meeting.id, membership);
 
                 const updatedRegistration = await Club.updateRegistration(registration.id, {
                     status: 'pending'
@@ -443,7 +443,7 @@ describe('ClubService', () => {
         describe('deleteRegistration', () => {
             it('deletes registration', async () => {
                 const membership = await Membership.create(MEMBERSHIP);
-                const registration = await Club.createRegistration(meeting.id, user.id, membership);
+                const registration = await Club.createRegistration(user.id, meeting.id, membership);
 
                 const deletedRegistration = await Club.deleteRegistration(registration.id);
                 const updatedMembership = await Membership.findById(membership.id);
@@ -456,7 +456,7 @@ describe('ClubService', () => {
         describe('approveRegistration', () => {
             it('approves registration', async () => {
                 const membership = await Membership.create(MEMBERSHIP);
-                const registration = await Club.createRegistration(meeting.id, user.id, membership, {
+                const registration = await Club.createRegistration(user.id, meeting.id, membership, {
                     status: 'pending'
                 });
 
@@ -471,7 +471,7 @@ describe('ClubService', () => {
         describe('cancelRegistration', () => {
             it('cancels registration', async () => {
                 const membership = await Membership.create(MEMBERSHIP);
-                const registration = await Club.createRegistration(meeting.id, user.id, membership);
+                const registration = await Club.createRegistration(user.id, meeting.id, membership);
 
                 const canceledRegistration = await Club.cancelRegistration(registration.id);
                 const updatedMembership = await Membership.findById(membership.id);

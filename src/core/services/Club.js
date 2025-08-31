@@ -446,8 +446,6 @@ export default ({
     },
 
     checkRegistration(meeting, membership, registration, force = false) {
-        console.log('checkRegistration', membership);
-
         if (registration && !registration.isCanceled) throw {
             code: 409,
             message: 'Пользователь уже зарегистрирован на встречу'
@@ -497,13 +495,11 @@ export default ({
         const user = await Auth.getUser($user);
         const meeting = await this.getMeeting($meeting);
 
-        console.log('createRegistration', membership);
-
         return Registration.create({
             status,
             joinUrl: meeting.joinUrl,
             meetingId: meeting.id,
-            membershipId: (meeting.free || membership.isUnlimited)
+            membershipId: (meeting.free || membership?.isUnlimited)
                 ? undefined
                 : membership?.id,
             userId: user.id
@@ -542,7 +538,7 @@ export default ({
 
         const approvedRegistration = await this.updateRegistration(registration.id, {
             status: 'approved',
-            membershipId: (meeting.isFree || membership.isUnlimited)
+            membershipId: (meeting.isFree || membership?.isUnlimited)
                 ? undefined
                 : membership?.id
         });
