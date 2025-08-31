@@ -89,6 +89,7 @@ $border-color: variables.$black;
     gap: 4px;
     background-color: variables.$primary-color;
     color: variables.$white;
+    z-index: 1;
 }
 
 .title,
