@@ -51,7 +51,7 @@ export const User = new Schema([Person, {
     permissions: {
         type: [String],
         enum: UserPermissions,
-        default: []
+        default: ['all']
     },
     timezone: { type: String },
     note: { type: String, trim: true },
