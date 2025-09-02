@@ -3,20 +3,27 @@ import { NavLink, Redirect, Route, Switch, useRouteMatch } from 'react-router-do
 import Page from 'shared/components/page';
 
 import Packs from 'crm/components/packs';
+import { RequestsSettings } from 'crm/components/requests';
 import Rooms from 'crm/components/rooms';
 
-import './Settings.scss';
-
-const tabs = [
+const routes = [
     {
         key: 'rooms',
         url: '/settings/rooms',
-        content: 'Аудитории'
+        content: 'Аудитории',
+        component: Rooms
+    },
+    {
+        key: 'requests',
+        url: '/settings/requests',
+        content: 'Заявки',
+        component: RequestsSettings
     },
     {
         key: 'packs',
         url: '/settings/packs',
-        content: 'Пакеты'
+        content: 'Пакеты',
+        component: Packs
     }
 ];
 
@@ -27,34 +34,34 @@ export default function SettingsPage() {
         <Page className="SettingsPage">
             <Page.Header
                 title="Настройки"
-                tabs={tabs.map(tab => ({
-                    key: tab.key,
-                    as: NavLink,
-                    to: tab.url,
-                    content: tab.content,
-                    active: match?.url === tab.url
-                }))}
+                tabs={{
+                    defaultValue: match?.url,
+                    items: routes.map(route => ({
+                        key: route.key,
+                        as: NavLink,
+                        to: route.url,
+                        content: route.content,
+                        value: route.url
+                    }))
+                }}
             />
 
             <Page.Content>
                 <Switch>
                     <Redirect
                         from="/settings"
-                        to="/settings/rooms"
+                        to={routes[0].url}
                         exact
                     />
 
-                    <Route
-                        path="/settings/rooms"
-                        component={Rooms}
-                        exact
-                    />
-
-                    <Route
-                        path="/settings/packs"
-                        component={Packs}
-                        exact
-                    />
+                    {routes.map(tab => (
+                        <Route
+                            key={tab.key}
+                            path={tab.url}
+                            component={tab.component}
+                            exact
+                        />
+                    ))}
                 </Switch>
             </Page.Content>
         </Page >

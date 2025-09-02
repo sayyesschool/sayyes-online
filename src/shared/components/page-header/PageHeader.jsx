@@ -94,7 +94,6 @@ export default function PageHeader({
                 {tabs &&
                     <Tabs
                         className="PageHeader__tabs"
-                        items={tabs}
                         variant="plain"
                         size="sm"
                         color="primary"

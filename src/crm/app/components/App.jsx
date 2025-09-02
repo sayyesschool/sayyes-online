@@ -38,9 +38,9 @@ export default function App({ routes }) {
         getRequests,
         getCourses,
         getMaterials,
+        getMeetings,
         getManagers,
-        getTeachers,
-        getMeetings
+        getTeachers
     ]);
 
     if (!user) return <LoadingIndicator fullscreen />;

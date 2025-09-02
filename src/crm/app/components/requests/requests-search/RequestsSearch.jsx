@@ -2,40 +2,14 @@ import { useCallback, useRef, useState } from 'react';
 
 import LoadingIndicator from 'shared/components/loading-indicator';
 import {
-    requestChannelOptions as _requestChannelOptions,
-    requestSourceOptions as _requestSourceOptions,
-    requestStatusOptions as _requestStatusOptions,
-    requestTypeOptions as _requestTypeOptions
+    requestStatusOptions as _requestStatusOptions
 } from 'shared/data/request';
+import { useSetting } from 'shared/store/settings';
 import { Form, Icon, IconButton } from 'shared/ui-components';
 import { debounce } from 'shared/utils/fn';
 import { stripEmptyValues } from 'shared/utils/object';
 
 import styles from './RequestsSearch.module.scss';
-
-const requestTypeOptions = _requestTypeOptions.concat({
-    key: 'all',
-    value: '',
-    content: 'Все'
-});
-
-const requestStatusOptions = _requestStatusOptions.concat({
-    key: 'all',
-    value: '',
-    content: 'Все'
-});
-
-const requestChannelOptions = _requestChannelOptions.concat({
-    key: 'all',
-    value: '',
-    content: 'Все'
-});
-
-const requestSourceOptions = _requestSourceOptions.concat({
-    key: 'all',
-    value: '',
-    content: 'Все'
-});
 
 const defaultFilters = {
     type: '',
@@ -47,6 +21,10 @@ const defaultFilters = {
 };
 
 export default function RequestsSearch({ onSubmit, onClear, ...props }) {
+    const [requestTypes = {}] = useSetting('request.types');
+    const [requestChannels = {}] = useSetting('request.channels');
+    const [requestSources = {}] = useSetting('request.sources');
+
     const [query, setQuery] = useState('');
     const [filters, setFilters] = useState(defaultFilters);
     const [isLoading, setLoading] = useState(false);
@@ -88,6 +66,42 @@ export default function RequestsSearch({ onSubmit, onClear, ...props }) {
         setFilters(defaultFilters);
         onClear();
     }, [onClear]);
+
+    const requestStatusOptions = _requestStatusOptions.concat({
+        key: 'all',
+        value: '',
+        content: 'Все'
+    });
+
+    const requestTypeOptions = Object.entries(requestTypes).map(([key, value]) => ({
+        key: key,
+        value: key,
+        content: value
+    })).concat({
+        key: 'all',
+        value: '',
+        content: 'Все'
+    });
+
+    const requestChannelOptions = Object.entries(requestChannels).map(([key, value]) => ({
+        key: key,
+        value: key,
+        content: value
+    })).concat({
+        key: 'all',
+        value: '',
+        content: 'Все'
+    });
+
+    const requestSourceOptions = Object.entries(requestSources).map(([key, value]) => ({
+        key: key,
+        value: key,
+        content: value
+    })).concat({
+        key: 'all',
+        value: '',
+        content: 'Все'
+    });
 
     const hasActiveFilters = Object.values(filters).some(Boolean);
 

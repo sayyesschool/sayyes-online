@@ -16,6 +16,7 @@ import rooms from 'shared/store/modules/rooms';
 import tasks from 'shared/store/modules/tasks';
 import teachers from 'shared/store/modules/teachers';
 import user from 'shared/store/modules/user';
+import { reducer as settings } from 'shared/store/settings';
 
 export default combineReducers({
     courses,
@@ -32,6 +33,7 @@ export default combineReducers({
     tasks,
     requests,
     rooms,
+    settings,
     teachers,
     user
 });

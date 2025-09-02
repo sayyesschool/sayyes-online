@@ -13,6 +13,7 @@ import packs from './packs';
 import payments from './payments';
 import requests from './requests';
 import rooms from './rooms';
+import settings from './settings';
 import tasks from './tasks';
 import teachers from './teachers';
 import users from './users';
@@ -33,6 +34,7 @@ export default context => {
     router.use('/payments', payments(context));
     router.use('/requests', requests(context));
     router.use('/rooms', rooms(context));
+    router.use('/settings', settings(context));
     router.use('/tasks', tasks(context));
     router.use('/teachers', teachers(context));
     router.use('/users', users(context));

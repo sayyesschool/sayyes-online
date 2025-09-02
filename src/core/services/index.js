@@ -6,6 +6,7 @@ import Club from './Club';
 import Dictionary from './Dictionary';
 import Mail from './Mail';
 import Newsletter from './Newsletter';
+import Settings from './Settings';
 import Storage from './Storage';
 import Task from './Task';
 import Vocabulary from './Vocabulary';
@@ -65,6 +66,7 @@ export default (config, clients, models) => {
         Vocabulary: Vocabulary({ config, models }),
         Mail: mail,
         Newsletter: newsletter,
+        Settings: Settings({ config, models }),
         Storage: Storage({ config, clients })
     };
 };

@@ -4,15 +4,7 @@ import datetime from 'shared/libs/datetime';
 
 import { Customer, UTM } from '../common';
 
-import {
-    RequestChannel,
-    RequestChannelLabel,
-    RequestSource,
-    RequestSourceLabel,
-    RequestStatus,
-    RequestType,
-    RequestTypeLabel
-} from './constants';
+import { RequestStatus } from './constants';
 
 export const Request = new Schema({
     hhid: { type: String },
@@ -21,20 +13,9 @@ export const Request = new Schema({
         enum: Object.values(RequestStatus),
         default: RequestStatus.New
     },
-    type: {
-        type: String,
-        enum: Object.values(RequestType)
-    },
-    channel: {
-        type: String,
-        enum: Object.values(RequestChannel),
-        default: RequestChannel.None
-    },
-    source: {
-        type: String,
-        enum: Object.values(RequestSource),
-        default: RequestSource.None
-    },
+    type: { type: String },
+    channel: { type: String },
+    source: { type: String },
     contact: { type: Customer },
     note: { type: String, trim: true, default: '' },
     referrer: { type: String },
@@ -54,25 +35,10 @@ export const Request = new Schema({
     timestamps: true
 });
 
-Request.statics.Channel = RequestChannel;
-Request.statics.Type = RequestType;
-Request.statics.Source = RequestSource;
 Request.statics.Status = RequestStatus;
 
 Request.virtual('url').get(function() {
     return `requests/${this.id}`;
-});
-
-Request.virtual('typeLabel').get(function() {
-    return RequestTypeLabel[this.type];
-});
-
-Request.virtual('channelLabel').get(function() {
-    return RequestChannelLabel[this.channel];
-});
-
-Request.virtual('sourceLabel').get(function() {
-    return RequestSourceLabel[this.source];
 });
 
 Request.virtual('dateString').get(function() {

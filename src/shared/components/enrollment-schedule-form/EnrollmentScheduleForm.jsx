@@ -28,8 +28,6 @@ export default function EnrollmentScheduleForm({ enrollment, onSubmit, ...props 
         }));
     }, [setData]);
 
-    console.log('EnrollmentScheduleForm', data.schedule);
-
     return (
         <Form
             className="EnrollmentScheduleForm" onSubmit={handleSubmit}

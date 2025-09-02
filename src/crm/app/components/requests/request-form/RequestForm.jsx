@@ -1,13 +1,9 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 
 import UserSelect from 'shared/components/user-select';
-import {
-    requestChannelOptions,
-    requestSourceOptions,
-    requestStatusOptions,
-    requestTypeOptions
-} from 'shared/data/request';
+import { requestStatusOptions } from 'shared/data/request';
 import { useFormData } from 'shared/hooks/form';
+import { useSetting } from 'shared/store/settings';
 import { Flex, Form, Text } from 'shared/ui-components';
 
 const defaultRequest = {
@@ -21,6 +17,10 @@ const defaultRequest = {
 };
 
 function RequestForm({ request = {}, managers, onSubmit, ...props }, ref) {
+    const [requestTypes = {}] = useSetting('request.types');
+    const [requestChannels = {}] = useSetting('request.channels');
+    const [requestSources = {}] = useSetting('request.sources');
+
     const formRef = useRef();
 
     const { data, handleChange } = useFormData({
@@ -41,6 +41,30 @@ function RequestForm({ request = {}, managers, onSubmit, ...props }, ref) {
         onSubmit(data);
     }
 
+    const requestTypeOptions = Object.entries(requestTypes)
+        .concat([['', '[Не указан]']])
+        .map(([key, value]) => ({
+            key: key,
+            value: key,
+            content: value
+        }));
+
+    const requestChannelOptions = Object.entries(requestChannels)
+        .concat([['', '[Не указан]']])
+        .map(([key, value]) => ({
+            key: key,
+            value: key,
+            content: value
+        }));
+
+    const requestSourceOptions = Object.entries(requestSources)
+        .concat([['', '[Не указан]']])
+        .map(([key, value]) => ({
+            key: key,
+            value: key,
+            content: value
+        }));
+
     return (
         <Form
             ref={formRef}
@@ -48,15 +72,6 @@ function RequestForm({ request = {}, managers, onSubmit, ...props }, ref) {
             onSubmit={handleSubmit}
             {...props}
         >
-            <Form.Select
-                name="type"
-                value={data.type}
-                label="Тип"
-                options={requestTypeOptions}
-                required
-                onChange={handleChange}
-            />
-
             <Form.Select
                 name="status"
                 value={data.status}
@@ -84,6 +99,15 @@ function RequestForm({ request = {}, managers, onSubmit, ...props }, ref) {
                 name="contact.phone"
                 value={data.contact?.phone}
                 label="Телефон"
+                onChange={handleChange}
+            />
+
+            <Form.Select
+                name="type"
+                value={data.type}
+                label="Тип"
+                options={requestTypeOptions}
+                required
                 onChange={handleChange}
             />
 

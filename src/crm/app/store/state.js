@@ -59,6 +59,8 @@ export default {
         single: null
     },
 
+    settings: null,
+
     teachers: {
         list: null,
         single: null
