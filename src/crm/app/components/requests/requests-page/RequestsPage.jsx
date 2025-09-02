@@ -5,6 +5,7 @@ import FormDialog from 'shared/components/form-dialog';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { useBoolean } from 'shared/hooks/state';
+import { useRequest, useRequests } from 'shared/store/requests';
 
 import RequestForm from 'crm/components/requests/request-form';
 import RequestProcessFormDialog from 'crm/components/requests/request-process-form-dialog';
@@ -15,7 +16,8 @@ import { useActions, useStore } from 'crm/store';
 export default function RequestsPage({ history }) {
     const [user] = useStore('user');
     const [managers] = useStore('managers.list');
-    const [{ list: requests, single: request }, requestActions] = useStore('requests');
+    const [requests, requestActions] = useRequests();
+    const [request] = useRequest();
     const learnerActions = useActions('learners');
     const enrollmentActions = useActions('enrollments');
     const { showNotification } = useActions('notification');
@@ -24,14 +26,7 @@ export default function RequestsPage({ history }) {
     const [isLoading, setLoading] = useState(false);
     const [isRequestProcessPanelOpen, toggleRequestProcessPanelOpen] = useBoolean(false);
     const [isRequestFormOpen, toggleRequestFormOpen] = useBoolean(false);
-    const [isSearchFormOpen, toggleSearchFormOpen] = useBoolean(false);
     const [requestWithExistingLearner, setRequestWithExistingLearner] = useState();
-
-    useEffect(() => {
-        setLoading(true);
-        requestActions.getRequests()
-            .finally(() => setLoading(false));
-    }, [requestActions]);
 
     const handleProcessRequest = useCallback(request => {
         if (!request.managerId) {
@@ -96,6 +91,11 @@ export default function RequestsPage({ history }) {
         toggleRequestFormOpen(true);
     }, []);
 
+    const handleCreateRequest = useCallback(data => {
+        return requestActions.createRequest(data)
+            .then(() => toggleRequestFormOpen(false));
+    }, []);
+
     const handleUpdateRequest = useCallback(data => {
         return requestActions.updateRequest(data.id, data)
             .then(() => toggleRequestFormOpen(false));
@@ -137,6 +137,13 @@ export default function RequestsPage({ history }) {
                         icon: 'file_export',
                         content: 'Экспорт в CSV',
                         variant: 'plain'
+                    },
+                    {
+                        key: 'new',
+                        icon: 'add',
+                        content: 'Создать заявку',
+                        variant: 'solid',
+                        onClick: () => toggleRequestFormOpen(true)
                     }
                 ]}
                 loading={isLoading}
@@ -173,15 +180,16 @@ export default function RequestsPage({ history }) {
             }
 
             <FormDialog
-                title="Редактирование заявки"
+                title={request ? 'Редактирование заявки' : 'Создание заявки'}
                 open={isRequestFormOpen}
+                submitButtonText={request ? 'Сохранить' : 'Создать'}
                 onClose={toggleRequestFormOpen}
             >
                 <RequestForm
-                    id="request-edit-form"
+                    id="request-form"
                     request={request}
                     managers={managers}
-                    onSubmit={handleUpdateRequest}
+                    onSubmit={request ? handleUpdateRequest : handleCreateRequest}
                 />
             </FormDialog>
 

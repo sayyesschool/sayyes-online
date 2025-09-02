@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 
+import { useSetting } from 'shared/store/settings';
 import { Avatar, List, ListItem, Text } from 'shared/ui-components';
 
 export default function RequestsList({ requests }) {
+    const [requestTypes = {}] = useSetting('request.types');
+
     return (
         <List className="RequestsList">
             {requests?.map(request =>
@@ -13,10 +16,11 @@ export default function RequestsList({ requests }) {
                     content={<>
                         <Text
                             type="body-md"
-                            content={request.typeLabel}
+                            content={requestTypes[request.type]}
                             end={
                                 <Text
-                                    type="body-sm" content={request.dateTimeString}
+                                    content={request.dateTimeString}
+                                    type="body-sm"
                                     inline
                                 />
                             }
@@ -26,7 +30,6 @@ export default function RequestsList({ requests }) {
                         {request.contact &&
                             <Text
                                 type="body-sm"
-                                content={request.contact.phone || request.contact.email}
                                 noWrap
                             >
                                 {request.contact.name} · {request.contact.phone || request.contact.email}

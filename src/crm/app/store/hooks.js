@@ -8,7 +8,6 @@ import {
     memberships,
     packs,
     payments,
-    requests,
     rooms,
     teachers,
     user
@@ -23,7 +22,6 @@ const modules = {
     memberships,
     packs,
     payments,
-    requests,
     rooms,
     teachers,
     user

@@ -11,11 +11,11 @@ import memberships from 'shared/store/modules/memberships';
 import notification from 'shared/store/modules/notification';
 import packs from 'shared/store/modules/packs';
 import payments from 'shared/store/modules/payments';
-import requests from 'shared/store/modules/requests';
 import rooms from 'shared/store/modules/rooms';
 import tasks from 'shared/store/modules/tasks';
 import teachers from 'shared/store/modules/teachers';
 import user from 'shared/store/modules/user';
+import { reducer as requests } from 'shared/store/requests';
 import { reducer as settings } from 'shared/store/settings';
 
 export default combineReducers({

@@ -2,6 +2,7 @@ import AccessGuard from 'shared/components/access-guard';
 import Page from 'shared/components/page';
 import { Permissions } from 'shared/data/access';
 import { isThisWeek, isToday } from 'shared/libs/datetime';
+import { useRequests } from 'shared/store/requests';
 import { Grid } from 'shared/ui-components';
 
 import LessonsList from 'crm/components/lessons/lessons-list';
@@ -11,7 +12,7 @@ import { useStore } from 'crm/hooks/store';
 
 export default function HomePage() {
     const [user] = useStore('user');
-    const [requests] = useStore('requests.list');
+    const [requests] = useRequests();
     const [lessons] = useStore('lessons.list');
     const [meetings] = useStore('meetings.list');
 

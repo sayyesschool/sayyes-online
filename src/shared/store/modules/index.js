@@ -11,7 +11,6 @@ export * as memberships from './memberships';
 export * as notification from './notification';
 export * as packs from './packs';
 export * as payments from './payments';
-export * as requests from './requests';
 export * as rooms from './rooms';
 export * as tasks from './tasks';
 export * as teachers from './teachers';

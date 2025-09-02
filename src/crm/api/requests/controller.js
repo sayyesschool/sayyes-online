@@ -54,8 +54,9 @@ export default ({
         });
     },
 
-    async create(req, res, next) {
-        const request = await Request.create(req.body)
+    async create(req, res) {
+        const newRequest = await Request.create(req.body);
+        const request = await Request.findById(newRequest.id)
             .populate('learner', 'firstname lastname')
             .populate('manager', 'firstname lastname');
 

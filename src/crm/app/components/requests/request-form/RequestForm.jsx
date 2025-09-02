@@ -6,6 +6,8 @@ import { useFormData } from 'shared/hooks/form';
 import { useSetting } from 'shared/store/settings';
 import { Flex, Form, Text } from 'shared/ui-components';
 
+import { getOptions } from './/helpers';
+
 const defaultRequest = {
     status: 'new',
     type: '',
@@ -26,8 +28,8 @@ function RequestForm({ request = {}, managers, onSubmit, ...props }, ref) {
     const { data, handleChange } = useFormData({
         ...defaultRequest,
         ...request,
-        learnerId: request.learner?.id,
-        managerId: request.manager?.id
+        learnerId: request?.learnerId,
+        managerId: request?.managerId
     });
 
     useImperativeHandle(ref, () => ({
@@ -36,34 +38,14 @@ function RequestForm({ request = {}, managers, onSubmit, ...props }, ref) {
     }));
 
     function handleSubmit() {
-        data.contact.phone = data.contact?.phone.replace(/ /gm, '');
+        data.contact.phone = data.contact.phone ? data.contact?.phone.replace(/ /gm, '') : undefined;
 
         onSubmit(data);
     }
 
-    const requestTypeOptions = Object.entries(requestTypes)
-        .concat([['', '[Не указан]']])
-        .map(([key, value]) => ({
-            key: key,
-            value: key,
-            content: value
-        }));
-
-    const requestChannelOptions = Object.entries(requestChannels)
-        .concat([['', '[Не указан]']])
-        .map(([key, value]) => ({
-            key: key,
-            value: key,
-            content: value
-        }));
-
-    const requestSourceOptions = Object.entries(requestSources)
-        .concat([['', '[Не указан]']])
-        .map(([key, value]) => ({
-            key: key,
-            value: key,
-            content: value
-        }));
+    const requestTypeOptions = getOptions(requestTypes);
+    const requestChannelOptions = getOptions(requestChannels);
+    const requestSourceOptions = getOptions(requestSources);
 
     return (
         <Form
@@ -85,13 +67,7 @@ function RequestForm({ request = {}, managers, onSubmit, ...props }, ref) {
                 name="contact.name"
                 value={data.contact?.name}
                 label="Имя"
-                onChange={handleChange}
-            />
-
-            <Form.Input
-                name="contact.email"
-                value={data.contact?.email}
-                label="Эл. почта"
+                required={!data.learnerId}
                 onChange={handleChange}
             />
 
@@ -99,6 +75,15 @@ function RequestForm({ request = {}, managers, onSubmit, ...props }, ref) {
                 name="contact.phone"
                 value={data.contact?.phone}
                 label="Телефон"
+                required={!data.learnerId && !data?.contact?.email}
+                onChange={handleChange}
+            />
+
+            <Form.Input
+                name="contact.email"
+                value={data.contact?.email}
+                label="Эл. почта"
+                required={!data.learnerId && !data?.contact?.phone}
                 onChange={handleChange}
             />
 
@@ -137,6 +122,7 @@ function RequestForm({ request = {}, managers, onSubmit, ...props }, ref) {
                         value: request.learner.id,
                         label: request.learner.fullname
                     }]}
+                    readOnly={data.id}
                     disabled
                 />
             }

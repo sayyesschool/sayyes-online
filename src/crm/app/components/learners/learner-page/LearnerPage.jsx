@@ -123,7 +123,7 @@ export default function LearnerPage({ match, location, history }) {
                     >
                         <Flex gap="medium" column>
                             <LearnerRequests
-                                requests={learner?.requests}
+                                learner={learner}
                             />
 
                             <LearnerEnrollments
