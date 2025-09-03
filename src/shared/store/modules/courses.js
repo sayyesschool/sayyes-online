@@ -183,16 +183,6 @@ export const deleteExerciseItem = createAction('DELETE_COURSE_EXERCISE_ITEM', (c
     }
 }));
 
-// Progress
-
-export const updateExerciseProgress = createAction('UPDATE_COURSE_EXERCISE_PROGRESS', (progressId = '', data) => ({
-    request: {
-        method: 'post',
-        path: `progress/${progressId}`,
-        body: data
-    }
-}));
-
 // Comments
 
 export const createExerciseComment = createAction('CREATE_EXERCISE_COMMENT', (courseId, exerciseId, data) => ({
@@ -244,7 +234,6 @@ export const actions = {
     createExercise,
     updateExercise,
     deleteExercise,
-    updateExerciseProgress,
 
     createExerciseItem,
     updateExerciseItem,
@@ -360,15 +349,6 @@ export const courseReducer = createReducer(null, {
         sections: state.sections.map(section => section.id !== action.data.section ? section : {
             ...section,
             _exercises: section._exercises.filter(id => id !== action.data.id)
-        })
-    }),
-    [updateExerciseProgress]: (state, action) => ({
-        ...state,
-        exercises: state.exercises.map(exercise => exercise.id !== action.data.exerciseId ? exercise : {
-            ...exercise,
-            progressId: action.data.id,
-            submitted: action.data.submitted,
-            completed: action.data.completed
         })
     }),
 

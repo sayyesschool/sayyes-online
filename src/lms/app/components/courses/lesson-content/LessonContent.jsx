@@ -5,6 +5,7 @@ import { Flex, Tabs } from 'shared/ui-components';
 import Exercise from 'lms/components/courses/exercise';
 
 export default function LessonContent({
+    enrollmentId,
     lesson,
     assignments,
     user,
@@ -43,7 +44,7 @@ export default function LessonContent({
                             id={exercise.id}
                             index={index}
                             user={user}
-                            exercise={exercise}
+                            enrollmentId={enrollmentId}
                             assignments={assignments}
                             showMenu={user.isTeacher}
                             onProgressChange={onExerciseProgressChange}

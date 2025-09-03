@@ -1,6 +1,9 @@
 import { Card, Heading, Image, Text } from 'shared/ui-components';
 
-export default function LessonCard({ lesson, onSelect, ...props }) {
+export default function LessonCard({ lesson, exercises, onSelect, ...props }) {
+    const completedExercises = exercises.filter(exercise => exercise.completed);
+    const checkedExercises = exercises.filter(exercise => exercise.checked);
+
     return (
         <Card
             className="LessonCard"
@@ -33,6 +36,10 @@ export default function LessonCard({ lesson, onSelect, ...props }) {
                         />
                     </Text>
                 }
+
+                <Text as="p" type="body-md">{exercises.length} упражнений</Text>
+                <Text as="p" type="body-md">{completedExercises.length} упражнений выполнено</Text>
+                <Text as="p" type="body-md">{checkedExercises.length} упражнений проверено</Text>
             </Card.Content>
         </Card>
     );

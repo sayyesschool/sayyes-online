@@ -31,9 +31,11 @@ export default function SectionPage({ match, history }) {
 
     const handleCreateExercise = useCallback(data => {
         data.sectionId = section.id;
+        data.lessonId = lesson.id;
+        data.unitId = unit.id;
 
         return actions.createExercise(course.id, data);
-    }, [course, lesson, section]);
+    }, [actions, course, lesson, section, unit]);
 
     const handleDeleteExercise = useCallback(exercise => {
         return actions.deleteExercise(course.id, exercise.id);

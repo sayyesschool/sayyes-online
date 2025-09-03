@@ -1,12 +1,12 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Content from 'shared/components/content';
-import LoadingIndicator from 'shared/components/loading-indicator';
 import { useExercise } from 'shared/hooks/exercises';
 import { useBoolean } from 'shared/hooks/state';
 import {
     Avatar,
+    Badge,
     Button,
     Chip,
     Flex,
@@ -17,49 +17,59 @@ import {
     Surface
 } from 'shared/ui-components';
 
-import ExerciseComments from 'lms/components/courses/exercise-comments';
 import ExerciseContent from 'lms/components/courses/exercise-content';
 
 import styles from './Exercise.module.scss';
+
+const getBadgeIcon = ({ completed, checked } = {}) => {
+    if (completed && checked) return 'done_all';
+    if (completed) return 'done';
+    if (checked) return 'done_outline';
+
+    return null;
+};
 
 export default function Exercise({
     index,
     user,
     id,
+    enrollmentId,
     assignments,
     showMenu,
     showRemoveFromAssignment,
     onProgressChange,
     onAddToAssignment,
     onAddToNewAssignment,
-    onRemoveFromAssignment,
-    onComplete
+    onRemoveFromAssignment
 }) {
-    const [exercise] = useExercise(id);
-
-    const [state, setState] = useState(exercise?.state || {});
+    const query = useMemo(() => enrollmentId ? { enrollmentId } : {}, [enrollmentId]);
+    const [exercise] = useExercise({ id, query });
+    const [state, setState] = useState(exercise?.progress?.state || {});
     const [isCollapsed, toggleCollapsed] = useBoolean(true);
-    // const [isCommenting, toggleCommenting] = useBoolean(false);
-    const [isChecked, setChecked] = useBoolean(false);
     const [isSaving, setSaving] = useBoolean(false);
+
+    const badgeIcon = getBadgeIcon(exercise);
 
     const handleSave = useCallback(() => {
         setSaving(true);
 
         return onProgressChange(exercise, { state })
             .finally(() => setSaving(false));
-    }, [state, exercise, onProgressChange]);
+    }, [setSaving, onProgressChange, exercise, state]);
 
     const handleComplete = useCallback(() => {
         setSaving(true);
 
-        return onProgressChange(exercise, { completed: !exercise.completed })
+        return onProgressChange(exercise, { completed: !exercise?.completed })
             .finally(() => setSaving(false));
-    }, [exercise, onComplete]);
+    }, [exercise, onProgressChange, setSaving]);
 
-    const handleCheck = useCallback(() => {
-        setChecked(true);
-    }, []);
+    const handleChecked = useCallback(() => {
+        setSaving(true);
+
+        return onProgressChange(exercise, { checked: !exercise?.checked })
+            .finally(() => setSaving(false));
+    }, [exercise, onProgressChange, setSaving]);
 
     const handleUpdateState = useCallback((itemId, state) => {
         setState(oldState => ({
@@ -83,29 +93,11 @@ export default function Exercise({
         onRemoveFromAssignment(exercise, assignment);
     }, [exercise, onRemoveFromAssignment]);
 
-    // const handleCreateComment = useCallback((_, data) => {
-    //     return actions.createComment({...data, itemId: exercise?.id})
-    //         .then(() => toggleCommenting(false));
-    // }, [actions, exercise, toggleCommenting]);
-
-    // const handleUpdateComment = useCallback((commentId, data) => {
-    //     return actions.updateComment(commentId, data);
-    // }, [actions]);
-
-    // const handleDeleteComment = useCallback(commentId => {
-    //     return actions.deleteComment(commentId);
-    // }, [actions]);
-
-    const hasSaveableItems = user.isLearner && exercise?.items.some(item =>
-        item.type === 'essay' ||
-        item.type === 'fib' ||
-        item.type === 'input'
-    );
-
-    const hasCheckableItems = exercise?.items.some(item =>
-        item.type === 'fib' ||
-        (item.type === 'input' && item.items?.length > 0)
-    );
+    useEffect(() => {
+        if (exercise.progress) {
+            setState(exercise.progress.state || {});
+        }
+    }, [exercise.progress]);
 
     if (!exercise) return (
         <Skeleton
@@ -124,11 +116,15 @@ export default function Exercise({
             shadow="sm"
         >
             <div className={styles.header} onClick={toggleCollapsed}>
-                <Avatar
-                    content={index + 1}
-                    color={exercise.completed ? 'primary' : undefined}
+                <Badge
+                    content={badgeIcon && <Icon name={badgeIcon} size="small" />}
                     size="sm"
-                />
+                >
+                    <Avatar
+                        content={index + 1}
+                        size="sm"
+                    />
+                </Badge>
 
                 <Content
                     className={styles.description}
@@ -199,7 +195,7 @@ export default function Exercise({
 
                     {showRemoveFromAssignment &&
                         <IconButton
-                            icon="remove"
+                            icon="highlight_off"
                             title="Удалить из задания"
                             onClick={handleRemoveFromAssignment}
                         />
@@ -212,56 +208,44 @@ export default function Exercise({
                     <ExerciseContent
                         exercise={exercise}
                         state={state}
-                        checked={isChecked}
+                        checked={false}
                         disabled={user.isTeacher}
                         onUpdateState={handleUpdateState}
                     />
 
                     <Flex gap="sm">
-                        {hasCheckableItems &&
-                            <Button
-                                content="Проверить"
-                                icon="done"
-                                variant="outlined"
-                                onClick={handleCheck}
-                            />
-                        }
+                        <Button
+                            content="Сохранить"
+                            icon="save"
+                            variant="outlined"
+                            disabled={isSaving}
+                            onClick={handleSave}
+                        />
 
-                        {hasSaveableItems &&
+                        {user.isLearner && (
                             <Button
-                                content="Сохранить"
-                                icon="save"
-                                variant="outlined"
-                                disabled={isSaving}
-                                onClick={handleSave}
-                            />
-                        }
-
-                        {/* <Button
-                            label="Оставить комментарий"
-                            icon="comment"
-                            outlined
-                            onClick={toggleCommenting}
-                        /> */}
-
-                        {user.isTeacher &&
-                            <Button
-                                content={exercise.completed ? 'Отметить как невыполненное' : 'Отметить как выполненное'}
+                                content={
+                                    exercise.completed ? 'Убрать из выполненых' : 'Выполнено'
+                                }
                                 icon={exercise.completed ? 'task_alt' : undefined}
                                 variant="outlined"
                                 disabled={isSaving}
                                 onClick={handleComplete}
                             />
-                        }
-                    </Flex>
+                        )}
 
-                    {/* TODO: решили убрать коментарии из упражнений и оставить для задания */}
-                    {/* <ExerciseComments
-                    exercise={exercise}
-                    onCreate={handleCreateComment}
-                    onUpdate={handleUpdateComment}
-                    onDelete={handleDeleteComment}
-                /> */}
+                        {user.isTeacher && (
+                            <Button
+                                content={
+                                    exercise.checked ? 'Убрать из проверенных' : 'Проверено'
+                                }
+                                icon={exercise.completed ? 'task_alt' : undefined}
+                                variant="outlined"
+                                disabled={isSaving}
+                                onClick={handleChecked}
+                            />
+                        )}
+                    </Flex>
                 </div>
             }
         </Surface>

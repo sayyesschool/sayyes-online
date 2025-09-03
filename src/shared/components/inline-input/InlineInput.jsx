@@ -12,7 +12,7 @@ export default function InlineInput({
     onChange = Function.prototype,
     ...props
 }) {
-    const [value, setValue] = useState(completed ? correctValues[0] : _value);
+    const [value, setValue] = useState(_value);
 
     const handleChange = useCallback(event => {
         const value = event.target.value;

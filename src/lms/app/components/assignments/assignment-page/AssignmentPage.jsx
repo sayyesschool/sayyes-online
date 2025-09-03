@@ -12,23 +12,25 @@ import { useExerciseActions } from 'shared/hooks/exercises';
 import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
 import datetime from 'shared/libs/datetime';
-import { Heading, Surface, Text } from 'shared/ui-components';
+import { Heading, Text } from 'shared/ui-components';
 
 import Exercise from 'lms/components/courses/exercise';
 
 import styles from './AssignmentPage.module.scss';
 
 export default function AssignmentPage({ match, location, history }) {
-    const [assignment, actions] = useAssignment(match.params.id, location.search);
-    const exerciseActions = useExerciseActions();
     const [user] = useUser();
-
+    const [assignment, actions] = useAssignment(match.params.id);
+    const exerciseActions = useExerciseActions();
+    const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
     const editorRef = useRef();
 
-    const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
+    const isTeacher = user.isTeacher;
+    const isLearner = user.isLearner;
+    const hasExercises = assignment?.exercises?.length > 0;
 
     const handleExerciseProgressChange = useCallback((exercise, data) => {
-        return exerciseActions.updateExerciseProgress(exercise.progressId, {
+        return exerciseActions.updateExerciseProgress(exercise?.progress?.id, {
             ...data,
             enrollmentId: assignment.enrollmentId,
             courseId: exercise.courseId,
@@ -61,10 +63,6 @@ export default function AssignmentPage({ match, location, history }) {
     }, [assignment, actions]);
 
     if (!assignment) return <LoadingIndicator />;
-
-    const isTeacher = user.isTeacher;
-    const isLearner = user.isLearner;
-    const hasExercises = assignment.exercises?.length > 0;
 
     return (
         <Page className={styles.root} layout="narrow">
@@ -102,20 +100,18 @@ export default function AssignmentPage({ match, location, history }) {
                     />
                 }
                 actions={
-                    isLearner && getLearnerAssignmentActions(assignment.status, updateAssignmentStatus)
-                    ||
-                    isTeacher && [{
-                        key: 'save',
-                        icon: 'save',
-                        title: 'Сохранить задание',
-                        onClick: handleSave
-                    }, {
-                        key: 'delete',
-                        icon: 'delete',
-                        color: 'danger',
-                        title: 'Удалить задание',
-                        onClick: toggleConfirmationDialogOpen
-                    }]
+                    (isLearner &&
+                        getLearnerAssignmentActions(
+                            assignment.status,
+                            updateAssignmentStatus
+                        )) ||
+                    (isTeacher &&
+                        getTeacherAssignmentActions(
+                            assignment.status,
+                            updateAssignmentStatus,
+                            handleSave,
+                            toggleConfirmationDialogOpen
+                        ))
                 }
             />
 
@@ -151,7 +147,6 @@ export default function AssignmentPage({ match, location, history }) {
                             id={exercise.id}
                             index={index}
                             user={user}
-                            exercise={exercise}
                             showRemoveFromAssignment={isTeacher}
                             onRemoveFromAssignment={handleRemoveExercise}
                             onProgressChange={handleExerciseProgressChange}
@@ -190,4 +185,45 @@ function getLearnerAssignmentActions(status, onClick) {
         }];
         case 'completed': return [];
     }
+}
+
+function getTeacherAssignmentActions(
+    status,
+    onClick,
+    handleSave,
+    toggleConfirmationDialogOpen
+) {
+    const baseActions = [
+        {
+            key: 'save',
+            icon: 'save',
+            title: 'Сохранить задание',
+            onClick: handleSave
+        }, {
+            key: 'delete',
+            icon: 'delete',
+            color: 'danger',
+            title: 'Удалить задание',
+            onClick: toggleConfirmationDialogOpen
+        }
+    ];
+
+    status === 'assigned' ?
+        baseActions.push({
+            key: 'turn-in',
+            icon: 'verified',
+            content: 'Отметить выполненным',
+            color: 'primary',
+            onClick: () => onClick('completed')
+        }) :
+        baseActions.push({
+            key: 'turn-in',
+            icon: 'unpublished',
+            content: 'Вернуть в работу',
+            variant: 'soft',
+            color: 'primary',
+            onClick: () => onClick('assigned')
+        });
+
+    return baseActions;
 }

@@ -6,6 +6,7 @@ import Page from 'shared/components/page';
 import { useAssignments } from 'shared/hooks/assignments';
 import { useCourse } from 'shared/hooks/courses';
 import { useEnrollment } from 'shared/hooks/enrollments';
+import { useExerciseActions } from 'shared/hooks/exercises';
 import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
 import { Text } from 'shared/ui-components';
@@ -15,7 +16,8 @@ import LessonContent from 'lms/components/courses/lesson-content';
 import { LearnerContextProvider } from 'lms/contexts/learner';
 
 export default function LessonPage({ match, location }) {
-    const [course, actions] = useCourse(match.params.course, location.search);
+    const [course] = useCourse(match.params.course, location.search);
+    const exerciseActions = useExerciseActions();
     const [enrollment] = useEnrollment(course?.enrollmentId);
     const assignmentsQuery = course?.enrollmentId ?
         { enrollmentId: course?.enrollmentId } :
@@ -40,13 +42,13 @@ export default function LessonPage({ match, location }) {
     }, [enrollment, exerciseIdForNewAssignment]);
 
     const handleExerciseProgressChange = useCallback((exercise, data) => {
-        return actions.updateExerciseProgress(exercise.progressId, {
+        return exerciseActions.updateExerciseProgress(exercise.progress?.id, {
             ...data,
             enrollmentId: course.enrollmentId,
             courseId: course.id,
             exerciseId: exercise.id
         });
-    }, [course]);
+    }, [course?.enrollmentId, course?.id, exerciseActions]);
 
     const handleAddExerciseToAssignment = useCallback((exercise, assignment) => {
         return assignmentActions.updateAssignment(assignment.id, {
@@ -90,6 +92,7 @@ export default function LessonPage({ match, location }) {
 
                 <Page.Content>
                     <LessonContent
+                        enrollmentId={enrollment.id}
                         lesson={lesson}
                         assignments={assignments}
                         user={user}

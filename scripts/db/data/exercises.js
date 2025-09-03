@@ -2,6 +2,8 @@ export const exercise = {
     _id: '660af90c20a265092f53b487',
     courseId: '5fb265487ef0653994e53a26',
     sectionId: '64b6c8b8368b0620f3298514',
+    lessonId: '64b6c782368b0620f32984f2',
+    unitId: '64b6c779368b0620f32984ed',
     description: '<p class="directions">Complete the conversations. Use the conversations above to help you. Then practice with a partner. Use your own names.</p><p>Заполните пропуски, используя диалоги выше. Затем попрактикуйте данные диалоги с партнёром, используя свои собственные имена.</p>',
     items: [
         {

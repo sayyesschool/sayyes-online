@@ -3,9 +3,13 @@ import { Avatar, Card, Flex, Heading, Image, Text } from 'shared/ui-components';
 export default function UnitCard({
     number,
     unit,
+    exercises,
     onSelectUnit,
     ...props
 }) {
+    const completedExercises = exercises.filter(exercise => exercise.completed);
+    const checkedExercises = exercises.filter(exercise => exercise.checked);
+
     return (
         <Card
             className="UnitCard"
@@ -28,6 +32,10 @@ export default function UnitCard({
                         {unit.lessons &&
                             <Text as="p" type="body-md">{unit.lessons?.length} уроков</Text>
                         }
+
+                        <Text as="p" type="body-md">{exercises.length} упражнений</Text>
+                        <Text as="p" type="body-md">{completedExercises.length} упражнений выполнено</Text>
+                        <Text as="p" type="body-md">{checkedExercises.length} упражнений проверено</Text>
                     </Flex>
                 </Flex>
             </Card.Content>

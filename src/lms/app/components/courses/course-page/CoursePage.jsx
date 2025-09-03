@@ -1,11 +1,13 @@
 import LoadingIndicator from 'shared/components/loading-indicator';
 import Page from 'shared/components/page';
 import { useCourse } from 'shared/hooks/courses';
+import { useExercises } from 'shared/hooks/exercises';
 
 import CourseContent from 'lms/components/courses/course-content';
 
 export default function CoursePage({ match, location }) {
     const [course] = useCourse(match.params.course, location.search);
+    const [exercises] = useExercises();
 
     if (!course) return <LoadingIndicator />;
 
@@ -19,6 +21,7 @@ export default function CoursePage({ match, location }) {
             <Page.Content>
                 <CourseContent
                     course={course}
+                    exercises={exercises}
                 />
             </Page.Content>
         </Page>

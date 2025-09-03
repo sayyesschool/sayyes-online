@@ -12,13 +12,20 @@ export default ({
 
     async getOne(req, res, next) {
         const assignment = await Assignment.findById(req.params.id)
-            .populate('enrollment', 'domain')
-            .populate('exercises')
-            .populate('comments');
+            .populate('enrollment', 'domain');
+
+        await assignment.populate({
+            path: 'exercises',
+            populate: {
+                path: 'progress',
+                match: { enrollmentId: assignment.enrollmentId }
+            }
+        });
 
         if (!assignment) {
-            const error = new Error('Задание не найдена');
+            const error = new Error('Задание не найдено');
             error.status = 404;
+
             return next(error);
         }
 
@@ -42,11 +49,16 @@ export default ({
         const assignment = await Assignment.findOneAndUpdate({
             _id: req.params.id
         }, req.body, {
-            new: true,
-            projection: Object.keys(req.body)
-        }).populate('enrollment', 'domain')
-            .populate('exercises')
-            .populate('comments');
+            new: true
+        }).populate('enrollment', 'domain');
+
+        await assignment.populate({
+            path: 'exercises',
+            populate: {
+                path: 'progress',
+                match: { enrollmentId: assignment.enrollmentId }
+            }
+        });
 
         res.json({
             ok: true,
