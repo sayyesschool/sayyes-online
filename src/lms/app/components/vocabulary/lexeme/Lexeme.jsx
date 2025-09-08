@@ -11,6 +11,7 @@ import styles from './Lexeme.module.scss';
 export default function LexemeView({
     lexeme,
     readOnly,
+    showStatus = true,
     onStatusUpdate
 }) {
     const { value, image, definition, translation, examples, status, data } = lexeme;
@@ -52,7 +53,7 @@ export default function LexemeView({
                         className={styles.value}
                         content={value}
                         type="h1"
-                        end={
+                        end={showStatus &&
                             <LexemeStatus
                                 level={status}
                                 tooltipPlacement="right"

@@ -159,6 +159,7 @@ export default function VocabularyItem({
                     <Lexeme
                         lexeme={viewingLexeme}
                         readOnly={user.isTeacher}
+                        showStatus={viewingLexeme.record}
                         onStatusUpdate={handleUpdateLexemeStatus}
                     />
                 </Dialog>
