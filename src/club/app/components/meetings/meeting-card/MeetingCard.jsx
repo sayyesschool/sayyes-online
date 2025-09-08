@@ -79,7 +79,7 @@ export default function MeetingCard({
                     <Flex gap="small">
                         <Chip
                             content={meeting.online ? 'Онлайн' : 'Офлайн'}
-                            color={meeting.online ? 'primary' : 'neutral'}
+                            color="primary"
                             variant="soft"
                             inline
                         />
