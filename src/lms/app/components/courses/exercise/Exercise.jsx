@@ -24,9 +24,8 @@ import ExerciseContent from 'lms/components/courses/exercise-content';
 import styles from './Exercise.module.scss';
 
 const getBadgeIcon = ({ completed, checked } = {}) => {
-    if (completed && checked) return 'done_all';
+    if (checked) return 'done_all';
     if (completed) return 'done';
-    if (checked) return 'done_outline';
 
     return null;
 };
