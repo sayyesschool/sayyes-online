@@ -8,6 +8,7 @@ import Page from 'shared/components/page';
 import { StatusColor, StatusLabel } from 'shared/data/assignment';
 import { DomainLabel } from 'shared/data/common';
 import { useAssignment } from 'shared/hooks/assignments';
+import { useEnrollment } from 'shared/hooks/enrollments';
 import { useExerciseActions } from 'shared/hooks/exercises';
 import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
@@ -15,11 +16,13 @@ import datetime from 'shared/libs/datetime';
 import { Heading, Text } from 'shared/ui-components';
 
 import Exercise from 'lms/components/courses/exercise';
+import { LearnerContextProvider } from 'lms/contexts/learner';
 
 import styles from './AssignmentPage.module.scss';
 
 export default function AssignmentPage({ match, location, history }) {
     const [assignment, actions] = useAssignment(match.params.id, location.search);
+    const [enrollment] = useEnrollment(assignment?.enrollment.id);
     const exerciseActions = useExerciseActions();
     const [user] = useUser();
 
@@ -67,42 +70,43 @@ export default function AssignmentPage({ match, location, history }) {
     const hasExercises = assignment.exercises?.length > 0;
 
     return (
-        <Page className={styles.root} layout="narrow">
-            <Page.Header
-                breadcrumbs={[
-                    {
-                        content: DomainLabel[assignment.enrollment?.domain],
-                        to: `/enrollments/${assignment.enrollmentId}`
+        <LearnerContextProvider learnerId={enrollment?.learnerId}>
+            <Page className={styles.root} layout="narrow">
+                <Page.Header
+                    breadcrumbs={[
+                        {
+                            content: DomainLabel[assignment.enrollment?.domain],
+                            to: `/enrollments/${assignment.enrollmentId}`
+                        }
+                    ]}
+                    title={
+                        <Heading
+                            content={assignment.title}
+                            end={
+                                <Text
+                                    content={StatusLabel[assignment.status]}
+                                    color={StatusColor[assignment.status]}
+                                    variant="soft"
+                                    type="body-sm"
+                                />
+                            }
+                        />
                     }
-                ]}
-                title={
-                    <Heading
-                        content={assignment.title}
-                        end={
-                            <Text
-                                content={StatusLabel[assignment.status]}
-                                color={StatusColor[assignment.status]}
-                                variant="soft"
-                                type="body-sm"
-                            />
-                        }
-                    />
-                }
-                description={assignment.dueDate &&
-                    <Text
-                        content="Дата выполнения:"
-                        end={
-                            <Text
-                                content={datetime(assignment.dueDate).calendar()}
-                                variant="soft"
-                                type="body-sm"
-                                fontWeight="lg"
-                            />
-                        }
-                    />
-                }
-                actions={
-                    isLearner && getLearnerAssignmentActions(assignment.status, updateAssignmentStatus)
+                    description={assignment.dueDate &&
+                        <Text
+                            content="Дата выполнения:"
+                            end={
+                                <Text
+                                    content={datetime(assignment.dueDate).calendar()}
+                                    variant="soft"
+                                    type="body-sm"
+                                    fontWeight="lg"
+                                />
+                            }
+                        />
+                    }
+                    actions={
+                        isLearner && getLearnerAssignmentActions(assignment.status, updateAssignmentStatus)
                     ||
                     isTeacher && [{
                         key: 'save',
@@ -116,55 +120,56 @@ export default function AssignmentPage({ match, location, history }) {
                         title: 'Удалить задание',
                         onClick: toggleConfirmationDialogOpen
                     }]
-                }
-            />
+                    }
+                />
 
-            <Page.Content>
-                <Page.Section compact>
-                    {isTeacher ? (
-                        <ContentEditor
-                            ref={editorRef}
-                            content={assignment.content}
-                            placeholder="Напишите приветственно-мотивационное вступление и похвалите учеников за отличную работу."
-                        />
-                    ) : isLearner && assignment.content && (
-                        <Content
-                            content={assignment.content}
-                            className={styles.description}
-                            html
-                        />
-                    )}
-                </Page.Section>
+                <Page.Content>
+                    <Page.Section compact>
+                        {isTeacher ? (
+                            <ContentEditor
+                                ref={editorRef}
+                                content={assignment.content}
+                                placeholder="Напишите приветственно-мотивационное вступление и похвалите учеников за отличную работу."
+                            />
+                        ) : isLearner && assignment.content && (
+                            <Content
+                                content={assignment.content}
+                                className={styles.description}
+                                html
+                            />
+                        )}
+                    </Page.Section>
 
-                <Page.Section
-                    title={hasExercises ? 'Упражнения' : 'Нет упражнений'}
-                    description={!hasExercises && 'Добавьте упражнения в задание на странице курса'}
-                    compact
-                    plain
-                >
-                    {assignment.exercises?.map((exercise, index) =>
-                        <Exercise
-                            key={exercise.id}
-                            id={exercise.id}
-                            index={index}
-                            user={user}
-                            exercise={exercise}
-                            showRemoveFromAssignment={isTeacher}
-                            onRemoveFromAssignment={handleRemoveExercise}
-                            onProgressChange={handleExerciseProgressChange}
-                        />
-                    )}
-                </Page.Section>
-            </Page.Content>
+                    <Page.Section
+                        title={hasExercises ? 'Упражнения' : 'Нет упражнений'}
+                        description={!hasExercises && 'Добавьте упражнения в задание на странице курса'}
+                        compact
+                        plain
+                    >
+                        {assignment.exercises?.map((exercise, index) =>
+                            <Exercise
+                                key={exercise.id}
+                                id={exercise.id}
+                                index={index}
+                                user={user}
+                                exercise={exercise}
+                                showRemoveFromAssignment={isTeacher}
+                                onRemoveFromAssignment={handleRemoveExercise}
+                                onProgressChange={handleExerciseProgressChange}
+                            />
+                        )}
+                    </Page.Section>
+                </Page.Content>
 
-            <ConfirmationDialog
-                title="Удалить упражнение?"
-                message="Упражнение будет удален без возможности восстановления."
-                open={isConfirmationDialogOpen}
-                onClose={toggleConfirmationDialogOpen}
-                onConfirm={handleDelete}
-            />
-        </Page>
+                <ConfirmationDialog
+                    title="Удалить упражнение?"
+                    message="Упражнение будет удален без возможности восстановления."
+                    open={isConfirmationDialogOpen}
+                    onClose={toggleConfirmationDialogOpen}
+                    onConfirm={handleDelete}
+                />
+            </Page>
+        </LearnerContextProvider>
     );
 }
 
