@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import isEqual from 'lodash/isEqual';
+
 import Content from 'shared/components/content';
 import { useExercise } from 'shared/hooks/exercises';
 import { useBoolean } from 'shared/hooks/state';
@@ -44,7 +46,7 @@ export default function Exercise({
 }) {
     const query = useMemo(() => enrollmentId ? { enrollmentId } : {}, [enrollmentId]);
     const [exercise] = useExercise({ id, query });
-    const [state, setState] = useState(exercise?.progress?.state || {});
+    const [state, setState] = useState(exercise.progress?.state || {});
     const [isCollapsed, toggleCollapsed] = useBoolean(true);
     const [isSaving, setSaving] = useBoolean(false);
 
@@ -98,6 +100,16 @@ export default function Exercise({
             setState(exercise.progress.state || {});
         }
     }, [exercise.progress]);
+
+    useEffect(() => {
+        const stateIsEmpty = Object.keys(state).length === 0;
+
+        if (!exercise || stateIsEmpty || isEqual(state, exercise.progress?.state)) return;
+
+        const timeout = setTimeout(handleSave, 2000);
+
+        return () => clearTimeout(timeout);
+    }, [exercise, state, handleSave]);
 
     if (!exercise) return (
         <Skeleton
@@ -214,14 +226,6 @@ export default function Exercise({
                     />
 
                     <Flex gap="sm">
-                        <Button
-                            content="Сохранить"
-                            icon="save"
-                            variant="outlined"
-                            disabled={isSaving}
-                            onClick={handleSave}
-                        />
-
                         {user.isLearner && (
                             <Button
                                 content={

@@ -13,7 +13,6 @@ export default ({
 
         res.json({
             ok: true,
-            message: 'Прогресс сохранен',
             data: progress
         });
     }
