@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
 
+import { useExercises } from 'shared/hooks/exercises';
 import { useStore } from 'shared/hooks/store';
 import { actions as courseActions, mapCourse } from 'shared/store/modules/courses';
 import { emptyObject, hasKey } from 'shared/utils/object';
@@ -51,6 +52,41 @@ export function useUnit({ courseId, unitId }) {
         unit,
         actions
     }), [course, unitId]);
+}
+
+export function useUnitProgress(unit) {
+    const [exercises] = useExercises();
+
+    const unitExercises = unit.lessons.flatMap(
+        lesson => lesson.sections.flatMap(
+            section => section.exercises
+        )
+    )?.map(({ id } = {}) => exercises?.[id]);
+
+    if (!unitExercises || unitExercises.some(ex => !ex.progressId)) return undefined;
+
+    const exercisesLength = unitExercises.length;
+    const checkedExercises = unitExercises.filter(exercise => exercise.isChecked);
+    const progress = exercisesLength ? (checkedExercises.length / exercisesLength) * 100 : 0;
+
+    return Math.round(progress);
+}
+
+export function useLessonProgress(lesson) {
+    const [exercises] = useExercises();
+
+    const unitExercises = lesson.sections.flatMap(
+        section => section.exercises
+    ).map(({ id } = {}) => exercises?.[id]);
+
+    if (!unitExercises || unitExercises.some(ex => !ex.progressId)) return undefined;
+
+    // TODO: перенести дублирование из useUnitProgress в хелпер
+    const exercisesLength = unitExercises.length;
+    const checkedExercises = unitExercises.filter(exercise => exercise.isChecked);
+    const progress = exercisesLength ? (checkedExercises.length / exercisesLength) * 100 : 0;
+
+    return Math.round(progress);
 }
 
 export function useLesson({ courseId, lessonId }) {

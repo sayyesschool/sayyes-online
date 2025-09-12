@@ -9,14 +9,20 @@ function InlineTextarea({
     value: _value = '',
     correctValues,
     checked,
-    completed,
+    readOnly,
     required,
     onChange = Function.prototype,
     ...props
 }, ref) {
     const elementRef = useRef();
 
-    const [value, setValue] = useState(completed ? correctValues[0] : _value);
+    const [value, setValue] = useState(_value);
+    const isCorrect = (checked && required) ? (
+        correctValues?.length > 0 ?
+            correctValues?.includes(value?.trim().toLocaleLowerCase()) :
+            value !== ''
+    ) : undefined;
+    const displayValue = checked && !isCorrect ? correctValues.join(', ') : value;
 
     useImperativeHandle(ref, () => elementRef.current);
 
@@ -43,12 +49,6 @@ function InlineTextarea({
         onChange(value, event.target, event);
     }, [onChange]);
 
-    const isCorrect = (checked && required) ? (
-        correctValues?.length > 0 ?
-            correctValues?.includes(value?.trim().toLocaleLowerCase()) :
-            value !== ''
-    ) : undefined;
-
     const classNames = classnames('InlineTextarea', {
         'InlineTextarea--correct': isCorrect === true,
         'InlineTextarea--incorrect': isCorrect === false
@@ -58,8 +58,9 @@ function InlineTextarea({
         <textarea
             ref={elementRef}
             className={classNames}
-            value={value}
+            value={displayValue}
             required={required}
+            readOnly={readOnly}
             data-id={id}
             onChange={handleChange}
             {...props}

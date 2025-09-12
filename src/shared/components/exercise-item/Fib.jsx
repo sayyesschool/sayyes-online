@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from 'react';
 
-import { parseFromHtml } from 'shared/libs/eml';
-import { render } from 'shared/libs/jsx';
 import Content from 'shared/components/content';
 import Input from 'shared/components/inline-input';
 import Select from 'shared/components/inline-select';
+import { parseFromHtml } from 'shared/libs/eml';
+import { render } from 'shared/libs/jsx';
 
 import './Fib.scss';
 
@@ -17,7 +17,7 @@ export default function FibItem({
     id,
     content,
     checked,
-    completed,
+    readOnly,
     state = {},
     onUpdateState,
     className
@@ -44,14 +44,14 @@ export default function FibItem({
                 item.type = Components[item.type];
                 item.props.id = item.id;
                 item.props.value = state[item.props.id];
-                item.props.completed = completed;
                 item.props.checked = checked;
+                item.props.readOnly = readOnly;
                 item.props.onChange = handleChange;
             }
 
             return item;
         });
-    }, [content, checked, handleChange]);
+    }, [content, state, checked, readOnly, handleChange]);
 
     return (
         <div className={className}>

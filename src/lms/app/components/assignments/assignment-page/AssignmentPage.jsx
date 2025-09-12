@@ -8,11 +8,11 @@ import Page from 'shared/components/page';
 import { StatusColor, StatusLabel } from 'shared/data/assignment';
 import { DomainLabel } from 'shared/data/common';
 import { useAssignment } from 'shared/hooks/assignments';
-import { useExerciseActions } from 'shared/hooks/exercises';
+import { useExercises } from 'shared/hooks/exercises';
 import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
 import datetime from 'shared/libs/datetime';
-import { Heading, Text } from 'shared/ui-components';
+import { Alert, Heading, Icon, Text } from 'shared/ui-components';
 
 import Exercise from 'lms/components/courses/exercise';
 
@@ -21,16 +21,19 @@ import styles from './AssignmentPage.module.scss';
 export default function AssignmentPage({ match, location, history }) {
     const [user] = useUser();
     const [assignment, actions] = useAssignment(match.params.id);
-    const exerciseActions = useExerciseActions();
+    const [exercisesMap, exerciseActions] = useExercises();
     const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
     const editorRef = useRef();
 
     const isTeacher = user.isTeacher;
     const isLearner = user.isLearner;
     const hasExercises = assignment?.exercises?.length > 0;
+    const assignmentExercises = assignment?.exerciseIds.map(id => exercisesMap?.[id]);
+    const isAllChecked = assignmentExercises?.every(ex => ex.isChecked);
+    const showAllCheckedAlert = isTeacher && isAllChecked && assignment?.status !== 'completed';
 
     const handleExerciseProgressChange = useCallback((exercise, data) => {
-        return exerciseActions.updateExerciseProgress(exercise?.progress?.id, {
+        return exerciseActions.updateExerciseProgress(exercise.progressId, {
             ...data,
             enrollmentId: assignment.enrollmentId,
             courseId: exercise.courseId,
@@ -114,6 +117,15 @@ export default function AssignmentPage({ match, location, history }) {
                         ))
                 }
             />
+
+            {showAllCheckedAlert && (
+                <Alert
+                    start={<Icon name="checklist" />}
+                    content="Все задания проверены"
+                    variant="soft"
+                    color="success"
+                />
+            )}
 
             <Page.Content>
                 <Page.Section compact>

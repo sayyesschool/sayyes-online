@@ -3,11 +3,18 @@ import { combineReducers, createAction, createReducer } from 'shared/store/helpe
 import { getAssignment } from './assignments';
 import { getCourse } from './courses';
 
-const normalizeExercise = exercise => ({
-    ...exercise,
-    completed: exercise.progress?.completed,
-    checked: exercise.progress?.checked
-});
+const normalizeExercise = rawExercise => {
+    const { progress, ...exercise } = rawExercise;
+
+    return {
+        ...exercise,
+        progressId: progress?.id,
+        state: progress?.state ?? {},
+        status: progress?.status ?? 0,
+        isCompleted: !!progress?.isCompleted,
+        isChecked: !!progress?.isChecked
+    };
+};
 
 const exercisesToMap = (exercises = []) => {
     return exercises.reduce((map, exercise) => {
@@ -57,7 +64,7 @@ export const exerciseReducer = createReducer(null, {
     [getAssignment]: (state, action) => exercisesToMap(action.data?.exercises),
     // Progress
     [updateExerciseProgress]: (state, action) => {
-        const { exerciseId, completed, checked } = action.data;
+        const { id, exerciseId, status, isCompleted, isChecked, state: progressState } = action.data;
 
         if (!state[exerciseId]) return state;
 
@@ -65,9 +72,11 @@ export const exerciseReducer = createReducer(null, {
             ...state,
             [exerciseId]: {
                 ...state[exerciseId],
-                completed: completed,
-                checked: checked,
-                progress: action.data
+                progressId: id,
+                state: progressState,
+                status,
+                isCompleted,
+                isChecked
             }
         };
     }

@@ -42,7 +42,7 @@ export default function LessonPage({ match, location }) {
     }, [enrollment, exerciseIdForNewAssignment]);
 
     const handleExerciseProgressChange = useCallback((exercise, data) => {
-        return exerciseActions.updateExerciseProgress(exercise.progress?.id, {
+        return exerciseActions.updateExerciseProgress(exercise.progressId, {
             ...data,
             enrollmentId: course.enrollmentId,
             courseId: course.id,

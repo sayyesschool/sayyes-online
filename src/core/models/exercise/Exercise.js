@@ -5,8 +5,6 @@ import Item from './Item';
 export const Exercise = new Schema({
     courseId: { type: Schema.Types.ObjectId, required: true },
     sectionId: { type: Schema.Types.ObjectId, required: true },
-    lessonId: { type: Schema.Types.ObjectId, required: true },
-    unitId: { type: Schema.Types.ObjectId, required: true },
     description: { type: String, default: '' },
     notes: { type: String },
     items: [Item]

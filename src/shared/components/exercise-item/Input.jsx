@@ -13,6 +13,7 @@ export default function InputItem({
     values,
     inline,
     checked,
+    readOnly,
     state = '',
     onUpdateState,
     className
@@ -34,6 +35,7 @@ export default function InputItem({
                     value={state}
                     correctValues={values}
                     checked={checked}
+                    readOnly={readOnly}
                     required
                     onChange={handleChange}
                 />

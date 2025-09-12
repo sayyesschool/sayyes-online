@@ -7,24 +7,24 @@ export default function InlineInput({
     value: _value = '',
     correctValues,
     checked,
-    completed,
+    readOnly,
     required,
     onChange = Function.prototype,
     ...props
 }) {
     const [value, setValue] = useState(_value);
+    const isCorrect = (checked && required) ? (
+        correctValues?.length > 0 ?
+            correctValues?.includes(value?.trim().toLocaleLowerCase()) :
+            value !== ''
+    ) : undefined;
+    const displayValue = checked && !isCorrect ? correctValues.join(', ') : value;
 
     const handleChange = useCallback(event => {
         const value = event.target.value;
         setValue(value);
         onChange(value, event.target, event);
     }, [onChange]);
-
-    const isCorrect = (checked && required) ? (
-        correctValues?.length > 0 ?
-            correctValues?.includes(value?.trim().toLocaleLowerCase()) :
-            value !== ''
-    ) : undefined;
 
     const classNames = classnames('InlineInput', {
         'InlineInput--correct': isCorrect === true,
@@ -33,12 +33,13 @@ export default function InlineInput({
 
     return (
         <span className={classNames}>
-            <span>{value}</span>
+            <span>{displayValue}</span>
 
             <input
-                value={value}
+                value={displayValue}
                 required={required}
                 data-id={id}
+                readOnly={readOnly}
                 onChange={handleChange}
                 {...props}
             />

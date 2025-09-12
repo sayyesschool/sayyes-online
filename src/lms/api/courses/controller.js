@@ -24,8 +24,7 @@ export default ({
 
             return {
                 ...exercise,
-                completed: progressData ? progressData.completed : false,
-                checked: progressData ? progressData.checked : false,
+                status: progressData ? progressData.status : 0,
                 partiallyLoaded: true,
                 progress: progressData ? {
                     ...progressData.toJSON()

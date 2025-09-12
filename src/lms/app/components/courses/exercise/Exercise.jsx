@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 
 import Content from 'shared/components/content';
@@ -23,12 +24,7 @@ import ExerciseContent from 'lms/components/courses/exercise-content';
 
 import styles from './Exercise.module.scss';
 
-const getBadgeIcon = ({ completed, checked } = {}) => {
-    if (checked) return 'done_all';
-    if (completed) return 'done';
-
-    return null;
-};
+const interactiveItems = ['input', 'fib', 'boolean', 'choice'];
 
 export default function Exercise({
     index,
@@ -45,11 +41,19 @@ export default function Exercise({
 }) {
     const query = useMemo(() => enrollmentId ? { enrollmentId } : {}, [enrollmentId]);
     const [exercise] = useExercise({ id, query });
-    const [state, setState] = useState(exercise.progress?.state || {});
+    const [state, setState] = useState(exercise.state);
     const [isCollapsed, toggleCollapsed] = useBoolean(true);
+    const [showCorrectAnswers, setShowCorrectAnswers] = useBoolean(false);
     const [isSaving, setSaving] = useBoolean(false);
+    const [initialized, setInitialized] = useState(false);
 
-    const badgeIcon = getBadgeIcon(exercise);
+    const { isCompleted, isChecked } = exercise;
+    const badgeIcon = isCompleted ? 'done' : isChecked ? 'done_all' : null;
+    const isInteractive = exercise.items?.some(item => interactiveItems.includes(item.type));
+    const showCorrectAnswersButton =
+        isInteractive &&
+        (isCompleted || isChecked) ||
+        user.isTeacher;
 
     const handleSave = useCallback(() => {
         setSaving(true);
@@ -60,17 +64,22 @@ export default function Exercise({
 
     const handleComplete = useCallback(() => {
         setSaving(true);
+        setShowCorrectAnswers(false);
 
-        return onProgressChange(exercise, { completed: !exercise?.completed })
+        const status = isCompleted ? 0 : 1;
+
+        return onProgressChange(exercise, { status, state })
             .finally(() => setSaving(false));
-    }, [exercise, onProgressChange, setSaving]);
+    }, [exercise, isCompleted, onProgressChange, setSaving, setShowCorrectAnswers, state]);
 
     const handleChecked = useCallback(() => {
         setSaving(true);
 
-        return onProgressChange(exercise, { checked: !exercise?.checked })
+        const status = isChecked ? 0 : 2;
+
+        return onProgressChange(exercise, { status })
             .finally(() => setSaving(false));
-    }, [exercise, onProgressChange, setSaving]);
+    }, [exercise, isChecked, onProgressChange, setSaving]);
 
     const handleUpdateState = useCallback((itemId, state) => {
         setState(oldState => ({
@@ -95,15 +104,14 @@ export default function Exercise({
     }, [exercise, onRemoveFromAssignment]);
 
     useEffect(() => {
-        if (exercise.progress) {
-            setState(exercise.progress.state || {});
+        if (!isEmpty(exercise.state) && !initialized) {
+            setState(exercise.state);
+            setInitialized(true);
         }
-    }, [exercise.progress]);
+    }, [exercise, initialized]);
 
     useEffect(() => {
-        const stateIsEmpty = Object.keys(state).length === 0;
-
-        if (!exercise || stateIsEmpty || isEqual(state, exercise.progress?.state)) return;
+        if (!exercise || isEmpty(state) || isEqual(state, exercise.state)) return;
 
         const timeout = setTimeout(handleSave, 2000);
 
@@ -219,18 +227,16 @@ export default function Exercise({
                     <ExerciseContent
                         exercise={exercise}
                         state={state}
-                        checked={false}
-                        disabled={user.isTeacher}
+                        checked={showCorrectAnswers}
+                        readOnly={user.isTeacher || showCorrectAnswers}
                         onUpdateState={handleUpdateState}
                     />
 
                     <Flex gap="sm">
-                        {user.isLearner && (
+                        {user.isLearner && exercise.status < 2 && (
                             <Button
-                                content={
-                                    exercise.completed ? 'Убрать из выполненых' : 'Выполнено'
-                                }
-                                icon={exercise.completed ? 'task_alt' : undefined}
+                                content={isCompleted ? 'Убрать из выполненых' : 'Выполнено'}
+                                icon={isCompleted ? undefined : 'task_alt'}
                                 variant="outlined"
                                 disabled={isSaving}
                                 onClick={handleComplete}
@@ -239,13 +245,19 @@ export default function Exercise({
 
                         {user.isTeacher && (
                             <Button
-                                content={
-                                    exercise.checked ? 'Убрать из проверенных' : 'Проверено'
-                                }
-                                icon={exercise.completed ? 'task_alt' : undefined}
+                                content={isChecked ? 'Убрать из проверенных' : 'Проверено'}
+                                icon={isChecked ? undefined : 'task_alt'}
                                 variant="outlined"
                                 disabled={isSaving}
                                 onClick={handleChecked}
+                            />
+                        )}
+
+                        {showCorrectAnswersButton && (
+                            <Button
+                                content={showCorrectAnswers ? 'Убрать ответы' : 'Показать ответы'}
+                                variant="outlined"
+                                onClick={setShowCorrectAnswers}
                             />
                         )}
                     </Flex>

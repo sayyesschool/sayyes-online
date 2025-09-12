@@ -9,6 +9,7 @@ export default function Select({
     values,
     correctValue,
     checked,
+    readOnly,
     completed,
     onChange = Function.prototype,
     ...props
@@ -33,6 +34,7 @@ export default function Select({
             className={classNames}
             value={value}
             data-id={id}
+            disabled={readOnly}
             onChange={handleChange}
             {...props}
         >

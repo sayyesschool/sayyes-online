@@ -11,11 +11,12 @@ export default function ChoiceItem({
     content,
     items = [],
     checked,
+    readOnly,
     state = getDefaultState(items),
     onUpdateState,
-    className,
+    className
 }) {
-    const isMultiple = useMemo(() => items.filter(item => item.correct).length > 1);
+    const isMultiple = useMemo(() => items.filter(item => item.correct).length > 1, [items]);
 
     const handleChange = useCallback(item => {
         if (isMultiple) {
@@ -52,18 +53,15 @@ export default function ChoiceItem({
                         decorator={isMultiple ?
                             <Checkbox
                                 checked={state.includes(item.id)}
-                                disabled={checked}
                             />
                             :
                             <Radio
                                 checked={item.id === state}
-                                disabled={checked}
                             />
                         }
                         content={item.text}
-                        selected={checked && (item.correct || isItemChosen(item))}
-                        interactive={!checked}
-                        onClick={() => handleChange(item)}
+                        interactive={!checked && !readOnly}
+                        onClick={readOnly ? undefined : () => handleChange(item)}
                     />
                 )}
             </List>

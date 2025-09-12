@@ -34,7 +34,7 @@ export function useExercises() {
 
     if (!exercises) return [[], actions];
 
-    return [Object.values(exercises), actions];
+    return [exercises, actions];
 }
 
 export function useExerciseActions() {
