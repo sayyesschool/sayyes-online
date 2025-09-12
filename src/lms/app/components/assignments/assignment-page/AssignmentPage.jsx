@@ -9,11 +9,11 @@ import { StatusColor, StatusLabel } from 'shared/data/assignment';
 import { DomainLabel } from 'shared/data/common';
 import { useAssignment } from 'shared/hooks/assignments';
 import { useEnrollment } from 'shared/hooks/enrollments';
-import { useExerciseActions } from 'shared/hooks/exercises';
+import { useExercises } from 'shared/hooks/exercises';
 import { useBoolean } from 'shared/hooks/state';
 import { useUser } from 'shared/hooks/user';
 import datetime from 'shared/libs/datetime';
-import { Heading, Text } from 'shared/ui-components';
+import { Alert, Heading, Icon, Text } from 'shared/ui-components';
 
 import Exercise from 'lms/components/courses/exercise';
 import { LearnerContextProvider } from 'lms/contexts/learner';
@@ -21,14 +21,19 @@ import { LearnerContextProvider } from 'lms/contexts/learner';
 import styles from './AssignmentPage.module.scss';
 
 export default function AssignmentPage({ match, location, history }) {
-    const [assignment, actions] = useAssignment(match.params.id, location.search);
-    const [enrollment] = useEnrollment(assignment?.enrollment.id);
-    const exerciseActions = useExerciseActions();
     const [user] = useUser();
-
+    const [assignment, actions] = useAssignment(match.params.id);
+    const [enrollment] = useEnrollment(assignment?.enrollment.id);
+    const [exercisesMap, exerciseActions] = useExercises();
+    const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
     const editorRef = useRef();
 
-    const [isConfirmationDialogOpen, toggleConfirmationDialogOpen] = useBoolean(false);
+    const isTeacher = user.isTeacher;
+    const isLearner = user.isLearner;
+    const hasExercises = assignment?.exercises?.length > 0;
+    const assignmentExercises = assignment?.exerciseIds.map(id => exercisesMap?.[id]);
+    const isAllChecked = assignmentExercises?.every(ex => ex.isChecked);
+    const showAllCheckedAlert = isTeacher && isAllChecked && assignment?.status !== 'completed';
 
     const handleExerciseProgressChange = useCallback((exercise, data) => {
         return exerciseActions.updateExerciseProgress(exercise.progressId, {
@@ -64,10 +69,6 @@ export default function AssignmentPage({ match, location, history }) {
     }, [assignment, actions]);
 
     if (!assignment) return <LoadingIndicator />;
-
-    const isTeacher = user.isTeacher;
-    const isLearner = user.isLearner;
-    const hasExercises = assignment.exercises?.length > 0;
 
     return (
         <LearnerContextProvider learnerId={enrollment?.learnerId}>
@@ -106,38 +107,48 @@ export default function AssignmentPage({ match, location, history }) {
                         />
                     }
                     actions={
-                        isLearner && getLearnerAssignmentActions(assignment.status, updateAssignmentStatus)
-                    ||
-                    isTeacher && [{
-                        key: 'save',
-                        icon: 'save',
-                        title: 'Сохранить задание',
-                        onClick: handleSave
-                    }, {
-                        key: 'delete',
-                        icon: 'delete',
-                        color: 'danger',
-                        title: 'Удалить задание',
-                        onClick: toggleConfirmationDialogOpen
-                    }]
+                        (isLearner &&
+                        getLearnerAssignmentActions(
+                            assignment.status,
+                            updateAssignmentStatus
+                        )) ||
+                    (isTeacher &&
+                        getTeacherAssignmentActions(
+                            assignment.status,
+                            updateAssignmentStatus,
+                            handleSave,
+                            toggleConfirmationDialogOpen
+                        ))
                     }
                 />
 
+                {showAllCheckedAlert && (
+                    <Alert
+                        start={<Icon name="checklist" />}
+                        content="Все задания проверены"
+                        variant="soft"
+                        color="success"
+                    />
+                )}
+
                 <Page.Content>
                     <Page.Section compact>
-                        {isTeacher ? (
-                            <ContentEditor
-                                ref={editorRef}
-                                content={assignment.content}
-                                placeholder="Напишите приветственно-мотивационное вступление и похвалите учеников за отличную работу."
-                            />
-                        ) : isLearner && assignment.content && (
+                        {
+                            isTeacher && (
+                                <ContentEditor
+                                    ref={editorRef}
+                                    content={assignment.content}
+                                />
+                            )
+                        ||
+                        isLearner && assignment.content && (
                             <Content
                                 content={assignment.content}
                                 className={styles.description}
                                 html
                             />
-                        )}
+                        )
+                        }
                     </Page.Section>
 
                     <Page.Section
@@ -152,7 +163,6 @@ export default function AssignmentPage({ match, location, history }) {
                                 id={exercise.id}
                                 index={index}
                                 user={user}
-                                exercise={exercise}
                                 showRemoveFromAssignment={isTeacher}
                                 onRemoveFromAssignment={handleRemoveExercise}
                                 onProgressChange={handleExerciseProgressChange}
@@ -192,4 +202,45 @@ function getLearnerAssignmentActions(status, onClick) {
         }];
         case 'completed': return [];
     }
+}
+
+function getTeacherAssignmentActions(
+    status,
+    onClick,
+    handleSave,
+    toggleConfirmationDialogOpen
+) {
+    const baseActions = [
+        {
+            key: 'save',
+            icon: 'save',
+            title: 'Сохранить задание',
+            onClick: handleSave
+        }, {
+            key: 'delete',
+            icon: 'delete',
+            color: 'danger',
+            title: 'Удалить задание',
+            onClick: toggleConfirmationDialogOpen
+        }
+    ];
+
+    status === 'assigned' ?
+        baseActions.push({
+            key: 'turn-in',
+            icon: 'verified',
+            content: 'Отметить выполненным',
+            color: 'primary',
+            onClick: () => onClick('completed')
+        }) :
+        baseActions.push({
+            key: 'turn-in',
+            icon: 'unpublished',
+            content: 'Вернуть в работу',
+            variant: 'soft',
+            color: 'primary',
+            onClick: () => onClick('assigned')
+        });
+
+    return baseActions;
 }

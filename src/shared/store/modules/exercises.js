@@ -1,182 +1,87 @@
 import { combineReducers, createAction, createReducer } from 'shared/store/helpers';
-import { createComment, deleteComment, updateComment } from 'shared/store/modules/comments';
 
-export const getExercises = createAction('GET_EXERCISES', query => ({
+import { getAssignment } from './assignments';
+import { getCourse } from './courses';
+
+const normalizeExercise = rawExercise => {
+    const { progress, ...exercise } = rawExercise;
+
+    return {
+        ...exercise,
+        progressId: progress?.id,
+        state: progress?.state ?? {},
+        status: progress?.status ?? 0,
+        isCompleted: !!progress?.isCompleted,
+        isChecked: !!progress?.isChecked
+    };
+};
+
+const exercisesToMap = (exercises = []) => {
+    return exercises.reduce((map, exercise) => {
+        map[exercise.id] = normalizeExercise(exercise);
+
+        return map;
+    }, {});
+};
+
+// Exercise
+export const getExercise = createAction('GET_EXERCISE', (id, query) => ({
     request: {
         method: 'get',
-        path: 'exercises',
+        path: `exercises/${id}`,
         query
     }
 }));
 
-export const getExercise = createAction('GET_EXERCISE', id => ({
-    request: {
-        method: 'get',
-        path: `exercises/${id}`
-    }
-}));
-
-export const createExercise = createAction('CREATE_EXERCISE', data => ({
-    request: {
-        method: 'post',
-        path: 'exercises',
-        body: data
-    }
-}));
-
-export const updateExercise = createAction('UPDATE_EXERCISE', (id, data) => ({
-    request: {
-        method: 'put',
-        path: `exercises/${id}`,
-        body: data
-    }
-}));
-
-export const deleteExercise = createAction('DELETE_EXERCISE', id => ({
-    request: {
-        method: 'delete',
-        path: `exercises/${id}`
-    }
-}));
-
-export const unsetExercise = createAction('UNSET_EXERCISE', exerciseId => ({
-    exerciseId
-}));
-
-// Items
-
-export const createExerciseItem = createAction('CREATE_EXERCISE_ITEM', (exerciseId, data) => ({
-    request: {
-        method: 'post',
-        path: `exercises/${exerciseId}/items`,
-        body: data
-    }
-}));
-
-export const updateExerciseItem = createAction('UPDATE_EXERCISE_ITEM', (exerciseId, itemId, data) => ({
-    request: {
-        method: 'put',
-        path: `exercises/${exerciseId}/items/${itemId}`,
-        body: data
-    }
-}));
-
-export const deleteExerciseItem = createAction('DELETE_EXERCISE_ITEM', (exerciseId, itemId, body) => ({
-    request: {
-        method: 'delete',
-        path: `exercises/${exerciseId}/items/${itemId}`,
-        body
-    }
-}));
-
 // Progress
-
 export const updateExerciseProgress = createAction('UPDATE_EXERCISE_PROGRESS', (progressId = '', data) => ({
     request: {
-        method: 'post',
+        method: 'put',
         path: `progress/${progressId}`,
         body: data
     }
 }));
 
 export const actions = {
-    getExercises,
     getExercise,
-    createExercise,
-    updateExercise,
-    deleteExercise,
-    unsetExercise,
-
-    createExerciseItem,
-    updateExerciseItem,
-    deleteExerciseItem,
-
     updateExerciseProgress
 };
 
-export const exercisesListReducer = createReducer(null, {
-    [getExercises]: (state, action) => action.data,
+export const exerciseReducer = createReducer(null, {
+    [getExercise]: (state, action) => {
+        const exercise = action.data;
 
-    [createExercise]: (state, action) => state && state.concat(action.data) || [action.data],
+        if (!exercise) return state;
 
-    [updateExercise]: (state, action) => state && state.map(exercise =>
-        exercise.id !== action.data.id ? exercise : {
-            ...exercise,
-            ...action.data
-        }
-    ),
-
-    [deleteExercise]: (state, action) => state && state.filter(exercise => exercise.id !== action.data.id)
-});
-
-export const exercisesMapReducer = createReducer(null, {
-    [getExercises]: (state, action) => action.data.reduce((map, exercise) => {
-        map[exercise.id] = exercise;
-
-        return map;
-    }, {}),
-
-    [getExercise]: (state, action) => ({
-        ...state,
-        [action.data.id]: action.data
-    }),
-
-    [unsetExercise]: (state, action) => {
-        return state && {
+        return {
             ...state,
-            [action.exerciseId]: null
+            [exercise.id]: normalizeExercise(exercise)
         };
     },
+    // Course
+    [getCourse]: (state, action) => exercisesToMap(action.data?.exercises),
+    // Assignment
+    [getAssignment]: (state, action) => exercisesToMap(action.data?.exercises),
+    // Progress
+    [updateExerciseProgress]: (state, action) => {
+        const { id, exerciseId, status, isCompleted, isChecked, state: progressState } = action.data;
 
-    [createExercise]: (state, action) => ({
-        ...state,
-        [action.data.id]: action.data
-    }),
+        if (!state[exerciseId]) return state;
 
-    [updateExercise]: (state, action) => ({
-        ...state,
-        [action.data.id]: {
-            ...state[action.data.id],
-            ...action.data
-        }
-    }),
-    [deleteExercise]: (state, action) => {
-        const { [action.data.id]: _, ...rest } = state;
-
-        return rest;
+        return {
+            ...state,
+            [exerciseId]: {
+                ...state[exerciseId],
+                progressId: id,
+                state: progressState,
+                status,
+                isCompleted,
+                isChecked
+            }
+        };
     }
 });
 
-export const exerciseReducer = createReducer(null, {
-    [getExercise]: (state, action) => action.data,
-
-    [updateExercise]: (state, action) => ({ ...state, ...action.data }),
-
-    [deleteExercise]: () => null,
-
-    [unsetExercise]: () => null,
-
-    [createComment]: (state, action) => ({
-        ...state,
-        comments: state.comments.concat(action.data)
-    }),
-
-    [updateComment]: (state, action) => ({
-        ...state,
-        comments: state.comments.map(comment => comment.id !== action.data.id ?
-            comment :
-            action.data
-        )
-    }),
-
-    [deleteComment]: (state, action) => ({
-        ...state,
-        comments: state.comments.filter(comment => comment.id !== action.data.id)
-    })
-});
-
 export default combineReducers({
-    list: exercisesListReducer,
-    map: exercisesMapReducer
-    //single: exerciseReducer
+    map: exerciseReducer
 });

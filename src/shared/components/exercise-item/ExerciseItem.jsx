@@ -32,7 +32,6 @@ const Components = {
 function ExerciseItem({
     item,
     checked,
-    completed,
     state,
     readOnly,
     onUpdateState
@@ -47,7 +46,6 @@ function ExerciseItem({
             className={classNames}
             {...item.props}
             checked={checked}
-            completed={completed}
             state={state}
             readOnly={readOnly}
             onUpdateState={onUpdateState}

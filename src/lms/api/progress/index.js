@@ -6,10 +6,7 @@ export default context => {
     const router = Router();
     const controller = Controller(context);
 
-    router.route('/{:progress}')
-        .get(controller.get)
-        .post(controller.upsert)
-        .delete(controller.delete);
+    router.route('/{:progressId}').put(controller.upsert);
 
     return router;
 };

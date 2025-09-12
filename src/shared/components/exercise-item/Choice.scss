@@ -1,3 +1,9 @@
-.ChoiceItem {
-    
+.ChoiceListItem {
+    &--correct {
+        background-color: rgba(34, 139, 34, .12);
+    }
+
+    &--incorrect {
+        background-color: rgba(178, 34, 34, .12);
+    }
 }

@@ -8,20 +8,13 @@ export const Exercise = new Schema({
     description: { type: String, default: '' },
     notes: { type: String },
     items: [Item]
-}, {
-    toJSON: {
-        transform: (exercise, object) => {
-            const progress = exercise.parent()?.progress?.find(({ exerciseId }) => exerciseId == exercise.id);
+});
 
-            if (progress) {
-                object.progressId = progress.id;
-                object.completed = progress.completed;
-                object.state = progress.state;
-            }
-
-            return object;
-        }
-    }
+Exercise.virtual('progress', {
+    ref: 'Progress',
+    localField: '_id',
+    foreignField: 'exerciseId',
+    justOne: true
 });
 
 Exercise.virtual('url').get(function() {

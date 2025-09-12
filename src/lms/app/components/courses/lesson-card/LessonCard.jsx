@@ -1,6 +1,9 @@
-import { Card, Heading, Image, Text } from 'shared/ui-components';
+import { useLessonProgress } from 'shared/hooks/courses';
+import { Card, CircularProgress, Heading, Icon, Image, Text } from 'shared/ui-components';
 
-export default function LessonCard({ lesson, onSelect, ...props }) {
+export default function LessonCard({ lesson, exercises, onSelect, ...props }) {
+    const progress = useLessonProgress(lesson);
+
     return (
         <Card
             className="LessonCard"
@@ -9,7 +12,10 @@ export default function LessonCard({ lesson, onSelect, ...props }) {
             {...props}
         >
             <Card.Overflow>
-                <Image src={lesson.imageUrl} alt="" ratio="16/9" sx={{ width: '256px' }} />
+                <Image
+                    src={lesson.imageUrl} alt=""
+                    ratio="16/9" sx={{ width: '256px' }}
+                />
             </Card.Overflow>
 
             <Card.Content sx={{ px: 2 }}>
@@ -33,6 +39,20 @@ export default function LessonCard({ lesson, onSelect, ...props }) {
                         />
                     </Text>
                 }
+
+                {progress !== undefined && (
+                    <CircularProgress
+                        value={progress}
+                        thickness={3}
+                        size="md"
+                        determinate
+                    >
+                        {progress === 100 ?
+                            <Icon name="done_all" /> :
+                            <Text type="body-sm">{progress}%</Text>}
+
+                    </CircularProgress>
+                )}
             </Card.Content>
         </Card>
     );

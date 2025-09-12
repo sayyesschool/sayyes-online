@@ -36,12 +36,6 @@ Course.virtual('exercises', {
     foreignField: 'courseId'
 });
 
-Course.virtual('progress', {
-    ref: 'Progress',
-    localField: '_id',
-    foreignField: 'courseId'
-});
-
 Course.static('createUnit', async function(courseId, data) {
     const course = await this.findByIdAndUpdate(courseId, {
         $push: { units: data }

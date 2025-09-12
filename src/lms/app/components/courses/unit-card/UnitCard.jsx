@@ -1,4 +1,14 @@
-import { Avatar, Card, Flex, Heading, Image, Text } from 'shared/ui-components';
+import { useUnitProgress } from 'shared/hooks/courses';
+import {
+    Avatar,
+    Card,
+    CircularProgress,
+    Flex,
+    Heading,
+    Icon,
+    Image,
+    Text
+} from 'shared/ui-components';
 
 export default function UnitCard({
     number,
@@ -6,6 +16,8 @@ export default function UnitCard({
     onSelectUnit,
     ...props
 }) {
+    const progress = useUnitProgress(unit);
+
     return (
         <Card
             className="UnitCard"
@@ -29,6 +41,20 @@ export default function UnitCard({
                             <Text as="p" type="body-md">{unit.lessons?.length} уроков</Text>
                         }
                     </Flex>
+
+                    {progress !== undefined && (
+                        <CircularProgress
+                            value={progress}
+                            thickness={3}
+                            size="md"
+                            determinate
+                        >
+                            {progress === 100 ?
+                                <Icon name="done_all" /> :
+                                <Text type="body-sm">{progress}%</Text>}
+
+                        </CircularProgress>
+                    )}
                 </Flex>
             </Card.Content>
         </Card>
