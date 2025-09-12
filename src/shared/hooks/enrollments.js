@@ -40,7 +40,7 @@ export function useEnrollment(id) {
     const enrollmentId = enrollment?.id;
 
     useEffect(() => {
-        if (enrollmentId === id) return;
+        if (!id || enrollmentId === id) return;
 
         actions.unsetEnrollment();
         actions.getEnrollment(id);
