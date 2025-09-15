@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { shuffleAndFilter, shuffleLetters } from 'shared/libs/quiz';
-import { Button, Text } from 'shared/ui-components';
+import { Badge, Button, Text } from 'shared/ui-components';
 
 import LexemeStatus from 'lms/components/vocabulary/lexeme-status';
 
@@ -101,6 +101,38 @@ export default function Scrabble({ item, updateStatus }) {
         );
     }, []);
 
+    const handleKeyPress = useCallback(({ key }) => {
+        if (key === 'Backspace') {
+            const lastFilledIndex = [...selectedChars]
+                .map((c, i) => (c ? i : -1))
+                .filter(i => i !== -1)
+                .pop();
+
+            if (lastFilledIndex !== undefined) {
+                const charObj = selectedChars[lastFilledIndex];
+                handleDeselect(charObj, lastFilledIndex);
+            }
+
+            return;
+        }
+
+        const availableChar = availableChars.find(
+            c => c.char === key && !c.disabled
+        );
+
+        if (availableChar) {
+            handleSelect(availableChar.char);
+        }
+    }, [selectedChars, availableChars, handleDeselect, handleSelect]);
+
+    useEffect(() => {
+        window.addEventListener('keydown', handleKeyPress);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyPress);
+        };
+    }, [handleKeyPress]);
+
     useEffect(() => {
         reset();
     }, [reset]);
@@ -113,7 +145,8 @@ export default function Scrabble({ item, updateStatus }) {
                     content={translation}
                     end={
                         <LexemeStatus
-                            level={status} tooltipPlacement="right"
+                            level={status}
+                            tooltipPlacement="right"
                             readOnly
                         />
                     }
@@ -146,17 +179,21 @@ export default function Scrabble({ item, updateStatus }) {
 
                 <div className={styles.availableChars}>
                     {availableChars.map(({ char, count, disabled }, index) => (
-                        <Button
+                        <Badge
                             key={`${char}-${count}-${index}`}
-                            className={styles.availableChar}
-                            color="neutral"
-                            variant="soft"
-                            disabled={disabled}
-                            onClick={() => handleSelect(char)}
+                            content={count > 1 ? <span>{count}</span> : null}
+                            size="sm"
                         >
-                            <span>{char}</span>
-                            {count > 1 && <span>{count}</span>}
-                        </Button>
+                            <Button
+                                className={styles.availableChar}
+                                color="neutral"
+                                variant="soft"
+                                disabled={disabled}
+                                onClick={() => handleSelect(char)}
+                            >
+                                <span>{char}</span>
+                            </Button>
+                        </Badge>
                     ))}
                 </div>
 
