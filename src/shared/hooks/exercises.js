@@ -4,7 +4,7 @@ import { useActions, useStore } from 'shared/hooks/store';
 import { actions as exerciseActions } from 'shared/store/modules/exercises';
 import { hasKey } from 'shared/utils/object';
 
-export function useExercise({ id, query = {} }) {
+export function useExercise(id, query) {
     const [exercises, actions] = useStore(
         state => state && hasKey(state.exercises, 'map') ?
             state.exercises.map :

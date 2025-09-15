@@ -41,7 +41,8 @@ export default function Exercise({
     onRemoveFromAssignment
 }) {
     const query = useMemo(() => enrollmentId ? { enrollmentId } : {}, [enrollmentId]);
-    const [exercise] = useExercise({ id, query });
+    const [exercise] = useExercise(id, query);
+
     const [state, setState] = useState(exercise.state);
     const [isCollapsed, toggleCollapsed] = useBoolean(true);
     const [showCorrectAnswers, setShowCorrectAnswers] = useBoolean(false);
@@ -131,6 +132,7 @@ export default function Exercise({
 
     return (
         <Surface
+            id={exercise.id}
             className={styles.root}
             padding="md"
             shadow="sm"
