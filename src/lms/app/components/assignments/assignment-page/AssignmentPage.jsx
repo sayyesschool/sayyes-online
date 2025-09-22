@@ -33,7 +33,7 @@ export default function AssignmentPage({ match, location, history }) {
     const hasExercises = assignment?.exercises?.length > 0;
     const assignmentExercises = assignment?.exerciseIds.map(id => exercisesMap?.[id]);
     const isAllChecked = assignmentExercises?.every(ex => ex.isChecked);
-    const isAllCompleted = assignmentExercises?.every(ex => ex.isCompleted);
+    const isAllCompletedOrChecked = assignmentExercises?.every(ex => ex.isCompleted || ex.isChecked);
     const showAllCheckedAlert = isTeacher && isAllChecked && assignment?.status !== 'completed';
 
     const handleExerciseProgressChange = useCallback((exercise, data) => {
@@ -112,7 +112,7 @@ export default function AssignmentPage({ match, location, history }) {
                         getLearnerAssignmentActions(
                             assignment.status,
                             updateAssignmentStatus,
-                            isAllCompleted
+                            isAllCompletedOrChecked
                         )) ||
                     (isTeacher &&
                         getTeacherAssignmentActions(
@@ -166,6 +166,7 @@ export default function AssignmentPage({ match, location, history }) {
                                 id={exercise.id}
                                 index={index}
                                 user={user}
+                                assignment={assignment}
                                 showRemoveFromAssignment={isTeacher}
                                 onRemoveFromAssignment={handleRemoveExercise}
                                 onProgressChange={handleExerciseProgressChange}

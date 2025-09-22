@@ -32,6 +32,7 @@ export default function Exercise({
     user,
     id,
     enrollmentId,
+    assignment,
     assignments,
     showMenu,
     showRemoveFromAssignment,
@@ -231,7 +232,7 @@ export default function Exercise({
                         exercise={exercise}
                         state={state}
                         checked={showCorrectAnswers}
-                        readOnly={user.isTeacher || showCorrectAnswers}
+                        readOnly={user.isTeacher || showCorrectAnswers || isChecked || assignment?.isCompleted}
                         onUpdateState={handleUpdateState}
                     />
 

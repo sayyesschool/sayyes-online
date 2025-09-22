@@ -57,4 +57,16 @@ Assignment.virtual('numberOfExercises').get(function() {
     return this.exerciseIds && this.exerciseIds.length;
 });
 
+Assignment.virtual('isAssigned').get(function() {
+    return this.status === AssignmentStatus.Assigned;
+});
+
+Assignment.virtual('isCompleted').get(function() {
+    return this.status === AssignmentStatus.Completed;
+});
+
+Assignment.virtual('isSubmitted').get(function() {
+    return this.status === AssignmentStatus.Submitted;
+});
+
 export default Assignment;
