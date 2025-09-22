@@ -33,6 +33,7 @@ export default function AssignmentPage({ match, location, history }) {
     const hasExercises = assignment?.exercises?.length > 0;
     const assignmentExercises = assignment?.exerciseIds.map(id => exercisesMap?.[id]);
     const isAllChecked = assignmentExercises?.every(ex => ex.isChecked);
+    const isAllCompleted = assignmentExercises?.every(ex => ex.isCompleted);
     const showAllCheckedAlert = isTeacher && isAllChecked && assignment?.status !== 'completed';
 
     const handleExerciseProgressChange = useCallback((exercise, data) => {
@@ -110,14 +111,16 @@ export default function AssignmentPage({ match, location, history }) {
                         (isLearner &&
                         getLearnerAssignmentActions(
                             assignment.status,
-                            updateAssignmentStatus
+                            updateAssignmentStatus,
+                            isAllCompleted
                         )) ||
                     (isTeacher &&
                         getTeacherAssignmentActions(
                             assignment.status,
                             updateAssignmentStatus,
                             handleSave,
-                            toggleConfirmationDialogOpen
+                            toggleConfirmationDialogOpen,
+                            isAllChecked
                         ))
                     }
                 />
@@ -183,13 +186,14 @@ export default function AssignmentPage({ match, location, history }) {
     );
 }
 
-function getLearnerAssignmentActions(status, onClick) {
+function getLearnerAssignmentActions(status, onClick, isAllCompleted) {
     switch (status) {
         case 'assigned': return [{
             key: 'turn-in',
             icon: 'assignment_return',
             content: 'Сдать на проверку',
             color: 'primary',
+            disabled: !isAllCompleted,
             onClick: () => onClick('submitted')
         }];
         case 'submitted': return [{
@@ -198,6 +202,7 @@ function getLearnerAssignmentActions(status, onClick) {
             content: 'Отменить сдачу',
             variant: 'soft',
             color: 'primary',
+            disabled: isAllCompleted,
             onClick: () => onClick('assigned')
         }];
         case 'completed': return [];
@@ -208,7 +213,8 @@ function getTeacherAssignmentActions(
     status,
     onClick,
     handleSave,
-    toggleConfirmationDialogOpen
+    toggleConfirmationDialogOpen,
+    isAllChecked
 ) {
     const baseActions = [
         {
@@ -231,6 +237,7 @@ function getTeacherAssignmentActions(
             icon: 'verified',
             content: 'Отметить выполненным',
             color: 'primary',
+            disabled: !isAllChecked,
             onClick: () => onClick('completed')
         }) :
         baseActions.push({
@@ -239,6 +246,7 @@ function getTeacherAssignmentActions(
             content: 'Вернуть в работу',
             variant: 'soft',
             color: 'primary',
+            disabled: isAllChecked,
             onClick: () => onClick('assigned')
         });
 
