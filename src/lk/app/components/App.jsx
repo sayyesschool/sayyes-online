@@ -7,7 +7,7 @@ import AppNotification from 'shared/components/app-notification';
 import AppShell from 'shared/components/app-shell';
 import LoadingIndicator from 'shared/components/loading-indicator';
 import { APP_DOMAIN } from 'shared/constants';
-import { UserDomainLabel } from 'shared/data/user';
+import { UserDomainIcons, UserDomainLabel } from 'shared/data/user';
 import { useUser } from 'shared/hooks/user';
 
 import Account from 'lk/components/account';
@@ -25,7 +25,8 @@ export default function App() {
             key: domain,
             as: 'a',
             href: `//${domain}.${APP_DOMAIN}`,
-            text: UserDomainLabel[domain]
+            text: UserDomainLabel[domain],
+            icon: UserDomainIcons[domain]
         }));
 
     return (

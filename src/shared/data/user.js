@@ -9,6 +9,14 @@ export const UserDomainLabel = {
     [UserDomain.LMS]: 'LMS'
 };
 
+export const UserDomainIcons = {
+    lk: 'account_circle',
+    lms: 'school',
+    crm: 'manage_accounts',
+    cms: 'book',
+    club: 'groups'
+};
+
 export const userDomainOptions = [
     ...Object.entries(UserDomainLabel).map(([key, value]) => ({
         key,
