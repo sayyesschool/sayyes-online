@@ -7,9 +7,9 @@ import UnitCard from 'lms/components/courses/unit-card';
 export default function CourseContent({ course, onSelectUnit }) {
     return (
         <section className="CourseContent">
-            <Grid spacing={2}>
+            <Grid columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}>
                 {course.units.map((unit, index) =>
-                    <Grid.Item key={unit.id} lg={3}>
+                    <Grid.Item key={unit.id}>
                         <UnitCard
                             as={!onSelectUnit ? Link : undefined}
                             to={!onSelectUnit ? (unit.uri + (course.enrollmentId ? `?enrollmentId=${course.enrollmentId}` : '')) : undefined}
