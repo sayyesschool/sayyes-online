@@ -79,6 +79,7 @@ export default function LessonPage({ match, location }) {
             <Page className="LessonPage">
                 <Page.Header
                     breadcrumbs={[
+                        { to: `/enrollments/${course.enrollmentId}`, content: 'Обучение' },
                         { to: course.uri + query, content: course.title },
                         { to: unit.uri + query, content: unit.title }
                     ]}

@@ -12,7 +12,7 @@ export default function CoursePage({ match, location }) {
     return (
         <Page id={course.slug} className="CoursePage">
             <Page.Header
-                breadcrumbs={[{ content: 'Курс' }]}
+                breadcrumbs={[{ to: `/enrollments/${course.enrollmentId}`, content: 'Обучение' }]}
                 title={course.title}
             />
 

@@ -17,6 +17,7 @@ export default function UnitPage({ match, location }) {
             <Page.Header
                 title={unit.title}
                 breadcrumbs={[
+                    { to: `/enrollments/${course.enrollmentId}`, content: 'Обучение' },
                     { to: course.uri + query, content: course.title }
                 ]}
             />

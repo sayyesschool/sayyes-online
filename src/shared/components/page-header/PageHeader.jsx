@@ -49,7 +49,7 @@ export default function PageHeader({
                                         {...props}
                                     />
                                     :
-                                    <Text key={props.key} {...props} />
+                                    <Text key={props.to} {...props} />
                             )}
                         </Breadcrumbs>
                     }
